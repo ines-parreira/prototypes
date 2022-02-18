@@ -1,0 +1,523 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Form /> should render 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/users"
+          >
+            Users
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Edit Acme Support
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <form
+      class=""
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-name"
+        >
+          Name
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-name"
+            placeholder="John Doe"
+            required=""
+            type="text"
+            value="Acme Support"
+          />
+        </div>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-email"
+        >
+          Email
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-email"
+            placeholder="john@doe.com"
+            required=""
+            type="email"
+            value="hello@acme.gorgias.io"
+          />
+        </div>
+      </div>
+      <div
+        class="roleDropdown"
+      >
+        <div
+          class="roleLabel"
+        >
+          <label
+            class="control-label required"
+          >
+            Role
+          </label>
+          <button
+            class="wrapper wrapper learnMore secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                info_outline
+              </i>
+              Learn
+            </span>
+          </button>
+        </div>
+        <div
+          class="btn-group"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            Admin agent
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Observer agent
+              <br />
+              <span
+                class="description"
+              >
+                Able to view customers, tickets and send internal notes.
+              </span>
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Lite agent
+              <br />
+              <span
+                class="description"
+              >
+                Able to modify customers, tickets and send messages.
+              </span>
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Basic agent
+              <br />
+              <span
+                class="description"
+              >
+                Able to modify customers, tickets, send messages and perform integrations-related actions.
+              </span>
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Lead agent
+              <br />
+              <span
+                class="description"
+              >
+                Able to manage customers, tickets, tags, send messages and perform integrations-related actions.
+              </span>
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Admin agent
+              <br />
+              <span
+                class="description"
+              >
+                Able to manage everything. (billing info, users, integrations, rules, tickets, customers, etc...)
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="mt-5 form-group"
+      >
+        <button
+          class="wrapper mr-2 primary medium"
+        >
+          Save user
+        </button>
+        <button
+          class="wrapper secondary medium"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              mail
+            </i>
+            Re-send invitation email
+          </span>
+        </button>
+        <button
+          class="wrapper ml-2 destructive medium"
+          id="set-owner"
+          type="button"
+        >
+          Set as account owner
+        </button>
+        <button
+          class="wrapper float-right destructive medium"
+          id="delete-user"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete user
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`<Form /> should render with 2FA information when enabled 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/users"
+          >
+            Users
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Edit Acme Support
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <form
+      class=""
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-name"
+        >
+          Name
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-name"
+            placeholder="John Doe"
+            required=""
+            type="text"
+            value="Acme Support"
+          />
+        </div>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-email"
+        >
+          Email
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-email"
+            placeholder="john@doe.com"
+            required=""
+            type="email"
+            value="hello@acme.gorgias.io"
+          />
+        </div>
+      </div>
+      <div
+        class="roleDropdown"
+      >
+        <div
+          class="roleLabel"
+        >
+          <label
+            class="control-label required"
+          >
+            Role
+          </label>
+          <button
+            class="wrapper wrapper learnMore secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                info_outline
+              </i>
+              Learn
+            </span>
+          </button>
+        </div>
+        <div
+          class="btn-group"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            Admin agent
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Observer agent
+              <br />
+              <span
+                class="description"
+              >
+                Able to view customers, tickets and send internal notes.
+              </span>
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Lite agent
+              <br />
+              <span
+                class="description"
+              >
+                Able to modify customers, tickets and send messages.
+              </span>
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Basic agent
+              <br />
+              <span
+                class="description"
+              >
+                Able to modify customers, tickets, send messages and perform integrations-related actions.
+              </span>
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Lead agent
+              <br />
+              <span
+                class="description"
+              >
+                Able to manage customers, tickets, tags, send messages and perform integrations-related actions.
+              </span>
+            </button>
+            <button
+              class="dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              Admin agent
+              <br />
+              <span
+                class="description"
+              >
+                Able to manage everything. (billing info, users, integrations, rules, tickets, customers, etc...)
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="form-group"
+      >
+        <label
+          class="control-label"
+        >
+          Two-Factor Authentication
+        </label>
+        <p>
+          <span
+            class="badge badge badge-success badge-pill"
+          >
+            Active
+          </span>
+        </p>
+      </div>
+      <div
+        class="mt-5 form-group"
+      >
+        <button
+          class="wrapper mr-2 primary medium"
+        >
+          Save user
+        </button>
+        <button
+          class="wrapper secondary medium"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              mail
+            </i>
+            Re-send invitation email
+          </span>
+        </button>
+        <button
+          class="wrapper ml-2 destructive medium"
+          id="set-owner"
+          type="button"
+        >
+          Set as account owner
+        </button>
+        <button
+          class="wrapper float-right destructive medium"
+          id="delete-user"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete user
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

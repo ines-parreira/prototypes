@@ -45,6 +45,7 @@ import history from '../../history'
 import {RootState} from '../../../state/types'
 import settingsCss from '../settings.less'
 
+import {checkAccessTo2FA} from '../yourProfile/twoFactorAuthentication/utils'
 import css from './Form.less'
 
 type OwnProps = {
@@ -168,6 +169,7 @@ export class FormContainer extends Component<Props, State> {
             this.props.accountOwnerId === this.props.currentUserId
         const isAgentAccountOwner =
             this.props.agentId === this.props.accountOwnerId
+        const has2FaEnabled = agent.get('has_2fa_enabled', false)
 
         return (
             <div className="full-width">
@@ -269,7 +271,27 @@ export class FormContainer extends Component<Props, State> {
                                 </PopoverModal>
                             </div>
                         </RichDropdown>
-                        <FormGroup>
+                        {checkAccessTo2FA(this.props.accountDomain) && (
+                            <FormGroup>
+                                <Label className="control-label">
+                                    Two-Factor Authentication
+                                </Label>
+                                <p>
+                                    <Badge
+                                        pill
+                                        className={css.badge}
+                                        color={
+                                            has2FaEnabled ? 'success' : 'danger'
+                                        }
+                                    >
+                                        {has2FaEnabled
+                                            ? 'Active'
+                                            : 'Not Active'}
+                                    </Badge>
+                                </p>
+                            </FormGroup>
+                        )}
+                        <FormGroup className="mt-5">
                             <Button
                                 className="mr-2"
                                 isLoading={this.state.isSubmitting}
@@ -342,6 +364,7 @@ const connector = connect(
     (state: RootState, ownProps: OwnProps) => {
         return {
             agentId: parseInt(ownProps.match.params.id),
+            accountDomain: state.currentAccount.get('domain'),
             accountOwnerId: state.currentAccount.get('user_id'),
             currentUserId: state.currentUser.get('id'),
         }
