@@ -57,6 +57,138 @@ exports[`<Row /> should render 1`] = `
 </a>
 `;
 
+exports[`<Row /> should render 2FA information when enabled 1`] = `
+<a
+  class="component"
+  to="/app/settings/users/1"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <div
+      class="component avatar d-none d-md-block"
+      style="width: 36px; height: 36px;"
+    >
+      <div
+        class="initials"
+        style="width: 36px; height: 36px; font-size: 15px;"
+      >
+        <span
+          style="line-height: 38px;"
+        >
+          AS
+        </span>
+      </div>
+    </div>
+    <span
+      class="meta"
+    >
+      <p
+        class="name"
+      >
+        Acme Support
+      </p>
+      <p
+        class="email text-faded"
+      >
+        hello@acme.gorgias.io
+      </p>
+    </span>
+    <span
+      class="role"
+    >
+      <span
+        class="badge-pill badge badge-danger"
+      >
+        Admin
+      </span>
+    </span>
+    <span
+      class="twoFa"
+    >
+      <span
+        class="badge badge-success badge-pill"
+      >
+        Yes
+      </span>
+    </span>
+    <span
+      class="delete"
+    >
+      <div>
+        delete
+      </div>
+    </span>
+  </span>
+</a>
+`;
+
+exports[`<Row /> should render 2FA information when enabled and agent has 2FA disabled 1`] = `
+<a
+  class="component"
+  to="/app/settings/users/1"
+>
+  <span
+    class="d-flex align-items-center"
+  >
+    <div
+      class="component avatar d-none d-md-block"
+      style="width: 36px; height: 36px;"
+    >
+      <div
+        class="initials"
+        style="width: 36px; height: 36px; font-size: 15px;"
+      >
+        <span
+          style="line-height: 38px;"
+        >
+          AS
+        </span>
+      </div>
+    </div>
+    <span
+      class="meta"
+    >
+      <p
+        class="name"
+      >
+        Acme Support
+      </p>
+      <p
+        class="email text-faded"
+      >
+        hello@acme.gorgias.io
+      </p>
+    </span>
+    <span
+      class="role"
+    >
+      <span
+        class="badge-pill badge badge-danger"
+      >
+        Admin
+      </span>
+    </span>
+    <span
+      class="twoFa"
+    >
+      <span
+        class="badge badge-danger badge-pill"
+      >
+        No
+      </span>
+    </span>
+    <span
+      class="delete"
+    >
+      <div>
+        delete
+      </div>
+    </span>
+  </span>
+</a>
+`;
+
 exports[`<Row /> should render a user without a name 1`] = `
 <a
   class="component"

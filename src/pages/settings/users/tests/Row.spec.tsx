@@ -28,12 +28,14 @@ const minProps = {
                 name: 'admin',
             },
         ],
+        has_2fa_enabled: true,
         updated_datetime: '2021-05-06T16:11:10.990319+00:00',
     }) as Map<any, any>,
     currentPage: 1,
     isAccountOwner: false,
     deleteAgent: jest.fn(),
     fetchAgents: jest.fn(),
+    hasAccessTo2FA: false,
     last: false,
 }
 
@@ -49,6 +51,26 @@ describe('<Row />', () => {
             <RowContainer
                 {...minProps}
                 agent={minProps.agent.set('name', null)}
+            />
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render 2FA information when enabled', () => {
+        const {container} = render(
+            <RowContainer {...minProps} hasAccessTo2FA={true} />
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render 2FA information when enabled and agent has 2FA disabled', () => {
+        const {container} = render(
+            <RowContainer
+                {...minProps}
+                hasAccessTo2FA={true}
+                agent={minProps.agent.set('has_2fa_enabled', false)}
             />
         )
 

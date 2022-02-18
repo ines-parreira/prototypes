@@ -18,6 +18,7 @@ type Props = {
     agent: Map<any, any>
     currentPage: number
     isAccountOwner: boolean
+    hasAccessTo2FA: boolean
     last: boolean
 } & ConnectedProps<typeof connector>
 
@@ -33,8 +34,9 @@ export class RowContainer extends Component<Props> {
     }
 
     render() {
-        const {agent, isAccountOwner} = this.props
+        const {agent, isAccountOwner, hasAccessTo2FA} = this.props
         const editLink = `/app/settings/users/${agent.get('id') as number}`
+        const has2FaEnabled = agent.get('has_2fa_enabled')
 
         return (
             <Link to={editLink} className={css.component}>
@@ -63,6 +65,16 @@ export class RowContainer extends Component<Props> {
                             </Badge>
                         )}
                     </span>
+                    {hasAccessTo2FA && (
+                        <span className={css.twoFa}>
+                            <Badge
+                                pill
+                                color={has2FaEnabled ? 'success' : 'danger'}
+                            >
+                                {has2FaEnabled ? 'Yes' : 'No'}
+                            </Badge>
+                        </span>
+                    )}
                     <span className={css.delete}>
                         <ConfirmButton
                             className={css.deleteButton}
