@@ -722,7 +722,7 @@ Array [
             },
             "twitter_integration": Object {
               "enabled": true,
-              "limit": 5,
+              "limit": 10,
             },
             "user_roles": Object {
               "enabled": true,
@@ -800,7 +800,7 @@ Array [
             },
             "twitter_integration": Object {
               "enabled": true,
-              "limit": 5,
+              "limit": 10,
             },
             "user_roles": Object {
               "enabled": true,
