@@ -1,15 +1,8 @@
 import React, {useState, useMemo} from 'react'
 import {useLatest} from 'react-use'
-import {
-    Table,
-    Button,
-    Form,
-    FormGroup,
-    FormText,
-    Label,
-    Input,
-} from 'reactstrap'
+import {Table, Form, FormGroup, FormText, Label, Input} from 'reactstrap'
 import {produce} from 'immer'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import Modal from 'pages/common/components/Modal'
 import ReactSortable from 'pages/common/components/dragging/ReactSortable'
@@ -23,9 +16,9 @@ import {NotificationStatus} from '../../../../../../../state/notifications/types
 import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
 
 import QuickResponseListItem from '../QuickResponseListItem'
-import css from './QuickResponsesList.less'
+import css from './QuickResponseList.less'
 
-const QuickResponsesList = () => {
+const QuickResponseList = () => {
     const [shouldShowModal, setShouldShowModal] = useState(false)
     const [title, setTitle] = useState('')
     const [quickResponseIndex, setQuickResponseIndex] = useState<number | null>(
@@ -220,7 +213,7 @@ const QuickResponsesList = () => {
                 </Table>
             )}
 
-            <Button color="primary" onClick={handleAddFlow}>
+            <Button intent={ButtonIntent.Primary} onClick={handleAddFlow}>
                 <span className="material-icons">add</span>
                 Add flow
             </Button>
@@ -228,13 +221,14 @@ const QuickResponsesList = () => {
             <Modal
                 autoFocus={false}
                 centered
-                header={quickResponseIndex ? `Edit flow` : `Add flow`}
+                header={quickResponseIndex !== null ? `Edit flow` : `Add flow`}
                 isOpen={shouldShowModal}
                 onClose={handleClose}
                 footerClassName={css.modalButtons}
                 footer={
                     <>
                         <Button
+                            intent={ButtonIntent.Secondary}
                             color="secondary"
                             type="button"
                             onClick={handleClose}
@@ -242,10 +236,10 @@ const QuickResponsesList = () => {
                             Cancel
                         </Button>
                         <Button
-                            color="primary"
+                            intent={ButtonIntent.Primary}
                             type="submit"
                             form="quickResponseForm"
-                            disabled={!!error}
+                            isDisabled={!!error}
                         >
                             {quickResponseIndex ? `Save changes` : `Add flow`}
                         </Button>
@@ -254,7 +248,9 @@ const QuickResponsesList = () => {
             >
                 <Form id="quickResponseForm" onSubmit={handleSubmit}>
                     <FormGroup>
-                        <Label for="flowTitle">Flow title</Label>
+                        <Label for="flowTitle" className="control-label">
+                            Flow title
+                        </Label>
                         <Input
                             name="flowTitle"
                             id="flowTitle"
@@ -277,4 +273,4 @@ const QuickResponsesList = () => {
     )
 }
 
-export default QuickResponsesList
+export default QuickResponseList

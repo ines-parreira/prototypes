@@ -61,6 +61,12 @@ const SelfServicePreview = () => {
     const sspTexts =
         GORGIAS_CHAT_SSP_TEXTS[chatIntegration.meta.language || 'en-US']
 
+    const hasOrderManagementFlow =
+        selfServiceConfiguration.track_order_policy.enabled ||
+        selfServiceConfiguration.cancel_order_policy.enabled ||
+        selfServiceConfiguration.report_issue_policy.enabled ||
+        selfServiceConfiguration.return_order_policy.enabled
+
     return (
         <GorgiasChatIntegrationPreview
             name={chatIntegration.name}
@@ -90,31 +96,37 @@ const SelfServicePreview = () => {
                     </ListGroup>
                 )}
 
-                <ListGroup className={css.buttons}>
-                    <HomePageListGroupItem header>
-                        {sspTexts.manageYourOrders}
-                    </HomePageListGroupItem>
-                    {selfServiceConfiguration.track_order_policy.enabled && (
-                        <HomePageListGroupItem>
-                            {sspTexts.trackOrder}
+                {hasOrderManagementFlow && (
+                    <ListGroup className={css.buttons}>
+                        <HomePageListGroupItem header>
+                            {sspTexts.manageYourOrders}
                         </HomePageListGroupItem>
-                    )}
-                    {selfServiceConfiguration.return_order_policy.enabled && (
-                        <HomePageListGroupItem>
-                            {sspTexts.returnOrder}
-                        </HomePageListGroupItem>
-                    )}
-                    {selfServiceConfiguration.cancel_order_policy.enabled && (
-                        <HomePageListGroupItem>
-                            {sspTexts.cancelOrder}
-                        </HomePageListGroupItem>
-                    )}
-                    {selfServiceConfiguration.report_issue_policy.enabled && (
-                        <HomePageListGroupItem>
-                            {sspTexts.reportIssue}
-                        </HomePageListGroupItem>
-                    )}
-                </ListGroup>
+                        {selfServiceConfiguration.track_order_policy
+                            .enabled && (
+                            <HomePageListGroupItem>
+                                {sspTexts.trackOrder}
+                            </HomePageListGroupItem>
+                        )}
+                        {selfServiceConfiguration.return_order_policy
+                            .enabled && (
+                            <HomePageListGroupItem>
+                                {sspTexts.returnOrder}
+                            </HomePageListGroupItem>
+                        )}
+                        {selfServiceConfiguration.cancel_order_policy
+                            .enabled && (
+                            <HomePageListGroupItem>
+                                {sspTexts.cancelOrder}
+                            </HomePageListGroupItem>
+                        )}
+                        {selfServiceConfiguration.report_issue_policy
+                            .enabled && (
+                            <HomePageListGroupItem>
+                                {sspTexts.reportIssue}
+                            </HomePageListGroupItem>
+                        )}
+                    </ListGroup>
+                )}
 
                 <div className={css.footer}>
                     <span className={css.needHelpText}>

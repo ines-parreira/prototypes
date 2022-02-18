@@ -88,6 +88,7 @@ const QuickResponseListItem: React.FC<QuickResponseListItemProps> = ({
                         <div className="material-icons edit">edit</div>
                     </button>
                     <ConfirmButton
+                        id={`confirm_button_${toggleId}`}
                         confirmationContent={
                             <span>
                                 Are you sure you want to delete this quick
@@ -95,6 +96,8 @@ const QuickResponseListItem: React.FC<QuickResponseListItemProps> = ({
                             </span>
                         }
                         onConfirm={onDeleteConfirmation}
+                        placement="top"
+                        confirmationButtonIntent={ButtonIntent.Destructive}
                         intent={ButtonIntent.Text}
                         type="button"
                         className={css.actionButton}

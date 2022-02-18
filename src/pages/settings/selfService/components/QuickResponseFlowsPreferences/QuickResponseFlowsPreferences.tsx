@@ -14,7 +14,7 @@ import {GorgiasChatIntegrationSelfServicePaywall} from '../../../../integrations
 import {useConfigurationData} from '../hooks'
 
 import SelfServicePreview from './components/SelfServicePreview'
-import QuickResponsesList from './components/QuickResponsesList'
+import QuickResponseList from './components/QuickResponseList'
 
 const QuickResponseFlowsPreferences = () => {
     const {integration} = useConfigurationData()
@@ -48,13 +48,24 @@ const QuickResponseFlowsPreferences = () => {
                     <Col>
                         <h4>Quick Response Flows</h4>
                         <p>
-                            Create up to 4 quick response flows that when
-                            clicked by the shopper, it'll send an automated
-                            message with the answer. Create rules that will send
-                            a response to your customer. Read more
+                            Create up to 4 quick response flows sending a
+                            prefilled chat message when shoppers click on it.
+                            You can then{' '}
+                            <Link to="/app/settings/rules/new">
+                                create a rule
+                            </Link>{' '}
+                            that will send an automated response to your
+                            customer.{' '}
+                            <a
+                                href="https://updates.gorgias.com/publications/quick-response-flows-in-the-chat"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Read more
+                            </a>
                         </p>
 
-                        <QuickResponsesList />
+                        <QuickResponseList />
                     </Col>
 
                     <Col>

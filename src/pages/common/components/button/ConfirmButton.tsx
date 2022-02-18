@@ -12,9 +12,10 @@ import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import _get from 'lodash/get'
 import {useMountedState} from 'react-use'
 
-import Button from './Button'
+import Button, {ButtonIntent} from './Button'
 
 type Props = {
+    confirmationButtonIntent?: ButtonIntent
     confirmationContent?: ReactNode
     confirmationTitle?: string
     onConfirm?: () => void
@@ -25,6 +26,7 @@ export default function ConfirmButton({
     children,
     confirmationContent,
     confirmationTitle = 'Are you sure?',
+    confirmationButtonIntent,
     id,
     onConfirm,
     placement = 'bottom',
@@ -105,7 +107,11 @@ export default function ConfirmButton({
                     <PopoverBody>
                         <p>{confirmationContent}</p>
 
-                        <Button onClick={handleConfirmation} type={type}>
+                        <Button
+                            onClick={handleConfirmation}
+                            type={type}
+                            intent={confirmationButtonIntent}
+                        >
                             Confirm
                         </Button>
                     </PopoverBody>
