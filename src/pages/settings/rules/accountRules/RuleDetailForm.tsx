@@ -54,6 +54,8 @@ import {CodeASTType} from '../types'
 import RuleItemButtons from '../components/RuleItemButtons'
 import RuleEditor from '../components/RuleEditor'
 
+import {RuleTicketList} from './components/RuleTicketList'
+
 import css from './RuleDetailForm.less'
 
 export function RuleDetailForm({
@@ -424,6 +426,7 @@ export function RuleDetailForm({
                         />
                     </div>
                 )}
+                {ruleId && <RuleTicketList ruleId={parseInt(ruleId)} />}
             </Container>
         </div>
     )

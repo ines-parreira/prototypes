@@ -1,0 +1,65 @@
+@import '~css/new/colorTokens.less';
+
+:local {
+    .wrapper {
+        margin-top: 24px;
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        vertical-align: middle;
+        background: none;
+        line-height: 1.2rem;
+        padding: 1rem;
+        border: none;
+        .title {
+            font-size: 1.2rem;
+            color: @classic-neutral-grey-6;
+            font-weight: 600;
+        }
+        .toggle {
+            font-size: 0.8rem;
+            color: @classic-neutral-grey-4;
+            font-weight: 400;
+        }
+    }
+    .body {
+        padding: 0;
+        max-height: 600px;
+        overflow-y: scroll;
+        thead {
+            th {
+                text-transform: uppercase;
+                border-bottom: 1px solid @classic-neutral-grey-2;
+                color: @classic-neutral-grey-4;
+                font-size: 0.8rem;
+            }
+            .avatar {
+                width: 0px;
+            }
+        }
+        td {
+            vertical-align: middle;
+            border-bottom: 1px solid @classic-neutral-grey-2;
+        }
+        td.ticketInfo {
+            width: 60%;
+        }
+        .ticketSubject {
+            font-weight: 600;
+        }
+        .ticketDescription {
+            font-weight: 400;
+            color: @classic-neutral-grey-4;
+        }
+        tr:last-child {
+            td {
+                border-bottom: none;
+            }
+        }
+    }
+    .navigation {
+        text-align: right;
+        margin-top: 8px;
+    }
+}

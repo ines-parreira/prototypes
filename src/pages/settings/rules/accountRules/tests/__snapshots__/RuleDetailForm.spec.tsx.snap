@@ -50,6 +50,48 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
         />
       </div>
     </div>
+    <div
+      class="wrapper card"
+    >
+      <div
+        class="header card-header"
+      >
+        <div
+          class="title"
+        >
+          List of tickets triggering the rule
+        </div>
+        <div
+          class="toggle"
+        >
+          <span
+            class="material-icons ml-2"
+          >
+            keyboard_arrow_down
+          </span>
+        </div>
+      </div>
+      <div
+        class="body card-body"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="inner"
+            style="min-height: 60px;"
+          >
+            <i
+              class="icon-custom icon-circle-o-notch md-spin"
+              style="font-size: 40px;"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="navigation"
+    />
   </div>
 </div>
 `;
@@ -102,6 +144,48 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
         />
       </div>
     </div>
+    <div
+      class="wrapper card"
+    >
+      <div
+        class="header card-header"
+      >
+        <div
+          class="title"
+        >
+          List of tickets triggering the rule
+        </div>
+        <div
+          class="toggle"
+        >
+          <span
+            class="material-icons ml-2"
+          >
+            keyboard_arrow_down
+          </span>
+        </div>
+      </div>
+      <div
+        class="body card-body"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="inner"
+            style="min-height: 60px;"
+          >
+            <i
+              class="icon-custom icon-circle-o-notch md-spin"
+              style="font-size: 40px;"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="navigation"
+    />
   </div>
 </div>
 `;

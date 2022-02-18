@@ -33,6 +33,7 @@ export type Ticket = {
     external_id: string | null
     via: TicketVia
     is_unread: boolean
+    excerpt?: string
 }
 
 export type TicketAssignee = {
@@ -41,6 +42,9 @@ export type TicketAssignee = {
     firstname: string
     lastname: string
     name: string
+    meta?: {
+        profile_picture_url?: string
+    }
 }
 
 export type TicketElement =

@@ -1,0 +1,261 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleTicketList/> should collapse the element when clicking the header 1`] = `
+<div>
+  <div
+    class="wrapper card"
+  >
+    <div
+      class="header card-header"
+    >
+      <div
+        class="title"
+      >
+        List of tickets triggering the rule
+      </div>
+      <div
+        class="toggle"
+      >
+        <span
+          class="material-icons ml-2"
+        >
+          keyboard_arrow_up
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RuleTicketList/> should fetch the tickets on render 1`] = `
+Array [
+  Array [
+    1,
+    Object {
+      "cursor": undefined,
+      "limit": 10,
+    },
+  ],
+]
+`;
+
+exports[`<RuleTicketList/> should render the rule ticket list 1`] = `
+<div>
+  <div
+    class="wrapper card"
+  >
+    <div
+      class="header card-header"
+    >
+      <div
+        class="title"
+      >
+        List of tickets triggering the rule
+      </div>
+      <div
+        class="toggle"
+      >
+        <span
+          class="material-icons ml-2"
+        >
+          keyboard_arrow_down
+        </span>
+      </div>
+    </div>
+    <div
+      class="body card-body"
+    >
+      <table
+        class="table"
+      >
+        <thead>
+          <tr>
+            <th
+              class="avatar"
+            />
+            <th>
+              ticket information
+            </th>
+            <th>
+              created
+            </th>
+            <th>
+              channel
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div
+                class="component"
+                style="width: 30px; height: 30px;"
+              >
+                <div
+                  class="initials"
+                  style="width: 30px; height: 30px; font-size: 12.5px;"
+                >
+                  <span
+                    style="line-height: 32px;"
+                  >
+                    AP
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td
+              class="ticketInfo"
+            >
+              <div
+                class="ticketSubject"
+              >
+                Great ticket
+              </div>
+              <div
+                class="ticketDescription"
+              />
+            </td>
+            <td>
+              31/07/2017
+            </td>
+            <td>
+              <i
+                class="icon d-inline-block material-icons text-secondary"
+              >
+                email
+              </i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div
+    class="navigation"
+  />
+</div>
+`;
+
+exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
+<div>
+  <div
+    class="wrapper card"
+  >
+    <div
+      class="header card-header"
+    >
+      <div
+        class="title"
+      >
+        List of tickets triggering the rule
+      </div>
+      <div
+        class="toggle"
+      >
+        <span
+          class="material-icons ml-2"
+        >
+          keyboard_arrow_down
+        </span>
+      </div>
+    </div>
+    <div
+      class="body card-body"
+    >
+      <table
+        class="table"
+      >
+        <thead>
+          <tr>
+            <th
+              class="avatar"
+            />
+            <th>
+              ticket information
+            </th>
+            <th>
+              created
+            </th>
+            <th>
+              channel
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div
+                class="component"
+                style="width: 30px; height: 30px;"
+              >
+                <div
+                  class="initials"
+                  style="width: 30px; height: 30px; font-size: 12.5px;"
+                >
+                  <span
+                    style="line-height: 32px;"
+                  >
+                    AP
+                  </span>
+                </div>
+              </div>
+            </td>
+            <td
+              class="ticketInfo"
+            >
+              <div
+                class="ticketSubject"
+              >
+                Great ticket
+              </div>
+              <div
+                class="ticketDescription"
+              />
+            </td>
+            <td>
+              31/07/2017
+            </td>
+            <td>
+              <i
+                class="icon d-inline-block material-icons text-secondary"
+              >
+                email
+              </i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div
+    class="navigation"
+  >
+    <div
+      class="btn-group"
+      role="group"
+    >
+      <button
+        class="wrapper previousButton wrapper medium secondary medium isDisabled"
+        disabled=""
+        id="prev-btn"
+      >
+        <i
+          class="material-icons icon"
+        >
+          keyboard_arrow_left
+        </i>
+      </button>
+      <button
+        class="wrapper nextButton wrapper medium secondary medium"
+        id="next-btn"
+      >
+        <i
+          class="material-icons icon"
+        >
+          keyboard_arrow_right
+        </i>
+      </button>
+    </div>
+  </div>
+</div>
+`;

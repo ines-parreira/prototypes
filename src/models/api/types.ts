@@ -46,6 +46,13 @@ export enum MetaSortOptions {
     Relevance = 'relevance',
 }
 
+export type ApiPaginationParams = {
+    per_page?: number
+    page?: number
+    limit?: number
+    cursor?: string
+}
+
 export type GorgiasApiError<T = unknown> = Omit<AxiosError, 'response'> &
     Pick<
         Required<

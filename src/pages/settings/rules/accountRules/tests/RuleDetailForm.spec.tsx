@@ -1,4 +1,7 @@
 import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
 import {render, waitFor} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
@@ -16,10 +19,15 @@ import {Rule} from '../../../../../state/rules/types'
 import {ApiListResponsePagination} from '../../../../../models/api/types'
 import history from '../../../../history'
 
+import {RootState} from '../../../../../state/types'
+
 import {RuleDetailForm} from '../RuleDetailForm'
 
 jest.mock('../../../../../state/entities/rules/actions')
 jest.mock('../../../../../models/rule/resources')
+
+const mockStore = configureMockStore([thunk])
+const defaultStore: Partial<RootState> = {}
 
 describe('<RuleSettingsForm />', () => {
     const mockDate = jest.spyOn(global.Date, 'now').mockImplementation(() => 0)
@@ -70,13 +78,19 @@ describe('<RuleSettingsForm />', () => {
 
     describe('rendering', () => {
         it('should render an empty form when no rule id', () => {
-            const {container} = render(<RuleDetailForm {...minProps} />)
+            const {container} = render(
+                <Provider store={mockStore(defaultStore)}>
+                    <RuleDetailForm {...minProps} />
+                </Provider>
+            )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a loader when rule id before fetched', () => {
             const {container} = render(
-                <RuleDetailForm {...minProps} match={matchProp} />
+                <Provider store={mockStore(defaultStore)}>
+                    <RuleDetailForm {...minProps} match={matchProp} />
+                </Provider>
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -86,7 +100,9 @@ describe('<RuleSettingsForm />', () => {
                 data: [emptyRule],
             } as unknown as ApiListResponsePagination<Rule[]>)
             const {container} = render(
-                <RuleDetailForm {...minProps} match={matchProp} />
+                <Provider store={mockStore(defaultStore)}>
+                    <RuleDetailForm {...minProps} match={matchProp} />
+                </Provider>
             )
 
             await waitFor(() => {
@@ -99,7 +115,11 @@ describe('<RuleSettingsForm />', () => {
     describe('fetching', () => {
         it('should notify user and send them back to rules on failed fetch', async () => {
             fetchRulesMock.mockRejectedValue('error')
-            render(<RuleDetailForm {...minProps} match={matchProp} />)
+            render(
+                <Provider store={mockStore(defaultStore)}>
+                    <RuleDetailForm {...minProps} match={matchProp} />
+                </Provider>
+            )
             await waitFor(() => {
                 expect(notifyMock).toHaveBeenNthCalledWith(1, {
                     message: 'Failed to fetch rules',
