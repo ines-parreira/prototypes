@@ -1,21 +1,22 @@
 import {Map} from 'immutable'
 
-import {RecentChatTicket} from './business/types/recentChats'
-import {User} from './config/types/user'
-import {Plan} from './models/billing/types'
+import {RecentChatTicket} from 'business/types/recentChats'
+import {User} from 'config/types/user'
+import {Plan} from 'models/billing/types'
 import {
     IntegrationType,
     IntegrationAuthentication,
     IntegrationExtra,
     Integration,
-} from './models/integration/types'
-import {MacroActionName} from './models/macroAction/types'
-import {Section} from './models/section/types'
-import {View} from './models/view/types'
-import {Account} from './state/currentAccount/types'
-import {Customer} from './state/customers/types'
-import {Tag} from './state/tags/types'
-import {Team} from './state/teams/types'
+} from 'models/integration/types'
+import {PhoneNumber} from 'models/phoneNumber/types'
+import {MacroActionName} from 'models/macroAction/types'
+import {Section} from 'models/section/types'
+import {View} from 'models/view/types'
+import {Account} from 'state/currentAccount/types'
+import {Customer} from 'state/customers/types'
+import {Tag} from 'state/tags/types'
+import {Team} from 'state/teams/types'
 
 export enum ActionTemplateExecution {
     Front = 'front',
@@ -128,6 +129,7 @@ export type GorgiasInitialState = {
     viewSections: {
         [key: string]: Section
     }
+    phoneNumbers: PhoneNumber[]
 }
 
 export type InitialRootState = {
@@ -140,6 +142,7 @@ export type InitialRootState = {
         sections: {[key: string]: Section}
         tags: {[key: string]: Tag}
         views: {[key: string]: View}
+        phoneNumbers: {[key: number]: PhoneNumber}
     }
     integrations: Map<any, any>
     schemas: Map<any, any>

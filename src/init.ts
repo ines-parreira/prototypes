@@ -6,31 +6,29 @@ import {SankeyController, Flow} from 'chartjs-chart-sankey'
 
 import './polyfills'
 
-import {EditableUserProfile} from './config/types/user'
-import {resendVerificationEmail} from './state/currentAccount/actions'
+import {EditableUserProfile} from 'config/types/user'
+import {resendVerificationEmail} from 'state/currentAccount/actions'
 import {
     getActiveIntegrations,
     getBaseEmailIntegration,
-} from './state/integrations/selectors'
-import {recentViewsStorage} from './state/views/utils'
-import {notify} from './state/notifications/actions'
-import configureStore from './store/configureStore'
-import {logEvent, SegmentEvent} from './store/middlewares/segmentTracker'
-import {isAdmin, transformSystemMessagesToNotifications} from './utils'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from './state/notifications/types'
-import {GorgiasInitialState, InitialRootState} from './types'
-import {initDatadogLogger} from './utils/datadog'
-import {initializeNewReleaseHandler} from './models/api/resources'
-import {Tag} from './models/tag/types'
-import {View} from './models/view/types'
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from './constants/integration'
-import {isProduction, isStaging} from './utils/environment'
-import {getCurrentAccountState} from './state/currentAccount/selectors'
-import {isAccountAffectedByApiBreakingChange} from './utils/account'
-import {getCurrentUserState} from './state/currentUser/selectors'
+} from 'state/integrations/selectors'
+import {recentViewsStorage} from 'state/views/utils'
+import {notify} from 'state/notifications/actions'
+import configureStore from 'store/configureStore'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {isAdmin, transformSystemMessagesToNotifications} from 'utils'
+import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import {GorgiasInitialState, InitialRootState} from 'types'
+import {initDatadogLogger} from 'utils/datadog'
+import {initializeNewReleaseHandler} from 'models/api/resources'
+import {Tag} from 'models/tag/types'
+import {View} from 'models/view/types'
+import {PhoneNumber} from 'models/phoneNumber/types'
+import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
+import {isProduction, isStaging} from 'utils/environment'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {isAccountAffectedByApiBreakingChange} from 'utils/account'
+import {getCurrentUserState} from 'state/currentUser/selectors'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -77,10 +75,20 @@ export const toInitialStoreState = (initialState: GorgiasInitialState) => {
         {}
     )
 
+    const phoneNumbers = initialState.phoneNumbers?.reduce(
+        (acc: {[key: number]: PhoneNumber}, phoneNumber) => {
+            acc[phoneNumber.id] = phoneNumber
+            return acc
+        },
+        {}
+    )
+    delete nextState.phoneNumbers
+
     nextState.entities = {
         sections,
         tags,
         views,
+        phoneNumbers,
     }
 
     return nextState as InitialRootState
