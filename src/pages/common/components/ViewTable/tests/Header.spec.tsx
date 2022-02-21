@@ -2,26 +2,23 @@ import React from 'react'
 import {shallow, ShallowWrapper} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 
-import Search from '../../Search'
-import * as viewsFixtures from '../../../../../fixtures/views'
-import * as viewsActions from '../../../../../state/views/actions'
-import history from '../../../../history'
+import Search from 'pages/common/components/Search'
+import * as viewsFixtures from 'fixtures/views'
+import * as viewsActions from 'state/views/actions'
+import history from 'pages/history'
+import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import {getConfigByName} from 'config/views'
+
 import {HeaderContainer} from '../Header'
-import EmojiSelect from '../EmojiSelect/EmojiSelect'
-import {getConfigByName} from '../../../../../config/views'
 
-jest.mock('../../../../../state/views/actions.ts', () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const _identity: <T>(arg: T) => T = require('lodash/identity')
-
+jest.mock('state/views/actions.ts', () => {
+    const _identity: <T>(arg: T) => T = jest.requireActual('lodash/identity')
     return {
         fetchViewItems: jest.fn(() => _identity),
     }
 })
-
 jest.mock('react-router-dom')
-
-jest.mock('../../../../history')
+jest.mock('pages/history')
 
 describe('ViewTable::Header', () => {
     const fixtureView = viewsFixtures.view
@@ -101,6 +98,16 @@ describe('ViewTable::Header', () => {
         expect(minProps.fetchViewItems).toHaveBeenCalled()
     })
 
+    it('should not update view on search change when not in search mode', () => {
+        const component = shallow(
+            <HeaderContainer {...minProps} isSearch={false} config={config} />
+        )
+
+        component.find(Search).props().onChange('foo search')
+
+        expect(minProps.updateView).not.toHaveBeenCalled()
+    })
+
     describe('default view', () => {
         let component: ShallowWrapper
         beforeEach(() => {
@@ -114,12 +121,11 @@ describe('ViewTable::Header', () => {
         })
 
         it('should update search of the active view and not fetch view items on search input change', () => {
+            const component = shallow(
+                <HeaderContainer {...minProps} config={config} isSearch />
+            )
             const searchTerm = 'term1'
-            const searchOnChange = (
-                component.find(Search).props() as {
-                    onChange: (search: string) => void
-                }
-            ).onChange
+            const searchOnChange = component.find(Search).props().onChange
             searchOnChange(searchTerm)
             expect(minProps.updateView).toHaveBeenLastCalledWith(
                 (fromJS(fixtureView) as Map<any, any>).set(

@@ -6,19 +6,20 @@ import MockAdapter from 'axios-mock-adapter'
 import {fromJS, Map, List} from 'immutable'
 import _range from 'lodash/range'
 
+import {baseView, getExpirationTimeForCount} from 'config/views'
+import socketManager from 'services/socketManager/socketManager'
+import {ViewType, ViewVisibility} from 'models/view/types'
+import * as socketConstants from 'config/socketConstants'
+import {RootState, StoreDispatch} from 'state/types'
+import client from 'models/api/resources'
+import {JobType} from 'models/job/types'
+import {MoveIndexDirection} from 'pages/common/utils/keyboard'
+import {getAST} from 'utils'
+
+import {ViewNavDirection} from '../types'
+import * as viewsSelectors from '../selectors'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
-import {baseView, getExpirationTimeForCount} from '../../../config/views'
-import socketManager from '../../../services/socketManager/socketManager'
-import {ViewType, ViewVisibility} from '../../../models/view/types'
-import * as socketConstants from '../../../config/socketConstants'
-import {RootState, StoreDispatch} from '../../types'
-import {ViewNavDirection} from '../types'
-import {JobType} from '../../../models/job/types'
-import {MoveIndexDirection} from '../../../pages/common/utils/keyboard'
-import {getAST} from '../../../utils'
-import * as viewsSelectors from '../selectors'
-import client from '../../../models/api/resources'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -713,6 +714,53 @@ describe('actions', () => {
             await store.dispatch(actions.submitView(viewToUpdate))
             expect(mockServer.history).toMatchSnapshot()
             expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('should clean up the view before sending a creation call', async () => {
+            const propsToRemove = {
+                dirty: true,
+                editMode: true,
+                allItemsSelected: true,
+                filters_ast: 'foo filters',
+                search: 'foo search',
+            }
+            const viewToCreate = view.merge(propsToRemove)
+            const mockServer = new MockAdapter(client)
+                .onPost('/api/views/')
+                .reply(() => [200, {id: 1, slug: 'my-tickets'}])
+
+            await store.dispatch(actions.submitView(viewToCreate))
+
+            const {post} = mockServer.history
+            const viewSent = JSON.parse(post[0].data)
+            for (const prop of Object.keys(propsToRemove)) {
+                expect(viewSent).not.toHaveProperty(prop)
+            }
+        })
+
+        it('should clean up the view before sending an update call', async () => {
+            const propsToRemove = {
+                dirty: true,
+                editMode: true,
+                allItemsSelected: true,
+                visibility: ViewVisibility.Public,
+                shared_with_teams: [1],
+                shared_with_users: [1],
+                filters_ast: 'foo filters',
+                search: 'foo search',
+            }
+            const viewToUpdate = view.set('id', 1).merge(propsToRemove)
+            const mockServer = new MockAdapter(client)
+                .onPut('/api/views/99/')
+                .reply(200)
+
+            await store.dispatch(actions.submitView(viewToUpdate))
+
+            const {put} = mockServer.history
+            const viewSent = JSON.parse(put[0].data)
+            for (const prop of Object.keys(propsToRemove)) {
+                expect(viewSent).not.toHaveProperty(prop)
+            }
         })
     })
 

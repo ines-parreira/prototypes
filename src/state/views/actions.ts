@@ -213,6 +213,12 @@ export function submitView(view: ViewImmutable) {
         const {views} = getState()
         const isUpdate = !!view.get('id')
         const objectName = getPluralObjectName(view.get('type', ''))
+        const viewToSend = view
+            .delete('dirty')
+            .delete('editMode')
+            .delete('allItemsSelected')
+            .delete('filters_ast')
+            .delete('search')
 
         dispatch({
             type: types.SUBMIT_VIEW_START,
@@ -223,14 +229,10 @@ export function submitView(view: ViewImmutable) {
         if (isUpdate) {
             promise = client.put<View>(
                 `/api/views/${view.get('id') as number}/`,
-                view
-                    .delete('dirty')
-                    .delete('editMode')
-                    .delete('allItemsSelected')
+                viewToSend
                     .delete('visibility')
                     .delete('shared_with_teams')
                     .delete('shared_with_users')
-                    .delete('filters_ast')
                     .toJS()
             )
         } else {
@@ -246,13 +248,9 @@ export function submitView(view: ViewImmutable) {
                 .toJS() as number[]) || [0]
             promise = client.post<View>(
                 '/api/views/',
-                view
+                viewToSend
                     .set('display_order', (_max(orders) as number) + 1)
                     .delete('id')
-                    .delete('dirty')
-                    .delete('editMode')
-                    .delete('allItemsSelected')
-                    .delete('filters_ast')
                     .toJS()
             )
         }

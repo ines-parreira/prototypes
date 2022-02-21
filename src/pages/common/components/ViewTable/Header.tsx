@@ -65,9 +65,9 @@ export class HeaderContainer extends React.Component<Props, State> {
     }
 
     _search = (searchQuery: string) => {
-        const {updateView, activeView} = this.props
+        const {updateView, activeView, isSearch} = this.props
 
-        if (searchQuery !== activeView.get('search')) {
+        if (isSearch && searchQuery !== activeView.get('search')) {
             updateView(
                 activeView.merge({
                     search: searchQuery,
