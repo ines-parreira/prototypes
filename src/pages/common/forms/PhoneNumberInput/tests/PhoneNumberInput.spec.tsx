@@ -17,7 +17,6 @@ describe('<PhoneNumberInput/>', () => {
         const {container} = render(
             <PhoneNumberInput
                 label="Your phone number"
-                error="Is not a valid phone number"
                 value="+1234567890"
                 onChange={onChange}
             />
@@ -137,5 +136,49 @@ describe('<PhoneNumberInput/>', () => {
         })
 
         expect(onChange).toHaveBeenCalledWith('+33555')
+    })
+
+    it('should display error message if phone number is too long', () => {
+        const {container, getByText} = render(
+            <PhoneNumberInput
+                value="+33123456"
+                allowedCountries={['US', 'CA']}
+                onChange={onChange}
+            />
+        )
+
+        fireEvent.change(container.getElementsByTagName('input')[0], {
+            // 16 5s
+            target: {value: '5555555555555555'},
+        })
+
+        getByText("A phone number can't have more than 15 digits")
+
+        expect(container.getElementsByTagName('input')[0].className).toBe(
+            'form-control-danger is-invalid form-control'
+        )
+    })
+
+    it('should not display error message if phone number is not too long', () => {
+        const {container, queryByText} = render(
+            <PhoneNumberInput
+                value="+33123456"
+                allowedCountries={['US', 'CA']}
+                onChange={onChange}
+            />
+        )
+
+        fireEvent.change(container.getElementsByTagName('input')[0], {
+            // 15 5s
+            target: {value: '555555555555555'},
+        })
+
+        expect(
+            queryByText("A phone number can't have more than 15 digits")
+        ).toBeNull()
+
+        expect(container.getElementsByTagName('input')[0].className).toBe(
+            'form-control'
+        )
     })
 })

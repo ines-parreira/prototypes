@@ -31,7 +31,6 @@ const typedCountries = countries as {value: CountryCode; label: string}[]
 type Props = {
     label?: string
     value: string
-    error?: string
     onChange: (value: string) => void
     allowedCountries?: CountryCode[]
     defaultCountry?: CountryCode
@@ -42,13 +41,13 @@ type Props = {
 const PhoneNumberInput = ({
     label,
     value,
-    error,
     onChange,
     allowedCountries,
     defaultCountry = 'US',
     disabled = false,
     className,
 }: Props): JSX.Element => {
+    const [isPhoneNumberTooLong, setIsPhoneNumberTooLong] = useState(false)
     const [currentCountry, setCurrentCountry] = useState<CountryCode>(
         getCountryFromPhoneNumber(value) ?? defaultCountry
     )
@@ -158,17 +157,31 @@ const PhoneNumberInput = ({
                     ) : (
                         <Input
                             className={classnames({
-                                'form-control-danger': error,
-                                'is-invalid': error,
+                                'form-control-danger': isPhoneNumberTooLong,
+                                'is-invalid': isPhoneNumberTooLong,
                             })}
                             value={formatAsNationalNumber(value)}
                             onChange={(event) => {
+                                const newValue = event.target.value
+                                const numberOfDigits = newValue.replace(
+                                    /\s+/g,
+                                    ''
+                                ).length
+                                if (numberOfDigits > 15) {
+                                    setIsPhoneNumberTooLong(true)
+                                    return
+                                }
+                                setIsPhoneNumberTooLong(false)
                                 handleChange(event.target.value, currentCountry)
                             }}
                             disabled={disabled}
                         />
                     )}
-                    {error && <Errors>{error}</Errors>}
+                    {isPhoneNumberTooLong && (
+                        <Errors>
+                            A phone number can't have more than 15 digits
+                        </Errors>
+                    )}
                 </InputGroup>
             </FormGroup>
         </div>

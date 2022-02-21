@@ -32,15 +32,10 @@ exports[`<PhoneNumberInput/> should render 1`] = `
         </span>
       </div>
       <input
-        class="form-control-danger is-invalid form-control"
+        class="form-control"
         type="text"
         value="234 567 890"
       />
-      <div
-        class="invalid-feedback"
-      >
-        Is not a valid phone number
-      </div>
     </div>
   </div>
 </div>
