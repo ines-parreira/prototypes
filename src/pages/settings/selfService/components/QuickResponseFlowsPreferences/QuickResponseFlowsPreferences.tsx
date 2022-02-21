@@ -48,11 +48,10 @@ const QuickResponseFlowsPreferences = () => {
                     <Col>
                         <h4>Quick Response Flows</h4>
                         <p>
-                            Create up to 4 quick response flows sending a
-                            prefilled chat message when shoppers click on it.
-                            You can then{' '}
+                            Add up to 4 flows that create and send a pre-filled
+                            chat message when shoppers click on it. Reply by{' '}
                             <Link to="/app/settings/rules/new">
-                                create a rule
+                                creating rules
                             </Link>{' '}
                             that will send an automated response to your
                             customer.{' '}

@@ -19,7 +19,6 @@ import {
     PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
 } from '../config/paywalls'
-import {isDevelopment, isStaging} from '../utils/environment'
 import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
 import IntegrationListContainer from './integrations/list/IntegrationListContainer'
@@ -775,8 +774,6 @@ export function SelfServiceSettingsRoutes({
     match: {path},
 }: RouteComponentProps) {
     const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
-    const showQuickResponse =
-        hasAutomationAddOn && (isDevelopment() || isStaging())
 
     return (
         <Switch>
@@ -795,7 +792,7 @@ export function SelfServiceSettingsRoutes({
                 exact
                 from={`${path}/:integrationType/:shopName/preferences`}
                 to={`${path}/:integrationType/:shopName/preferences/${
-                    showQuickResponse ? `quick-response` : `order-management`
+                    hasAutomationAddOn ? `quick-response` : `order-management`
                 }`}
             />
             <Route
