@@ -6,12 +6,13 @@ import {Provider} from 'react-redux'
 
 import {fetchTicketsByRuleId} from 'models/ticket/resources'
 import {ticket as ticketFixture} from 'fixtures/ticket'
-import history from 'pages/history'
+import {logEvent} from 'store/middlewares/segmentTracker'
 
 import {RuleTicketList} from '../RuleTicketList'
 
 jest.mock('models/ticket/resources')
 jest.mock('pages/history')
+jest.mock('store/middlewares/segmentTracker')
 
 describe('<RuleTicketList/>', () => {
     const minProps: ComponentProps<typeof RuleTicketList> = {
@@ -84,15 +85,15 @@ describe('<RuleTicketList/>', () => {
             expect(fetchTicketsByRuleIdMock).toHaveBeenCalledTimes(2)
         )
     })
-    it('should go to ticket on click', async () => {
+    it('should log segment event on click', async () => {
         const {getByText} = render(
             <Provider store={store}>
                 <RuleTicketList {...minProps} />
             </Provider>
         )
         await waitFor(() => getByText('List of tickets triggering the rule'))
-        fireEvent.click(getByText(ticketFixture.subject))
-        await waitFor(() => expect(history.push).toHaveBeenCalled())
+        fireEvent.mouseDown(getByText(ticketFixture.subject))
+        await waitFor(() => expect(logEvent).toHaveBeenCalled())
     })
 
     it('should collapse the element when clicking the header', async () => {

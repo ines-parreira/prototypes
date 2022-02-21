@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import moment from 'moment'
 import _truncate from 'lodash/truncate'
+import _uniqueId from 'lodash/uniqueId'
 import {useAsyncFn} from 'react-use'
 import {Card, CardBody, CardHeader, Table} from 'reactstrap'
 import {useSelector} from 'react-redux'
+import {Link} from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
@@ -18,7 +20,6 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {ChannelLabel} from 'pages/common/utils/labels'
 import Loader from 'pages/common/components/Loader/Loader'
-import history from 'pages/history'
 
 import css from './RuleTicketList.less'
 
@@ -57,12 +58,13 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
         void handleFetchData()
     }, [])
 
-    const visitTicket = (ticketId: number) => {
-        logEvent(SegmentEvent.RuleDebuggingTicketVisited, {
-            account_domain: currentAccount.get('domain'),
-            ticket_id: ticketId,
-        })
-        history.push(`/app/ticket/${ticketId}`)
+    const handleVisit = (ticketId: number, event: React.MouseEvent) => {
+        if (event.button !== 2) {
+            logEvent(SegmentEvent.RuleDebuggingTicketVisited, {
+                account_domain: currentAccount.get('domain'),
+                ticket_id: ticketId,
+            })
+        }
     }
 
     const toggleVisibility = (visibility: boolean) => {
@@ -74,6 +76,29 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
             {
                 account_domain: currentAccount.get('domain'),
             }
+        )
+    }
+
+    const LinkedCell = ({
+        ticketId,
+        children,
+        className,
+    }: {
+        ticketId: number
+        children: React.ReactNode
+        className?: string
+    }) => {
+        return (
+            <td className={className}>
+                <Link
+                    onMouseDown={(event) => {
+                        handleVisit(ticketId, event)
+                    }}
+                    to={`/app/ticket/${ticketId}`}
+                >
+                    <div className={css.cellWrapper}>{children}</div>
+                </Link>
+            </td>
         )
     }
 
@@ -89,8 +114,8 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
             </thead>
             <tbody>
                 {tickets.map((ticket) => (
-                    <tr key={ticket.id} onClick={() => visitTicket(ticket.id)}>
-                        <td>
+                    <tr key={_uniqueId(`${ticket.id}-`)}>
+                        <LinkedCell ticketId={ticket.id}>
                             {ticket.assignee_user && (
                                 <Avatar
                                     email={ticket.assignee_user.email}
@@ -102,27 +127,30 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
                                     size={30}
                                 />
                             )}
-                        </td>
-                        <td className={css.ticketInfo}>
+                        </LinkedCell>
+                        <LinkedCell
+                            ticketId={ticket.id}
+                            className={css.ticketInfo}
+                        >
                             <div className={css.ticketSubject}>
                                 {ticket.subject}
                             </div>
                             <div className={css.ticketDescription}>
                                 {_truncate(ticket.excerpt, {length: 100})}
                             </div>
-                        </td>
-                        <td>
+                        </LinkedCell>
+                        <LinkedCell ticketId={ticket.id}>
                             {moment(ticket.created_datetime).format(
                                 'DD/MM/YYYY'
                             )}
-                        </td>
-                        <td>
+                        </LinkedCell>
+                        <LinkedCell ticketId={ticket.id}>
                             <ChannelLabel
                                 channel={
                                     ticket.channel as unknown as TicketMessageSourceType
                                 }
                             />
-                        </td>
+                        </LinkedCell>
                     </tr>
                 ))}
             </tbody>

@@ -87,43 +87,75 @@ exports[`<RuleTicketList/> should render the rule ticket list 1`] = `
         <tbody>
           <tr>
             <td>
-              <div
-                class="component"
-                style="width: 30px; height: 30px;"
+              <a
+                to="/app/ticket/152"
               >
                 <div
-                  class="initials"
-                  style="width: 30px; height: 30px; font-size: 12.5px;"
+                  class="cellWrapper"
                 >
-                  <span
-                    style="line-height: 32px;"
+                  <div
+                    class="component"
+                    style="width: 30px; height: 30px;"
                   >
-                    AP
-                  </span>
+                    <div
+                      class="initials"
+                      style="width: 30px; height: 30px; font-size: 12.5px;"
+                    >
+                      <span
+                        style="line-height: 32px;"
+                      >
+                        AP
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </a>
             </td>
             <td
               class="ticketInfo"
             >
-              <div
-                class="ticketSubject"
+              <a
+                to="/app/ticket/152"
               >
-                Great ticket
-              </div>
-              <div
-                class="ticketDescription"
-              />
+                <div
+                  class="cellWrapper"
+                >
+                  <div
+                    class="ticketSubject"
+                  >
+                    Great ticket
+                  </div>
+                  <div
+                    class="ticketDescription"
+                  />
+                </div>
+              </a>
             </td>
             <td>
-              31/07/2017
+              <a
+                to="/app/ticket/152"
+              >
+                <div
+                  class="cellWrapper"
+                >
+                  31/07/2017
+                </div>
+              </a>
             </td>
             <td>
-              <i
-                class="icon d-inline-block material-icons text-secondary"
+              <a
+                to="/app/ticket/152"
               >
-                email
-              </i>
+                <div
+                  class="cellWrapper"
+                >
+                  <i
+                    class="icon d-inline-block material-icons text-secondary"
+                  >
+                    email
+                  </i>
+                </div>
+              </a>
             </td>
           </tr>
         </tbody>
@@ -184,43 +216,75 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
         <tbody>
           <tr>
             <td>
-              <div
-                class="component"
-                style="width: 30px; height: 30px;"
+              <a
+                to="/app/ticket/152"
               >
                 <div
-                  class="initials"
-                  style="width: 30px; height: 30px; font-size: 12.5px;"
+                  class="cellWrapper"
                 >
-                  <span
-                    style="line-height: 32px;"
+                  <div
+                    class="component"
+                    style="width: 30px; height: 30px;"
                   >
-                    AP
-                  </span>
+                    <div
+                      class="initials"
+                      style="width: 30px; height: 30px; font-size: 12.5px;"
+                    >
+                      <span
+                        style="line-height: 32px;"
+                      >
+                        AP
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </a>
             </td>
             <td
               class="ticketInfo"
             >
-              <div
-                class="ticketSubject"
+              <a
+                to="/app/ticket/152"
               >
-                Great ticket
-              </div>
-              <div
-                class="ticketDescription"
-              />
+                <div
+                  class="cellWrapper"
+                >
+                  <div
+                    class="ticketSubject"
+                  >
+                    Great ticket
+                  </div>
+                  <div
+                    class="ticketDescription"
+                  />
+                </div>
+              </a>
             </td>
             <td>
-              31/07/2017
+              <a
+                to="/app/ticket/152"
+              >
+                <div
+                  class="cellWrapper"
+                >
+                  31/07/2017
+                </div>
+              </a>
             </td>
             <td>
-              <i
-                class="icon d-inline-block material-icons text-secondary"
+              <a
+                to="/app/ticket/152"
               >
-                email
-              </i>
+                <div
+                  class="cellWrapper"
+                >
+                  <i
+                    class="icon d-inline-block material-icons text-secondary"
+                  >
+                    email
+                  </i>
+                </div>
+              </a>
             </td>
           </tr>
         </tbody>
