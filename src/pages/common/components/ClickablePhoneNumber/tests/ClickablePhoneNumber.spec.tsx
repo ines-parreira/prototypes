@@ -1,41 +1,39 @@
 import React from 'react'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 
 import {fromJS} from 'immutable'
 import {Device} from '@twilio/voice-sdk'
 
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {initialState} from '../../../../../state/twilio/reducers'
+import {IntegrationType} from 'models/integration/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState} from 'state/twilio/reducers'
+import {mockDevice} from 'tests/twilioMocks'
+import {phoneNumbers as phoneNumberFixtures} from 'fixtures/phoneNumber'
 import {ClickablePhoneNumber} from '../ClickablePhoneNumber'
-import {IntegrationType} from '../../../../../models/integration/types'
-import {mockDevice} from '../../../../../tests/twilioMocks'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const phoneNumbers = phoneNumberFixtures.reduce(
+    (acc, number) => ({...acc, [number.id]: number}),
+    {}
+)
 
 describe('<ClickablePhoneNumber/>', () => {
-    let store: MockStoreEnhanced
-
-    function getPhoneIntegration(id: number, phoneNumber: string) {
+    function getPhoneIntegration(id: number) {
         return {
             id,
             type: IntegrationType.Phone,
             name: `My Phone Integration ${id}`,
             meta: {
                 emoji: '😀',
-                twilio: {
-                    incoming_phone_number: {
-                        phone_number: phoneNumber,
-                    },
-                },
+                twilio_phone_number_id: id,
             },
         }
     }
 
     it('should render href with prefix "tel:" because there is no phone integration', () => {
-        store = mockStore({
+        const store = mockStore({
             twilio: initialState,
         })
 
@@ -53,22 +51,20 @@ describe('<ClickablePhoneNumber/>', () => {
     })
 
     it.each([
-        [
-            [
-                getPhoneIntegration(1, '+14151112222'),
-                getPhoneIntegration(2, '+14153334444'),
-            ],
-        ],
-        [[getPhoneIntegration(1, '+14151112222')]],
+        [[getPhoneIntegration(1), getPhoneIntegration(2)]],
+        [[getPhoneIntegration(1)]],
     ])(
         'should render a dropdown listing the phone integrations, with disabled buttons because there is no device',
         (integrations) => {
-            store = mockStore({
+            const store = mockStore({
                 twilio: initialState,
                 integrations: fromJS({
                     integrations,
                 }),
-            })
+                entities: {
+                    phoneNumbers,
+                },
+            } as RootState)
 
             const {container} = render(
                 <Provider store={store}>
@@ -85,22 +81,20 @@ describe('<ClickablePhoneNumber/>', () => {
     )
 
     it.each([
-        [
-            [
-                getPhoneIntegration(1, '+14151112222'),
-                getPhoneIntegration(2, '+14153334444'),
-            ],
-        ],
-        [[getPhoneIntegration(1, '+14151112222')]],
+        [[getPhoneIntegration(1), getPhoneIntegration(2)]],
+        [[getPhoneIntegration(1)]],
     ])(
         'should render a dropdown listing the phone integrations, with disabled buttons because the address is invalid',
         (integrations) => {
-            store = mockStore({
+            const store = mockStore({
                 twilio: initialState,
                 integrations: fromJS({
                     integrations,
                 }),
-            })
+                entities: {
+                    phoneNumbers,
+                },
+            } as RootState)
 
             const {container} = render(
                 <Provider store={store}>
@@ -117,17 +111,12 @@ describe('<ClickablePhoneNumber/>', () => {
     )
 
     it.each([
-        [
-            [
-                getPhoneIntegration(1, '+14151112222'),
-                getPhoneIntegration(2, '+14153334444'),
-            ],
-        ],
-        [[getPhoneIntegration(1, '+14151112222')]],
+        [[getPhoneIntegration(1), getPhoneIntegration(2)]],
+        [[getPhoneIntegration(1)]],
     ])(
         'should render a dropdown listing the phone integrations',
         (integrations) => {
-            store = mockStore({
+            const store = mockStore({
                 twilio: {
                     ...initialState,
                     device: mockDevice() as Device,
@@ -135,7 +124,10 @@ describe('<ClickablePhoneNumber/>', () => {
                 integrations: fromJS({
                     integrations,
                 }),
-            })
+                entities: {
+                    phoneNumbers,
+                },
+            } as RootState)
 
             const {container} = render(
                 <Provider store={store}>

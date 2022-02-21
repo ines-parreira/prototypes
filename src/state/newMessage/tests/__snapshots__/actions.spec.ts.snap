@@ -2636,7 +2636,7 @@ Array [
   Object {
     "sender": Immutable.Map {
       "name": "Acme Phone",
-      "address": "+14151112222",
+      "address": "+14151112223",
       "id": 6,
     },
     "type": "NEW_MESSAGE_SET_SENDER",

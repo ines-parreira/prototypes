@@ -6,15 +6,17 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
-import {Map} from 'immutable'
 import classnames from 'classnames'
 import parsePhoneNumber from 'libphonenumber-js'
 
-import {RootState} from '../../../../state/types'
-import {getPhoneIntegrations} from '../../../../state/integrations/selectors'
-import {useOutboundCall} from '../../../../hooks/integrations/phone/useOutboundCall'
-import {DEPRECATED_getTicket} from '../../../../state/ticket/selectors'
-import {getCurrentUser} from '../../../../state/currentUser/selectors'
+import {RootState} from 'state/types'
+import {PhoneNumber} from 'models/phoneNumber/types'
+import {PhoneIntegration} from 'models/integration/types'
+import {getPhoneIntegrations} from 'state/integrations/selectors'
+import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {DEPRECATED_getTicket} from 'state/ticket/selectors'
+import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
 
 import css from './ClickablePhoneNumber.less'
 
@@ -28,6 +30,7 @@ type Props = OwnProps & ConnectedProps<typeof connector>
 
 const ClickablePhoneNumberContainer = ({
     integrations,
+    phoneNumbers,
     device,
     call,
     id,
@@ -40,14 +43,9 @@ const ClickablePhoneNumberContainer = ({
     const isDisabled = !device || !!call || !toAddress
     const onCall = useOutboundCall()
     const onClick = useCallback(
-        (integration: Map<any, any>) => {
-            const integrationId: number = integration.get('id')
-            const fromAddress: string = integration.getIn([
-                'meta',
-                'twilio',
-                'incoming_phone_number',
-                'phone_number',
-            ])
+        (integration: PhoneIntegration, phoneNumber: PhoneNumber) => {
+            const integrationId: number = integration.id
+            const fromAddress: string = phoneNumber.phone_number
 
             onCall({
                 fromAddress,
@@ -61,7 +59,7 @@ const ClickablePhoneNumberContainer = ({
         [onCall, toAddress, customerName, ticketId, agentId]
     )
 
-    if (!integrations.size) {
+    if (!integrations.length) {
         const href = address.replace(/[. ]/g, '')
         return (
             <a id={id} href={`tel:${href}`}>
@@ -79,27 +77,29 @@ const ClickablePhoneNumberContainer = ({
                 <DropdownItem header className="text-uppercase">
                     Call via
                 </DropdownItem>
-                {integrations.map((integration: Map<any, any>) => {
-                    const emoji = integration.getIn(['meta', 'emoji'])
-                    const phoneNumber = integration.getIn([
-                        'meta',
-                        'twilio',
-                        'incoming_phone_number',
-                        'phone_number',
-                    ])
+                {integrations.map((integration) => {
+                    const emoji = integration.meta.emoji
+                    const phoneNumber =
+                        phoneNumbers[integration.meta.twilio_phone_number_id]
+                    if (!phoneNumber) {
+                        return null
+                    }
 
                     return (
                         <DropdownItem
-                            key={integration.get('id')}
+                            key={integration.id}
                             className={classnames({
                                 'btn-link disabled': isDisabled,
                             })}
                             onClick={() =>
-                                isDisabled ? null : onClick(integration)
+                                isDisabled
+                                    ? null
+                                    : onClick(integration, phoneNumber)
                             }
                         >
                             {emoji} {emoji && ' '}
-                            {integration.get('name')} ({phoneNumber})
+                            {integration.name} ({phoneNumber.meta.friendly_name}
+                            )
                         </DropdownItem>
                     )
                 })}
@@ -109,7 +109,8 @@ const ClickablePhoneNumberContainer = ({
 }
 
 const mapStateToProps = (state: RootState) => ({
-    integrations: getPhoneIntegrations(state),
+    integrations: getPhoneIntegrations(state).toJS() as PhoneIntegration[],
+    phoneNumbers: getPhoneNumbers(state),
     device: state.twilio.device,
     call: state.twilio.call,
     ticketId: DEPRECATED_getTicket(state).get('id'),

@@ -2,13 +2,15 @@ import {fromJS, List, Map} from 'immutable'
 import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
-import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
-import {Integration, IntegrationType} from '../../models/integration/types'
-import {MESSAGING_INTEGRATION_TYPES} from '../../models/integration/constants'
-import {compare} from '../../utils'
-import {RootState} from '../types'
-import {getCurrentUserState} from '../currentUser/selectors'
-import {nestedReplace} from '../ticket/utils'
+import {INTEGRATION_TYPE_DESCRIPTIONS} from 'config'
+import {Integration, IntegrationType} from 'models/integration/types'
+import {MESSAGING_INTEGRATION_TYPES} from 'models/integration/constants'
+import {PhoneNumber} from 'models/phoneNumber/types'
+import {compare} from 'utils'
+import {RootState} from 'state/types'
+import {getCurrentUserState} from 'state/currentUser/selectors'
+import {getPhoneNumbers as getPhoneNumbersState} from 'state/entities/phoneNumbers/selectors'
+import {nestedReplace} from 'state/ticket/utils'
 
 import {IntegrationsState, IntegrationsImmutableState} from './types'
 
@@ -328,26 +330,30 @@ export const getPhoneChannels = createSelector<
     List<any>,
     Map<any, any>,
     Map<any, any>,
-    List<any>
+    List<any>,
+    Record<number, PhoneNumber>
 >(
     (state: RootState) => state.ticket || fromJS({}),
     getCurrentUserState,
     getPhoneIntegrations,
-    (currentTicket, currentUser, integrations) => {
-        return integrations.map(
-            (integration: Map<any, any>) =>
-                fromJS({
-                    id: integration.get('id'),
-                    type: integration.get('type'),
-                    name: integration.get('name'),
-                    address: integration.getIn([
+    getPhoneNumbersState,
+    (currentTicket, currentUser, integrations, phoneNumbers) => {
+        return integrations.map((integration: Map<any, any>) => {
+            const phoneNumber =
+                phoneNumbers[
+                    integration.getIn([
                         'meta',
-                        'twilio',
-                        'incoming_phone_number',
-                        'phone_number',
-                    ]),
-                }) as Map<any, any>
-        ) as List<any>
+                        'twilio_phone_number_id',
+                    ]) as number
+                ]
+
+            return fromJS({
+                id: integration.get('id'),
+                type: integration.get('type'),
+                name: integration.get('name'),
+                address: phoneNumber?.phone_number,
+            }) as Map<any, any>
+        }) as List<any>
     }
 )
 

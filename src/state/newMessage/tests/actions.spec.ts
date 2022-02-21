@@ -5,42 +5,41 @@ import {fromJS, Map} from 'immutable'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-} from '../../../business/types/ticket'
-import * as utils from '../../../utils'
-import * as actions from '../actions'
-import * as types from '../constants'
-import {initialState, makeNewMessage} from '../reducers'
-import {initialState as ticketInitialState} from '../../ticket/reducers'
-import {RootState, StoreDispatch} from '../../types'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import * as utils from 'utils'
+import * as actions from 'state/newMessage/actions'
+import * as types from 'state/newMessage/constants'
+import {initialState, makeNewMessage} from 'state/newMessage/reducers'
+import {initialState as ticketInitialState} from 'state/ticket/reducers'
+import {RootState, StoreDispatch} from 'state/types'
 
-import {integrationsState} from '../../../fixtures/integrations'
-import * as integrationSelectors from '../../integrations/selectors'
-import {PhoneIntegrationEvent} from '../../../constants/integrations/types/event'
-import {getLastSenderChannel, getPreferredChannel} from '../../ticket/utils'
+import {integrationsState} from 'fixtures/integrations'
+import {phoneNumbers} from 'fixtures/phoneNumber'
+import {PhoneNumber} from 'models/phoneNumber/types'
+import * as integrationSelectors from 'state/integrations/selectors'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {getLastSenderChannel, getPreferredChannel} from 'state/ticket/utils'
 import {
     emailTicket,
     instagramMedia,
     smoochTicket,
-} from '../../ticket/tests/fixtures'
-import socketManager from '../../../services/socketManager/socketManager'
-import {IntegrationType} from '../../../models/integration/types'
-import {ticket} from '../../../fixtures/ticket'
-import * as emailExtraUtils from '../emailExtraUtils'
-import {convertFromHTML} from '../../../utils/editor'
-import {ReplyAreaState, SearchCustomerType} from '../types'
+} from 'state/ticket/tests/fixtures'
+import socketManager from 'services/socketManager/socketManager'
+import {IntegrationType} from 'models/integration/types'
+import {ticket} from 'fixtures/ticket'
+import * as emailExtraUtils from 'state/newMessage/emailExtraUtils'
+import {convertFromHTML} from 'utils/editor'
+import {ReplyAreaState, SearchCustomerType} from 'state/newMessage/types'
 import {
     MacroActionType,
     MacroActionName,
     MacroAction,
-} from '../../../models/macroAction/types'
+} from 'models/macroAction/types'
 import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
-} from '../errors'
-import client from '../../../models/api/resources'
+} from 'state/newMessage/errors'
+import client from 'models/api/resources'
 
 import {getReplyAreaStateSnapshot} from './testUtils'
 
@@ -50,6 +49,9 @@ type MockedRootState = {
     ticket?: Map<any, any>
     newMessage?: Map<any, any>
     currentUser?: Map<any, any>
+    entities?: {
+        phoneNumbers: Record<number, PhoneNumber>
+    }
 }
 
 //$TsFixMe remove casting once ticket/reducers is migrated
@@ -64,7 +66,7 @@ const mockedUploadFiles = jest.spyOn(utils, 'uploadFiles')
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
-jest.mock('../../../services/socketManager/socketManager', () => {
+jest.mock('services/socketManager/socketManager', () => {
     return {
         join: jest.fn(),
         leave: jest.fn(),
@@ -476,6 +478,7 @@ describe('actions', () => {
 
                 store = mockStore({
                     integrations: fromJS(integrationsState),
+                    entities: {phoneNumbers},
                     ticket: fromJS({
                         events: [
                             {

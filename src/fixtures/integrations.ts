@@ -265,14 +265,7 @@ export const integrationsState = {
                     voicemail_outside_business_hours: true,
                 },
                 state: 'CA',
-                twilio: {
-                    incoming_phone_number: {
-                        deleted_datetime: null,
-                        friendly_name: '(415) 111-2222',
-                        phone_number: '+14151112222',
-                        sid: 'PN_FAKE_PHONE_NUMBER_SID_XXXXXXXXX',
-                    },
-                },
+                twilio_phone_number_id: 1,
                 type: 'Local',
                 voicemail: {
                     allow_to_leave_voicemail: true,

@@ -36,7 +36,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
        
       My Phone Integration 1
        (
-      +14151112222
+      +1 415 111 2222
       )
     </button>
     <button
@@ -50,7 +50,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
        
       My Phone Integration 2
        (
-      +14153334444
+      +1 813 111 2223
       )
     </button>
   </div>
@@ -93,7 +93,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
        
       My Phone Integration 1
        (
-      +14151112222
+      +1 415 111 2222
       )
     </button>
   </div>
@@ -136,7 +136,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
        
       My Phone Integration 1
        (
-      +14151112222
+      +1 415 111 2222
       )
     </button>
     <button
@@ -150,7 +150,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
        
       My Phone Integration 2
        (
-      +14153334444
+      +1 813 111 2223
       )
     </button>
   </div>
@@ -193,7 +193,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
        
       My Phone Integration 1
        (
-      +14151112222
+      +1 415 111 2222
       )
     </button>
   </div>
@@ -236,7 +236,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
        
       My Phone Integration 1
        (
-      +14151112222
+      +1 415 111 2222
       )
     </button>
     <button
@@ -250,7 +250,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
        
       My Phone Integration 2
        (
-      +14153334444
+      +1 813 111 2223
       )
     </button>
   </div>
@@ -293,7 +293,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
        
       My Phone Integration 1
        (
-      +14151112222
+      +1 415 111 2222
       )
     </button>
   </div>
