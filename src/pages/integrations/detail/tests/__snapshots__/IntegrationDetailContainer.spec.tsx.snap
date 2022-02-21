@@ -215,6 +215,12 @@ exports[`<IntegrationDetailContainer /> should render the creation page for phon
 </div>
 `;
 
+exports[`<IntegrationDetailContainer /> should render the creation page for sms 1`] = `
+<div>
+  SmsIntegrationCreate
+</div>
+`;
+
 exports[`<IntegrationDetailContainer /> should render the installation tab of a specific integration for gorgias_chat 1`] = `
 <div>
   GorgiasChatIntegrationInstall
@@ -282,63 +288,8 @@ exports[`<IntegrationDetailContainer /> should render the list of integrations f
 `;
 
 exports[`<IntegrationDetailContainer /> should render the list of integrations for phone 1`] = `
-<div
-  class="full-width"
->
-  <div
-    class="page-header pageHeader"
-  >
-    <nav
-      aria-label="breadcrumb"
-      class=""
-    >
-      <ol
-        class="breadcrumb"
-      >
-        <li
-          class="breadcrumb-item"
-        >
-          <a
-            to="/app/settings/integrations"
-          >
-            Integrations
-          </a>
-        </li>
-        <li
-          aria-current="page"
-          class="active breadcrumb-item"
-        >
-          Voice
-        </li>
-      </ol>
-    </nav>
-    <button
-      class="wrapper creation medium"
-    >
-      Add Voice Integration
-    </button>
-  </div>
-  <div
-    class="pageContainer container-fluid"
-  >
-    Chat with your customers over the phone from Gorgias.
-    <div
-      class="container"
-    >
-      <div
-        class="inner"
-        style="min-height: 500px;"
-      >
-        <i
-          class="icon-custom icon-circle-o-notch md-spin"
-          style="font-size: 40px;"
-        />
-      </div>
-    </div>
-  </div>
-  <div>
-    PhoneIntegrationsList
-  </div>
+<div>
+  PhoneIntegrationsList
 </div>
 `;
 
@@ -369,6 +320,12 @@ exports[`<IntegrationDetailContainer /> should render the list of integrations f
 exports[`<IntegrationDetailContainer /> should render the list of integrations for smooch_inside 1`] = `
 <div>
   ChatIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for sms 1`] = `
+<div>
+  SmsIntegrationsList
 </div>
 `;
 

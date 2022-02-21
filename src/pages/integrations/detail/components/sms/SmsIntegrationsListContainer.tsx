@@ -10,7 +10,6 @@ import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-
 import PageHeader from 'pages/common/components/PageHeader'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -21,10 +20,10 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import css from 'pages/settings/settings.less'
 
-export function PhoneIntegrationsListContainer(): JSX.Element {
+export function SmsIntegrationsListContainer(): JSX.Element {
     const dispatch = useAppDispatch()
     const integrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.Phone])
+        getIntegrationsByTypes([IntegrationType.Sms])
     )?.toJS()
     const [{loading: isLoading}, handleFetchPhoneNumbers] = useAsyncFn(
         async () => {
@@ -60,35 +59,35 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                                     Integrations
                                 </Link>
                             </BreadcrumbItem>
-                            <BreadcrumbItem active>Voice</BreadcrumbItem>
+                            <BreadcrumbItem active>SMS</BreadcrumbItem>
                         </Breadcrumb>
                         <Button
                             intent={ButtonIntent.Creation}
                             onClick={() =>
                                 history.push(
-                                    '/app/settings/integrations/phone/new'
+                                    '/app/settings/integrations/sms/new'
                                 )
                             }
                         >
-                            Add Voice Integration
+                            Add SMS Integration
                         </Button>
                     </>
                 }
             />
             <Container fluid className={css.pageContainer}>
-                Chat with your customers over the phone from Gorgias.
+                Chat with your customers via SMS from Gorgias.
                 {isEmpty(integrations) &&
                     (isLoading ? (
                         <Loader />
                     ) : (
                         <div className="mt-3">
-                            You don't have any voice integrations at the moment.
+                            You don't have any SMS integrations at the moment.
                         </div>
                     ))}
             </Container>
-            <PhoneIntegrationsList type={IntegrationType.Phone} />
+            <PhoneIntegrationsList type={IntegrationType.Sms} />
         </div>
     )
 }
 
-export default PhoneIntegrationsListContainer
+export default SmsIntegrationsListContainer

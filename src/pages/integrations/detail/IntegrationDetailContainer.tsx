@@ -6,6 +6,7 @@ import {fromJS, List, Map} from 'immutable'
 import {useUpdateEffect, useAsyncFn} from 'react-use'
 
 import useSearch from 'hooks/useSearch'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -19,6 +20,7 @@ import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
 import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {compare} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {SMS_INTEGRATION_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList.js'
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate.js'
@@ -95,6 +97,9 @@ import PhoneIntegrationVoicemail from './components/phone/PhoneIntegrationVoicem
 import PhoneIntegrationGreetingMessage from './components/phone/PhoneIntegrationGreetingMessage'
 import PhoneIntegrationIvr from './components/phone/PhoneIntegrationIvr'
 
+import SmsIntegrationsListContainer from './components/sms/SmsIntegrationsListContainer'
+import SmsIntegrationCreate from './components/sms/SmsIntegrationCreate'
+
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
 
@@ -122,6 +127,7 @@ export const IntegrationDetailContainer = ({
     currentUser,
     getEligibleShopifyIntegrationsFor,
     getRedirectUri,
+    currentAccount,
     integrations,
 }: ConnectedProps<typeof connector>) => {
     const {extra, integrationId, integrationType, subId} = useParams<{
@@ -498,6 +504,22 @@ export const IntegrationDetailContainer = ({
 
             return <PhoneIntegrationsListContainer />
 
+        case IntegrationType.Sms: {
+            if (
+                !SMS_INTEGRATION_PREVIEW_ACCOUNTS.includes(
+                    currentAccount.get('domain')
+                )
+            ) {
+                return null
+            }
+
+            if (!!integrationId) {
+                return <SmsIntegrationCreate />
+            }
+
+            return <SmsIntegrationsListContainer />
+        }
+
         case IntegrationType.SmoochInside:
             if (!!integrationId) {
                 if (extra === Tab.SmoochInsideMigration) {
@@ -733,6 +755,7 @@ const connector = connect(
         getEligibleShopifyIntegrationsFor:
             getEligibleShopifyIntegrationsFor(state),
         getRedirectUri: makeGetRedirectUri(state),
+        currentAccount: getCurrentAccountState(state),
         currentUser: state.currentUser,
     }),
     (dispatch) => ({

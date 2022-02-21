@@ -115,7 +115,7 @@ jest.mock(
     () => () => <div>GorgiasChatIntegrationSelfService</div>
 )
 
-jest.mock('../components/phone/PhoneIntegrationsList', () => () => (
+jest.mock('../components/phone/PhoneIntegrationsListContainer', () => () => (
     <div>PhoneIntegrationsList</div>
 ))
 jest.mock('../components/phone/PhoneIntegrationCreate', () => () => (
@@ -127,12 +127,15 @@ jest.mock('../components/phone/VoiceAppPreferences', () => () => (
 jest.mock('../components/phone/PhoneIntegrationVoicemail', () => () => (
     <div>PhoneIntegrationVoicemail</div>
 ))
-
 jest.mock('../components/phone/PhoneIntegrationCreate', () => () => (
     <div>PhoneIntegrationCreate</div>
 ))
-jest.mock('../components/phone/PhoneIntegrationVoicemail', () => () => (
-    <div>PhoneIntegrationVoicemail</div>
+
+jest.mock('../components/sms/SmsIntegrationsListContainer', () => () => (
+    <div>SmsIntegrationsList</div>
+))
+jest.mock('../components/sms/SmsIntegrationCreate', () => () => (
+    <div>SmsIntegrationCreate</div>
 ))
 
 jest.mock('../components/chat/ChatIntegrationList', () => () => (
@@ -259,7 +262,9 @@ describe('<IntegrationDetailContainer />', () => {
         getEligibleShopifyIntegrationsFor: jest.fn(),
         getRedirectUri: jest.fn(),
         currentUser: fromJS({}),
-        currentAccount: fromJS({}),
+        currentAccount: fromJS({
+            domain: 'acme',
+        }),
     }
 
     it.each([
@@ -270,6 +275,7 @@ describe('<IntegrationDetailContainer />', () => {
         [IntegrationType.Http],
         [IntegrationType.Klaviyo],
         [IntegrationType.Phone],
+        [IntegrationType.Sms],
         [IntegrationType.Magento2],
         [IntegrationType.Recharge],
         [IntegrationType.Shopify],
@@ -295,6 +301,7 @@ describe('<IntegrationDetailContainer />', () => {
         [IntegrationType.Email],
         [IntegrationType.Facebook],
         [IntegrationType.Phone],
+        [IntegrationType.Sms],
     ])('should render the creation page for %s', (integrationType) => {
         const {container} = renderWithRouter(
             <Provider store={store}>

@@ -26,9 +26,13 @@ type Row = {
     phoneNumber: Maybe<PhoneNumber>
 }
 
-export function PhoneIntegrationsList(): JSX.Element | null {
+type Props = {
+    type: IntegrationType.Phone | IntegrationType.Sms
+}
+
+export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
     const integrations: PhoneIntegration[] = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.Phone])
+        getIntegrationsByTypes([type])
     )?.toJS()
     const phoneNumbers = useAppSelector(getPhoneNumbers)
 
@@ -110,7 +114,7 @@ export function PhoneIntegrationsList(): JSX.Element | null {
                         integration: {id, name, meta},
                         phoneNumber,
                     } = row
-                    const detailsLink = `/app/settings/integrations/phone/${id}/preferences`
+                    const detailsLink = `/app/settings/integrations/${type}/${id}/preferences`
                     return (
                         <TableBodyRow
                             key={id}

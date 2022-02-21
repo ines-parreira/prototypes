@@ -185,6 +185,11 @@ export function onCreateSuccess(dispatch: StoreDispatch, resp: Integration) {
     if (resp.type === IntegrationType.Email) {
         nextStep = '/forwarding'
     } else if (
+        resp.type === IntegrationType.Phone ||
+        resp.type === IntegrationType.Sms
+    ) {
+        nextStep = '/preferences'
+    } else if (
         resp.type === IntegrationType.SmoochInside ||
         resp.type === IntegrationType.GorgiasChat
     ) {
