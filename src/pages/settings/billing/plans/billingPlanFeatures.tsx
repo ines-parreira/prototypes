@@ -33,7 +33,7 @@ const getCommonPlanCardFeatures = ({
     phoneNumbersLimit,
     isCustom = false,
 }: GetCommonPlanCardFeaturesArgs): PlanCardFeature[] => {
-    const hasPhone = enabledFeatures.includes(AccountFeature.PhoneIntegration)
+    const hasPhone = enabledFeatures.includes(AccountFeature.PhoneNumber)
 
     return [
         {
@@ -195,8 +195,7 @@ export const getPlanCardFeaturesForPlan = ({
             enableHardCodedFeatures,
             enabledFeatures: enabledFeaturesNames,
             phoneNumbersLimit:
-                planFeatures &&
-                planFeatures[AccountFeature.PhoneIntegration]?.limit,
+                planFeatures && planFeatures[AccountFeature.PhoneNumber]?.limit,
             isCustom: plan.custom,
         })
     )

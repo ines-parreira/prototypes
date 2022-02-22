@@ -151,10 +151,6 @@ Array [
             "overview_live_statistics": Object {
               "enabled": true,
             },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 10,
-            },
             "phone_number": Object {
               "enabled": true,
               "limit": 10,
@@ -228,10 +224,6 @@ Array [
             },
             "overview_live_statistics": Object {
               "enabled": true,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 10,
             },
             "phone_number": Object {
               "enabled": true,
@@ -427,10 +419,6 @@ Array [
             "overview_live_statistics": Object {
               "enabled": false,
             },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 1,
-            },
             "phone_number": Object {
               "enabled": true,
               "limit": 1,
@@ -504,10 +492,6 @@ Array [
             },
             "overview_live_statistics": Object {
               "enabled": false,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 1,
             },
             "phone_number": Object {
               "enabled": true,
@@ -703,10 +687,6 @@ Array [
             "overview_live_statistics": Object {
               "enabled": true,
             },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 50,
-            },
             "phone_number": Object {
               "enabled": true,
               "limit": 50,
@@ -780,10 +760,6 @@ Array [
             },
             "overview_live_statistics": Object {
               "enabled": true,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 50,
             },
             "phone_number": Object {
               "enabled": true,
@@ -1075,10 +1051,6 @@ Array [
             "overview_live_statistics": Object {
               "enabled": true,
             },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 3,
-            },
             "phone_number": Object {
               "enabled": true,
               "limit": 3,
@@ -1152,10 +1124,6 @@ Array [
             },
             "overview_live_statistics": Object {
               "enabled": true,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 3,
             },
             "phone_number": Object {
               "enabled": true,
@@ -1351,10 +1319,6 @@ Array [
             "overview_live_statistics": Object {
               "enabled": false,
             },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 1,
-            },
             "phone_number": Object {
               "enabled": true,
               "limit": 1,
@@ -1428,10 +1392,6 @@ Array [
             },
             "overview_live_statistics": Object {
               "enabled": false,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 1,
             },
             "phone_number": Object {
               "enabled": true,
@@ -1626,10 +1586,6 @@ Array [
             "overview_live_statistics": Object {
               "enabled": false,
             },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 1,
-            },
             "phone_number": Object {
               "enabled": true,
               "limit": 1,
@@ -1703,10 +1659,6 @@ Array [
             },
             "overview_live_statistics": Object {
               "enabled": false,
-            },
-            "phone_integration": Object {
-              "enabled": true,
-              "limit": 1,
             },
             "phone_number": Object {
               "enabled": true,

@@ -1,7 +1,7 @@
 import {Map} from 'immutable'
 
-import {TicketChannel} from '../../business/types/ticket'
-import {Notification} from '../notifications/types'
+import {TicketChannel} from 'business/types/ticket'
+import {Notification} from 'state/notifications/types'
 
 export type CurrentAccountState = Map<any, any>
 
@@ -26,7 +26,6 @@ export enum AccountFeature {
     UsersLiveStatistics = 'users_live_statistics',
     OverviewLiveStatistics = 'overview_live_statistics',
     MagentoIntegration = 'magento_integration',
-    PhoneIntegration = 'phone_integration',
     TwitterIntegration = 'twitter_integration',
     YotpoIntegration = 'yotpo_integration',
     RevenueStatistics = 'revenue_statistics',

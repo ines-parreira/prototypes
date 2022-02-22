@@ -44,8 +44,6 @@ exports[`getCheapestPlanNameForFeature() should return the cheaper plan to acces
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature overview_live_statistics 1`] = `"Pro"`;
 
-exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature phone_integration 1`] = `"Basic"`;
-
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature phone_number 1`] = `"Basic"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature revenue_statistics 1`] = `"Pro"`;

@@ -161,13 +161,13 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         type: IntegrationType.Phone,
         title: 'Voice',
         description: 'Chat with your customers over the phone from Gorgias.',
-        requiredFeature: AccountFeature.PhoneIntegration,
+        requiredFeature: AccountFeature.PhoneNumber,
     },
     {
         type: IntegrationType.Sms,
         title: 'SMS',
         description: 'Chat with your customers via SMS from Gorgias.',
-        requiredFeature: AccountFeature.PhoneIntegration,
+        requiredFeature: AccountFeature.PhoneNumber,
     },
     {
         type: IntegrationType.GorgiasChat,

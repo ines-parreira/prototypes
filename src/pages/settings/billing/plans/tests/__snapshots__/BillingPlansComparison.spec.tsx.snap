@@ -2120,11 +2120,11 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
           </div>
         </div>
         <button
-          aria-label="Upgrade to Basic Plan"
+          aria-label="Switch to Basic Plan"
           class="footerButton btn btn-link"
           type="button"
         >
-          Upgrade to Basic Plan
+          Switch to Basic Plan
         </button>
       </div>
     </div>

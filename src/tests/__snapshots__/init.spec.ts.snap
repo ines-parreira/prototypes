@@ -116,10 +116,6 @@ Object {
           "view_sharing": Immutable.Map {
             "enabled": false,
           },
-          "phone_integration": Immutable.Map {
-            "enabled": true,
-            "limit": 50,
-          },
           "automation_cancellations_flow": Immutable.Map {
             "enabled": false,
           },
@@ -246,10 +242,6 @@ Object {
     "features": Immutable.Map {
       "view_sharing": Immutable.Map {
         "enabled": true,
-      },
-      "phone_integration": Immutable.Map {
-        "enabled": true,
-        "limit": 3,
       },
       "automation_cancellations_flow": Immutable.Map {
         "enabled": true,
