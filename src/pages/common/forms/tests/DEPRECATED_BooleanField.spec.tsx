@@ -3,10 +3,10 @@ import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
 
-import BooleanField from '../BooleanField'
+import DEPRECATED_BooleanField from '../DEPRECATED_BooleanField'
 
-describe('BooleanField', () => {
-    const minProps: ComponentProps<typeof BooleanField> = {
+describe('DEPRECATED_BooleanField', () => {
+    const minProps: ComponentProps<typeof DEPRECATED_BooleanField> = {
         name: 'mybooleanfield',
         type: 'text',
         label: 'label',
@@ -17,36 +17,42 @@ describe('BooleanField', () => {
 
     it('should use default props', () => {
         const props = _omit(minProps, ['type'])
-        const component = mount(<BooleanField {...props} />)
-        expect(component.find('BooleanField').props()).toMatchSnapshot()
+        const component = mount(<DEPRECATED_BooleanField {...props} />)
+        expect(
+            component.find('DEPRECATED_BooleanField').props()
+        ).toMatchSnapshot()
     })
 
     it('should render a basic boolean input', () => {
-        const component = shallow(<BooleanField {...minProps} />)
+        const component = shallow(<DEPRECATED_BooleanField {...minProps} />)
         expect(component).toMatchSnapshot()
     })
 
     it('should render a required input', () => {
-        const component = shallow(<BooleanField {...minProps} required />)
+        const component = shallow(
+            <DEPRECATED_BooleanField {...minProps} required />
+        )
         expect(component).toMatchSnapshot()
     })
 
     it('should render a help text', () => {
         const component = shallow(
-            <BooleanField {...minProps} help="help text" />
+            <DEPRECATED_BooleanField {...minProps} help="help text" />
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should render the input with an error', () => {
         const component = shallow(
-            <BooleanField {...minProps} error="the value is wrong" />
+            <DEPRECATED_BooleanField {...minProps} error="the value is wrong" />
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should render inline', () => {
-        const component = shallow(<BooleanField {...minProps} inline />)
+        const component = shallow(
+            <DEPRECATED_BooleanField {...minProps} inline />
+        )
         expect(component).toMatchSnapshot()
     })
 })

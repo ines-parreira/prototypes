@@ -3,7 +3,7 @@ import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 
 import InputField from 'pages/common/forms/InputField'
-import BooleanField from 'pages/common/forms/BooleanField'
+import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
 
 import {FORM_CONTENT_TYPE} from '../../../../../config'
 import {updateActionArgsOnApplied} from '../../../../../state/ticket/actions'
@@ -102,11 +102,11 @@ export default class TicketReplyAction extends Component<Props> {
 
                         let Tag:
                             | typeof InputField
-                            | BooleanField
+                            | DEPRECATED_BooleanField
                             | typeof SelectField = InputField
 
                         if (inputConfig && inputConfig.type === 'checkbox') {
-                            Tag = BooleanField
+                            Tag = DEPRECATED_BooleanField
                         } else if (
                             inputConfig &&
                             inputConfig.type === 'select'

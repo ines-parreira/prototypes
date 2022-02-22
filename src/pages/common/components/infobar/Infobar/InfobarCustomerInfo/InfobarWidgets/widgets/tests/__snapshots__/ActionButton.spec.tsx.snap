@@ -80,7 +80,7 @@ exports[`ActionButton component should display a single option with a checkbox p
         onSubmit={[Function]}
         tag="form"
       >
-        <BooleanField
+        <DEPRECATED_BooleanField
           className="mb-2"
           key="param"
           label="Execute the action for real"

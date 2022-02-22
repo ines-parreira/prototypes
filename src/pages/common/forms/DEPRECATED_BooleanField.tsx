@@ -10,7 +10,7 @@ import css from './InputField.less'
 
 type Props = InputFieldProps<boolean>
 
-export default class BooleanField extends InputField<Props> {
+export default class DEPRECATED_BooleanField extends InputField<Props> {
     static defaultProps = {
         type: 'checkbox',
     }

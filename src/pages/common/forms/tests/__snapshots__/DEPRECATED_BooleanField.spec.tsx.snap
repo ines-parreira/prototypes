@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BooleanField should render a basic boolean input 1`] = `
+exports[`DEPRECATED_BooleanField should render a basic boolean input 1`] = `
 <FormGroup
   check={true}
   className=""
@@ -43,7 +43,7 @@ exports[`BooleanField should render a basic boolean input 1`] = `
 </FormGroup>
 `;
 
-exports[`BooleanField should render a help text 1`] = `
+exports[`DEPRECATED_BooleanField should render a help text 1`] = `
 <FormGroup
   check={true}
   className=""
@@ -92,7 +92,7 @@ exports[`BooleanField should render a help text 1`] = `
 </FormGroup>
 `;
 
-exports[`BooleanField should render a required input 1`] = `
+exports[`DEPRECATED_BooleanField should render a required input 1`] = `
 <FormGroup
   check={true}
   className="required"
@@ -136,7 +136,7 @@ exports[`BooleanField should render a required input 1`] = `
 </FormGroup>
 `;
 
-exports[`BooleanField should render inline 1`] = `
+exports[`DEPRECATED_BooleanField should render inline 1`] = `
 <FormGroup
   check={true}
   className="d-inline-block"
@@ -179,7 +179,7 @@ exports[`BooleanField should render inline 1`] = `
 </FormGroup>
 `;
 
-exports[`BooleanField should render the input with an error 1`] = `
+exports[`DEPRECATED_BooleanField should render the input with an error 1`] = `
 <FormGroup
   check={true}
   className=""
@@ -225,7 +225,7 @@ exports[`BooleanField should render the input with an error 1`] = `
 </FormGroup>
 `;
 
-exports[`BooleanField should use default props 1`] = `
+exports[`DEPRECATED_BooleanField should use default props 1`] = `
 Object {
   "label": "label",
   "name": "mybooleanfield",
