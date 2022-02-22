@@ -11,6 +11,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 
 import css from './ChatApplication.less'
 
@@ -75,7 +76,7 @@ const ChatApplication: React.FC = () => {
     }
 
     return (
-        <section>
+        <section className={helpCenterContactViewCss.leftColumn}>
             <ToggleInput
                 isToggled={!!chatApplicationId}
                 onClick={toggleChatEnabled}

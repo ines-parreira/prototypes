@@ -2,7 +2,9 @@
 
 exports[`<ChatApplication /> allows to enable chat widget and selects the first chat by default 1`] = `
 <div>
-  <section>
+  <section
+    class="leftColumn"
+  >
     <div
       class="toggle"
     >
@@ -38,7 +40,9 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
 
 exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] = `
 <div>
-  <section>
+  <section
+    class="leftColumn"
+  >
     <div
       class="toggle"
     >

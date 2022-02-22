@@ -1,4 +1,16 @@
+@import '~css/new/colorTokens';
+@import '~css/new/mixins';
+
 :local {
+    .contentWrapper {
+        color: @classic-neutral-grey-6;
+
+        @media @mobiles {
+            max-width: inherit;
+            width: 100%;
+        }
+    }
+
     .heading {
         display: flex;
         justify-content: space-between;
@@ -12,5 +24,10 @@
         p {
             margin-bottom: 0;
         }
+    }
+
+    .leftColumn {
+        max-width: 680px;
+        width: 70%;
     }
 }

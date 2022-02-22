@@ -30,6 +30,7 @@ type Props = {
     fluidContainer?: boolean
     showLanguageSelector?: boolean
     className?: string
+    wrapperClassName?: string
 }
 
 export const HelpCenterPageWrapper: React.FC<Props> = ({
@@ -39,6 +40,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
     fluidContainer = true,
     showLanguageSelector = false,
     className,
+    wrapperClassName = settingsCss.contentWrapper,
 }: Props) => {
     const dispatch = useAppDispatch()
     const locales = useSupportedLocales()
@@ -98,7 +100,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                     fluid
                     className={classNames(settingsCss.pageContainer, className)}
                 >
-                    <div className={settingsCss.contentWrapper}>{children}</div>
+                    <div className={wrapperClassName}>{children}</div>
                 </Container>
             ) : (
                 children

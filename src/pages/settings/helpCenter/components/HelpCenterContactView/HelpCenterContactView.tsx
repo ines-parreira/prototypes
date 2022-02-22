@@ -15,9 +15,13 @@ const HelpCenterContactView: React.FC = () => {
     const helpCenter = useCurrentHelpCenter()
 
     return (
-        <HelpCenterPageWrapper helpCenter={helpCenter} showLanguageSelector>
+        <HelpCenterPageWrapper
+            helpCenter={helpCenter}
+            showLanguageSelector
+            wrapperClassName={css.contentWrapper}
+        >
             <HelpCenterTranslation helpCenter={helpCenter}>
-                <section>
+                <section className={css.leftColumn}>
                     <div className={css.heading}>
                         <div>
                             <h3>Chat Widget</h3>
