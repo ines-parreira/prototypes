@@ -51,6 +51,26 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
         </div>
       </td>
       <td
+        class="wrapper is-clickable"
+      >
+        <div
+          class="content"
+        >
+          <div>
+            <span
+              class="title"
+            >
+              Integrations
+            </span>
+            <i
+              class="material-icons md-1 directionIcon"
+            >
+              arrow_drop_down
+            </i>
+          </div>
+        </div>
+      </td>
+      <td
         class="wrapper"
       />
     </tr>
@@ -100,6 +120,11 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
             Local
           </span>
         </div>
+      </td>
+      <td>
+        <div
+          class="cellContent"
+        />
       </td>
       <td>
         <div
@@ -163,6 +188,11 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
       <td>
         <div
           class="cellContent"
+        />
+      </td>
+      <td>
+        <div
+          class="cellContent"
         >
           <a
             to="/app/settings/phone-numbers/2"
@@ -218,6 +248,11 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
             Mobile
           </span>
         </div>
+      </td>
+      <td>
+        <div
+          class="cellContent"
+        />
       </td>
       <td>
         <div
@@ -290,6 +325,26 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
         </div>
       </td>
       <td
+        class="wrapper is-clickable"
+      >
+        <div
+          class="content"
+        >
+          <div>
+            <span
+              class="title"
+            >
+              Integrations
+            </span>
+            <i
+              class="material-icons md-1 directionIcon"
+            >
+              arrow_drop_up
+            </i>
+          </div>
+        </div>
+      </td>
+      <td
         class="wrapper"
       />
     </tr>
@@ -339,6 +394,11 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             Mobile
           </span>
         </div>
+      </td>
+      <td>
+        <div
+          class="cellContent"
+        />
       </td>
       <td>
         <div
@@ -402,6 +462,11 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
       <td>
         <div
           class="cellContent"
+        />
+      </td>
+      <td>
+        <div
+          class="cellContent"
         >
           <a
             to="/app/settings/phone-numbers/2"
@@ -457,6 +522,11 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
             Local
           </span>
         </div>
+      </td>
+      <td>
+        <div
+          class="cellContent"
+        />
       </td>
       <td>
         <div

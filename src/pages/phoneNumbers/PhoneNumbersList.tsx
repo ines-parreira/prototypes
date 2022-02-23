@@ -3,6 +3,7 @@ import {sortBy, reverse, startCase} from 'lodash'
 
 import {OrderDirection} from 'models/api/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
+import {IntegrationType} from 'models/integration/types'
 import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
 import history from 'pages/history'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -58,6 +59,15 @@ export function PhoneNumbersList(): JSX.Element | null {
         return null
     }
 
+    const hasIntegration = (
+        phoneNumber: PhoneNumber,
+        type: IntegrationType
+    ): boolean => {
+        return !!phoneNumber.integrations.find(
+            (integration) => integration.type === type
+        )
+    }
+
     return (
         <TableWrapper className={css.table}>
             <TableHead className={css.header}>
@@ -72,6 +82,12 @@ export function PhoneNumbersList(): JSX.Element | null {
                     direction={orderDirection}
                     isOrderedBy={orderBy === 'meta.type'}
                     onClick={() => setSortOptions('meta.type')}
+                />
+                <HeaderCellProperty
+                    title="Integrations"
+                    direction={orderDirection}
+                    isOrderedBy={orderBy === 'integrations'}
+                    onClick={() => setSortOptions('integrations')}
                 />
                 <HeaderCell />
             </TableHead>
@@ -95,6 +111,30 @@ export function PhoneNumbersList(): JSX.Element | null {
                                 <TagLabel>
                                     {startCase(phoneNumber.meta?.type)}
                                 </TagLabel>
+                            </BodyCell>
+                            <BodyCell>
+                                {hasIntegration(
+                                    phoneNumber,
+                                    IntegrationType.Phone
+                                ) && (
+                                    <i
+                                        className="material-icons md-2 align-middle mr-3"
+                                        title="Voice"
+                                    >
+                                        phone
+                                    </i>
+                                )}
+                                {hasIntegration(
+                                    phoneNumber,
+                                    IntegrationType.Sms
+                                ) && (
+                                    <i
+                                        className="material-icons md-2 align-middle mr-3"
+                                        title="SMS"
+                                    >
+                                        sms
+                                    </i>
+                                )}
                             </BodyCell>
                             <BodyCell>
                                 <ForwardIcon href={detailsLink} />
