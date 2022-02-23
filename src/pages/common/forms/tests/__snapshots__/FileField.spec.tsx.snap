@@ -20,11 +20,11 @@ exports[`<FileField/> render() should display loading when loading 1`] = `
           src="value"
         />
       </div>
-      <Button
-        className="label"
-        color="secondary"
-        disabled={true}
-        tag="label"
+      <ForwardRef
+        intent="secondary"
+        isDisabled={true}
+        onClick={[Function]}
+        type="button"
       >
         <span>
           <i
@@ -34,14 +34,19 @@ exports[`<FileField/> render() should display loading when loading 1`] = `
           </i>
           Uploading...
         </span>
-        <Input
-          className="input"
-          disabled={true}
-          id="id-input-1"
-          onChange={[Function]}
-          type="file"
-        />
-      </Button>
+      </ForwardRef>
+      <Input
+        className="input"
+        disabled={true}
+        id="id-input-1"
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
+        onChange={[Function]}
+        type="file"
+      />
     </div>
   </div>
 </FormGroup>
@@ -59,24 +64,29 @@ exports[`<FileField/> render() should not render preview 1`] = `
     <div
       className="d-flex align-center"
     >
-      <Button
-        className="label"
-        color="secondary"
-        disabled={false}
-        tag="label"
+      <ForwardRef
+        intent="secondary"
+        isDisabled={false}
+        onClick={[Function]}
+        type="button"
       >
         <span>
           Select a File...
         </span>
-        <Input
-          className="input"
-          disabled={false}
-          id="id-input-1"
-          onChange={[Function]}
-          previewUrl="url"
-          type="file"
-        />
-      </Button>
+      </ForwardRef>
+      <Input
+        className="input"
+        disabled={false}
+        id="id-input-1"
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
+        onChange={[Function]}
+        previewUrl="url"
+        type="file"
+      />
     </div>
   </div>
 </FormGroup>
@@ -102,23 +112,28 @@ exports[`<FileField/> render() should render a basic file input 1`] = `
           src="value"
         />
       </div>
-      <Button
-        className="label"
-        color="secondary"
-        disabled={false}
-        tag="label"
+      <ForwardRef
+        intent="secondary"
+        isDisabled={false}
+        onClick={[Function]}
+        type="button"
       >
         <span>
           Select a File...
         </span>
-        <Input
-          className="input"
-          disabled={false}
-          id="id-input-1"
-          onChange={[Function]}
-          type="file"
-        />
-      </Button>
+      </ForwardRef>
+      <Input
+        className="input"
+        disabled={false}
+        id="id-input-1"
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
+        onChange={[Function]}
+        type="file"
+      />
     </div>
   </div>
 </FormGroup>
@@ -144,24 +159,29 @@ exports[`<FileField/> render() should render preview 1`] = `
           src="value"
         />
       </div>
-      <Button
-        className="label"
-        color="secondary"
-        disabled={false}
-        tag="label"
+      <ForwardRef
+        intent="secondary"
+        isDisabled={false}
+        onClick={[Function]}
+        type="button"
       >
         <span>
           Select a File...
         </span>
-        <Input
-          className="input"
-          disabled={false}
-          id="id-input-1"
-          onChange={[Function]}
-          previewUrl="url"
-          type="file"
-        />
-      </Button>
+      </ForwardRef>
+      <Input
+        className="input"
+        disabled={false}
+        id="id-input-1"
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
+        onChange={[Function]}
+        previewUrl="url"
+        type="file"
+      />
     </div>
   </div>
 </FormGroup>

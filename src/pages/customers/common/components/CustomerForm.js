@@ -3,17 +3,17 @@ import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
-import classNames from 'classnames'
 import _isUndefined from 'lodash/isUndefined'
 import _pick from 'lodash/pick'
 import _merge from 'lodash/merge'
 import _find from 'lodash/find'
 import _clone from 'lodash/clone'
 import _isError from 'lodash/isError'
-import {Form, Button} from 'reactstrap'
+import {Form} from 'reactstrap'
 
 import {submitCustomer} from '../../../../state/customers/actions.ts'
 import InputField from '../../../common/forms/InputField'
+import Button from '../../../common/components/button/Button.tsx'
 
 import CustomerChannelFieldArray from './CustomerChannelFieldArray'
 
@@ -245,11 +245,8 @@ class CustomerForm extends React.Component {
                 <div className="float-right">
                     <Button
                         type="submit"
-                        color="primary"
-                        className={classNames({
-                            'btn-loading': this.state.submitting,
-                        })}
-                        disabled={this.state.submitting || invalid}
+                        isDisabled={this.state.submitting || invalid}
+                        isLoading={this.state.submitting}
                     >
                         {isUpdate ? 'Update customer' : 'Add customer'}
                     </Button>

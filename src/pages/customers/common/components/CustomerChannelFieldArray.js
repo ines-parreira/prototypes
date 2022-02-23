@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import _clone from 'lodash/clone'
-import {FormGroup, Label, Row, Col, Button} from 'reactstrap'
+import {FormGroup, Label, Row, Col} from 'reactstrap'
 
-import InputField from '../../../common/forms/InputField'
-
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import InputField from 'pages/common/forms/InputField'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 class CustomerChannelFieldArray extends React.Component {
     _add = () => {
@@ -64,15 +64,12 @@ class CustomerChannelFieldArray extends React.Component {
                         </Col>
                     </Row>
                 ))}
-
                 <Button
                     type="button"
-                    size="sm"
+                    intent={ButtonIntent.Secondary}
                     onClick={this._add}
-                    color="secondary"
                 >
-                    <i className="material-icons mr-2">add</i>
-                    {addLabel}
+                    <ButtonIconLabel icon="add">{addLabel}</ButtonIconLabel>
                 </Button>
             </FormGroup>
         )

@@ -1,19 +1,39 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
+import {Input} from 'reactstrap'
+import {fireEvent, render} from '@testing-library/react'
 
-import {uploadFiles} from '../../../../utils'
+import {uploadFiles} from 'utils'
+
 import {FileFieldContainer} from '../FileField'
-import * as utils from '../../../../utils'
 
-jest.mock('../../../../utils', () => {
-    const mockedUtils = jest.requireActual('../../../../utils')
-
-    const result: typeof utils = {
+jest.mock('utils', () => {
+    const mockedUtils = jest.requireActual('utils')
+    return {
         ...mockedUtils,
         uploadFiles: jest.fn(() => Promise.resolve([{url: 'file1'}])),
-    }
-    return result
+    } as unknown
+})
+
+const MockInput = {
+    inputRef: {
+        click: jest.fn(),
+    },
+}
+jest.mock('reactstrap', () => {
+    const reactstrap = jest.requireActual('reactstrap')
+    return {
+        ...reactstrap,
+        Input: ({innerRef}: ComponentProps<typeof Input>) => {
+            if (innerRef && typeof innerRef === 'object') {
+                // @ts-ignore
+                innerRef.current =
+                    MockInput.inputRef as unknown as HTMLInputElement
+            }
+            return <div>file input mock</div>
+        },
+    } as unknown
 })
 
 jest.mock('lodash/uniqueId', () => () => 'input-1')
@@ -121,5 +141,16 @@ describe('<FileField/>', () => {
             component.setState({isUploading: true})
             expect(component).toMatchSnapshot()
         })
+    })
+
+    it('should open the file dialog on upload button click', () => {
+        const placeholder = 'Select'
+        const {getByText} = render(
+            <FileFieldContainer {...minProps} placeholder={placeholder} />
+        )
+
+        fireEvent.click(getByText(placeholder))
+
+        expect(MockInput.inputRef.click).toHaveBeenLastCalledWith()
     })
 })

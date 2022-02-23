@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
-import {Button} from 'reactstrap'
 
 import {compactInteger} from '../../../utils.ts'
 import {isCreationUrl, isSearchUrl} from '../../common/utils/url.ts'
@@ -17,6 +16,7 @@ import ViewTable from '../../common/components/ViewTable/ViewTable.tsx'
 
 import CustomerForm from '../common/components/CustomerForm'
 import Modal from '../../common/components/Modal.tsx'
+import Button from '../../common/components/button/Button.tsx'
 
 import CustomerListActions from './components/CustomerListActions.tsx'
 
@@ -100,11 +100,7 @@ class CustomerListContainer extends React.Component {
                         ActionsComponent={CustomerListActions}
                         viewButtons={
                             <div className="d-inline-flex align-items-center">
-                                <Button
-                                    type="button"
-                                    color="primary"
-                                    onClick={this._openModal}
-                                >
+                                <Button type="button" onClick={this._openModal}>
                                     Add customer
                                 </Button>
 

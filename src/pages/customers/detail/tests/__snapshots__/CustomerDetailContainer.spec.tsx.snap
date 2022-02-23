@@ -12,13 +12,18 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
     </h1>
     <div>
       <a
-        class="btn btn-secondary mr-2"
+        class="mr-2"
         to="/app/ticket/new?customer=1"
       >
-        Create ticket
+        <button
+          class="wrapper secondary medium"
+          type="button"
+        >
+          Create ticket
+        </button>
       </a>
       <button
-        class="btn btn-success"
+        class="wrapper creation medium"
         type="button"
       >
         Edit customer

@@ -593,366 +593,344 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               </label>
                             </Label>
                             <div
-                              className="textarea-toolbar"
+                              className="textarea-toolbar toolbar"
                             >
-                              <UncontrolledButtonDropdown
+                              <UncontrolledDropdown
                                 key="0"
                               >
-                                <ButtonDropdown
+                                <Dropdown
+                                  a11y={true}
+                                  active={false}
+                                  addonType={false}
+                                  direction="down"
+                                  inNavbar={false}
                                   isOpen={false}
+                                  nav={false}
+                                  setActiveFromChild={false}
                                   toggle={[Function]}
                                 >
-                                  <Dropdown
-                                    a11y={true}
-                                    active={false}
-                                    addonType={false}
-                                    direction="down"
-                                    group={true}
-                                    inNavbar={false}
-                                    isOpen={false}
-                                    nav={false}
-                                    setActiveFromChild={false}
-                                    toggle={[Function]}
-                                  >
-                                    <Manager>
-                                      <div
-                                        className="btn-group"
-                                        onKeyDown={[Function]}
+                                  <Manager>
+                                    <div
+                                      className="dropdown"
+                                      onKeyDown={[Function]}
+                                    >
+                                      <DropdownToggle
+                                        aria-haspopup={true}
+                                        color="secondary"
+                                        tag="div"
                                       >
-                                        <DropdownToggle
-                                          aria-haspopup={true}
-                                          caret={true}
-                                          color="link"
-                                          style={
-                                            Object {
-                                              "color": "inherit",
-                                            }
-                                          }
-                                          type="button"
-                                        >
-                                          <Reference>
-                                            <InnerReference
-                                              setReferenceNode={[Function]}
+                                        <Reference>
+                                          <InnerReference
+                                            setReferenceNode={[Function]}
+                                          >
+                                            <div
+                                              aria-expanded={false}
+                                              aria-haspopup={true}
+                                              className=""
+                                              onClick={[Function]}
                                             >
-                                              <Button
-                                                aria-expanded={false}
-                                                aria-haspopup={true}
-                                                className="dropdown-toggle"
-                                                color="link"
-                                                innerRef={[Function]}
-                                                onClick={[Function]}
-                                                style={
-                                                  Object {
-                                                    "color": "inherit",
-                                                  }
-                                                }
-                                                tag="button"
+                                              <ForwardRef
+                                                className="toolbarItem"
+                                                intent="text"
                                                 type="button"
                                               >
                                                 <button
-                                                  aria-expanded={false}
-                                                  aria-haspopup={true}
-                                                  aria-label={null}
-                                                  className="dropdown-toggle btn btn-link"
-                                                  onClick={[Function]}
-                                                  style={
-                                                    Object {
-                                                      "color": "inherit",
-                                                    }
-                                                  }
+                                                  className="wrapper toolbarItem text medium"
                                                   type="button"
                                                 >
-                                                  Ticket customer
+                                                  <ButtonIconLabel
+                                                    icon="arrow_drop_down"
+                                                    position="right"
+                                                  >
+                                                    <span
+                                                      className="wrapper"
+                                                    >
+                                                      Ticket customer
+                                                      <Icon
+                                                        className="icon isRight"
+                                                      >
+                                                        <i
+                                                          className="material-icons icon isRight medium"
+                                                        >
+                                                          arrow_drop_down
+                                                        </i>
+                                                      </Icon>
+                                                    </span>
+                                                  </ButtonIconLabel>
                                                 </button>
-                                              </Button>
-                                            </InnerReference>
-                                          </Reference>
-                                        </DropdownToggle>
-                                        <DropdownMenu
-                                          flip={true}
-                                          tag="div"
+                                              </ForwardRef>
+                                            </div>
+                                          </InnerReference>
+                                        </Reference>
+                                      </DropdownToggle>
+                                      <DropdownMenu
+                                        flip={true}
+                                        tag="div"
+                                      >
+                                        <div
+                                          aria-hidden={true}
+                                          className="dropdown-menu"
+                                          role="menu"
+                                          tabIndex="-1"
                                         >
-                                          <div
-                                            aria-hidden={true}
-                                            className="dropdown-menu"
-                                            role="menu"
-                                            tabIndex="-1"
+                                          <DropdownItem
+                                            key="0"
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
                                           >
-                                            <DropdownItem
-                                              key="0"
+                                            <button
+                                              className="dropdown-item"
                                               onClick={[Function]}
-                                              tag="button"
-                                              toggle={true}
+                                              role="menuitem"
+                                              tabIndex="0"
                                               type="button"
                                             >
-                                              <button
-                                                className="dropdown-item"
-                                                onClick={[Function]}
-                                                role="menuitem"
-                                                tabIndex="0"
-                                                type="button"
-                                              >
-                                                First name
-                                              </button>
-                                            </DropdownItem>
-                                            <DropdownItem
-                                              key="1"
+                                              First name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            key="1"
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
                                               onClick={[Function]}
-                                              tag="button"
-                                              toggle={true}
+                                              role="menuitem"
+                                              tabIndex="0"
                                               type="button"
                                             >
-                                              <button
-                                                className="dropdown-item"
-                                                onClick={[Function]}
-                                                role="menuitem"
-                                                tabIndex="0"
-                                                type="button"
-                                              >
-                                                Last name
-                                              </button>
-                                            </DropdownItem>
-                                            <DropdownItem
-                                              key="2"
+                                              Last name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            key="2"
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
                                               onClick={[Function]}
-                                              tag="button"
-                                              toggle={true}
+                                              role="menuitem"
+                                              tabIndex="0"
                                               type="button"
                                             >
-                                              <button
-                                                className="dropdown-item"
-                                                onClick={[Function]}
-                                                role="menuitem"
-                                                tabIndex="0"
-                                                type="button"
-                                              >
-                                                Full name
-                                              </button>
-                                            </DropdownItem>
-                                            <DropdownItem
-                                              key="3"
+                                              Full name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            key="3"
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
                                               onClick={[Function]}
-                                              tag="button"
-                                              toggle={true}
+                                              role="menuitem"
+                                              tabIndex="0"
                                               type="button"
                                             >
-                                              <button
-                                                className="dropdown-item"
-                                                onClick={[Function]}
-                                                role="menuitem"
-                                                tabIndex="0"
-                                                type="button"
-                                              >
-                                                Email
-                                              </button>
-                                            </DropdownItem>
-                                          </div>
-                                        </DropdownMenu>
-                                      </div>
-                                    </Manager>
-                                  </Dropdown>
-                                </ButtonDropdown>
-                              </UncontrolledButtonDropdown>
-                              <UncontrolledButtonDropdown
+                                              Email
+                                            </button>
+                                          </DropdownItem>
+                                        </div>
+                                      </DropdownMenu>
+                                    </div>
+                                  </Manager>
+                                </Dropdown>
+                              </UncontrolledDropdown>
+                              <UncontrolledDropdown
                                 key="1"
                               >
-                                <ButtonDropdown
+                                <Dropdown
+                                  a11y={true}
+                                  active={false}
+                                  addonType={false}
+                                  direction="down"
+                                  inNavbar={false}
                                   isOpen={false}
+                                  nav={false}
+                                  setActiveFromChild={false}
                                   toggle={[Function]}
                                 >
-                                  <Dropdown
-                                    a11y={true}
-                                    active={false}
-                                    addonType={false}
-                                    direction="down"
-                                    group={true}
-                                    inNavbar={false}
-                                    isOpen={false}
-                                    nav={false}
-                                    setActiveFromChild={false}
-                                    toggle={[Function]}
-                                  >
-                                    <Manager>
-                                      <div
-                                        className="btn-group"
-                                        onKeyDown={[Function]}
+                                  <Manager>
+                                    <div
+                                      className="dropdown"
+                                      onKeyDown={[Function]}
+                                    >
+                                      <DropdownToggle
+                                        aria-haspopup={true}
+                                        color="secondary"
+                                        tag="div"
                                       >
-                                        <DropdownToggle
-                                          aria-haspopup={true}
-                                          caret={true}
-                                          color="link"
-                                          style={
-                                            Object {
-                                              "color": "inherit",
-                                            }
-                                          }
-                                          type="button"
-                                        >
-                                          <Reference>
-                                            <InnerReference
-                                              setReferenceNode={[Function]}
+                                        <Reference>
+                                          <InnerReference
+                                            setReferenceNode={[Function]}
+                                          >
+                                            <div
+                                              aria-expanded={false}
+                                              aria-haspopup={true}
+                                              className=""
+                                              onClick={[Function]}
                                             >
-                                              <Button
-                                                aria-expanded={false}
-                                                aria-haspopup={true}
-                                                className="dropdown-toggle"
-                                                color="link"
-                                                innerRef={[Function]}
-                                                onClick={[Function]}
-                                                style={
-                                                  Object {
-                                                    "color": "inherit",
-                                                  }
-                                                }
-                                                tag="button"
+                                              <ForwardRef
+                                                className="toolbarItem"
+                                                intent="text"
                                                 type="button"
                                               >
                                                 <button
-                                                  aria-expanded={false}
-                                                  aria-haspopup={true}
-                                                  aria-label={null}
-                                                  className="dropdown-toggle btn btn-link"
-                                                  onClick={[Function]}
-                                                  style={
-                                                    Object {
-                                                      "color": "inherit",
-                                                    }
-                                                  }
+                                                  className="wrapper toolbarItem text medium"
                                                   type="button"
                                                 >
-                                                  Current agent
+                                                  <ButtonIconLabel
+                                                    icon="arrow_drop_down"
+                                                    position="right"
+                                                  >
+                                                    <span
+                                                      className="wrapper"
+                                                    >
+                                                      Current agent
+                                                      <Icon
+                                                        className="icon isRight"
+                                                      >
+                                                        <i
+                                                          className="material-icons icon isRight medium"
+                                                        >
+                                                          arrow_drop_down
+                                                        </i>
+                                                      </Icon>
+                                                    </span>
+                                                  </ButtonIconLabel>
                                                 </button>
-                                              </Button>
-                                            </InnerReference>
-                                          </Reference>
-                                        </DropdownToggle>
-                                        <DropdownMenu
-                                          flip={true}
-                                          tag="div"
+                                              </ForwardRef>
+                                            </div>
+                                          </InnerReference>
+                                        </Reference>
+                                      </DropdownToggle>
+                                      <DropdownMenu
+                                        flip={true}
+                                        tag="div"
+                                      >
+                                        <div
+                                          aria-hidden={true}
+                                          className="dropdown-menu"
+                                          role="menu"
+                                          tabIndex="-1"
                                         >
-                                          <div
-                                            aria-hidden={true}
-                                            className="dropdown-menu"
-                                            role="menu"
-                                            tabIndex="-1"
+                                          <DropdownItem
+                                            key="0"
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
                                           >
-                                            <DropdownItem
-                                              key="0"
+                                            <button
+                                              className="dropdown-item"
                                               onClick={[Function]}
-                                              tag="button"
-                                              toggle={true}
+                                              role="menuitem"
+                                              tabIndex="0"
                                               type="button"
                                             >
-                                              <button
-                                                className="dropdown-item"
-                                                onClick={[Function]}
-                                                role="menuitem"
-                                                tabIndex="0"
-                                                type="button"
-                                              >
-                                                First name
-                                              </button>
-                                            </DropdownItem>
-                                            <DropdownItem
-                                              key="1"
+                                              First name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            key="1"
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
                                               onClick={[Function]}
-                                              tag="button"
-                                              toggle={true}
+                                              role="menuitem"
+                                              tabIndex="0"
                                               type="button"
                                             >
-                                              <button
-                                                className="dropdown-item"
-                                                onClick={[Function]}
-                                                role="menuitem"
-                                                tabIndex="0"
-                                                type="button"
-                                              >
-                                                Last name
-                                              </button>
-                                            </DropdownItem>
-                                            <DropdownItem
-                                              key="2"
+                                              Last name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            key="2"
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
                                               onClick={[Function]}
-                                              tag="button"
-                                              toggle={true}
+                                              role="menuitem"
+                                              tabIndex="0"
                                               type="button"
                                             >
-                                              <button
-                                                className="dropdown-item"
-                                                onClick={[Function]}
-                                                role="menuitem"
-                                                tabIndex="0"
-                                                type="button"
-                                              >
-                                                Full name
-                                              </button>
-                                            </DropdownItem>
-                                            <DropdownItem
-                                              key="3"
+                                              Full name
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            key="3"
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
                                               onClick={[Function]}
-                                              tag="button"
-                                              toggle={true}
+                                              role="menuitem"
+                                              tabIndex="0"
                                               type="button"
                                             >
-                                              <button
-                                                className="dropdown-item"
-                                                onClick={[Function]}
-                                                role="menuitem"
-                                                tabIndex="0"
-                                                type="button"
-                                              >
-                                                Email
-                                              </button>
-                                            </DropdownItem>
-                                            <DropdownItem
-                                              key="4"
+                                              Email
+                                            </button>
+                                          </DropdownItem>
+                                          <DropdownItem
+                                            key="4"
+                                            onClick={[Function]}
+                                            tag="button"
+                                            toggle={true}
+                                            type="button"
+                                          >
+                                            <button
+                                              className="dropdown-item"
                                               onClick={[Function]}
-                                              tag="button"
-                                              toggle={true}
+                                              role="menuitem"
+                                              tabIndex="0"
                                               type="button"
                                             >
-                                              <button
-                                                className="dropdown-item"
-                                                onClick={[Function]}
-                                                role="menuitem"
-                                                tabIndex="0"
-                                                type="button"
-                                              >
-                                                Bio
-                                              </button>
-                                            </DropdownItem>
-                                          </div>
-                                        </DropdownMenu>
-                                      </div>
-                                    </Manager>
-                                  </Dropdown>
-                                </ButtonDropdown>
-                              </UncontrolledButtonDropdown>
-                              <Button
-                                color="link"
+                                              Bio
+                                            </button>
+                                          </DropdownItem>
+                                        </div>
+                                      </DropdownMenu>
+                                    </div>
+                                  </Manager>
+                                </Dropdown>
+                              </UncontrolledDropdown>
+                              <ForwardRef
+                                className="toolbarItem"
+                                intent="text"
                                 key="2"
                                 onClick={[Function]}
-                                style={
-                                  Object {
-                                    "color": "inherit",
-                                  }
-                                }
-                                tag="button"
+                                type="button"
                               >
                                 <button
-                                  aria-label={null}
-                                  className="btn btn-link"
+                                  className="wrapper toolbarItem text medium"
                                   onClick={[Function]}
-                                  style={
-                                    Object {
-                                      "color": "inherit",
-                                    }
-                                  }
                                   type="button"
                                 >
                                   Satisfaction Survey
                                 </button>
-                              </Button>
+                              </ForwardRef>
                             </div>
                             <RichField
                               allowExternalChanges={true}

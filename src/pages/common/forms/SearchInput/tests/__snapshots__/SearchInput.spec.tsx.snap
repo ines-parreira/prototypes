@@ -253,21 +253,19 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
       tag="button"
       toggle={true}
     >
-      <Button
-        className="mr-2"
-        color="light"
+      <ForwardRef
+        className="mr-2 backButton"
+        intent="secondary"
         onClick={[Function]}
-        size="sm"
-        tag="button"
+        size="small"
         type="button"
       >
-        <i
-          className="icon material-icons mr-2"
+        <ButtonIconLabel
+          icon="arrow_back"
         >
-          arrow_back
-        </i>
-        Back
-      </Button>
+          Back
+        </ButtonIconLabel>
+      </ForwardRef>
       2 sub results
     </DropdownItem>
     <DropdownItem

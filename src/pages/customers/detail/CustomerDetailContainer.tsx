@@ -1,26 +1,22 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List} from 'immutable'
-import {Button} from 'reactstrap'
 import {Link, useParams} from 'react-router-dom'
 
+import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
+import Loader from 'pages/common/components/Loader/Loader'
+import CustomerForm from 'pages/customers/common/components/CustomerForm.js'
+import Timeline from 'pages/common/components/timeline/Timeline'
+import Modal from 'pages/common/components/Modal'
+import {Customer} from 'state/customers/types'
 import {
-    fetchCustomer,
-    fetchCustomerHistory,
-} from '../../../state/customers/actions'
-
-import Loader from '../../common/components/Loader/Loader'
-import CustomerForm from '../common/components/CustomerForm.js'
-import Timeline from '../../common/components/timeline/Timeline'
-import Modal from '../../common/components/Modal'
-import {Customer} from '../../../state/customers/types'
-import {
-    getCustomerHistory,
     DEPRECATED_getActiveCustomer,
+    getCustomerHistory,
     makeIsLoading,
-} from '../../../state/customers/selectors'
-import * as customersHelpers from '../../../state/customers/helpers'
-import {RootState} from '../../../state/types'
+} from 'state/customers/selectors'
+import * as customersHelpers from 'state/customers/helpers'
+import {RootState} from 'state/types'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import css from './CustomerDetailContainer.less'
 
@@ -66,17 +62,18 @@ export const CustomerDetailContainer = ({
 
                 <div>
                     <Link
-                        className="btn btn-secondary mr-2"
+                        className="mr-2"
                         to={`/app/ticket/new?customer=${
                             activeCustomer.get('id') as number
                         }`}
                     >
-                        Create ticket
+                        <Button type="button" intent={ButtonIntent.Secondary}>
+                            Create ticket
+                        </Button>
                     </Link>
-
                     <Button
                         type="button"
-                        color="success"
+                        intent={ButtonIntent.Creation}
                         onClick={() => setIsCustomerFormOpen(true)}
                     >
                         Edit customer

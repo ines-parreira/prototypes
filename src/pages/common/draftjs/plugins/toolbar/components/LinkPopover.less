@@ -1,46 +1,33 @@
 @import '~css/new/colorTokens';
 @import '~css/new/mixins';
 
-:local .wrapper {
-    > div {
-        padding: 0.2em 0.5em;
-        border: 1px solid @classic-neutral-grey-4;
-        box-shadow: @classic-neutral-grey-3 0 1px 2px;
-        font-size: 0.9em;
-    }
-}
-
-:local .inner {
-    display: flex;
-    align-items: center;
-}
-
-:local .url {
-    word-break: break-word;
-}
-
-:local .button {
-    padding: 0.1em;
-    opacity: 0.6;
-    transition: all 0.1s linear;
-    line-height: 1.2em;
-    margin-left: 0.1em;
-
-    &:hover {
-        opacity: 0.9;
+:local {
+    .wrapper {
+        > div {
+            padding: 3px 7px;
+            border: 1px solid @classic-neutral-grey-4;
+            box-shadow: @classic-neutral-grey-3 0 1px 2px;
+            font-size: 13px;
+        }
     }
 
-    &:last-child {
-        margin-right: 0;
+    .inner {
+        display: flex;
+        align-items: center;
     }
-}
 
-:local(.url) + :local(.button) {
-    margin-left: 0.5em;
-}
+    .url {
+        word-break: break-word;
+    }
 
-:local(.edit) {
-    @media @mobiles {
-        display: none !important;
+    .edit {
+        margin-left: 7px;
+        @media @mobiles {
+            display: none !important;
+        }
+    }
+
+    .delete {
+        margin-left: 2px;
     }
 }

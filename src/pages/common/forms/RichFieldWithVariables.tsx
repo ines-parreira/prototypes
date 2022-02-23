@@ -1,19 +1,24 @@
 import React, {Component} from 'react'
 import {
-    Button,
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
     DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
     Label,
+    UncontrolledDropdown,
 } from 'reactstrap'
 import {EditorState} from 'draft-js'
+import classNames from 'classnames'
 
-import {attachEntitiesToVariables} from '../draftjs/plugins/variables/utils.js'
-import {insertText} from '../../../utils'
-import {getVariables} from '../../../config/ticket'
+import {insertText} from 'utils'
+import {getVariables} from 'config/ticket'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
+import ButtonIconLabel, {
+    ButtonIconPosition,
+} from 'pages/common/components/button/ButtonIconLabel'
 
 import RichField from './RichField/RichField'
+import css from './RichFieldWithVariables.less'
 
 type Props = {
     label?: string
@@ -67,41 +72,52 @@ export default class RichFieldWithVariables extends Component<Props> {
                         {label}
                     </Label>
                 )}
-                <div className="textarea-toolbar">
+                <div className={classNames('textarea-toolbar', css.toolbar)}>
                     {variables.map((category, index) =>
                         category.children ? (
-                            <UncontrolledButtonDropdown key={index}>
-                                <DropdownToggle
-                                    color="link"
-                                    caret
-                                    type="button"
-                                    style={{color: 'inherit'}}
-                                >
-                                    {category.name}
-                                </DropdownToggle>
-                                <DropdownMenu>
-                                    {category.children.map(
-                                        (variable, indexVariable) => (
-                                            <DropdownItem
-                                                key={indexVariable}
-                                                type="button"
-                                                onClick={() => {
-                                                    this._insertText(
-                                                        variable.value
-                                                    )
-                                                }}
+                            <>
+                                <UncontrolledDropdown key={index}>
+                                    <DropdownToggle tag="div">
+                                        <Button
+                                            className={css.toolbarItem}
+                                            type="button"
+                                            intent={ButtonIntent.Text}
+                                        >
+                                            <ButtonIconLabel
+                                                icon="arrow_drop_down"
+                                                position={
+                                                    ButtonIconPosition.Right
+                                                }
                                             >
-                                                {variable.name}
-                                            </DropdownItem>
-                                        )
-                                    )}
-                                </DropdownMenu>
-                            </UncontrolledButtonDropdown>
+                                                {category.name}
+                                            </ButtonIconLabel>
+                                        </Button>
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        {category.children.map(
+                                            (variable, indexVariable) => (
+                                                <DropdownItem
+                                                    key={indexVariable}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        this._insertText(
+                                                            variable.value
+                                                        )
+                                                    }}
+                                                >
+                                                    {variable.name}
+                                                </DropdownItem>
+                                            )
+                                        )}
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
+                            </>
                         ) : (
                             <Button
                                 key={index}
-                                color="link"
-                                style={{color: 'inherit'}}
+                                className={css.toolbarItem}
+                                type="button"
+                                intent={ButtonIntent.Text}
                                 onClick={() => {
                                     this._insertText(category.value!)
                                 }}

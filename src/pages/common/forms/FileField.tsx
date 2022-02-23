@@ -1,17 +1,18 @@
-import React from 'react'
+import React, {createRef, RefObject} from 'react'
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Input} from 'reactstrap'
+import {Input} from 'reactstrap'
 import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
 import {AxiosError} from 'axios'
 import {InputType} from 'reactstrap/lib/Input'
 import _omit from 'lodash/omit'
 
-import {uploadFiles} from '../../../utils'
-import {getFileTooLargeError} from '../../../utils/file'
-import {notify} from '../../../state/notifications/actions'
-import {NotificationStatus} from '../../../state/notifications/types'
+import {uploadFiles} from 'utils'
+import {getFileTooLargeError} from 'utils/file'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import InputField, {InputFieldProps} from './InputField'
 import css from './FileField.less'
@@ -51,6 +52,13 @@ export class FileFieldContainer extends InputField<Props> {
     }
 
     id?: string
+
+    inputRef: RefObject<HTMLInputElement>
+
+    constructor(props: Props) {
+        super(props)
+        this.inputRef = createRef<HTMLInputElement>()
+    }
 
     _getFilesSize = (files: File[]) => {
         return files.reduce((sum, file) => sum + (file.size || 0), 0)
@@ -145,6 +153,10 @@ export class FileFieldContainer extends InputField<Props> {
         )
     }
 
+    _handleButtonClick = () => {
+        this.inputRef.current?.click()
+    }
+
     _getField = () => {
         const {noPreview, placeholder, className, value} = this.props
 
@@ -163,10 +175,10 @@ export class FileFieldContainer extends InputField<Props> {
                 )}
 
                 <Button
-                    className={css.label}
-                    tag="label"
-                    color="secondary"
-                    disabled={disabled}
+                    type="button"
+                    intent={ButtonIntent.Secondary}
+                    isDisabled={disabled}
+                    onClick={this._handleButtonClick}
                 >
                     {isUploading ? (
                         <span>
@@ -178,29 +190,30 @@ export class FileFieldContainer extends InputField<Props> {
                     ) : (
                         <span>{placeholder}</span>
                     )}
-                    <Input
-                        id={this.id}
-                        onChange={this.handleOnChange as any}
-                        disabled={disabled}
-                        className={classnames(css.input, className)}
-                        {..._omit(this.props, [
-                            'children',
-                            'error',
-                            'help',
-                            'inline',
-                            'label',
-                            'noPreview',
-                            'onChange',
-                            'placeholder',
-                            'className',
-                            'returnFiles',
-                            'notify',
-                            'uploadType',
-                            'maxSize',
-                            'value',
-                        ])}
-                    />
                 </Button>
+                <Input
+                    id={this.id}
+                    innerRef={this.inputRef}
+                    onChange={this.handleOnChange as any}
+                    disabled={disabled}
+                    className={classnames(css.input, className)}
+                    {..._omit(this.props, [
+                        'children',
+                        'error',
+                        'help',
+                        'inline',
+                        'label',
+                        'noPreview',
+                        'onChange',
+                        'placeholder',
+                        'className',
+                        'returnFiles',
+                        'notify',
+                        'uploadType',
+                        'maxSize',
+                        'value',
+                    ])}
+                />
             </div>
         )
     }

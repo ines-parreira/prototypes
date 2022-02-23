@@ -5,23 +5,28 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
   className="field"
 >
   <div
-    className="textarea-toolbar"
+    className="textarea-toolbar toolbar"
   >
-    <UncontrolledButtonDropdown
+    <UncontrolledDropdown
       key="0"
     >
       <DropdownToggle
         aria-haspopup={true}
-        caret={true}
-        color="link"
-        style={
-          Object {
-            "color": "inherit",
-          }
-        }
-        type="button"
+        color="secondary"
+        tag="div"
       >
-        Ticket customer
+        <ForwardRef
+          className="toolbarItem"
+          intent="text"
+          type="button"
+        >
+          <ButtonIconLabel
+            icon="arrow_drop_down"
+            position="right"
+          >
+            Ticket customer
+          </ButtonIconLabel>
+        </ForwardRef>
       </DropdownToggle>
       <DropdownMenu
         flip={true}
@@ -64,22 +69,27 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           Email
         </DropdownItem>
       </DropdownMenu>
-    </UncontrolledButtonDropdown>
-    <UncontrolledButtonDropdown
+    </UncontrolledDropdown>
+    <UncontrolledDropdown
       key="1"
     >
       <DropdownToggle
         aria-haspopup={true}
-        caret={true}
-        color="link"
-        style={
-          Object {
-            "color": "inherit",
-          }
-        }
-        type="button"
+        color="secondary"
+        tag="div"
       >
-        Current agent
+        <ForwardRef
+          className="toolbarItem"
+          intent="text"
+          type="button"
+        >
+          <ButtonIconLabel
+            icon="arrow_drop_down"
+            position="right"
+          >
+            Current agent
+          </ButtonIconLabel>
+        </ForwardRef>
       </DropdownToggle>
       <DropdownMenu
         flip={true}
@@ -131,7 +141,7 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
           Bio
         </DropdownItem>
       </DropdownMenu>
-    </UncontrolledButtonDropdown>
+    </UncontrolledDropdown>
   </div>
   <RichField
     onChange={[Function]}

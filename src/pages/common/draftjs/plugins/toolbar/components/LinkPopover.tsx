@@ -1,9 +1,10 @@
-import React, {Component, ReactNode, MouseEvent} from 'react'
-import classnames from 'classnames'
+import React, {Component, MouseEvent} from 'react'
 import {Popover} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {RootState} from '../../../../../../state/types'
+import {RootState} from 'state/types'
+import IconButton from 'pages/common/components/button/IconButton'
+import {ButtonIntent, ButtonSize} from 'pages/common/components/button/Button'
 
 import css from './LinkPopover.less'
 
@@ -19,26 +20,6 @@ type State = {
     isOpen: boolean
 }
 
-const Button = (props: {
-    className: string
-    children: ReactNode
-    onClick: (e: MouseEvent) => void
-}) => (
-    <button
-        {...props}
-        type="button"
-        className={classnames(
-            'btn',
-            'btn-secondary',
-            'btn-transparent',
-            css.button,
-            props.className
-        )}
-    >
-        <i className="material-icons">{props.children}</i>
-    </button>
-)
-
 export class LinkPopoverContainer extends Component<Props, State> {
     state: State = {
         isOpen: false,
@@ -46,7 +27,7 @@ export class LinkPopoverContainer extends Component<Props, State> {
 
     timeout?: number | null
 
-    componenWillUnmount() {
+    componentWillUnmount() {
         if (this.timeout) {
             window.clearTimeout(this.timeout)
         }
@@ -112,20 +93,24 @@ export class LinkPopoverContainer extends Component<Props, State> {
                         {this.props.url}
                     </a>
                     {this.props.onEdit && (
-                        <Button
-                            className={css.edit}
+                        <IconButton
+                            size={ButtonSize.Small}
+                            intent={ButtonIntent.Secondary}
                             onClick={this._onEditClick}
+                            className={css.edit}
                         >
                             edit
-                        </Button>
+                        </IconButton>
                     )}
                     {this.props.onDelete && (
-                        <Button
+                        <IconButton
+                            size={ButtonSize.Small}
+                            intent={ButtonIntent.Secondary}
                             className={css.delete}
                             onClick={this._onDeleteClick}
                         >
                             clear
-                        </Button>
+                        </IconButton>
                     )}
                 </Popover>
             </a>

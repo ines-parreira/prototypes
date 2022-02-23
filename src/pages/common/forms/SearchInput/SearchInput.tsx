@@ -1,12 +1,11 @@
 import React, {
-    ComponentType,
-    Component,
-    ReactNode,
     ChangeEvent,
+    Component,
+    ComponentType,
     KeyboardEvent,
+    ReactNode,
 } from 'react'
 import {
-    Button,
     Dropdown,
     DropdownItem,
     DropdownMenu,
@@ -17,7 +16,12 @@ import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import classnames from 'classnames'
 
-import GorgiasApi, {SearchResultType} from '../../../../services/gorgiasApi'
+import Button, {
+    ButtonIntent,
+    ButtonSize,
+} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import GorgiasApi, {SearchResultType} from 'services/gorgiasApi'
 
 import {SearchInputResultProps, SearchInputSubResultProps} from './types'
 import css from './SearchInput.less'
@@ -281,14 +285,15 @@ export default class SearchInput<
             <DropdownItem header className={css.header}>
                 {subResults.length ? (
                     <Button
-                        className="mr-2"
+                        className={classnames('mr-2', css.backButton)}
+                        size={ButtonSize.Small}
+                        intent={ButtonIntent.Secondary}
                         type="button"
-                        color="light"
-                        size="sm"
                         onClick={this._onBackClicked}
                     >
-                        <i className="icon material-icons mr-2">arrow_back</i>
-                        Back
+                        <ButtonIconLabel icon="arrow_back">
+                            Back
+                        </ButtonIconLabel>
                     </Button>
                 ) : null}
 
