@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle.tsx'
+import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 
 describe('<CardHeaderSubtitle/>', () => {
     describe('render()', () => {

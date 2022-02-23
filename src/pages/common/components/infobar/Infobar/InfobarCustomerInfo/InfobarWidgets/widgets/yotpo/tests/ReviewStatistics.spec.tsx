@@ -2,7 +2,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import React from 'react'
 
-import ReviewStatistics from '../ReviewStatistics.tsx'
+import ReviewStatistics from '../ReviewStatistics'
 
 const TitleWrapper = ReviewStatistics().TitleWrapper
 const AfterContent = ReviewStatistics().AfterContent

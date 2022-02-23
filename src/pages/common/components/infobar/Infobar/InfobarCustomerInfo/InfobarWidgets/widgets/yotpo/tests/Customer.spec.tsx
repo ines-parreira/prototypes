@@ -2,7 +2,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import React from 'react'
 
-import Customer from '../../yotpo/Customer.tsx'
+import Customer from '../../yotpo/Customer'
 
 const TitleWrapper = Customer().TitleWrapper
 const BeforeContent = Customer().BeforeContent

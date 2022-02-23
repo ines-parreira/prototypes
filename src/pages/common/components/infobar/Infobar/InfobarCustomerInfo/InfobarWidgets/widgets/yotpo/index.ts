@@ -1,10 +1,18 @@
-import Customer from './Customer.tsx'
-import ReviewStatistics from './ReviewStatistics.tsx'
-import Loyalty from './Loyalty.tsx'
-import Reviews from './Reviews.tsx'
+import {List, Map} from 'immutable'
 
-const yotpo = (args) => {
-    const path = args.template.get('absolutePath', []).join('.')
+import Customer from './Customer'
+import ReviewStatistics from './ReviewStatistics'
+import Loyalty from './Loyalty'
+import Reviews from './Reviews'
+
+const yotpo = (args: {
+    template: Map<any, any>
+    isEditing: boolean
+    source: unknown
+}) => {
+    const path = (args.template.get('absolutePath', []) as List<string>).join(
+        '.'
+    )
 
     if (path.match(/integrations\.[0-9]+\.customer$/)) {
         return Customer()

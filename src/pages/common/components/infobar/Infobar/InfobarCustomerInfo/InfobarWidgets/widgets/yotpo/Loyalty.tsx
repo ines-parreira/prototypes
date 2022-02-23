@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React from 'react'
 import type {Map} from 'immutable'
 
 import {CardHeaderYotpoLoyaltyPoints} from './custom/CardHeaderYotpoLoyaltyPoints'
@@ -11,7 +11,6 @@ export default function Loyalty() {
 }
 
 type TitleWrapperProps = {
-    children: ReactNode
     source: Map<string, any>
 }
 

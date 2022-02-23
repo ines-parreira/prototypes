@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import ActionButtonsGroup from '../ActionButtonsGroup.tsx'
+import ActionButtonsGroup from '../ActionButtonsGroup'
 
 describe('ActionButtonsGroup component', () => {
     const baseAction = {

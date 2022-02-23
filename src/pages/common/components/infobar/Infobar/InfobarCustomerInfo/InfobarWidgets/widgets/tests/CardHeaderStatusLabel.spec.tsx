@@ -1,16 +1,13 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import {CardHeaderDetails} from '../CardHeaderDetails.tsx'
+import {CardHeaderStatusLabel} from '../CardHeaderStatusLabel'
 
-describe('<CardHeaderDetails/>', () => {
+describe('<CardHeaderStatusLabel/>', () => {
     describe('render()', () => {
         it('should render children', () => {
             const component = shallow(
-                <CardHeaderDetails>
-                    <p>foo</p>
-                    <p>bar</p>
-                </CardHeaderDetails>
+                <CardHeaderStatusLabel>123</CardHeaderStatusLabel>
             )
 
             expect(component).toMatchSnapshot()

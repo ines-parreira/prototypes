@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import {CardHeaderStarPoints} from '../CardHeaderStarPoints.tsx'
+import {CardHeaderStarPoints} from '../CardHeaderStarPoints'
 
 describe('<CardHeaderStarPoints/>', () => {
     describe('render()', () => {

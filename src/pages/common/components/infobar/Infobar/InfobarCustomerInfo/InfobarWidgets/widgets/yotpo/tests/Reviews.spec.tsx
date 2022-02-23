@@ -1,9 +1,8 @@
 import {shallow} from 'enzyme'
 import React from 'react'
-
 import {fromJS} from 'immutable'
 
-import Reviews from '../Reviews.tsx'
+import Reviews from '../Reviews'
 
 const TitleWrapper = Reviews().TitleWrapper
 const AfterTitle = Reviews().AfterTitle

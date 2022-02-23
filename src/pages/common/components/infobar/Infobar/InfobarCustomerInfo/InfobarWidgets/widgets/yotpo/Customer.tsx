@@ -1,4 +1,4 @@
-import React, {ContextType, ReactNode} from 'react'
+import React, {ContextType} from 'react'
 import type {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/yotpo.svg'
@@ -55,7 +55,6 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 }
 
 type TitleWrapperProps = {
-    children: ReactNode
     source: Map<string, any>
 }
 
