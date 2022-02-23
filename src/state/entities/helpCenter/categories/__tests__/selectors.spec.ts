@@ -16,8 +16,9 @@ import {getCategories, getCategoriesWithArticles} from '../selectors'
 const articlesResponse =
     getArticlesResponseFixture.data.map(createArticleFromDto)
 
-const categoriesResponse = getCategoriesResponseEnglish.data.map((category) =>
-    createCategoryFromDto(category, 1)
+const categoriesResponse = getCategoriesResponseEnglish.data.map(
+    (category, currentIndex) =>
+        createCategoryFromDto(category, currentIndex + 1)
 )
 
 const store: Partial<StoreState> = {
@@ -28,6 +29,7 @@ const store: Partial<StoreState> = {
             },
             categories: {
                 categoriesById: _keyBy(categoriesResponse, 'id'),
+                positions: [1, 2, 3, 4],
             },
         },
     } as any,

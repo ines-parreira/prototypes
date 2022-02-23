@@ -11,13 +11,13 @@ import {
     LocaleCode,
     UpdateCategoryTranslationDto,
 } from 'models/helpCenter/types'
-import {createCategoryFromDto} from 'models/helpCenter/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     deleteCategory,
     pushCategorySupportedLocales,
     removeLocaleFromCategory,
     saveCategories,
+    savePositions,
     updateCategoriesOrder,
     updateCategoryTranslation,
 } from 'state/entities/helpCenter/categories'
@@ -73,24 +73,21 @@ export const useCategoriesActions = () => {
                     )
                     .then((response) => response.data)
 
-                const position = await client
+                const positions = await client
                     .getCategoriesPositions({
                         help_center_id: helpCenterId,
                     })
                     .then((response) => response.data)
-                    .then((positions) =>
-                        positions.findIndex(
-                            (categoryId) => categoryId === newCategory.id
-                        )
-                    )
 
-                const output = createCategoryFromDto(newCategory, position)
-
-                dispatch(saveCategories([output]))
+                dispatch(
+                    saveCategories({
+                        categories: [newCategory],
+                        shouldReset: false,
+                    })
+                )
+                dispatch(savePositions(positions))
 
                 setIsLoading(false)
-
-                return output
             } catch (error) {
                 setIsLoading(false)
 

@@ -9,14 +9,15 @@ import {fromJS} from 'immutable'
 
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {ShopType} from '../../../../../../models/selfServiceConfiguration/types'
-import {updateSelfServiceConfiguration} from '../../../../../../models/selfServiceConfiguration/resources'
+import {RootState, StoreDispatch} from 'state/types'
+import {ShopType} from 'models/selfServiceConfiguration/types'
+import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 
-import {billingState} from '../../../../../../fixtures/billing'
-import {account} from '../../../../../../fixtures/account'
-import {basicPlan} from '../../../../../../fixtures/subscriptionPlan'
-import {getEquivalentAutomationPlanId} from '../../../../../../models/billing/utils'
+import {billingState} from 'fixtures/billing'
+import {account} from 'fixtures/account'
+import {basicPlan} from 'fixtures/subscriptionPlan'
+import {getEquivalentAutomationPlanId} from 'models/billing/utils'
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 
 import QuickResponseFlowsPreferences from '../QuickResponseFlowsPreferences'
 
@@ -31,7 +32,7 @@ const updateSelfServiceConfigurationMock =
     updateSelfServiceConfiguration as jest.MockedFunction<
         typeof updateSelfServiceConfiguration
     >
-jest.mock('../../../../../../models/selfServiceConfiguration/resources')
+jest.mock('models/selfServiceConfiguration/resources')
 
 describe('<QuickResponseFlowsPreferences />', () => {
     const automationPlanId = getEquivalentAutomationPlanId(basicPlan.id)
@@ -67,17 +68,7 @@ describe('<QuickResponseFlowsPreferences />', () => {
             tags: {},
             views: {},
             viewsCount: {},
-            helpCenter: {
-                articles: {
-                    articlesById: {},
-                },
-                categories: {
-                    categoriesById: {},
-                },
-                helpCenters: {
-                    helpCentersById: {},
-                },
-            },
+            helpCenter: helpCenterInitialState,
             selfServiceConfigurations: {
                 1: {
                     id: 1,

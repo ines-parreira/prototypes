@@ -1,4 +1,5 @@
 import {createSelector} from 'reselect'
+import {Category} from 'models/helpCenter/types'
 
 import {getArticles} from '../articles/selectors'
 import {getHelpCenterStore} from '../selectors'
@@ -8,19 +9,29 @@ export const helpCenterCategoriesStore = createSelector(
     (store) => store.categories
 )
 
-const getCategoriesById = createSelector(
-    helpCenterCategoriesStore,
-    (store) => store.categoriesById
-)
+const getCategoriesById = createSelector(helpCenterCategoriesStore, (store) => {
+    const {positions = [], categoriesById} = store
+    const categoriesWithPosition: Record<string, Category> = {}
+
+    positions.forEach((categoryId, currentIndex) => {
+        if (categoriesById[categoryId]) {
+            categoriesWithPosition[categoryId] = {
+                ...categoriesById[categoryId],
+                articles: [],
+                position: currentIndex + 1,
+            }
+        }
+    })
+    return categoriesWithPosition
+})
 
 export const getCategories = createSelector(getCategoriesById, (categories) =>
-    Object.values(categories)
+    Object.values(categories).sort((a, b) => a.position - b.position)
 )
 
-export const getCategoryById = (id: number) =>
-    createSelector(
-        getCategoriesById,
-        (categories) => categories[id?.toString()]
+export const getCategoryById = (id: number | undefined) =>
+    createSelector(getCategoriesById, (categories) =>
+        id ? categories[id.toString()] : undefined
     )
 
 export const getCategoriesWithArticles = createSelector(

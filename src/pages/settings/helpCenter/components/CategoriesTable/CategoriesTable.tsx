@@ -1,11 +1,11 @@
 import {chain as _chain} from 'lodash'
 import React, {useEffect, useState} from 'react'
 
-import {Category} from '../../../../../models/helpCenter/types'
-import HeaderCell from '../../../../common/components/table/cells/HeaderCell'
-import TableBody from '../../../../common/components/table/TableBody'
-import TableHead from '../../../../common/components/table/TableHead'
-import TableWrapper from '../../../../common/components/table/TableWrapper'
+import {Category} from 'models/helpCenter/types'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 
 import {
     CategoriesTableRow,
@@ -28,12 +28,10 @@ export const CategoriesTable = ({
     renderArticleList,
     shouldRenderEmptyUncategorizedRow,
 }: CategoriesTableProps): JSX.Element => {
-    const [records, setRecords] = useState(
-        _chain(categories).sortBy(['position']).value()
-    )
+    const [records, setRecords] = useState(categories)
 
     useEffect(() => {
-        setRecords(_chain(categories).sortBy(['position']).value())
+        setRecords(categories)
     }, [categories])
 
     const handleOnDropCategory = (dragIndex: number, hoverIndex: number) => {

@@ -1,6 +1,6 @@
 import {useMemo} from 'react'
 import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
-import {LocaleCode} from '../../../../../../../models/helpCenter/types'
+import {LocaleCode} from 'models/helpCenter/types'
 
 interface UseCategoriesOptions {
     locale: LocaleCode

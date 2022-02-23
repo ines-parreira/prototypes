@@ -8,6 +8,7 @@ import {
     updateCategory,
     deleteCategory,
     resetCategories,
+    savePositions,
     updateCategoryTranslation,
     updateCategoriesOrder,
     pushCategorySupportedLocales,
@@ -16,6 +17,7 @@ import {
 
 export const initialState: HelpCenterCategoriesState = {
     categoriesById: {},
+    positions: [],
 }
 
 export default createReducer<HelpCenterCategoriesState>(
@@ -24,13 +26,18 @@ export default createReducer<HelpCenterCategoriesState>(
         builder
             // Append the payload to current state
             .addCase(saveCategories, (state, {payload}) => {
-                state.categoriesById = payload.reduce(
+                const {categories, shouldReset} = payload
+                state.categoriesById = categories.reduce(
                     (acc, category) => ({
                         ...acc,
                         [category.id.toString()]: category,
                     }),
-                    state.categoriesById
+                    shouldReset ? {} : state.categoriesById
                 )
+            })
+            // Set the categories positions in current state
+            .addCase(savePositions, (state, {payload}) => {
+                state.positions = payload
             })
 
             // Merge payload with the current category
@@ -50,10 +57,7 @@ export default createReducer<HelpCenterCategoriesState>(
             })
 
             .addCase(updateCategoriesOrder, (state, {payload}) => {
-                payload.forEach((categoryId, position) => {
-                    state.categoriesById[categoryId.toString()].position =
-                        position
-                })
+                state.positions = payload
             })
 
             .addCase(pushCategorySupportedLocales, (state, {payload}) => {

@@ -32,7 +32,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
 
     const [{loading, value: translation}, getCategoryTranslation] = useAsyncFn(
         (categoryId: number, locale: LocaleCode) => {
-            if (category.available_locales.includes(locale)) {
+            if (category?.available_locales.includes(locale)) {
                 return categoriesActions.getCategoryTranslation(
                     categoryId,
                     locale
@@ -58,7 +58,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
         locale: LocaleCode
     ) => {
         try {
-            if (category.available_locales.includes(locale)) {
+            if (category?.available_locales.includes(locale)) {
                 // Update translation
                 await categoriesActions.updateCategoryTranslation(
                     params.id,

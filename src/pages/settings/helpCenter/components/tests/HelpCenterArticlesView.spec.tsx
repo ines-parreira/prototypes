@@ -47,6 +47,16 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
     }
 })
 
+jest.mock('hooks/useModalManager/useModalManager.tsx', () => {
+    return {
+        useModalManager: () => ({
+            getParams: jest.fn().mockReturnValue({id: 1}),
+            isOpen: jest.fn().mockReturnValue(false),
+            on: jest.fn(),
+        }),
+    }
+})
+
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
 ])

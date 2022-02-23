@@ -3,14 +3,16 @@ import {createAction} from '@reduxjs/toolkit'
 import {
     Category,
     CategoryTranslation,
+    CategoryWithLocalTranslation,
     LocaleCode,
 } from 'models/helpCenter/types'
 
 import {CategoryActions} from './types'
 
-export const saveCategories = createAction<Category[]>(
-    CategoryActions.SAVE_CATEGORIES
-)
+export const saveCategories = createAction<{
+    categories: CategoryWithLocalTranslation[]
+    shouldReset: boolean
+}>(CategoryActions.SAVE_CATEGORIES)
 
 export const updateCategory = createAction<Category>(
     CategoryActions.UPDATE_CATEGORY
@@ -18,6 +20,10 @@ export const updateCategory = createAction<Category>(
 
 export const deleteCategory = createAction<number>(
     CategoryActions.DELETE_CATEGORY
+)
+
+export const savePositions = createAction<number[]>(
+    CategoryActions.SAVE_POSITIONS
 )
 
 export const pushCategorySupportedLocales = createAction<{

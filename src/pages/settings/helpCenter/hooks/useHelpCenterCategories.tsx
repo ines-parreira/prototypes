@@ -5,10 +5,10 @@ import {Paths} from 'rest_api/help_center_api/client.generated'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {Category} from 'models/helpCenter/types'
-import {createCategoryFromDto} from 'models/helpCenter/utils'
 import {
     getCategories,
     saveCategories,
+    savePositions,
 } from 'state/entities/helpCenter/categories'
 
 import {useHelpCenterApi} from './useHelpCenterApi'
@@ -63,22 +63,9 @@ export const useHelpCenterCategories = (
                     })
                     .then((response) => response.data)
 
-                const fetchedCategories = data.map((category) =>
-                    createCategoryFromDto(
-                        category,
-                        positions.findIndex(
-                            (categoryId) => categoryId === category.id
-                        )
-                    )
-                )
-
-                const shouldResetCategories = page === 0
-                dispatch(
-                    saveCategories([
-                        ...(shouldResetCategories ? [] : categories),
-                        ...fetchedCategories,
-                    ])
-                )
+                const shouldReset = page === 0
+                dispatch(saveCategories({categories: data, shouldReset}))
+                dispatch(savePositions(positions))
 
                 setPagination({page: meta.page, nbPages: meta.nb_pages})
             } catch (err) {

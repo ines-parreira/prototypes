@@ -6,9 +6,8 @@ import {renderHook} from 'react-hooks-testing-library'
 import configureMockStore from 'redux-mock-store'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {
     getCategories,
     saveCategories,
@@ -43,15 +42,16 @@ jest.mock('state/entities/helpCenter/categories', () => ({
         type: 'HELPCENTER/CATEGORIES/SAVE_CATEGORIES',
         payload: {},
     }),
+    savePositions: jest.fn().mockReturnValue({
+        type: 'HELPCENTER/CATEGORIES/SAVE_POSITIONS',
+        payload: [],
+    }),
 }))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     entities: {
-        helpCenter: {
-            articles: articlesState,
-            categories: categoriesState,
-        },
+        helpCenter: helpCenterInitialState,
     } as any,
     ui: {helpCenter: uiState} as any,
 }

@@ -33,7 +33,10 @@ describe('Help Center/Categories reducer', () => {
         it('saves the categories by key', () => {
             const nextState = reducer(
                 undefined,
-                saveCategories(categoriesResponse)
+                saveCategories({
+                    categories: categoriesResponse,
+                    shouldReset: true,
+                })
             )
             const categoriesId = Object.keys(nextState.categoriesById).map(
                 (id) => parseInt(id, 10)
@@ -66,6 +69,7 @@ describe('Help Center/Categories reducer', () => {
                     categoriesById: {
                         [categoryResponse.id]: categoryResponse,
                     },
+                    positions: [1],
                 },
                 updateCategory(updatedCategory)
             )
@@ -74,6 +78,7 @@ describe('Help Center/Categories reducer', () => {
                 categoriesById: {
                     [categoryResponse.id]: updatedCategory,
                 },
+                positions: [1],
             })
         })
     })
@@ -85,12 +90,14 @@ describe('Help Center/Categories reducer', () => {
                     categoriesById: {
                         [categoryResponse.id]: categoryResponse,
                     },
+                    positions: [1],
                 },
                 deleteCategory(categoryResponse.id)
             )
 
             expect(nextState).toEqual({
                 categoriesById: {},
+                positions: [1],
             })
         })
     })
@@ -101,6 +108,7 @@ describe('Help Center/Categories reducer', () => {
                 categoriesById: {
                     [categoryResponse.id]: categoryResponse,
                 },
+                positions: [1],
             },
             pushCategorySupportedLocales({
                 categoryId: 1,
@@ -120,6 +128,7 @@ describe('Help Center/Categories reducer', () => {
                     },
                 },
             },
+            positions: [1],
         })
     })
 
@@ -128,6 +137,7 @@ describe('Help Center/Categories reducer', () => {
             const nextState = reducer(
                 {
                     categoriesById: _keyBy(categoriesResponse, 'id'),
+                    positions: [1],
                 },
                 resetCategories()
             )

@@ -3,6 +3,7 @@ import {PayloadActionCreator} from '@reduxjs/toolkit'
 import {
     Category,
     CategoryTranslation,
+    CategoryWithLocalTranslation,
     LocaleCode,
 } from 'models/helpCenter/types'
 
@@ -11,6 +12,8 @@ export enum CategoryActions {
     UPDATE_CATEGORY = 'HELPCENTER/CATEGORIES/UPDATE_CATEGORY',
     DELETE_CATEGORY = 'HELPCENTER/CATEGORIES/DELETE_CATEGORY',
     RESET_CATEGORIES = 'HELPCENTER/CATEGORIES/RESET_CATEGORIES',
+
+    SAVE_POSITIONS = 'HELPCENTER/CATEGORIES/SAVE_POSITIONS',
 
     PUSH_CATEGORY_LOCALES = 'HELPCENTER/CATEGORIES/PUSH_CATEGORY_LOCALES',
     REMOVE_CATEGORY_LOCALE = 'HELPCENTER/CATEGORIES/REMOVE_CATEGORY_LOCALE',
@@ -76,5 +79,6 @@ export type CategoriesAction =
     | RemoveCategorySupportedLocales
 
 export type HelpCenterCategoriesState = {
-    categoriesById: Record<string, Category>
+    categoriesById: Record<string, CategoryWithLocalTranslation>
+    positions: number[]
 }

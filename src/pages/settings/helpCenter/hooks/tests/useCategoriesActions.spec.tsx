@@ -88,6 +88,10 @@ jest.mock('state/entities/helpCenter/categories', () => ({
         type: 'HELPCENTER/CATEGORIES/SAVE_CATEGORIES',
         payload: {},
     }),
+    savePositions: jest.fn().mockReturnValue({
+        type: 'HELPCENTER/CATEGORIES/SAVE_POSITIONS',
+        payload: {},
+    }),
     updateCategoriesOrder: jest.fn().mockReturnValue({
         type: 'HELPCENTER/CATEGORIES/UPDATE_CATEGORIES_ORDER',
         payload: {},

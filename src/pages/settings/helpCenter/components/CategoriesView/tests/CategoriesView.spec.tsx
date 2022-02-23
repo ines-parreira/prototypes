@@ -182,6 +182,7 @@ describe('<CategoriesViews />', () => {
                         categoriesById: {
                             1: getSingleCategoryEnglish,
                         },
+                        positions: [1],
                     },
                 },
             } as any,
