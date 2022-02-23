@@ -120,3 +120,5 @@ export default function ConfirmButton({
         </>
     )
 }
+
+ConfirmButton.displayName = 'ConfirmButton'

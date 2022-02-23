@@ -7,6 +7,8 @@ import React, {
 import classnames from 'classnames'
 import {Spinner} from 'reactstrap'
 
+import {AppendPosition} from 'pages/common/components/layout/Group'
+
 import css from './Button.less'
 
 export enum ButtonIntent {
@@ -23,6 +25,7 @@ export enum ButtonSize {
 }
 
 type Props = {
+    appendPosition?: AppendPosition
     intent?: ButtonIntent
     isDisabled?: boolean
     isLoading?: boolean
@@ -39,6 +42,7 @@ export const ButtonContext = createContext<ButtonContextState>({
 
 const Button = forwardRef(function (
     {
+        appendPosition,
         children,
         className,
         intent = ButtonIntent.Primary,
@@ -58,6 +62,7 @@ const Button = forwardRef(function (
                     className,
                     css[intent],
                     css[size],
+                    css[appendPosition || ''],
                     {
                         [css.isDisabled]: isDisabled || isLoading,
                     }

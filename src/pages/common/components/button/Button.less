@@ -12,6 +12,7 @@
         font-size: 14px;
         font-weight: 500;
         height: 32px;
+        justify-content: center;
         line-height: 20px;
         padding: 0 12px;
         text-transform: capitalize;
@@ -37,6 +38,33 @@
             font-size: 12px;
             height: 24px;
             padding: 0 8px;
+        }
+
+        &.right,
+        &.center {
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+            margin-left: -1px;
+        }
+
+        &.left,
+        &.center {
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+            margin-right: -1px;
+        }
+
+        &.top,
+        &.middle {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        &.bottom,
+        &.middle {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            margin-top: -1px;
         }
     }
 

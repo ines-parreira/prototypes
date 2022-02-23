@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GroupItem /> should pass the append position props to its child 1`] = `
+<div>
+  left
+</div>
+`;

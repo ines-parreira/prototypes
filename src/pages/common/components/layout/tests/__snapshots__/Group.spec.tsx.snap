@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Group /> should render a group of buttons 1`] = `
+<span
+  class="group horizontal"
+>
+  <button
+    class="wrapper primary medium left"
+  >
+    Foo
+  </button>
+  <button
+    class="wrapper primary medium center"
+  >
+    Bar
+  </button>
+  <button
+    class="wrapper primary medium right"
+  >
+    Baz
+  </button>
+</span>
+`;
