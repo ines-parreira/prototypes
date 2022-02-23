@@ -1,14 +1,27 @@
+@import (reference) '~css/new/colorTokens';
+
 :local {
     .wrapper {
         section:first-child {
             margin-bottom: 24px;
         }
         section {
-            margin-bottom: 64px;
+            h5 {
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 20px;
+            }
             .toggle {
                 margin-bottom: 24px;
-                .toggleTooltip {
-                    margin-left: 5px;
+                .toggleLabel {
+                    display: flex;
+                    align-items: center;
+                    .tooltipIcon {
+                        margin-left: 5px;
+                        margin-top: 2px;
+                        font-size: 16px;
+                        color: @classic-neutral-grey-4;
+                    }
                 }
             }
             .heading {
@@ -31,5 +44,20 @@
                 margin-bottom: 24px;
             }
         }
+    }
+    .tooltip {
+        width: 180px;
+        left: -9px !important;
+        margin-bottom: 5px;
+    }
+
+    .tooltip-inner {
+        text-align: left;
+        max-width: 250px;
+        padding: 10px;
+    }
+
+    .tooltip-arrow {
+        left: 12px !important;
     }
 }

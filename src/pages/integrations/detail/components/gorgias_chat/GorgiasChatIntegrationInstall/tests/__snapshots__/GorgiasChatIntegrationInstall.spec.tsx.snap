@@ -1530,93 +1530,98 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                   </div>
                                                 </div>
                                               </Alert>
-                                              <CodeSnippet
+                                              <WithClipboardComponent
                                                 code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                               >
-                                                <Alert
-                                                  className="wrapper"
-                                                  closeAriaLabel="Close"
-                                                  color="success"
-                                                  fade={true}
-                                                  isOpen={true}
+                                                <div
+                                                  className="container"
                                                   onMouseEnter={[Function]}
                                                   onMouseLeave={[Function]}
-                                                  tag="div"
-                                                  transition={
-                                                    Object {
-                                                      "appear": true,
-                                                      "baseClass": "fade",
-                                                      "baseClassActive": "show",
-                                                      "enter": true,
-                                                      "exit": true,
-                                                      "in": true,
-                                                      "mountOnEnter": false,
-                                                      "onEnter": [Function],
-                                                      "onEntered": [Function],
-                                                      "onEntering": [Function],
-                                                      "onExit": [Function],
-                                                      "onExited": [Function],
-                                                      "onExiting": [Function],
-                                                      "tag": "div",
-                                                      "timeout": 150,
-                                                      "unmountOnExit": true,
-                                                    }
-                                                  }
                                                 >
-                                                  <Fade
-                                                    appear={true}
-                                                    baseClass="fade"
-                                                    baseClassActive="show"
-                                                    className="wrapper alert alert-success"
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    onMouseLeave={[Function]}
-                                                    role="alert"
-                                                    tag="div"
-                                                    timeout={150}
-                                                    unmountOnExit={true}
+                                                  <CodeSnippet
+                                                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                    id="code-snippet-3"
                                                   >
-                                                    <Transition
-                                                      appear={true}
-                                                      enter={true}
-                                                      exit={true}
-                                                      in={true}
-                                                      mountOnEnter={false}
-                                                      onEnter={[Function]}
-                                                      onEntered={[Function]}
-                                                      onEntering={[Function]}
-                                                      onExit={[Function]}
-                                                      onExited={[Function]}
-                                                      onExiting={[Function]}
-                                                      timeout={150}
-                                                      unmountOnExit={true}
+                                                    <Alert
+                                                      className="wrapper"
+                                                      closeAriaLabel="Close"
+                                                      color="success"
+                                                      fade={true}
+                                                      isOpen={true}
+                                                      tag="div"
+                                                      transition={
+                                                        Object {
+                                                          "appear": true,
+                                                          "baseClass": "fade",
+                                                          "baseClassActive": "show",
+                                                          "enter": true,
+                                                          "exit": true,
+                                                          "in": true,
+                                                          "mountOnEnter": false,
+                                                          "onEnter": [Function],
+                                                          "onEntered": [Function],
+                                                          "onEntering": [Function],
+                                                          "onExit": [Function],
+                                                          "onExited": [Function],
+                                                          "onExiting": [Function],
+                                                          "tag": "div",
+                                                          "timeout": 150,
+                                                          "unmountOnExit": true,
+                                                        }
+                                                      }
                                                     >
-                                                      <div
-                                                        className="wrapper alert alert-success fade"
-                                                        onMouseEnter={[Function]}
-                                                        onMouseLeave={[Function]}
+                                                      <Fade
+                                                        appear={true}
+                                                        baseClass="fade"
+                                                        baseClassActive="show"
+                                                        className="wrapper alert alert-success"
+                                                        enter={true}
+                                                        exit={true}
+                                                        in={true}
+                                                        mountOnEnter={false}
+                                                        onEnter={[Function]}
+                                                        onEntered={[Function]}
+                                                        onEntering={[Function]}
+                                                        onExit={[Function]}
+                                                        onExited={[Function]}
+                                                        onExiting={[Function]}
                                                         role="alert"
+                                                        tag="div"
+                                                        timeout={150}
+                                                        unmountOnExit={true}
                                                       >
-                                                        <pre
-                                                          className="code"
-                                                          id="code-snippet-3"
+                                                        <Transition
+                                                          appear={true}
+                                                          enter={true}
+                                                          exit={true}
+                                                          in={true}
+                                                          mountOnEnter={false}
+                                                          onEnter={[Function]}
+                                                          onEntered={[Function]}
+                                                          onEntering={[Function]}
+                                                          onExit={[Function]}
+                                                          onExited={[Function]}
+                                                          onExiting={[Function]}
+                                                          timeout={150}
+                                                          unmountOnExit={true}
                                                         >
-                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
-                                                        </pre>
-                                                      </div>
-                                                    </Transition>
-                                                  </Fade>
-                                                </Alert>
-                                              </CodeSnippet>
+                                                          <div
+                                                            className="wrapper alert alert-success fade"
+                                                            role="alert"
+                                                          >
+                                                            <pre
+                                                              className="code"
+                                                              id="code-snippet-3"
+                                                            >
+                                                              &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
+                                                            </pre>
+                                                          </div>
+                                                        </Transition>
+                                                      </Fade>
+                                                    </Alert>
+                                                  </CodeSnippet>
+                                                </div>
+                                              </WithClipboardComponent>
                                             </div>
                                           </CustomInstallationShopifyTab>
                                         </div>
@@ -1703,93 +1708,98 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                                   </div>
                                                 </div>
                                               </Alert>
-                                              <CodeSnippet
+                                              <WithClipboardComponent
                                                 code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                               >
-                                                <Alert
-                                                  className="wrapper"
-                                                  closeAriaLabel="Close"
-                                                  color="success"
-                                                  fade={true}
-                                                  isOpen={true}
+                                                <div
+                                                  className="container"
                                                   onMouseEnter={[Function]}
                                                   onMouseLeave={[Function]}
-                                                  tag="div"
-                                                  transition={
-                                                    Object {
-                                                      "appear": true,
-                                                      "baseClass": "fade",
-                                                      "baseClassActive": "show",
-                                                      "enter": true,
-                                                      "exit": true,
-                                                      "in": true,
-                                                      "mountOnEnter": false,
-                                                      "onEnter": [Function],
-                                                      "onEntered": [Function],
-                                                      "onEntering": [Function],
-                                                      "onExit": [Function],
-                                                      "onExited": [Function],
-                                                      "onExiting": [Function],
-                                                      "tag": "div",
-                                                      "timeout": 150,
-                                                      "unmountOnExit": true,
-                                                    }
-                                                  }
                                                 >
-                                                  <Fade
-                                                    appear={true}
-                                                    baseClass="fade"
-                                                    baseClassActive="show"
-                                                    className="wrapper alert alert-success"
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    onMouseLeave={[Function]}
-                                                    role="alert"
-                                                    tag="div"
-                                                    timeout={150}
-                                                    unmountOnExit={true}
+                                                  <CodeSnippet
+                                                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                    id="code-snippet-4"
                                                   >
-                                                    <Transition
-                                                      appear={true}
-                                                      enter={true}
-                                                      exit={true}
-                                                      in={true}
-                                                      mountOnEnter={false}
-                                                      onEnter={[Function]}
-                                                      onEntered={[Function]}
-                                                      onEntering={[Function]}
-                                                      onExit={[Function]}
-                                                      onExited={[Function]}
-                                                      onExiting={[Function]}
-                                                      timeout={150}
-                                                      unmountOnExit={true}
+                                                    <Alert
+                                                      className="wrapper"
+                                                      closeAriaLabel="Close"
+                                                      color="success"
+                                                      fade={true}
+                                                      isOpen={true}
+                                                      tag="div"
+                                                      transition={
+                                                        Object {
+                                                          "appear": true,
+                                                          "baseClass": "fade",
+                                                          "baseClassActive": "show",
+                                                          "enter": true,
+                                                          "exit": true,
+                                                          "in": true,
+                                                          "mountOnEnter": false,
+                                                          "onEnter": [Function],
+                                                          "onEntered": [Function],
+                                                          "onEntering": [Function],
+                                                          "onExit": [Function],
+                                                          "onExited": [Function],
+                                                          "onExiting": [Function],
+                                                          "tag": "div",
+                                                          "timeout": 150,
+                                                          "unmountOnExit": true,
+                                                        }
+                                                      }
                                                     >
-                                                      <div
-                                                        className="wrapper alert alert-success fade"
-                                                        onMouseEnter={[Function]}
-                                                        onMouseLeave={[Function]}
+                                                      <Fade
+                                                        appear={true}
+                                                        baseClass="fade"
+                                                        baseClassActive="show"
+                                                        className="wrapper alert alert-success"
+                                                        enter={true}
+                                                        exit={true}
+                                                        in={true}
+                                                        mountOnEnter={false}
+                                                        onEnter={[Function]}
+                                                        onEntered={[Function]}
+                                                        onEntering={[Function]}
+                                                        onExit={[Function]}
+                                                        onExited={[Function]}
+                                                        onExiting={[Function]}
                                                         role="alert"
+                                                        tag="div"
+                                                        timeout={150}
+                                                        unmountOnExit={true}
                                                       >
-                                                        <pre
-                                                          className="code"
-                                                          id="code-snippet-4"
+                                                        <Transition
+                                                          appear={true}
+                                                          enter={true}
+                                                          exit={true}
+                                                          in={true}
+                                                          mountOnEnter={false}
+                                                          onEnter={[Function]}
+                                                          onEntered={[Function]}
+                                                          onEntering={[Function]}
+                                                          onExit={[Function]}
+                                                          onExited={[Function]}
+                                                          onExiting={[Function]}
+                                                          timeout={150}
+                                                          unmountOnExit={true}
                                                         >
-                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
-                                                        </pre>
-                                                      </div>
-                                                    </Transition>
-                                                  </Fade>
-                                                </Alert>
-                                              </CodeSnippet>
+                                                          <div
+                                                            className="wrapper alert alert-success fade"
+                                                            role="alert"
+                                                          >
+                                                            <pre
+                                                              className="code"
+                                                              id="code-snippet-4"
+                                                            >
+                                                              &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
+                                                            </pre>
+                                                          </div>
+                                                        </Transition>
+                                                      </Fade>
+                                                    </Alert>
+                                                  </CodeSnippet>
+                                                </div>
+                                              </WithClipboardComponent>
                                             </div>
                                           </CustomInstallationOtherWebsiteTab>
                                         </div>
@@ -2633,93 +2643,98 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                                                   </div>
                                                 </div>
                                               </Alert>
-                                              <CodeSnippet
+                                              <WithClipboardComponent
                                                 code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                               >
-                                                <Alert
-                                                  className="wrapper"
-                                                  closeAriaLabel="Close"
-                                                  color="success"
-                                                  fade={true}
-                                                  isOpen={true}
+                                                <div
+                                                  className="container"
                                                   onMouseEnter={[Function]}
                                                   onMouseLeave={[Function]}
-                                                  tag="div"
-                                                  transition={
-                                                    Object {
-                                                      "appear": true,
-                                                      "baseClass": "fade",
-                                                      "baseClassActive": "show",
-                                                      "enter": true,
-                                                      "exit": true,
-                                                      "in": true,
-                                                      "mountOnEnter": false,
-                                                      "onEnter": [Function],
-                                                      "onEntered": [Function],
-                                                      "onEntering": [Function],
-                                                      "onExit": [Function],
-                                                      "onExited": [Function],
-                                                      "onExiting": [Function],
-                                                      "tag": "div",
-                                                      "timeout": 150,
-                                                      "unmountOnExit": true,
-                                                    }
-                                                  }
                                                 >
-                                                  <Fade
-                                                    appear={true}
-                                                    baseClass="fade"
-                                                    baseClassActive="show"
-                                                    className="wrapper alert alert-success"
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    onMouseLeave={[Function]}
-                                                    role="alert"
-                                                    tag="div"
-                                                    timeout={150}
-                                                    unmountOnExit={true}
+                                                  <CodeSnippet
+                                                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                    id="code-snippet-5"
                                                   >
-                                                    <Transition
-                                                      appear={true}
-                                                      enter={true}
-                                                      exit={true}
-                                                      in={true}
-                                                      mountOnEnter={false}
-                                                      onEnter={[Function]}
-                                                      onEntered={[Function]}
-                                                      onEntering={[Function]}
-                                                      onExit={[Function]}
-                                                      onExited={[Function]}
-                                                      onExiting={[Function]}
-                                                      timeout={150}
-                                                      unmountOnExit={true}
+                                                    <Alert
+                                                      className="wrapper"
+                                                      closeAriaLabel="Close"
+                                                      color="success"
+                                                      fade={true}
+                                                      isOpen={true}
+                                                      tag="div"
+                                                      transition={
+                                                        Object {
+                                                          "appear": true,
+                                                          "baseClass": "fade",
+                                                          "baseClassActive": "show",
+                                                          "enter": true,
+                                                          "exit": true,
+                                                          "in": true,
+                                                          "mountOnEnter": false,
+                                                          "onEnter": [Function],
+                                                          "onEntered": [Function],
+                                                          "onEntering": [Function],
+                                                          "onExit": [Function],
+                                                          "onExited": [Function],
+                                                          "onExiting": [Function],
+                                                          "tag": "div",
+                                                          "timeout": 150,
+                                                          "unmountOnExit": true,
+                                                        }
+                                                      }
                                                     >
-                                                      <div
-                                                        className="wrapper alert alert-success fade"
-                                                        onMouseEnter={[Function]}
-                                                        onMouseLeave={[Function]}
+                                                      <Fade
+                                                        appear={true}
+                                                        baseClass="fade"
+                                                        baseClassActive="show"
+                                                        className="wrapper alert alert-success"
+                                                        enter={true}
+                                                        exit={true}
+                                                        in={true}
+                                                        mountOnEnter={false}
+                                                        onEnter={[Function]}
+                                                        onEntered={[Function]}
+                                                        onEntering={[Function]}
+                                                        onExit={[Function]}
+                                                        onExited={[Function]}
+                                                        onExiting={[Function]}
                                                         role="alert"
+                                                        tag="div"
+                                                        timeout={150}
+                                                        unmountOnExit={true}
                                                       >
-                                                        <pre
-                                                          className="code"
-                                                          id="code-snippet-5"
+                                                        <Transition
+                                                          appear={true}
+                                                          enter={true}
+                                                          exit={true}
+                                                          in={true}
+                                                          mountOnEnter={false}
+                                                          onEnter={[Function]}
+                                                          onEntered={[Function]}
+                                                          onEntering={[Function]}
+                                                          onExit={[Function]}
+                                                          onExited={[Function]}
+                                                          onExiting={[Function]}
+                                                          timeout={150}
+                                                          unmountOnExit={true}
                                                         >
-                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
-                                                        </pre>
-                                                      </div>
-                                                    </Transition>
-                                                  </Fade>
-                                                </Alert>
-                                              </CodeSnippet>
+                                                          <div
+                                                            className="wrapper alert alert-success fade"
+                                                            role="alert"
+                                                          >
+                                                            <pre
+                                                              className="code"
+                                                              id="code-snippet-5"
+                                                            >
+                                                              &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
+                                                            </pre>
+                                                          </div>
+                                                        </Transition>
+                                                      </Fade>
+                                                    </Alert>
+                                                  </CodeSnippet>
+                                                </div>
+                                              </WithClipboardComponent>
                                             </div>
                                           </CustomInstallationOtherWebsiteTab>
                                         </div>
@@ -3749,93 +3764,98 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                   </div>
                                                 </div>
                                               </Alert>
-                                              <CodeSnippet
+                                              <WithClipboardComponent
                                                 code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                               >
-                                                <Alert
-                                                  className="wrapper"
-                                                  closeAriaLabel="Close"
-                                                  color="success"
-                                                  fade={true}
-                                                  isOpen={true}
+                                                <div
+                                                  className="container"
                                                   onMouseEnter={[Function]}
                                                   onMouseLeave={[Function]}
-                                                  tag="div"
-                                                  transition={
-                                                    Object {
-                                                      "appear": true,
-                                                      "baseClass": "fade",
-                                                      "baseClassActive": "show",
-                                                      "enter": true,
-                                                      "exit": true,
-                                                      "in": true,
-                                                      "mountOnEnter": false,
-                                                      "onEnter": [Function],
-                                                      "onEntered": [Function],
-                                                      "onEntering": [Function],
-                                                      "onExit": [Function],
-                                                      "onExited": [Function],
-                                                      "onExiting": [Function],
-                                                      "tag": "div",
-                                                      "timeout": 150,
-                                                      "unmountOnExit": true,
-                                                    }
-                                                  }
                                                 >
-                                                  <Fade
-                                                    appear={true}
-                                                    baseClass="fade"
-                                                    baseClassActive="show"
-                                                    className="wrapper alert alert-success"
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    onMouseLeave={[Function]}
-                                                    role="alert"
-                                                    tag="div"
-                                                    timeout={150}
-                                                    unmountOnExit={true}
+                                                  <CodeSnippet
+                                                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                    id="code-snippet-1"
                                                   >
-                                                    <Transition
-                                                      appear={true}
-                                                      enter={true}
-                                                      exit={true}
-                                                      in={true}
-                                                      mountOnEnter={false}
-                                                      onEnter={[Function]}
-                                                      onEntered={[Function]}
-                                                      onEntering={[Function]}
-                                                      onExit={[Function]}
-                                                      onExited={[Function]}
-                                                      onExiting={[Function]}
-                                                      timeout={150}
-                                                      unmountOnExit={true}
+                                                    <Alert
+                                                      className="wrapper"
+                                                      closeAriaLabel="Close"
+                                                      color="success"
+                                                      fade={true}
+                                                      isOpen={true}
+                                                      tag="div"
+                                                      transition={
+                                                        Object {
+                                                          "appear": true,
+                                                          "baseClass": "fade",
+                                                          "baseClassActive": "show",
+                                                          "enter": true,
+                                                          "exit": true,
+                                                          "in": true,
+                                                          "mountOnEnter": false,
+                                                          "onEnter": [Function],
+                                                          "onEntered": [Function],
+                                                          "onEntering": [Function],
+                                                          "onExit": [Function],
+                                                          "onExited": [Function],
+                                                          "onExiting": [Function],
+                                                          "tag": "div",
+                                                          "timeout": 150,
+                                                          "unmountOnExit": true,
+                                                        }
+                                                      }
                                                     >
-                                                      <div
-                                                        className="wrapper alert alert-success fade"
-                                                        onMouseEnter={[Function]}
-                                                        onMouseLeave={[Function]}
+                                                      <Fade
+                                                        appear={true}
+                                                        baseClass="fade"
+                                                        baseClassActive="show"
+                                                        className="wrapper alert alert-success"
+                                                        enter={true}
+                                                        exit={true}
+                                                        in={true}
+                                                        mountOnEnter={false}
+                                                        onEnter={[Function]}
+                                                        onEntered={[Function]}
+                                                        onEntering={[Function]}
+                                                        onExit={[Function]}
+                                                        onExited={[Function]}
+                                                        onExiting={[Function]}
                                                         role="alert"
+                                                        tag="div"
+                                                        timeout={150}
+                                                        unmountOnExit={true}
                                                       >
-                                                        <pre
-                                                          className="code"
-                                                          id="code-snippet-1"
+                                                        <Transition
+                                                          appear={true}
+                                                          enter={true}
+                                                          exit={true}
+                                                          in={true}
+                                                          mountOnEnter={false}
+                                                          onEnter={[Function]}
+                                                          onEntered={[Function]}
+                                                          onEntering={[Function]}
+                                                          onExit={[Function]}
+                                                          onExited={[Function]}
+                                                          onExiting={[Function]}
+                                                          timeout={150}
+                                                          unmountOnExit={true}
                                                         >
-                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
-                                                        </pre>
-                                                      </div>
-                                                    </Transition>
-                                                  </Fade>
-                                                </Alert>
-                                              </CodeSnippet>
+                                                          <div
+                                                            className="wrapper alert alert-success fade"
+                                                            role="alert"
+                                                          >
+                                                            <pre
+                                                              className="code"
+                                                              id="code-snippet-1"
+                                                            >
+                                                              &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
+                                                            </pre>
+                                                          </div>
+                                                        </Transition>
+                                                      </Fade>
+                                                    </Alert>
+                                                  </CodeSnippet>
+                                                </div>
+                                              </WithClipboardComponent>
                                             </div>
                                           </CustomInstallationShopifyTab>
                                         </div>
@@ -3922,93 +3942,98 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                                   </div>
                                                 </div>
                                               </Alert>
-                                              <CodeSnippet
+                                              <WithClipboardComponent
                                                 code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
                                               >
-                                                <Alert
-                                                  className="wrapper"
-                                                  closeAriaLabel="Close"
-                                                  color="success"
-                                                  fade={true}
-                                                  isOpen={true}
+                                                <div
+                                                  className="container"
                                                   onMouseEnter={[Function]}
                                                   onMouseLeave={[Function]}
-                                                  tag="div"
-                                                  transition={
-                                                    Object {
-                                                      "appear": true,
-                                                      "baseClass": "fade",
-                                                      "baseClassActive": "show",
-                                                      "enter": true,
-                                                      "exit": true,
-                                                      "in": true,
-                                                      "mountOnEnter": false,
-                                                      "onEnter": [Function],
-                                                      "onEntered": [Function],
-                                                      "onEntering": [Function],
-                                                      "onExit": [Function],
-                                                      "onExited": [Function],
-                                                      "onExiting": [Function],
-                                                      "tag": "div",
-                                                      "timeout": 150,
-                                                      "unmountOnExit": true,
-                                                    }
-                                                  }
                                                 >
-                                                  <Fade
-                                                    appear={true}
-                                                    baseClass="fade"
-                                                    baseClassActive="show"
-                                                    className="wrapper alert alert-success"
-                                                    enter={true}
-                                                    exit={true}
-                                                    in={true}
-                                                    mountOnEnter={false}
-                                                    onEnter={[Function]}
-                                                    onEntered={[Function]}
-                                                    onEntering={[Function]}
-                                                    onExit={[Function]}
-                                                    onExited={[Function]}
-                                                    onExiting={[Function]}
-                                                    onMouseEnter={[Function]}
-                                                    onMouseLeave={[Function]}
-                                                    role="alert"
-                                                    tag="div"
-                                                    timeout={150}
-                                                    unmountOnExit={true}
+                                                  <CodeSnippet
+                                                    code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"
+                                                    id="code-snippet-2"
                                                   >
-                                                    <Transition
-                                                      appear={true}
-                                                      enter={true}
-                                                      exit={true}
-                                                      in={true}
-                                                      mountOnEnter={false}
-                                                      onEnter={[Function]}
-                                                      onEntered={[Function]}
-                                                      onEntering={[Function]}
-                                                      onExit={[Function]}
-                                                      onExited={[Function]}
-                                                      onExiting={[Function]}
-                                                      timeout={150}
-                                                      unmountOnExit={true}
+                                                    <Alert
+                                                      className="wrapper"
+                                                      closeAriaLabel="Close"
+                                                      color="success"
+                                                      fade={true}
+                                                      isOpen={true}
+                                                      tag="div"
+                                                      transition={
+                                                        Object {
+                                                          "appear": true,
+                                                          "baseClass": "fade",
+                                                          "baseClassActive": "show",
+                                                          "enter": true,
+                                                          "exit": true,
+                                                          "in": true,
+                                                          "mountOnEnter": false,
+                                                          "onEnter": [Function],
+                                                          "onEntered": [Function],
+                                                          "onEntering": [Function],
+                                                          "onExit": [Function],
+                                                          "onExited": [Function],
+                                                          "onExiting": [Function],
+                                                          "tag": "div",
+                                                          "timeout": 150,
+                                                          "unmountOnExit": true,
+                                                        }
+                                                      }
                                                     >
-                                                      <div
-                                                        className="wrapper alert alert-success fade"
-                                                        onMouseEnter={[Function]}
-                                                        onMouseLeave={[Function]}
+                                                      <Fade
+                                                        appear={true}
+                                                        baseClass="fade"
+                                                        baseClassActive="show"
+                                                        className="wrapper alert alert-success"
+                                                        enter={true}
+                                                        exit={true}
+                                                        in={true}
+                                                        mountOnEnter={false}
+                                                        onEnter={[Function]}
+                                                        onEntered={[Function]}
+                                                        onEntering={[Function]}
+                                                        onExit={[Function]}
+                                                        onExited={[Function]}
+                                                        onExiting={[Function]}
                                                         role="alert"
+                                                        tag="div"
+                                                        timeout={150}
+                                                        unmountOnExit={true}
                                                       >
-                                                        <pre
-                                                          className="code"
-                                                          id="code-snippet-2"
+                                                        <Transition
+                                                          appear={true}
+                                                          enter={true}
+                                                          exit={true}
+                                                          in={true}
+                                                          mountOnEnter={false}
+                                                          onEnter={[Function]}
+                                                          onEntered={[Function]}
+                                                          onEntering={[Function]}
+                                                          onExit={[Function]}
+                                                          onExited={[Function]}
+                                                          onExiting={[Function]}
+                                                          timeout={150}
+                                                          unmountOnExit={true}
                                                         >
-                                                          &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
-                                                        </pre>
-                                                      </div>
-                                                    </Transition>
-                                                  </Fade>
-                                                </Alert>
-                                              </CodeSnippet>
+                                                          <div
+                                                            className="wrapper alert alert-success fade"
+                                                            role="alert"
+                                                          >
+                                                            <pre
+                                                              className="code"
+                                                              id="code-snippet-2"
+                                                            >
+                                                              &lt;!--Gorgias Chat Widget Start--&gt;&lt;script id="gorgias-chat-widget-install-v2" src="https:///gorgias-chat-bundle-loader.js?applicationId=undefined"&gt;&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
+                                                            </pre>
+                                                          </div>
+                                                        </Transition>
+                                                      </Fade>
+                                                    </Alert>
+                                                  </CodeSnippet>
+                                                </div>
+                                              </WithClipboardComponent>
                                             </div>
                                           </CustomInstallationOtherWebsiteTab>
                                         </div>

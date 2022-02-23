@@ -60,7 +60,7 @@ exports[`<CustomInstallationOtherWebsiteTab/> should display the custom installa
   >
     Please note that by inserting this snippet on your webpage, it will load the chat on that specific webpage only. Make sure to insert the snippet on all the pages for which you wish to display the chat widget.
   </Alert>
-  <CodeSnippet
+  <WithClipboardComponent
     code="<script>installChat();</script>"
   />
 </div>

@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 
 import withACEEditor from './withACEEditor'
-import {EditorProps} from './types'
+import {ACEProps, EditorProps} from './types'
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
 
@@ -16,10 +16,11 @@ const ReactAce = ({
     width,
     height,
     value,
+    editor,
+    setEditor,
     ...props
-}: EditorProps & {ace: any}) => {
+}: EditorProps & ACEProps & {ace: any}) => {
     const editorRef = useRef<HTMLDivElement>(null)
-    const [editor, setEditor] = useState<any | null>(null)
 
     // Init the editor object
     useEffect(() => {
@@ -36,12 +37,13 @@ const ReactAce = ({
         const {
             mode = '',
             theme = '',
-            fontSize = 12,
+            fontSize = 14,
+            lineHeight = 2.5,
             defaultValue = '',
             cursorStart = 1,
             showGutter = true,
             wrapEnabled = false,
-            showPrintMargin = true,
+            showPrintMargin = false,
             showLineNumbers = true,
             tabSize = 2,
             onBeforeLoad,
@@ -60,7 +62,9 @@ const ReactAce = ({
 
         mode && session.setMode(`ace/mode/${mode}`)
         theme && editor.setTheme(`ace/theme/${theme}`)
-        fontSize && editor.setFontSize(fontSize)
+        editor.setFontSize(fontSize)
+        editor.container.style.lineHeight = lineHeight
+        editor.renderer.updateFontSize()
         editor.setValue(
             defaultValue === undefined ? value : defaultValue,
             cursorStart

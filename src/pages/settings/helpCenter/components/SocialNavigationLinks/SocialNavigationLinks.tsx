@@ -35,7 +35,7 @@ export const SocialNavigationLinks = ({
 }: Props): JSX.Element => {
     return (
         <div className={css['social-list']}>
-            <h4>Social network links</h4>
+            <h5>Social network links</h5>
             {links.map((link) => {
                 if (LOGO_MAP[link.label.toLowerCase()]) {
                     return (

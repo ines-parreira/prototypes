@@ -226,21 +226,19 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 <div
                   class="label"
                 >
-                  <span>
-                    Use custom header
-                  </span>
-                  <span>
-                    <span
-                      class="toggleTooltip"
+                  <div
+                    class="toggleLabel"
+                  >
+                    <span>
+                      Use custom header
+                    </span>
+                    <i
+                      class="material-icons tooltipIcon"
                       id="custom-header-toggle-info"
                     >
-                      <i
-                        class="material-icons"
-                      >
-                        info_outline
-                      </i>
-                    </span>
-                  </span>
+                      info_outline
+                    </i>
+                  </div>
                 </div>
               </label>
             </div>
@@ -302,21 +300,19 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 <div
                   class="label"
                 >
-                  <span>
-                    Use custom footer
-                  </span>
-                  <span>
-                    <span
-                      class="toggleTooltip"
+                  <div
+                    class="toggleLabel"
+                  >
+                    <span>
+                      Use custom footer
+                    </span>
+                    <i
+                      class="material-icons tooltipIcon"
                       id="custom-footer-toggle-info"
                     >
-                      <i
-                        class="material-icons"
-                      >
-                        info_outline
-                      </i>
-                    </span>
-                  </span>
+                      info_outline
+                    </i>
+                  </div>
                 </div>
               </label>
             </div>
@@ -344,9 +340,9 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
           <div
             class="social-list"
           >
-            <h4>
+            <h5>
               Social network links
-            </h4>
+            </h5>
             <div
               class="social-item"
               data-testid="Facebook-nav"
@@ -491,38 +487,6 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                   Add extra HTML
                 </div>
               </label>
-            </div>
-          </div>
-          <div
-            class="wrapper"
-          >
-            <div
-              class="titleWrapper"
-            >
-              <h4
-                class="title"
-              />
-            </div>
-            <div
-              id="code-editor-wrapper-tooltip-6"
-            >
-              <div
-                class="codeWrapper codeDisabled"
-              >
-                <div
-                  class="container"
-                >
-                  <div
-                    class="inner"
-                    style="min-height: 200px;"
-                  >
-                    <i
-                      class="icon-custom icon-circle-o-notch md-spin"
-                      style="font-size: 40px;"
-                    />
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </section>

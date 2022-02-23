@@ -12,14 +12,48 @@
             }
         }
         .codeWrapper {
+            position: relative;
             border-radius: 4px;
-            padding: 8px;
-            background-color: @classic-neutral-grey-2;
-            :global .ace_gutter {
-                background-color: @classic-neutral-grey-2;
+            background-color: @classic-neutral-grey-1;
+            :global .ace_editor {
+                z-index: 0;
+                border-radius: 4px;
+                .ace_gutter {
+                    background-color: @classic-neutral-grey-1;
+                }
+                .ace_content {
+                    background-color: @classic-neutral-grey-1;
+                    .ace_active-line {
+                        background-color: @classic-neutral-grey-2;
+                    }
+                }
+                .ace_scrollbar-v,
+                .ace_scrollbar-h {
+                    &::-webkit-scrollbar {
+                        background-color: @classic-neutral-grey-1;
+                    }
+                }
+
+                .ace-tm .ace_gutter-active-line {
+                    background-color: #d2d7de;
+                    color: @classic-neutral-grey-5;
+                }
             }
-            :global .ace_content {
-                background-color: @classic-neutral-grey-2;
+
+            .modeWrapper {
+                z-index: 1;
+                position: absolute;
+                text-transform: uppercase;
+                color: @classic-neutral-grey-4;
+                user-select: none;
+                bottom: 5px;
+                right: 25px;
+            }
+            .copyButton {
+                position: absolute;
+                z-index: 1;
+                top: 16px;
+                right: 16px;
             }
         }
         .codeDisabled {

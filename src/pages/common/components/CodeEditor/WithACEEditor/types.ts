@@ -1,6 +1,11 @@
 export type WindowWithACE = Window & typeof globalThis & {ace: any}
 
 export type EditorProps = {
+    editor: any
+    setEditor: (editor: any) => void
+}
+
+export type ACEProps = {
     mode?: string
     focus?: boolean
     theme?: string
@@ -9,6 +14,7 @@ export type EditorProps = {
     height?: string
     width?: string
     fontSize?: number | string
+    lineHeight?: number
     showGutter?: boolean
     onChange?: (value: string, event?: any) => void
     onCopy?: (value: string) => void

@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {useSelector} from 'react-redux'
 import {FormGroup} from 'reactstrap'
+import classNames from 'classnames'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
@@ -282,26 +283,27 @@ export const HelpCenterCustomizationView = () => {
                         }
                         className={css.toggle}
                     >
-                        <>
+                        <div className={css.toggleLabel}>
                             <span>Use custom header</span>
-                            <span>
-                                <span
-                                    className={css.toggleTooltip}
-                                    id="custom-header-toggle-info"
-                                >
-                                    <i className="material-icons">
-                                        info_outline
-                                    </i>
-                                </span>
-                                <Tooltip
-                                    target="custom-header-toggle-info"
-                                    placement="top"
-                                >
-                                    Add custom HTML code for the help center
-                                    header.
-                                </Tooltip>
-                            </span>
-                        </>
+                            <i
+                                id="custom-header-toggle-info"
+                                className={classNames(
+                                    'material-icons',
+                                    css.tooltipIcon
+                                )}
+                            >
+                                info_outline
+                            </i>
+                            <Tooltip
+                                target="custom-header-toggle-info"
+                                placement="top-start"
+                                popperClassName={css.tooltip}
+                                innerClassName={css['tooltip-inner']}
+                                arrowClassName={css['tooltip-arrow']}
+                            >
+                                Add custom HTML code for the help center header.
+                            </Tooltip>
+                        </div>
                     </ToggleInput>
                 </div>
                 {!isCustomHeaderToggled ? (
@@ -343,8 +345,6 @@ export const HelpCenterCustomizationView = () => {
                             )
                         }
                         mode="html"
-                        fontSize={14}
-                        showGutter={true}
                         highlightActiveLine={true}
                         width="auto"
                         height="200px"
@@ -375,26 +375,27 @@ export const HelpCenterCustomizationView = () => {
                         }
                         className={css.toggle}
                     >
-                        <>
+                        <div className={css.toggleLabel}>
                             <span>Use custom footer</span>
-                            <span>
-                                <span
-                                    className={css.toggleTooltip}
-                                    id="custom-footer-toggle-info"
-                                >
-                                    <i className="material-icons">
-                                        info_outline
-                                    </i>
-                                </span>
-                                <Tooltip
-                                    target="custom-footer-toggle-info"
-                                    placement="top"
-                                >
-                                    Add custom HTML code for the help center
-                                    footer.
-                                </Tooltip>
-                            </span>
-                        </>
+                            <i
+                                id="custom-footer-toggle-info"
+                                className={classNames(
+                                    'material-icons',
+                                    css.tooltipIcon
+                                )}
+                            >
+                                info_outline
+                            </i>
+                            <Tooltip
+                                target="custom-footer-toggle-info"
+                                placement="top-start"
+                                popperClassName={css.tooltip}
+                                innerClassName={css['tooltip-inner']}
+                                arrowClassName={css['tooltip-arrow']}
+                            >
+                                Add custom HTML code for the help center footer.
+                            </Tooltip>
+                        </div>
                     </ToggleInput>
                 </div>
                 {!isCustomFooterToggled ? (
@@ -447,8 +448,6 @@ export const HelpCenterCustomizationView = () => {
                             )
                         }
                         mode="html"
-                        fontSize={14}
-                        showGutter={true}
                         highlightActiveLine={true}
                         width="auto"
                         height="200px"
@@ -487,25 +486,24 @@ export const HelpCenterCustomizationView = () => {
                         Add extra HTML
                     </ToggleInput>
                 </div>
-                <CodeEditor
-                    value={extraHTML?.extra_head}
-                    disabled={!isExtraHtmlToggled}
-                    onChange={(value) =>
-                        setExtraHTML(
-                            (extraHTML) =>
-                                extraHTML && {
-                                    ...extraHTML,
-                                    extra_head: value,
-                                }
-                        )
-                    }
-                    mode="html"
-                    fontSize={14}
-                    showGutter={true}
-                    highlightActiveLine={true}
-                    width="auto"
-                    height="200px"
-                />
+                {isExtraHtmlToggled && (
+                    <CodeEditor
+                        value={extraHTML?.extra_head}
+                        onChange={(value) =>
+                            setExtraHTML(
+                                (extraHTML) =>
+                                    extraHTML && {
+                                        ...extraHTML,
+                                        extra_head: value,
+                                    }
+                            )
+                        }
+                        mode="html"
+                        highlightActiveLine={true}
+                        width="auto"
+                        height="200px"
+                    />
+                )}
             </section>
             <FormGroup>
                 <Button

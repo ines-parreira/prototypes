@@ -3,10 +3,10 @@ import React, {useEffect, useState, ComponentType} from 'react'
 import Loader from '../../Loader/Loader'
 
 import loadAce from './loadAce'
-import {EditorProps, WindowWithACE} from './types'
+import {ACEProps, EditorProps, WindowWithACE} from './types'
 
 function withACEEditor(Component: ComponentType<any>) {
-    function WrappedComponent(props: EditorProps) {
+    function WrappedComponent(props: EditorProps & ACEProps) {
         const [loaded, setLoaded] = useState(false)
 
         useEffect(() => {

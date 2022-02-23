@@ -43,6 +43,9 @@ exports[`<CodeEditor /> should render the component 1`] = `
           />
         </div>
       </div>
+      <div
+        class="modeWrapper"
+      />
     </div>
   </div>
 </div>
