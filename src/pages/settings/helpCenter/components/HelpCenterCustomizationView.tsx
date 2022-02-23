@@ -461,7 +461,7 @@ export const HelpCenterCustomizationView = () => {
                     <p>
                         Add extra HTML in the{' '}
                         <a
-                            href="https://www.w3schools.com/html/html_head.asp"
+                            href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/The_head_metadata_in_HTML"
                             rel="noreferrer"
                             target="_blank"
                         >
