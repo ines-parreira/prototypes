@@ -1,12 +1,13 @@
 import {fromJS} from 'immutable'
 import moment from 'moment'
 
-import {TicketAuditLogEvent} from '../../../constants/integrations/types/event'
+import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
+import {TICKET_EVENT_TYPES} from 'models/event/types'
+
 import {
     deduplicateAuditLogEvents,
     shouldDeduplicateAuditLogEvents,
 } from '../helpers'
-import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from '../../../models/event/constants'
 
 describe('ticket helpers', () => {
     describe('shouldDeduplicateAuditLogEvents()', () => {
@@ -25,16 +26,16 @@ describe('ticket helpers', () => {
 
     describe('deduplicateAuditLogEvents()', () => {
         describe('should deduplicate events of type', () => {
-            it(TicketAuditLogEvent.TicketAssigned, () => {
+            it(TICKET_EVENT_TYPES.TicketAssigned, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketAssigned,
+                        type: TICKET_EVENT_TYPES.TicketAssigned,
                         data: {assignee_user_id: 1},
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketAssigned,
+                        type: TICKET_EVENT_TYPES.TicketAssigned,
                         data: {assignee_user_id: 1},
                     },
                 ])
@@ -42,7 +43,7 @@ describe('ticket helpers', () => {
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketAssigned,
+                        type: TICKET_EVENT_TYPES.TicketAssigned,
                         data: {assignee_user_id: 1},
                     },
                 ])
@@ -50,126 +51,126 @@ describe('ticket helpers', () => {
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketClosed, () => {
+            it(TICKET_EVENT_TYPES.TicketClosed, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketClosed,
+                        type: TICKET_EVENT_TYPES.TicketClosed,
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketClosed,
+                        type: TICKET_EVENT_TYPES.TicketClosed,
                     },
                 ])
 
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketClosed,
+                        type: TICKET_EVENT_TYPES.TicketClosed,
                     },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketCreated, () => {
+            it(TICKET_EVENT_TYPES.TicketCreated, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketCreated,
+                        type: TICKET_EVENT_TYPES.TicketCreated,
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketCreated,
+                        type: TICKET_EVENT_TYPES.TicketCreated,
                     },
                 ])
 
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketCreated,
+                        type: TICKET_EVENT_TYPES.TicketCreated,
                     },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketMarkedSpam, () => {
+            it(TICKET_EVENT_TYPES.TicketMarkedSpam, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketMarkedSpam,
+                        type: TICKET_EVENT_TYPES.TicketMarkedSpam,
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketMarkedSpam,
+                        type: TICKET_EVENT_TYPES.TicketMarkedSpam,
                     },
                 ])
 
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketMarkedSpam,
+                        type: TICKET_EVENT_TYPES.TicketMarkedSpam,
                     },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketReopened, () => {
+            it(TICKET_EVENT_TYPES.TicketReopened, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketReopened,
+                        type: TICKET_EVENT_TYPES.TicketReopened,
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketReopened,
+                        type: TICKET_EVENT_TYPES.TicketReopened,
                     },
                 ])
 
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketReopened,
+                        type: TICKET_EVENT_TYPES.TicketReopened,
                     },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketSnoozed, () => {
+            it(TICKET_EVENT_TYPES.TicketSnoozed, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketSnoozed,
+                        type: TICKET_EVENT_TYPES.TicketSnoozed,
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketSnoozed,
+                        type: TICKET_EVENT_TYPES.TicketSnoozed,
                     },
                 ])
 
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketSnoozed,
+                        type: TICKET_EVENT_TYPES.TicketSnoozed,
                     },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketTagsAdded, () => {
+            it(TICKET_EVENT_TYPES.TicketTagsAdded, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketTagsAdded,
+                        type: TICKET_EVENT_TYPES.TicketTagsAdded,
                         data: {[TAGS_ADDED_KEY]: [1]},
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketTagsAdded,
+                        type: TICKET_EVENT_TYPES.TicketTagsAdded,
                         data: {[TAGS_ADDED_KEY]: [1]},
                     },
                 ])
@@ -177,7 +178,7 @@ describe('ticket helpers', () => {
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketTagsAdded,
+                        type: TICKET_EVENT_TYPES.TicketTagsAdded,
                         data: {[TAGS_ADDED_KEY]: [1]},
                     },
                 ])
@@ -185,21 +186,21 @@ describe('ticket helpers', () => {
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketTagsRemoved, () => {
+            it(TICKET_EVENT_TYPES.TicketTagsRemoved, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketTagsAdded,
+                        type: TICKET_EVENT_TYPES.TicketTagsAdded,
                         data: {[TAGS_ADDED_KEY]: [1]},
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketTagsRemoved,
+                        type: TICKET_EVENT_TYPES.TicketTagsRemoved,
                         data: {[TAGS_REMOVED_KEY]: [1]},
                     },
                     {
                         created_datetime: 2,
-                        type: TicketAuditLogEvent.TicketTagsRemoved,
+                        type: TICKET_EVENT_TYPES.TicketTagsRemoved,
                         data: {[TAGS_REMOVED_KEY]: [1]},
                     },
                 ])
@@ -207,12 +208,12 @@ describe('ticket helpers', () => {
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketTagsAdded,
+                        type: TICKET_EVENT_TYPES.TicketTagsAdded,
                         data: {[TAGS_ADDED_KEY]: [1]},
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketTagsRemoved,
+                        type: TICKET_EVENT_TYPES.TicketTagsRemoved,
                         data: {[TAGS_REMOVED_KEY]: [1]},
                     },
                 ])
@@ -220,16 +221,16 @@ describe('ticket helpers', () => {
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketTeamAssigned, () => {
+            it(TICKET_EVENT_TYPES.TicketTeamAssigned, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketTeamAssigned,
+                        type: TICKET_EVENT_TYPES.TicketTeamAssigned,
                         data: {assignee_team_id: 1},
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketTeamAssigned,
+                        type: TICKET_EVENT_TYPES.TicketTeamAssigned,
                         data: {assignee_team_id: 1},
                     },
                 ])
@@ -237,7 +238,7 @@ describe('ticket helpers', () => {
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketTeamAssigned,
+                        type: TICKET_EVENT_TYPES.TicketTeamAssigned,
                         data: {assignee_team_id: 1},
                     },
                 ])
@@ -245,130 +246,130 @@ describe('ticket helpers', () => {
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketTeamUnassigned, () => {
+            it(TICKET_EVENT_TYPES.TicketTeamUnassigned, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketTeamAssigned,
+                        type: TICKET_EVENT_TYPES.TicketTeamAssigned,
                         data: {assignee_team_id: 1},
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketTeamUnassigned,
+                        type: TICKET_EVENT_TYPES.TicketTeamUnassigned,
                     },
                     {
                         created_datetime: 2,
-                        type: TicketAuditLogEvent.TicketTeamUnassigned,
+                        type: TICKET_EVENT_TYPES.TicketTeamUnassigned,
                     },
                 ])
 
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketTeamAssigned,
+                        type: TICKET_EVENT_TYPES.TicketTeamAssigned,
                         data: {assignee_team_id: 1},
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketTeamUnassigned,
+                        type: TICKET_EVENT_TYPES.TicketTeamUnassigned,
                     },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketTrashed, () => {
+            it(TICKET_EVENT_TYPES.TicketTrashed, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketTrashed,
+                        type: TICKET_EVENT_TYPES.TicketTrashed,
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketTrashed,
+                        type: TICKET_EVENT_TYPES.TicketTrashed,
                     },
                 ])
 
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketTrashed,
+                        type: TICKET_EVENT_TYPES.TicketTrashed,
                     },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketUnassigned, () => {
+            it(TICKET_EVENT_TYPES.TicketUnassigned, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketAssigned,
+                        type: TICKET_EVENT_TYPES.TicketAssigned,
                         data: {assignee_user_id: 1},
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketUnassigned,
+                        type: TICKET_EVENT_TYPES.TicketUnassigned,
                     },
                     {
                         created_datetime: 2,
-                        type: TicketAuditLogEvent.TicketUnassigned,
+                        type: TICKET_EVENT_TYPES.TicketUnassigned,
                     },
                 ])
 
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketAssigned,
+                        type: TICKET_EVENT_TYPES.TicketAssigned,
                         data: {assignee_user_id: 1},
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketUnassigned,
+                        type: TICKET_EVENT_TYPES.TicketUnassigned,
                     },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketUnmarkedSpam, () => {
+            it(TICKET_EVENT_TYPES.TicketUnmarkedSpam, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketUnmarkedSpam,
+                        type: TICKET_EVENT_TYPES.TicketUnmarkedSpam,
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketUnmarkedSpam,
+                        type: TICKET_EVENT_TYPES.TicketUnmarkedSpam,
                     },
                 ])
 
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketUnmarkedSpam,
+                        type: TICKET_EVENT_TYPES.TicketUnmarkedSpam,
                     },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
             })
 
-            it(TicketAuditLogEvent.TicketUntrashed, () => {
+            it(TICKET_EVENT_TYPES.TicketUntrashed, () => {
                 const events = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketUntrashed,
+                        type: TICKET_EVENT_TYPES.TicketUntrashed,
                     },
                     {
                         created_datetime: 1,
-                        type: TicketAuditLogEvent.TicketUntrashed,
+                        type: TICKET_EVENT_TYPES.TicketUntrashed,
                     },
                 ])
 
                 const expected = fromJS([
                     {
                         created_datetime: 0,
-                        type: TicketAuditLogEvent.TicketUntrashed,
+                        type: TICKET_EVENT_TYPES.TicketUntrashed,
                     },
                 ])
 
@@ -377,17 +378,17 @@ describe('ticket helpers', () => {
         })
 
         describe('should keep two events of type', () => {
-            describe(TicketAuditLogEvent.TicketAssigned, () => {
+            describe(TICKET_EVENT_TYPES.TicketAssigned, () => {
                 it('because ticket is assigned to someone else', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketAssigned,
+                            type: TICKET_EVENT_TYPES.TicketAssigned,
                             data: {assignee_user_id: 1},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketAssigned,
+                            type: TICKET_EVENT_TYPES.TicketAssigned,
                             data: {assignee_user_id: 2},
                         },
                     ])
@@ -399,16 +400,16 @@ describe('ticket helpers', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketAssigned,
+                            type: TICKET_EVENT_TYPES.TicketAssigned,
                             data: {assignee_user_id: 1},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketUnassigned,
+                            type: TICKET_EVENT_TYPES.TicketUnassigned,
                         },
                         {
                             created_datetime: 2,
-                            type: TicketAuditLogEvent.TicketAssigned,
+                            type: TICKET_EVENT_TYPES.TicketAssigned,
                             data: {assignee_user_id: 1},
                         },
                     ])
@@ -417,19 +418,19 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketClosed, () => {
+            describe(TICKET_EVENT_TYPES.TicketClosed, () => {
                 it('because ticket is re-opened and closed again', () => {
                     const events = fromJS([
                         {
-                            type: TicketAuditLogEvent.TicketClosed,
+                            type: TICKET_EVENT_TYPES.TicketClosed,
                             created_datetime: 0,
                         },
                         {
-                            type: TicketAuditLogEvent.TicketReopened,
+                            type: TICKET_EVENT_TYPES.TicketReopened,
                             created_datetime: 1,
                         },
                         {
-                            type: TicketAuditLogEvent.TicketClosed,
+                            type: TICKET_EVENT_TYPES.TicketClosed,
                             created_datetime: 2,
                         },
                     ])
@@ -438,19 +439,19 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketMarkedSpam, () => {
+            describe(TICKET_EVENT_TYPES.TicketMarkedSpam, () => {
                 it('because ticket is unmarked as spam and marked again', () => {
                     const events = fromJS([
                         {
-                            type: TicketAuditLogEvent.TicketMarkedSpam,
+                            type: TICKET_EVENT_TYPES.TicketMarkedSpam,
                             created_datetime: 0,
                         },
                         {
-                            type: TicketAuditLogEvent.TicketUnmarkedSpam,
+                            type: TICKET_EVENT_TYPES.TicketUnmarkedSpam,
                             created_datetime: 1,
                         },
                         {
-                            type: TicketAuditLogEvent.TicketMarkedSpam,
+                            type: TICKET_EVENT_TYPES.TicketMarkedSpam,
                             created_datetime: 2,
                         },
                     ])
@@ -459,19 +460,19 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketReopened, () => {
+            describe(TICKET_EVENT_TYPES.TicketReopened, () => {
                 it('because ticket is closed and reopened again', () => {
                     const events = fromJS([
                         {
-                            type: TicketAuditLogEvent.TicketReopened,
+                            type: TICKET_EVENT_TYPES.TicketReopened,
                             created_datetime: 0,
                         },
                         {
-                            type: TicketAuditLogEvent.TicketClosed,
+                            type: TICKET_EVENT_TYPES.TicketClosed,
                             created_datetime: 1,
                         },
                         {
-                            type: TicketAuditLogEvent.TicketReopened,
+                            type: TICKET_EVENT_TYPES.TicketReopened,
                             created_datetime: 2,
                         },
                     ])
@@ -480,15 +481,15 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketSnoozed, () => {
+            describe(TICKET_EVENT_TYPES.TicketSnoozed, () => {
                 it('because ticket is snoozed a second time, more than 5 seconds after the first time', () => {
                     const events = fromJS([
                         {
-                            type: TicketAuditLogEvent.TicketSnoozed,
+                            type: TICKET_EVENT_TYPES.TicketSnoozed,
                             created_datetime: moment(0).valueOf(),
                         },
                         {
-                            type: TicketAuditLogEvent.TicketSnoozed,
+                            type: TICKET_EVENT_TYPES.TicketSnoozed,
                             created_datetime: moment(0)
                                 .add(6, 'seconds')
                                 .valueOf(),
@@ -499,17 +500,17 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketTagsAdded, () => {
+            describe(TICKET_EVENT_TYPES.TicketTagsAdded, () => {
                 it('because added tags are different', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketTagsAdded,
+                            type: TICKET_EVENT_TYPES.TicketTagsAdded,
                             data: {[TAGS_ADDED_KEY]: [1]},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketTagsAdded,
+                            type: TICKET_EVENT_TYPES.TicketTagsAdded,
                             data: {[TAGS_ADDED_KEY]: [2]},
                         },
                     ])
@@ -521,12 +522,12 @@ describe('ticket helpers', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketTagsAdded,
+                            type: TICKET_EVENT_TYPES.TicketTagsAdded,
                             data: {[TAGS_ADDED_KEY]: [1]},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketTagsAdded,
+                            type: TICKET_EVENT_TYPES.TicketTagsAdded,
                             data: {[TAGS_ADDED_KEY]: [1, 2]},
                         },
                     ])
@@ -534,12 +535,12 @@ describe('ticket helpers', () => {
                     const expected = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketTagsAdded,
+                            type: TICKET_EVENT_TYPES.TicketTagsAdded,
                             data: {[TAGS_ADDED_KEY]: [1]},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketTagsAdded,
+                            type: TICKET_EVENT_TYPES.TicketTagsAdded,
                             data: {[TAGS_ADDED_KEY]: [2]},
                         },
                     ])
@@ -548,22 +549,22 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketTagsRemoved, () => {
+            describe(TICKET_EVENT_TYPES.TicketTagsRemoved, () => {
                 it('because removed tags are different', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketTagsAdded,
+                            type: TICKET_EVENT_TYPES.TicketTagsAdded,
                             data: {[TAGS_ADDED_KEY]: [1, 2]},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketTagsRemoved,
+                            type: TICKET_EVENT_TYPES.TicketTagsRemoved,
                             data: {[TAGS_REMOVED_KEY]: [1]},
                         },
                         {
                             created_datetime: 2,
-                            type: TicketAuditLogEvent.TicketTagsRemoved,
+                            type: TICKET_EVENT_TYPES.TicketTagsRemoved,
                             data: {[TAGS_REMOVED_KEY]: [2]},
                         },
                     ])
@@ -575,17 +576,17 @@ describe('ticket helpers', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketTagsAdded,
+                            type: TICKET_EVENT_TYPES.TicketTagsAdded,
                             data: {[TAGS_ADDED_KEY]: [1, 2]},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketTagsRemoved,
+                            type: TICKET_EVENT_TYPES.TicketTagsRemoved,
                             data: {[TAGS_REMOVED_KEY]: [1]},
                         },
                         {
                             created_datetime: 2,
-                            type: TicketAuditLogEvent.TicketTagsRemoved,
+                            type: TICKET_EVENT_TYPES.TicketTagsRemoved,
                             data: {[TAGS_REMOVED_KEY]: [1, 2]},
                         },
                     ])
@@ -593,17 +594,17 @@ describe('ticket helpers', () => {
                     const expected = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketTagsAdded,
+                            type: TICKET_EVENT_TYPES.TicketTagsAdded,
                             data: {[TAGS_ADDED_KEY]: [1, 2]},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketTagsRemoved,
+                            type: TICKET_EVENT_TYPES.TicketTagsRemoved,
                             data: {[TAGS_REMOVED_KEY]: [1]},
                         },
                         {
                             created_datetime: 2,
-                            type: TicketAuditLogEvent.TicketTagsRemoved,
+                            type: TICKET_EVENT_TYPES.TicketTagsRemoved,
                             data: {[TAGS_REMOVED_KEY]: [2]},
                         },
                     ])
@@ -612,17 +613,17 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketTeamAssigned, () => {
+            describe(TICKET_EVENT_TYPES.TicketTeamAssigned, () => {
                 it('because ticket is assigned to someone else', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketTeamAssigned,
+                            type: TICKET_EVENT_TYPES.TicketTeamAssigned,
                             data: {assignee_team_id: 1},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketTeamAssigned,
+                            type: TICKET_EVENT_TYPES.TicketTeamAssigned,
                             data: {assignee_team_id: 2},
                         },
                     ])
@@ -634,16 +635,16 @@ describe('ticket helpers', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketTeamAssigned,
+                            type: TICKET_EVENT_TYPES.TicketTeamAssigned,
                             data: {assignee_team_id: 1},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketTeamUnassigned,
+                            type: TICKET_EVENT_TYPES.TicketTeamUnassigned,
                         },
                         {
                             created_datetime: 2,
-                            type: TicketAuditLogEvent.TicketTeamAssigned,
+                            type: TICKET_EVENT_TYPES.TicketTeamAssigned,
                             data: {assignee_team_id: 1},
                         },
                     ])
@@ -652,26 +653,26 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketTeamUnassigned, () => {
+            describe(TICKET_EVENT_TYPES.TicketTeamUnassigned, () => {
                 it('because ticket is assigned and re-unassigned', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketTeamAssigned,
+                            type: TICKET_EVENT_TYPES.TicketTeamAssigned,
                             data: {assignee_team_id: 1},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketTeamUnassigned,
+                            type: TICKET_EVENT_TYPES.TicketTeamUnassigned,
                         },
                         {
                             created_datetime: 2,
-                            type: TicketAuditLogEvent.TicketTeamAssigned,
+                            type: TICKET_EVENT_TYPES.TicketTeamAssigned,
                             data: {assignee_team_id: 1},
                         },
                         {
                             created_datetime: 3,
-                            type: TicketAuditLogEvent.TicketTeamUnassigned,
+                            type: TICKET_EVENT_TYPES.TicketTeamUnassigned,
                         },
                     ])
 
@@ -679,20 +680,20 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketTrashed, () => {
+            describe(TICKET_EVENT_TYPES.TicketTrashed, () => {
                 it('because ticket is untrashed and re-trashed', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketTrashed,
+                            type: TICKET_EVENT_TYPES.TicketTrashed,
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketUntrashed,
+                            type: TICKET_EVENT_TYPES.TicketUntrashed,
                         },
                         {
                             created_datetime: 2,
-                            type: TicketAuditLogEvent.TicketTrashed,
+                            type: TICKET_EVENT_TYPES.TicketTrashed,
                         },
                     ])
 
@@ -700,26 +701,26 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketUnassigned, () => {
+            describe(TICKET_EVENT_TYPES.TicketUnassigned, () => {
                 it('because ticket is assigned and re-unassigned', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketAssigned,
+                            type: TICKET_EVENT_TYPES.TicketAssigned,
                             data: {assignee_user_id: 1},
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketUnassigned,
+                            type: TICKET_EVENT_TYPES.TicketUnassigned,
                         },
                         {
                             created_datetime: 2,
-                            type: TicketAuditLogEvent.TicketAssigned,
+                            type: TICKET_EVENT_TYPES.TicketAssigned,
                             data: {assignee_user_id: 1},
                         },
                         {
                             created_datetime: 3,
-                            type: TicketAuditLogEvent.TicketUnassigned,
+                            type: TICKET_EVENT_TYPES.TicketUnassigned,
                         },
                     ])
 
@@ -727,20 +728,20 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketUnmarkedSpam, () => {
+            describe(TICKET_EVENT_TYPES.TicketUnmarkedSpam, () => {
                 it('because ticket is marked as spam and re-unmarked', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketUnmarkedSpam,
+                            type: TICKET_EVENT_TYPES.TicketUnmarkedSpam,
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketMarkedSpam,
+                            type: TICKET_EVENT_TYPES.TicketMarkedSpam,
                         },
                         {
                             created_datetime: 2,
-                            type: TicketAuditLogEvent.TicketUnmarkedSpam,
+                            type: TICKET_EVENT_TYPES.TicketUnmarkedSpam,
                         },
                     ])
 
@@ -748,20 +749,20 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.TicketUntrashed, () => {
+            describe(TICKET_EVENT_TYPES.TicketUntrashed, () => {
                 it('because ticket is trashed and re-untrashed', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.TicketUntrashed,
+                            type: TICKET_EVENT_TYPES.TicketUntrashed,
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.TicketTrashed,
+                            type: TICKET_EVENT_TYPES.TicketTrashed,
                         },
                         {
                             created_datetime: 2,
-                            type: TicketAuditLogEvent.TicketUntrashed,
+                            type: TICKET_EVENT_TYPES.TicketUntrashed,
                         },
                     ])
 
@@ -769,16 +770,16 @@ describe('ticket helpers', () => {
                 })
             })
 
-            describe(TicketAuditLogEvent.RuleExecuted, () => {
+            describe(TICKET_EVENT_TYPES.RuleExecuted, () => {
                 it('because it should never get deduplicated', () => {
                     const events = fromJS([
                         {
                             created_datetime: 0,
-                            type: TicketAuditLogEvent.RuleExecuted,
+                            type: TICKET_EVENT_TYPES.RuleExecuted,
                         },
                         {
                             created_datetime: 1,
-                            type: TicketAuditLogEvent.RuleExecuted,
+                            type: TICKET_EVENT_TYPES.RuleExecuted,
                         },
                     ])
 

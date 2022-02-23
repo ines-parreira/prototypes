@@ -1,4 +1,4 @@
-import {Event} from 'models/event/types'
+import {Event, EventObjectType, EventType} from 'models/event/types'
 import {CursorMeta} from 'models/api/types'
 
 export const events: Event[] = [
@@ -8,8 +8,8 @@ export const events: Event[] = [
         data: null,
         id: 1,
         object_id: 10,
-        object_type: 'Ticket',
-        type: 'ticket-customer-updated',
+        object_type: EventObjectType.Ticket,
+        type: EventType.TicketCustomerUpdated,
         uri: '/api/events/1/',
         user_id: 1,
     },
@@ -19,8 +19,8 @@ export const events: Event[] = [
         data: null,
         id: 2,
         object_id: 20,
-        object_type: 'Macro',
-        type: 'macro-created',
+        object_type: EventObjectType.Macro,
+        type: EventType.MacroCreated,
         uri: '/api/events/2/',
         user_id: 1,
     },
@@ -30,8 +30,8 @@ export const events: Event[] = [
         data: null,
         id: 3,
         object_id: 30,
-        object_type: 'View',
-        type: 'view-deleted',
+        object_type: EventObjectType.View,
+        type: EventType.ViewDeleted,
         uri: '/api/events/3/',
         user_id: 1,
     },

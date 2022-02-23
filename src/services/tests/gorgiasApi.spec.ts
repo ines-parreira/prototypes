@@ -5,24 +5,20 @@ import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios/index'
 import {fromJS, List} from 'immutable'
 
-import GorgiasApi from '../gorgiasApi'
-import {
-    AuditLogEvent,
-    AuditLogEventObjectType,
-    AuditLogEventType,
-} from '../../models/event/types'
-
+import {Event, EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
 import {
     IntegrationDataItem,
     IntegrationType,
     IntegrationDataItemType,
-} from '../../models/integration/types'
+} from 'models/integration/types'
+import client from 'models/api/resources'
+import {ApiListResponseCursorPagination} from 'models/api/types'
 import {
     shopifyCancelOrderPayloadFixture,
     shopifyInvoicePayloadFixture,
-} from '../../fixtures/shopify'
-import {ViewVisibility} from '../../constants/view'
-import client from '../../models/api/resources'
+} from 'fixtures/shopify'
+import {ViewVisibility} from 'constants/view'
+import GorgiasApi from 'services/gorgiasApi'
 
 describe('services', () => {
     describe('GorgiasApi', () => {
@@ -129,6 +125,69 @@ describe('services', () => {
             })
         })
 
+        describe('*cursorPaginate()', () => {
+            it('should yield each page of requested items until last page is reached', async () => {
+                const mocks: ApiListResponseCursorPagination<any[]>[] = [
+                    {
+                        data: [1, 2, 3],
+                        meta: {
+                            next_cursor: 'cursored_page_2',
+                            prev_cursor: null,
+                        },
+                        object: 'list',
+                        uri: 'api/events',
+                    },
+                    {
+                        data: [4, 5, 6],
+                        meta: {
+                            next_cursor: 'cursored_page_3',
+                            prev_cursor: 'cursored_page_1',
+                        },
+                        object: 'list',
+                        uri: 'api/events',
+                    },
+                    {
+                        data: [7, 8, 9],
+                        meta: {
+                            next_cursor: null,
+                            prev_cursor: 'cursored_page_2',
+                        },
+                        object: 'list',
+                        uri: 'api/events',
+                    },
+                ]
+
+                const path = '/foo/bar'
+                const matcher = new RegExp(`${path}/*`)
+
+                apiMock
+                    .onGet(matcher)
+                    .replyOnce(200, mocks[0])
+                    .onGet(matcher)
+                    .replyOnce(200, mocks[1])
+                    .onGet(matcher)
+                    .replyOnce(200, mocks[2])
+
+                const gorgiasApi = new GorgiasApi()
+                const pages = []
+
+                const asyncFunction = (params: {cursor?: string}) =>
+                    gorgiasApi._api.get('/foo/bar', {params})
+
+                for await (const events of gorgiasApi.cursorPaginate(
+                    asyncFunction
+                )) {
+                    pages.push(events)
+                }
+
+                expect(pages.length).toBe(mocks.length)
+                pages.forEach((page, index) => {
+                    expect(page).toEqual(mocks[index].data)
+                })
+                expect(apiMock.history).toMatchSnapshot()
+            })
+        })
+
         describe('startSubscription()', () => {
             it('should start the subscription of the current account.', async () => {
                 const expectedSubscription = {
@@ -195,31 +254,28 @@ describe('services', () => {
         })
 
         describe('*getTicketEvents()', function () {
-            const getEvent = (id: number): AuditLogEvent => ({
+            const getEvent = (id: number): Event => ({
                 id,
-                account_id: 1,
                 user_id: 1,
-                object_type: AuditLogEventObjectType.Ticket,
+                object_type: EventObjectType.Ticket,
                 object_id: 1,
                 data: null,
                 context: 'foo',
-                type: AuditLogEventType.TicketReopened,
+                type: TICKET_EVENT_TYPES.TicketReopened,
                 created_datetime: '2019-11-15 19:00:00.000000',
+                uri: '/api/events/3265847/',
             })
 
             it('should yield each page of events until last page is reached', async () => {
                 const gorgiasApi = new GorgiasApi()
                 const ticketId = 123
-                const expectedUrl = `/api/tickets/${ticketId}/events/`
                 const mocks = [
                     [getEvent(1), getEvent(2), getEvent(3)],
                     [getEvent(4), getEvent(5), getEvent(6)],
                     [getEvent(7), getEvent(8), getEvent(9)],
                 ]
 
-                gorgiasApi.paginate = function* (url: string) {
-                    expect(url).toBe(expectedUrl)
-
+                gorgiasApi.cursorPaginate = function* () {
                     for (const mock of mocks) {
                         yield mock
                     }

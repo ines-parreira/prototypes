@@ -1,12 +1,13 @@
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 
-import {TicketAuditLogEvent} from '../../constants/integrations/types/event'
-import * as customerTypes from '../customers/constants'
-import ticketReplyCache from '../newMessage/ticketReplyCache'
-import * as newMessageTypes from '../newMessage/constants'
-import {compare} from '../../utils'
-import {GorgiasAction} from '../types'
+import {TICKET_EVENT_TYPES} from 'models/event/types'
+import {GorgiasAction} from 'state/types'
+import * as customerTypes from 'state/customers/constants'
+import ticketReplyCache from 'state/newMessage/ticketReplyCache'
+import * as newMessageTypes from 'state/newMessage/constants'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import {compare} from 'utils'
 
 import {getPendingMessageIndex, parseTimedelta} from './utils'
 import * as types from './constants'
@@ -405,7 +406,7 @@ export default function reducer(
             // keep audit log events
             const auditLogEvents = (state.get('events') as List<any>).filter(
                 (event: Map<any, any>) =>
-                    Object.values(TicketAuditLogEvent).includes(
+                    Object.values(TICKET_EVENT_TYPES).includes(
                         event.get('type')
                     ) &&
                     event.get('object_id') === ticket?.get('id') &&
@@ -513,8 +514,14 @@ export default function reducer(
         case types.ADD_TICKET_AUDIT_LOG_EVENTS:
             return state.updateIn(['events'], (events: List<any>) => {
                 let results = events
-                ;(action.payload as List<any>).forEach(
-                    (eventToDisplay: Map<any, any>) => {
+                ;(action.payload as List<any>)
+                    .filter(
+                        (eventToDisplay: Map<any, any>) =>
+                            !Object.values(PhoneIntegrationEvent).includes(
+                                eventToDisplay.get('type')
+                            )
+                    )
+                    .forEach((eventToDisplay: Map<any, any>) => {
                         const index = results.findIndex(
                             (event: Map<any, any>) =>
                                 event.get('id') === eventToDisplay.get('id')
@@ -525,8 +532,7 @@ export default function reducer(
                         } else {
                             results = results.set(index, eventToDisplay)
                         }
-                    }
-                )
+                    })
 
                 return shouldDeduplicateAuditLogEvents(
                     state.get('created_datetime')
@@ -539,7 +545,7 @@ export default function reducer(
             return state.updateIn(['events'], (events: List<any>) =>
                 events.filter(
                     (event: Map<any, any>) =>
-                        !Object.values(TicketAuditLogEvent).includes(
+                        !Object.values(TICKET_EVENT_TYPES).includes(
                             event.get('type')
                         )
                 )

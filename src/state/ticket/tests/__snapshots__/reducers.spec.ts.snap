@@ -20,7 +20,6 @@ Object {
   "customer": null,
   "events": Array [
     Object {
-      "account_id": 1,
       "context": "foo",
       "created_datetime": "2019-11-15 19:00:00.000000",
       "data": Object {
@@ -30,10 +29,10 @@ Object {
       "object_id": 1,
       "object_type": "Ticket",
       "type": "ticket-closed",
+      "uri": "/api/events/3265847/",
       "user_id": 1,
     },
     Object {
-      "account_id": 1,
       "context": "foo",
       "created_datetime": "2019-11-15 19:00:00.000000",
       "data": null,
@@ -41,6 +40,7 @@ Object {
       "object_id": 1,
       "object_type": "Ticket",
       "type": "ticket-reopened",
+      "uri": "/api/events/3265847/",
       "user_id": 1,
     },
   ],
@@ -89,7 +89,6 @@ Object {
   "customer": null,
   "events": Array [
     Object {
-      "account_id": 1,
       "context": "foo",
       "created_datetime": "2019-11-15 19:00:00.000000",
       "data": null,
@@ -97,9 +96,54 @@ Object {
       "object_id": 1,
       "object_type": "Ticket",
       "type": "ticket-reopened",
+      "uri": "/api/events/3265847/",
       "user_id": 1,
     },
   ],
+  "is_unread": false,
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+    "internal-note": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
+exports[`ticket reducers action ADD_TICKET_AUDIT_LOG_EVENTS should not add received event when it is a phone event 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+      "setSpam": false,
+      "setTrash": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
   "is_unread": false,
   "messages": Array [],
   "priority": "normal",
@@ -145,7 +189,6 @@ Object {
   "customer": null,
   "events": Array [
     Object {
-      "account_id": 1,
       "context": "foo",
       "created_datetime": "2019-11-15 19:00:00.000000",
       "data": Object {
@@ -155,6 +198,7 @@ Object {
       "object_id": 1,
       "object_type": "Ticket",
       "type": "ticket-reopened",
+      "uri": "/api/events/3265847/",
       "user_id": 1,
     },
   ],

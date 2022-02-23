@@ -1,5 +1,101 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`services GorgiasApi *cursorPaginate() should yield each page of requested items until last page is reached 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": undefined,
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": Object {},
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/foo/bar",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": undefined,
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": Object {
+        "cursor": "cursored_page_2",
+      },
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/foo/bar",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": undefined,
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": Object {
+        "cursor": "cursored_page_3",
+      },
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/foo/bar",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [],
+}
+`;
+
 exports[`services GorgiasApi cancelPendingRequests() should not be able to cancel pending requests because instance was not created with this ability 1`] = `"Cannot call \`.cancelPendingRequests()\` on this instance because it was not created with this ability."`;
 
 exports[`services GorgiasApi confirmInvoicePayment() should make an HTTP request to confirm a payment for an invoice. 1`] = `

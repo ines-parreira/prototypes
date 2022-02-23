@@ -1,9 +1,9 @@
 import moment, {Moment} from 'moment'
 import {fromJS, List, Map} from 'immutable'
 
-import {TicketStatus} from '../../business/types/ticket'
-import {TicketAuditLogEvent} from '../../constants/integrations/types/event'
-import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from '../../models/event/constants'
+import {TicketEventType, TICKET_EVENT_TYPES} from 'models/event/types'
+import {TicketStatus} from 'business/types/ticket'
+import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
 
 const MAX_DIFF_SECONDS = 5
 
@@ -47,10 +47,10 @@ export function deduplicateAuditLogEvents(events: List<any>) {
     )
 
     sortedEvents.forEach((event: Map<any, any>) => {
-        const type = event.get('type') as TicketAuditLogEvent
+        const type = event.get('type') as TicketEventType
 
         switch (type) {
-            case TicketAuditLogEvent.TicketAssigned: {
+            case TICKET_EVENT_TYPES.TicketAssigned: {
                 const assigneeUserId = event.getIn([
                     'data',
                     'assignee_user_id',
@@ -64,35 +64,35 @@ export function deduplicateAuditLogEvents(events: List<any>) {
                 break
             }
 
-            case TicketAuditLogEvent.TicketClosed:
+            case TICKET_EVENT_TYPES.TicketClosed:
                 if (ticketState.status !== TicketStatus.Closed) {
                     ticketState.status = TicketStatus.Closed
                     results.push(event)
                 }
                 break
 
-            case TicketAuditLogEvent.TicketCreated:
+            case TICKET_EVENT_TYPES.TicketCreated:
                 if (ticketState.status !== TicketStatus.Open) {
                     ticketState.status = TicketStatus.Open
                     results.push(event)
                 }
                 break
 
-            case TicketAuditLogEvent.TicketMarkedSpam:
+            case TICKET_EVENT_TYPES.TicketMarkedSpam:
                 if (ticketState.spam !== true) {
                     ticketState.spam = true
                     results.push(event)
                 }
                 break
 
-            case TicketAuditLogEvent.TicketReopened:
+            case TICKET_EVENT_TYPES.TicketReopened:
                 if (ticketState.status !== TicketStatus.Open) {
                     ticketState.status = TicketStatus.Open
                     results.push(event)
                 }
                 break
 
-            case TicketAuditLogEvent.TicketSnoozed: {
+            case TICKET_EVENT_TYPES.TicketSnoozed: {
                 const snoozedAt = moment(event.get('created_datetime'))
 
                 if (ticketState.snoozedAt) {
@@ -112,7 +112,7 @@ export function deduplicateAuditLogEvents(events: List<any>) {
                 break
             }
 
-            case TicketAuditLogEvent.TicketTagsAdded: {
+            case TICKET_EVENT_TYPES.TicketTagsAdded: {
                 const tagsAdded = event.getIn([
                     'data',
                     TAGS_ADDED_KEY,
@@ -138,7 +138,7 @@ export function deduplicateAuditLogEvents(events: List<any>) {
                 break
             }
 
-            case TicketAuditLogEvent.TicketTagsRemoved: {
+            case TICKET_EVENT_TYPES.TicketTagsRemoved: {
                 const tagsRemoved = event.getIn([
                     'data',
                     TAGS_REMOVED_KEY,
@@ -166,7 +166,7 @@ export function deduplicateAuditLogEvents(events: List<any>) {
                 break
             }
 
-            case TicketAuditLogEvent.TicketTeamAssigned: {
+            case TICKET_EVENT_TYPES.TicketTeamAssigned: {
                 const assigneeTeamId = event.getIn(['data', 'assignee_team_id'])
 
                 if (ticketState.assigneeTeamId !== assigneeTeamId) {
@@ -177,35 +177,35 @@ export function deduplicateAuditLogEvents(events: List<any>) {
                 break
             }
 
-            case TicketAuditLogEvent.TicketTeamUnassigned:
+            case TICKET_EVENT_TYPES.TicketTeamUnassigned:
                 if (ticketState.assigneeTeamId !== null) {
                     ticketState.assigneeTeamId = null
                     results.push(event)
                 }
                 break
 
-            case TicketAuditLogEvent.TicketTrashed:
+            case TICKET_EVENT_TYPES.TicketTrashed:
                 if (ticketState.trashed !== true) {
                     ticketState.trashed = true
                     results.push(event)
                 }
                 break
 
-            case TicketAuditLogEvent.TicketUnassigned:
+            case TICKET_EVENT_TYPES.TicketUnassigned:
                 if (ticketState.assigneeUserId !== null) {
                     ticketState.assigneeUserId = null
                     results.push(event)
                 }
                 break
 
-            case TicketAuditLogEvent.TicketUnmarkedSpam:
+            case TICKET_EVENT_TYPES.TicketUnmarkedSpam:
                 if (ticketState.spam !== false) {
                     ticketState.spam = false
                     results.push(event)
                 }
                 break
 
-            case TicketAuditLogEvent.TicketUntrashed:
+            case TICKET_EVENT_TYPES.TicketUntrashed:
                 if (ticketState.trashed !== false) {
                     ticketState.trashed = false
                     results.push(event)

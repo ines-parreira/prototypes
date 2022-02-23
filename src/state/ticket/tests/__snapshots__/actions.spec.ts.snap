@@ -295,6 +295,128 @@ Array [
 ]
 `;
 
+exports[`ticket actions displayAuditLogEvents() should dispatch audit logs events, page per page 1`] = `
+Array [
+  Object {
+    "type": "DISPLAY_TICKET_AUDIT_LOG_EVENTS",
+  },
+  Object {
+    "payload": Immutable.List [
+      Immutable.Map {
+        "data": null,
+        "uri": "/api/events/3265847/",
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 1,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "uri": "/api/events/3265847/",
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 2,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "uri": "/api/events/3265847/",
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 3,
+        "object_id": 1,
+      },
+    ],
+    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
+  },
+  Object {
+    "payload": Immutable.List [
+      Immutable.Map {
+        "data": null,
+        "uri": "/api/events/3265847/",
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 4,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "uri": "/api/events/3265847/",
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 5,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "uri": "/api/events/3265847/",
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 6,
+        "object_id": 1,
+      },
+    ],
+    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
+  },
+  Object {
+    "payload": Immutable.List [
+      Immutable.Map {
+        "data": null,
+        "uri": "/api/events/3265847/",
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 7,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "uri": "/api/events/3265847/",
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 8,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "uri": "/api/events/3265847/",
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 9,
+        "object_id": 1,
+      },
+    ],
+    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
+  },
+]
+`;
+
 exports[`ticket actions displayHistoryOnNextPage() 1`] = `
 Object {
   "state": true,
@@ -1564,128 +1686,6 @@ Array [
   },
   Object {
     "type": "REMOVE_TICKET_AUDIT_LOG_EVENTS",
-  },
-]
-`;
-
-exports[`ticket actions loadAuditLogEvents() should dispatch audit logs events, page per page 1`] = `
-Array [
-  Object {
-    "type": "DISPLAY_TICKET_AUDIT_LOG_EVENTS",
-  },
-  Object {
-    "payload": Immutable.List [
-      Immutable.Map {
-        "data": null,
-        "account_id": 1,
-        "context": "foo",
-        "user_id": 1,
-        "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "Ticket",
-        "type": "ticket-reopened",
-        "id": 1,
-        "object_id": 1,
-      },
-      Immutable.Map {
-        "data": null,
-        "account_id": 1,
-        "context": "foo",
-        "user_id": 1,
-        "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "Ticket",
-        "type": "ticket-reopened",
-        "id": 2,
-        "object_id": 1,
-      },
-      Immutable.Map {
-        "data": null,
-        "account_id": 1,
-        "context": "foo",
-        "user_id": 1,
-        "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "Ticket",
-        "type": "ticket-reopened",
-        "id": 3,
-        "object_id": 1,
-      },
-    ],
-    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
-  },
-  Object {
-    "payload": Immutable.List [
-      Immutable.Map {
-        "data": null,
-        "account_id": 1,
-        "context": "foo",
-        "user_id": 1,
-        "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "Ticket",
-        "type": "ticket-reopened",
-        "id": 4,
-        "object_id": 1,
-      },
-      Immutable.Map {
-        "data": null,
-        "account_id": 1,
-        "context": "foo",
-        "user_id": 1,
-        "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "Ticket",
-        "type": "ticket-reopened",
-        "id": 5,
-        "object_id": 1,
-      },
-      Immutable.Map {
-        "data": null,
-        "account_id": 1,
-        "context": "foo",
-        "user_id": 1,
-        "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "Ticket",
-        "type": "ticket-reopened",
-        "id": 6,
-        "object_id": 1,
-      },
-    ],
-    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
-  },
-  Object {
-    "payload": Immutable.List [
-      Immutable.Map {
-        "data": null,
-        "account_id": 1,
-        "context": "foo",
-        "user_id": 1,
-        "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "Ticket",
-        "type": "ticket-reopened",
-        "id": 7,
-        "object_id": 1,
-      },
-      Immutable.Map {
-        "data": null,
-        "account_id": 1,
-        "context": "foo",
-        "user_id": 1,
-        "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "Ticket",
-        "type": "ticket-reopened",
-        "id": 8,
-        "object_id": 1,
-      },
-      Immutable.Map {
-        "data": null,
-        "account_id": 1,
-        "context": "foo",
-        "user_id": 1,
-        "created_datetime": "2019-11-15 19:00:00.000000",
-        "object_type": "Ticket",
-        "type": "ticket-reopened",
-        "id": 9,
-        "object_id": 1,
-      },
-    ],
-    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
   },
 ]
 `;

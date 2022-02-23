@@ -4,7 +4,7 @@ import {
     TicketStatus,
     TicketVia,
 } from '../../business/types/ticket'
-import {AuditLogEvent} from '../event/types'
+import {Event} from '../event/types'
 import {FacebookReactionType} from '../../constants/integrations/facebook'
 
 export type Ticket = {
@@ -17,7 +17,7 @@ export type Ticket = {
     receiver: Actor
     sender: Actor
     tags: unknown[]
-    events: AuditLogEvent[]
+    events: InternalTicketEvent[]
     customer: unknown
     from_agent: boolean
     created_datetime: string
@@ -35,6 +35,11 @@ export type Ticket = {
     is_unread: boolean
     excerpt?: string
 }
+
+type InternalTicketEvent = Pick<
+    Event,
+    'id' | 'type' | 'data' | 'created_datetime'
+> & {user: Record<string, unknown> | null}
 
 export type TicketAssignee = {
     id: number

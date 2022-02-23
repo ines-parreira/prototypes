@@ -1,5 +1,5 @@
-import {ContentType, HttpMethod} from '../../api/types'
-import {AuditLogEventType} from '../../event/types'
+import {ContentType, HttpMethod} from 'models/api/types'
+import {EventType} from 'models/event/types'
 
 export type IntegrationBase = {
     created_datetime: string
@@ -40,7 +40,7 @@ type HttpIntegrationMeta = {
     request_content_type: ContentType
     response_content_type: ContentType
     triggers: {
-        [key in typeof AuditLogEventType[keyof typeof AuditLogEventType]]?: boolean
+        [key in typeof EventType[keyof typeof EventType]]?: boolean
     }
     url: string
 }

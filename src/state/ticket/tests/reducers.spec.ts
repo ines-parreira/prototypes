@@ -2,13 +2,15 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map} from 'immutable'
 import {Moment} from 'moment'
 
-import reducer, {initialState} from '../reducers'
-import * as newMessageTypes from '../../newMessage/constants'
-import * as customerTypes from '../../customers/constants'
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import * as newMessageTypes from 'state/newMessage/constants'
+import * as customerTypes from 'state/customers/constants'
+import {EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
+import {GorgiasAction} from 'state/types'
+import * as ticketFixtures from 'fixtures/ticket'
+
 import * as types from '../constants'
-import * as ticketFixtures from '../../../fixtures/ticket'
-import {AuditLogEventType} from '../../../models/event/types'
-import {GorgiasAction} from '../../types'
+import reducer, {initialState} from '../reducers'
 
 // mock Date object
 const DATE_TO_USE = new Date('2017')
@@ -768,15 +770,15 @@ describe('ticket reducers', () => {
                     fromJS([
                         {
                             object_id: ticket.get('id'),
-                            type: AuditLogEventType.TicketCreated,
+                            type: TICKET_EVENT_TYPES.TicketCreated,
                         },
                         {
                             object_id: ticket.get('id'),
-                            type: AuditLogEventType.TicketClosed,
+                            type: TICKET_EVENT_TYPES.TicketClosed,
                         },
                         {
                             object_id: ticket.get('id'),
-                            type: AuditLogEventType.TicketReopened,
+                            type: TICKET_EVENT_TYPES.TicketReopened,
                         },
                     ])
                 ),
@@ -864,14 +866,14 @@ describe('ticket reducers', () => {
         const getEvent = (id: number) =>
             fromJS({
                 id,
-                account_id: 1,
                 user_id: 1,
-                object_type: 'Ticket',
+                object_type: EventObjectType.Ticket,
                 object_id: 1,
                 data: null,
                 context: 'foo',
-                type: AuditLogEventType.TicketReopened,
+                type: TICKET_EVENT_TYPES.TicketReopened,
                 created_datetime: '2019-11-15 19:00:00.000000',
+                uri: '/api/events/3265847/',
             }) as Map<any, any>
 
         it('should add received event when it is not in the store yet', () => {
@@ -903,7 +905,7 @@ describe('ticket reducers', () => {
         it('should add new received event, and update existing one', () => {
             const initialEvent = getEvent(1)
             const updatedEvent = initialEvent
-                .set('type', AuditLogEventType.TicketClosed)
+                .set('type', TICKET_EVENT_TYPES.TicketClosed)
                 .set('data', {foo: 'bar'})
             const newEvent = getEvent(2)
 
@@ -916,6 +918,21 @@ describe('ticket reducers', () => {
                 initialState.mergeDeep({events: [initialEvent]}),
                 action
             )
+            expect(nextState.toJS()).toMatchSnapshot()
+        })
+
+        it('should not add received event when it is a phone event', () => {
+            const action = {
+                type: types.ADD_TICKET_AUDIT_LOG_EVENTS,
+                payload: [
+                    getEvent(1).set(
+                        'type',
+                        PhoneIntegrationEvent.PhoneCallAnswered
+                    ),
+                ],
+            }
+
+            const nextState = reducer(initialState, action)
             expect(nextState.toJS()).toMatchSnapshot()
         })
     })
@@ -935,7 +952,7 @@ describe('ticket reducers', () => {
             }) as Map<any, any>
 
         it('should remove audit log events', () => {
-            const auditLogEvent = getEvent(1, AuditLogEventType.TicketReopened)
+            const auditLogEvent = getEvent(1, TICKET_EVENT_TYPES.TicketReopened)
             const randomEvent = getEvent(2, 'foo')
 
             const action = {

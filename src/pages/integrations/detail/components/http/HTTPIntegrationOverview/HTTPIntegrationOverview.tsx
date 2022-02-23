@@ -6,12 +6,8 @@ import _isEmpty from 'lodash/isEmpty'
 import {Button, Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {
-    TICKET_CREATED,
-    TICKET_MESSAGE_CREATED,
-    TICKET_UPDATED,
-} from 'constants/event'
 import {ContentType, HttpMethod} from 'models/api/types'
+import {EventType} from 'models/event/types'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -225,9 +221,10 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                 request_content_type: this.state.requestContentType,
                 response_content_type: this.state.responseContentType,
                 triggers: {
-                    [TICKET_CREATED]: this.state.ticketCreated,
-                    [TICKET_UPDATED]: this.state.ticketUpdated,
-                    [TICKET_MESSAGE_CREATED]: this.state.ticketMessageCreated,
+                    [EventType.TicketCreated]: this.state.ticketCreated,
+                    [EventType.TicketUpdated]: this.state.ticketUpdated,
+                    [EventType.TicketMessageCreated]:
+                        this.state.ticketMessageCreated,
                 },
                 form,
             },

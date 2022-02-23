@@ -4,17 +4,14 @@ import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
 
-import {TicketBody} from '../TicketBody'
-import {message} from '../../../../../models/ticket/tests/mocks'
-import {
-    INCOMING_PHONE_CALL,
-    OUTGOING_PHONE_CALL,
-    TICKET_ASSIGNED,
-} from '../../../../../constants/event'
-import {TicketMessage} from '../../../../../models/ticket/types'
-import TicketMessages from '../TicketMessages/TicketMessages'
-import Event from '../Event'
-import {TicketChannel} from '../../../../../business/types/ticket'
+import {message} from 'models/ticket/tests/mocks'
+import {TicketMessage} from 'models/ticket/types'
+import {TICKET_EVENT_TYPES} from 'models/event/types'
+import {TicketBody} from 'pages/tickets/detail/components/TicketBody'
+import TicketMessages from 'pages/tickets/detail/components/TicketMessages/TicketMessages'
+import Event from 'pages/tickets/detail/components/Event'
+import {TicketChannel} from 'business/types/ticket'
+import {INCOMING_PHONE_CALL, OUTGOING_PHONE_CALL} from 'constants/event'
 
 describe('TicketBody', () => {
     const commonProps = {
@@ -148,7 +145,7 @@ describe('TicketBody', () => {
                         object_id: 1,
                         data: null,
                         context: 'foo',
-                        type: TICKET_ASSIGNED,
+                        type: TICKET_EVENT_TYPES.TicketAssigned,
                         created_datetime: '2019-11-15 19:00:00.000000',
                         isEvent: true,
                     },

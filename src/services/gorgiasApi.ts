@@ -6,16 +6,20 @@ import axios, {
 } from 'axios'
 import {fromJS, List, Map} from 'immutable'
 
-import {IntegrationDataItemType} from '../models/integration/types'
-import {ApiListResponsePagination} from '../models/api/types'
-import {EditOrderAction} from '../constants/integrations/types/shopify'
-import {createClient} from '../models/api/resources'
-import {AuditLogEvent} from '../models/event/types'
+import {IntegrationDataItemType} from 'models/integration/types'
+import {
+    ApiListResponseCursorPagination,
+    ApiListResponsePagination,
+} from 'models/api/types'
+import {EditOrderAction} from 'constants/integrations/types/shopify'
+import {createClient} from 'models/api/resources'
+import {Event, EventObjectType} from 'models/event/types'
 import type {
     PollingConfig,
     Refund,
     Edit_to_perform,
-} from '../constants/integrations/types/shopify'
+} from 'constants/integrations/types/shopify'
+import {fetchEvents} from 'models/event/resources'
 
 type GorgiasApiOptions = {
     requestsCancellation?: boolean
@@ -97,6 +101,32 @@ export default class GorgiasApi {
     }
 
     /**
+     * Yield each cursored page of requested items until last page is reached
+     */
+    async *cursorPaginate<
+        T extends (params?: any) => any,
+        U extends Parameters<T>[0],
+        V = ReturnType<T>
+    >(
+        asyncMethod: (
+            params: U
+        ) => Promise<AxiosResponse<ApiListResponseCursorPagination<Array<V>>>>,
+        params: U = {} as U
+    ): AsyncGenerator<Array<V>, void, void> {
+        let nextCursor: string | null
+
+        do {
+            const response = await asyncMethod(params)
+            const {
+                data: {data, meta},
+            } = response
+            yield data
+            nextCursor = meta.next_cursor
+            params.cursor = nextCursor
+        } while (nextCursor)
+    }
+
+    /**
      * Create a new subscription with no trial period or end the trial period of an existing subscription.
      */
     async startSubscription() {
@@ -137,13 +167,14 @@ export default class GorgiasApi {
         return fromJS(resp.data) as Map<any, any>
     }
 
-    /**
-     * Yield each page of events until last page is reached
-     */
     async *getTicketEvents(
         ticketId: number
-    ): AsyncGenerator<List<any>, void, Array<AuditLogEvent>> {
-        const pages = this.paginate(`/api/tickets/${ticketId}/events/`)
+    ): AsyncGenerator<List<any>, void, Array<Event>> {
+        const pages = this.cursorPaginate(fetchEvents, {
+            objectId: ticketId,
+            objectType: EventObjectType.Ticket,
+            limit: 30,
+        })
 
         for await (const events of pages) {
             yield fromJS(events)

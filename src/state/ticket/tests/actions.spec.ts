@@ -1,6 +1,3 @@
-import querystring from 'querystring'
-import url from 'url'
-
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import moment from 'moment'
 import MockAdapter from 'axios-mock-adapter'
@@ -11,11 +8,7 @@ import {dismissNotification} from 'reapop'
 
 import {notify} from 'state/notifications/actions'
 import {initialState as newMessageState} from 'state/newMessage/reducers'
-import {
-    AuditLogEventType,
-    AuditLogEvent,
-    AuditLogEventObjectType,
-} from 'models/event/types'
+import {Event, EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
 import {StoreDispatch} from 'state/types'
 import {Ticket, TicketMessage} from 'models/ticket/types'
 import socketManager from 'services/socketManager/socketManager'
@@ -25,7 +18,9 @@ import {
 } from 'services/socketManager/types'
 import history from 'pages/history'
 import client from 'models/api/resources'
+import {ApiListResponseCursorPagination} from 'models/api/types'
 import {ViewType} from 'models/view/constants'
+
 import {initialState} from '../reducers'
 import * as actions from '../actions'
 
@@ -1006,18 +1001,18 @@ describe('ticket actions', () => {
         })
     })
 
-    describe('loadAuditLogEvents()', () => {
+    describe('displayAuditLogEvents()', () => {
         let mockServerGorgiasApi: MockAdapter
-        const getEvent = (id: number): AuditLogEvent => ({
+        const getEvent = (id: number): Event => ({
             id,
-            account_id: 1,
             user_id: 1,
-            object_type: AuditLogEventObjectType.Ticket,
+            object_type: EventObjectType.Ticket,
             object_id: 1,
             data: null,
             context: 'foo',
-            type: AuditLogEventType.TicketReopened,
+            type: TICKET_EVENT_TYPES.TicketReopened,
             created_datetime: '2019-11-15 19:00:00.000000',
+            uri: '/api/events/3265847/',
         })
 
         beforeEach(() => {
@@ -1026,31 +1021,46 @@ describe('ticket actions', () => {
 
         it('should dispatch audit logs events, page per page', async () => {
             const ticketId = 123
-            const path = `/api/tickets/${ticketId}/events/`
+            const path = `/api/events/`
             const matcher = new RegExp(path + '*')
 
-            const mocks = [
+            const mocks: ApiListResponseCursorPagination<Event[]>[] = [
                 {
                     data: [getEvent(1), getEvent(2), getEvent(3)],
-                    meta: {next_page: `${path}?page=2`},
+                    meta: {
+                        next_cursor: 'cursored_page_2',
+                        prev_cursor: null,
+                    },
+                    object: 'list',
+                    uri: 'api/events',
                 },
                 {
                     data: [getEvent(4), getEvent(5), getEvent(6)],
-                    meta: {next_page: `${path}?page=3`},
+                    meta: {
+                        next_cursor: 'cursored_page_3',
+                        prev_cursor: 'cursored_page_1',
+                    },
+                    object: 'list',
+                    uri: 'api/events',
                 },
-                {data: [getEvent(7), getEvent(8), getEvent(9)], meta: {}},
+                {
+                    data: [getEvent(7), getEvent(8), getEvent(9)],
+                    meta: {
+                        next_cursor: null,
+                        prev_cursor: 'cursored_page_2',
+                    },
+                    object: 'list',
+                    uri: 'api/events',
+                },
             ]
 
-            mockServerGorgiasApi.onGet(matcher).reply((config) => {
-                const parsedUrl = url.parse(config.url || '')
-                const parsedQuery = querystring.parse(parsedUrl.query || '')
-                const page =
-                    parsedQuery && parsedQuery.page
-                        ? parseInt(parsedQuery.page as string)
-                        : 1
-                const index = page - 1
-                return [200, mocks[index]]
-            })
+            mockServerGorgiasApi
+                .onGet(matcher)
+                .replyOnce(200, mocks[0])
+                .onGet(matcher)
+                .replyOnce(200, mocks[1])
+                .onGet(matcher)
+                .replyOnce(200, mocks[2])
 
             await store.dispatch(actions.displayAuditLogEvents(ticketId))
             expect(store.getActions()).toMatchSnapshot()
@@ -1058,9 +1068,12 @@ describe('ticket actions', () => {
 
         it('should dispatch a notification because there is no event for the given ticket', async () => {
             const ticketId = 123
-            const path = `/api/tickets/${ticketId}/events/`
+            const path = `/api/events/`
 
-            mockServerGorgiasApi.onGet(path).reply(200, {data: [], meta: {}})
+            mockServerGorgiasApi.onGet(path).reply(200, {
+                data: [],
+                meta: {next_cursor: null, prev_cursor: null},
+            })
 
             await store.dispatch(actions.displayAuditLogEvents(ticketId))
 

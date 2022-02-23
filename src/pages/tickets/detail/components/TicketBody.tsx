@@ -4,27 +4,24 @@ import {connect, ConnectedProps} from 'react-redux'
 import _debounce from 'lodash/debounce'
 import {fromJS, List, Map} from 'immutable'
 
-import * as ticketSelectors from '../../../../state/ticket/selectors'
-import shortcutManager from '../../../../services/shortcutManager/index'
-import {moveIndex, MoveIndexDirection} from '../../../common/utils/keyboard'
-import {RootState} from '../../../../state/types'
 import {
     Channel,
     TicketElement,
     TicketEvent,
     TicketMessage,
     TicketSatisfactionSurvey,
-} from '../../../../models/ticket/types'
+} from 'models/ticket/types'
 import {
     isTicketEvent,
     isTicketMessage,
     isTicketSatisfactionSurvey,
-} from '../../../../models/ticket/predicates'
-import {TicketChannel} from '../../../../business/types/ticket'
-import {
-    PHONE_EVENTS,
-    TICKET_AUDIT_LOG_EVENTS,
-} from '../../../../constants/event'
+} from 'models/ticket/predicates'
+import {TicketChannel} from 'business/types/ticket'
+import * as ticketSelectors from 'state/ticket/selectors'
+import shortcutManager from 'services/shortcutManager/index'
+import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
+import {PHONE_EVENTS, TICKET_EVENT_TYPES_VALUES} from 'constants/event'
+import {RootState} from 'state/types'
 
 import TicketMessages from './TicketMessages/TicketMessages'
 import SatisfactionSurvey from './SatisfactionSurvey'
@@ -255,7 +252,7 @@ export class TicketBody extends React.Component<Props, State> {
                     }
 
                     if (isTicketEvent(element)) {
-                        if (TICKET_AUDIT_LOG_EVENTS.includes(elementType)) {
+                        if (TICKET_EVENT_TYPES_VALUES.includes(elementType)) {
                             return (
                                 <AuditLogEvent
                                     key={key}
