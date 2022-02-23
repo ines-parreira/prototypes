@@ -3,14 +3,13 @@ import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import Lightbox from 'react-images'
 
-import classnames from 'classnames'
-import {Button} from 'reactstrap'
-
 import IntegrationList from '../IntegrationList.tsx'
 import ForwardIcon from '../ForwardIcon.tsx'
 import history from '../../../../history.ts'
 
 import Carousel from './../../../common/Carousel.tsx'
+
+import Button from 'pages/common/components/button/Button'
 
 export default class ShopifyIntegrationList extends React.Component {
     static propTypes = {
@@ -130,12 +129,8 @@ export default class ShopifyIntegrationList extends React.Component {
                         <div>
                             {!active && (
                                 <Button
-                                    tag="a"
-                                    color="success"
                                     onClick={activateIntegration}
-                                    className={classnames({
-                                        'btn-loading': isRowSubmitting,
-                                    })}
+                                    isLoading={isRowSubmitting}
                                 >
                                     Reactivate
                                 </Button>

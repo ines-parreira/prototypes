@@ -1,11 +1,13 @@
 import React, {ChangeEvent, useState, useEffect, useCallback} from 'react'
 import {useDebounce} from 'react-use'
 
-import {Input, ListGroup, ListGroupItem, Button} from 'reactstrap'
+import {Input, ListGroup, ListGroupItem} from 'reactstrap'
 import {Map} from 'immutable'
 
 import classnames from 'classnames'
 
+import Button, {ButtonSize} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
 import GorgiasApi from '../../../../services/gorgiasApi'
@@ -220,19 +222,17 @@ export default function ShopifyProductLine({
                         <Button
                             className="mr-2"
                             type="button"
-                            color="light"
-                            size="sm"
                             onClick={
                                 subResults.length
                                     ? handleBackClicked
                                     : onResetStoreChoice
                             }
+                            size={ButtonSize.Small}
                             tabIndex={-1}
                         >
-                            <i className="icon material-icons mr-2">
-                                arrow_back
-                            </i>
-                            Back
+                            <ButtonIconLabel icon="arrow_back">
+                                Back
+                            </ButtonIconLabel>
                         </Button>
                     )}
                 </div>

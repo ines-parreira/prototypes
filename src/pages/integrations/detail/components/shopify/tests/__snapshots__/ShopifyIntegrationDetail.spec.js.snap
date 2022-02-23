@@ -152,25 +152,21 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
             </ul>
           </div>
           <div>
-            <Button
+            <ForwardRef
               className="mr-2"
-              color="success"
-              disabled={false}
-              tag="button"
+              isDisabled={false}
+              isLoading={false}
               type="submit"
             >
               Update integration
-            </Button>
-            <Button
-              className=""
-              color="success"
-              disabled={false}
+            </ForwardRef>
+            <ForwardRef
+              isLoading={false}
               onClick={[Function]}
-              tag="button"
               type="button"
             >
               Reactivate integration
-            </Button>
+            </ForwardRef>
             <ConfirmButton
               className="float-right"
               confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -284,15 +280,14 @@ exports[`ShopifyIntegrationDetail should render the page for an integration bein
             />
           </div>
           <div>
-            <Button
+            <ForwardRef
               className="mr-2"
-              color="success"
-              disabled={true}
-              tag="button"
+              isDisabled={true}
+              isLoading={false}
               type="submit"
             >
               Add integration
-            </Button>
+            </ForwardRef>
           </div>
         </Form>
       </Col>
@@ -453,15 +448,14 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             </ul>
           </div>
           <div>
-            <Button
-              className="mr-2 btn-loading"
-              color="success"
-              disabled={false}
-              tag="button"
+            <ForwardRef
+              className="mr-2"
+              isDisabled={false}
+              isLoading={true}
               type="submit"
             >
               Update integration
-            </Button>
+            </ForwardRef>
             <ConfirmButton
               className="float-right"
               confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -647,15 +641,14 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             </ul>
           </div>
           <div>
-            <Button
+            <ForwardRef
               className="mr-2"
-              color="success"
-              disabled={false}
-              tag="button"
+              isDisabled={false}
+              isLoading={false}
               type="submit"
             >
               Update integration
-            </Button>
+            </ForwardRef>
             <ConfirmButton
               className="float-right"
               confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -829,15 +822,14 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             </ul>
           </div>
           <div>
-            <Button
-              className="mr-2 btn-loading"
-              color="success"
-              disabled={true}
-              tag="button"
+            <ForwardRef
+              className="mr-2"
+              isDisabled={true}
+              isLoading={true}
               type="submit"
             >
               Update integration
-            </Button>
+            </ForwardRef>
             <ConfirmButton
               className="float-right"
               confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -1011,25 +1003,22 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             </ul>
           </div>
           <div>
-            <Button
+            <ForwardRef
               className="mr-2"
-              color="info"
-              disabled={false}
+              isLoading={false}
               onClick={[Function]}
-              tag="button"
               type="button"
             >
               Update app permissions
-            </Button>
-            <Button
+            </ForwardRef>
+            <ForwardRef
               className="mr-2"
-              color="success"
-              disabled={false}
-              tag="button"
+              isDisabled={false}
+              isLoading={false}
               type="submit"
             >
               Update integration
-            </Button>
+            </ForwardRef>
             <ConfirmButton
               className="float-right"
               confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -1143,15 +1132,14 @@ exports[`ShopifyIntegrationDetail should render the page to create a new integra
             />
           </div>
           <div>
-            <Button
+            <ForwardRef
               className="mr-2"
-              color="success"
-              disabled={false}
-              tag="button"
+              isDisabled={false}
+              isLoading={false}
               type="submit"
             >
               Add integration
-            </Button>
+            </ForwardRef>
           </div>
         </Form>
       </Col>
@@ -1312,15 +1300,14 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
             </ul>
           </div>
           <div>
-            <Button
+            <ForwardRef
               className="mr-2"
-              color="success"
-              disabled={false}
-              tag="button"
+              isDisabled={false}
+              isLoading={false}
               type="submit"
             >
               Update integration
-            </Button>
+            </ForwardRef>
             <ConfirmButton
               className="float-right"
               confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."

@@ -253,16 +253,20 @@ exports[`<ShopifyProductLine/> should render the variants picker of a product 1`
         class="backContainer"
       >
         <button
-          class="mr-2 btn btn-light btn-sm"
+          class="wrapper mr-2 primary small"
           tabindex="-1"
           type="button"
         >
-          <i
-            class="icon material-icons mr-2"
+          <span
+            class="wrapper"
           >
-            arrow_back
-          </i>
-          Back
+            <i
+              class="material-icons icon isLeft small"
+            >
+              arrow_back
+            </i>
+            Back
+          </span>
         </button>
       </div>
       <div>

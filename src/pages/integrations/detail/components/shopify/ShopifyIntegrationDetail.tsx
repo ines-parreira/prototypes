@@ -1,13 +1,11 @@
 import React, {SyntheticEvent} from 'react'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
-import classNames from 'classnames'
 import {Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import {
     Breadcrumb,
     BreadcrumbItem,
-    Button,
     Col,
     Container,
     Form,
@@ -18,7 +16,7 @@ import {parse} from 'query-string'
 
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -371,14 +369,8 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                     {isUpdate && needScopeUpdate ? (
                                         <Button
                                             type="button"
-                                            color="info"
-                                            className={classNames(
-                                                {
-                                                    'btn-loading': isSubmitting,
-                                                },
-                                                'mr-2'
-                                            )}
-                                            disabled={isSubmitting}
+                                            className="mr-2"
+                                            isLoading={isSubmitting}
                                             onClick={this._updateAppPermissions}
                                         >
                                             Update app permissions
@@ -387,11 +379,9 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
 
                                     <Button
                                         type="submit"
-                                        color="success"
-                                        className={classNames('mr-2', {
-                                            'btn-loading': ctaIsLoading,
-                                        })}
-                                        disabled={submitIsDisabled}
+                                        className="mr-2"
+                                        isDisabled={submitIsDisabled}
+                                        isLoading={ctaIsLoading}
                                     >
                                         {isUpdate
                                             ? 'Update integration'
@@ -402,11 +392,7 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                     !isActive ? (
                                         <Button
                                             type="button"
-                                            color="success"
-                                            className={classNames({
-                                                'btn-loading': isSubmitting,
-                                            })}
-                                            disabled={isSubmitting}
+                                            isLoading={isSubmitting}
                                             onClick={activateIntegration}
                                         >
                                             Reactivate integration
