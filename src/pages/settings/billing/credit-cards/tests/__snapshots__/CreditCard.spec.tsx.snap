@@ -183,16 +183,15 @@ exports[`CreditCard component should display credit card form 1`] = `
             >
               <Errors />
             </FormGroup>
-            <Button
-              className=""
-              color="success"
-              disabled={true}
-              tag="button"
+            <ForwardRef
+              isDisabled={true}
+              isLoading={false}
+              type="submit"
             >
               Add payment method
                
                and pay $1000
-            </Button>
+            </ForwardRef>
           </div>
         </Form>
       </Col>
@@ -404,15 +403,14 @@ exports[`CreditCard component should not render the billing address form when a 
             >
               <Errors />
             </FormGroup>
-            <Button
-              className=""
-              color="success"
-              disabled={true}
-              tag="button"
+            <ForwardRef
+              isDisabled={true}
+              isLoading={false}
+              type="submit"
             >
               Add payment method
                
-            </Button>
+            </ForwardRef>
           </div>
         </Form>
       </Col>
@@ -604,16 +602,15 @@ exports[`CreditCard component should render billing plan card with automation fo
             >
               <Errors />
             </FormGroup>
-            <Button
-              className=""
-              color="success"
-              disabled={true}
-              tag="button"
+            <ForwardRef
+              isDisabled={true}
+              isLoading={false}
+              type="submit"
             >
               Add payment method
                
                and pay $1000
-            </Button>
+            </ForwardRef>
           </div>
         </Form>
       </Col>
@@ -860,15 +857,14 @@ exports[`CreditCard component should render nothing if loaded, but no current su
             >
               <Errors />
             </FormGroup>
-            <Button
-              className=""
-              color="success"
-              disabled={true}
-              tag="button"
+            <ForwardRef
+              isDisabled={true}
+              isLoading={false}
+              type="submit"
             >
               Add payment method
                
-            </Button>
+            </ForwardRef>
           </div>
         </Form>
       </Col>
@@ -1060,15 +1056,14 @@ exports[`CreditCard component should render the billing address form when accoun
             >
               <Errors />
             </FormGroup>
-            <Button
-              className=""
-              color="success"
-              disabled={true}
-              tag="button"
+            <ForwardRef
+              isDisabled={true}
+              isLoading={false}
+              type="submit"
             >
               Add payment method
                
-            </Button>
+            </ForwardRef>
           </div>
         </Form>
       </Col>

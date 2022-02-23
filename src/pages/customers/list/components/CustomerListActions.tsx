@@ -1,25 +1,25 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
     DropdownItem,
-    Button,
+    DropdownMenu,
+    DropdownToggle,
     Popover,
-    PopoverHeader,
     PopoverBody,
+    PopoverHeader,
+    UncontrolledButtonDropdown,
 } from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 import {List, Map} from 'immutable'
 
-import shortcutManager from '../../../../services/shortcutManager/index'
-import {bulkDeleteCustomer} from '../../../../state/customers/actions'
+import shortcutManager from 'services/shortcutManager/index'
+import {bulkDeleteCustomer} from 'state/customers/actions'
 import {
     areAllActiveViewItemsSelected,
     makeGetViewCount,
-} from '../../../../state/views/selectors'
-import {RootState} from '../../../../state/types'
+} from 'state/views/selectors'
+import {RootState} from 'state/types'
+import Button from 'pages/common/components/button/Button'
 
 import css from './CustomerListActions.less'
 
@@ -147,10 +147,9 @@ class CustomerListActions extends Component<Props, State> {
                             customer{selectedCount > 1 && 's'}?
                         </p>
                         <Button
-                            type="submit"
-                            color="success"
-                            onClick={this._bulkDelete}
+                            type="button"
                             autoFocus
+                            onClick={this._bulkDelete}
                         >
                             Confirm
                         </Button>

@@ -159,10 +159,10 @@ exports[`<AutomationSection /> should render for customers already with full add
       </p>
     </div>
     <button
-      class="align-self-end btn btn-secondary"
+      class="wrapper align-self-end secondary medium"
       type="button"
     >
-      Manage Add-On
+      Manage add-on
     </button>
   </div>
 </div>

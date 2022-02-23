@@ -181,14 +181,12 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
           >
             You can create an API Key using the button below.
           </p>
-          <Button
-            className="resetBtn"
-            color="primary"
+          <ForwardRef
             onClick={[Function]}
-            tag="button"
+            type="button"
           >
-            Create API Key
-          </Button>
+            Create API key
+          </ForwardRef>
         </div>
       </FormGroup>
       <div
@@ -237,13 +235,12 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
           , new features and integrations.
         </p>
       </div>
-      <Button
-        color="primary"
+      <ForwardRef
         onClick={[Function]}
-        tag="button"
+        type="button"
       >
         Subscribe
-      </Button>
+      </ForwardRef>
     </div>
   </Container>
 </div>
@@ -512,13 +509,12 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
           , new features and integrations.
         </p>
       </div>
-      <Button
-        color="primary"
+      <ForwardRef
         onClick={[Function]}
-        tag="button"
+        type="button"
       >
         Subscribe
-      </Button>
+      </ForwardRef>
     </div>
   </Container>
 </div>

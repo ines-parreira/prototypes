@@ -1,12 +1,10 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
-import classnames from 'classnames'
 import _pick from 'lodash/pick'
 import {
     Breadcrumb,
     BreadcrumbItem,
-    Button,
     Col,
     Container,
     Form,
@@ -18,43 +16,37 @@ import {AxiosError} from 'axios'
 import {AnyAction} from 'redux'
 
 import Errors from 'pages/common/forms/Errors'
+import {fetchContact, setCreditCard, updateContact} from 'state/billing/actions'
 import {
-    fetchContact,
-    setCreditCard,
-    updateContact,
-} from '../../../../state/billing/actions'
-import {
+    DEPRECATED_getCurrentPlan as currentPlanSelector,
     getAddOnAutomationAmountCurrentPlan,
     getContact,
-    DEPRECATED_getCurrentPlan as currentPlanSelector,
     getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
     hasLegacyPlan as hasLegacyPlanSelector,
     isMissingContactInformation,
-} from '../../../../state/billing/selectors'
-import Loader from '../../../common/components/Loader/Loader'
-import {loadScript} from '../../../../utils'
-import InputField from '../../../common/forms/InputField'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
-import PageHeader from '../../../common/components/PageHeader'
-import * as currentAccountSelectors from '../../../../state/currentAccount/selectors'
-import GorgiasApi from '../../../../services/gorgiasApi'
-import {setCurrentSubscription} from '../../../../state/currentAccount/actions'
-import {notify} from '../../../../state/notifications/actions'
-import {createStripeCardToken} from '../../../../utils/stripe'
-import history from '../../../history'
-import LegacyPlanBanner from '../../../common/components/LegacyPlanBanner'
-import Alert from '../../../common/components/Alert/Alert'
-import BillingPlanCard from '../plans/BillingPlanCard'
-import {RootState} from '../../../../state/types'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {BillingContact, CreditCard} from '../../../../state/billing/types'
-import BillingAddressInputs from '../common/BillingAddressInputs'
-import {UPDATE_BILLING_CONTACT_ERROR} from '../../../../state/billing/constants'
-import settingsCss from '../../settings.less'
+} from 'state/billing/selectors'
+import Loader from 'pages/common/components/Loader/Loader'
+import {loadScript} from 'utils'
+import InputField from 'pages/common/forms/InputField'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import PageHeader from 'pages/common/components/PageHeader'
+import * as currentAccountSelectors from 'state/currentAccount/selectors'
+import GorgiasApi from 'services/gorgiasApi'
+import {setCurrentSubscription} from 'state/currentAccount/actions'
+import {notify} from 'state/notifications/actions'
+import {createStripeCardToken} from 'utils/stripe'
+import history from 'pages/history'
+import LegacyPlanBanner from 'pages/common/components/LegacyPlanBanner'
+import Alert from 'pages/common/components/Alert/Alert'
+import BillingPlanCard from 'pages/settings/billing/plans/BillingPlanCard'
+import {RootState} from 'state/types'
+import {NotificationStatus} from 'state/notifications/types'
+import {BillingContact, CreditCard} from 'state/billing/types'
+import BillingAddressInputs from 'pages/settings/billing/common/BillingAddressInputs'
+import {UPDATE_BILLING_CONTACT_ERROR} from 'state/billing/constants'
+import settingsCss from 'pages/settings/settings.less'
+import Button from 'pages/common/components/button/Button'
 
 import AutomationAmount from '../plans/AutomationAmount'
 import TotalAmount from '../plans/TotalAmount'
@@ -515,14 +507,9 @@ export class CreditCardContainer extends Component<Props, State> {
                                     </FormGroup>
 
                                     <Button
-                                        color={
-                                            isUpdating ? 'primary' : 'success'
-                                        }
-                                        className={classnames({
-                                            'btn-loading':
-                                                this.state.isSubmitting,
-                                        })}
-                                        disabled={
+                                        type="submit"
+                                        isLoading={this.state.isSubmitting}
+                                        isDisabled={
                                             this.state.isSubmitting ||
                                             invalid ||
                                             !this.state.dirty

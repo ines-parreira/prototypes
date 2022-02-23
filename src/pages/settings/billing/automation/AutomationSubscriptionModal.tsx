@@ -1,22 +1,22 @@
 import React, {ElementType} from 'react'
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
+import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 import {useAsyncFn} from 'react-use'
 import {useSelector} from 'react-redux'
 
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {getEquivalentRegularPlanId} from '../../../../models/billing/utils'
-import {setFutureSubscriptionPlan} from '../../../../state/billing/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {getEquivalentRegularPlanId} from 'models/billing/utils'
+import {setFutureSubscriptionPlan} from 'state/billing/actions'
 import {
     DEPRECATED_getCurrentPlan,
     getEquivalentAutomationCurrentPlan,
     getHasAutomationAddOn,
-} from '../../../../state/billing/selectors'
-import {updateSubscription} from '../../../../state/currentAccount/actions'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-
-import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
+} from 'state/billing/selectors'
+import {updateSubscription} from 'state/currentAccount/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import AutomationSubscriptionDescription from './AutomationSubscriptionDescription'
 import css from './AutomationSubscriptionModal.less'
@@ -41,16 +41,10 @@ const DefaultFooter = ({
     onConfirm,
 }: Pick<Props, 'confirmLabel' | 'onClose'> & FooterProps) => (
     <ModalFooter className={css.footer}>
-        <Button color="secondary" onClick={onClose}>
+        <Button type="button" intent={ButtonIntent.Secondary} onClick={onClose}>
             Cancel
         </Button>
-        <Button
-            color="primary"
-            onClick={onConfirm}
-            className={classnames({
-                'btn-loading': isUpdating,
-            })}
-        >
+        <Button type="button" isLoading={isUpdating} onClick={onConfirm}>
             {confirmLabel}
         </Button>
     </ModalFooter>
@@ -125,15 +119,18 @@ const AutomationSubscriptionModal = ({
                     className={classnames(css.footer, css.footerUnsubscribe)}
                 >
                     <Button
-                        color="danger"
+                        type="button"
+                        intent={ButtonIntent.Destructive}
                         onClick={handleUnsubscribeClick}
-                        className={classnames({
-                            'btn-loading': isSubscriptionUpdating,
-                        })}
+                        isLoading={isSubscriptionUpdating}
                     >
                         Cancel subscription
                     </Button>
-                    <Button color="secondary" onClick={onClose}>
+                    <Button
+                        type="button"
+                        intent={ButtonIntent.Secondary}
+                        onClick={onClose}
+                    >
                         OK
                     </Button>
                 </ModalFooter>

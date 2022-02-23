@@ -10,9 +10,20 @@ exports[`<AutomationSubscriptionModal /> should display image 1`] = `
 
 exports[`<AutomationSubscriptionModal /> should display loader 1`] = `
 <button
-  class="btn-loading btn btn-primary"
+  class="wrapper primary medium isDisabled"
+  disabled=""
   type="button"
 >
+  <div
+    class="spinner spinner-border"
+    role="status"
+  >
+    <span
+      class="sr-only"
+    >
+      Loading...
+    </span>
+  </div>
   I am sure
 </button>
 `;
@@ -28,13 +39,13 @@ exports[`<AutomationSubscriptionModal /> should render for customers already wit
   class="footer footerUnsubscribe modal-footer"
 >
   <button
-    class="btn btn-danger"
+    class="wrapper destructive medium"
     type="button"
   >
     Cancel subscription
   </button>
   <button
-    class="btn btn-secondary"
+    class="wrapper secondary medium"
     type="button"
   >
     OK
@@ -204,13 +215,13 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
               class="footer modal-footer"
             >
               <button
-                class="btn btn-secondary"
+                class="wrapper secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="btn btn-primary"
+                class="wrapper primary medium"
                 type="button"
               >
                 I am sure

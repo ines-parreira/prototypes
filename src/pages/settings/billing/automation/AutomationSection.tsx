@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import classnames from 'classnames'
-import {Button, Card, CardBody, CardTitle} from 'reactstrap'
+import {Card, CardBody, CardTitle} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 
@@ -8,16 +8,16 @@ import {
     DEPRECATED_getCurrentPlan,
     getAddOnAutomationAmountCurrentPlan,
     getHasAutomationAddOn,
-} from '../../../../state/billing/selectors'
+} from 'state/billing/selectors'
 import {
     hasAutomationLegacyFeatures,
     isTrialing,
-} from '../../../../state/currentAccount/selectors'
-import UpgradeButton from '../../../common/components/UpgradeButton/UpgradeButton'
-import SubscriptionAmount from '../../common/SubscriptionAmount'
+} from 'state/currentAccount/selectors'
+import UpgradeButton from 'pages/common/components/UpgradeButton/UpgradeButton'
+import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import AutomationSubscriptionModal from './AutomationSubscriptionModal'
-
 import css from './AutomationSection.less'
 
 const AutomationSection = () => {
@@ -119,12 +119,13 @@ const AutomationSection = () => {
                 {hasAutomationAddOn ? (
                     <Button
                         className="align-self-end"
-                        color="secondary"
+                        type="button"
+                        intent={ButtonIntent.Secondary}
                         onClick={() => {
                             setIsAutomationModalOpened(true)
                         }}
                     >
-                        Manage Add-On
+                        Manage add-on
                     </Button>
                 ) : (
                     <UpgradeButton

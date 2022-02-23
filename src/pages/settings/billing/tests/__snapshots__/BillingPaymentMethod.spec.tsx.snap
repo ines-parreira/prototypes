@@ -148,24 +148,26 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
                 }
               }
             >
-              <Button
+              <a
                 className=""
-                color="success"
-                disabled={false}
                 href="/integrations/shopify/billing/activate/"
-                onClick={[Function]}
-                tag="a"
               >
-                <a
-                  aria-label={null}
-                  className="btn btn-success"
-                  disabled={false}
-                  href="/integrations/shopify/billing/activate/"
+                <ForwardRef
+                  isDisabled={false}
+                  isLoading={false}
                   onClick={[Function]}
+                  type="button"
                 >
-                  Activate billing with Shopify and pay $12
-                </a>
-              </Button>
+                  <button
+                    className="wrapper primary medium"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Activate billing with Shopify and pay $12
+                  </button>
+                </ForwardRef>
+              </a>
             </div>
           </div>
         </CardBody>
@@ -201,15 +203,18 @@ exports[`BillingPaymentMethod Shopify should render a button to reactivate billi
          
         Billing with Shopify is inactive. Please reactivate to avoid account cancellation.
          
-        <Button
+        <a
           className="float-right"
-          color="success"
           href="/integrations/shopify/billing/activate/"
-          onClick={[Function]}
-          tag="a"
         >
-          Reactivate billing with Shopify
-        </Button>
+          <ForwardRef
+            isLoading={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Reactivate billing with Shopify
+          </ForwardRef>
+        </a>
       </div>
     </CardBody>
   </Card>
@@ -239,16 +244,19 @@ exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
           }
         }
       >
-        <Button
-          className=""
-          color="success"
-          disabled={true}
+        <a
+          className="disabledLink"
           href="/integrations/shopify/billing/activate/"
-          onClick={[Function]}
-          tag="a"
         >
-          Activate billing with Shopify
-        </Button>
+          <ForwardRef
+            isDisabled={true}
+            isLoading={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Activate billing with Shopify
+          </ForwardRef>
+        </a>
         <UncontrolledTooltip
           placement="top"
           target="activate-shopify-billing-button"
@@ -520,30 +528,27 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                         }
                       }
                     >
-                      <Button
-                        color="success"
-                        disabled={false}
-                        tag={[Function]}
+                      <Link
+                        className=""
                         to="/app/settings/billing/add-payment-method"
                       >
-                        <Link
-                          aria-label={null}
-                          className="btn btn-success"
-                          disabled={false}
-                          onClick={[Function]}
+                        <a
+                          className=""
                           to="/app/settings/billing/add-payment-method"
                         >
-                          <a
-                            aria-label={null}
-                            className="btn btn-success"
-                            disabled={false}
-                            onClick={[Function]}
-                            to="/app/settings/billing/add-payment-method"
+                          <ForwardRef
+                            isDisabled={false}
+                            type="button"
                           >
-                            Add Payment Method
-                          </a>
-                        </Link>
-                      </Button>
+                            <button
+                              className="wrapper primary medium"
+                              type="button"
+                            >
+                              Add payment method
+                            </button>
+                          </ForwardRef>
+                        </a>
+                      </Link>
                     </div>
                   </div>
                 </Col>
@@ -720,27 +725,25 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                   <div
                     className="text-right col-sm-4"
                   >
-                    <Button
-                      color="secondary"
-                      tag={[Function]}
+                    <Link
                       to="/app/settings/billing/change-credit-card"
                     >
-                      <Link
-                        aria-label={null}
-                        className="btn btn-secondary"
-                        onClick={[Function]}
+                      <a
                         to="/app/settings/billing/change-credit-card"
                       >
-                        <a
-                          aria-label={null}
-                          className="btn btn-secondary"
-                          onClick={[Function]}
-                          to="/app/settings/billing/change-credit-card"
+                        <ForwardRef
+                          intent="secondary"
+                          type="button"
                         >
-                          Change Card
-                        </a>
-                      </Link>
-                    </Button>
+                          <button
+                            className="wrapper secondary medium"
+                            type="button"
+                          >
+                            Change card
+                          </button>
+                        </ForwardRef>
+                      </a>
+                    </Link>
                   </div>
                 </Col>
               </div>
@@ -818,14 +821,17 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
               }
             }
           >
-            <Button
-              color="success"
-              disabled={true}
-              tag={[Function]}
+            <Link
+              className="disabledLink"
               to="/app/settings/billing/add-payment-method"
             >
-              Add Payment Method
-            </Button>
+              <ForwardRef
+                isDisabled={true}
+                type="button"
+              >
+                Add payment method
+              </ForwardRef>
+            </Link>
             <UncontrolledTooltip
               placement="top"
               target="add-payment-method-button"

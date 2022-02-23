@@ -1,27 +1,22 @@
 import React, {Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
-import {Button, Card, CardBody, Col, Row, UncontrolledTooltip} from 'reactstrap'
+import {Card, CardBody, Col, Row, UncontrolledTooltip} from 'reactstrap'
 import classnames from 'classnames'
 
-import {
-    creditCard,
-    DEPRECATED_getCurrentPlan,
-} from '../../../state/billing/selectors'
+import {creditCard, DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
 import {
     getCurrentSubscription,
-    paymentMethod,
     getShopifyBillingStatus,
-} from '../../../state/currentAccount/selectors'
-import {ShopifyBillingStatus} from '../../../state/currentAccount/types'
-import {
-    fetchPaymentMethod,
-    fetchCreditCard,
-} from '../../../state/billing/actions'
-import Loader from '../../common/components/Loader/Loader'
-import {logEvent, SegmentEvent} from '../../../store/middlewares/segmentTracker'
-import {RootState} from '../../../state/types'
-import {PaymentMethodType} from '../../../state/billing/types'
+    paymentMethod,
+} from 'state/currentAccount/selectors'
+import {ShopifyBillingStatus} from 'state/currentAccount/types'
+import {fetchCreditCard, fetchPaymentMethod} from 'state/billing/actions'
+import Loader from 'pages/common/components/Loader/Loader'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {RootState} from 'state/types'
+import {PaymentMethodType} from 'state/billing/types'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import css from './BillingPaymentMethod.less'
 import BillingHeader from './common/BillingHeader'
@@ -80,14 +75,20 @@ export class BillingPaymentMethodContainer extends Component<
                                         display: 'inline-block',
                                     }}
                                 >
-                                    <Button
-                                        tag={Link}
-                                        color="success"
+                                    <Link
                                         to="/app/settings/billing/add-payment-method"
-                                        disabled={hasNoSubscription}
+                                        className={classnames({
+                                            [css.disabledLink]:
+                                                hasNoSubscription,
+                                        })}
                                     >
-                                        Add Payment Method
-                                    </Button>
+                                        <Button
+                                            type="button"
+                                            isDisabled={hasNoSubscription}
+                                        >
+                                            Add payment method
+                                        </Button>
+                                    </Link>
                                     {hasNoSubscription ? (
                                         <UncontrolledTooltip
                                             placement="top"
@@ -99,12 +100,14 @@ export class BillingPaymentMethodContainer extends Component<
                                     ) : null}
                                 </div>
                             ) : (
-                                <Button
-                                    tag={Link}
-                                    to="/app/settings/billing/change-credit-card"
-                                >
-                                    Change Card
-                                </Button>
+                                <Link to="/app/settings/billing/change-credit-card">
+                                    <Button
+                                        type="button"
+                                        intent={ButtonIntent.Secondary}
+                                    >
+                                        Change card
+                                    </Button>
+                                </Link>
                             )}
                         </Col>
                     </Row>
@@ -159,21 +162,24 @@ export class BillingPaymentMethodContainer extends Component<
                         </i>{' '}
                         Billing with Shopify is inactive. Please reactivate to
                         avoid account cancellation.{' '}
-                        <Button
-                            tag="a"
-                            color="success"
+                        <a
                             href="/integrations/shopify/billing/activate/"
-                            onClick={() => {
-                                this.setState({
-                                    isActivatingShopifyBilling: true,
-                                })
-                            }}
                             className={classnames('float-right', {
-                                'btn-loading': isActivatingShopifyBilling,
+                                [css.disabledLink]: isActivatingShopifyBilling,
                             })}
                         >
-                            Reactivate billing with Shopify
-                        </Button>
+                            <Button
+                                type="button"
+                                isLoading={isActivatingShopifyBilling}
+                                onClick={() => {
+                                    this.setState({
+                                        isActivatingShopifyBilling: true,
+                                    })
+                                }}
+                            >
+                                Reactivate billing with Shopify
+                            </Button>
+                        </a>
                     </div>
                 )
                 break
@@ -195,18 +201,23 @@ export class BillingPaymentMethodContainer extends Component<
                             display: 'inline-block',
                         }}
                     >
-                        <Button
-                            tag="a"
-                            color="success"
+                        <a
                             href="/integrations/shopify/billing/activate/"
-                            onClick={this.onActivateShopifyBilling}
                             className={classnames({
-                                'btn-loading': isActivatingShopifyBilling,
+                                [css.disabledLink]:
+                                    isActivatingShopifyBilling ||
+                                    hasNoSubscription,
                             })}
-                            disabled={hasNoSubscription}
                         >
-                            {buttonLabel}
-                        </Button>
+                            <Button
+                                type="button"
+                                onClick={this.onActivateShopifyBilling}
+                                isLoading={isActivatingShopifyBilling}
+                                isDisabled={hasNoSubscription}
+                            >
+                                {buttonLabel}
+                            </Button>
+                        </a>
                         {hasNoSubscription ? (
                             <UncontrolledTooltip
                                 placement="top"

@@ -2,15 +2,16 @@ import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import Clipboard from 'clipboard'
 import {
-    FormGroup,
+    Button as ReactstrapButton,
     Container,
-    Label,
-    InputGroup,
-    Button,
+    FormGroup,
     Input,
+    InputGroup,
     InputGroupAddon,
+    Label,
 } from 'reactstrap'
 import classnames from 'classnames'
+import _camelCase from 'lodash/camelCase'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import {fetchCurrentAuths, resetApiKey} from 'state/auths/actions'
@@ -21,19 +22,21 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
+import Button from 'pages/common/components/button/Button'
+
 import css from '../settings.less'
 
 type Props = ConnectedProps<typeof connector>
 
 type State = {
-    isCopiedAPIKey: boolean
+    isCopiedApiKey: boolean
     isCopiedEmail: boolean
     isCopiedUrl: boolean
 }
 
 export class APIViewContainer extends Component<Props, State> {
     state = {
-        isCopiedAPIKey: false,
+        isCopiedApiKey: false,
         isCopiedEmail: false,
         isCopiedUrl: false,
     }
@@ -83,13 +86,16 @@ export class APIViewContainer extends Component<Props, State> {
                     dataset: {clipboardTarget: string}
                 }
             ).dataset.clipboardTarget
-            const target = `isCopied${targetId.replace('#', '')}` as keyof State
+            const targetPart = _camelCase(targetId.replace('#', ''))
+            const stateProp = `isCopied${targetPart
+                .charAt(0)
+                .toUpperCase()}${targetPart.slice(1)}` as keyof State
             const newState: Partial<State> = {}
-            newState[target] = true
+            newState[stateProp] = true
 
             this.setState(newState as State)
             setTimeout(() => {
-                newState[target] = false
+                newState[stateProp] = false
                 this.setState(newState as State)
             }, 1500)
         })
@@ -126,12 +132,8 @@ export class APIViewContainer extends Component<Props, State> {
                 <p className={classnames(css['body-regular'], css.mb24)}>
                     You can create an API Key using the button below.
                 </p>
-                <Button
-                    className="resetBtn"
-                    color="primary"
-                    onClick={this._createApiKey}
-                >
-                    Create API Key
+                <Button type="button" onClick={this._createApiKey}>
+                    Create API key
                 </Button>
             </div>
         )
@@ -142,18 +144,21 @@ export class APIViewContainer extends Component<Props, State> {
             <InputGroup>
                 <Input id="apiKey" type="text" value={apiKey} readOnly />
                 <InputGroupAddon addonType="append">
-                    <Button
+                    <ReactstrapButton
                         className="resetBtn"
                         color="danger"
                         onClick={this._resetApiKey}
                     >
                         <i className="material-icons mr-2">refresh</i>
                         Reset
-                    </Button>
-                    <Button className="copyBtn" data-clipboard-target="#apiKey">
+                    </ReactstrapButton>
+                    <ReactstrapButton
+                        className="copyBtn"
+                        data-clipboard-target="#apiKey"
+                    >
                         <i className="material-icons mr-2">file_copy</i>
-                        {this.state.isCopiedAPIKey ? 'Copied!' : 'Copy'}
-                    </Button>
+                        {this.state.isCopiedApiKey ? 'Copied!' : 'Copy'}
+                    </ReactstrapButton>
                 </InputGroupAddon>
             </InputGroup>
         )
@@ -247,7 +252,7 @@ export class APIViewContainer extends Component<Props, State> {
                                     readOnly
                                 />
                                 <InputGroupAddon addonType="append">
-                                    <Button
+                                    <ReactstrapButton
                                         className="copyBtn"
                                         data-clipboard-target="#url"
                                     >
@@ -257,7 +262,7 @@ export class APIViewContainer extends Component<Props, State> {
                                         {this.state.isCopiedUrl
                                             ? 'Copied!'
                                             : 'Copy'}
-                                    </Button>
+                                    </ReactstrapButton>
                                 </InputGroupAddon>
                             </InputGroup>
                         </FormGroup>
@@ -273,7 +278,7 @@ export class APIViewContainer extends Component<Props, State> {
                                     readOnly
                                 />
                                 <InputGroupAddon addonType="append">
-                                    <Button
+                                    <ReactstrapButton
                                         className="copyBtn"
                                         data-clipboard-target="#email"
                                     >
@@ -283,7 +288,7 @@ export class APIViewContainer extends Component<Props, State> {
                                         {this.state.isCopiedEmail
                                             ? 'Copied!'
                                             : 'Copy'}
-                                    </Button>
+                                    </ReactstrapButton>
                                 </InputGroupAddon>
                             </InputGroup>
                         </FormGroup>
@@ -353,7 +358,7 @@ export class APIViewContainer extends Component<Props, State> {
                         </div>
 
                         <Button
-                            color="primary"
+                            type="button"
                             onClick={this._subscribeToDeveloperNewsletter}
                         >
                             Subscribe

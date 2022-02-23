@@ -1,22 +1,20 @@
-import classnames from 'classnames'
 import React, {Component} from 'react'
-import {Badge, Button, Table} from 'reactstrap'
+import {Badge, Table} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
 import {AxiosError} from 'axios'
 import {Map} from 'immutable'
 
-import {SHOPIFY_PAYMENT_SERVICE} from '../../../constants/billing'
-import * as billingSelectors from '../../../state/billing/selectors'
-import {
-    fetchInvoices,
-    updateInvoiceInList,
-} from '../../../state/billing/actions'
-import Loader from '../../common/components/Loader/Loader'
-import GorgiasApi from '../../../services/gorgiasApi'
-import {notify} from '../../../state/notifications/actions'
-import {RootState} from '../../../state/types'
-import {NotificationStatus} from '../../../state/notifications/types'
+import {SHOPIFY_PAYMENT_SERVICE} from 'constants/billing'
+import * as billingSelectors from 'state/billing/selectors'
+import {fetchInvoices, updateInvoiceInList} from 'state/billing/actions'
+import Loader from 'pages/common/components/Loader/Loader'
+import GorgiasApi from 'services/gorgiasApi'
+import {notify} from 'state/notifications/actions'
+import {RootState} from 'state/types'
+import {NotificationStatus} from 'state/notifications/types'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import BillingHeader from './common/BillingHeader'
 
@@ -165,28 +163,32 @@ export class BillingInvoicesContainer extends Component<Props, State> {
                                     <td>
                                         {!shopifyPaid && (
                                             <a
-                                                color="secondary"
-                                                href={invoicePdfUrl}
-                                                className="btn btn-secondary mr-2"
+                                                className="mr-2"
                                                 target="_self"
+                                                href={invoicePdfUrl}
                                             >
-                                                <i className="material-icons mr-1">
-                                                    file_copy
-                                                </i>
-                                                Download PDF
+                                                <Button
+                                                    type="button"
+                                                    intent={
+                                                        ButtonIntent.Secondary
+                                                    }
+                                                >
+                                                    <ButtonIconLabel icon="file_copy">
+                                                        Download PDF
+                                                    </ButtonIconLabel>
+                                                </Button>
                                             </a>
                                         )}
                                         {paymentIntent &&
                                             paymentIntent.get('status') ===
                                                 'requires_source_action' && (
                                                 <Button
-                                                    color="success"
-                                                    className={classnames({
-                                                        'btn-loading':
-                                                            confirmingInvoicePayment ===
-                                                            invoice.get('id'),
-                                                    })}
-                                                    disabled={
+                                                    type="button"
+                                                    isLoading={
+                                                        confirmingInvoicePayment ===
+                                                        invoice.get('id')
+                                                    }
+                                                    isDisabled={
                                                         !!confirmingInvoicePayment ||
                                                         !!payingInvoice
                                                     }
@@ -204,13 +206,12 @@ export class BillingInvoicesContainer extends Component<Props, State> {
                                             paymentIntent.get('status') ===
                                                 'requires_source' && (
                                                 <Button
-                                                    color="success"
-                                                    className={classnames({
-                                                        'btn-loading':
-                                                            payingInvoice ===
-                                                            invoice.get('id'),
-                                                    })}
-                                                    disabled={
+                                                    type="button"
+                                                    isLoading={
+                                                        payingInvoice ===
+                                                        invoice.get('id')
+                                                    }
+                                                    isDisabled={
                                                         !!confirmingInvoicePayment ||
                                                         !!payingInvoice
                                                     }
