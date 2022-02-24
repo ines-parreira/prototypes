@@ -32,6 +32,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -64,6 +66,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -96,6 +100,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -128,6 +134,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -160,6 +168,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -192,6 +202,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -224,6 +236,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -256,6 +270,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -288,6 +304,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -320,6 +338,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -352,6 +372,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -384,6 +406,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
         {
@@ -416,6 +440,8 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     up: 0,
                     down: 0,
                 },
+                sharing_status: 'PUBLIC',
+                is_current: true,
             },
         },
     ],
@@ -460,5 +486,7 @@ export const getSingleArticleEnglish: Article = {
             up: 0,
             down: 0,
         },
+        sharing_status: 'PUBLIC',
+        is_current: true,
     },
 }

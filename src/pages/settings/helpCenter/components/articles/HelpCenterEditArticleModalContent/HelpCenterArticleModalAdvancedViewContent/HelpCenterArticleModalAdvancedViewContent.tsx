@@ -13,6 +13,7 @@ import {
     isExistingArticle,
 } from '../../../../utils/helpCenter.utils'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
+import {ArticleMode} from '../../../../types/articleMode'
 import HelpCenterEditAdvancedArticleForm from '../../HelpCenterEditAdvancedArticleForm'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
@@ -45,9 +46,7 @@ type Props = {
     // should be replaced by a call to a service, & provided by the
     // CurrentArticleTranslationEditionContext (that manages the current
     // article translation being edited)
-    onArticleSave: () => Promise<void>
-    // same
-    onArticleDelete: () => Promise<void>
+    articleMode: ArticleMode
 
     onChangesDiscard: () => void
 }
@@ -60,9 +59,8 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     counters,
     canSaveArticle,
     requiredFieldsArticle,
-    onArticleSave,
-    onArticleDelete,
     onChangesDiscard,
+    articleMode,
 }: Props) => {
     const {setEditModal, selectedArticle, setSelectedArticle} =
         useEditionManager()
@@ -141,10 +139,8 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 counters={counters}
                 canSave={canSaveArticle}
                 requiredFields={requiredFieldsArticle}
-                canDelete={isExistingArticle(selectedArticle)}
-                onSave={onArticleSave}
-                onDelete={onArticleDelete}
                 onDiscard={onChangesDiscard}
+                articleMode={articleMode}
             />
         </span>
     )

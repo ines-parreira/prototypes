@@ -16,6 +16,7 @@ describe('getNewArticleTranslation()', () => {
             title: '',
             content: '',
             excerpt: '',
+            is_current: false,
             slug: '',
             locale: 'en-US',
             seo_meta: {

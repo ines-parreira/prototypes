@@ -9,13 +9,19 @@ const mockedOnDiscard = jest.fn()
 
 describe('<HelpCenterEditModalFooter />', () => {
     const props: ComponentProps<typeof HelpCenterEditModalFooter> = {
+        rating: {
+            up: 15,
+            down: 2,
+        },
         canSave: true,
-        canDelete: true,
         requiredFields: [],
-        onSave: mockedOnSave,
-        onDelete: mockedOnDelete,
         onDiscard: mockedOnDiscard,
         counters: {charCount: 1752},
+        articleMode: {
+            mode: 'modified',
+            onSave: mockedOnSave,
+            onDelete: mockedOnDelete,
+        },
     }
 
     beforeEach(() => {
@@ -28,15 +34,83 @@ describe('<HelpCenterEditModalFooter />', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should trigger onSave when clicking on save button', () => {
+    it('allows to save and publish an existing modified article', () => {
         const {getByRole} = render(
             <HelpCenterEditModalFooter {...props} canSave={true} />
         )
 
-        const saveBtn = getByRole('button', {name: /Save Article/i})
-        fireEvent.click(saveBtn)
+        const saveAndPublish = getByRole('button', {name: /Save & Publish/i})
+        fireEvent.click(saveAndPublish)
 
         expect(mockedOnSave).toHaveBeenCalledTimes(1)
+        expect(mockedOnSave).toHaveBeenLastCalledWith(true)
+    })
+
+    it('allows to publish an unchanged and unpublished article', () => {
+        const mockedOnPublish = jest.fn()
+
+        const {getByRole} = render(
+            <HelpCenterEditModalFooter
+                {...{
+                    ...props,
+                    articleMode: {
+                        mode: 'unchanged_not_published',
+                        onPublish: mockedOnPublish,
+                        onDelete: mockedOnDelete,
+                    },
+                }}
+                canSave={true}
+            />
+        )
+
+        const publish = getByRole('button', {name: /Publish/i})
+        fireEvent.click(publish)
+
+        expect(mockedOnPublish).toHaveBeenCalledTimes(1)
+        expect(mockedOnPublish).toHaveBeenCalledTimes(1)
+    })
+
+    it('allows to create and publish a new article', () => {
+        const mockedOnCreate = jest.fn()
+
+        const {getByRole} = render(
+            <HelpCenterEditModalFooter
+                {...{
+                    ...props,
+                    articleMode: {
+                        mode: 'new',
+                        onCreate: mockedOnCreate,
+                    },
+                }}
+                canSave={true}
+            />
+        )
+
+        const createAndPublish = getByRole('button', {
+            name: /Create & Publish/i,
+        })
+        fireEvent.click(createAndPublish)
+
+        expect(mockedOnCreate).toHaveBeenLastCalledWith(true)
+    })
+
+    it('only displays disabled published button if article is published and unchanged', () => {
+        const {getByRole} = render(
+            <HelpCenterEditModalFooter
+                {...{
+                    ...props,
+                    articleMode: {
+                        mode: 'unchanged_published',
+                        onDelete: mockedOnDelete,
+                    },
+                }}
+                canSave={false}
+            />
+        )
+
+        getByRole('button', {
+            name: /Published/i,
+        }).hasAttribute('disabled')
     })
 
     it('should trigger onDelete when confirming the delete action', () => {

@@ -93,9 +93,15 @@ const mockUpdateArticle = jest
                 },
             })
     )
-const mockCreateArticleTranslation = jest.fn().mockResolvedValue({
-    data: {},
-})
+const mockCreateArticleTranslation = jest
+    .fn()
+    .mockImplementation((_article, translation) => ({
+        data: {
+            ...translation,
+            created_datetime: new Date().toISOString(),
+            updated_datetime: new Date().toISOString(),
+        },
+    }))
 const mockUpdateArticleTranslation = jest
     .fn()
     .mockResolvedValueOnce({
@@ -319,7 +325,8 @@ describe('useArticlesActions()', () => {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.updateArticle(
+            const {available_locales} = await result.current.updateArticle(
+                'fr-FR',
                 {
                     id: 1,
                     help_center_id: 1,
@@ -344,6 +351,8 @@ describe('useArticlesActions()', () => {
                             up: 0,
                             down: 0,
                         },
+                        sharing_status: 'PUBLIC',
+                        is_current: false,
                     },
                     rating: {
                         up: 0,
@@ -358,6 +367,57 @@ describe('useArticlesActions()', () => {
                 articleId: 1,
                 supportedLocales: ['fr-FR'],
             })
+            expect(available_locales).toEqual(['en-US', 'fr-FR'])
+        })
+
+        it('does not update translation in list if its locale is not the same from the default help center locale', async () => {
+            const {result} = renderHook(useArticlesActions, {
+                wrapper: dependencyWrapper,
+            })
+
+            const {available_locales} = await result.current.updateArticle(
+                'en-US',
+                {
+                    id: 1,
+                    help_center_id: 1,
+                    position: 1,
+                    created_datetime: '',
+                    updated_datetime: '',
+                    available_locales: ['en-US'],
+                    translation: {
+                        article_id: 1,
+                        locale: 'fr-FR',
+                        title: '',
+                        excerpt: '',
+                        content: '',
+                        slug: '',
+                        seo_meta: {
+                            title: null,
+                            description: null,
+                        },
+                        created_datetime: '',
+                        updated_datetime: '',
+                        rating: {
+                            up: 0,
+                            down: 0,
+                        },
+                        sharing_status: 'PUBLIC',
+                        is_current: false,
+                    },
+                    rating: {
+                        up: 0,
+                        down: 0,
+                    },
+                },
+                null
+            )
+
+            expect(updateArticle).toHaveBeenCalledTimes(0)
+            expect(pushArticleSupportedLocales).toHaveBeenCalledWith({
+                articleId: 1,
+                supportedLocales: ['fr-FR'],
+            })
+            expect(available_locales).toEqual(['en-US', 'fr-FR'])
         })
     })
 

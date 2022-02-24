@@ -12,6 +12,8 @@ import {Article, CreateArticleDto, LocaleCode} from 'models/helpCenter/types'
 import {getViewLanguage} from 'state/ui/helpCenter/selectors'
 import {HelpCenterArticleModalState} from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
 import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
+import {changeViewLanguage} from 'state/ui/helpCenter'
+import useAppDispatch from 'hooks/useAppDispatch'
 
 // TODO: move to redux (as UI states?)
 type EditionManagerContextValues = {
@@ -43,6 +45,8 @@ const EditionManagerContext = createContext<null | EditionManagerContextValues>(
 export const EditionManagerContextProvider = (props: {
     children: React.ReactNode
 }): JSX.Element => {
+    const dispatch = useAppDispatch()
+
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
@@ -72,6 +76,10 @@ export const EditionManagerContextProvider = (props: {
             setIsFullscreenEditModal(false)
         }
     }, [editModal])
+
+    useEffect(() => {
+        dispatch(changeViewLanguage(selectedArticleLanguage))
+    }, [selectedArticleLanguage])
 
     // change the selected article locale whenever we change of selectedArticle
     // ??: is this effect still relevant?

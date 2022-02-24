@@ -1,6 +1,7 @@
 import {isDevelopment} from 'utils/environment'
 import {
     Article,
+    ArticleTranslationWithRating,
     CreateArticleDto,
     CreateArticleTranslationDto,
     CreateHelpCenterTranslationDto,
@@ -25,11 +26,20 @@ export const getNewArticleTranslation = (
         title: null,
         description: null,
     },
+    is_current: false, // by default, new articles are unpublished
 })
 
 export const isExistingArticle = (
     article: CreateArticleDto | Article | null
 ): article is Article => (article ? 'id' in article : false)
+
+export const isExistingTranslation = (
+    translation: any | null
+): translation is ArticleTranslationWithRating =>
+    translation ? 'created_datetime' in translation : false
+
+export const isNotPublished = (article: Article) =>
+    article.translation.is_current === false
 
 export const helpCenterSeoMetaFields: Partial<
     keyof CreateHelpCenterTranslationDto['seo_meta']

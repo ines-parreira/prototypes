@@ -1327,6 +1327,21 @@
                         }
                     },
                     {
+                        "name": "version_status",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": ["latest_draft", "current"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sharing_status",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"enum": ["PUBLIC"], "type": "string"}
+                    },
+                    {
                         "name": "order_by",
                         "required": false,
                         "in": "query",
@@ -1513,6 +1528,21 @@
                         }
                     },
                     {
+                        "name": "version_status",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": ["latest_draft", "current"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sharing_status",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"enum": ["PUBLIC"], "type": "string"}
+                    },
+                    {
                         "name": "order_by",
                         "required": false,
                         "in": "query",
@@ -1681,6 +1711,21 @@
                         "schema": {"type": "number"}
                     },
                     {
+                        "name": "version_status",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": ["latest_draft", "current"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sharing_status",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"enum": ["PUBLIC"], "type": "string"}
+                    },
+                    {
                         "name": "locale",
                         "required": true,
                         "in": "query",
@@ -1804,6 +1849,21 @@
                         "schema": {"type": "number"}
                     },
                     {
+                        "name": "version_status",
+                        "required": false,
+                        "in": "query",
+                        "schema": {
+                            "enum": ["latest_draft", "current"],
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sharing_status",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"enum": ["PUBLIC"], "type": "string"}
+                    },
+                    {
                         "name": "per_page",
                         "required": false,
                         "in": "query",
@@ -1866,7 +1926,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ArticleTranslationDto"
+                                    "$ref": "#/components/schemas/ArticleTranslationResponseDto"
                                 }
                             }
                         }
@@ -1915,7 +1975,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ArticleTranslationDto"
+                                    "$ref": "#/components/schemas/ArticleTranslationResponseDto"
                                 }
                             }
                         }
@@ -3981,7 +4041,7 @@
                 },
                 "required": ["title", "description"]
             },
-            "LocalArticleTranslationAndRating": {
+            "ArticleListDataTranslationDto": {
                 "type": "object",
                 "properties": {
                     "created_datetime": {
@@ -3997,8 +4057,11 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "title": {"type": "string"},
+                    "excerpt": {"type": "string"},
+                    "content": {"type": "string"},
+                    "slug": {"type": "string"},
                     "locale": {
-                        "type": "string",
                         "enum": [
                             "en-US",
                             "fr-FR",
@@ -4011,7 +4074,8 @@
                             "no-NO",
                             "it-IT",
                             "sv-SE"
-                        ]
+                        ],
+                        "type": "string"
                     },
                     "article_id": {"type": "number"},
                     "seo_meta": {
@@ -4021,35 +4085,34 @@
                             }
                         ]
                     },
+                    "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
+                    "is_current": {"type": "boolean"},
+                    "rating": {"$ref": "#/components/schemas/Rating"},
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
                         "enum": ["default", "available"],
                         "type": "string"
-                    },
-                    "rating": {
-                        "allOf": [{"$ref": "#/components/schemas/Rating"}]
-                    },
-                    "title": {"type": "string"},
-                    "excerpt": {"type": "string"},
-                    "content": {"type": "string"},
-                    "slug": {"type": "string"}
+                    }
                 },
                 "required": [
                     "created_datetime",
                     "updated_datetime",
-                    "locale",
-                    "article_id",
-                    "seo_meta",
-                    "rating",
                     "title",
                     "excerpt",
                     "content",
-                    "slug"
+                    "slug",
+                    "locale",
+                    "article_id",
+                    "seo_meta",
+                    "sharing_status",
+                    "is_current",
+                    "rating"
                 ]
             },
-            "ArticleWithLocalTranslationAndRating": {
+            "ArticleListDataDto": {
                 "type": "object",
                 "properties": {
+                    "id": {"type": "number"},
                     "created_datetime": {
                         "format": "date-time",
                         "type": "string"
@@ -4090,20 +4153,19 @@
                     "translation": {
                         "allOf": [
                             {
-                                "$ref": "#/components/schemas/LocalArticleTranslationAndRating"
+                                "$ref": "#/components/schemas/ArticleListDataTranslationDto"
                             }
                         ]
-                    },
-                    "id": {"type": "number"}
+                    }
                 },
                 "required": [
+                    "id",
                     "created_datetime",
                     "updated_datetime",
                     "help_center_id",
                     "available_locales",
                     "rating",
-                    "translation",
-                    "id"
+                    "translation"
                 ]
             },
             "ArticlesListPageDto": {
@@ -4118,7 +4180,7 @@
                     "data": {
                         "type": "array",
                         "items": {
-                            "$ref": "#/components/schemas/ArticleWithLocalTranslationAndRating"
+                            "$ref": "#/components/schemas/ArticleListDataDto"
                         }
                     }
                 },
@@ -4140,8 +4202,11 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "title": {"type": "string"},
+                    "excerpt": {"type": "string"},
+                    "content": {"type": "string"},
+                    "slug": {"type": "string"},
                     "locale": {
-                        "type": "string",
                         "enum": [
                             "en-US",
                             "fr-FR",
@@ -4154,7 +4219,8 @@
                             "no-NO",
                             "it-IT",
                             "sv-SE"
-                        ]
+                        ],
+                        "type": "string"
                     },
                     "article_id": {"type": "number"},
                     "seo_meta": {
@@ -4164,26 +4230,26 @@
                             }
                         ]
                     },
+                    "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
+                    "is_current": {"type": "boolean"},
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
                         "enum": ["default", "available"],
                         "type": "string"
-                    },
-                    "title": {"type": "string"},
-                    "excerpt": {"type": "string"},
-                    "content": {"type": "string"},
-                    "slug": {"type": "string"}
+                    }
                 },
                 "required": [
                     "created_datetime",
                     "updated_datetime",
-                    "locale",
-                    "article_id",
-                    "seo_meta",
                     "title",
                     "excerpt",
                     "content",
-                    "slug"
+                    "slug",
+                    "locale",
+                    "article_id",
+                    "seo_meta",
+                    "sharing_status",
+                    "is_current"
                 ]
             },
             "ArticleWithLocalTranslation": {
@@ -4202,7 +4268,63 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "available_locales": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ]
+                        }
+                    },
                     "category_id": {"type": "number", "nullable": true},
+                    "help_center_id": {"type": "number"},
+                    "id": {"type": "number"},
+                    "translation": {
+                        "$ref": "#/components/schemas/LocalArticleTranslation"
+                    }
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "available_locales",
+                    "help_center_id",
+                    "id",
+                    "translation"
+                ]
+            },
+            "UpdateArticleDto": {
+                "type": "object",
+                "properties": {
+                    "category_id": {"type": "number", "nullable": true}
+                }
+            },
+            "CategoryEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
                     "help_center_id": {"type": "number"},
                     "available_locales": {
                         "type": "array",
@@ -4223,9 +4345,6 @@
                             ]
                         }
                     },
-                    "translation": {
-                        "$ref": "#/components/schemas/LocalArticleTranslation"
-                    },
                     "id": {"type": "number"}
                 },
                 "required": [
@@ -4233,15 +4352,8 @@
                     "updated_datetime",
                     "help_center_id",
                     "available_locales",
-                    "translation",
                     "id"
                 ]
-            },
-            "UpdateArticleDto": {
-                "type": "object",
-                "properties": {
-                    "category_id": {"type": "number", "nullable": true}
-                }
             },
             "ArticleEntity": {
                 "type": "object",
@@ -4259,35 +4371,185 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "category_id": {"type": "number", "nullable": true},
-                    "help_center_id": {"type": "number"},
-                    "available_locales": {
+                    "id": {"type": "number"},
+                    "positionInCategory": {
+                        "type": "number",
+                        "description": "The position of the article in its category.\nIf the article has no category, it'll be the position of\nthe articles among uncategorized articles."
+                    },
+                    "categoryId": {"type": "number", "nullable": true},
+                    "category": {"$ref": "#/components/schemas/CategoryEntity"},
+                    "helpCenterId": {"type": "number"},
+                    "helpCenter": {
+                        "$ref": "#/components/schemas/HelpCenterEntity"
+                    },
+                    "translations": {
                         "type": "array",
                         "items": {
-                            "type": "string",
-                            "enum": [
-                                "en-US",
-                                "fr-FR",
-                                "fr-CA",
-                                "es-ES",
-                                "de-DE",
-                                "nl-NL",
-                                "cs-CZ",
-                                "da-DK",
-                                "no-NO",
-                                "it-IT",
-                                "sv-SE"
-                            ]
+                            "$ref": "#/components/schemas/ArticleTranslationEntity"
                         }
                     },
-                    "id": {"type": "number"}
+                    "creatorUserId": {"type": "number"}
                 },
                 "required": [
                     "created_datetime",
                     "updated_datetime",
-                    "help_center_id",
-                    "available_locales",
-                    "id"
+                    "id",
+                    "positionInCategory",
+                    "helpCenterId",
+                    "translations"
+                ]
+            },
+            "ArticleTranslationVersionEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "article_translation_id": {"type": "number"},
+                    "version": {"type": "number"},
+                    "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
+                    "seo_meta": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleTranslationSeoMeta"
+                            }
+                        ]
+                    },
+                    "title": {"type": "string"},
+                    "excerpt": {"type": "string"},
+                    "content": {"type": "string"},
+                    "slug": {"type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "article_translation_id",
+                    "version",
+                    "sharing_status",
+                    "seo_meta",
+                    "title",
+                    "excerpt",
+                    "content",
+                    "slug"
+                ]
+            },
+            "ArticleTranslationRatingEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "context": {"type": "object"},
+                    "id": {"type": "number"},
+                    "rating": {"enum": ["1", "-1"], "type": "string"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "context",
+                    "id",
+                    "rating"
+                ]
+            },
+            "ArticleTranslationEntity": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "id": {"type": "number"},
+                    "title": {"type": "string"},
+                    "excerpt": {"type": "string"},
+                    "content": {"type": "string"},
+                    "slug": {"type": "string"},
+                    "localeId": {"type": "number"},
+                    "locale": {"$ref": "#/components/schemas/LocaleEntity"},
+                    "articleId": {"type": "number"},
+                    "article": {"$ref": "#/components/schemas/ArticleEntity"},
+                    "draftVersionId": {"type": "number", "nullable": true},
+                    "currentVersionId": {"type": "number", "nullable": true},
+                    "currentVersion": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleTranslationVersionEntity"
+                            }
+                        ]
+                    },
+                    "draftVersion": {
+                        "nullable": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleTranslationVersionEntity"
+                            }
+                        ]
+                    },
+                    "ratings": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleTranslationRatingEntity"
+                        }
+                    },
+                    "versions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleTranslationVersionEntity"
+                        }
+                    },
+                    "seoMeta": {
+                        "$ref": "#/components/schemas/ArticleTranslationSeoMeta"
+                    },
+                    "creatorUserId": {"type": "number"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "id",
+                    "title",
+                    "excerpt",
+                    "content",
+                    "slug",
+                    "localeId",
+                    "locale",
+                    "articleId",
+                    "article",
+                    "draftVersionId",
+                    "currentVersionId",
+                    "currentVersion",
+                    "draftVersion",
+                    "ratings",
+                    "versions",
+                    "seoMeta"
                 ]
             },
             "CreateArticleTranslationSeoMetaDto": {
@@ -4357,6 +4619,17 @@
                                 "$ref": "#/components/schemas/CreateArticleTranslationSeoMetaDto"
                             }
                         ]
+                    },
+                    "sharing_status": {
+                        "type": "string",
+                        "description": "",
+                        "enum": ["PUBLIC"],
+                        "default": "PUBLIC"
+                    },
+                    "is_current": {
+                        "type": "boolean",
+                        "description": "",
+                        "default": true
                     }
                 },
                 "required": [
@@ -4427,6 +4700,8 @@
                             }
                         ]
                     },
+                    "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
+                    "is_current": {"type": "boolean"},
                     "rating": {"$ref": "#/components/schemas/Rating"}
                 },
                 "required": [
@@ -4439,6 +4714,8 @@
                     "locale",
                     "article_id",
                     "seo_meta",
+                    "sharing_status",
+                    "is_current",
                     "rating"
                 ]
             },
@@ -4460,7 +4737,7 @@
                 },
                 "required": ["meta", "object", "data"]
             },
-            "ArticleTranslationDto": {
+            "ArticleTranslationResponseDto": {
                 "type": "object",
                 "properties": {
                     "created_datetime": {
@@ -4503,7 +4780,9 @@
                                 "$ref": "#/components/schemas/ArticleTranslationSeoMeta"
                             }
                         ]
-                    }
+                    },
+                    "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
+                    "is_current": {"type": "boolean"}
                 },
                 "required": [
                     "created_datetime",
@@ -4514,7 +4793,9 @@
                     "slug",
                     "locale",
                     "article_id",
-                    "seo_meta"
+                    "seo_meta",
+                    "sharing_status",
+                    "is_current"
                 ]
             },
             "UpdateArticleTranslationDto": {
@@ -4550,6 +4831,17 @@
                                 "$ref": "#/components/schemas/CreateArticleTranslationSeoMetaDto"
                             }
                         ]
+                    },
+                    "sharing_status": {
+                        "type": "string",
+                        "description": "",
+                        "enum": ["PUBLIC"],
+                        "default": "PUBLIC"
+                    },
+                    "is_current": {
+                        "type": "boolean",
+                        "description": "",
+                        "default": true
                     }
                 }
             },
@@ -4565,34 +4857,6 @@
                     "context": {"type": "object"}
                 },
                 "required": ["rating", "context"]
-            },
-            "ArticleTranslationRatingEntity": {
-                "type": "object",
-                "properties": {
-                    "created_datetime": {
-                        "format": "date-time",
-                        "type": "string"
-                    },
-                    "updated_datetime": {
-                        "format": "date-time",
-                        "type": "string"
-                    },
-                    "deleted_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "context": {"type": "object"},
-                    "id": {"type": "number"},
-                    "rating": {"enum": ["1", "-1"], "type": "string"}
-                },
-                "required": [
-                    "created_datetime",
-                    "updated_datetime",
-                    "context",
-                    "id",
-                    "rating"
-                ]
             },
             "UpdateArticleTranslationRatingDto": {
                 "type": "object",

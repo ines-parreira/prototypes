@@ -11,8 +11,9 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {Event, useModalManager} from 'hooks/useModalManager'
 import {
     Article,
-    ArticleTranslation,
+    ArticleTranslationWithRating,
     CreateArticleDto,
+    CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
 import {resetArticles} from 'state/entities/helpCenter/articles'
@@ -37,6 +38,7 @@ import {
     getNewArticleTranslation,
     isExistingArticle,
 } from '../utils/helpCenter.utils'
+import {ArticleMode, getArticleMode} from '../types/articleMode'
 
 import {useEditionManager} from '../providers/EditionManagerContext'
 
@@ -99,11 +101,11 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     // article states
     const [selectedArticleTranslations, setSelectedArticleTranslations] =
-        useState<ArticleTranslation[] | null>(null)
+        useState<ArticleTranslationWithRating[] | null>(null)
     const [
         selectedExistingArticleTranslation,
         setSelectedExistingArticleTranslation,
-    ] = useState<ArticleTranslation | null>(null)
+    ] = useState<ArticleTranslationWithRating | null>(null)
     const [isFetchingArticleTranslations, setIsFetchingArticleTranslations] =
         useState(false)
 
@@ -143,6 +145,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 } = await client.listArticleTranslations({
                     help_center_id: helpCenter.id,
                     article_id: selectedArticle.id,
+                    version_status: 'latest_draft',
                 })
 
                 const translation =
@@ -260,28 +263,92 @@ export const HelpCenterArticlesView: React.FC = () => {
         })
     }
 
-    const onArticleSave = async () => {
-        if (!selectedArticle?.translation) {
+    const reloadArticle = (article: Article) => {
+        setSelectedArticle(article)
+        setSelectedExistingArticleTranslation(article.translation)
+
+        const oldTranslations = selectedArticleTranslations ?? []
+
+        setSelectedArticleTranslations([
+            ...oldTranslations.filter(
+                (translation) =>
+                    translation.locale !== article.translation.locale
+            ),
+            article.translation,
+        ])
+    }
+
+    const createArticle = async (
+        article: CreateArticleDto | Article | null,
+        isPublished: boolean
+    ) => {
+        if (!article?.translation) {
             return
         }
 
-        // Create or update article
         try {
-            if (isExistingArticle(selectedArticle)) {
-                await articlesActions.updateArticle(
-                    selectedArticle,
-                    selectedCategoryId
-                )
-            } else {
-                await articlesActions.createArticle(
-                    selectedArticle.translation,
-                    selectedCategoryId
-                )
-            }
+            const newArticle = await articlesActions.createArticle(
+                {
+                    ...article.translation,
+                    is_current: isPublished,
+                },
+                selectedCategoryId
+            )
+
+            reloadArticle(newArticle)
 
             void dispatch(
                 notify({
-                    message: 'Article saved with success',
+                    message: `Article created${
+                        isPublished ? ' and published' : ''
+                    } with success`,
+                    status: NotificationStatus.Success,
+                })
+            )
+        } catch (err) {
+            const errorMessage =
+                axios.isAxiosError(err) && err.response?.status === 400
+                    ? 'some fields are empty or invalid.'
+                    : 'please try again later.'
+
+            void dispatch(
+                notify({
+                    message: `Failed to create the article: ${errorMessage}`,
+                    status: NotificationStatus.Error,
+                })
+            )
+            console.error(err)
+        }
+    }
+
+    const updateArticle = async (
+        article: Article | null,
+        isPublished: boolean
+    ) => {
+        if (!article?.translation) {
+            return
+        }
+
+        try {
+            const updatedArticle = await articlesActions.updateArticle(
+                helpCenter.default_locale,
+                {
+                    ...article,
+                    translation: {
+                        ...article.translation,
+                        is_current: isPublished,
+                    },
+                },
+                selectedCategoryId
+            )
+
+            reloadArticle(updatedArticle)
+
+            void dispatch(
+                notify({
+                    message: `Article saved${
+                        isPublished ? ' and published' : ''
+                    } with success`,
                     status: NotificationStatus.Success,
                 })
             )
@@ -403,7 +470,7 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     const onArticleLanguageSelect = (
         localeCode: LocaleCode,
-        translation: ArticleTranslation
+        translation: ArticleTranslationWithRating | CreateArticleTranslationDto
     ) => {
         if (!selectedArticle) {
             return
@@ -457,14 +524,12 @@ export const HelpCenterArticlesView: React.FC = () => {
                     } = await client.listArticleTranslations({
                         help_center_id: helpCenter.id,
                         article_id: selectedArticle.id,
+                        version_status: 'latest_draft',
                     })
                     const translation =
                         translations.find(
                             ({locale}) => locale === localeCode
-                        ) ||
-                        (getNewArticleTranslation(
-                            localeCode
-                        ) as ArticleTranslation)
+                        ) || getNewArticleTranslation(localeCode)
                     onArticleLanguageSelect(localeCode, translation)
                     setSelectedArticleTranslations(translations)
                 }
@@ -474,8 +539,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 selectedArticleTranslations?.find(
                     ({locale: translationLocale}) =>
                         translationLocale === localeCode
-                ) ||
-                (getNewArticleTranslation(localeCode) as ArticleTranslation)
+                ) || getNewArticleTranslation(localeCode)
             if (translation) onArticleLanguageSelect(localeCode, translation)
         }
     }
@@ -522,19 +586,17 @@ export const HelpCenterArticlesView: React.FC = () => {
                           selectedArticleLanguage,
                       ],
             })
+
+            await updateArticle(selectedArticle, false)
+        } else {
+            await createArticle(selectedArticle, false)
         }
-        await onArticleSave()
+
         setIsPendingCloseArticle(false)
         if (isExistingArticle(selectedArticle)) nextAction.current()
-        else closeModal()
     }
 
-    const onDirectSaveArticle = async () => {
-        await onArticleSave()
-        closeModal()
-    }
-
-    const renderArticleEditModalContent = () => {
+    const renderArticleEditModalContent = (articleMode: ArticleMode) => {
         if (!selectedArticle?.translation) {
             return null
         }
@@ -549,16 +611,15 @@ export const HelpCenterArticlesView: React.FC = () => {
                         canSaveArticle={canSaveArticle}
                         counters={counters}
                         onArticleChange={onArticleChange}
-                        onArticleDelete={onArticleDelete}
                         onArticleLanguageSelect={onArticleLanguageSelectAttempt}
                         onArticleLanguageSelectActionClick={
                             onArticleLanguageSelectActionClick
                         }
-                        onArticleSave={onDirectSaveArticle}
                         onArticleModalClose={onCloseModalAttempt}
                         onChangesDiscard={onDiscardChangesAttempt}
                         requiredFieldsArticle={requiredFieldsArticle}
                         autoFocus={autoFocus}
+                        articleMode={articleMode}
                     />
                 )
             case HelpCenterArticleModalView.ADVANCED:
@@ -571,10 +632,9 @@ export const HelpCenterArticlesView: React.FC = () => {
                         }
                         canSaveArticle={canSaveArticle}
                         requiredFieldsArticle={requiredFieldsArticle}
-                        onArticleSave={onArticleSave}
-                        onArticleDelete={onArticleDelete}
                         onChangesDiscard={onDiscardChangesAttempt}
                         autoFocus={autoFocus}
+                        articleMode={articleMode}
                     />
                 )
             default:
@@ -587,9 +647,11 @@ export const HelpCenterArticlesView: React.FC = () => {
      */
     const {
         canSaveArticle,
+        articleModified,
         requiredFieldsArticle,
     }: {
         canSaveArticle: boolean
+        articleModified: boolean
         requiredFieldsArticle: typeof articleRequiredFields
     } = useMemo(() => {
         const currentTranslation = selectedArticle?.translation
@@ -602,6 +664,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         ) {
             return {
                 canSaveArticle: false,
+                articleModified: false,
                 requiredFieldsArticle,
             }
         }
@@ -618,6 +681,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         if (!selectedExistingArticleTranslation) {
             return {
                 canSaveArticle: filledRequired,
+                articleModified: false,
                 requiredFieldsArticle,
             }
         }
@@ -626,13 +690,17 @@ export const HelpCenterArticlesView: React.FC = () => {
             currentTranslation,
             selectedExistingArticleTranslation
         )
-        const categoryHasBeenChanged =
-            selectedArticle?.category_id !== selectedCategoryId
+
+        // selectedArticle?.category_id is number | undefined | null, we want to compare it to number | null
+        const oldCategory = selectedArticle?.category_id ?? null
+        const categoryHasBeenChanged = oldCategory !== selectedCategoryId
+
+        const articleModified =
+            categoryHasBeenChanged || translationHasBeenChanged
 
         return {
-            canSaveArticle:
-                filledRequired &&
-                (categoryHasBeenChanged || translationHasBeenChanged),
+            canSaveArticle: filledRequired && articleModified,
+            articleModified,
             requiredFieldsArticle,
         }
     }, [
@@ -693,7 +761,13 @@ export const HelpCenterArticlesView: React.FC = () => {
                 onBackdropClick={onCloseModalAttempt}
                 transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
             >
-                {renderArticleEditModalContent()}
+                {renderArticleEditModalContent(
+                    getArticleMode(selectedArticle, articleModified, {
+                        createArticle,
+                        deleteArticle: onArticleDelete,
+                        updateArticle,
+                    })
+                )}
             </HelpCenterEditModal>
 
             {isPendingCloseArticle && (

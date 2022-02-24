@@ -45,7 +45,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           </button>
         </div>
         <button
-          aria-label="close modal"
+          aria-label="close edit modal"
           class="controlButton"
           type="button"
         >
@@ -171,7 +171,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           </button>
         </div>
         <button
-          aria-label="close modal"
+          aria-label="close edit modal"
           class="controlButton"
           type="button"
         >
@@ -246,7 +246,7 @@ exports[`<HelpCenterEditModalHeader /> should render a preview article button 1`
           </i>
         </button>
         <button
-          aria-label="close modal"
+          aria-label="close edit modal"
           class="controlButton"
           type="button"
         >
@@ -312,7 +312,7 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
           </button>
         </div>
         <button
-          aria-label="close modal"
+          aria-label="close edit modal"
           class="controlButton"
           type="button"
         >

@@ -162,7 +162,7 @@ export const HelpCenterEditModalHeader = ({
                         type="button"
                         className={css.controlButton}
                         onClick={onClose}
-                        aria-label="close modal"
+                        aria-label="close edit modal"
                     >
                         <i className="material-icons">keyboard_tab</i>
                     </button>

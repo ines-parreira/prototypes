@@ -23,6 +23,7 @@ import HelpCenterEditor from '../../HelpCenterEditor/HelpCenterEditor'
 import {HelpCenterArticleModalView} from '../types'
 
 import css from '../HelpCenterEditArticleModalContent.less'
+import {ArticleMode} from '../../../../types/articleMode'
 
 type Props = {
     onArticleLanguageSelect: (localeCode: LocaleCode) => void
@@ -59,9 +60,7 @@ type Props = {
     // should be replaced by a call to a service, & provided by the
     // CurrentArticleTranslationEditionContext (that manages the current
     // article translation being edited)
-    onArticleSave: () => Promise<void>
-    // same
-    onArticleDelete: () => Promise<void>
+    articleMode: ArticleMode
 
     onChangesDiscard: () => void
 }
@@ -75,9 +74,8 @@ const HelpCenterArticleModalBasicViewContent = ({
     counters,
     canSaveArticle,
     requiredFieldsArticle,
-    onArticleSave,
-    onArticleDelete,
     onChangesDiscard,
+    articleMode,
 }: Props) => {
     const screenSize = useScreenSize()
     const {
@@ -183,9 +181,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                 counters={counters}
                 canSave={canSaveArticle}
                 requiredFields={requiredFieldsArticle}
-                canDelete={isExistingArticle(selectedArticle)}
-                onSave={onArticleSave}
-                onDelete={onArticleDelete}
+                articleMode={articleMode}
                 onDiscard={onChangesDiscard}
             />
         </span>

@@ -86,12 +86,14 @@ export const useArticlesActions = () => {
                           help_center_id: helpCenterId,
                           category_id: categoryId,
                           order_by: 'position',
+                          version_status: 'latest_draft',
                           ...params,
                       })
                     : client.listArticles({
                           help_center_id: helpCenterId,
                           has_category: false,
                           order_by: 'position',
+                          version_status: 'latest_draft',
                           ...params,
                       }))
 
@@ -140,12 +142,14 @@ export const useArticlesActions = () => {
                           category_id: categoryId,
                           page: 1,
                           per_page: 1,
+                          version_status: 'latest_draft',
                       })
                     : client.listArticles({
                           help_center_id: helpCenterId,
                           has_category: false,
                           page: 1,
                           per_page: 1,
+                          version_status: 'latest_draft',
                       }))
 
                 setIsLoading(false)
@@ -161,7 +165,7 @@ export const useArticlesActions = () => {
         async createArticle(
             translation: CreateArticleTranslationDto,
             categoryId: number | null
-        ) {
+        ): Promise<Article> {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
@@ -200,7 +204,11 @@ export const useArticlesActions = () => {
             }
         },
 
-        async updateArticle(article: Article, categoryId: number | null) {
+        async updateArticle(
+            defaultLocale: LocaleCode,
+            article: Article,
+            categoryId: number | null
+        ): Promise<Article> {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
@@ -246,12 +254,20 @@ export const useArticlesActions = () => {
                     rating: article.translation.rating,
                 }
 
+                // if a new translation was added, the updated article must contain it in its available_locales
+                updatedArticle.available_locales = Array.from(
+                    new Set(updatedArticle.available_locales).add(
+                        updatedArticle.translation.locale
+                    )
+                )
+
                 if (updatedArticle.translation.locale !== viewLanguage) {
                     const {
                         data: {data: translations},
                     } = await client.listArticleTranslations({
                         help_center_id: helpCenterId,
                         article_id: article.id,
+                        version_status: 'latest_draft',
                     })
 
                     updatedArticle.translation =
@@ -259,7 +275,10 @@ export const useArticlesActions = () => {
                         updatedArticle.translation
                 }
 
-                dispatch(updateArticle(updatedArticle))
+                if (article.translation.locale === defaultLocale) {
+                    dispatch(updateArticle(updatedArticle))
+                }
+
                 dispatch(
                     pushArticleSupportedLocales({
                         articleId: article.id,
@@ -268,6 +287,8 @@ export const useArticlesActions = () => {
                 )
 
                 setIsLoading(false)
+
+                return updatedArticle
             } catch (err) {
                 setIsLoading(false)
 
@@ -290,6 +311,7 @@ export const useArticlesActions = () => {
                     excerpt: article.translation.excerpt,
                     slug: article.translation.slug,
                     seo_meta: article.translation.seo_meta,
+                    is_current: article.translation.is_current,
                 }
             )
 
@@ -311,6 +333,7 @@ export const useArticlesActions = () => {
                     excerpt: article.translation.excerpt,
                     slug: article.translation.slug,
                     seo_meta: article.translation.seo_meta,
+                    is_current: article.translation.is_current,
                 }
             )
 
@@ -419,6 +442,7 @@ export const useArticlesActions = () => {
                     .listArticleTranslations({
                         help_center_id: helpCenterId,
                         article_id: article.id,
+                        version_status: 'latest_draft',
                     })
                     .then((response) => response.data.data)
 

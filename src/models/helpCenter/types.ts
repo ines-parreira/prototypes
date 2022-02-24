@@ -69,12 +69,13 @@ export type UpdateArticleTranslationDto =
 
 export type ArticlesListPage = Components.Schemas.ArticlesListPageDto
 export type ArticleWithLocalTranslationAndRating =
-    Components.Schemas.ArticleWithLocalTranslationAndRating
+    Components.Schemas.ArticleListDataDto
 export type ArticleWithLocalTranslation =
     Components.Schemas.ArticleWithLocalTranslation
 export type Rating = Components.Schemas.Rating
 
-export type ArticleTranslation = Components.Schemas.ArticleTranslationDto
+export type ArticleTranslationWithRating =
+    Components.Schemas.ArticleTranslationWithRating
 export type ArticleTranslationSeoMeta =
     Components.Schemas.ArticleTranslationSeoMeta
 export type LocalArticleTranslation = Components.Schemas.LocalArticleTranslation

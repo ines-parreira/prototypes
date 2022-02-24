@@ -9,14 +9,51 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
       class="buttonsWrapper"
     >
       <div
+        class="dropup btn-group"
         id="article-save-button-wrapper"
       >
         <button
-          class="wrapper submitButton primary medium"
+          class="wrapper primary medium"
+          color="primary"
+        >
+          Save & Publish
+        </button>
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="dropdown-toggle btn btn-primary"
           type="button"
         >
-          Save Article
+          <span
+            class="sr-only"
+          >
+            Toggle Dropdown
+          </span>
         </button>
+        <div
+          aria-hidden="true"
+          class="dropdown-menu dropdown-menu-right"
+          role="menu"
+          style="width: 100%;"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Save Changes
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Save & Publish
+          </button>
+        </div>
       </div>
       <button
         class="wrapper secondary medium"
@@ -24,6 +61,49 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
       >
         Discard changes
       </button>
+      <div
+        class="rating"
+      >
+        <div
+          class="rating-text"
+        >
+          Rating:
+        </div>
+        <img
+          alt="star"
+          class="rating-star"
+          src="test-file-stub"
+        />
+        <div>
+          77
+          %
+        </div>
+        <div
+          class="rating-separator"
+        >
+          |
+        </div>
+        <div
+          class="rating-thumbs"
+        >
+          <div>
+            <img
+              alt="up"
+              class="rating-icon"
+              src="test-file-stub"
+            />
+            15
+          </div>
+          <div>
+            <img
+              alt="down"
+              class="rating-icon"
+              src="test-file-stub"
+            />
+            2
+          </div>
+        </div>
+      </div>
     </div>
     <div
       class="buttonsWrapper"
