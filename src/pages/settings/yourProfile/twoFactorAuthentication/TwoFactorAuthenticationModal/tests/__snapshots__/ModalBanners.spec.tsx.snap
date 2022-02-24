@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 1- 1`] = `
+<div>
+  <div
+    class="banner bannerInfo"
+  >
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+    <div
+      class="infoBannerText"
+    >
+      <span>
+        For security reasons, your admin requires you to setup two-factor authentication in order to access your account.
+      </span>
+    </div>
+  </div>
+  
+</div>
+`;
+
+exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 1-Foo error banner 1`] = `
+<div>
+  <div
+    class="banner bannerInfo"
+  >
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+    <div
+      class="infoBannerText"
+    >
+      <span>
+        For security reasons, your admin requires you to setup two-factor authentication in order to access your account.
+      </span>
+    </div>
+  </div>
+  <div
+    class="banner bannerError"
+  >
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+    <div
+      class="bannerText"
+    >
+      <span>
+        Foo error banner
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 2- 1`] = `
+<div>
+  
+</div>
+`;
+
+exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 2-Foo error banner 1`] = `
+<div>
+  <div
+    class="banner bannerError"
+  >
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+    <div
+      class="bannerText"
+    >
+      <span>
+        Foo error banner
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 3-Foo error banner 1`] = `
+<div>
+  <div
+    class="banner bannerError"
+  >
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+    <div
+      class="bannerText"
+    >
+      <span>
+        Foo error banner
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 4- 1`] = `
+<div>
+  
+</div>
+`;
+
+exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 999- 1`] = `
+<div>
+  
+</div>
+`;
+
+exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 999-Foo error banner 1`] = `
+<div>
+  <div
+    class="banner bannerError"
+  >
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+    <div
+      class="bannerText"
+    >
+      <span>
+        Foo error banner
+      </span>
+    </div>
+  </div>
+</div>
+`;

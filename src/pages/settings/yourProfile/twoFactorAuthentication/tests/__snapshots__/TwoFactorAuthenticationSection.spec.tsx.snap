@@ -48,7 +48,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
         <div
           class="modal-dialog"
           role="document"
-          style="max-width: 400px;"
+          style="max-width: 600px;"
         >
           <div
             class="modal-content"
@@ -76,7 +76,74 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
             <div
               class="modal-body modal-body"
             >
-              QR Code step
+              <div
+                class="banner bannerInfo"
+              >
+                <img
+                  alt="icon"
+                  class="icon"
+                  src="test-file-stub"
+                />
+                <div
+                  class="infoBannerText"
+                >
+                  <span>
+                    For security reasons, your admin requires you to setup two-factor authentication in order to access your account.
+                  </span>
+                </div>
+              </div>
+              
+              <div
+                class="headingBold"
+              >
+                Step 1: Download an authenticator app
+              </div>
+              <div
+                class="textSection"
+              >
+                Download and install any authenticator app (
+                <a
+                  href="https://support.google.com/accounts/answer/1066447"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Eg. Google Authenticator
+                </a>
+                ) on your phone.
+              </div>
+              <div
+                class="headingBold"
+              >
+                Step 2: Scan the QR code
+              </div>
+              <div
+                class="textSection"
+              >
+                Open the authenticator app and scan the image below using your phone’s camera.
+              </div>
+              
+              <div
+                class="qrCodeLoadingContainer"
+              >
+                <div
+                  class="container"
+                >
+                  <div
+                    class="inner"
+                    style="min-height: 98px;"
+                  >
+                    <i
+                      class="icon-custom icon-circle-o-notch md-spin"
+                      style="font-size: 98px;"
+                    />
+                    <div
+                      class="mt-3"
+                    >
+                      QR code is loading. Please wait.
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="modal-footer modal-footer"

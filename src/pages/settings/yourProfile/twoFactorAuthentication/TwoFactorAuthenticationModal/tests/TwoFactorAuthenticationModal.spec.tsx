@@ -1,12 +1,14 @@
 import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import TwoFactorAuthenticationModal from '../TwoFactorAuthenticationModal'
+import {authenticatorData} from '../../../../../../fixtures/authenticatorData'
+import {fetchAuthenticatorData} from '../../../../../../models/twoFactorAuthentication/resources'
+
+jest.mock('models/twoFactorAuthentication/resources')
+const fetchAuthenticatorDataMock =
+    fetchAuthenticatorData as jest.MockedFunction<typeof fetchAuthenticatorData>
 
 describe('<TwoFactorAuthenticationModal />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     const minProps: ComponentProps<typeof TwoFactorAuthenticationModal> = {
         isOpen: true,
         setIsOpen: jest.fn(),
@@ -20,8 +22,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
             expect(baseElement).toMatchSnapshot()
         })
 
-        it('should render the modal', async () => {
-            const {baseElement} = render(
+        it('should render modal with QR Code step', async () => {
+            fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
+            const {baseElement, findByAltText} = render(
                 <TwoFactorAuthenticationModal {...minProps} />
             )
 
@@ -31,12 +34,17 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     baseElement.getElementsByClassName('modal show').length
                 ).toBe(1)
             )
+
+            // Wait for the qrcode library to render the image
+            await findByAltText('The QR Code to scan')
 
             expect(baseElement).toMatchSnapshot()
         })
 
-        it('should render modal with QR Code step', async () => {
-            const {baseElement} = render(
+        it('should render modal with QR Code step having error banner', async () => {
+            fetchAuthenticatorDataMock.mockRejectedValue({foo: 'api error'})
+
+            const {baseElement, findByText} = render(
                 <TwoFactorAuthenticationModal {...minProps} />
             )
 
@@ -46,11 +54,15 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     baseElement.getElementsByClassName('modal show').length
                 ).toBe(1)
             )
+
+            // Wait for the qrcode library to render the image
+            await findByText('Failed to load the QR code. Please try again.')
 
             expect(baseElement).toMatchSnapshot()
         })
 
         it('should render modal with Validate authenticator code step', async () => {
+            fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
             const {findByText, baseElement} = render(
                 <TwoFactorAuthenticationModal {...minProps} />
             )
@@ -69,6 +81,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
         })
 
         it('should render modal with Recovery codes step', async () => {
+            fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
             const {findByText, baseElement} = render(
                 <TwoFactorAuthenticationModal {...minProps} />
             )
@@ -90,7 +103,8 @@ describe('<TwoFactorAuthenticationModal />', () => {
         })
 
         it('should render modal with QR code step after pressing back button', async () => {
-            const {findByText, baseElement} = render(
+            fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
+            const {baseElement, findByText, findByAltText} = render(
                 <TwoFactorAuthenticationModal {...minProps} />
             )
 
@@ -107,10 +121,14 @@ describe('<TwoFactorAuthenticationModal />', () => {
             const backButton = await findByText(/Back/)
             fireEvent.click(backButton)
 
+            // Wait for the qrcode library to render the image
+            await findByAltText('The QR Code to scan')
+
             expect(baseElement).toMatchSnapshot()
         })
 
         it('should call setIsOpen with false value which closes the modal on cancel', async () => {
+            fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
             const setIsOpenMock = jest.fn()
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             const useStateMock: any = (useState: any) => [

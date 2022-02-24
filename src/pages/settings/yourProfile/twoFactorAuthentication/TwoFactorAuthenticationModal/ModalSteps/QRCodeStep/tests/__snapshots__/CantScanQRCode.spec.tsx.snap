@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CantScanQRCode /> render() should render the component with extra hidden 1`] = `
+<div>
+  <div
+    class="cantScanQrCodeContainer"
+  >
+    <span
+      class="link"
+    >
+      Can't scan the QR code?
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<CantScanQRCode /> render() should render the component with extra shown 1`] = `
+<div>
+  <div
+    class="cantScanQrCodeContainer"
+  >
+    <span
+      class="link"
+    >
+      Can't scan the QR code?
+    </span>
+  </div>
+  <div
+    style="margin-top: 8px;"
+  >
+    Enter the required information by your app from the following:
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="authenticatorField0"
+      >
+        Secret key
+      </label>
+      <div
+        class="input-group"
+      >
+        <input
+          class="form-control"
+          id="authenticatorField0"
+          readonly=""
+          type="text"
+          value="foo_secret"
+        />
+        <div
+          class="input-group-append"
+        >
+          <button
+            class="copy-authenticator-field btn btn-secondary"
+            data-clipboard-target="#authenticatorField0"
+          >
+            <i
+              class="material-icons mr-2"
+            >
+              file_copy
+            </i>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="authenticatorField1"
+      >
+        Account name
+      </label>
+      <div
+        class="input-group"
+      >
+        <input
+          class="form-control"
+          id="authenticatorField1"
+          readonly=""
+          type="text"
+          value="foo@email.com"
+        />
+        <div
+          class="input-group-append"
+        >
+          <button
+            class="copy-authenticator-field btn btn-secondary"
+            data-clipboard-target="#authenticatorField1"
+          >
+            <i
+              class="material-icons mr-2"
+            >
+              file_copy
+            </i>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="form-group"
+    >
+      <label
+        class="control-label"
+        for="authenticatorField2"
+      >
+        URL
+      </label>
+      <div
+        class="input-group"
+      >
+        <input
+          class="form-control"
+          id="authenticatorField2"
+          readonly=""
+          type="text"
+          value="otpauth://foo-uri-authenticator"
+        />
+        <div
+          class="input-group-append"
+        >
+          <button
+            class="copy-authenticator-field btn btn-secondary"
+            data-clipboard-target="#authenticatorField2"
+          >
+            <i
+              class="material-icons mr-2"
+            >
+              file_copy
+            </i>
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

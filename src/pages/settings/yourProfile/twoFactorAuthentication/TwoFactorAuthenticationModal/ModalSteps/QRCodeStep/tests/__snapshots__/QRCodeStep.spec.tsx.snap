@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<QRCodeStep /> render() should render the component with the loading component 1`] = `
+<div>
+  <div
+    class="headingBold"
+  >
+    Step 1: Download an authenticator app
+  </div>
+  <div
+    class="textSection"
+  >
+    Download and install any authenticator app (
+    <a
+      href="https://support.google.com/accounts/answer/1066447"
+      rel="noreferrer"
+      target="_blank"
+    >
+      Eg. Google Authenticator
+    </a>
+    ) on your phone.
+  </div>
+  <div
+    class="headingBold"
+  >
+    Step 2: Scan the QR code
+  </div>
+  <div
+    class="textSection"
+  >
+    Open the authenticator app and scan the image below using your phone’s camera.
+  </div>
+  
+  <div
+    class="qrCodeLoadingContainer"
+  >
+    <div
+      class="container"
+    >
+      <div
+        class="inner"
+        style="min-height: 98px;"
+      >
+        <i
+          class="icon-custom icon-circle-o-notch md-spin"
+          style="font-size: 98px;"
+        />
+        <div
+          class="mt-3"
+        >
+          QR code is loading. Please wait.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<QRCodeStep /> render() should render the component with the qr code 1`] = `
+<div>
+  <div
+    class="headingBold"
+  >
+    Step 1: Download an authenticator app
+  </div>
+  <div
+    class="textSection"
+  >
+    Download and install any authenticator app (
+    <a
+      href="https://support.google.com/accounts/answer/1066447"
+      rel="noreferrer"
+      target="_blank"
+    >
+      Eg. Google Authenticator
+    </a>
+    ) on your phone.
+  </div>
+  <div
+    class="headingBold"
+  >
+    Step 2: Scan the QR code
+  </div>
+  <div
+    class="textSection"
+  >
+    Open the authenticator app and scan the image below using your phone’s camera.
+  </div>
+  <div
+    class="qrCodeContainer"
+  >
+    <img
+      alt="The QR Code to scan"
+      id="qrCodeImage"
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATZSURBVO3BQY4cSRIEQdNA/f/Lun30UwCJ9GoOuSaCP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtAfpOaGyCTmk1AbtRMQJ5QMwH5TWreOKladFK16KRq0SfL1GwC8oSaCcgTam7UPKFmk5pNQDadVC06qVp0UrXoky8D8oSaJ4A8oeYJIJOaCcik5jcBeULNN51ULTqpWnRSteiTf4yaCcgEZFJzo+YJIJOaCcik5l9yUrXopGrRSdWiT/5xam6AvKFmAjIBuQEyqfmbnVQtOqladFK16JMvU/ObgExqJiCbgNyo+SY1/yUnVYtOqhadVC36ZBmQP0nNBGRSMwGZ1ExAJjUTkEnNBGRSMwGZ1NwA+S87qVp0UrXopGrRJy+p+ZsAmdRMQCY1E5BJzTep+ZucVC06qVp0UrXok5eATGomIJvUTGpu1NwAmdRMQJ4AMql5A8gmNd90UrXopGrRSdUi/JEXgNyomYDcqNkE5Ak1N0Bu1NwA+SY1N0Bu1LxxUrXopGrRSdUi/JE/CMikZgLyhpoJyKTmTwIyqZmA3KiZgExqftNJ1aKTqkUnVYs+eQnIjZobNTdqboBMajYBmdRMQCY1E5BJzZ8EZFKz6aRq0UnVopOqRZ+8pGYCcgNkUjMBuVEzqbkBMql5Qs0TQCY1TwCZ1LwB5DedVC06qVp0UrUIf+QFIJOaCcikZhOQJ9RMQN5QMwH5L1FzA2RS88ZJ1aKTqkUnVYs+WQbkBsikZgJyo+ZGzQ2QSc0E5Akgk5oJyKRmAjKpmYBMam6APKFm00nVopOqRSdViz75MjU3QG7UPAFkk5oJyKTmRs2Nmhs1E5A3gExqNp1ULTqpWnRStQh/ZBGQGzU3QG7UPAFkUjMBmdRMQG7UTEAmNb8JyI2abzqpWnRSteikatEnLwG5UTMBmdTcqJmATGomIDdAnlAzAZmATGomIE+omYC8oeYGyKTmjZOqRSdVi06qFn2yTM0TQCY1E5BJzQTkRs0NkCfU3AC5UTMBuVEzAZnUvKFm00nVopOqRSdViz75MiBvqLlR84aaGyCTmgnIpOZPAjKpuQEyqXnjpGrRSdWik6pFn/wyNROQCcgTaiYgk5obIJOaSc2NmgnIpGYCcgPkCSCTmgnIpOabTqoWnVQtOqlahD/yFwMyqXkDyBNqboBMaiYgk5ongExqJiBPqHnjpGrRSdWik6pFn7wE5DepmdRMQCY1N0B+E5AngExqnlDzm06qFp1ULTqpWvTJMjWbgNwAmdTcAHlCzRtqboDcqPkmIJOaN06qFp1ULTqpWvTJlwF5Qs2fpGYC8oaaJ4C8AeRGzTedVC06qVp0UrXok38ckCeATGpugExqboBMar4JyI2aTSdVi06qFp1ULfrk/5yaCcgEZJOaCcikZgIyqZmATGpugExqNp1ULTqpWnRSteiTL1PzTWomIJOaCcgbaiYgN0AmNTdAJjUTkEnNjZoJyDedVC06qVp0UrXok2VAfhOQGyCTmhs1E5AbNROQSc0EZFIzAZmAvAFkUvNNJ1WLTqoWnVQtwh+pWnJSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQt+h8x8UUwJOxn0QAAAABJRU5ErkJggg=="
+    />
+  </div>
+  <div>
+    Can't scan QR code mocked
+  </div>
+</div>
+`;
+
+exports[`<QRCodeStep /> render() should render the component without the qrcode container 1`] = `
+<div>
+  <div
+    class="headingBold"
+  >
+    Step 1: Download an authenticator app
+  </div>
+  <div
+    class="textSection"
+  >
+    Download and install any authenticator app (
+    <a
+      href="https://support.google.com/accounts/answer/1066447"
+      rel="noreferrer"
+      target="_blank"
+    >
+      Eg. Google Authenticator
+    </a>
+    ) on your phone.
+  </div>
+  <div
+    class="headingBold"
+  >
+    Step 2: Scan the QR code
+  </div>
+  <div
+    class="textSection"
+  >
+    Open the authenticator app and scan the image below using your phone’s camera.
+  </div>
+  
+</div>
+`;

@@ -4,6 +4,7 @@ import Modal from '../../../../common/components/Modal'
 import css from '../../../../common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal.less'
 import ModalContinueButton from './ModalContinueButton'
 import ModalStep from './ModalStep'
+import ModalBanners from './ModalBanners'
 
 type OwnProps = {
     isOpen: boolean
@@ -19,6 +20,7 @@ export default function TwoFactorAuthenticationModal({
     onFinish,
 }: OwnProps) {
     const [step, setStep] = useState(1)
+    const [errorText, setErrorText] = useState('')
 
     const resetModalState = useCallback(() => {
         setStep(1)
@@ -63,7 +65,7 @@ export default function TwoFactorAuthenticationModal({
             isOpen={isOpen}
             header="Setup 2FA"
             onClose={handleCancel}
-            style={{maxWidth: '400px'}}
+            style={{maxWidth: '600px'}}
             footerClassName={css['modal-footer']}
             bodyClassName={css['modal-body']}
             footer={
@@ -81,7 +83,12 @@ export default function TwoFactorAuthenticationModal({
             }
             dismissible={false}
         >
-            <ModalStep currentStep={step} />
+            <ModalBanners currentStep={step} errorText={errorText} />
+            <ModalStep
+                currentStep={step}
+                errorText={errorText}
+                setErrorText={setErrorText}
+            />
         </Modal>
     )
 }

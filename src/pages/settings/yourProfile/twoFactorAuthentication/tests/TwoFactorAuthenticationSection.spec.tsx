@@ -3,10 +3,6 @@ import {fireEvent, render} from '@testing-library/react'
 import TwoFactorAuthenticationSection from '../TwoFactorAuthenticationSection'
 
 describe('<TwoFactorAuthenticationSection />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('render()', () => {
         it('should render the Two-Factor Authentication Section', () => {
             const {baseElement} = render(<TwoFactorAuthenticationSection />)

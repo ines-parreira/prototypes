@@ -3,10 +3,6 @@ import {fireEvent, render} from '@testing-library/react'
 import ModalContinueButton from '../ModalContinueButton'
 
 describe('<ModalContinueButton />', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     const handleContinue = jest.fn()
     const handleFinish = jest.fn()
 

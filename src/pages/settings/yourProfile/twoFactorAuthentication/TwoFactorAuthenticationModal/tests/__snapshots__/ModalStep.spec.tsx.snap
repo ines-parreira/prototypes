@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ModalStep /> render() should render the appropriate step 1`] = `QR Code step`;
+exports[`<ModalStep /> render() should render the appropriate step 1`] = `
+<div>
+  QRCode step mocked
+</div>
+`;
 
 exports[`<ModalStep /> render() should render the appropriate step 2`] = `Validate authenticator code step`;
 

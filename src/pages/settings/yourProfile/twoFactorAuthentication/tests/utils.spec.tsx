@@ -1,10 +1,6 @@
 import {buildPasswordAnd2FaText, checkAccessTo2FA} from '../utils'
 
 describe('utils.ts', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
     describe('checkAccessTo2FA()', () => {
         it.each([
             ['acme', true],
