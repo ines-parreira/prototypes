@@ -39,7 +39,7 @@ type Props = {
     children: ReactNode
     renderFooter?: boolean
     renderPoweredBy?: boolean
-    position: GorgiasChatPosition
+    position?: GorgiasChatPosition
     editedPositionAxis?: PositionAxis | null
     autoResponderEnabled?: boolean
     autoResponderReply?: string
@@ -58,7 +58,11 @@ const ChatIntegrationPreview = (props: Props) => {
         children,
         renderFooter = true,
         renderPoweredBy = true,
-        position,
+        position = {
+            alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_RIGHT,
+            offsetX: 0,
+            offsetY: 0,
+        },
         editedPositionAxis,
         autoResponderReply,
         autoResponderEnabled,
