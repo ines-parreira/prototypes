@@ -11,7 +11,7 @@ exports[`<ModalBanners /> render() should render the appropriate banners based o
       src="test-file-stub"
     />
     <div
-      class="infoBannerText"
+      class="bannerText"
     >
       <span>
         For security reasons, your admin requires you to setup two-factor authentication in order to access your account.
@@ -33,7 +33,7 @@ exports[`<ModalBanners /> render() should render the appropriate banners based o
       src="test-file-stub"
     />
     <div
-      class="infoBannerText"
+      class="bannerText"
     >
       <span>
         For security reasons, your admin requires you to setup two-factor authentication in order to access your account.

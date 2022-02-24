@@ -15,7 +15,7 @@ export default function ModalBanners({currentStep, errorText}: OwnProps) {
             {currentStep === 1 && (
                 <div className={classnames(css.banner, css.bannerInfo)}>
                     <img src={infoIcon} alt="icon" className={css.icon} />
-                    <div className={css.infoBannerText}>
+                    <div className={css.bannerText}>
                         <span>
                             For security reasons, your admin requires you to
                             setup two-factor authentication in order to access

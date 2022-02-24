@@ -6,6 +6,11 @@ jest.mock('../ModalSteps/QRCodeStep/QRCodeStep', () => () => (
     <div>QRCode step mocked</div>
 ))
 
+jest.mock(
+    '../ModalSteps/ValidateVerificationCodeStep/ValidateVerificationCodeStep',
+    () => () => <div>Validate Verification Code step mocked</div>
+)
+
 describe('<ModalStep />', () => {
     describe('render()', () => {
         it.each([1, 2, 3, 999999])(
@@ -15,9 +20,12 @@ describe('<ModalStep />', () => {
                     <ModalStep
                         currentStep={currentStep}
                         errorText={''}
-                        setErrorText={jest.fn}
+                        setErrorText={jest.fn()}
+                        setVerificationCode={jest.fn()}
+                        setIsLoading={jest.fn()}
                     />
                 )
+
                 expect(container.firstChild).toMatchSnapshot()
             }
         )

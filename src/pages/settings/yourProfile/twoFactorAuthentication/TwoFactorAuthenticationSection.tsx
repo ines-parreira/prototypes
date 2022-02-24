@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 
 import classnames from 'classnames'
-import {Button} from 'reactstrap'
 import css from '../../settings.less'
+import Button from '../../../common/components/button/Button'
 import TwoFactorAuthenticationModal from './TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 
 export default function TwoFactorAuthenticationSection() {
@@ -24,11 +24,7 @@ export default function TwoFactorAuthenticationSection() {
                 <a href={''}>Learn more</a>
             </div>
 
-            <Button
-                type="button"
-                color="primary"
-                onClick={() => setIsModalOpen(true)}
-            >
+            <Button type="button" onClick={() => setIsModalOpen(true)}>
                 Enable Two-Factor Authentication
             </Button>
             <TwoFactorAuthenticationModal

@@ -14,11 +14,16 @@ import css from './QRCodeStep.less'
 import CantScanQRCode from './CantScanQRCode'
 
 type OwnProps = {
-    errorText: string
+    errorText?: string
     setErrorText: Dispatch<SetStateAction<string>>
+    setIsLoading: Dispatch<SetStateAction<boolean>>
 }
 
-export default function QRCodeStep({errorText, setErrorText}: OwnProps) {
+export default function QRCodeStep({
+    errorText,
+    setErrorText,
+    setIsLoading,
+}: OwnProps) {
     const [qrCodeImageUrl, setQrCodeImageUrl] = useState('')
     const [authenticatorData, setAuthenticatorData] = useState(
         {} as AuthenticatorData
@@ -35,6 +40,7 @@ export default function QRCodeStep({errorText, setErrorText}: OwnProps) {
 
     useEffect(() => {
         async function init() {
+            setIsLoading(true)
             setErrorText('')
 
             const fetchedAuthenticatorData: AuthenticatorData =
@@ -44,11 +50,15 @@ export default function QRCodeStep({errorText, setErrorText}: OwnProps) {
             await generateQRCode(fetchedAuthenticatorData.uri)
         }
 
-        init().catch((error: Error) => {
-            setErrorText('Failed to load the QR code. Please try again.')
-            console.error(error)
-        })
-    }, [generateQRCode, setErrorText])
+        init()
+            .catch((error: Error) => {
+                setErrorText('Failed to load the QR code. Please try again.')
+                console.error(error)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }, [generateQRCode, setErrorText, setIsLoading])
 
     return (
         <>

@@ -6,7 +6,11 @@ exports[`<ModalStep /> render() should render the appropriate step 1`] = `
 </div>
 `;
 
-exports[`<ModalStep /> render() should render the appropriate step 2`] = `Validate authenticator code step`;
+exports[`<ModalStep /> render() should render the appropriate step 2`] = `
+<div>
+  Validate Verification Code step mocked
+</div>
+`;
 
 exports[`<ModalStep /> render() should render the appropriate step 3`] = `Recovery codes step`;
 

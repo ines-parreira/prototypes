@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ValidateVerificationCodeStep /> render() should render the component with the verification code validation 1`] = `
+<div>
+  <div
+    class="headingBold"
+  >
+    Step 3: Verify your code
+  </div>
+  <div
+    class="textSection mb16"
+  >
+    Enter the 6-digit verification code generated from your authenticator app.
+  </div>
+  <div
+    class="InputField form-group"
+    color=""
+  >
+    <div
+      class=""
+    >
+      <input
+        class="form-control"
+        id="id-verificationCode"
+        placeholder="Enter 6-digit verification code from app"
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -16,7 +16,11 @@ describe('<QRCodeStep />', () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
 
             const {container, findByText} = render(
-                <QRCodeStep errorText={''} setErrorText={jest.fn()} />
+                <QRCodeStep
+                    errorText={''}
+                    setErrorText={jest.fn()}
+                    setIsLoading={jest.fn()}
+                />
             )
 
             await findByText('QR code is loading. Please wait.')
@@ -28,7 +32,11 @@ describe('<QRCodeStep />', () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
 
             const {container, findByAltText} = render(
-                <QRCodeStep errorText={''} setErrorText={jest.fn()} />
+                <QRCodeStep
+                    errorText={''}
+                    setErrorText={jest.fn()}
+                    setIsLoading={jest.fn()}
+                />
             )
 
             // Wait for the qrcode library to render the image
@@ -44,6 +52,7 @@ describe('<QRCodeStep />', () => {
                 <QRCodeStep
                     errorText={'foo error banner'}
                     setErrorText={jest.fn()}
+                    setIsLoading={jest.fn()}
                 />
             )
 

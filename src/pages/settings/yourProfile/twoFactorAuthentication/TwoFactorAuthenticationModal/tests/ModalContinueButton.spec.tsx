@@ -13,6 +13,8 @@ describe('<ModalContinueButton />', () => {
                 const {container, queryByText} = render(
                     <ModalContinueButton
                         currentStep={currentStep}
+                        isLoading={false}
+                        hasError={false}
                         onContinue={handleContinue}
                         onFinish={handleFinish}
                     />
@@ -33,6 +35,36 @@ describe('<ModalContinueButton />', () => {
                 if (currentStep === 3) {
                     expect(handleFinish).toHaveBeenCalled()
                 }
+            }
+        )
+        it.each([1, 2, 3])(
+            'should render the Continue button disabled because of error',
+            (currentStep) => {
+                const {container} = render(
+                    <ModalContinueButton
+                        currentStep={currentStep}
+                        isLoading={false}
+                        hasError={true}
+                        onContinue={handleContinue}
+                        onFinish={handleFinish}
+                    />
+                )
+                expect(container.firstChild).toMatchSnapshot()
+            }
+        )
+        it.each([1, 2, 3])(
+            'should render the Continue button as loading',
+            (currentStep) => {
+                const {container} = render(
+                    <ModalContinueButton
+                        currentStep={currentStep}
+                        isLoading={true}
+                        hasError={false}
+                        onContinue={handleContinue}
+                        onFinish={handleFinish}
+                    />
+                )
+                expect(container.firstChild).toMatchSnapshot()
             }
         )
     })
