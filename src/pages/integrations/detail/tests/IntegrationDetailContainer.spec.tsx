@@ -137,6 +137,9 @@ jest.mock('../components/sms/SmsIntegrationsListContainer', () => () => (
 jest.mock('../components/sms/SmsIntegrationCreate', () => () => (
     <div>SmsIntegrationCreate</div>
 ))
+jest.mock('../components/sms/SmsAppPreferences', () => () => (
+    <div>SmsAppPreferences</div>
+))
 
 jest.mock('../components/chat/ChatIntegrationList', () => () => (
     <div>ChatIntegrationList</div>
@@ -383,6 +386,7 @@ describe('<IntegrationDetailContainer />', () => {
         [IntegrationType.Facebook],
         [IntegrationType.GorgiasChat],
         [IntegrationType.Phone],
+        [IntegrationType.Sms],
         [IntegrationType.Smooch],
     ])(
         'should render the preferences tab of a specific integrations for %s',

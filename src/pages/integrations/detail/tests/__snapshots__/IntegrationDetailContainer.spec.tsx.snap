@@ -550,6 +550,12 @@ exports[`<IntegrationDetailContainer /> should render the preferences tab of a s
 </div>
 `;
 
+exports[`<IntegrationDetailContainer /> should render the preferences tab of a specific integrations for sms 1`] = `
+<div>
+  SmsAppPreferences
+</div>
+`;
+
 exports[`<IntegrationDetailContainer /> should render the quick replies tab of a specific integration for gorgias_chat 1`] = `
 <div>
   GorgiasChatIntegrationQuickReplies

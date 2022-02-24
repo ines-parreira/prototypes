@@ -99,6 +99,7 @@ import PhoneIntegrationIvr from './components/phone/PhoneIntegrationIvr'
 
 import SmsIntegrationsListContainer from './components/sms/SmsIntegrationsListContainer'
 import SmsIntegrationCreate from './components/sms/SmsIntegrationCreate'
+import SmsAppPreferences from './components/sms/SmsAppPreferences'
 
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
@@ -514,6 +515,12 @@ export const IntegrationDetailContainer = ({
             }
 
             if (!!integrationId) {
+                if (extra === Tab.Preferences) {
+                    return (
+                        <SmsAppPreferences integration={integration.toJS()} />
+                    )
+                }
+
                 return <SmsIntegrationCreate />
             }
 
