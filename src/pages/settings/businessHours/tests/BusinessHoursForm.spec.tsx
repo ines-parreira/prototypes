@@ -1,9 +1,9 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 import {mount, shallow} from 'enzyme'
-import {noop as _noop} from 'lodash/noop'
+import _noop from 'lodash/noop'
 
-import BusinessHoursForm from '../BusinessHoursForm.tsx'
+import BusinessHoursForm from '../BusinessHoursForm'
 
 describe('BusinessHoursForm component', () => {
     it('should render', () => {
@@ -24,7 +24,7 @@ describe('BusinessHoursForm component', () => {
     it('should call props.onChange with the passed data merged with the new data', () => {
         const spy = jest.fn()
 
-        const component = mount(
+        const component = mount<BusinessHoursForm>(
             <BusinessHoursForm
                 onChange={spy}
                 businessHour={fromJS({

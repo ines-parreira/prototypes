@@ -29,7 +29,8 @@ exports[`BillingInvoices component should display invoices, without PDF download
       },
     ]
   }
-  shopifyBillingStatus="inactive"
+  notify={[MockFunction]}
+  updateInvoiceInList={[MockFunction]}
 >
   <div>
     <BillingHeader
@@ -181,6 +182,8 @@ exports[`BillingInvoices component should display loader 1`] = `
 <BillingInvoicesContainer
   fetchInvoices={[Function]}
   invoices={Immutable.Map {}}
+  notify={[MockFunction]}
+  updateInvoiceInList={[MockFunction]}
 >
   <Loader
     inline={false}
@@ -216,5 +219,7 @@ exports[`BillingInvoices component should load with empty props 1`] = `
 <BillingInvoicesContainer
   fetchInvoices={[Function]}
   invoices={Immutable.Map {}}
+  notify={[MockFunction]}
+  updateInvoiceInList={[MockFunction]}
 />
 `;

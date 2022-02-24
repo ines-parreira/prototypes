@@ -1,26 +1,29 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {BillingInvoicesContainer} from '../BillingInvoices.tsx'
+import {BillingInvoicesContainer} from '../BillingInvoices'
 
 describe('BillingInvoices component', () => {
+    const minProps: Omit<
+        ComponentProps<typeof BillingInvoicesContainer>,
+        'invoices'
+    > = {
+        notify: jest.fn(),
+        updateInvoiceInList: jest.fn(),
+        fetchInvoices: () => Promise.resolve(),
+    }
+
     it('should display loader', () => {
         const component = mount(
-            <BillingInvoicesContainer
-                fetchInvoices={() => Promise.resolve()}
-                invoices={fromJS({})}
-            />
+            <BillingInvoicesContainer {...minProps} invoices={fromJS({})} />
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should load with empty props', () => {
         const component = mount(
-            <BillingInvoicesContainer
-                fetchInvoices={() => Promise.resolve()}
-                invoices={fromJS({})}
-            />
+            <BillingInvoicesContainer {...minProps} invoices={fromJS({})} />
         )
         component.setState({isFetchingInvoices: false})
         expect(component).toMatchSnapshot()
@@ -29,8 +32,7 @@ describe('BillingInvoices component', () => {
     it('should display invoices, without PDF download links if paid through Shopify', () => {
         const component = mount(
             <BillingInvoicesContainer
-                shopifyBillingStatus="inactive"
-                fetchInvoices={() => Promise.resolve()}
+                {...minProps}
                 invoices={fromJS([
                     {
                         id: 123,

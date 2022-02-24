@@ -15,9 +15,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
     }
   }
 >
-  <Connect(SatisfactionSurveyView)
-    submitSetting={[MockFunction]}
-  >
+  <Connect(SatisfactionSurveyView)>
     <SatisfactionSurveyView
       submitSetting={[Function]}
       surveysSettings={

@@ -1,15 +1,17 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import {Map, fromJS} from 'immutable'
 
-import {TableContainer} from '../Table.tsx'
+import {Row} from '../Row'
+import {TableContainer} from '../Table'
 
 jest.mock('../Row', () => {
-    return jest.requireActual('../Row').Row
+    const {Row: rowMock} = jest.requireActual('../Row')
+    return rowMock as Row
 })
 
 describe('ManageTags Table component', () => {
-    const minProps = {
+    const minProps: Omit<ComponentProps<typeof TableContainer>, 'columns'> = {
         tags: fromJS([
             {
                 id: 1,
@@ -32,13 +34,16 @@ describe('ManageTags Table component', () => {
                 selected: true,
             },
         }),
-        getSelectedTagMeta: () => fromJS({}),
+        getSelectedTagMeta: () => fromJS({}) as Map<any, any>,
         selectAll: false,
         sort: 'name',
-        reverse: jest.fn(),
+        reverse: true,
         onSort: jest.fn(),
         onSelectAll: jest.fn(),
         refresh: jest.fn(),
+        dispatch: jest.fn(),
+        onBulkDelete: jest.fn(),
+        onMerge: jest.fn(),
     }
 
     beforeEach(() => {

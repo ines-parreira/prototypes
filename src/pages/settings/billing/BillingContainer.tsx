@@ -1,43 +1,33 @@
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom'
+import {connect, ConnectedProps} from 'react-redux'
+import {RouteComponentProps, withRouter} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import {parse} from 'query-string'
 
-import {notify} from '../../../state/notifications/actions.ts'
-import PageHeader from '../../common/components/PageHeader.tsx'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
-import history from '../../history.ts'
-import {paymentMethod} from '../../../state/billing/selectors.ts'
+import {RootState} from 'state/types'
+import {NotificationStatus} from 'state/notifications/types'
+import PageHeader from 'pages/common/components/PageHeader'
+import {notify} from 'state/notifications/actions'
+import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
+import history from '../../history'
+import {paymentMethod} from '../../../state/billing/selectors'
 import css from '../settings.less'
 
-import BillingUsage from './BillingUsage.tsx'
-import BillingPaymentMethod from './BillingPaymentMethod.tsx'
-import BillingDetails from './details/BillingDetails.tsx'
-import BillingInvoices from './BillingInvoices.tsx'
+import BillingUsage from './BillingUsage'
+import BillingPaymentMethod from './BillingPaymentMethod'
+import BillingDetails from './details/BillingDetails'
+import BillingInvoices from './BillingInvoices'
 
-@withRouter
-export class BillingContainer extends Component {
-    static propTypes = {
-        // Router
-        location: PropTypes.object.isRequired,
-        // history: PropTypes.object.isRequired,
+type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
-        notify: PropTypes.func.isRequired,
-        currentSubscription: PropTypes.object.isRequired,
-        hasCreditCard: PropTypes.bool.isRequired,
-        paymentMethod: PropTypes.string.isRequired,
-    }
-
+export class BillingContainer extends Component<Props> {
     componentDidMount() {
         // display message from url
         const {notif_msg, notif_type} = parse(this.props.location.search)
-
         if (notif_msg) {
-            this.props.notify({
-                status: notif_type,
-                title: notif_msg.replace(/\+/g, ' '),
+            void this.props.notify({
+                status: notif_type as NotificationStatus,
+                title: (notif_msg as string).replace(/\+/g, ' '),
                 allowHTML: false,
             })
             // remove notification from url
@@ -69,8 +59,8 @@ export class BillingContainer extends Component {
     }
 }
 
-export default connect(
-    (state) => {
+const connector = connect(
+    (state: RootState) => {
         const currentSubscription =
             currentAccountSelectors.getCurrentSubscription(state)
         return {
@@ -80,4 +70,6 @@ export default connect(
         }
     },
     {notify}
-)(BillingContainer)
+)
+
+export default withRouter(connector(BillingContainer))

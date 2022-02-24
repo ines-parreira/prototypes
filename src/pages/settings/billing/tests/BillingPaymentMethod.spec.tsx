@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
@@ -7,14 +7,13 @@ import {PaymentMethodType} from '../../../../state/billing/types'
 import {ShopifyBillingStatus} from '../../../../state/currentAccount/types'
 
 describe('BillingPaymentMethod', () => {
-    const minProps = {
+    const minProps: ComponentProps<typeof BillingPaymentMethodContainer> = {
         currentUserId: '1',
         currentAccountDomain: 'foo',
         creditCard: fromJS({}),
         subscription: fromJS({}),
         currentPlan: fromJS({}),
         paymentMethod: PaymentMethodType.Stripe,
-        isTrialing: false,
         shopifyBillingStatus: ShopifyBillingStatus.Inactive,
         fetchPaymentMethod: jest.fn().mockResolvedValue({}),
         fetchCreditCard: jest.fn().mockResolvedValue({}),

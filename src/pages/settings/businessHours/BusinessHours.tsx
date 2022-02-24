@@ -17,7 +17,7 @@ import {
 } from '../../../state/currentAccount/types'
 import settingsCss from '../settings.less'
 
-import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants.js'
+import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants'
 import BusinessHoursForm from './BusinessHoursForm'
 import css from './BusinessHours.less'
 
@@ -74,12 +74,11 @@ export class BusinessHoursContainer extends Component<Props, State> {
 
     _addBusinessHours = () => {
         const {items} = this.state
-
         if (items.size >= MAX_BUSINESS_HOURS) {
             return
         }
 
-        this.setState({items: items.push(DEFAULT_BUSINESS_HOUR)})
+        this.setState({items: items.push(fromJS(DEFAULT_BUSINESS_HOUR))})
     }
 
     render() {

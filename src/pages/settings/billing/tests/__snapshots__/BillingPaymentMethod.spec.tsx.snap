@@ -102,7 +102,6 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
       ],
     }
   }
-  isTrialing={false}
   paymentMethod="shopify"
   shopifyBillingStatus="inactive"
   subscription={
@@ -336,7 +335,6 @@ exports[`BillingPaymentMethod Shopify should render an active status 1`] = `
       ],
     }
   }
-  isTrialing={false}
   paymentMethod="shopify"
   shopifyBillingStatus="active"
   subscription={
@@ -430,7 +428,6 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
       ],
     }
   }
-  isTrialing={false}
   paymentMethod="stripe"
   shopifyBillingStatus="inactive"
   subscription={
@@ -626,7 +623,6 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
       ],
     }
   }
-  isTrialing={false}
   paymentMethod="stripe"
   shopifyBillingStatus="inactive"
   subscription={
@@ -866,7 +862,6 @@ exports[`BillingPaymentMethod Stripe should render a loader 1`] = `
       ],
     }
   }
-  isTrialing={false}
   paymentMethod="stripe"
   shopifyBillingStatus="inactive"
   subscription={Immutable.Map {}}

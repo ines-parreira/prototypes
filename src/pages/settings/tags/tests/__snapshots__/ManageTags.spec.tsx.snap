@@ -109,7 +109,7 @@ exports[`ManageTags component mounts correctly 1`] = `
   <Connect(TableContainer)
     onBulkDelete={[Function]}
     onMerge={[Function]}
-    onSelectAll={[Function]}
+    onSelectAll={[MockFunction]}
     onSort={[Function]}
     refresh={[Function]}
     reverse={true}

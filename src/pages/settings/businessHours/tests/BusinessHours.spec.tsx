@@ -1,20 +1,21 @@
 import React from 'react'
 import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import {noop as _noop} from 'lodash/noop'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import BusinessHours, {BusinessHoursContainer} from '../BusinessHours.tsx'
-import {SETTING_TYPE_BUSINESS_HOURS} from '../../../../state/currentAccount/constants.ts'
+import BusinessHours, {BusinessHoursContainer} from '../BusinessHours'
+import {SETTING_TYPE_BUSINESS_HOURS} from '../../../../state/currentAccount/constants'
 
 const mockStore = configureMockStore([thunk])
 
 describe('BusinessHours component', () => {
     it('should render default values', () => {
+        const mockSubmitSetting = jest.fn()
         const component = shallow(
             <BusinessHoursContainer
-                submitSetting={_noop}
+                submitSetting={mockSubmitSetting}
                 businessHoursSettings={fromJS({})}
             />
         )
@@ -24,7 +25,7 @@ describe('BusinessHours component', () => {
 
     it('should render values from state', () => {
         const component = mount(
-            <BusinessHours
+            <Provider
                 store={mockStore({
                     currentAccount: fromJS({
                         settings: [
@@ -49,8 +50,9 @@ describe('BusinessHours component', () => {
                         ],
                     }),
                 })}
-                submitSetting={_noop}
-            />
+            >
+                <BusinessHours />
+            </Provider>
         )
 
         expect(component).toMatchSnapshot()

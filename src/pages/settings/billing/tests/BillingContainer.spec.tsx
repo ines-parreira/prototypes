@@ -1,21 +1,13 @@
-import React, {Component} from 'react'
-import {fromJS, Map} from 'immutable'
+import React from 'react'
+import {fromJS} from 'immutable'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
 import {renderWithRouter} from '../../../../utils/testing'
-import {StoreDispatch} from '../../../../state/types'
+import {RootState, StoreDispatch} from '../../../../state/types'
 import {PaymentMethodType} from '../../../../state/billing/types'
-import BillingContainer from '../BillingContainer.js'
-
-// $TsFixMe remove cast on BillingContainer migration
-const TypeSafeBillingContainer = BillingContainer as unknown as typeof Component
-
-type MockedRootState = {
-    currentAccount: Map<any, any>
-    billing: Map<any, any>
-}
+import BillingContainer from '../BillingContainer'
 
 jest.mock('../BillingUsage', () => () => <div>Billing usage</div>)
 jest.mock('../BillingPaymentMethod', () => () => (
@@ -27,10 +19,10 @@ jest.mock('../details/BillingDetails', () => () => (
 jest.mock('../BillingInvoices', () => () => <div>Billing invoices</div>)
 
 describe('<BillingContainer />', () => {
-    const mockStore = configureMockStore<MockedRootState, StoreDispatch>([
+    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
-    const defaultState = {
+    const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             meta: {
                 hasCreditCard: true,
@@ -38,7 +30,7 @@ describe('<BillingContainer />', () => {
         }),
         billing: fromJS({}),
     }
-    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
+    let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -48,7 +40,7 @@ describe('<BillingContainer />', () => {
     it('should render the billing page', () => {
         const {container} = renderWithRouter(
             <Provider store={store}>
-                <TypeSafeBillingContainer />
+                <BillingContainer />
             </Provider>
         )
 
@@ -66,7 +58,7 @@ describe('<BillingContainer />', () => {
         })
         const {getByTestId} = renderWithRouter(
             <Provider store={store}>
-                <TypeSafeBillingContainer />
+                <BillingContainer />
             </Provider>
         )
 
@@ -83,7 +75,7 @@ describe('<BillingContainer />', () => {
 
         const {queryByTestId} = renderWithRouter(
             <Provider store={store}>
-                <TypeSafeBillingContainer />
+                <BillingContainer />
             </Provider>
         )
 

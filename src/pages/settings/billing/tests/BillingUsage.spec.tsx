@@ -4,15 +4,17 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import {RootState} from 'state/types'
 
-import {account} from '../../../../fixtures/account.ts'
-import {billingState} from '../../../../fixtures/billing.ts'
+import {Plan} from 'models/billing/types'
+import {account} from '../../../../fixtures/account'
+import {billingState} from '../../../../fixtures/billing'
 import {
     advancedPlan,
     basicPlan,
     proPlan,
-} from '../../../../fixtures/subscriptionPlan.ts'
-import BillingUsage from '../BillingUsage.tsx'
+} from '../../../../fixtures/subscriptionPlan'
+import BillingUsage from '../BillingUsage'
 
 jest.mock('../../../common/components/LegacyPlanBanner', () => () => (
     <div>Legacy Plan Banner Mock</div>
@@ -22,22 +24,22 @@ jest.mock('../../../../state/billing/actions.ts')
 const mockStore = configureMockStore([thunk])
 
 describe('<BillingUsage/>', () => {
-    const defaultPlans = [basicPlan, proPlan, advancedPlan].reduce(
-        (acc, plan) => {
-            const id = `${plan.name.toLowerCase()}-monthly`
-            return {
-                ...acc,
-                [id]: {
-                    ...plan,
-                    id,
-                    interval: 'month',
-                },
-            }
-        },
-        {}
-    )
-
-    const defaultState = {
+    const defaultPlans: Record<string, Plan> = [
+        basicPlan,
+        proPlan,
+        advancedPlan,
+    ].reduce((acc, plan) => {
+        const id = `${plan.name.toLowerCase()}-monthly`
+        return {
+            ...acc,
+            [id]: {
+                ...plan,
+                id,
+                interval: 'month',
+            },
+        }
+    }, {})
+    const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             ...account,
             current_subscription: {

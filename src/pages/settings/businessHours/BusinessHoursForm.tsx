@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import {Input} from 'reactstrap'
-import {Map, List} from 'immutable'
+import {Map} from 'immutable'
 
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import SelectField from '../../common/forms/SelectField/SelectField'
 
 import css from './BusinessHours.less'
 
-import {DAYS_OPTIONS} from './constants.js'
+import {DAYS_OPTIONS} from './constants'
 
 type Props = {
     onChange: (map: Map<any, any>) => void
@@ -20,13 +21,12 @@ export default class BusinessHoursForm extends Component<Props> {
 
     render() {
         const {businessHour} = this.props
-
         return (
             <div className={css.businessHoursInput}>
                 <SelectField
                     value={businessHour.get('days')}
                     onChange={(value) => this._onChange({days: value})}
-                    options={(DAYS_OPTIONS as List<any>).toJS()}
+                    options={DAYS_OPTIONS as SelectableOption[]}
                     fixedWidth
                 />
                 <Input

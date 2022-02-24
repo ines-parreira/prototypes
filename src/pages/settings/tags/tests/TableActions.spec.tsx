@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
-import {fromJS} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
-import TableActions from '../TableActions/TableActions.tsx'
+import TableActions from '../TableActions/TableActions'
 
-const defaultTags = fromJS([
+const defaultTags: List<any> = fromJS([
     {
         id: 1,
         name: 'refund',
@@ -20,7 +20,7 @@ const defaultTags = fromJS([
     },
 ])
 
-const defaultMeta = fromJS({
+const defaultMeta: Map<any, any> = fromJS({
     1: {
         selected: true,
     },
@@ -29,7 +29,7 @@ const defaultMeta = fromJS({
     },
 })
 
-const defaultProps = {
+const defaultProps: ComponentProps<typeof TableActions> = {
     meta: defaultMeta,
     tags: defaultTags,
     selectedNum: 2,
