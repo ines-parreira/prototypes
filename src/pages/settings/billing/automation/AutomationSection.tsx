@@ -62,20 +62,17 @@ const AutomationSection = () => {
                 <div className={css.description}>
                     {hasAutomationAddOn ? (
                         <>
-                            <p>
-                                You have access to{' '}
-                                <b>
-                                    <Link to="/app/settings/self-service">
-                                        self-service
-                                    </Link>
-                                </b>
-                                , activate:
+                            <p className="mb0">
+                                You have access to the automation-addon,
+                                including:
                             </p>
                             <div>
                                 <ul>
                                     <li>
-                                        Self-service in <b>chat</b> and in{' '}
-                                        <b>help center</b>
+                                        <Link to="/app/settings/self-service">
+                                            <b>Self-service</b>
+                                        </Link>{' '}
+                                        in <b>chat</b> and in <b>help center</b>
                                     </li>
                                     <li>
                                         <b>Track</b>, <b>Return</b> &{' '}
@@ -84,18 +81,14 @@ const AutomationSection = () => {
                                     <li>
                                         <b>Customized</b> report issue workflows
                                     </li>
+                                    <li>
+                                        Dedicated self-service{' '}
+                                        <Link to="/app/stats/self-service">
+                                            <b>report </b>
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
-                            <p>
-                                Track the performance in a{' '}
-                                <b>
-                                    {' '}
-                                    <Link to="/app/stats/self-service">
-                                        dedicated report
-                                    </Link>
-                                </b>
-                                !
-                            </p>
                         </>
                     ) : isSelfServeLegacy ? (
                         <p>

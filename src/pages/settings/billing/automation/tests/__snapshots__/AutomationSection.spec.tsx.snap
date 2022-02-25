@@ -96,27 +96,27 @@ exports[`<AutomationSection /> should render for customers already with full add
     <div
       class="description"
     >
-      <p>
-        You have access to
-         
-        <b>
-          <a
-            to="/app/settings/self-service"
-          >
-            self-service
-          </a>
-        </b>
-        , activate:
+      <p
+        class="mb0"
+      >
+        You have access to the automation-addon, including:
       </p>
       <div>
         <ul>
           <li>
-            Self-service in 
+            <a
+              to="/app/settings/self-service"
+            >
+              <b>
+                Self-service
+              </b>
+            </a>
+             
+            in 
             <b>
               chat
             </b>
-             and in
-             
+             and in 
             <b>
               help center
             </b>
@@ -142,21 +142,19 @@ exports[`<AutomationSection /> should render for customers already with full add
             </b>
              report issue workflows
           </li>
+          <li>
+            Dedicated self-service
+             
+            <a
+              to="/app/stats/self-service"
+            >
+              <b>
+                report 
+              </b>
+            </a>
+          </li>
         </ul>
       </div>
-      <p>
-        Track the performance in a
-         
-        <b>
-           
-          <a
-            to="/app/stats/self-service"
-          >
-            dedicated report
-          </a>
-        </b>
-        !
-      </p>
     </div>
     <button
       class="wrapper align-self-end secondary medium"
