@@ -1,8 +1,6 @@
-import React, {useEffect, useState, ComponentProps} from 'react'
-import {Button} from 'reactstrap'
+import React, {ComponentProps, useEffect, useState} from 'react'
 import {useSelector} from 'react-redux'
 import {fromJS, Map} from 'immutable'
-import classNames from 'classnames'
 
 import {
     DEPRECATED_getCurrentPlan,
@@ -10,9 +8,10 @@ import {
     getHasAutomationAddOn,
     getPlan,
     hasLegacyPlan,
-} from '../../../../state/billing/selectors'
-import {AccountFeatures} from '../../../../state/currentAccount/types'
-import {isFeatureEnabled} from '../../../../utils/account'
+} from 'state/billing/selectors'
+import {AccountFeatures} from 'state/currentAccount/types'
+import {isFeatureEnabled} from 'utils/account'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import BillingPlanCard from './BillingPlanCard'
 import ChangePlanModal from './ChangePlanModal'
@@ -196,12 +195,12 @@ export default function BillingComparisonPlanCard({
                         isAutomationChecked={isAutomationChecked}
                     />
                     <Button
+                        type="button"
                         aria-label={switchPlanButtonText}
-                        className={classNames(css.footerButton, {
-                            'btn-loading': isUpdating,
-                        })}
-                        color="link"
-                        disabled={!canChoosePlan}
+                        className={css.footerButton}
+                        intent={ButtonIntent.Text}
+                        isDisabled={!canChoosePlan}
+                        isLoading={isUpdating}
                         onClick={() => {
                             if (canChoosePlan) {
                                 setIsPlanChangeModalOpen(!isPlanChangeModalOpen)

@@ -120,17 +120,20 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
             Import summary
              
             <button
-              class="btn btn-secondary"
+              class="wrapper learnButton secondary medium"
               id="learn-button"
               type="button"
             >
-              <i
-                class="material-icons"
+              <span
+                class="wrapper"
               >
-                info_outline
-              </i>
-               
-              Learn
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  info_outline
+                </i>
+                Learn
+              </span>
             </button>
           </h4>
           <p>
@@ -202,17 +205,19 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         </div>
       </div>
       <button
-        class="btn btn-success"
+        class="wrapper primary medium"
         type="button"
       >
-        <span />
-        <i
-          class="material-icons"
+        <span
+          class="wrapper"
         >
-          play_circle_filled
-        </i>
-         
-        Resume
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            play_circle_filled
+          </i>
+          Resume
+        </span>
       </button>
     </div>
   </div>
@@ -339,17 +344,20 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
             Import summary
              
             <button
-              class="btn btn-secondary"
+              class="wrapper learnButton secondary medium"
               id="learn-button"
               type="button"
             >
-              <i
-                class="material-icons"
+              <span
+                class="wrapper"
               >
-                info_outline
-              </i>
-               
-              Learn
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  info_outline
+                </i>
+                Learn
+              </span>
             </button>
           </h4>
           <p>
@@ -543,17 +551,20 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
             Import summary
              
             <button
-              class="btn btn-secondary"
+              class="wrapper learnButton secondary medium"
               id="learn-button"
               type="button"
             >
-              <i
-                class="material-icons"
+              <span
+                class="wrapper"
               >
-                info_outline
-              </i>
-               
-              Learn
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  info_outline
+                </i>
+                Learn
+              </span>
             </button>
           </h4>
           <p>
@@ -625,6 +636,43 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         </div>
       </div>
     </div>
+  </div>
+</div>
+`;
+
+exports[`<ImportZendeskDetail/> rendering should display the popover 1`] = `
+<div
+  class="popover-inner"
+  role="tooltip"
+>
+  <div
+    class="popover-body"
+  >
+    <div
+      class="align-content-center mb-1"
+    >
+      You’ve made the decision to transform the way your organization executes support. Now it’s time to implement that change. Here are the steps and resources required for successfully launching Gorgias with a Zendesk import. Please note that we can only import about 2,500 tickets per hour from Zendesk. Therefore, if there is a lot of Zendesk data, the import can take a few days.
+    </div>
+    <a
+      class="mb-1"
+      href="https://docs.gorgias.com/migrating-helpdesks/switching-from-zendesk"
+    >
+      <button
+        class="wrapper secondary small"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          Learn more
+          <i
+            class="material-icons icon isRight small"
+          >
+            arrow_forward
+          </i>
+        </span>
+      </button>
+    </a>
   </div>
 </div>
 `;

@@ -1,10 +1,9 @@
-import React, {useState, ComponentProps, MouseEvent} from 'react'
-import {Button} from 'reactstrap'
+import React, {ComponentProps, MouseEvent, useState} from 'react'
 import {useSelector} from 'react-redux'
-import classNames from 'classnames'
 
-import {hasLegacyPlan} from '../../../../state/billing/selectors'
-import {openChat} from '../../../../utils'
+import {hasLegacyPlan} from 'state/billing/selectors'
+import {openChat} from 'utils'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import PlanCard, {PlanCardTheme} from './PlanCard'
 import ChangePlanModal from './ChangePlanModal'
@@ -58,12 +57,12 @@ export default function EnterpriseComparisonPlanCard({
                         plan={{id: 'enterprise'}}
                     />
                     <Button
+                        type="button"
                         aria-label={switchPlanButtonText}
-                        className={classNames(css.footerButton, {
-                            'btn-loading': isUpdating,
-                        })}
-                        color="link"
-                        disabled={!canChoosePlan}
+                        className={css.footerButton}
+                        intent={ButtonIntent.Text}
+                        isLoading={isUpdating}
+                        isDisabled={!canChoosePlan}
                         onClick={() => {
                             if (canChoosePlan) {
                                 setIsPlanChangeModalOpen(!isPlanChangeModalOpen)

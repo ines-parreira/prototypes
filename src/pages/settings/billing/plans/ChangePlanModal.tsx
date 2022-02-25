@@ -1,18 +1,18 @@
-import React, {ComponentProps, ReactNode, MouseEventHandler} from 'react'
+import React, {ComponentProps, MouseEventHandler, ReactNode} from 'react'
 import {useSelector} from 'react-redux'
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
+import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 
 import ArrowForward from 'assets/img/icons/arrow-forward.svg'
-
 import {
-    getAddOnAutomationAmountCurrentPlan,
     DEPRECATED_getCurrentPlan,
+    getAddOnAutomationAmountCurrentPlan,
     getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
-} from '../../../../state/billing/selectors'
-import SynchronizedScrollTopProvider from '../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
-import SynchronizedScrollTopContainer from '../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
+} from 'state/billing/selectors'
+import SynchronizedScrollTopProvider from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
+import SynchronizedScrollTopContainer from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import BillingPlanCard from './BillingPlanCard'
 import CurrentPlanBadge from './CurrentPlanBadge'
@@ -132,15 +132,17 @@ export const ChangePlanModal = ({
                     </div>
                 </ModalBody>
                 <ModalFooter className={css.footer}>
-                    <Button color="secondary" onClick={onClose}>
+                    <Button
+                        type="button"
+                        intent={ButtonIntent.Secondary}
+                        onClick={onClose}
+                    >
                         Cancel
                     </Button>
                     <Button
-                        color="primary"
+                        type="button"
+                        isDisabled={isUpdating}
                         onClick={onConfirm}
-                        className={classnames({
-                            'btn-loading': isUpdating,
-                        })}
                     >
                         {confirmLabel}
                     </Button>

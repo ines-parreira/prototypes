@@ -1,20 +1,21 @@
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Container} from 'reactstrap'
+import {Container} from 'reactstrap'
 import {useEffectOnce} from 'react-use'
 import {bindActionCreators} from 'redux'
+import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
-import PageHeader from '../../common/components/PageHeader'
-import history from '../../history'
-import {RootState, StoreDispatch} from '../../../state/types'
-import {IntegrationType} from '../../../models/integration/types'
-import Loader from '../../common/components/Loader/Loader'
-import LinkAlert from '../../common/components/Alert/LinkAlert'
-import * as integrationSelectors from '../../../state/integrations/selectors'
-import * as integrationActions from '../../../state/integrations/actions'
-import css from '../settings.less'
+import PageHeader from 'pages/common/components/PageHeader'
+import {RootState, StoreDispatch} from 'state/types'
+import {IntegrationType} from 'models/integration/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import * as integrationSelectors from 'state/integrations/selectors'
+import * as integrationActions from 'state/integrations/actions'
+import Button from 'pages/common/components/button/Button'
 
+import css from '../settings.less'
 import ImportZendeskDataList from './zendesk/ImportZendeskDataList'
 
 export const ImportDataContainer = (
@@ -33,16 +34,12 @@ export const ImportDataContainer = (
     return (
         <div className="full-width">
             <PageHeader title="Import data">
-                <Button
-                    type="submit"
-                    color="success"
-                    onClick={() => {
-                        history.push('/app/settings/import-data/zendesk')
-                    }}
+                <Link
+                    to="/app/settings/import-data/zendesk"
                     className="float-right"
                 >
-                    Add account
-                </Button>
+                    <Button type="button">Add account</Button>
+                </Link>
             </PageHeader>
             <Container fluid className={css.pageContainer}>
                 <div className={classnames('body-regular', css.contentWrapper)}>

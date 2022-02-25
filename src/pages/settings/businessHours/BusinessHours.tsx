@@ -2,19 +2,22 @@ import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List} from 'immutable'
 import {Link} from 'react-router-dom'
-import {Button, Row, Col, Container, Form, Label} from 'reactstrap'
+import {Col, Container, Form, Label, Row} from 'reactstrap'
 import classnames from 'classnames'
 
 import InputField from 'pages/common/forms/InputField'
-import PageHeader from '../../common/components/PageHeader'
-import {getMomentTimezoneNames} from '../../../utils/date'
-import {submitSetting} from '../../../state/currentAccount/actions'
-import {DEPRECATED_getBusinessHoursSettings} from '../../../state/currentAccount/selectors'
-import {RootState} from '../../../state/types'
+import PageHeader from 'pages/common/components/PageHeader'
+import {getMomentTimezoneNames} from 'utils/date'
+import {submitSetting} from 'state/currentAccount/actions'
+import {DEPRECATED_getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import {RootState} from 'state/types'
 import {
-    AccountSettingType,
     AccountSettingBusinessHours,
-} from '../../../state/currentAccount/types'
+    AccountSettingType,
+} from 'state/currentAccount/types'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+
 import settingsCss from '../settings.less'
 
 import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants'
@@ -160,12 +163,12 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                         ))}
                                         <Button
                                             type="button"
+                                            intent={ButtonIntent.Secondary}
                                             onClick={this._addBusinessHours}
                                         >
-                                            <i className="material-icons">
-                                                add
-                                            </i>{' '}
-                                            Add business hours
+                                            <ButtonIconLabel icon="add">
+                                                Add business hours
+                                            </ButtonIconLabel>
                                         </Button>
                                     </div>
 
@@ -195,13 +198,10 @@ export class BusinessHoursContainer extends Component<Props, State> {
 
                             <Button
                                 type="submit"
-                                color="success"
-                                className={classnames({
-                                    'btn-loading': this.state.loading,
-                                })}
-                                disabled={this.state.loading}
+                                isLoading={this.state.loading}
+                                isDisabled={this.state.loading}
                             >
-                                Save Changes
+                                Save changes
                             </Button>
                         </Form>
                     </div>

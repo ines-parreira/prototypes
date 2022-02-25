@@ -19,14 +19,15 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
         searchDebounceTime={300}
       />
       <MacrosManageDropdown />
-      <Button
-        color="success"
-        onClick={[Function]}
-        tag="button"
-        type="button"
+      <Link
+        to="/app/settings/macros/new"
       >
-        Create macro
-      </Button>
+        <ForwardRef
+          type="button"
+        >
+          Create macro
+        </ForwardRef>
+      </Link>
     </div>
   </PageHeader>
   <Container

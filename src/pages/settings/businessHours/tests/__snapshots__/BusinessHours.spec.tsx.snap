@@ -106,20 +106,17 @@ exports[`BusinessHours component should render default values 1`] = `
                   </i>
                 </div>
               </div>
-              <Button
-                color="secondary"
+              <ForwardRef
+                intent="secondary"
                 onClick={[Function]}
-                tag="button"
                 type="button"
               >
-                <i
-                  className="material-icons"
+                <ButtonIconLabel
+                  icon="add"
                 >
-                  add
-                </i>
-                 
-                Add business hours
-              </Button>
+                  Add business hours
+                </ButtonIconLabel>
+              </ForwardRef>
             </div>
             <InputField
               className="inputField mb40"
@@ -150,15 +147,13 @@ exports[`BusinessHours component should render default values 1`] = `
             </InputField>
           </Col>
         </Row>
-        <Button
-          className=""
-          color="success"
-          disabled={false}
-          tag="button"
+        <ForwardRef
+          isDisabled={false}
+          isLoading={false}
           type="submit"
         >
-          Save Changes
-        </Button>
+          Save changes
+        </ForwardRef>
       </Form>
     </div>
   </Container>
@@ -1161,27 +1156,36 @@ exports[`BusinessHours component should render values from state 1`] = `
                                 </i>
                               </div>
                             </div>
-                            <Button
-                              color="secondary"
+                            <ForwardRef
+                              intent="secondary"
                               onClick={[Function]}
-                              tag="button"
                               type="button"
                             >
                               <button
-                                aria-label={null}
-                                className="btn btn-secondary"
+                                className="wrapper secondary medium"
                                 onClick={[Function]}
                                 type="button"
                               >
-                                <i
-                                  className="material-icons"
+                                <ButtonIconLabel
+                                  icon="add"
                                 >
-                                  add
-                                </i>
-                                 
-                                Add business hours
+                                  <span
+                                    className="wrapper"
+                                  >
+                                    <Icon
+                                      className="icon isLeft"
+                                    >
+                                      <i
+                                        className="material-icons icon isLeft medium"
+                                      >
+                                        add
+                                      </i>
+                                    </Icon>
+                                    Add business hours
+                                  </span>
+                                </ButtonIconLabel>
                               </button>
-                            </Button>
+                            </ForwardRef>
                           </div>
                           <InputField
                             className="inputField mb40"
@@ -1265,23 +1269,19 @@ exports[`BusinessHours component should render values from state 1`] = `
                       </Col>
                     </div>
                   </Row>
-                  <Button
-                    className=""
-                    color="success"
-                    disabled={false}
-                    tag="button"
+                  <ForwardRef
+                    isDisabled={false}
+                    isLoading={false}
                     type="submit"
                   >
                     <button
-                      aria-label={null}
-                      className="btn btn-success"
+                      className="wrapper primary medium"
                       disabled={false}
-                      onClick={[Function]}
                       type="submit"
                     >
-                      Save Changes
+                      Save changes
                     </button>
-                  </Button>
+                  </ForwardRef>
                 </form>
               </Form>
             </div>

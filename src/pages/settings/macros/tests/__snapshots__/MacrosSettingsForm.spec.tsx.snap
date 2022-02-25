@@ -652,41 +652,36 @@ Sincerely,
               <div
                 className="mt-5 form-group"
               >
-                <Button
+                <ForwardRef
                   className="mr-2"
-                  color="success"
-                  disabled={false}
-                  tag="button"
+                  isDisabled={false}
+                  isLoading={false}
                   type="submit"
                 >
                   <button
-                    aria-label={null}
-                    className="mr-2 btn btn-success"
+                    className="wrapper mr-2 primary medium"
                     disabled={false}
-                    onClick={[Function]}
                     type="submit"
                   >
                     Update macro
                   </button>
-                </Button>
-                <Button
-                  className=""
-                  color="secondary"
-                  disabled={false}
+                </ForwardRef>
+                <ForwardRef
+                  intent="secondary"
+                  isDisabled={false}
+                  isLoading={false}
                   onClick={[Function]}
-                  tag="button"
                   type="button"
                 >
                   <button
-                    aria-label={null}
-                    className="btn btn-secondary"
+                    className="wrapper secondary medium"
                     disabled={false}
                     onClick={[Function]}
                     type="button"
                   >
                     Duplicate macro
                   </button>
-                </Button>
+                </ForwardRef>
                 <Component
                   className="float-right"
                   confirmationContent="You are about to delete this macro."
@@ -807,15 +802,14 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
         className="mt-5"
         tag="div"
       >
-        <Button
+        <ForwardRef
           className="mr-2"
-          color="success"
-          disabled={false}
-          tag="button"
+          isDisabled={false}
+          isLoading={false}
           type="submit"
         >
           Create macro
-        </Button>
+        </ForwardRef>
       </FormGroup>
     </Form>
   </Container>

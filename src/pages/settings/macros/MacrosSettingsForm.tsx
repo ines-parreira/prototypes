@@ -1,48 +1,47 @@
 import classnames from 'classnames'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
-import React, {useEffect, useState, SyntheticEvent} from 'react'
+import React, {SyntheticEvent, useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 import {
     Breadcrumb,
     BreadcrumbItem,
-    Button,
     Container,
     Form,
     FormGroup,
 } from 'reactstrap'
 
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {DEFAULT_ACTIONS} from '../../../config'
+import {DEFAULT_ACTIONS} from 'config'
 import {
     createMacro,
     deleteMacro,
     fetchMacro,
     updateMacro,
-} from '../../../models/macro/resources'
-import {MacroDraft} from '../../../models/macro/types'
-import {getAgents} from '../../../state/agents/selectors'
+} from 'models/macro/resources'
+import {MacroDraft} from 'models/macro/types'
+import {getAgents} from 'state/agents/selectors'
 import {
     macroCreated,
     macroDeleted,
     macroFetched,
     macroUpdated,
-} from '../../../state/entities/macros/actions'
-import {getDefaultMacro, getErrorReason} from '../../../state/macro/utils'
-import {notify} from '../../../state/notifications/actions'
-import {NotificationStatus} from '../../../state/notifications/types'
-import {RootState} from '../../../state/types'
-import Loader from '../../common/components/Loader/Loader'
-import PageHeader from '../../common/components/PageHeader'
-import MacroEdit from '../../tickets/common/macros/components/MacroEdit'
-import history from '../../history'
-import {errorToChildren} from '../../../utils'
-import settingsCss from '../settings.less'
-import {MacroApiError} from '../../../state/macro/types'
+} from 'state/entities/macros/actions'
+import {getDefaultMacro, getErrorReason} from 'state/macro/utils'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import MacroEdit from 'pages/tickets/common/macros/components/MacroEdit'
+import history from 'pages/history'
+import {errorToChildren} from 'utils'
+import settingsCss from 'pages/settings/settings.less'
+import {MacroApiError} from 'state/macro/types'
 
 import css from './MacrosSettingsForm.less'
 
@@ -239,27 +238,20 @@ export function MacrosSettingsFormContainer({
                         />
                         <FormGroup className="mt-5">
                             <Button
-                                className={classnames(
-                                    {
-                                        'btn-loading': isSubmitPending,
-                                    },
-                                    'mr-2'
-                                )}
-                                color="success"
-                                disabled={isActionDisabled}
                                 type="submit"
+                                className="mr-2"
+                                isLoading={isSubmitPending}
+                                isDisabled={isActionDisabled}
                             >
                                 {macroId ? 'Update macro' : 'Create macro'}
                             </Button>
                             {macroId && (
                                 <Button
-                                    className={classnames({
-                                        'btn-loading': isDuplicatePending,
-                                    })}
-                                    color="secondary"
-                                    onClick={handleMacroDuplicate}
-                                    disabled={isActionDisabled}
                                     type="button"
+                                    intent={ButtonIntent.Secondary}
+                                    isLoading={isDuplicatePending}
+                                    isDisabled={isActionDisabled}
+                                    onClick={handleMacroDuplicate}
                                 >
                                     Duplicate macro
                                 </Button>

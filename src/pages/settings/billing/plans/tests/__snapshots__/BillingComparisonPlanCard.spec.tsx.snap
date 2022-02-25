@@ -341,7 +341,7 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
     </div>
     <button
       aria-label="Switch to Basic Plan"
-      class="footerButton btn btn-link"
+      class="wrapper footerButton text medium"
       type="button"
     >
       Switch to Basic Plan
@@ -688,7 +688,7 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
     </div>
     <button
       aria-label="Current Plan"
-      class="footerButton btn btn-link disabled"
+      class="wrapper footerButton text medium isDisabled"
       disabled=""
       type="button"
     >
@@ -1046,7 +1046,7 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
     </div>
     <button
       aria-label="Current Plan"
-      class="footerButton btn btn-link disabled"
+      class="wrapper footerButton text medium isDisabled"
       disabled=""
       type="button"
     >
@@ -1355,7 +1355,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
     </div>
     <button
       aria-label="Current Plan"
-      class="footerButton btn btn-link disabled"
+      class="wrapper footerButton text medium isDisabled"
       disabled=""
       type="button"
     >
@@ -1657,7 +1657,7 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
     </div>
     <button
       aria-label="Current Plan"
-      class="footerButton btn btn-link disabled"
+      class="wrapper footerButton text medium isDisabled"
       disabled=""
       type="button"
     >
@@ -2008,10 +2008,20 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
     </div>
     <button
       aria-label="Switch to Basic Plan"
-      class="footerButton btn-loading btn btn-link disabled"
+      class="wrapper footerButton text medium isDisabled"
       disabled=""
       type="button"
     >
+      <div
+        class="spinner spinner-border"
+        role="status"
+      >
+        <span
+          class="sr-only"
+        >
+          Loading...
+        </span>
+      </div>
       Switch to Basic Plan
     </button>
   </div>

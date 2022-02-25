@@ -40,7 +40,7 @@ describe('<ImportZendeskDetail/>', () => {
         )
 
         it('should display the popover', () => {
-            const {getByText} = renderComponent({
+            const {getByText, getByRole} = renderComponent({
                 fetchIntegration: jest.fn(),
                 updateOrCreateIntegration: jest.fn(),
                 match: {
@@ -54,11 +54,7 @@ describe('<ImportZendeskDetail/>', () => {
 
             fireEvent.click(getByText('Learn'))
 
-            const learnMoreButton = getByText('Learn more')
-            expect(learnMoreButton).toBeDefined()
-            expect(learnMoreButton.getAttribute('href')).toEqual(
-                'https://docs.gorgias.com/migrating-helpdesks/switching-from-zendesk'
-            )
+            expect(getByRole('tooltip')).toMatchSnapshot()
         })
 
         it('should start syncing', () => {

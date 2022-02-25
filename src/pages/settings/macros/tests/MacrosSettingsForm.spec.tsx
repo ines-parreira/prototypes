@@ -1,20 +1,21 @@
 import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
-import {Button} from 'reactstrap'
 
+import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {macros as macrosFixtures} from '../../../../fixtures/macro'
+import {macros as macrosFixtures} from 'fixtures/macro'
 import {
     createMacro,
     deleteMacro,
     fetchMacro,
     updateMacro,
-} from '../../../../models/macro/resources'
-import {getDefaultMacro} from '../../../../state/macro/utils'
+} from 'models/macro/resources'
+import {getDefaultMacro} from 'state/macro/utils'
+import {NotificationStatus} from 'state/notifications/types'
+import history from 'pages/history'
+
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import history from '../../../history'
 
 jest.mock('../../../history')
 jest.mock('../../../../models/macro/resources')

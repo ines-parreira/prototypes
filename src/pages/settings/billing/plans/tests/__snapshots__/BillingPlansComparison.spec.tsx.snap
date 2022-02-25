@@ -387,7 +387,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         </div>
         <button
           aria-label="Current Plan"
-          class="footerButton btn btn-link disabled"
+          class="wrapper footerButton text medium isDisabled"
           disabled=""
           type="button"
         >
@@ -746,7 +746,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         </div>
         <button
           aria-label="Upgrade to Pro Plan"
-          class="footerButton btn btn-link"
+          class="wrapper footerButton text medium"
           type="button"
         >
           Upgrade to Pro Plan
@@ -1104,7 +1104,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         </div>
         <button
           aria-label="Upgrade to Advanced Plan"
-          class="footerButton btn btn-link"
+          class="wrapper footerButton text medium"
           type="button"
         >
           Upgrade to Advanced Plan
@@ -1392,7 +1392,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         </div>
         <button
           aria-label="Contact us"
-          class="footerButton btn btn-link"
+          class="wrapper footerButton text medium"
           type="button"
         >
           Contact us
@@ -1406,7 +1406,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
 exports[`<BillingPlansComparison /> should display disabled link to modal for current plan with automation add-on 2`] = `
 <button
   aria-label="Current Plan"
-  class="footerButton btn btn-link disabled"
+  class="wrapper footerButton text medium isDisabled"
   disabled=""
   type="button"
 >
@@ -1764,7 +1764,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         </div>
         <button
           aria-label="Current Plan"
-          class="footerButton btn btn-link disabled"
+          class="wrapper footerButton text medium isDisabled"
           disabled=""
           type="button"
         >
@@ -2121,7 +2121,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         </div>
         <button
           aria-label="Switch to Basic Plan"
-          class="footerButton btn btn-link"
+          class="wrapper footerButton text medium"
           type="button"
         >
           Switch to Basic Plan
@@ -2478,7 +2478,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         </div>
         <button
           aria-label="Upgrade to Pro Plan"
-          class="footerButton btn btn-link"
+          class="wrapper footerButton text medium"
           type="button"
         >
           Upgrade to Pro Plan
@@ -2835,7 +2835,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         </div>
         <button
           aria-label="Upgrade to Advanced Plan"
-          class="footerButton btn btn-link"
+          class="wrapper footerButton text medium"
           type="button"
         >
           Upgrade to Advanced Plan
@@ -3123,7 +3123,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         </div>
         <button
           aria-label="Contact us"
-          class="footerButton btn btn-link"
+          class="wrapper footerButton text medium"
           type="button"
         >
           Contact us
@@ -3513,7 +3513,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         </div>
         <button
           aria-label="Upgrade to Basic Plan"
-          class="footerButton btn btn-link"
+          class="wrapper footerButton text medium"
           type="button"
         >
           Upgrade to Basic Plan
@@ -3870,7 +3870,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         </div>
         <button
           aria-label="Upgrade to Pro Plan"
-          class="footerButton btn btn-link"
+          class="wrapper footerButton text medium"
           type="button"
         >
           Upgrade to Pro Plan
@@ -4227,7 +4227,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         </div>
         <button
           aria-label="Upgrade to Advanced Plan"
-          class="footerButton btn btn-link"
+          class="wrapper footerButton text medium"
           type="button"
         >
           Upgrade to Advanced Plan
@@ -4515,7 +4515,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
         </div>
         <button
           aria-label="Contact us"
-          class="footerButton btn btn-link"
+          class="wrapper footerButton text medium"
           type="button"
         >
           Contact us
@@ -4912,10 +4912,20 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         </div>
         <button
           aria-label="Current Plan"
-          class="footerButton btn-loading btn btn-link disabled"
+          class="wrapper footerButton text medium isDisabled"
           disabled=""
           type="button"
         >
+          <div
+            class="spinner spinner-border"
+            role="status"
+          >
+            <span
+              class="sr-only"
+            >
+              Loading...
+            </span>
+          </div>
           Current Plan
         </button>
       </div>
@@ -5270,10 +5280,20 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         </div>
         <button
           aria-label="Upgrade to Pro Plan"
-          class="footerButton btn-loading btn btn-link disabled"
+          class="wrapper footerButton text medium isDisabled"
           disabled=""
           type="button"
         >
+          <div
+            class="spinner spinner-border"
+            role="status"
+          >
+            <span
+              class="sr-only"
+            >
+              Loading...
+            </span>
+          </div>
           Upgrade to Pro Plan
         </button>
       </div>
@@ -5628,10 +5648,20 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         </div>
         <button
           aria-label="Upgrade to Advanced Plan"
-          class="footerButton btn-loading btn btn-link disabled"
+          class="wrapper footerButton text medium isDisabled"
           disabled=""
           type="button"
         >
+          <div
+            class="spinner spinner-border"
+            role="status"
+          >
+            <span
+              class="sr-only"
+            >
+              Loading...
+            </span>
+          </div>
           Upgrade to Advanced Plan
         </button>
       </div>
@@ -5917,10 +5947,20 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         </div>
         <button
           aria-label="Contact us"
-          class="footerButton btn-loading btn btn-link disabled"
+          class="wrapper footerButton text medium isDisabled"
           disabled=""
           type="button"
         >
+          <div
+            class="spinner spinner-border"
+            role="status"
+          >
+            <span
+              class="sr-only"
+            >
+              Loading...
+            </span>
+          </div>
           Contact us
         </button>
       </div>

@@ -2,7 +2,12 @@
 
 :local {
     .footerButton {
-        border-top: 1px solid @classic-neutral-grey-3;
+        // todo: remove !important when UI Kit css priority bug is fixed
+        border-top: 1px solid @classic-neutral-grey-3 !important;
+        text-align: center !important;
+        display: inline-block;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
         height: 52px;
         width: 100%;
     }

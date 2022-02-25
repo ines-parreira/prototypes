@@ -7,7 +7,6 @@ import {useEffectOnce} from 'react-use'
 import {
     Breadcrumb,
     BreadcrumbItem,
-    Button,
     Container,
     Popover,
     PopoverBody,
@@ -18,19 +17,26 @@ import InputField from 'pages/common/forms/InputField'
 import {
     fetchIntegration,
     updateOrCreateIntegration,
-} from '../../../../state/integrations/actions'
-import {getTimezone} from '../../../../state/currentUser/selectors'
-import {RootState, StoreDispatch} from '../../../../state/types'
-import {ZENDESK_INTEGRATION_TYPE} from '../../../../constants/integration'
-import PageHeader from '../../../common/components/PageHeader'
-import Loader from '../../../common/components/Loader/Loader'
-import Tooltip from '../../../common/components/Tooltip'
-import css from '../../settings.less'
+} from 'state/integrations/actions'
+import {getTimezone} from 'state/currentUser/selectors'
+import {RootState, StoreDispatch} from 'state/types'
+import {ZENDESK_INTEGRATION_TYPE} from 'constants/integration'
+import PageHeader from 'pages/common/components/PageHeader'
+import Loader from 'pages/common/components/Loader/Loader'
+import Tooltip from 'pages/common/components/Tooltip'
+import settingsCss from 'pages/settings/settings.less'
+import Button, {
+    ButtonIntent,
+    ButtonSize,
+} from 'pages/common/components/button/Button'
+import ButtonIconLabel, {
+    ButtonIconPosition,
+} from 'pages/common/components/button/ButtonIconLabel'
 
 import {ImportStatus} from './types'
 import {getImportCompletionDate} from './utils'
-import './ImportZendeskDetail.less'
 import ImportStatusAlert from './ImportStatusAlert'
+import css from './ImportZendeskDetail.less'
 
 export const ImportZendeskDetail = (
     props: RouteComponentProps<{integrationId: string}> &
@@ -111,7 +117,7 @@ export const ImportZendeskDetail = (
                     </Breadcrumb>
                 }
             />
-            <Container fluid className={css.pageContainer}>
+            <Container fluid className={settingsCss.pageContainer}>
                 <div className="row mb-5">
                     <div className="col-sm-12 col-md-7 col-lg-4">
                         <ImportStatusAlert integrationMeta={integrationMeta} />
@@ -137,17 +143,20 @@ export const ImportZendeskDetail = (
                         <h4>
                             Import summary{' '}
                             <Button
-                                active={false}
                                 id="learn-button"
+                                type="button"
+                                className={css.learnButton}
+                                intent={ButtonIntent.Secondary}
                                 onClick={() => {
                                     setIsPopoverOpened(!isPopoverOpened)
                                 }}
                             >
-                                <i className="material-icons">info_outline</i>{' '}
-                                Learn
+                                <ButtonIconLabel icon="info_outline">
+                                    Learn
+                                </ButtonIconLabel>
                             </Button>
                             <Popover
-                                className="learn-popover"
+                                className={css.learnPopover}
                                 placement="bottom-start"
                                 isOpen={isPopoverOpened}
                                 target="learn-button"
@@ -169,17 +178,25 @@ export const ImportZendeskDetail = (
                                         Therefore, if there is a lot of Zendesk
                                         data, the import can take a few days.
                                     </div>
-                                    <Button
-                                        size="sm"
+                                    <a
                                         className="mb-1"
-                                        active={false}
                                         href="https://docs.gorgias.com/migrating-helpdesks/switching-from-zendesk"
                                     >
-                                        Learn more{' '}
-                                        <i className="material-icons">
-                                            arrow_forward
-                                        </i>
-                                    </Button>
+                                        <Button
+                                            type="button"
+                                            size={ButtonSize.Small}
+                                            intent={ButtonIntent.Secondary}
+                                        >
+                                            <ButtonIconLabel
+                                                icon="arrow_forward"
+                                                position={
+                                                    ButtonIconPosition.Right
+                                                }
+                                            >
+                                                Learn more
+                                            </ButtonIconLabel>
+                                        </Button>
+                                    </a>
                                 </PopoverBody>
                             </Popover>
                         </h4>
@@ -281,19 +298,16 @@ export const ImportZendeskDetail = (
                 ) : null}
                 {importStatus === ImportStatus.Success &&
                     (synchronizationEnabled ? (
-                        <Button color="primary" onClick={handleSyncClick}>
-                            <i className="material-icons">
-                                pause_circle_filled
-                            </i>{' '}
-                            Pause
+                        <Button type="button" onClick={handleSyncClick}>
+                            <ButtonIconLabel icon="pause_circle_filled">
+                                Pause
+                            </ButtonIconLabel>
                         </Button>
                     ) : (
-                        <Button color="success" onClick={handleSyncClick}>
-                            <span></span>
-                            <i className="material-icons">
-                                play_circle_filled
-                            </i>{' '}
-                            Resume
+                        <Button type="button" onClick={handleSyncClick}>
+                            <ButtonIconLabel icon="play_circle_filled">
+                                Resume
+                            </ButtonIconLabel>
                         </Button>
                     ))}
             </Container>

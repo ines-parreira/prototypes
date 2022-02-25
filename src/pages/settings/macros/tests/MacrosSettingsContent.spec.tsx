@@ -2,7 +2,6 @@ import axios from 'axios'
 import _pick from 'lodash/pick'
 import {mount, shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
-import {Button} from 'reactstrap'
 
 import {macros as macrosFixtures} from '../../../../fixtures/macro'
 import {fetchMacros} from '../../../../models/macro/resources'
@@ -10,8 +9,6 @@ import Pagination from '../../../common/components/Pagination'
 import Search from '../../../common/components/Search'
 import {MacrosSettingsContentContainer} from '../MacrosSettingsContent'
 import MacroSettingsTable from '../MacrosSettingsTable'
-import history from '../../../history'
-// import {MacrosManageDropdown} from '../MacrosManageDropdown'
 
 jest.mock('../../../../models/macro/resources')
 jest.mock(
@@ -34,7 +31,6 @@ jest.mock(
                 />
             )
 )
-jest.mock('../../../history')
 jest.mock(
     '../MacrosSettingsTable',
     () =>
@@ -155,18 +151,6 @@ describe('<MacrosSettingsContent/>', () => {
                 page: 2,
             },
             mockToken
-        )
-    })
-
-    it('should redirect when creating new macro', () => {
-        const component = mount(
-            <MacrosSettingsContentContainer {...minProps} />
-        )
-
-        component.find(Button).simulate('click')
-        expect(history.push).toHaveBeenNthCalledWith(
-            1,
-            '/app/settings/macros/new'
         )
     })
 

@@ -2,27 +2,28 @@ import {CancelToken} from 'axios'
 import _pick from 'lodash/pick'
 import React, {useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button, Container} from 'reactstrap'
+import {Container} from 'reactstrap'
+import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
-import useDelayedAsyncFn from '../../../hooks/useDelayedAsyncFn'
-import useCancellableRequest from '../../../hooks/useCancellableRequest'
-import {OrderDirection} from '../../../models/api/types'
-import {fetchMacros} from '../../../models/macro/resources'
+import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import {OrderDirection} from 'models/api/types'
+import {fetchMacros} from 'models/macro/resources'
 import {
     FetchMacrosOptions,
     MacroSortableProperties,
     Macro,
-} from '../../../models/macro/types'
-import {macrosFetched} from '../../../state/entities/macros/actions'
-import {notify} from '../../../state/notifications/actions'
-import {NotificationStatus} from '../../../state/notifications/types'
-import PageHeader from '../../common/components/PageHeader'
-import Pagination from '../../common/components/Pagination'
-import Search from '../../common/components/Search'
-import {RootState} from '../../../state/types'
-import history from '../../history'
-import settingsCss from '../settings.less'
+} from 'models/macro/types'
+import {macrosFetched} from 'state/entities/macros/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import PageHeader from 'pages/common/components/PageHeader'
+import Pagination from 'pages/common/components/Pagination'
+import Search from 'pages/common/components/Search'
+import {RootState} from 'state/types'
+import settingsCss from 'pages/settings/settings.less'
+import Button from 'pages/common/components/button/Button'
 
 import css from './MacrosSettingsContent.less'
 import MacrosSettingsTable from './MacrosSettingsTable'
@@ -108,15 +109,9 @@ export function MacrosSettingsContentContainer({
                         searchDebounceTime={300}
                     />
                     <MacrosManageDropdown />
-                    <Button
-                        color="success"
-                        onClick={() => {
-                            history.push('/app/settings/macros/new')
-                        }}
-                        type="button"
-                    >
-                        Create macro
-                    </Button>
+                    <Link to="/app/settings/macros/new">
+                        <Button type="button">Create macro</Button>
+                    </Link>
                 </div>
             </PageHeader>
             <Container

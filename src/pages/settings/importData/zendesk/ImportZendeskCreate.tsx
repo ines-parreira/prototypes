@@ -1,21 +1,21 @@
 import {fromJS} from 'immutable'
-import classnames from 'classnames'
 import React, {FormEvent, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Container, Form} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 
 import InputField from 'pages/common/forms/InputField'
-import PageHeader from '../../../common/components/PageHeader'
-import {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} from '../../../../config'
-import {createImportIntegration} from '../../../../state/integrations/actions'
-import * as utils from '../../../../utils'
-import {RootState, StoreDispatch} from '../../../../state/types'
-import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../models/integration/types'
-import Tooltip from '../../../common/components/Tooltip'
-import css from '../../settings.less'
+import PageHeader from 'pages/common/components/PageHeader'
+import {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} from 'config'
+import {createImportIntegration} from 'state/integrations/actions'
+import * as utils from 'utils'
+import {RootState, StoreDispatch} from 'state/types'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/types'
+import Tooltip from 'pages/common/components/Tooltip'
+import css from 'pages/settings/settings.less'
+import Button from 'pages/common/components/button/Button'
 
 import {ZENDESK_CONNECTION_TYPE} from './types'
 
@@ -136,11 +136,8 @@ export const ImportZendeskCreate = (
                     </Tooltip>
                     <Button
                         type="submit"
-                        color="success"
-                        className={classnames({
-                            'btn-loading': isLoading,
-                        })}
-                        disabled={isLoading || !domain || isExistingDomain}
+                        isLoading={isLoading}
+                        isDisabled={isLoading || !domain || isExistingDomain}
                     >
                         Start import
                     </Button>
