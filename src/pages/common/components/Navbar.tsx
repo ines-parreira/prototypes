@@ -438,6 +438,24 @@ export class Navbar extends React.Component<Props, State> {
                             <span id="noticeable-widget-notification" />
                         </DropdownItem>
                         <DropdownItem
+                            tag={NavLink}
+                            to={'/app/referral-program'}
+                            onClick={() => {
+                                this._closePanel()
+                            }}
+                            className={css['dropdown-item']}
+                        >
+                            <i
+                                className={classnames(
+                                    'material-icons mr-2',
+                                    css.icon
+                                )}
+                            >
+                                favorite_border
+                            </i>
+                            Refer a friend & earn
+                        </DropdownItem>
+                        <DropdownItem
                             onClick={() => {
                                 shortcutManager.triggerAction(
                                     'KeyboardHelp',

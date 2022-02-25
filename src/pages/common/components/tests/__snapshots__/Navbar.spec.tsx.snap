@@ -240,6 +240,19 @@ exports[`<Navbar /> should render the navbar 1`] = `
           id="noticeable-widget-notification"
         />
       </div>
+      <a
+        class="dropdown-item dropdown-item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        to="/app/referral-program"
+      >
+        <i
+          class="material-icons mr-2 icon"
+        >
+          favorite_border
+        </i>
+        Refer a friend & earn
+      </a>
       <button
         class="dropdown-item dropdown-item"
         role="menuitem"
@@ -511,6 +524,19 @@ exports[`<Navbar /> should render the opened panel 1`] = `
           id="noticeable-widget-notification"
         />
       </div>
+      <a
+        class="dropdown-item dropdown-item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        to="/app/referral-program"
+      >
+        <i
+          class="material-icons mr-2 icon"
+        >
+          favorite_border
+        </i>
+        Refer a friend & earn
+      </a>
       <button
         class="dropdown-item dropdown-item"
         role="menuitem"
@@ -781,6 +807,19 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
           id="noticeable-widget-notification"
         />
       </div>
+      <a
+        class="dropdown-item dropdown-item dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        to="/app/referral-program"
+      >
+        <i
+          class="material-icons mr-2 icon"
+        >
+          favorite_border
+        </i>
+        Refer a friend & earn
+      </a>
       <button
         class="dropdown-item dropdown-item"
         role="menuitem"
