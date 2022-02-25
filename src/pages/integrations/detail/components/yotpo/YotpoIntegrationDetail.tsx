@@ -9,7 +9,7 @@ import {
     Container,
     Row,
 } from 'reactstrap'
-import {parse} from 'query-string'
+import {parse} from 'qs'
 import {fromJS, Map} from 'immutable'
 
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
@@ -76,7 +76,8 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                 nextProps.integration.getIn(['meta', 'oauth', 'status']) ===
                 PENDING_AUTHENTICATION_STATUS
             const isAuthenticating =
-                parse(nextProps.location.search)?.action === 'authentication'
+                parse(nextProps.location.search, {ignoreQueryPrefix: true})
+                    ?.action === 'authentication'
 
             if (isAuthenticating) {
                 if (authenticationRequired) {

@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {RouteComponentProps, withRouter} from 'react-router-dom'
 import {Container} from 'reactstrap'
-import {parse} from 'query-string'
+import {parse} from 'qs'
 
 import {RootState} from 'state/types'
 import {NotificationStatus} from 'state/notifications/types'
@@ -23,7 +23,10 @@ type Props = RouteComponentProps & ConnectedProps<typeof connector>
 export class BillingContainer extends Component<Props> {
     componentDidMount() {
         // display message from url
-        const {notif_msg, notif_type} = parse(this.props.location.search)
+        const {notif_msg, notif_type} = parse(this.props.location.search, {
+            ignoreQueryPrefix: true,
+        })
+
         if (notif_msg) {
             void this.props.notify({
                 status: notif_type as NotificationStatus,

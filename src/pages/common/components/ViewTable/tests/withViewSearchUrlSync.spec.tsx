@@ -4,7 +4,7 @@ import {Map} from 'immutable'
 import _noop from 'lodash/noop'
 import {render} from '@testing-library/react'
 import {compressToEncodedURIComponent} from 'lz-string'
-import {stringify} from 'query-string'
+import {stringify} from 'qs'
 import reactRouterDom from 'react-router-dom'
 
 import {
