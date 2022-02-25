@@ -10,11 +10,11 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
     >
       bolt
     </i>
-    <span
-      class="badge mr-2 badge badge-primary badge-pill"
+    <div
+      class="badge mr-2"
     >
       1
-    </span>
+    </div>
     <span
       class="title"
     >
@@ -253,11 +253,11 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
     >
       bolt
     </i>
-    <span
-      class="badge mr-2 badge badge-primary badge-pill"
+    <div
+      class="badge mr-2"
     >
       5
-    </span>
+    </div>
     <span
       class="title"
     >
@@ -692,11 +692,11 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
     >
       bolt
     </i>
-    <span
-      class="badge mr-2 badge badge-primary badge-pill"
+    <div
+      class="badge mr-2"
     >
       1
-    </span>
+    </div>
     <span
       class="title"
     >

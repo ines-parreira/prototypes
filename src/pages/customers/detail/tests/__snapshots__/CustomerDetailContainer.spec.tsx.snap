@@ -46,11 +46,11 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
           <div
             class="meta"
           >
-            <span
-              class="statusLabel badge badge-primary badge-pill"
+            <div
+              class="badge statusLabel"
             >
               open
-            </span>
+            </div>
             <div
               class="AgentLabel assigneeLabel"
             >

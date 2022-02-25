@@ -3,28 +3,26 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Badge} from 'reactstrap'
 
-import {
-    fileIconFromContentType,
-    getSortedIntegrationActions,
-} from '../../common/utils'
+import css from './Preview.less'
+
+import {TicketMessageSourceType} from 'business/types/ticket.ts'
+import {isRichType} from 'config/ticket.ts'
+import {getIconFromActionType} from 'models/macroAction/helpers'
+import {actionTypeToName} from 'models/macroAction/types'
+import RichField from 'pages/common/forms/RichField'
 import {
     TagLabel,
     AgentLabel,
     StatusLabel,
     TimedeltaLabel,
     TeamLabel,
-} from '../../../common/utils/labels.tsx'
-import RichField from '../../../common/forms/RichField'
-
-import {isRichType} from '../../../../config/ticket.ts'
-import {sanitizeHtmlForFacebookMessenger} from '../../../../utils/html.ts'
-import {TicketMessageSourceType} from '../../../../business/types/ticket.ts'
-import {actionTypeToName} from '../../../../models/macroAction/types'
-import {getIconFromActionType} from '../../../../models/macroAction/helpers'
-
-import {getActionTemplate} from './../../../../utils.ts'
-
-import css from './Preview.less'
+} from 'pages/common/utils/labels.tsx'
+import {
+    fileIconFromContentType,
+    getSortedIntegrationActions,
+} from 'pages/tickets/common/utils'
+import {getActionTemplate} from 'utils.ts'
+import {sanitizeHtmlForFacebookMessenger} from 'utils/html.ts'
 
 class Preview extends React.Component {
     renderAddAttachments = (attachments) => {

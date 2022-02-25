@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
-import {Badge} from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 import classnames from 'classnames'
 
-import Modal from '../../components/Modal'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import Modal from 'pages/common/components/Modal'
 
-import shortcutManager from '../../../../services/shortcutManager/index'
-import keymap from '../../../../config/shortcuts'
+import shortcutManager from 'services/shortcutManager/index'
+import keymap from 'config/shortcuts'
 
 import css from './KeyboardHelp.less'
 
@@ -81,7 +81,7 @@ export default class KeyboardHelp extends Component<
                                         return (
                                             <div key={j} className="mb-2">
                                                 <Badge
-                                                    color="secondary"
+                                                    type={ColorType.Grey}
                                                     className={classnames(
                                                         css.combo,
                                                         'mr-2'

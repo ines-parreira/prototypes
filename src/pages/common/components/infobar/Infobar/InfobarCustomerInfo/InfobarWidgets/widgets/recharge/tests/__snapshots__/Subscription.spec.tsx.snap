@@ -2,8 +2,8 @@
 
 exports[`Subscription AfterTitle should display only the activate action because the subscription is cancelled 1`] = `
 <div>
-  <span
-    class="ml-1 badge badge-secondary badge-pill"
+  <div
+    class="badge ml-1"
   />
   <div
     class="action-buttons btn-group"
@@ -46,8 +46,8 @@ exports[`Subscription AfterTitle should display only the activate action because
 
 exports[`Subscription AfterTitle should display only the cancel action because the subscription is not cancelled 1`] = `
 <div>
-  <span
-    class="ml-1 badge badge-secondary badge-pill"
+  <div
+    class="badge ml-1"
   />
   <div
     class="action-buttons btn-group"

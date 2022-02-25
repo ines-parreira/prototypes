@@ -153,7 +153,7 @@ describe('Order', () => {
                                 source={fromJS({
                                     customer_id: customerId,
                                     entity_id: orderId,
-                                    state: statusColors.new,
+                                    state: Object.keys(statusColors)[0],
                                 })}
                             />
                         </IntegrationContext.Provider>
@@ -196,7 +196,7 @@ describe('Order', () => {
                                 source={fromJS({
                                     customer_id: customerId,
                                     entity_id: orderId,
-                                    state: statusColors.new,
+                                    state: Object.keys(statusColors)[0],
                                     created_at: createdAt,
                                 })}
                             />
@@ -240,7 +240,7 @@ describe('Order', () => {
                                 source={fromJS({
                                     customer_id: customerId,
                                     entity_id: orderId,
-                                    state: statusColors.new,
+                                    state: Object.keys(statusColors)[0],
                                     created_at: createdAt,
                                 })}
                             />

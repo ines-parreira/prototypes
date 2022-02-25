@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import HTTPStatus from 'httpstatus'
-import {Badge} from 'reactstrap'
+
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 type Props = {
     statusCode: number
@@ -10,13 +11,13 @@ export default class HTTPStatusLabel extends Component<Props> {
     _getHTTPStatusColor = (status: HTTPStatus) => {
         switch (true) {
             case status.isSuccess:
-                return 'success'
+                return ColorType.Success
             case status.isRedirection:
-                return 'primary'
+                return ColorType.Classic
             case status.isClientError || status.isServerError:
-                return 'danger'
+                return ColorType.Error
             default:
-                return 'secondary'
+                return ColorType.Grey
         }
     }
 
@@ -29,7 +30,7 @@ export default class HTTPStatusLabel extends Component<Props> {
         const color = this._getHTTPStatusColor(status)
 
         return (
-            <Badge color={color}>
+            <Badge type={color}>
                 {status.code} {desc}
             </Badge>
         )

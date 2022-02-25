@@ -3,21 +3,15 @@ import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 
 import helpCenterImagePreview from 'assets/img/paywalls/screens/helpcenter.png'
-
-import UpgradeButton from '../../../../common/components/UpgradeButton'
+import {PlanInterval} from 'models/billing/types'
+import Paywall, {PaywallTheme} from 'pages/common/components/Paywall/Paywall'
+import UpgradeButton from 'pages/common/components/UpgradeButton'
 import {
     DEPRECATED_getCurrentPlan,
     DEPRECATED_getPlans,
-} from '../../../../../state/billing/selectors'
-import {openChat} from '../../../../../utils'
-import {PlanInterval} from '../../../../../models/billing/types'
-import {
-    convertLegacyPlanNameToPublicPlanName,
-    PlanName,
-} from '../../../../../utils/paywalls'
-import Paywall, {
-    PaywallTheme,
-} from '../../../../common/components/Paywall/Paywall'
+} from 'state/billing/selectors'
+import {openChat} from 'utils'
+import {convertLegacyPlanNameToPublicPlanName, PlanName} from 'utils/paywalls'
 
 import HelpCenterChangePlanModal from './HelpCenterChangePlanModal'
 

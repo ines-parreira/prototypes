@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
-import {Badge} from 'reactstrap'
 import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {ButtonIntent} from 'pages/common/components/button/Button'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {RoleLabel} from '../../common/utils/labels'
@@ -60,16 +60,17 @@ export class RowContainer extends Component<Props> {
                     <span className={css.role}>
                         <RoleLabel roles={agent.get('roles')} />
                         {isAccountOwner && (
-                            <Badge color="dark" pill>
-                                Account Owner
-                            </Badge>
+                            <Badge type={ColorType.Dark}>Account Owner</Badge>
                         )}
                     </span>
                     {hasAccessTo2FA && (
                         <span className={css.twoFa}>
                             <Badge
-                                pill
-                                color={has2FaEnabled ? 'success' : 'danger'}
+                                type={
+                                    has2FaEnabled
+                                        ? ColorType.Success
+                                        : ColorType.Error
+                                }
                             >
                                 {has2FaEnabled ? 'Yes' : 'No'}
                             </Badge>

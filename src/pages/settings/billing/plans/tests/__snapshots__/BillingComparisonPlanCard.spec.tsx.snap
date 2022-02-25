@@ -358,11 +358,11 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
     class="planHeader card-header"
   >
     <div>
-      <span
-        class="currentPlanBadge badge badge-secondary"
+      <div
+        class="badge"
       >
         CURRENT PLAN
-      </span>
+      </div>
     </div>
     <div
       class="headerText"
@@ -706,11 +706,11 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
     class="planHeader card-header"
   >
     <div>
-      <span
-        class="currentPlanBadge badge badge-primary"
+      <div
+        class="badge"
       >
         CURRENT PLAN
-      </span>
+      </div>
     </div>
     <div
       class="headerText"
@@ -1064,11 +1064,11 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
     class="planHeader card-header"
   >
     <div>
-      <span
-        class="currentPlanBadge badge badge-warning"
+      <div
+        class="badge"
       >
         CURRENT PLAN
-      </span>
+      </div>
     </div>
     <div
       class="headerText"
@@ -1373,11 +1373,11 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
     class="planHeader card-header"
   >
     <div>
-      <span
-        class="currentPlanBadge badge badge-warning"
+      <div
+        class="badge"
       >
         CURRENT PLAN
-      </span>
+      </div>
     </div>
     <div
       class="headerText"

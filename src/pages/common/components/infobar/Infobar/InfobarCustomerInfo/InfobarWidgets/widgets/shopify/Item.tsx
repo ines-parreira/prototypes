@@ -5,8 +5,8 @@ import React, {
     useContext,
 } from 'react'
 import {fromJS, List, Map} from 'immutable'
-import {Badge} from 'reactstrap'
 
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {OrderContext} from './Order/OrderWidget'
 
 export default function Item() {
@@ -36,7 +36,7 @@ class BeforeContent extends React.Component {
             <div className="simple-field">
                 <span className="field-label">Refunded:</span>
                 <span className="field-value">
-                    <Badge pill color="warning">
+                    <Badge type={ColorType.Warning}>
                         {refundedQuantity} item{refundedQuantity > 1 && 's'}
                     </Badge>
                 </span>

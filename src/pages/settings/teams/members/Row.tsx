@@ -1,14 +1,14 @@
 import React, {Component, SyntheticEvent} from 'react'
-import {Badge} from 'reactstrap'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
 import CheckBox from 'pages/common/forms/CheckBox'
+import Avatar from 'pages/common/components/Avatar/Avatar'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import {RoleLabel} from '../../../common/utils/labels'
-import Avatar from '../../../common/components/Avatar/Avatar'
+import {RoleLabel} from 'pages/common/utils/labels'
 
 import css from './Row.less'
 
@@ -65,9 +65,7 @@ export default class Row extends Component<Props, State> {
                     <span className={css.role}>
                         <RoleLabel roles={member.get('roles')} />
                         {isAccountOwner && (
-                            <Badge color="dark" pill>
-                                Account Owner
-                            </Badge>
+                            <Badge type={ColorType.Dark}>Account Owner</Badge>
                         )}
                     </span>
                     <span className={css.delete}>

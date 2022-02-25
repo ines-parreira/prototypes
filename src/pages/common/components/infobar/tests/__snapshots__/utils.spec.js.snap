@@ -28,11 +28,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() given "0" and "senti
 exports[`widgets infobar utils guessFieldValueFromRawData() given "1" and "percent" as arguments, returns correct value 1`] = `"1%"`;
 
 exports[`widgets infobar utils guessFieldValueFromRawData() given "1" and "points" as arguments, returns correct value 1`] = `
-<Badge
-  color="primary"
-  pill={true}
-  tag="span"
->
+<Badge>
   1
 </Badge>
 `;
@@ -134,11 +130,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() given 0 and "sentime
 exports[`widgets infobar utils guessFieldValueFromRawData() given 1 and "percent" as arguments, returns correct value 1`] = `"1%"`;
 
 exports[`widgets infobar utils guessFieldValueFromRawData() given 1 and "points" as arguments, returns correct value 1`] = `
-<Badge
-  color="primary"
-  pill={true}
-  tag="span"
->
+<Badge>
   1
 </Badge>
 `;
@@ -253,20 +245,14 @@ exports[`widgets infobar utils guessFieldValueFromRawData() given 5 and "rating"
 exports[`widgets infobar utils guessFieldValueFromRawData() given 555 and "percent" as arguments, returns correct value 1`] = `"555%"`;
 
 exports[`widgets infobar utils guessFieldValueFromRawData() given 555 and "points" as arguments, returns correct value 1`] = `
-<Badge
-  color="primary"
-  pill={true}
-  tag="span"
->
+<Badge>
   555
 </Badge>
 `;
 
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 1`] = `
 <Badge
-  color="danger"
-  pill={true}
-  tag="span"
+  type="error"
 >
   False
 </Badge>
@@ -274,9 +260,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a dang
 
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 2`] = `
 <Badge
-  color="danger"
-  pill={true}
-  tag="span"
+  type="error"
 >
   False
 </Badge>
@@ -284,9 +268,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a dang
 
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 3`] = `
 <Badge
-  color="danger"
-  pill={true}
-  tag="span"
+  type="error"
 >
   False
 </Badge>
@@ -294,9 +276,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a dang
 
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 4`] = `
 <Badge
-  color="danger"
-  pill={true}
-  tag="span"
+  type="error"
 >
   False
 </Badge>
@@ -304,9 +284,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a dang
 
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 1`] = `
 <Badge
-  color="success"
-  pill={true}
-  tag="span"
+  type="success"
 >
   True
 </Badge>
@@ -314,9 +292,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a succ
 
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 2`] = `
 <Badge
-  color="success"
-  pill={true}
-  tag="span"
+  type="success"
 >
   True
 </Badge>
@@ -324,9 +300,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a succ
 
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 3`] = `
 <Badge
-  color="success"
-  pill={true}
-  tag="span"
+  type="success"
 >
   True
 </Badge>
@@ -334,9 +308,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a succ
 
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 4`] = `
 <Badge
-  color="success"
-  pill={true}
-  tag="span"
+  type="success"
 >
   True
 </Badge>
@@ -344,9 +316,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a succ
 
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 5`] = `
 <Badge
-  color="success"
-  pill={true}
-  tag="span"
+  type="success"
 >
   True
 </Badge>

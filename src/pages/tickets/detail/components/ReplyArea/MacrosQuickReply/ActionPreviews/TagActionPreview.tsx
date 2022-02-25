@@ -1,16 +1,14 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
 import {List, Map} from 'immutable'
-
 import {Badge} from 'reactstrap'
 
-import {getTags} from '../../../../../../../state/tags/selectors'
-import {RootState} from '../../../../../../../state/types'
-import {MacroAction} from '../../../../../../../models/macroAction/types'
-import {DEFAULT_TAG_COLOR} from '../../../../../../../config'
+import {DEFAULT_TAG_COLOR} from 'config'
+import {MacroAction} from 'models/macroAction/types'
+import {getTags} from 'state/tags/selectors'
+import {RootState} from 'state/types'
 
 import {BaseActionPreview} from './BaseActionPreview'
-
 import css from './TagActionPreview.less'
 
 type Props = {

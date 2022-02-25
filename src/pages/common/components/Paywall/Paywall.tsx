@@ -1,12 +1,14 @@
-import {Badge, Col, Container, Row} from 'reactstrap'
+import {Col, Container, Row} from 'reactstrap'
 import classnames from 'classnames'
 import Lightbox from 'react-images'
 import React, {isValidElement, ReactNode, useState} from 'react'
 
+import {PaywallConfig} from 'config/paywalls'
+import {PLAN_NAME_TO_BADGE_COLOR} from 'models/billing/utils'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+
 import UpgradeButton from '../UpgradeButton'
 import PageHeader from '../PageHeader'
-
-import {PaywallConfig} from '../../../../config/paywalls'
 import css from './Paywall.less'
 
 export enum PaywallTheme {
@@ -102,10 +104,7 @@ const Paywall = ({
                                 <div className="flex align-items-center">
                                     {shouldKeepPlan && (
                                         <>
-                                            <Badge
-                                                className={css.badge}
-                                                color="danger"
-                                            >
+                                            <Badge type={ColorType.Error}>
                                                 <i className="material-icons mr-1">
                                                     warning
                                                 </i>
@@ -122,10 +121,11 @@ const Paywall = ({
                                         </>
                                     )}
                                     <Badge
-                                        className={classnames(css.badge, [
-                                            css[paywallTheme?.toLowerCase()],
-                                        ])}
-                                        color="primary"
+                                        type={
+                                            PLAN_NAME_TO_BADGE_COLOR[
+                                                paywallTheme
+                                            ] || 'dark-grey'
+                                        }
                                     >
                                         {`${requiredUpgrade} ${upgradeType}`}
                                     </Badge>

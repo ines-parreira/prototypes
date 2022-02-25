@@ -14,9 +14,7 @@ exports[`<CardHeaderYotpoReviewStatistics/> render() should render children and 
   </span>
   <Badge
     className="pill"
-    color="primary"
-    pill={true}
-    tag="span"
+    type="dark-grey"
   >
     3
   </Badge>

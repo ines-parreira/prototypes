@@ -1,20 +1,19 @@
 import React, {Component, ContextType, ReactNode} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {Badge, CardBody} from 'reactstrap'
+import {CardBody} from 'reactstrap'
 
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
-import {getIntegrationDataByIntegrationId} from '../../../../../../../../../state/ticket/selectors'
-import {RootState} from '../../../../../../../../../state/types'
-
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {
-    devLog,
-    humanizeString,
-    isCurrentlyOnTicket,
-} from '../../../../../../../../../utils'
-import {getTrackingUrl} from '../../../../../../../../../utils/delivery'
-import {DatetimeLabel} from '../../../../../../../utils/labels'
-import {displayLabel, guessFieldValueFromRawData} from '../../../../../utils'
+    displayLabel,
+    guessFieldValueFromRawData,
+} from 'pages/common/components/infobar/utils'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
+import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
+import {RootState} from 'state/types'
+import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
+import {getTrackingUrl} from 'utils/delivery'
 
 import {IntegrationContext} from '../IntegrationContext'
 
@@ -48,14 +47,14 @@ function getIntegrationData(
     return integrationData
 }
 
-export const statusColors = {
-    new: 'info',
-    pending: 'info',
-    processing: 'info',
-    complete: 'success',
-    on_hold: 'warning',
-    canceled: 'danger',
-    closed: 'danger',
+export const statusColors: Record<string, ColorType> = {
+    new: ColorType.Classic,
+    pending: ColorType.Classic,
+    processing: ColorType.Classic,
+    complete: ColorType.Success,
+    on_hold: ColorType.Warning,
+    canceled: ColorType.Error,
+    closed: ColorType.Error,
 }
 
 type BeforeContentProps = ConnectedProps<typeof connectorBeforeContent> & {
@@ -69,9 +68,7 @@ class BeforeContentContainer extends Component<BeforeContentProps> {
     render() {
         const {source, getIntegrationData} = this.props
 
-        const state = (
-            (source.get('state') as string) || ''
-        ).toLowerCase() as keyof typeof statusColors
+        const state = ((source.get('state') as string) || '').toLowerCase()
 
         const {integrationId} = this.context
 
@@ -92,7 +89,7 @@ class BeforeContentContainer extends Component<BeforeContentProps> {
                 <div className="simple-field">
                     <span className="field-label">State:</span>
                     <span className="field-value">
-                        <Badge pill color={statusColors[state]}>
+                        <Badge type={statusColors[state]}>
                             {humanizeString(state)}
                         </Badge>
                     </span>

@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CheckBox /> should render a badge 1`] = `
+<div
+  class="badge"
+>
+  Shopify
+</div>
+`;
+
+exports[`<CheckBox /> should render a badge with custom style 1`] = `
+<div
+  class="badge"
+  style="color: rgb(165, 65, 171);"
+>
+  Shopify
+</div>
+`;
+
+exports[`<CheckBox /> should render a badge with specified color type 1`] = `
+<div
+  class="badge"
+>
+  Shopify
+</div>
+`;

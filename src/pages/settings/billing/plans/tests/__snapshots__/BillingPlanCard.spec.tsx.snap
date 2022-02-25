@@ -1585,8 +1585,8 @@ exports[`<BillingPlanCard /> should render the legacy badge for legacy plan when
       <div
         class="d-inline-flex cursor-pointer"
       >
-        <span
-          class="d-inline-flex flex-row badge badge badge-danger"
+        <div
+          class="badge"
         >
           <i
             class="material-icons"
@@ -1598,7 +1598,7 @@ exports[`<BillingPlanCard /> should render the legacy badge for legacy plan when
           >
             LEGACY PLAN
           </div>
-        </span>
+        </div>
       </div>
     </div>
     <div

@@ -206,11 +206,11 @@ exports[`<ActionPreviews /> should render other type of action  1`] = `
     <div
       class="propsColumnWrapper"
     >
-      <span
-        class="smallTag badge badge-primary badge-pill"
+      <div
+        class="badge smallTag"
       >
         open
-      </span>
+      </div>
     </div>
   </div>
 </div>

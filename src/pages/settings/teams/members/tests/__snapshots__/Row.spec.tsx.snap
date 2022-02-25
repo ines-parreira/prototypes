@@ -58,11 +58,11 @@ exports[`<Row /> should render 1`] = `
     <span
       class="role"
     >
-      <span
-        class="badge-pill badge badge-danger"
+      <div
+        class="badge"
       >
         Admin
-      </span>
+      </div>
     </span>
     <span
       class="delete"

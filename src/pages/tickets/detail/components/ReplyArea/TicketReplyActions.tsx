@@ -1,12 +1,13 @@
 import React, {useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
-import {Badge, Collapse} from 'reactstrap'
+import {Collapse} from 'reactstrap'
 import classNames from 'classnames'
 
-import {updateActionArgsOnApplied} from '../../../../../state/ticket/actions'
-import {getActionTemplate} from '../../../../../utils'
-import {MacroActionName} from '../../../../../models/macroAction/types'
-import Tooltip from '../../../../common/components/Tooltip'
+import {MacroActionName} from 'models/macroAction/types'
+import Badge from 'pages/common/components/Badge/Badge'
+import Tooltip from 'pages/common/components/Tooltip'
+import {updateActionArgsOnApplied} from 'state/ticket/actions'
+import {getActionTemplate} from 'utils'
 
 import TicketReplyAction from './TicketReplyAction'
 import css from './TicketReplyActions.less'
@@ -58,13 +59,7 @@ export default function TicketReplyActions({
                 >
                     bolt
                 </i>
-                <Badge
-                    color="primary"
-                    className={classNames(css.badge, 'mr-2')}
-                    pill
-                >
-                    {backendActions.size}
-                </Badge>
+                <Badge className="mr-2">{backendActions.size}</Badge>
                 <span className={css.title}>Actions performed on send</span>
                 <i
                     id="show-actions"

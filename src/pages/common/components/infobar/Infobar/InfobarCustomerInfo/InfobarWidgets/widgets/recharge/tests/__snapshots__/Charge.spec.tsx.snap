@@ -205,11 +205,11 @@ exports[`Charge BeforeContent should display default color if there's no matchin
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-secondary badge-pill"
+        <div
+          class="badge"
         >
           Foobar
-        </span>
+        </div>
       </span>
     </div>
   </div>
@@ -230,11 +230,11 @@ exports[`Charge BeforeContent should display the appropriate color if there's a 
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-danger badge-pill"
+        <div
+          class="badge"
         >
           Error
-        </span>
+        </div>
       </span>
     </div>
   </div>

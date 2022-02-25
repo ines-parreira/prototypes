@@ -1,20 +1,13 @@
 import React from 'react'
-
 import {fromJS, List} from 'immutable'
-
 import classnames from 'classnames'
-
 import {Badge} from 'reactstrap'
 
-import {
-    actionTypeToName,
-    MacroAction,
-} from '../../../../../../../models/macroAction/types'
-import {getSortedIntegrationActions} from '../../../../../common/utils.js'
-import {getIconFromActionType} from '../../../../../../../models/macroAction/helpers'
+import {getIconFromActionType} from 'models/macroAction/helpers'
+import {actionTypeToName, MacroAction} from 'models/macroAction/types'
+import {getSortedIntegrationActions} from 'pages/tickets/common/utils.js'
 
 import {BaseActionPreview} from './BaseActionPreview'
-
 import css from './BackendActionPreview.less'
 
 type Props = {

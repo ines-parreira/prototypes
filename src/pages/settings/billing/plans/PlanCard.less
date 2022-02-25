@@ -1,7 +1,5 @@
-@import '~css/new/colorTokens';
+@import '~css/new/colors';
 @import '~css/new/mixins';
-
-@import '../colors';
 
 :local {
     .plan {
@@ -73,7 +71,7 @@
     }
 
     .featureIcon {
-        --feature-icon-color: @basic;
+        --feature-icon-color: @classic-main-primary;
         --feature-icon-size: 20px;
         font-size: 20px;
         flex-shrink: 0;
@@ -111,27 +109,27 @@
     .blueTheme {
         .planHeader {
             color: @classic-neutral-grey-0;
-            background-color: @basic;
+            background-color: @classic-main-primary;
         }
     }
 
     .navyTheme {
         .planHeader {
             color: @classic-neutral-grey-0;
-            background-color: @pro;
+            background-color: @indigo;
         }
     }
 
     .greenTheme {
         .planHeader {
             color: @classic-neutral-grey-0;
-            background-color: @advanced;
+            background-color: @classic-feedback-success;
         }
     }
 
     .goldTheme {
         .planHeader {
-            background-color: @enterprise;
+            background-color: @classic-feedback-warning;
             color: @classic-neutral-grey-0;
         }
     }

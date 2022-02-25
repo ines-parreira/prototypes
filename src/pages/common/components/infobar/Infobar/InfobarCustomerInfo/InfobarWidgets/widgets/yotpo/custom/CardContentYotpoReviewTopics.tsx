@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
-import {Badge} from 'reactstrap'
 
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import css from './CardContentYotpoReviewTopics.less'
 
 type Props = {
@@ -13,7 +13,7 @@ export function CardContentYotpoReviewTopics({children}: Props) {
     if (children) {
         Object.keys(children).forEach((key) => {
             topics.push(
-                <Badge key={key} className={css.topic}>
+                <Badge key={key} className={css.topic} type={ColorType.Light}>
                     {children[key]}
                 </Badge>
             )

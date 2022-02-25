@@ -7,15 +7,14 @@ import React, {
 } from 'react'
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {Badge} from 'reactstrap'
 
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {
     devLog,
     humanizeString,
     isCurrentlyOnTicket,
 } from '../../../../../../../../../utils'
 import {renderTemplate} from '../../../../../../../utils/template'
-
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
@@ -23,7 +22,6 @@ import {
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 import {RootState} from '../../../../../../../../../state/types'
-
 import {DatetimeLabel} from '../../../../../../../utils/labels'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'
@@ -58,9 +56,9 @@ type AfterTitleProps = {
     source: Map<any, any>
 }
 
-const statusColors = {
-    active: 'success',
-    cancelled: 'danger',
+const statusColors: Record<string, ColorType> = {
+    active: ColorType.Success,
+    cancelled: ColorType.Error,
 }
 
 export class AfterTitle extends React.Component<AfterTitleProps> {
@@ -138,16 +136,13 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             subscription_id: source.get('id'),
         }
 
-        const status = (
-            (source.get('status') as string) || ''
-        ).toLowerCase() as keyof typeof statusColors
+        const status = ((source.get('status') as string) || '').toLowerCase()
 
         return (
             <>
                 <Badge
                     key="status"
-                    pill
-                    color={statusColors[status]}
+                    type={statusColors[status]}
                     className="ml-1"
                 >
                     {humanizeString(status)}

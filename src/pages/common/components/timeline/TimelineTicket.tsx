@@ -66,9 +66,7 @@ export default class TimelineTicket extends Component<Props> {
                     <div className={css.meta}>
                         <StatusLabel
                             status={ticket.get('status')}
-                            // $TsFixMe: remove after StatusLabel is migrated to TS
-                            // @ts-ignore
-                            className={classnames(css.statusLabel)}
+                            className={css.statusLabel}
                         />
                         {assigneeName ? (
                             <AgentLabel

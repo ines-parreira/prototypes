@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
-
 import classnames from 'classnames'
-import css from '../../settings.less'
-import Button from '../../../common/components/button/Button'
+
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import Button from 'pages/common/components/button/Button'
+import css from 'pages/settings/settings.less'
 import TwoFactorAuthenticationModal from './TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 
 export default function TwoFactorAuthenticationSection() {
@@ -14,14 +15,14 @@ export default function TwoFactorAuthenticationSection() {
                 className={classnames('heading-subsection-semibold', css.mb16)}
             >
                 Two-Factor Authentication
-                <span className="badge badge-pill badge-danger ml-3 align-middle">
-                    DISABLED
-                </span>
+                <Badge className="ml-3 " type={ColorType.Error}>
+                    Disabled
+                </Badge>
             </div>
             <div className={classnames('body-regular', css.mb16)}>
                 For an added layer of security, your admin requires you to use
                 two-factor authentication (2FA) when you sign in to Gorgias.
-                <a href={''}>Learn more</a>
+                <a href={''}> Learn more</a>
             </div>
 
             <Button type="button" onClick={() => setIsModalOpen(true)}>

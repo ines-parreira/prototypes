@@ -7,18 +7,14 @@ import React, {
 } from 'react'
 import {fromJS, Map, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {Badge} from 'reactstrap'
 
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
-import {
-    devLog,
-    humanizeString,
-    isCurrentlyOnTicket,
-} from '../../../../../../../../../utils'
-import {getIntegrationDataByIntegrationId} from '../../../../../../../../../state/ticket/selectors'
-import {renderTemplate} from '../../../../../../../utils/template'
-import {DatetimeLabel} from '../../../../../../../utils/labels'
-import {RootState} from '../../../../../../../../../state/types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {renderTemplate} from 'pages/common/utils/template'
+import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
+import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
+import {RootState} from 'state/types'
+import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'
@@ -180,7 +176,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
 
         const chargeStatus = (
             (source.get('charge_status') as string) || ''
-        ).toLowerCase() as keyof typeof chargeStatusColors
+        ).toLowerCase()
 
         return (
             <>
@@ -199,8 +195,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                     <CardHeaderValue>
                         <Badge
                             key="status"
-                            pill
-                            color={chargeStatusColors[chargeStatus]}
+                            type={chargeStatusColors[chargeStatus]}
                         >
                             {humanizeString(chargeStatus)}
                         </Badge>
@@ -215,13 +210,13 @@ const connectorAfterTitle = connect(makeGetIntegrationData)
 
 const ConnectedAfterTitle = connectorAfterTitle(AfterTitle)
 
-const chargeStatusColors = {
-    success: 'success',
-    error: 'danger',
-    queued: 'default',
-    partially_refunded: 'warning',
-    refunded: 'warning',
-    skipped: 'info',
+const chargeStatusColors: Record<string, ColorType> = {
+    success: ColorType.Success,
+    error: ColorType.Error,
+    queued: ColorType.Grey,
+    partially_refunded: ColorType.Warning,
+    refunded: ColorType.Warning,
+    skipped: ColorType.Classic,
 }
 
 type BeforeContentProps = {

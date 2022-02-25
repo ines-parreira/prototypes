@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
-import {Badge} from 'reactstrap'
 
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import css from './CardHeaderYotpoReviewStatistics.less'
 
 type Props = {
@@ -13,7 +13,7 @@ export function CardHeaderYotpoReviewStatistics({children}: Props) {
         <span className={css.container}>
             <span className={`material-icons ${css.star}`}>chat_bubble</span>
             <span>Reviews</span>
-            <Badge pill color="primary" className={css.pill}>
+            <Badge className={css.pill} type={ColorType.DarkGrey}>
                 {children}
             </Badge>
         </span>

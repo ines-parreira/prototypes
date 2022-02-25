@@ -7,24 +7,20 @@ import React, {
 } from 'react'
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {Badge, CardBody} from 'reactstrap'
+import {CardBody} from 'reactstrap'
 import _lowerCase from 'lodash/lowerCase'
 import _groupBy from 'lodash/groupBy'
 
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
-import {getIntegrationDataByIntegrationId} from '../../../../../../../../../state/ticket/selectors'
-import {
-    devLog,
-    humanizeString,
-    isCurrentlyOnTicket,
-    toJS,
-} from '../../../../../../../../../utils'
-import {renderTemplate} from '../../../../../../../utils/template'
-import {LineItem} from '../../../../../../../../../constants/integrations/types/shopify'
-import {RootState} from '../../../../../../../../../state/types'
-import {IntegrationContext} from '../IntegrationContext'
+import {LineItem} from 'constants/integrations/types/shopify'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {renderTemplate} from 'pages/common/utils/template'
+import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
+import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
+import {RootState} from 'state/types'
+import {devLog, humanizeString, isCurrentlyOnTicket, toJS} from 'utils'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
+import {IntegrationContext} from '../IntegrationContext'
 
 export default function Charge() {
     return {
@@ -191,13 +187,13 @@ export class SubscriptionAfterTitle extends React.Component<{
     }
 }
 
-const statusColors = {
-    success: 'success',
-    error: 'danger',
-    queued: 'default',
-    partially_refunded: 'warning',
-    refunded: 'warning',
-    skipped: 'info',
+const statusColors: Record<string, ColorType> = {
+    success: ColorType.Success,
+    error: ColorType.Error,
+    queued: ColorType.Grey,
+    partially_refunded: ColorType.Warning,
+    refunded: ColorType.Warning,
+    skipped: ColorType.Classic,
 }
 
 class BeforeContent extends React.Component<{
@@ -206,16 +202,14 @@ class BeforeContent extends React.Component<{
     render() {
         const {source} = this.props
 
-        const status = (
-            (source.get('status') as string) || ''
-        ).toLowerCase() as keyof typeof statusColors
+        const status = ((source.get('status') as string) || '').toLowerCase()
 
         return (
             <div>
                 <div className="simple-field">
                     <span className="field-label">Status:</span>
                     <span className="field-value">
-                        <Badge pill color={statusColors[status]}>
+                        <Badge type={statusColors[status]}>
                             {humanizeString(status)}
                         </Badge>
                     </span>

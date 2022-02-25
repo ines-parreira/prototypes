@@ -37,11 +37,11 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
         class="planHeader card-header"
       >
         <div>
-          <span
-            class="currentPlanBadge badge badge-primary"
+          <div
+            class="badge"
           >
             CURRENT PLAN
-          </span>
+          </div>
         </div>
         <div
           class="headerText"
@@ -1465,8 +1465,8 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
           <div
             class="d-inline-flex cursor-pointer"
           >
-            <span
-              class="d-inline-flex flex-row badge badge badge-danger"
+            <div
+              class="badge"
             >
               <i
                 class="material-icons"
@@ -1478,7 +1478,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
               >
                 LEGACY PLAN
               </div>
-            </span>
+            </div>
           </div>
         </div>
         <div
@@ -4563,11 +4563,11 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         class="planHeader card-header"
       >
         <div>
-          <span
-            class="currentPlanBadge badge badge-primary"
+          <div
+            class="badge"
           >
             CURRENT PLAN
-          </span>
+          </div>
         </div>
         <div
           class="headerText"

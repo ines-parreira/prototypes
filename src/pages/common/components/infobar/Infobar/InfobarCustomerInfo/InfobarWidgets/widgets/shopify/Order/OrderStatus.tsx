@@ -1,12 +1,12 @@
 import React from 'react'
-import {Badge} from 'reactstrap'
 import classnames from 'classnames'
 
 import {
     FinancialStatus,
     FulfillmentStatus,
-} from '../../../../../../../../../../constants/integrations/types/shopify'
-import {humanizeString} from '../../../../../../../../../../utils'
+} from 'constants/integrations/types/shopify'
+import Badge from 'pages/common/components/Badge/Badge'
+import {humanizeString} from 'utils'
 
 import css from './OrderStatus.less'
 
@@ -78,11 +78,7 @@ function FulfillmentBadge({fulfillmentStatus}: FulfillmentBadgeProps) {
     const [fulfillmentBadge, fulfillmentIcon, fulfillmentLabel] = values
 
     return (
-        <Badge
-            className={classnames(css.badge, fulfillmentBadge, 'ml-1')}
-            color="secondary"
-            pill
-        >
+        <Badge className={classnames(css.badge, fulfillmentBadge, 'ml-1')}>
             <span className={classnames(css.icon, fulfillmentIcon)} />
             {fulfillmentLabel}
         </Badge>
@@ -99,11 +95,7 @@ function FinancialBadge({financialStatus}: FinancialBadgeProps) {
     const financialLabel = humanizeString(financialStatus).replace(/_/g, ' ')
 
     return (
-        <Badge
-            className={classnames(css.badge, financialBadge)}
-            color="secondary"
-            pill
-        >
+        <Badge className={classnames(css.badge, financialBadge)}>
             <span className={classnames(css.icon, financialIcon)} />
             {financialLabel}
         </Badge>
@@ -112,7 +104,13 @@ function FinancialBadge({financialStatus}: FinancialBadgeProps) {
 
 function CancelledBadge() {
     return (
-        <Badge pill className={classnames(css.badge, css.cancelled)}>
+        <Badge
+            className={classnames(css.badge)}
+            style={{
+                backgroundColor: '#ffdcd4',
+                color: '#ca1010',
+            }}
+        >
             Cancelled
         </Badge>
     )

@@ -1,6 +1,5 @@
 import React from 'react'
 import {fromJS, Map, List, Seq} from 'immutable'
-import {Badge} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import _get from 'lodash/get'
 import _pickBy from 'lodash/pickBy'
@@ -12,18 +11,19 @@ import {
     LogicalOperator,
 } from 'estree'
 
-import {BASIC_OPERATORS, UNARY_OPERATORS} from '../../../../../config'
-import {fieldPath, findProperty} from '../../../../../utils'
-import * as viewsSelectors from '../../../../../state/views/selectors'
-import {updateFieldFilter} from '../../../../../state/views/actions'
-import {RootState} from '../../../../../state/types'
+import {BASIC_OPERATORS, UNARY_OPERATORS} from 'config'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {RootState} from 'state/types'
+import {updateFieldFilter} from 'state/views/actions'
+import * as viewsSelectors from 'state/views/selectors'
+import {fieldPath, findProperty} from 'utils'
 
-import {OperatorType} from './types'
 import Left from './Left'
-import Right from './Right'
 import Operator from './Operator'
 import OperatorLabel from './OperatorLabel'
 import RemoveCallExpression from './RemoveCallExpression'
+import Right from './Right'
+import {OperatorType} from './types'
 
 const resolveObjectPath = (node: Expression): string => {
     switch (node.type) {
@@ -151,7 +151,9 @@ class CallExpression extends React.Component<Props> {
                     field={field}
                     empty={Object.keys(UNARY_OPERATORS).includes(operator.name)}
                 />
-                {!field && <Badge color="danger">System condition</Badge>}
+                {!field && (
+                    <Badge type={ColorType.Error}>System condition</Badge>
+                )}
                 <RemoveCallExpression onClick={removeCondition} index={index} />
             </div>
         )

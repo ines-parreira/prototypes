@@ -40,11 +40,11 @@ exports[`<Row /> should render 1`] = `
     <span
       class="role"
     >
-      <span
-        class="badge-pill badge badge-danger"
+      <div
+        class="badge"
       >
         Admin
-      </span>
+      </div>
     </span>
     <span
       class="delete"
@@ -97,20 +97,20 @@ exports[`<Row /> should render 2FA information when enabled 1`] = `
     <span
       class="role"
     >
-      <span
-        class="badge-pill badge badge-danger"
+      <div
+        class="badge"
       >
         Admin
-      </span>
+      </div>
     </span>
     <span
       class="twoFa"
     >
-      <span
-        class="badge badge-success badge-pill"
+      <div
+        class="badge"
       >
         Yes
-      </span>
+      </div>
     </span>
     <span
       class="delete"
@@ -163,20 +163,20 @@ exports[`<Row /> should render 2FA information when enabled and agent has 2FA di
     <span
       class="role"
     >
-      <span
-        class="badge-pill badge badge-danger"
+      <div
+        class="badge"
       >
         Admin
-      </span>
+      </div>
     </span>
     <span
       class="twoFa"
     >
-      <span
-        class="badge badge-danger badge-pill"
+      <div
+        class="badge"
       >
         No
-      </span>
+      </div>
     </span>
     <span
       class="delete"
@@ -224,11 +224,11 @@ exports[`<Row /> should render a user without a name 1`] = `
     <span
       class="role"
     >
-      <span
-        class="badge-pill badge badge-danger"
+      <div
+        class="badge"
       >
         Admin
-      </span>
+      </div>
     </span>
     <span
       class="delete"

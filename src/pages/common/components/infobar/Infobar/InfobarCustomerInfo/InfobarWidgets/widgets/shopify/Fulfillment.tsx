@@ -1,9 +1,9 @@
 import React from 'react'
 import {Map} from 'immutable'
-import {Badge} from 'reactstrap'
 import classnames from 'classnames'
 
-import {humanizeString} from '../../../../../../../../../utils'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {humanizeString} from 'utils'
 
 export default function Fulfillment() {
     return {
@@ -15,16 +15,16 @@ type AfterTitleProps = {
     source: Map<any, any>
 }
 
-const shipmentStatusColors = {
-    label_printed: 'info',
-    label_purchased: 'info',
-    attempted_delivery: 'warning',
-    ready_for_pickup: 'info',
-    confirmed: 'info',
-    in_transit: 'info',
-    out_for_delivery: 'info',
-    delivered: 'success',
-    failure: 'danger',
+const shipmentStatusColors: Record<string, ColorType> = {
+    label_printed: ColorType.Classic,
+    label_purchased: ColorType.Classic,
+    attempted_delivery: ColorType.Warning,
+    ready_for_pickup: ColorType.Classic,
+    confirmed: ColorType.Classic,
+    in_transit: ColorType.Classic,
+    out_for_delivery: ColorType.Classic,
+    delivered: ColorType.Success,
+    failure: ColorType.Error,
 }
 
 function AfterTitle({source}: AfterTitleProps) {
@@ -38,7 +38,7 @@ function AfterTitle({source}: AfterTitleProps) {
     return (
         <>
             {shipmentStatus && (
-                <Badge className={classnames('ml-1')} color={color} pill>
+                <Badge className={classnames('ml-1')} type={color}>
                     {humanizeString(shipmentStatus).replace(/_/g, ' ')}
                 </Badge>
             )}

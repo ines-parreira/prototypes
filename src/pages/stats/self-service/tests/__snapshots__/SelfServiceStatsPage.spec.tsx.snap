@@ -80,11 +80,11 @@ exports[`<SelfServiceStatsPage /> should render the automation add-on upgrade pa
               <div
                 class="flex align-items-center"
               >
-                <span
-                  class="badge default badge badge-primary"
+                <div
+                  class="badge"
                 >
                   Automation Add-on
-                </span>
+                </div>
               </div>
               <h1
                 class="contentTitle"

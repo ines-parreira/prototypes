@@ -36,9 +36,6 @@ exports[`<InfobarSearchResultsList /> Should match snapshot when results are ava
           test
           <Badge
             className="ml-2"
-            color="info"
-            pill={false}
-            tag="span"
           >
             Current Customer
           </Badge>

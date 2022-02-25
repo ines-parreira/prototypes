@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {Badge} from 'reactstrap'
 
-import FileField from '../../../../../common/forms/FileField.tsx'
-
-import {fileIconFromContentType} from '../../../utils'
+import FileField from 'pages/common/forms/FileField.tsx'
+import {fileIconFromContentType} from 'pages/tickets/common/utils'
 
 export default class AddAttachmentsAction extends Component {
     _addAttachments = (files) => {

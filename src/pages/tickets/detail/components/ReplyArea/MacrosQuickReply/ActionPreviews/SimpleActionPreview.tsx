@@ -1,13 +1,10 @@
 import React from 'react'
 import {Badge} from 'reactstrap'
 
-import {
-    MacroAction,
-    MacroActionName,
-} from '../../../../../../../models/macroAction/types'
-import * as Label from '../../../../../../common/utils/labels'
-import {fileIconFromContentType} from '../../../../../common/utils.js'
-import {getActionTemplate} from '../../../../../../../utils'
+import {MacroAction, MacroActionName} from 'models/macroAction/types'
+import * as Label from 'pages/common/utils/labels'
+import {fileIconFromContentType} from 'pages/tickets/common/utils.js'
+import {getActionTemplate} from 'utils'
 
 import {BaseActionPreview} from './BaseActionPreview'
 

@@ -1,13 +1,12 @@
 import React, {useState} from 'react'
-import {Container, Collapse, Badge, Row, Col} from 'reactstrap'
-
+import {Container, Collapse, Row, Col} from 'reactstrap'
 import ReactStars from 'react-rating-stars-component'
 
-import {ProductDetails} from '../../../../models/ticket/types'
-import {getIconFromUrl} from '../../../../utils'
+import {ProductDetails} from 'models/ticket/types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {getIconFromUrl} from 'utils'
 
 import GenericCard from '../GenericCard/GenericCard'
-
 import {starRatingProps} from '../infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Reviews'
 
 import css from './ProductEmbeddedCard.less'
@@ -91,7 +90,7 @@ export default function ProductEmbeddedCard(props: Props) {
                                             Category:
                                         </td>
                                         <th>
-                                            <Badge>
+                                            <Badge type={ColorType.Grey}>
                                                 {product.category.name}
                                             </Badge>
                                         </th>

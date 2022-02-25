@@ -2,31 +2,32 @@ import React, {MouseEvent, useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import moment from 'moment'
 import classnames from 'classnames'
-import {Badge, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
-import IconButton from 'pages/common/components/button/IconButton'
-import ToggleInput from 'pages/common/forms/ToggleInput'
-import {Rule} from 'state/rules/types'
 import {
     activateRule,
     deactivateRule,
     createRule,
     deleteRule,
-} from '../../../../../models/rule/resources'
+} from 'models/rule/resources'
+import {RuleRecipe} from 'models/ruleRecipe/types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import history from 'pages/history'
 import {
     ruleCreated,
     ruleUpdated,
     ruleDeleted,
-} from '../../../../../state/entities/rules/actions'
-import {RuleRecipe} from '../../../../../models/ruleRecipe/types'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {notify} from '../../../../../state/notifications/actions'
-import {RootState} from '../../../../../state/types'
-import {ruleRecipes} from '../../../../../state/entities/ruleRecipes/selectors'
-import history from '../../../../history'
+} from 'state/entities/rules/actions'
+import {ruleRecipes} from 'state/entities/ruleRecipes/selectors'
+import {NotificationStatus} from 'state/notifications/types'
+import {notify} from 'state/notifications/actions'
+import {Rule} from 'state/rules/types'
+import {RootState} from 'state/types'
 
 import css from './RuleRow.less'
 
@@ -216,7 +217,7 @@ export function RuleRow({
                                 {rule.name}
                             </span>
                             {rule.type === 'system' && (
-                                <Badge className="ml-2" color="danger">
+                                <Badge className="ml-2" type={ColorType.Error}>
                                     <i className="material-icons mr-2">
                                         warning
                                     </i>
@@ -229,8 +230,7 @@ export function RuleRow({
                                         'ml-2',
                                         css.fromLibraryBadge
                                     )}
-                                    pill
-                                    color="light"
+                                    type={ColorType.Light}
                                 >
                                     <i className="material-icons mr-1">
                                         auto_fix_high

@@ -1,0 +1,31 @@
+@import '~css/new/colors';
+@import '~css/typography';
+
+:local {
+    .badge {
+        .caption-allcaps();
+        align-items: center;
+        border-radius: 100px;
+        color: @classic-neutral-grey-0;
+        display: inline-flex;
+        padding: 2px 8px;
+        text-align: center;
+
+        + .badge {
+            margin-left: 8px;
+        }
+
+        --background-purple: @purple;
+        --background-classic: @classic-main-primary;
+        --background-error: @classic-feedback-error;
+        --background-modern: @modern-main-primary-4;
+        --background-success: @classic-feedback-success;
+        --background-warning: @classic-feedback-warning;
+        --background-grey: @classic-neutral-grey-4;
+        --background-dark-grey: @classic-neutral-grey-5;
+        --background-indigo: @indigo;
+        --background-dark: @modern-neutral-neutral-6;
+        --background-light: @classic-neutral-grey-1;
+        --text-light: @classic-neutral-grey-6;
+    }
+}

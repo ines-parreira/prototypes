@@ -44,8 +44,8 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
             <div
               class="flex align-items-center"
             >
-              <span
-                class="badge badge badge-danger"
+              <div
+                class="badge"
               >
                 <i
                   class="material-icons mr-1"
@@ -53,17 +53,17 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
                   warning
                 </i>
                 Legacy plan
-              </span>
+              </div>
               <i
                 class="material-icons upgradeChevron"
               >
                 chevron_right
               </i>
-              <span
-                class="badge enterprise badge badge-primary"
+              <div
+                class="badge"
               >
                 Enterprise Plan
-              </span>
+              </div>
             </div>
             <h1
               class="contentTitle"
@@ -213,8 +213,8 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
             <div
               class="flex align-items-center"
             >
-              <span
-                class="badge badge badge-danger"
+              <div
+                class="badge"
               >
                 <i
                   class="material-icons mr-1"
@@ -222,17 +222,17 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
                   warning
                 </i>
                 Legacy plan
-              </span>
+              </div>
               <i
                 class="material-icons upgradeChevron"
               >
                 chevron_right
               </i>
-              <span
-                class="badge advanced badge badge-primary"
+              <div
+                class="badge"
               >
                 Advanced Plan
-              </span>
+              </div>
             </div>
             <h1
               class="contentTitle"
@@ -386,11 +386,11 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
             <div
               class="flex align-items-center"
             >
-              <span
-                class="badge advanced badge badge-primary"
+              <div
+                class="badge"
               >
                 Advanced Plan
-              </span>
+              </div>
             </div>
             <h1
               class="contentTitle"

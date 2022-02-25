@@ -1,6 +1,6 @@
 import React from 'react'
-import {Badge} from 'reactstrap'
 
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import css from './CardHeaderYotpoLoyaltyPoints.less'
 
 type Props = {
@@ -14,7 +14,7 @@ export function CardHeaderYotpoLoyaltyPoints({value}: Props) {
             <span className={`material-icons ${css.star}`}>stars</span>
             <span>Loyalty Points</span>
 
-            <Badge pill color="primary" className={css.pill}>
+            <Badge className={css.pill} type={ColorType.DarkGrey}>
                 {parseFloat(value).toLocaleString()}
             </Badge>
         </span>

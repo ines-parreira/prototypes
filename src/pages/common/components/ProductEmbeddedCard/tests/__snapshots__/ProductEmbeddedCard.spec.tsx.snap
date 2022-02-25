@@ -229,9 +229,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
                   </td>
                   <th>
                     <Badge
-                      color="secondary"
-                      pill={false}
-                      tag="span"
+                      type="grey"
                     >
                       electronics
                     </Badge>
@@ -476,9 +474,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
                   </td>
                   <th>
                     <Badge
-                      color="secondary"
-                      pill={false}
-                      tag="span"
+                      type="grey"
                     >
                       electronics
                     </Badge>
@@ -723,9 +719,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
                   </td>
                   <th>
                     <Badge
-                      color="secondary"
-                      pill={false}
-                      tag="span"
+                      type="grey"
                     >
                       electronics
                     </Badge>

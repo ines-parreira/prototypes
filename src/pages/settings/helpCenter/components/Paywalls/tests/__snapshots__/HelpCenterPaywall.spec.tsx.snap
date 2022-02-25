@@ -45,8 +45,8 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
               <div
                 class="flex align-items-center"
               >
-                <span
-                  class="badge badge badge-danger"
+                <div
+                  class="badge"
                 >
                   <i
                     class="material-icons mr-1"
@@ -54,17 +54,17 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
                     warning
                   </i>
                   Legacy plan
-                </span>
+                </div>
                 <i
                   class="material-icons upgradeChevron"
                 >
                   chevron_right
                 </i>
-                <span
-                  class="badge pro badge badge-primary"
+                <div
+                  class="badge"
                 >
                   Pro Plan
-                </span>
+                </div>
               </div>
               <h1
                 class="contentTitle"
@@ -158,8 +158,8 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
               <div
                 class="flex align-items-center"
               >
-                <span
-                  class="badge badge badge-danger"
+                <div
+                  class="badge"
                 >
                   <i
                     class="material-icons mr-1"
@@ -167,17 +167,17 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
                     warning
                   </i>
                   Legacy plan
-                </span>
+                </div>
                 <i
                   class="material-icons upgradeChevron"
                 >
                   chevron_right
                 </i>
-                <span
-                  class="badge advanced badge badge-primary"
+                <div
+                  class="badge"
                 >
                   Advanced Plan
-                </span>
+                </div>
               </div>
               <h1
                 class="contentTitle"
@@ -272,8 +272,8 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
               <div
                 class="flex align-items-center"
               >
-                <span
-                  class="badge badge badge-danger"
+                <div
+                  class="badge"
                 >
                   <i
                     class="material-icons mr-1"
@@ -281,17 +281,17 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
                     warning
                   </i>
                   Legacy plan
-                </span>
+                </div>
                 <i
                   class="material-icons upgradeChevron"
                 >
                   chevron_right
                 </i>
-                <span
-                  class="badge basic badge badge-primary"
+                <div
+                  class="badge"
                 >
                   Basic Plan
-                </span>
+                </div>
               </div>
               <h1
                 class="contentTitle"
@@ -385,8 +385,8 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
               <div
                 class="flex align-items-center"
               >
-                <span
-                  class="badge badge badge-danger"
+                <div
+                  class="badge"
                 >
                   <i
                     class="material-icons mr-1"
@@ -394,17 +394,17 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
                     warning
                   </i>
                   Legacy plan
-                </span>
+                </div>
                 <i
                   class="material-icons upgradeChevron"
                 >
                   chevron_right
                 </i>
-                <span
-                  class="badge enterprise badge badge-primary"
+                <div
+                  class="badge"
                 >
                   Enterprise Plan
-                </span>
+                </div>
               </div>
               <h1
                 class="contentTitle"

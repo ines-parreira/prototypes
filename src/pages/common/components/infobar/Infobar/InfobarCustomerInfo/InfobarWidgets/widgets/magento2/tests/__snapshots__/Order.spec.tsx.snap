@@ -276,11 +276,11 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-secondary badge-pill"
+        <div
+          class="badge"
         >
-          Info
-        </span>
+          New
+        </div>
       </span>
     </div>
     <div
@@ -530,11 +530,11 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-secondary badge-pill"
+        <div
+          class="badge"
         >
-          Info
-        </span>
+          New
+        </div>
       </span>
     </div>
     <div
@@ -784,11 +784,11 @@ exports[`Order <BeforeContent/> render() should render the state and an empty cr
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-secondary badge-pill"
+        <div
+          class="badge"
         >
-          Info
-        </span>
+          New
+        </div>
       </span>
     </div>
     <div
@@ -826,11 +826,11 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-danger badge-pill"
+        <div
+          class="badge"
         >
           Canceled
-        </span>
+        </div>
       </span>
     </div>
     <div
@@ -870,11 +870,11 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-danger badge-pill"
+        <div
+          class="badge"
         >
           Closed
-        </span>
+        </div>
       </span>
     </div>
     <div
@@ -914,11 +914,11 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-success badge-pill"
+        <div
+          class="badge"
         >
           Complete
-        </span>
+        </div>
       </span>
     </div>
     <div
@@ -958,11 +958,11 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-info badge-pill"
+        <div
+          class="badge"
         >
           New
-        </span>
+        </div>
       </span>
     </div>
     <div
@@ -1002,11 +1002,11 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-warning badge-pill"
+        <div
+          class="badge"
         >
           On hold
-        </span>
+        </div>
       </span>
     </div>
     <div
@@ -1046,11 +1046,11 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-info badge-pill"
+        <div
+          class="badge"
         >
           Pending
-        </span>
+        </div>
       </span>
     </div>
     <div
@@ -1090,11 +1090,11 @@ exports[`Order <BeforeContent/> render() should render with a label for the proc
       <span
         class="field-value"
       >
-        <span
-          class="badge badge-info badge-pill"
+        <div
+          class="badge"
         >
           Processing
-        </span>
+        </div>
       </span>
     </div>
     <div

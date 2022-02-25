@@ -7,11 +7,11 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       class="heading-subsection-semibold mb16"
     >
       Two-Factor Authentication
-      <span
-        class="badge badge-pill badge-danger ml-3 align-middle"
+      <div
+        class="badge ml-3 "
       >
-        DISABLED
-      </span>
+        Disabled
+      </div>
     </div>
     <div
       class="body-regular mb16"
@@ -20,7 +20,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       <a
         href=""
       >
-        Learn more
+         Learn more
       </a>
     </div>
     <button
@@ -45,11 +45,11 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       class="heading-subsection-semibold mb16"
     >
       Two-Factor Authentication
-      <span
-        class="badge badge-pill badge-danger ml-3 align-middle"
+      <div
+        class="badge ml-3 "
       >
-        DISABLED
-      </span>
+        Disabled
+      </div>
     </div>
     <div
       class="body-regular mb16"
@@ -58,7 +58,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       <a
         href=""
       >
-        Learn more
+         Learn more
       </a>
     </div>
     <button

@@ -5,7 +5,6 @@ import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {
-    Badge,
     Breadcrumb,
     BreadcrumbItem,
     Container,
@@ -15,34 +14,30 @@ import {
 } from 'reactstrap'
 import {AxiosError} from 'axios'
 
+import {MetaByAgentRole, User, UserDraft, UserRole} from 'config/types/user'
+import {ORDERED_ROLES_META_BY_USER_ROLE} from 'config/user'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import InputField from 'pages/common/forms/InputField'
-import {toJS} from '../../../utils'
-import Loader from '../../common/components/Loader/Loader'
-import RichDropdown from '../../common/components/RichDropdown/RichDropdown'
-import {Option} from '../../common/components/RichDropdown/types'
-import {ORDERED_ROLES_META_BY_USER_ROLE} from '../../../config/user'
-import {
-    MetaByAgentRole,
-    User,
-    UserDraft,
-    UserRole,
-} from '../../../config/types/user'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import PopoverModal from 'pages/common/components/PopoverModal'
+import RichDropdown from 'pages/common/components/RichDropdown/RichDropdown'
+import {Option} from 'pages/common/components/RichDropdown/types'
+import history from 'pages/history'
 import {
     updateAgent,
     inviteAgent,
     fetchAgent,
     deleteAgent,
     createAgent,
-} from '../../../state/agents/actions'
-import {updateAccountOwner} from '../../../state/currentAccount/actions'
-import * as helpers from '../../../state/agents/helpers'
-import PageHeader from '../../common/components/PageHeader'
-import PopoverModal from '../../common/components/PopoverModal'
-import history from '../../history'
-import {RootState} from '../../../state/types'
+} from 'state/agents/actions'
+import * as helpers from 'state/agents/helpers'
+import {updateAccountOwner} from 'state/currentAccount/actions'
+import {RootState} from 'state/types'
+import {toJS} from 'utils'
 import settingsCss from '../settings.less'
 
 import {checkAccessTo2FA} from '../yourProfile/twoFactorAuthentication/utils'
@@ -185,9 +180,8 @@ export class FormContainer extends Component<Props, State> {
                                     : 'Add user'}
                                 {isAgentAccountOwner && (
                                     <Badge
-                                        className={'ml-2 align-middle'}
-                                        color="dark"
-                                        pill
+                                        className="ml-2 align-middle"
+                                        type={ColorType.Dark}
                                     >
                                         Account Owner
                                     </Badge>
@@ -278,10 +272,11 @@ export class FormContainer extends Component<Props, State> {
                                 </Label>
                                 <p>
                                     <Badge
-                                        pill
                                         className={css.badge}
-                                        color={
-                                            has2FaEnabled ? 'success' : 'danger'
+                                        type={
+                                            has2FaEnabled
+                                                ? ColorType.Success
+                                                : ColorType.Error
                                         }
                                     >
                                         {has2FaEnabled

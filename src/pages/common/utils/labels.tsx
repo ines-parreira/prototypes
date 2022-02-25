@@ -4,27 +4,28 @@ import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 import _omit from 'lodash/omit'
-import {Badge, UncontrolledTooltipProps} from 'reactstrap'
+import {Badge as ReactstrapBadge, UncontrolledTooltipProps} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
 import moment from 'moment-timezone'
 
+import {DEFAULT_TAG_COLOR} from 'config'
+import {UserRole} from 'config/types/user'
 import {
     EMAIL_INTEGRATION_TYPES,
     RECHARGE_INTEGRATION_TYPE,
-} from '../../../constants/integration'
-import {UserRole} from '../../../config/types/user'
-import * as currentUserSelectors from '../../../state/currentUser/selectors'
-import {RootState} from '../../../state/types'
-import Tooltip from '../components/Tooltip'
-import Avatar from '../components/Avatar/Avatar'
-import {formatDatetime, humanizeString, isImmutable, toJS} from '../../../utils'
-import * as customersHelpers from '../../../state/customers/helpers'
-import {DEFAULT_TAG_COLOR} from '../../../config'
-import SourceIcon from '../components/SourceIcon'
-import {SourceType} from '../../../models/ticket/types'
-import {getAgents} from '../../../state/agents/selectors'
-import {getTeams} from '../../../state/teams/selectors'
-import {parseTimedelta} from '../../../state/ticket/utils'
+} from 'constants/integration'
+import {SourceType} from 'models/ticket/types'
+import Avatar from 'pages/common/components/Avatar/Avatar'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import Tooltip from 'pages/common/components/Tooltip'
+import SourceIcon from 'pages/common/components/SourceIcon'
+import {getAgents} from 'state/agents/selectors'
+import * as currentUserSelectors from 'state/currentUser/selectors'
+import * as customersHelpers from 'state/customers/helpers'
+import {getTeams} from 'state/teams/selectors'
+import {parseTimedelta} from 'state/ticket/utils'
+import {RootState} from 'state/types'
+import {formatDatetime, humanizeString, isImmutable, toJS} from 'utils'
 
 import css from './labels.less'
 
@@ -195,9 +196,12 @@ export const TagLabel = ({
         DEFAULT_TAG_COLOR
 
     return (
-        <Badge className={classnames('badge-tag', className)} style={{color}}>
+        <ReactstrapBadge
+            className={classnames('badge-tag', className)}
+            style={{color}}
+        >
             {children}
-        </Badge>
+        </ReactstrapBadge>
     )
 }
 
@@ -235,8 +239,7 @@ export const TimedeltaLabel = ({
     return (
         <Badge
             className={classnames('text-center', className)}
-            color={'secondary'}
-            pill
+            type={ColorType.Grey}
         >
             {durationArray.join(',')}
         </Badge>
@@ -252,20 +255,20 @@ type StatusLabelParam = {
 }
 
 export const StatusLabel = ({status, ...rest}: StatusLabelParam) => {
-    let color = 'info'
+    let color: ColorType = ColorType.Modern
 
     switch (status) {
         case 'open':
-            color = 'primary'
+            color = ColorType.Classic
             break
         case 'closed':
-            color = 'secondary'
+            color = ColorType.Grey
             break
         default:
     }
 
     return (
-        <Badge className="text-center" color={color} pill {...rest}>
+        <Badge className="text-center" type={color} {...rest}>
             {status}
         </Badge>
     )
@@ -336,31 +339,27 @@ export const RoleLabel = ({
         userRoles = (userRoles as Role[]).map((v) => v.name)
     }
 
-    let color: string | undefined
+    let color: ColorType | undefined
     let role = null
 
     if ((userRoles as string[]).includes(UserRole.Admin)) {
-        color = 'danger'
+        color = ColorType.Error
         role = _capitalize(UserRole.Admin)
     } else if ((userRoles as string[]).includes(UserRole.Agent)) {
-        color = 'warning'
+        color = ColorType.Warning
         role = 'Lead agent'
     } else if ((userRoles as string[]).includes(UserRole.BasicAgent)) {
-        color = 'info'
+        color = ColorType.DarkGrey
         role = _capitalize(humanizeString(UserRole.BasicAgent))
     } else if ((userRoles as string[]).includes(UserRole.LiteAgent)) {
-        color = 'primary'
+        color = ColorType.Classic
         role = _capitalize(humanizeString(UserRole.LiteAgent))
     } else if ((userRoles as string[]).includes(UserRole.ObserverAgent)) {
-        color = 'success'
+        color = ColorType.Grey
         role = _capitalize(humanizeString(UserRole.ObserverAgent))
     }
 
-    return (
-        <Badge color={color} className="badge-pill">
-            {role}
-        </Badge>
-    )
+    return <Badge type={color}>{role}</Badge>
 }
 
 RoleLabel.displayName = 'RoleLabel'

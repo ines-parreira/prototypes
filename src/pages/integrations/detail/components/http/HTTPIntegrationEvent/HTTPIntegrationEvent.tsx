@@ -1,16 +1,17 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Badge, Col, Container, Row} from 'reactstrap'
+import {Col, Container, Row} from 'reactstrap'
 
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
+import Loader from 'pages/common/components/Loader/Loader'
 import InputField from 'pages/common/forms/InputField'
-import {DatetimeLabel} from '../../../../../common/utils/labels'
-import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel/HTTPStatusLabel'
-import Loader from '../../../../../common/components/Loader/Loader'
-import {countLines} from '../../../../../../utils/string'
-import {fetchHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/actions'
-import {getHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/selectors'
-import {RootState} from '../../../../../../state/types'
-import settingsCss from '../../../../../settings/settings.less'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import settingsCss from 'pages/settings/settings.less'
+import {fetchHTTPIntegrationEvent} from 'state/HTTPIntegrationEvents/actions'
+import {getHTTPIntegrationEvent} from 'state/HTTPIntegrationEvents/selectors'
+import {RootState} from 'state/types'
+import {countLines} from 'utils/string'
 
 import HTTPParams from './HTTPIntegrationEventParams/HTTPIntegrationEventParams'
 import HTTPItem from './HTTPIntegrationEventItem/HTTPIntegrationEventItem'
@@ -172,7 +173,7 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
                                     <>
                                         {requestMethod.toLowerCase() ===
                                         'get' ? (
-                                            <Badge color="warning">
+                                            <Badge type={ColorType.Warning}>
                                                 JSON Params are not compatible
                                                 with the GET HTTP Method.
                                             </Badge>

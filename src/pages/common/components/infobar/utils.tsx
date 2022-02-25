@@ -1,6 +1,5 @@
 import React, {ReactNode} from 'react'
 import {fromJS, Map, List} from 'immutable'
-import {Badge} from 'reactstrap'
 import _compact from 'lodash/compact'
 import _concat from 'lodash/concat'
 import _get from 'lodash/get'
@@ -26,19 +25,17 @@ import momentTimezone from 'moment-timezone'
 import moment, {MomentInput} from 'moment'
 import ReactStars from 'react-rating-stars-component'
 
-import {DatetimeLabel} from '../../utils/labels'
-import * as utils from '../../../../utils'
+import {SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND} from 'config'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import * as utils from 'utils'
+import {reportError} from 'utils/errors'
+import {WidgetContextType} from 'state/widgets/types'
 import {
     getContextFromSourcePath,
     getSourcePathFromContext,
-} from '../../../../state/widgets/utils'
-import {WidgetContextType} from '../../../../state/widgets/types'
-import {
-    SENTIMENT_TYPE_LOWER_BOUND,
-    SENTIMENT_TYPE_UPPER_BOUND,
-} from '../../../../config'
-import {reportError} from '../../../../utils/errors'
+} from 'state/widgets/utils'
 
+import {DatetimeLabel} from '../../utils/labels'
 import css from './utils.less'
 import EditableListWidget from './Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
 
@@ -657,7 +654,7 @@ export function guessFieldValueFromRawData(
             }
 
             fieldValue = (
-                <Badge pill color={isTrue ? 'success' : 'danger'}>
+                <Badge type={isTrue ? ColorType.Success : ColorType.Error}>
                     {isTrue ? 'True' : 'False'}
                 </Badge>
             )
@@ -733,11 +730,7 @@ export function guessFieldValueFromRawData(
         }
         case 'points': {
             if (!isNaN(data)) {
-                fieldValue = (
-                    <Badge pill color="primary">
-                        {parseFloat(data).toLocaleString()}
-                    </Badge>
-                )
+                fieldValue = <Badge>{parseFloat(data).toLocaleString()}</Badge>
             }
 
             break

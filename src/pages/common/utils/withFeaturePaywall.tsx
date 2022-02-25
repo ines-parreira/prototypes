@@ -1,11 +1,11 @@
 import React, {ComponentProps, ComponentType} from 'react'
 import {useSelector} from 'react-redux'
 
-import {AccountFeature} from '../../../state/currentAccount/types'
-import {RootState} from '../../../state/types'
-import {currentAccountHasFeature} from '../../../state/currentAccount/selectors'
-import {paywallConfigs as defaultPaywallConfigs} from '../../../config/paywalls'
-import FeaturePaywall from '../components/FeaturePaywall/FeaturePaywall'
+import {paywallConfigs as defaultPaywallConfigs} from 'config/paywalls'
+import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
+import {currentAccountHasFeature} from 'state/currentAccount/selectors'
+import {AccountFeature} from 'state/currentAccount/types'
+import {RootState} from 'state/types'
 
 export const withFeaturePaywall = (
     feature: AccountFeature,

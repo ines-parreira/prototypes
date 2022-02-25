@@ -67,11 +67,11 @@ exports[`<BillingUsage/> should display price 1`] = `
         >
           Pro monthly plan
         </div>
-        <span
-          class="currentPlanBadge badge badge-info"
+        <div
+          class="badge"
         >
           CURRENT PLAN
-        </span>
+        </div>
       </div>
       <div
         class="card-body card-body"
@@ -305,11 +305,11 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
         >
           Pro monthly plan
         </div>
-        <span
-          class="currentPlanBadge badge badge-info"
+        <div
+          class="badge"
         >
           CURRENT PLAN
-        </span>
+        </div>
       </div>
       <div
         class="card-body card-body"

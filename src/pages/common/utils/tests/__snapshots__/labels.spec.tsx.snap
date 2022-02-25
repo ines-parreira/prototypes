@@ -224,27 +224,27 @@ exports[`components utils: labels <TeamLabel/> render() should render without av
 `;
 
 exports[`components utils: labels <TimedeltaLabel/> render() should render with day duration 1`] = `
-<span
-  class="text-center badge badge-secondary badge-pill"
+<div
+  class="badge text-center"
 >
   1 day(s)
-</span>
+</div>
 `;
 
 exports[`components utils: labels <TimedeltaLabel/> render() should render with hour duration 1`] = `
-<span
-  class="text-center badge badge-secondary badge-pill"
+<div
+  class="badge text-center"
 >
   1 hour(s)
-</span>
+</div>
 `;
 
 exports[`components utils: labels <TimedeltaLabel/> render() should render with minute duration 1`] = `
-<span
-  class="text-center badge badge-secondary badge-pill"
+<div
+  class="badge text-center"
 >
   1 minute(s)
-</span>
+</div>
 `;
 
 exports[`components utils: labels RenderLabel ValueRendered should display name and address formatted as aircall eg: with address into parenthesis 1`] = `
@@ -396,11 +396,11 @@ exports[`components utils: labels RenderLabel distribution integrations label 1`
 `;
 
 exports[`components utils: labels RenderLabel distribution status label 1`] = `
-<span
-  class="text-center badge badge-primary badge-pill"
+<div
+  class="badge text-center"
 >
   open
-</span>
+</div>
 `;
 
 exports[`components utils: labels RenderLabel distribution tags label 1`] = `

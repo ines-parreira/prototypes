@@ -12,17 +12,16 @@ import angryIcon from 'assets/img/integrations/facebook-reaction-angry.svg'
 import sadIcon from 'assets/img/integrations/facebook-reaction-sad.svg'
 import prideIcon from 'assets/img/integrations/facebook-reaction-pride.png'
 import careIcon from 'assets/img/integrations/facebook-reaction-care.svg'
-
-import {FacebookReactionType} from '../../../../../constants/integrations/facebook'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {FacebookReactionType} from 'constants/integrations/facebook'
 import {
     FacebookReactionCounter,
     FacebookReaction,
     Meta,
     Source,
-} from '../../../../../models/ticket/types'
-import * as infobarActions from '../../../../../state/infobar/actions'
-import Loader from '../../../../common/components/Loader/Loader'
-import {TicketMessageSourceType} from '../../../../../business/types/ticket'
+} from 'models/ticket/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import * as infobarActions from 'state/infobar/actions'
 
 import css from './SourceActions.less'
 

@@ -4,8 +4,8 @@ exports[`<LegacyPlanBadge /> should render a badge 1`] = `
 <div
   class="d-inline-flex cursor-pointer"
 >
-  <span
-    class="d-inline-flex flex-row badge badge badge-danger"
+  <div
+    class="badge"
   >
     <i
       class="material-icons"
@@ -17,6 +17,6 @@ exports[`<LegacyPlanBadge /> should render a badge 1`] = `
     >
       LEGACY PLAN
     </div>
-  </span>
+  </div>
 </div>
 `;

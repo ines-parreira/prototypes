@@ -1,20 +1,21 @@
 import React, {Component} from 'react'
-import {Badge, Table} from 'reactstrap'
+import {Table} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
 import {AxiosError} from 'axios'
 import {Map} from 'immutable'
 
 import {SHOPIFY_PAYMENT_SERVICE} from 'constants/billing'
-import * as billingSelectors from 'state/billing/selectors'
-import {fetchInvoices, updateInvoiceInList} from 'state/billing/actions'
-import Loader from 'pages/common/components/Loader/Loader'
-import GorgiasApi from 'services/gorgiasApi'
-import {notify} from 'state/notifications/actions'
-import {RootState} from 'state/types'
-import {NotificationStatus} from 'state/notifications/types'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Loader from 'pages/common/components/Loader/Loader'
+import GorgiasApi from 'services/gorgiasApi'
+import {fetchInvoices, updateInvoiceInList} from 'state/billing/actions'
+import * as billingSelectors from 'state/billing/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
 
 import BillingHeader from './common/BillingHeader'
 
@@ -144,9 +145,13 @@ export class BillingInvoicesContainer extends Component<Props, State> {
                                 <tr key={invoice.get('id')}>
                                     <td>
                                         {paid ? (
-                                            <Badge color="success">Paid</Badge>
+                                            <Badge type={ColorType.Success}>
+                                                Paid
+                                            </Badge>
                                         ) : (
-                                            <Badge color="danger">Unpaid</Badge>
+                                            <Badge type={ColorType.Error}>
+                                                Unpaid
+                                            </Badge>
                                         )}
                                     </td>
                                     <td>

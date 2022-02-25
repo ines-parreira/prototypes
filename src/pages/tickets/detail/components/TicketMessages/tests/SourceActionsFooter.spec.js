@@ -1,8 +1,13 @@
 import React from 'react'
 import {render} from 'enzyme'
-
 import configureMockStore from 'redux-mock-store'
 
+import SourceActionsFooter from '../SourceActionsFooter.tsx'
+
+import {
+    FACEBOOK_COMMENT_SOURCE,
+    FACEBOOK_MENTION_COMMENT_SOURCE,
+} from 'config/ticket.ts'
 import {
     facebookMessageWithPageReaction,
     facebookMessageWithCustomerReaction,
@@ -10,14 +15,8 @@ import {
     facebookMessageWithPageAndCustomerReactions,
     hiddenFacebookMessage,
     duplicatedHiddenFacebookMessage,
-} from '../../../../../../models/ticket/tests/mocks.ts'
-
-import SourceActionsFooter from '../SourceActionsFooter.tsx'
-import * as infobarActions from '../../../../../../state/infobar/actions.ts'
-import {
-    FACEBOOK_COMMENT_SOURCE,
-    FACEBOOK_MENTION_COMMENT_SOURCE,
-} from '../../../../../../config/ticket.ts'
+} from 'models/ticket/tests/mocks.ts'
+import * as infobarActions from 'state/infobar/actions.ts'
 
 describe('<SourceActionsFooter/>', () => {
     const mockStore = configureMockStore()

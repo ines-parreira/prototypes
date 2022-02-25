@@ -1,28 +1,14 @@
 import React from 'react'
-import {Badge} from 'reactstrap'
 
-import css from './CurrentPlanBadge.less'
-
-const PLAN_NAME_TO_BADGE_COLOR: Partial<Record<string, string>> = {
-    Basic: 'primary',
-    Pro: 'info',
-    Advanced: 'success',
-    Custom: 'warning',
-    Enterprise: 'warning',
-    Free: '#7f87d3',
-}
+import Badge from 'pages/common/components/Badge/Badge'
+import {PLAN_NAME_TO_BADGE_COLOR} from 'models/billing/utils'
 
 type Props = {
     planName: keyof typeof PLAN_NAME_TO_BADGE_COLOR
 }
 
 const CurrentPlanBadge = ({planName}: Props) => (
-    <Badge
-        className={css.currentPlanBadge}
-        color={PLAN_NAME_TO_BADGE_COLOR[planName]}
-    >
-        CURRENT PLAN
-    </Badge>
+    <Badge type={PLAN_NAME_TO_BADGE_COLOR[planName]}>CURRENT PLAN</Badge>
 )
 
 export default CurrentPlanBadge

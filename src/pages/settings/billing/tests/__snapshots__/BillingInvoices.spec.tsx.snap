@@ -83,15 +83,18 @@ exports[`BillingInvoices component should display invoices, without PDF download
           >
             <td>
               <Badge
-                color="danger"
-                pill={false}
-                tag="span"
+                type="error"
               >
-                <span
-                  className="badge badge-danger"
+                <div
+                  className="badge"
+                  style={
+                    Object {
+                      "backgroundColor": "var(--background-error)",
+                    }
+                  }
                 >
                   Unpaid
-                </span>
+                </div>
               </Badge>
             </td>
             <td>
@@ -112,15 +115,18 @@ exports[`BillingInvoices component should display invoices, without PDF download
           >
             <td>
               <Badge
-                color="success"
-                pill={false}
-                tag="span"
+                type="success"
               >
-                <span
-                  className="badge badge-success"
+                <div
+                  className="badge"
+                  style={
+                    Object {
+                      "backgroundColor": "var(--background-success)",
+                    }
+                  }
                 >
                   Paid
-                </span>
+                </div>
               </Badge>
             </td>
             <td>
