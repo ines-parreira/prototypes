@@ -152,6 +152,7 @@ function SmsIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
                                     value={phoneNumber}
                                     onChange={setPhoneNumber}
                                     onCreate={setPhoneNumber}
+                                    integrationType={IntegrationType.Sms}
                                 />
                             </FormGroup>
                             <Button

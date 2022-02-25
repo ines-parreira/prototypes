@@ -1,27 +1,31 @@
 import React, {useCallback, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 import CountryFlag from 'react-country-flag'
 
-import {RootState} from 'state/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
+import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import {IntegrationType} from 'models/integration/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import PhoneNumberCreateModalForm from 'pages/phoneNumbers/PhoneNumberCreateModalForm'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from './PhoneNumberSelectField.less'
 
-type OwnProps = {
+type Props = {
     value: Maybe<PhoneNumber> | '_new'
     onChange: (phoneNumber: PhoneNumber) => void
     onCreate: (phoneNumber: PhoneNumber) => void
+    integrationType?: IntegrationType.Phone | IntegrationType.Sms
 }
-type Props = ConnectedProps<typeof connector> & OwnProps
 
 function PhoneNumberSelectField({
-    phoneNumbers,
     value,
     onChange,
     onCreate,
+    integrationType,
 }: Props): JSX.Element {
+    const phoneNumbers: Record<number, PhoneNumber> =
+        useAppSelector(getPhoneNumbers)
+
     const [isCreateFormVisible, setIsCreateFormVisible] = useState(
         value === '_new'
     )
@@ -40,6 +44,15 @@ function PhoneNumberSelectField({
         [phoneNumbers, onChange]
     )
 
+    const availableNumbers = Object.entries(phoneNumbers)
+        .filter(([, phoneNumber]) => {
+            const existingIntegration = phoneNumber.integrations.find(
+                (integration) => integration.type === integrationType
+            )
+            return !existingIntegration
+        })
+        .map(([, phoneNumber]) => phoneNumber)
+
     const options = [
         {
             value: '_new',
@@ -50,7 +63,7 @@ function PhoneNumberSelectField({
                 </div>
             ),
         },
-        ...Object.entries(phoneNumbers).map(([, phoneNumber]) => {
+        ...availableNumbers.map((phoneNumber) => {
             const {name} = phoneNumber
             const {country, friendly_name} = phoneNumber.meta
             return {
@@ -93,8 +106,4 @@ function PhoneNumberSelectField({
     )
 }
 
-const connector = connect((state: RootState) => ({
-    phoneNumbers: state.entities.phoneNumbers,
-}))
-
-export default connector(PhoneNumberSelectField)
+export default PhoneNumberSelectField

@@ -182,6 +182,7 @@ function PhoneIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
                                     value={phoneNumber}
                                     onChange={setPhoneNumber}
                                     onCreate={setPhoneNumber}
+                                    integrationType={IntegrationType.Phone}
                                 />
                             </FormGroup>
                             <FormGroup>

@@ -4,6 +4,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
+import {IntegrationType} from 'models/integration/types'
 import {phoneNumbers} from 'fixtures/phoneNumber'
 
 import PhoneNumberSelectField from '../PhoneNumberSelectField'
@@ -49,6 +50,42 @@ describe('<PhoneNumberSelectField/>', () => {
                 </Provider>
             )
             expect(baseElement).toMatchSnapshot()
+        })
+
+        it('should hide phone numbers that have attached integrations', () => {
+            const existingIntegration = {type: IntegrationType.Sms}
+            const store = mockStore({
+                entities: {
+                    phoneNumbers: phoneNumbers.reduce(
+                        (acc, number) => ({
+                            ...acc,
+                            [number.id]: {
+                                ...number,
+                                integrations:
+                                    number.meta.friendly_name ===
+                                    '+1 415 111 2222'
+                                        ? []
+                                        : [existingIntegration],
+                            },
+                        }),
+                        {}
+                    ),
+                },
+            } as RootState)
+
+            const {container, queryByText} = render(
+                <Provider store={store}>
+                    <PhoneNumberSelectField
+                        value={phoneNumbers[0]}
+                        onChange={onChange}
+                        onCreate={onCreate}
+                        integrationType={IntegrationType.Sms}
+                    />
+                </Provider>
+            )
+            expect(queryByText(/\+1 415 111 2222/)).toBeTruthy()
+            expect(queryByText(/\+1 415 111 2223/)).toBeFalsy()
+            expect(container).toMatchSnapshot()
         })
     })
 })
