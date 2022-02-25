@@ -1,37 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ColorField should render a basic color input 1`] = `
-<FormGroup
-  className="InputField"
+exports[`ColorField should render with minimal props 1`] = `
+<div
+  class="InputField form-group"
   color=""
-  tag="div"
 >
-  <div
-    className=""
+  <label
+    class="control-label"
+    for="id-input-1"
   >
-    <ColorPicker
-      colors={
-        Array [
-          "#EB144C",
-          "#FF6900",
-          "#FCB900",
-          "#B5CC18",
-          "#00D084",
-          "#7BDCB5",
-          "#8ED1FC",
-          "#0693E3",
-          "#9900EF",
-          "#E03997",
-          "#F78DA7",
-          "#A5673F",
-          "#ABB8C3",
-          "#767676",
-        ]
-      }
-      onChange={[Function]}
-      type="text"
-      value="value"
-    />
+    A label
+  </label>
+  <div
+    class=""
+  >
+    <div
+      class="d-inline-block"
+    >
+      <button
+        class="wrapper secondary medium"
+        id="color-picker-2"
+        type="button"
+      >
+        <div
+          class="color"
+          style="background-color: rgb(255, 255, 255);"
+        />
+      </button>
+    </div>
   </div>
-</FormGroup>
+</div>
 `;

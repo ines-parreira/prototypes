@@ -19,10 +19,16 @@ import css from './FileField.less'
 
 const DEFAULT_ERROR = 'Failed to upload files. Please try again later.'
 
+export enum UploadType {
+    Profile = 'profile_picture',
+    Widget = 'widget_picture',
+    Avatar = 'avatar_team_picture',
+}
+
 export type Props = {
     noPreview?: boolean
     returnFiles?: boolean
-    uploadType?: string
+    uploadType?: UploadType
     maxSize?: number
     params?: Record<string, unknown>
     type?: InputType

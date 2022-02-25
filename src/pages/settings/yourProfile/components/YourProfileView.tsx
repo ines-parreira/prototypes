@@ -15,7 +15,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/InputField'
-import FileField from 'pages/common/forms/FileField'
+import FileField, {UploadType} from 'pages/common/forms/FileField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
@@ -306,7 +306,6 @@ export default class YourProfileView extends Component<Props, State> {
                                 />
 
                                 <FileField
-                                    key={this.state.profilePictureUrl}
                                     returnFiles={false}
                                     noPreview={true}
                                     onChange={(picture_url: string) =>
@@ -319,7 +318,7 @@ export default class YourProfileView extends Component<Props, State> {
                                             }
                                         )
                                     }
-                                    uploadType="profile_picture"
+                                    uploadType={UploadType.Profile}
                                     maxSize={500 * 1000}
                                     className={settingsCss.mb16}
                                 />

@@ -1,6 +1,5 @@
 :local {
     .color {
-        background-color: #cdcdcd;
         height: 16px;
         width: 80px;
     }
@@ -20,11 +19,12 @@
         width: @choice-width * @choices-per-row;
 
         .choice {
+            border: none;
+            padding: 0;
             height: @choice-size;
             width: @choice-size;
             border-radius: 3px;
             margin: @choice-margin;
-            cursor: pointer;
         }
 
         .input {

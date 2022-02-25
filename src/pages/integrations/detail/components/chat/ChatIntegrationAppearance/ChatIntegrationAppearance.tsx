@@ -39,7 +39,7 @@ import {ButtonIntent} from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import ColorField from 'pages/common/forms/ColorField'
-import FileField from 'pages/common/forms/FileField'
+import FileField, {UploadType} from 'pages/common/forms/FileField'
 import InputField from 'pages/common/forms/InputField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import settingsCss from 'pages/settings/settings.less'
@@ -386,7 +386,9 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                                                     avatarTeamPictureUrl,
                                                                 })
                                                             }
-                                                            uploadType="avatar_team_picture"
+                                                            uploadType={
+                                                                UploadType.Avatar
+                                                            }
                                                             params={{
                                                                 ['integration_id']:
                                                                     integration.get(

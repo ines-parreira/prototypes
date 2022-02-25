@@ -1,11 +1,13 @@
 import React from 'react'
 import _omit from 'lodash/omit'
 
-import ColorPicker from '../components/ColorPicker'
+import ColorPicker, {
+    Props as ColorPickerProps,
+} from '../components/ColorPicker/ColorPicker'
 
 import InputField, {InputFieldProps} from './InputField'
 
-type Props = InputFieldProps<string>
+type Props = ColorPickerProps & InputFieldProps<string>
 
 export default class ColorField extends InputField<Props> {
     _getField = () => {

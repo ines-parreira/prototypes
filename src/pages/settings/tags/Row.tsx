@@ -8,7 +8,7 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/InputField'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import ColorPicker from '../../common/components/ColorPicker'
+import ColorPicker from '../../common/components/ColorPicker/ColorPicker'
 import {TagLabel} from '../../common/utils/labels'
 import {toJS} from '../../../utils'
 import {DEFAULT_TAG_COLOR} from '../../../config'
@@ -165,6 +165,7 @@ export class Row extends Component<Props, State> {
 
                                 <ColorPicker
                                     value={this.state.decoration.get('color')}
+                                    defaultValue={DEFAULT_TAG_COLOR}
                                     onChange={this._changeColor}
                                 />
                             </div>
