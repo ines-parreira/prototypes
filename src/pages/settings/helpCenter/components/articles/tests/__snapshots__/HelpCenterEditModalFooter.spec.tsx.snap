@@ -9,27 +9,34 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
       class="buttonsWrapper"
     >
       <div
-        class="dropup btn-group"
+        class="dropdown"
         id="article-save-button-wrapper"
       >
-        <button
-          class="wrapper primary medium"
-          color="primary"
+        <span
+          class="group horizontal"
         >
-          Save & Publish
-        </button>
-        <button
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="dropdown-toggle btn btn-primary"
-          type="button"
-        >
-          <span
-            class="sr-only"
+          <button
+            class="wrapper primary medium left"
+            color="primary"
           >
-            Toggle Dropdown
+            Save & Publish
+          </button>
+          <span
+            aria-expanded="false"
+            aria-haspopup="true"
+            class=""
+          >
+            <button
+              class="wrapper wrapper medium primary medium right"
+            >
+              <i
+                class="material-icons icon"
+              >
+                arrow_drop_down
+              </i>
+            </button>
           </span>
-        </button>
+        </span>
         <div
           aria-hidden="true"
           class="dropdown-menu dropdown-menu-right"

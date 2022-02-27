@@ -3,10 +3,13 @@ import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
-    UncontrolledButtonDropdown,
+    UncontrolledDropdown,
 } from 'reactstrap'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Group from 'pages/common/components/layout/Group'
+import GroupItem from 'pages/common/components/layout/GroupItem'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import {Rating} from 'models/helpCenter/types'
 import Tooltip from '../../../../common/components/Tooltip'
@@ -55,18 +58,29 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
     const ratingScore = useRatingScore(rating)
 
     const buttonsForModified = (mode: ArticleModeModified) => (
-        <UncontrolledButtonDropdown
-            direction="up"
-            id="article-save-button-wrapper"
-        >
-            <Button
-                isDisabled={!canSave}
-                onClick={() => mode.onSave(true)}
-                color="primary"
-            >
-                Save &amp; Publish
-            </Button>
-            {canSave && <DropdownToggle caret color="primary" />}
+        <UncontrolledDropdown id="article-save-button-wrapper">
+            <Group>
+                <Button
+                    isDisabled={!canSave}
+                    onClick={() => mode.onSave(true)}
+                    color="primary"
+                >
+                    Save &amp; Publish
+                </Button>
+
+                {canSave && (
+                    <GroupItem>
+                        {(appendPosition) => (
+                            <DropdownToggle tag="span">
+                                <IconButton appendPosition={appendPosition}>
+                                    arrow_drop_down
+                                </IconButton>
+                            </DropdownToggle>
+                        )}
+                    </GroupItem>
+                )}
+            </Group>
+
             {requiredFields.length >= 1 && (
                 <Tooltip
                     disabled={canSave}
@@ -85,22 +99,32 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                     Save &amp; Publish
                 </DropdownItem>
             </DropdownMenu>
-        </UncontrolledButtonDropdown>
+        </UncontrolledDropdown>
     )
 
     const buttonsForNew = (mode: ArticleModeNew) => (
-        <UncontrolledButtonDropdown
-            direction="up"
-            id="article-save-button-wrapper"
-        >
-            <Button
-                onClick={() => mode.onCreate(true)}
-                isDisabled={!canSave}
-                color="primary"
-            >
-                Create &amp; Publish
-            </Button>
-            {canSave && <DropdownToggle caret color="primary" />}
+        <UncontrolledDropdown id="article-save-button-wrapper">
+            <Group>
+                <Button
+                    onClick={() => mode.onCreate(true)}
+                    isDisabled={!canSave}
+                    color="primary"
+                >
+                    Create &amp; Publish
+                </Button>
+                {canSave && (
+                    <GroupItem>
+                        {(appendPosition) => (
+                            <DropdownToggle tag="span">
+                                <IconButton appendPosition={appendPosition}>
+                                    arrow_drop_down
+                                </IconButton>
+                            </DropdownToggle>
+                        )}
+                    </GroupItem>
+                )}
+            </Group>
+
             {requiredFields.length >= 1 && (
                 <Tooltip
                     disabled={canSave}
@@ -119,7 +143,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                     Create &amp; Publish
                 </DropdownItem>
             </DropdownMenu>
-        </UncontrolledButtonDropdown>
+        </UncontrolledDropdown>
     )
 
     const buttonsForUnchangedPublished = () => (
