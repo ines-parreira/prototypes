@@ -56,7 +56,7 @@ const QuickResponseFlowsPreferences = () => {
                             that will send an automated response to your
                             customer.{' '}
                             <a
-                                href="https://updates.gorgias.com/publications/quick-response-flows-in-the-chat"
+                                href="https://docs.gorgias.com/self-service/custom-self-service-flows"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
