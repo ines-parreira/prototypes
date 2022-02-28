@@ -1,5 +1,4 @@
 import React, {useEffect, useCallback, useMemo} from 'react'
-import {useAsyncFn} from 'react-use'
 import {useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import {Container} from 'reactstrap'
@@ -18,13 +17,20 @@ import {getHelpCenterSortedList} from 'state/entities/helpCenter/helpCenters/sel
 import {changeHelpCenterId, changeViewLanguage} from 'state/ui/helpCenter'
 import PageHeader from 'pages/common/components/PageHeader'
 import Tooltip from 'pages/common/components/Tooltip'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../providers/SupportedLocales'
-import {HELP_CENTER_MAX_CREATION, HELP_CENTER_BASE_PATH} from '../constants'
+import {
+    HELP_CENTER_MAX_CREATION,
+    HELP_CENTER_BASE_PATH,
+    HELP_CENTERS_PER_PAGE,
+} from '../constants'
 import settingsCss from '../../settings.less'
+import {useHelpCenterList} from '../hooks/useHelpCenterList'
 
-import HelpCenterTable from './HelpCenterTable'
 import css from './HelpCenterStartView.less'
+import HelpCenterTable from './HelpCenterTable'
 
 export const HelpCenterStartView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -32,41 +38,18 @@ export const HelpCenterStartView: React.FC = () => {
     const {client} = useHelpCenterApi()
     const localeOptions = useSupportedLocales()
     const helpCenterList = useSelector(getHelpCenterSortedList)
-
     const localesByCode = useMemo(
         () => _keyBy<Locale>(localeOptions, 'code'),
         [localeOptions]
     )
 
-    const [{loading}, getHelpCentersList] = useAsyncFn(async () => {
-        if (client) {
-            try {
-                const {
-                    data: {data: helpCenters},
-                } = await client.listHelpCenters({per_page: 50}) // temporary fix before implementing the infinite scroll on this page
-
-                dispatch(helpCentersFetched(helpCenters))
-            } catch (err) {
-                void dispatch(
-                    notify({
-                        message: 'Failed to retrieve the Help Center list',
-                        status: NotificationStatus.Error,
-                    })
-                )
-                console.error(err)
-            }
-        }
-    }, [client])
+    const {isLoading, hasMore, fetchMore} = useHelpCenterList({
+        per_page: HELP_CENTERS_PER_PAGE,
+    })
 
     useEffect(() => {
         dispatch(changeHelpCenterId(null))
     }, [dispatch])
-
-    useEffect(() => {
-        if (!loading) {
-            void getHelpCentersList()
-        }
-    }, [getHelpCentersList])
 
     const navigateToArticles = useCallback(
         (helpCenterId: number) => {
@@ -132,7 +115,12 @@ export const HelpCenterStartView: React.FC = () => {
         helpCenterList.length >= HELP_CENTER_MAX_CREATION
 
     return (
-        <div className="full-width">
+        <InfiniteScroll
+            className="full-width"
+            onLoad={fetchMore}
+            shouldLoadMore={!isLoading && hasMore}
+            loaderSize={20}
+        >
             <PageHeader title="Help Center">
                 <div id="add-new-help-center-button-wrapper">
                     <Button
@@ -176,15 +164,14 @@ export const HelpCenterStartView: React.FC = () => {
                     about how to set it up.
                 </p>
             </Container>
-
             <HelpCenterTable
                 list={helpCenterList}
+                isLoading={helpCenterList.length === 0 && isLoading}
                 locales={localesByCode}
-                isLoading={loading}
                 onClick={navigateToArticles}
                 onToggle={toggleActivation}
             />
-        </div>
+        </InfiniteScroll>
     )
 }
 

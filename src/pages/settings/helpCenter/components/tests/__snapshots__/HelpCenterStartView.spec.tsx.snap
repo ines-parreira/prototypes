@@ -3,7 +3,7 @@
 exports[`<HelpCenterStartView /> should render the component 1`] = `
 <div>
   <div
-    class="full-width"
+    class="component full-width"
   >
     <div
       class="page-header pageHeader"
@@ -52,16 +52,366 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
         about how to set it up.
       </p>
     </div>
+    <table
+      class="table"
+    >
+      <thead
+        class="tableHead"
+      >
+        <tr
+          class="headerRow"
+        >
+          <td
+            class="wrapper smallest"
+          />
+          <td
+            class="wrapper"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Help Center name
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Languages
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper"
+          >
+            <div
+              class="content"
+            >
+              <div>
+                <span
+                  class="title"
+                >
+                  Last updated
+                </span>
+                <i
+                  class="material-icons md-1 directionIcon"
+                >
+                  arrow_drop_up
+                </i>
+              </div>
+            </div>
+          </td>
+          <td
+            class="wrapper"
+          />
+        </tr>
+      </thead>
+      <tbody
+        class="tableBody"
+      >
+        <tr
+          class="row tableBodyRow isClickable"
+        >
+          <td
+            class="smallest actions"
+          >
+            <div
+              class="cellContent"
+            >
+              <div>
+                <label
+                  aria-checked="true"
+                  class="container"
+                  for="toggle-button-1"
+                  role="switch"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    disabled=""
+                    id="toggle-button-1"
+                    name="toggle-button-1"
+                    type="checkbox"
+                  />
+                  <div
+                    class="slider"
+                  />
+                </label>
+              </div>
+            </div>
+          </td>
+          <td
+            class="helpCenterName"
+          >
+            <div
+              class="cellContent"
+            >
+              ACME Help Center
+            </div>
+          </td>
+          <td>
+            <div
+              class="cellContent"
+            >
+              <div
+                class="language-bullet-list"
+              >
+                <div
+                  class="language-bullet-item"
+                  data-testid="locale-bullet-en-US"
+                >
+                  <img
+                    alt="en-US"
+                    class="flag-emoji"
+                    data-testid="flag-en-US"
+                    src="test-file-stub"
+                  />
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div
+              class="cellContent"
+            >
+              05/17/2021
+            </div>
+          </td>
+          <td
+            class="smallest actions"
+          >
+            <div
+              class="cellContent"
+            >
+              <i
+                class="material-icons forwardIcon"
+              >
+                keyboard_arrow_right
+              </i>
+            </div>
+          </td>
+        </tr>
+        <tr
+          class="row tableBodyRow isClickable"
+        >
+          <td
+            class="smallest actions"
+          >
+            <div
+              class="cellContent"
+            >
+              <div>
+                <label
+                  aria-checked="true"
+                  class="container"
+                  for="toggle-button-2"
+                  role="switch"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    disabled=""
+                    id="toggle-button-2"
+                    name="toggle-button-2"
+                    type="checkbox"
+                  />
+                  <div
+                    class="slider"
+                  />
+                </label>
+              </div>
+            </div>
+          </td>
+          <td
+            class="helpCenterName"
+          >
+            <div
+              class="cellContent"
+            >
+              ACME Help Center 2
+            </div>
+          </td>
+          <td>
+            <div
+              class="cellContent"
+            >
+              <div
+                class="language-bullet-list"
+              >
+                <div
+                  class="language-bullet-item"
+                  data-testid="locale-bullet-en-US"
+                >
+                  <img
+                    alt="en-US"
+                    class="flag-emoji"
+                    data-testid="flag-en-US"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div
+                  class="language-bullet-item"
+                  data-testid="locale-bullet-de-DE"
+                >
+                  <img
+                    alt="de-DE"
+                    class="flag-emoji"
+                    data-testid="flag-de-DE"
+                    src="test-file-stub"
+                  />
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div
+              class="cellContent"
+            >
+              05/17/2021
+            </div>
+          </td>
+          <td
+            class="smallest actions"
+          >
+            <div
+              class="cellContent"
+            >
+              <i
+                class="material-icons forwardIcon"
+              >
+                keyboard_arrow_right
+              </i>
+            </div>
+          </td>
+        </tr>
+        <tr
+          class="row tableBodyRow isClickable"
+        >
+          <td
+            class="smallest actions"
+          >
+            <div
+              class="cellContent"
+            >
+              <div>
+                <label
+                  aria-checked="true"
+                  class="container"
+                  for="toggle-button-3"
+                  role="switch"
+                >
+                  <input
+                    checked=""
+                    class="input"
+                    disabled=""
+                    id="toggle-button-3"
+                    name="toggle-button-3"
+                    type="checkbox"
+                  />
+                  <div
+                    class="slider"
+                  />
+                </label>
+              </div>
+            </div>
+          </td>
+          <td
+            class="helpCenterName"
+          >
+            <div
+              class="cellContent"
+            >
+              ACME Help Center 3
+            </div>
+          </td>
+          <td>
+            <div
+              class="cellContent"
+            >
+              <div
+                class="language-bullet-list"
+              >
+                <div
+                  class="language-bullet-item"
+                  data-testid="locale-bullet-en-US"
+                >
+                  <img
+                    alt="en-US"
+                    class="flag-emoji"
+                    data-testid="flag-en-US"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div
+                  class="language-bullet-item"
+                  data-testid="locale-bullet-fr-FR"
+                >
+                  <img
+                    alt="fr-FR"
+                    class="flag-emoji"
+                    data-testid="flag-fr-FR"
+                    src="test-file-stub"
+                  />
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div
+              class="cellContent"
+            >
+              05/17/2021
+            </div>
+          </td>
+          <td
+            class="smallest actions"
+          >
+            <div
+              class="cellContent"
+            >
+              <i
+                class="material-icons forwardIcon"
+              >
+                keyboard_arrow_right
+              </i>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <div
-      class="container"
+      class="container loader"
     >
       <div
         class="inner"
-        style="min-height: 500px;"
+        style="min-height: 0;"
       >
         <i
           class="icon-custom icon-circle-o-notch md-spin"
-          style="font-size: 40px;"
+          style="font-size: 20px;"
         />
       </div>
     </div>
