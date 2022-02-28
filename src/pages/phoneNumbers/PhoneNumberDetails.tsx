@@ -11,12 +11,14 @@ import {
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
-
 import Clipboard from 'clipboard'
+import classnames from 'classnames'
+
 import {PhoneNumber, PhoneCountry} from 'models/phoneNumber/types'
 import {deletePhoneNumber} from 'models/phoneNumber/resources'
 import {GorgiasApiError} from 'models/api/types'
 import {phoneNumberDeleted} from 'state/entities/phoneNumbers/actions'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType} from 'models/integration/types'
@@ -24,9 +26,11 @@ import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {ButtonIntent} from 'pages/common/components/button/Button'
+import {SMS_INTEGRATION_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 import history from 'pages/history'
 import {errorToChildren} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from './PhoneNumberDetails.less'
 
@@ -46,6 +50,7 @@ const states: States = rawStates
 
 export function PhoneNumberDetails({phoneNumber}: Props) {
     const dispatch = useAppDispatch()
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const state =
         phoneNumber.meta?.country === PhoneCountry.US
             ? states[phoneNumber.meta.country].find(
@@ -83,6 +88,9 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
 
     const voiceApp = phoneNumber.integrations.find(
         (integration) => integration.type === IntegrationType.Phone
+    )
+    const smsApp = phoneNumber.integrations.find(
+        (integration) => integration.type === IntegrationType.Sms
     )
 
     useEffect(() => {
@@ -165,7 +173,15 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
             <Row className="mt-4">
                 <Col lg={6} className="pr-lg-0 pr-md-3">
                     <h4>Connected integrations</h4>
-                    <Row className="border-bottom py-3  ml-1 mr-1">
+                    <Row
+                        className={classnames(
+                            'border-bottom',
+                            'py-3',
+                            'ml-1',
+                            'mr-1',
+                            {[css.disabledApp]: !voiceApp}
+                        )}
+                    >
                         <Col lg={8}>
                             <i className="material-icons md-2 align-middle mr-2">
                                 phone
@@ -191,6 +207,44 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                             )}
                         </Col>
                     </Row>
+                    {SMS_INTEGRATION_PREVIEW_ACCOUNTS.includes(
+                        currentAccount.get('domain')
+                    ) && (
+                        <Row
+                            className={classnames(
+                                'border-bottom',
+                                'py-3',
+                                'ml-1',
+                                'mr-1',
+                                {[css.disabledApp]: !smsApp}
+                            )}
+                        >
+                            <Col lg={8}>
+                                <i className="material-icons md-2 align-middle mr-2">
+                                    sms
+                                </i>
+                                <strong>SMS</strong>
+                            </Col>
+                            <Col lg={4} className={css.appLink}>
+                                {smsApp ? (
+                                    <Link
+                                        to={`/app/settings/integrations/sms/${smsApp.id}/preferences`}
+                                    >
+                                        Manage Integration
+                                    </Link>
+                                ) : (
+                                    <Link
+                                        to={`/app/settings/integrations/sms/new?phoneNumberId=${phoneNumber.id}`}
+                                    >
+                                        <i className="material-icons md-2 align-middle mr-2">
+                                            add
+                                        </i>
+                                        Add Integration
+                                    </Link>
+                                )}
+                            </Col>
+                        </Row>
+                    )}
                 </Col>
             </Row>
             <Row className="mt-4">

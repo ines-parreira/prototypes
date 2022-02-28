@@ -521,7 +521,11 @@ export const IntegrationDetailContainer = ({
                     )
                 }
 
-                return <SmsIntegrationCreate />
+                return (
+                    <SmsIntegrationCreate
+                        selectedPhoneNumberId={parseInt(phoneNumberId)}
+                    />
+                )
             }
 
             return <SmsIntegrationsListContainer />
