@@ -28,10 +28,12 @@ export default function TwoFactorAuthenticationSection() {
             <Button type="button" onClick={() => setIsModalOpen(true)}>
                 Enable Two-Factor Authentication
             </Button>
-            <TwoFactorAuthenticationModal
-                isOpen={isModalOpen}
-                setIsOpen={setIsModalOpen}
-            />
+            {isModalOpen && (
+                <TwoFactorAuthenticationModal
+                    isOpen={isModalOpen}
+                    setIsOpen={setIsModalOpen}
+                />
+            )}
         </>
     )
 }

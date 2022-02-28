@@ -67,11 +67,6 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
     >
       Enable Two-Factor Authentication
     </button>
-    <div
-      class="Closed"
-    >
-      TwoFactorAuthenticationModal mocked
-    </div>
   </div>
 </body>
 `;

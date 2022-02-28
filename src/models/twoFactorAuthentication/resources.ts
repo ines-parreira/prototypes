@@ -12,3 +12,7 @@ export const validateVerificationCode = async (
 ): Promise<void> => {
     await client.get<void>(`/api/2fa/verification-code/${verificationCode}`)
 }
+
+export const saveTwoFASecret = async (): Promise<void> => {
+    await client.post<void>('/api/2fa/secret', {})
+}

@@ -1,5 +1,526 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<TwoFactorAuthenticationModal /> render() Validate verification code should render modal with Recovery codes step because validation is successful and the secret was saved to the database: Recovery codes step 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Setup 2FA
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body modal-body"
+            >
+              
+              Recovery codes step
+            </div>
+            <div
+              class="modal-footer modal-footer"
+            >
+              <button
+                class="wrapper full-width primary medium"
+                type="button"
+              >
+                <span
+                  class="full-width"
+                >
+                  Continue
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationModal /> render() Validate verification code should render modal with error banner because saving the secret failed: error banner and continue button disabled 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Setup 2FA
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body modal-body"
+            >
+              <div
+                class="banner bannerError"
+              >
+                <img
+                  alt="icon"
+                  class="icon"
+                  src="test-file-stub"
+                />
+                <div
+                  class="bannerText"
+                >
+                  <span>
+                    foo error saveTwoFASecret
+                  </span>
+                </div>
+              </div>
+              <div
+                class="headingBold"
+              >
+                Step 3: Verify your code
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter the 6-digit verification code generated from your authenticator app.
+              </div>
+              <div
+                class="InputField form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="form-control"
+                    id="id-verificationCode"
+                    placeholder="Enter 6-digit verification code from app"
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="modal-footer modal-footer"
+            >
+              <button
+                class="wrapper secondary medium"
+                type="button"
+              >
+                Back
+              </button>
+              <button
+                class="wrapper primary medium isDisabled"
+                disabled=""
+                type="button"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationModal /> render() Validate verification code should render modal with error banner because saving the secret failed: no error banner and continue button enabled 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Setup 2FA
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body modal-body"
+            >
+              
+              <div
+                class="headingBold"
+              >
+                Step 3: Verify your code
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter the 6-digit verification code generated from your authenticator app.
+              </div>
+              <div
+                class="InputField form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="form-control"
+                    id="id-verificationCode"
+                    placeholder="Enter 6-digit verification code from app"
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="modal-footer modal-footer"
+            >
+              <button
+                class="wrapper secondary medium"
+                type="button"
+              >
+                Back
+              </button>
+              <button
+                class="wrapper primary medium"
+                type="button"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationModal /> render() Validate verification code should render modal with error banner because validation failed: error banner and continue button disabled 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Setup 2FA
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body modal-body"
+            >
+              <div
+                class="banner bannerError"
+              >
+                <img
+                  alt="icon"
+                  class="icon"
+                  src="test-file-stub"
+                />
+                <div
+                  class="bannerText"
+                >
+                  <span>
+                    foo error validateVerificationCode
+                  </span>
+                </div>
+              </div>
+              <div
+                class="headingBold"
+              >
+                Step 3: Verify your code
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter the 6-digit verification code generated from your authenticator app.
+              </div>
+              <div
+                class="InputField form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="form-control"
+                    id="id-verificationCode"
+                    placeholder="Enter 6-digit verification code from app"
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="modal-footer modal-footer"
+            >
+              <button
+                class="wrapper secondary medium"
+                type="button"
+              >
+                Back
+              </button>
+              <button
+                class="wrapper primary medium isDisabled"
+                disabled=""
+                type="button"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationModal /> render() Validate verification code should render modal with error banner because validation failed: no error banner and continue button enabled 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Setup 2FA
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body modal-body"
+            >
+              
+              <div
+                class="headingBold"
+              >
+                Step 3: Verify your code
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter the 6-digit verification code generated from your authenticator app.
+              </div>
+              <div
+                class="InputField form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="form-control"
+                    id="id-verificationCode"
+                    placeholder="Enter 6-digit verification code from app"
+                    type="text"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="modal-footer modal-footer"
+            >
+              <button
+                class="wrapper secondary medium"
+                type="button"
+              >
+                Back
+              </button>
+              <button
+                class="wrapper primary medium"
+                type="button"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
 exports[`<TwoFactorAuthenticationModal /> render() should not render the modal 1`] = `
 <body>
   <div />
@@ -475,202 +996,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
               class="modal-body modal-body"
             >
               
-              <div
-                class="headingBold"
-              >
-                Step 3: Verify your code
-              </div>
-              <div
-                class="textSection mb16"
-              >
-                Enter the 6-digit verification code generated from your authenticator app.
-              </div>
-              <div
-                class="InputField form-group"
-                color=""
-              >
-                <div
-                  class=""
-                >
-                  <input
-                    class="form-control"
-                    id="id-verificationCode"
-                    placeholder="Enter 6-digit verification code from app"
-                    type="text"
-                  />
-                </div>
-              </div>
-            </div>
-            <div
-              class="modal-footer modal-footer"
-            >
-              <button
-                class="wrapper secondary medium"
-                type="button"
-              >
-                Back
-              </button>
-              <button
-                class="wrapper primary medium isDisabled"
-                disabled=""
-                type="button"
-              >
-                Continue
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="modal-backdrop show"
-      />
-    </div>
-  </div>
-</body>
-`;
-
-exports[`<TwoFactorAuthenticationModal /> render() should validate verification code and render modal with Recovery codes step if validation is successful 1`] = `
-<body
-  class="modal-open"
->
-  <div />
-  <div
-    style="position: relative; z-index: 1050; display: block;"
-    tabindex="-1"
-  >
-    <div
-      class=""
-    >
-      <div
-        class="modal show"
-        role="dialog"
-        style="display: block;"
-        tabindex="-1"
-      >
-        <div
-          class="modal-dialog"
-          role="document"
-          style="max-width: 600px;"
-        >
-          <div
-            class="modal-content"
-          >
-            <div
-              class="modal-header"
-            >
-              <h5
-                class="modal-title"
-              >
-                Setup 2FA
-              </h5>
-              <button
-                aria-label="Close"
-                class="close"
-                type="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ×
-                </span>
-              </button>
-            </div>
-            <div
-              class="modal-body modal-body"
-            >
-              
-              Recovery codes step
-            </div>
-            <div
-              class="modal-footer modal-footer"
-            >
-              <button
-                class="wrapper full-width primary medium"
-                type="button"
-              >
-                <span
-                  class="full-width"
-                >
-                  Continue
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="modal-backdrop show"
-      />
-    </div>
-  </div>
-</body>
-`;
-
-exports[`<TwoFactorAuthenticationModal /> render() should validate verification code and render modal with Recovery codes step if validation is successful 2`] = `
-<body
-  class="modal-open"
->
-  <div />
-  <div
-    style="position: relative; z-index: 1050; display: block;"
-    tabindex="-1"
-  >
-    <div
-      class=""
-    >
-      <div
-        class="modal show"
-        role="dialog"
-        style="display: block;"
-        tabindex="-1"
-      >
-        <div
-          class="modal-dialog"
-          role="document"
-          style="max-width: 600px;"
-        >
-          <div
-            class="modal-content"
-          >
-            <div
-              class="modal-header"
-            >
-              <h5
-                class="modal-title"
-              >
-                Setup 2FA
-              </h5>
-              <button
-                aria-label="Close"
-                class="close"
-                type="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ×
-                </span>
-              </button>
-            </div>
-            <div
-              class="modal-body modal-body"
-            >
-              <div
-                class="banner bannerError"
-              >
-                <img
-                  alt="icon"
-                  class="icon"
-                  src="test-file-stub"
-                />
-                <div
-                  class="bannerText"
-                >
-                  <span>
-                    foo error validateVerificationCode
-                  </span>
-                </div>
-              </div>
               <div
                 class="headingBold"
               >

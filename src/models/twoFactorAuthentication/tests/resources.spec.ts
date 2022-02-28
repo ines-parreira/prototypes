@@ -3,7 +3,11 @@ import MockAdapter from 'axios-mock-adapter'
 import {AxiosError} from 'axios'
 import {authenticatorData as authenticatorDataFixture} from '../../../fixtures/authenticatorData'
 import client from '../../api/resources'
-import {fetchAuthenticatorData, validateVerificationCode} from '../resources'
+import {
+    fetchAuthenticatorData,
+    saveTwoFASecret,
+    validateVerificationCode,
+} from '../resources'
 
 const mockedServer = new MockAdapter(client)
 
@@ -17,14 +21,18 @@ describe('twoFactorAuthentication resources', () => {
             mockedServer
                 .onGet('/api/2fa/authenticator')
                 .reply(200, authenticatorDataFixture)
+
             const res = await fetchAuthenticatorData()
+
             expect(res).toStrictEqual(authenticatorDataFixture)
         })
-        it('should reject an error on fail', () => {
+
+        it('should reject an error on fail', async () => {
             mockedServer
                 .onGet('/api/2fa/authenticator')
                 .reply(503, {message: 'error'})
-            return expect(fetchAuthenticatorData()).rejects.toEqual(
+
+            await expect(fetchAuthenticatorData()).rejects.toThrow(
                 new Error('Request failed with status code 503')
             )
         })
@@ -38,8 +46,9 @@ describe('twoFactorAuthentication resources', () => {
                 .onGet(`/api/2fa/verification-code/${code}`)
                 .reply(200, {})
 
-            await validateVerificationCode(code)
+            await expect(validateVerificationCode(code)).resolves.not.toThrow()
         })
+
         it('should resolve with an invalid verification code', async () => {
             const code = '123456'
 
@@ -48,6 +57,7 @@ describe('twoFactorAuthentication resources', () => {
                 .reply(400, {
                     error: {msg: 'foo error'},
                 })
+
             try {
                 await validateVerificationCode(code)
             } catch (error) {
@@ -57,14 +67,33 @@ describe('twoFactorAuthentication resources', () => {
                 }
             }
         })
-        it('should reject an error on fail', () => {
+
+        it('should reject an error on fail', async () => {
             const code = '123456'
 
             mockedServer
                 .onGet(`/api/2fa/verification-code/${code}`)
                 .reply(503, {message: 'error'})
 
-            return expect(validateVerificationCode(code)).rejects.toEqual(
+            await expect(validateVerificationCode(code)).rejects.toThrow(
+                new Error('Request failed with status code 503')
+            )
+        })
+    })
+
+    describe('saveTwoFASecret', () => {
+        it('should resolve with 201 code and empty body on success', async () => {
+            mockedServer.onPost('/api/2fa/secret').reply(201, {})
+
+            await expect(saveTwoFASecret()).resolves.not.toThrow()
+        })
+
+        it('should reject an error on fail', async () => {
+            mockedServer
+                .onPost('/api/2fa/secret')
+                .reply(503, {message: 'error'})
+
+            await expect(saveTwoFASecret()).rejects.toThrow(
                 new Error('Request failed with status code 503')
             )
         })

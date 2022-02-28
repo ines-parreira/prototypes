@@ -1,5 +1,5 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
 import {authenticatorData} from '../../../../../../../../fixtures/authenticatorData'
 import {fetchAuthenticatorData} from '../../../../../../../../models/twoFactorAuthentication/resources'
 import QRCodeStep from '../QRCodeStep'
@@ -12,10 +12,24 @@ const fetchAuthenticatorDataMock =
 
 describe('<QRCodeStep />', () => {
     describe('render()', () => {
+        const waitForLoadingToEnd = async () => {
+            await waitFor(() => {
+                expect(() =>
+                    screen.queryByText('QR code is loading. Please wait.')
+                ).toHaveLength(0)
+            })
+
+            await waitFor(() => {
+                expect(() => screen.queryAllByText('Loading...')).toHaveLength(
+                    0
+                )
+            })
+        }
+
         it('should render the component with the loading component', async () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
 
-            const {container, findByText} = render(
+            const {container} = render(
                 <QRCodeStep
                     errorText={''}
                     setErrorText={jest.fn()}
@@ -23,7 +37,7 @@ describe('<QRCodeStep />', () => {
                 />
             )
 
-            await findByText('QR code is loading. Please wait.')
+            await screen.findByText('QR code is loading. Please wait.')
 
             expect(container).toMatchSnapshot()
         })
@@ -31,7 +45,7 @@ describe('<QRCodeStep />', () => {
         it('should render the component with the qr code', async () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
 
-            const {container, findByAltText} = render(
+            const {container} = render(
                 <QRCodeStep
                     errorText={''}
                     setErrorText={jest.fn()}
@@ -39,13 +53,15 @@ describe('<QRCodeStep />', () => {
                 />
             )
 
+            await waitForLoadingToEnd()
+
             // Wait for the qrcode library to render the image
-            await findByAltText('The QR Code to scan')
+            await screen.findByAltText('The QR Code to scan')
 
             expect(container).toMatchSnapshot()
         })
 
-        it('should render the component without the qrcode container', () => {
+        it('should render the component without the qrcode container', async () => {
             fetchAuthenticatorDataMock.mockRejectedValue({foo: 'api error'})
 
             const {container} = render(
@@ -55,6 +71,8 @@ describe('<QRCodeStep />', () => {
                     setIsLoading={jest.fn()}
                 />
             )
+
+            await waitForLoadingToEnd()
 
             expect(container).toMatchSnapshot()
         })

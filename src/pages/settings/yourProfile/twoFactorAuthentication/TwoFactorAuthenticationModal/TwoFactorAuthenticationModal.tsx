@@ -1,8 +1,17 @@
-import React, {Dispatch, SetStateAction, useCallback, useState} from 'react'
+import React, {
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useState,
+    useEffect,
+} from 'react'
 import {AxiosError} from 'axios'
 import Modal from '../../../../common/components/Modal'
 import css from '../../../../common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal.less'
-import {validateVerificationCode as validateVerificationCodeResource} from '../../../../../models/twoFactorAuthentication/resources'
+import {
+    saveTwoFASecret as saveTwoFASecretResource,
+    validateVerificationCode as validateVerificationCodeResource,
+} from '../../../../../models/twoFactorAuthentication/resources'
 import Button, {ButtonIntent} from '../../../../common/components/button/Button'
 import ModalContinueButton from './ModalContinueButton'
 import ModalStep from './ModalStep'
@@ -21,7 +30,7 @@ export default function TwoFactorAuthenticationModal({
     onCancel,
     onFinish,
 }: OwnProps) {
-    const [step, setStep] = useState(1)
+    const [step, setStep] = useState(3)
     const [errorText, setErrorText] = useState('')
     const [verificationCode, setVerificationCode] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -34,21 +43,19 @@ export default function TwoFactorAuthenticationModal({
 
     const handleCancel = useCallback(() => {
         setIsOpen(false)
-        resetModalState()
 
         if (onCancel) {
             onCancel()
         }
-    }, [setIsOpen, resetModalState, onCancel])
+    }, [setIsOpen, onCancel])
 
     const handleFinish = useCallback(() => {
         setIsOpen(false)
-        resetModalState()
 
         if (onFinish) {
             onFinish()
         }
-    }, [setIsOpen, resetModalState, onFinish])
+    }, [setIsOpen, onFinish])
 
     const handleBack = useCallback(() => {
         if (step !== 2) {
@@ -61,7 +68,6 @@ export default function TwoFactorAuthenticationModal({
 
     const validateVerificationCode = useCallback(async () => {
         try {
-            setIsLoading(true)
             setErrorText('')
 
             await validateVerificationCodeResource(verificationCode)
@@ -75,10 +81,25 @@ export default function TwoFactorAuthenticationModal({
 
             console.error(error)
             return
-        } finally {
-            setIsLoading(false)
         }
     }, [verificationCode])
+
+    const saveTwoFASecret = useCallback(async () => {
+        try {
+            setErrorText('')
+            await saveTwoFASecretResource()
+
+            return true
+        } catch (error) {
+            const {response} = error as AxiosError<{error: {msg: string}}>
+            if (response) {
+                setErrorText(response.data.error.msg)
+            }
+
+            console.error(error)
+            return
+        }
+    }, [])
 
     const handleContinue = useCallback(async () => {
         if (step > 2) {
@@ -86,14 +107,28 @@ export default function TwoFactorAuthenticationModal({
         }
 
         if (step === 2) {
+            setIsLoading(true)
             const isVerificationCodeValid = await validateVerificationCode()
             if (!isVerificationCodeValid) {
+                setIsLoading(false)
                 return
             }
+
+            const isTwoFASecretSaved = await saveTwoFASecret()
+            if (!isTwoFASecretSaved) {
+                setIsLoading(false)
+                return
+            }
+
+            setIsLoading(false)
         }
 
         setStep(step + 1)
-    }, [step, validateVerificationCode])
+    }, [step, validateVerificationCode, saveTwoFASecret])
+
+    useEffect(() => {
+        resetModalState()
+    }, [])
 
     return (
         <Modal
