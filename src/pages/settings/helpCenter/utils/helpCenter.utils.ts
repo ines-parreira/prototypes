@@ -56,10 +56,27 @@ export const getNewHelpCenterTranslation = (
     chat_application_id: null,
 })
 
+// Translate all the "common accented characters" from this list : https://practicaltypography.com/common-accented-characters.html
+export function removeAccents(value: string): string {
+    return value
+        .replace(/[áàâäãå]/gi, 'a')
+        .replace(/[ç]/gi, 'c')
+        .replace(/[éèêë]/gi, 'e')
+        .replace(/[íìîï]/gi, 'i')
+        .replace(/[ñ]/gi, 'n')
+        .replace(/[óòôöõø]/gi, 'o')
+        .replace(/[úùûü]/gi, 'u')
+        .replace(/[æ]/gi, 'ae')
+        .replace(/[œ]/gi, 'oe')
+        .replace(/[ß]/gi, 'ss')
+        .toLowerCase()
+}
+
 export function slugify(value: string): string {
     if (value) {
+        const valueWithoutAccents = removeAccents(value)
         return encodeURI(
-            value
+            valueWithoutAccents
                 .replace(/[/;:.',*?!]/g, '')
                 .trim()
                 .replace(/ /g, '-')

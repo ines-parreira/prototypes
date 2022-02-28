@@ -7,6 +7,7 @@ import {
     getHelpCenterDomain,
     getNewArticleTranslation,
     getNewHelpCenterTranslation,
+    removeAccents,
     slugify,
 } from '../helpCenter.utils'
 
@@ -147,5 +148,19 @@ describe('getCategoryUrl()', () => {
                 categoryId: 4,
             })
         ).toEqual('http://acme.gorgias.rehab/en-US/articles/orders-4')
+    })
+})
+
+describe('removeAccents()', () => {
+    it('returns a string without accents for lowercase letters', () => {
+        expect(removeAccents('àéùô')).toEqual('aeuo')
+    })
+
+    it('returns a string without accents for uppercase letters', () => {
+        expect(removeAccents('ÀÉÛÔ')).toEqual('aeuo')
+    })
+
+    it('returns a string without accents for specials characters', () => {
+        expect(removeAccents('æŒß')).toEqual('aeoess')
     })
 })
