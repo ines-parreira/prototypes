@@ -224,25 +224,21 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
         onChange={[Function]}
       />
       <div>
-        <Button
+        <ForwardRef
           className="mr-2"
-          color="success"
-          disabled={false}
-          tag="button"
+          isLoading={false}
           type="submit"
         >
           Save changes
-        </Button>
-        <Button
-          className=""
-          color="warning"
+        </ForwardRef>
+        <ForwardRef
+          intent="destructive"
+          isLoading={false}
           onClick={[Function]}
-          outline={true}
-          tag="button"
           type="button"
         >
           Deactivate integration
-        </Button>
+        </ForwardRef>
         <ConfirmButton
           className="float-right"
           confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -496,25 +492,21 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
         />
       </FormGroup>
       <div>
-        <Button
+        <ForwardRef
           className="mr-2"
-          color="success"
-          disabled={false}
-          tag="button"
+          isLoading={false}
           type="submit"
         >
           Save changes
-        </Button>
-        <Button
-          className=""
-          color="warning"
+        </ForwardRef>
+        <ForwardRef
+          intent="destructive"
+          isLoading={false}
           onClick={[Function]}
-          outline={true}
-          tag="button"
           type="button"
         >
           Deactivate integration
-        </Button>
+        </ForwardRef>
         <ConfirmButton
           className="float-right"
           confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -717,15 +709,13 @@ exports[`HTTPIntegrationOverview should display default values because there is 
         />
       </FormGroup>
       <div>
-        <Button
+        <ForwardRef
           className="mr-2"
-          color="success"
-          disabled={false}
-          tag="button"
+          isLoading={false}
           type="submit"
         >
           Add integration
-        </Button>
+        </ForwardRef>
       </div>
     </Form>
   </Container>

@@ -1,9 +1,13 @@
 import React, {Component} from 'react'
 import _trim from 'lodash/trim'
 import _clone from 'lodash/clone'
-import {Row, Col, Button} from 'reactstrap'
+import {Row, Col} from 'reactstrap'
 
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {
+    ButtonIntent,
+    ButtonSize,
+} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/InputField'
 
@@ -101,13 +105,13 @@ export default class ObjectListField extends Component<Props> {
                     </Row>
                 ))}
                 <Button
-                    size="sm"
-                    color="secondary"
+                    size={ButtonSize.Small}
                     type="button"
                     onClick={this._add}
                 >
-                    <i className="material-icons mr-1">add</i>
-                    {`Add ${this.props.fieldName}`}
+                    <ButtonIconLabel icon="add">
+                        Add {this.props.fieldName}
+                    </ButtonIconLabel>
                 </Button>
             </div>
         )

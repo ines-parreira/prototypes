@@ -1,14 +1,13 @@
 import React, {Component, SyntheticEvent} from 'react'
-import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import _forIn from 'lodash/forIn'
 import _isEmpty from 'lodash/isEmpty'
-import {Button, Container, Form, FormGroup, FormText, Label} from 'reactstrap'
+import {Container, Form, FormGroup, FormText, Label} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {ContentType, HttpMethod} from 'models/api/types'
 import {EventType} from 'models/event/types'
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -497,22 +496,16 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                         <div>
                             <Button
                                 type="submit"
-                                color="success"
-                                className={classNames('mr-2', {
-                                    'btn-loading': isSubmitting,
-                                })}
-                                disabled={isSubmitting}
+                                className="mr-2"
+                                isLoading={isSubmitting}
                             >
                                 {isUpdate ? 'Save changes' : 'Add integration'}
                             </Button>
                             {isUpdate && isActive && (
                                 <Button
                                     type="button"
-                                    color="warning"
-                                    outline
-                                    className={classNames({
-                                        'btn-loading': isSubmitting,
-                                    })}
+                                    isLoading={isSubmitting}
+                                    intent={ButtonIntent.Destructive}
                                     onClick={() =>
                                         deactivateIntegration(
                                             integration.get('id')
@@ -526,11 +519,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                             {isUpdate && !isActive && (
                                 <Button
                                     type="button"
-                                    color="success"
-                                    outline
-                                    className={classNames({
-                                        'btn-loading': isSubmitting,
-                                    })}
+                                    isLoading={isSubmitting}
                                     onClick={() =>
                                         activateIntegration(
                                             integration.get('id')

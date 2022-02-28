@@ -10,20 +10,18 @@ exports[`ObjectListField component should display the field as empty 1`] = `
   <p>
     No field
   </p>
-  <Button
-    color="secondary"
+  <ForwardRef
     onClick={[Function]}
-    size="sm"
-    tag="button"
+    size="small"
     type="button"
   >
-    <i
-      className="material-icons mr-1"
+    <ButtonIconLabel
+      icon="add"
     >
-      add
-    </i>
-    Add field
-  </Button>
+      Add 
+      field
+    </ButtonIconLabel>
+  </ForwardRef>
 </div>
 `;
 
@@ -116,19 +114,17 @@ exports[`ObjectListField component should display the field with items 1`] = `
       </ForwardRef>
     </Col>
   </Row>
-  <Button
-    color="secondary"
+  <ForwardRef
     onClick={[Function]}
-    size="sm"
-    tag="button"
+    size="small"
     type="button"
   >
-    <i
-      className="material-icons mr-1"
+    <ButtonIconLabel
+      icon="add"
     >
-      add
-    </i>
-    Add field
-  </Button>
+      Add 
+      field
+    </ButtonIconLabel>
+  </ForwardRef>
 </div>
 `;
