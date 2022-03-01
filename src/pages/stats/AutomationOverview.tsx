@@ -79,7 +79,7 @@ export default function AutomationOverview() {
         <StatsPage
             title="Automation Overview"
             description="The automation overview records how many customer interactions are automated
-            (answered and closed without agent intervention) thanks to Gorgias automation rules.
+            (answered and closed without agent intervention) thanks to Gorgias automation features.
             You can see at a glance how many interactions are automated depending on its source and the automation
             tool used to answer it."
             helpUrl="https://docs.gorgias.com/statistics/automation-statistics"
