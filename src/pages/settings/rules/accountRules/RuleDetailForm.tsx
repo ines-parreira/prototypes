@@ -396,22 +396,20 @@ export function RuleDetailForm({
                         />
                         <div className={css.toggleButtonContainer}>
                             <span>
+                                <Label
+                                    className={classnames(
+                                        css.toggleLabel,
+                                        'mr-2'
+                                    )}
+                                >
+                                    Enable rule:
+                                </Label>
+                            </span>
+                            <span>
                                 <ToggleInput
                                     isToggled={!ruleDraft.deactivated_datetime}
                                     onClick={toggleActivation}
                                 />
-                            </span>
-                            <span>
-                                <Label
-                                    className={classnames(
-                                        css.toggleLabel,
-                                        'ml-2'
-                                    )}
-                                >
-                                    {!ruleDraft.deactivated_datetime
-                                        ? 'Disable rule'
-                                        : 'Enable rule'}
-                                </Label>
                             </span>
                         </div>
 
