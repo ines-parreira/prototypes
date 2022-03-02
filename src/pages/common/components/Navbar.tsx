@@ -67,22 +67,26 @@ const mainMenu = [
         url: '/app/tickets',
         label: 'Tickets',
         icon: 'question_answer',
+        segmentProp: {link: 'tickets'},
     },
     {
         url: '/app/customers',
         label: 'Customers',
         icon: 'people',
+        segmentProp: {link: 'customers'},
     },
     {
         url: '/app/stats',
         label: 'Statistics',
         className: 'd-none d-md-block',
         icon: 'bar_chart',
+        segmentProp: {link: 'statistics'},
     },
     {
         url: '/app/settings',
         label: 'Settings',
         icon: 'settings',
+        segmentProp: {link: 'settings'},
     },
 ]
 
@@ -201,6 +205,7 @@ export class Navbar extends React.Component<Props, State> {
             ['data', 'available'],
             (status) => !status
         )
+        logEvent(SegmentEvent.MenuUserLinkClicked, {link: 'available-on-off'})
         return submitSetting(newPreferences.toJS(), false)
     }
 
@@ -252,6 +257,10 @@ export class Navbar extends React.Component<Props, State> {
                                     to={item.url}
                                     onClick={() => {
                                         this.setState({title: item.label})
+                                        logEvent(
+                                            SegmentEvent.MenuMainLinkClicked,
+                                            item.segmentProp
+                                        )
                                         this._closePanel()
                                     }}
                                     className={css['dropdown-item']}
@@ -334,6 +343,9 @@ export class Navbar extends React.Component<Props, State> {
                             tag={NavLink}
                             to="/app/settings/profile"
                             onClick={() => {
+                                logEvent(SegmentEvent.MenuUserLinkClicked, {
+                                    link: 'your-profile',
+                                })
                                 this._closePanel()
                             }}
                             className={css['dropdown-item']}
@@ -353,7 +365,9 @@ export class Navbar extends React.Component<Props, State> {
                             href="https://docs.gorgias.com/"
                             target="_blank"
                             onClick={() =>
-                                logEvent(SegmentEvent.HelpCenterClicked)
+                                logEvent(SegmentEvent.MenuUserLinkClicked, {
+                                    link: 'helpdocs',
+                                })
                             }
                             className={css['dropdown-item']}
                         >
@@ -373,6 +387,11 @@ export class Navbar extends React.Component<Props, State> {
                             href="https://status.gorgias.com/"
                             target="_blank"
                             className={css['dropdown-item']}
+                            onClick={() =>
+                                logEvent(SegmentEvent.MenuUserLinkClicked, {
+                                    link: 'service-status',
+                                })
+                            }
                         >
                             <i
                                 className={classnames(
@@ -409,6 +428,11 @@ export class Navbar extends React.Component<Props, State> {
                             href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
                             target="_blank"
                             className={css['dropdown-item']}
+                            onClick={() =>
+                                logEvent(SegmentEvent.MenuUserLinkClicked, {
+                                    link: 'roadmap',
+                                })
+                            }
                         >
                             <i
                                 className={classnames(
@@ -425,6 +449,11 @@ export class Navbar extends React.Component<Props, State> {
                             id="noticeable-widget"
                             toggle={false}
                             className={css['dropdown-item']}
+                            onClick={() =>
+                                logEvent(SegmentEvent.MenuUserLinkClicked, {
+                                    link: 'latest-updates',
+                                })
+                            }
                         >
                             <i
                                 className={classnames(
@@ -441,6 +470,9 @@ export class Navbar extends React.Component<Props, State> {
                             tag={NavLink}
                             to={'/app/referral-program'}
                             onClick={() => {
+                                logEvent(SegmentEvent.MenuUserLinkClicked, {
+                                    link: 'referral-program',
+                                })
                                 this._closePanel()
                             }}
                             className={css['dropdown-item']}
@@ -461,6 +493,9 @@ export class Navbar extends React.Component<Props, State> {
                                     'KeyboardHelp',
                                     'SHOW_HELP'
                                 )
+                                logEvent(SegmentEvent.MenuUserLinkClicked, {
+                                    link: 'keyboard-shortcuts',
+                                })
                             }}
                             className={css['dropdown-item']}
                         >
@@ -478,6 +513,11 @@ export class Navbar extends React.Component<Props, State> {
                             tag="a"
                             href={`/logout?csrf-token=${window.CSRF_TOKEN}`}
                             className={css['dropdown-item']}
+                            onClick={() =>
+                                logEvent(SegmentEvent.MenuUserLinkClicked, {
+                                    link: 'log-out',
+                                })
+                            }
                         >
                             <i
                                 className={classnames(

@@ -53,7 +53,6 @@ export enum SegmentEvent {
     CustomerNoteEdited = 'customer-note-edited',
     DisplayAllEventsClicked = 'display-all-events-clicked',
     ExternalLinkClicked = 'external-link-clicked',
-    HelpCenterClicked = 'help-center-clicked',
     InfobarIntegrationAddClicked = 'infobar-integration-add-clicked',
     IntegrationClicked = 'integration-clicked',
     IntentFeedbackUserSubmission = 'intent-feedback-user-submission',
@@ -165,6 +164,8 @@ export enum SegmentEvent {
     CustomActionButtonsExecuted = 'widget/custom-button/button-executed',
     CustomActionButtonsParamOpened = 'widget/custom-button/params-modal-opened',
     CustomActionButtonsParamClosed = 'widget/custom-button/params-modal-closed',
+    MenuUserLinkClicked = 'menu-user-link-clicked',
+    MenuMainLinkClicked = 'menu-main-link-clicked',
 }
 
 export enum StatViewLinkClickedStat {
