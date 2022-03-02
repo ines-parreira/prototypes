@@ -288,7 +288,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                           <span
                             class="policyDescription"
                           >
-                            Let customers track orders directly  from the Self-service Portal in chat  and help center
+                            Let customers request returns directly  from the Self-service Portal in chat  and help center
                           </span>
                         </div>
                       </div>
@@ -670,7 +670,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                           <span
                             class="policyDescription"
                           >
-                            Let customers track orders directly  from the Self-service Portal in chat  and help center
+                            Let customers request returns directly  from the Self-service Portal in chat  and help center
                           </span>
                         </div>
                       </div>

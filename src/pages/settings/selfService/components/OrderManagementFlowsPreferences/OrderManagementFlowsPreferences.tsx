@@ -184,7 +184,7 @@ export const OrderManagementFlowsPreferences = () => {
                                                 }
                                                 integration={integration}
                                                 policyName="Return"
-                                                policyDescription="Let customers track orders directly 
+                                                policyDescription="Let customers request returns directly 
                                                         from the Self-service Portal in chat 
                                                         and help center"
                                                 configuration={configuration}
