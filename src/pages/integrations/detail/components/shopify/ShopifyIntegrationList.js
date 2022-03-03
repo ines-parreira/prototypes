@@ -5,6 +5,7 @@ import Lightbox from 'react-images'
 
 import IntegrationList from '../IntegrationList.tsx'
 import ForwardIcon from '../ForwardIcon.tsx'
+import history from '../../../../history.ts'
 
 import Carousel from './../../../common/Carousel.tsx'
 
@@ -151,7 +152,7 @@ export default class ShopifyIntegrationList extends React.Component {
                     (v) => v.get('type') === 'shopify'
                 )}
                 createIntegration={() =>
-                    window.open('https://apps.shopify.com/helpdesk')
+                    history.push('/app/settings/integrations/shopify/new')
                 }
                 createIntegrationButtonContent="Add Shopify"
                 integrationToItemDisplay={integrationToItemDisplay}
