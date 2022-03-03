@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChatContactInfoSection /> should render the component 1`] = `
+<section
+  class="container"
+>
+  <div
+    class="leftColumn"
+  >
+    <div
+      class="toggleInput"
+    >
+      <label
+        aria-checked="false"
+        aria-label="Enable chat contact card"
+        class="container"
+        for="toggle-button-1"
+        role="switch"
+      >
+        <input
+          aria-label="Enable chat contact card"
+          class="input"
+          disabled=""
+          id="toggle-button-1"
+          name="toggle-button-1"
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+        <div
+          class="label"
+        >
+          Chat card
+        </div>
+      </label>
+    </div>
+    <p>
+      This card will be shown in the helpcenter home page and display the same availability defined in your 
+      <a
+        to="/app/settings/business-hours"
+      >
+        Business Hours configuration
+      </a>
+      .
+    </p>
+    <div
+      class="InputField form-group"
+      color=""
+    >
+      <label
+        class="control-label"
+        for="id-input-2"
+      >
+        Description text
+      </label>
+      <div
+        class=""
+      >
+        <textarea
+          class="form-control"
+          disabled=""
+          id="id-input-2"
+        >
+          Start live conversation with our agents
+        </textarea>
+      </div>
+      <small
+        class="form-text text-muted"
+      >
+        This will appear in the chat card
+      </small>
+    </div>
+  </div>
+  <div
+    class="container card"
+  >
+    <div
+      class="card disabled"
+    >
+      <div
+        class="header"
+      >
+        <i
+          class="material-icons icon"
+        >
+          forum
+        </i>
+        <span
+          class="title"
+        >
+          Chat
+        </span>
+        <i
+          class="material-icons chevron"
+        >
+          chevron_right
+        </i>
+      </div>
+    </div>
+    <span
+      class="help"
+    >
+      Chat card preview
+    </span>
+  </div>
+</section>
+`;

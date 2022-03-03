@@ -83,7 +83,9 @@ const ChatContactInfoSection: React.FC = () => {
                     isToggled={enabled}
                     onClick={handleChange('enabled')}
                     aria-label="Enable chat contact card"
-                />
+                >
+                    Chat card
+                </ToggleInput>
                 <p>
                     This card will be shown in the helpcenter home page and
                     display the same availability defined in your&nbsp;

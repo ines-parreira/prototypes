@@ -40,7 +40,9 @@ const EmailContactInfoSection: React.FC = () => {
                     isToggled={enabled}
                     onClick={handleChange('enabled')}
                     aria-label="Enable email contact card"
-                />
+                >
+                    Email card
+                </ToggleInput>
                 <InputField
                     type="textarea"
                     label="Description text"

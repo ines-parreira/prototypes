@@ -40,7 +40,9 @@ const PhoneContactInfoSection: React.FC = () => {
                     className={css.toggle}
                     isToggled={enabled}
                     onClick={handleChange('enabled')}
-                />
+                >
+                    Phone number card
+                </ToggleInput>
                 <InputField
                     type="textarea"
                     label="Description text"

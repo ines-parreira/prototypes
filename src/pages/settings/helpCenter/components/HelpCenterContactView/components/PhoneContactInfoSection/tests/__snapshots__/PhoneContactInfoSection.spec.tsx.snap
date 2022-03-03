@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneContactInfoSection /> should render the component 1`] = `
+<section
+  class="container"
+>
+  <div
+    class="leftColumn"
+  >
+    <div
+      class="toggle"
+    >
+      <label
+        aria-checked="false"
+        class="container"
+        for="toggle-button-1"
+        role="switch"
+      >
+        <input
+          class="input"
+          disabled=""
+          id="toggle-button-1"
+          name="toggle-button-1"
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+        <div
+          class="label"
+        >
+          Phone number card
+        </div>
+      </label>
+    </div>
+    <div
+      class="InputField form-group"
+      color=""
+    >
+      <label
+        class="control-label"
+        for="id-input-2"
+      >
+        Description text
+      </label>
+      <div
+        class=""
+      >
+        <textarea
+          class="form-control"
+          disabled=""
+          id="id-input-2"
+        />
+      </div>
+      <small
+        class="form-text text-muted"
+      >
+        This will appear in the phone number card
+      </small>
+    </div>
+    <button
+      class="wrapper secondary medium isDisabled"
+      disabled=""
+      type="button"
+    >
+      <i
+        class="material-icons"
+      >
+        add
+      </i>
+       Add Number
+    </button>
+  </div>
+  <div
+    class="container card"
+  >
+    <div
+      class="card disabled"
+    >
+      <div
+        class="header"
+      >
+        <i
+          class="material-icons icon"
+        >
+          phone
+        </i>
+        <span
+          class="title"
+        >
+          Call
+        </span>
+      </div>
+    </div>
+    <span
+      class="help"
+    >
+      Phone number card preview
+    </span>
+  </div>
+</section>
+`;

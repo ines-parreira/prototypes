@@ -1,0 +1,124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EmailContactInfoSection /> should render the component 1`] = `
+<section
+  class="container"
+>
+  <div
+    class="leftColumn"
+  >
+    <div
+      class="toggleInput"
+    >
+      <label
+        aria-checked="false"
+        aria-label="Enable email contact card"
+        class="container"
+        for="toggle-button-1"
+        role="switch"
+      >
+        <input
+          aria-label="Enable email contact card"
+          class="input"
+          disabled=""
+          id="toggle-button-1"
+          name="toggle-button-1"
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+        <div
+          class="label"
+        >
+          Email card
+        </div>
+      </label>
+    </div>
+    <div
+      class="InputField form-group"
+      color=""
+    >
+      <label
+        class="control-label"
+        for="id-input-2"
+      >
+        Description text
+      </label>
+      <div
+        class=""
+      >
+        <textarea
+          class="form-control"
+          disabled=""
+          id="id-input-2"
+        />
+      </div>
+      <small
+        class="form-text text-muted"
+      >
+        This will appear in the email card
+      </small>
+    </div>
+    <div
+      class="InputField form-group"
+      color=""
+    >
+      <label
+        class="control-label"
+        for="id-input-3"
+      >
+        Email
+      </label>
+      <div
+        class=""
+      >
+        <input
+          class="form-control"
+          disabled=""
+          id="id-input-3"
+          type="email"
+          value=""
+        />
+      </div>
+      <small
+        class="form-text text-muted"
+      >
+        This will appear in the email card
+      </small>
+    </div>
+  </div>
+  <div
+    class="container card"
+  >
+    <div
+      class="card disabled"
+    >
+      <div
+        class="header"
+      >
+        <i
+          class="material-icons icon"
+        >
+          email
+        </i>
+        <span
+          class="title"
+        >
+          Email
+        </span>
+        <i
+          class="material-icons chevron"
+        >
+          chevron_right
+        </i>
+      </div>
+    </div>
+    <span
+      class="help"
+    >
+      Email card preview
+    </span>
+  </div>
+</section>
+`;
