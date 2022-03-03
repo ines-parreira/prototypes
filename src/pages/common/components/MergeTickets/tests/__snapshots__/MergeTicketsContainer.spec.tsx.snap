@@ -53,7 +53,6 @@ exports[`MergeTicketsContainer component should render the build component if th
           color="secondary"
           isDisabled={false}
           onClick={[Function]}
-          type="button"
         >
           <ButtonIconLabel
             icon="arrow_back"
@@ -70,13 +69,13 @@ exports[`MergeTicketsContainer component should render the build component if th
           intent="secondary"
           isDisabled={false}
           onClick={[Function]}
-          type="button"
         >
           Cancel
         </ForwardRef>
         <ConfirmButton
           confirmationContent="This action is irreversible. Are you sure you want to merge these tickets?"
           isLoading={false}
+          type="submit"
         >
           Merge tickets
         </ConfirmButton>

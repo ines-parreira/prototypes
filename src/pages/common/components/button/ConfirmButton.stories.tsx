@@ -94,7 +94,10 @@ Main.args = defaultProps
 Main.parameters = templateParameters
 
 export const WithinForm = FormTemplate.bind({})
-WithinForm.args = defaultProps
+WithinForm.args = {
+    ...defaultProps,
+    type: 'submit',
+}
 WithinForm.parameters = templateParameters
 
 export default storyConfig

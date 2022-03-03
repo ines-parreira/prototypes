@@ -62,7 +62,6 @@ exports[`Event component should display correctly a failed event for a Recharge 
         intent="text"
         onClick={[Function]}
         title="More details"
-        type="button"
       >
         expand_more
       </ForwardRef>
@@ -183,7 +182,6 @@ exports[`Event component should display correctly a failed event for a Recharge 
         intent="text"
         onClick={[Function]}
         title="More details"
-        type="button"
       >
         expand_more
       </ForwardRef>
@@ -294,7 +292,6 @@ exports[`Event component should display correctly a failed event for a Shopify O
         intent="text"
         onClick={[Function]}
         title="More details"
-        type="button"
       >
         expand_more
       </ForwardRef>
@@ -405,7 +402,6 @@ exports[`Event component should display correctly a successful event for a Recha
         intent="text"
         onClick={[Function]}
         title="More details"
-        type="button"
       >
         expand_more
       </ForwardRef>
@@ -515,7 +511,6 @@ exports[`Event component should display correctly a successful event for a Recha
         intent="text"
         onClick={[Function]}
         title="More details"
-        type="button"
       >
         expand_more
       </ForwardRef>
@@ -615,7 +610,6 @@ exports[`Event component should display correctly a successful event for a Shopi
         intent="text"
         onClick={[Function]}
         title="More details"
-        type="button"
       >
         expand_more
       </ForwardRef>
@@ -715,7 +709,6 @@ exports[`Event component should display correctly a successful event for a Shopi
         intent="text"
         onClick={[Function]}
         title="More details"
-        type="button"
       >
         expand_more
       </ForwardRef>
@@ -829,7 +822,6 @@ exports[`Event component should display the correct label for an action 1`] = `
         intent="text"
         onClick={[Function]}
         title="More details"
-        type="button"
       >
         expand_more
       </ForwardRef>

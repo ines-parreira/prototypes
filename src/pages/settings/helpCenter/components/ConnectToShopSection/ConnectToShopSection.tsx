@@ -180,7 +180,6 @@ export const ConnectToShopSection = ({
 
                             <Button
                                 intent={ButtonIntent.Destructive}
-                                type="button"
                                 onClick={() => {
                                     setDisconnectModalOpen(false)
                                     setSelectedShop(NO_SELECTED_SHOP)
@@ -195,7 +194,6 @@ export const ConnectToShopSection = ({
             ) : (
                 <Button
                     intent={ButtonIntent.Primary}
-                    type="button"
                     onClick={() => setConnectModalOpen(true)}
                 >
                     Connect
@@ -211,7 +209,6 @@ export const ConnectToShopSection = ({
                     <div>
                         <Button
                             intent={ButtonIntent.Secondary}
-                            type="button"
                             onClick={() => setConnectModalOpen(false)}
                         >
                             Cancel
@@ -221,7 +218,6 @@ export const ConnectToShopSection = ({
                             className="ml-3"
                             isDisabled={selectedShop === NO_SELECTED_SHOP}
                             intent={ButtonIntent.Primary}
-                            type="button"
                             onClick={() => {
                                 onUpdate({
                                     shop_name: selectedShop,

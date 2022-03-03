@@ -187,7 +187,10 @@ class SatisfactionSurveyView extends Component<Props, State> {
                                         onChange={this._updateSurveyEmail}
                                     />
                                 </FormGroup>
-                                <Button isLoading={this.state.isLoading}>
+                                <Button
+                                    type="submit"
+                                    isLoading={this.state.isLoading}
+                                >
                                     Save
                                 </Button>
                             </Form>

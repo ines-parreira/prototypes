@@ -80,7 +80,6 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                     </GroupItem>
                 )}
             </Group>
-
             {requiredFields.length >= 1 && (
                 <Tooltip
                     disabled={canSave}
@@ -150,7 +149,6 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
         <Button
             className={css.submitButton}
             intent={ButtonIntent.Primary}
-            type="button"
             isDisabled={true}
         >
             Published
@@ -163,7 +161,6 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
         <Button
             className={css.submitButton}
             intent={ButtonIntent.Primary}
-            type="button"
             onClick={mode.onPublish}
         >
             Publish Article
@@ -188,11 +185,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
             <div className={css.buttonsWrapper}>
                 {savingButtons(articleMode)}
 
-                <Button
-                    intent={ButtonIntent.Secondary}
-                    type="button"
-                    onClick={onDiscard}
-                >
+                <Button intent={ButtonIntent.Secondary} onClick={onDiscard}>
                     Discard changes
                 </Button>
 
@@ -237,7 +230,6 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                     <Button
                         className={css.deleteButton}
                         intent={ButtonIntent.Secondary}
-                        type="button"
                         onClick={() => setPendingDeleteArticle(true)}
                     >
                         <i className="material-icons">delete</i>

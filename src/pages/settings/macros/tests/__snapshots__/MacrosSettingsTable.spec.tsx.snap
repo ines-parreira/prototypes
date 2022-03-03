@@ -52,7 +52,6 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           intent="text"
           onClick={[Function]}
           title="Duplicate macro"
-          type="button"
         >
           file_copy
         </ForwardRef>
@@ -62,7 +61,6 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           intent="text"
           onClick={[Function]}
           title="Delete macro"
-          type="button"
         >
           delete
         </ForwardRef>
@@ -95,7 +93,6 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         <ForwardRef
           intent="destructive"
           onClick={[Function]}
-          type="button"
         >
           Confirm
         </ForwardRef>
@@ -127,7 +124,6 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           intent="text"
           onClick={[Function]}
           title="Duplicate macro"
-          type="button"
         >
           file_copy
         </ForwardRef>
@@ -137,7 +133,6 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
           intent="text"
           onClick={[Function]}
           title="Delete macro"
-          type="button"
         >
           delete
         </ForwardRef>
@@ -170,7 +165,6 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         <ForwardRef
           intent="destructive"
           onClick={[Function]}
-          type="button"
         >
           Confirm
         </ForwardRef>

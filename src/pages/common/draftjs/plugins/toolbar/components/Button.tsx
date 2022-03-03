@@ -16,7 +16,6 @@ type Props = {
 
 const Button = (props: Props) => (
     <IconButton
-        type="button"
         className={classnames(css.button, {
             [css.isActive]: props.isActive,
         })}

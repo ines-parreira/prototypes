@@ -53,7 +53,6 @@ export const Magento2IntegrationActionButtons = ({
             </Button>
             {isUpdate && !isActive && !isManual ? (
                 <ConfirmButton
-                    type="button"
                     isLoading={isSubmitting}
                     onConfirm={() =>
                         _onReactivateOneClick(integration, redirectUri)
@@ -76,7 +75,6 @@ export const Magento2IntegrationActionButtons = ({
             {isUpdate ? (
                 <ConfirmButton
                     className="float-right"
-                    type="button"
                     onConfirm={() => deleteIntegration(integration)}
                     confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                     intent={ButtonIntent.Destructive}

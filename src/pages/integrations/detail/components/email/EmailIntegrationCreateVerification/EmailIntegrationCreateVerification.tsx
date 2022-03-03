@@ -194,7 +194,6 @@ export class EmailIntegrationCreateVerification extends Component<
                 <ConfirmButton
                     onConfirm={() => deleteIntegration(integration)}
                     confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                    type="button"
                     isDisabled={this.state.isDisabled}
                     intent={ButtonIntent.Destructive}
                     className="float-right"

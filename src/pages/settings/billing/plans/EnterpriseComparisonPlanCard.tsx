@@ -57,7 +57,6 @@ export default function EnterpriseComparisonPlanCard({
                         plan={{id: 'enterprise'}}
                     />
                     <Button
-                        type="button"
                         aria-label={switchPlanButtonText}
                         className={css.footerButton}
                         intent={ButtonIntent.Text}

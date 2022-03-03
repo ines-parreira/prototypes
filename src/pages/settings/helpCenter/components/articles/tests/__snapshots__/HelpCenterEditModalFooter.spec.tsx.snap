@@ -18,6 +18,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
           <button
             class="wrapper primary medium left"
             color="primary"
+            type="button"
           >
             Save & Publish
           </button>
@@ -28,6 +29,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
           >
             <button
               class="wrapper wrapper medium primary medium right"
+              type="button"
             >
               <i
                 class="material-icons icon"

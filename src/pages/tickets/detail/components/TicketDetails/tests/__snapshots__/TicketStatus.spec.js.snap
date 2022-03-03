@@ -9,7 +9,6 @@ exports[`TicketStatus component closed ticket 1`] = `
   >
     <ForwardRef
       onClick={[Function]}
-      type="button"
     >
       check
     </ForwardRef>
@@ -33,7 +32,6 @@ exports[`TicketStatus component open ticket 1`] = `
     <ForwardRef
       intent="secondary"
       onClick={[Function]}
-      type="button"
     >
       <ButtonIconLabel
         icon="check"

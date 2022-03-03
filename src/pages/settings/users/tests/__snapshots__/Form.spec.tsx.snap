@@ -206,6 +206,7 @@ exports[`<Form /> should render 1`] = `
       >
         <button
           class="wrapper mr-2 primary medium"
+          type="submit"
         >
           Save user
         </button>
@@ -475,6 +476,7 @@ exports[`<Form /> should render with 2FA information when enabled 1`] = `
       >
         <button
           class="wrapper mr-2 primary medium"
+          type="submit"
         >
           Save user
         </button>

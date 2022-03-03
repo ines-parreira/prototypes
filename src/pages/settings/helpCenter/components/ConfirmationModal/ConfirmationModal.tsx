@@ -41,17 +41,12 @@ export const ConfirmationModal = ({
             footerClassName={css.actions}
             footer={
                 <>
-                    <Button
-                        intent={ButtonIntent.Secondary}
-                        type="button"
-                        onClick={onClose}
-                    >
+                    <Button intent={ButtonIntent.Secondary} onClick={onClose}>
                         {cancelText}
                     </Button>
                     <Button
                         className={classNames('ml-3', css.confirmBtn)}
                         intent={confirmIntent}
-                        type="button"
                         onClick={onConfirm}
                     >
                         {confirmText}

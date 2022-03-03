@@ -242,7 +242,6 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                             integration.get('id') || 'delete'
                                         )}`}
                                         className="float-right"
-                                        type="button"
                                         onConfirm={() =>
                                             deleteIntegration(integration)
                                         }

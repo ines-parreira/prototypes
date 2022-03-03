@@ -25,7 +25,7 @@ const MacroNoResults = ({searchQuery, newAction}: Props) => {
                 )}
             </p>
             {hasRole(currentUser, UserRole.Agent) && (
-                <Button type="button" onClick={newAction}>
+                <Button onClick={newAction}>
                     <ButtonIconLabel icon="add">
                         Create a new macro
                     </ButtonIconLabel>

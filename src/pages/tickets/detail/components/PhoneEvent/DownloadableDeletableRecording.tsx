@@ -120,7 +120,6 @@ const DeleteButton = ({url}: ButtonProps) => {
     return (
         <ConfirmButton
             className="float-right"
-            type="button"
             intent={ButtonIntent.Destructive}
             isDisabled={isRequestPending}
             onConfirm={deleteRecording}
@@ -136,7 +135,6 @@ const DownloadButton = ({url}: ButtonProps) => {
 
     return (
         <Button
-            type="button"
             intent={ButtonIntent.Secondary}
             isDisabled={isRequestPending}
             onClick={downloadRecording}

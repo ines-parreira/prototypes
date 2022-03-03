@@ -123,7 +123,6 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
                     <div className={css['footer-actions']}>
                         <Button
                             intent={ButtonIntent.Secondary}
-                            type="button"
                             onClick={handleOnCancelDeleteLocale}
                         >
                             Cancel
@@ -131,7 +130,6 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
                         <Button
                             className={css['delete-btn']}
                             intent={ButtonIntent.Secondary}
-                            type="button"
                             onClick={handleOnClickDeleteLocale}
                         >
                             <i className="material-icons">delete</i>

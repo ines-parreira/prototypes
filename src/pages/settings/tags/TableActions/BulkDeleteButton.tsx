@@ -27,7 +27,6 @@ const BulkDeleteButton = ({onBulkDelete, disabled}: Props) => {
                 isDisabled={disabled}
                 id="bulk-remove-button"
                 intent={ButtonIntent.Secondary}
-                type="button"
                 className="mr-2 skip-default"
                 onClick={toggleRemoveConfirmation}
             >
@@ -46,9 +45,7 @@ const BulkDeleteButton = ({onBulkDelete, disabled}: Props) => {
                         Are you sure you want to delete these tags?{' '}
                         <b>They will be removed from all tickets</b>.
                     </p>
-                    <Button type="button" onClick={handleDeleteClick}>
-                        Confirm
-                    </Button>
+                    <Button onClick={handleDeleteClick}>Confirm</Button>
                 </PopoverBody>
             </Popover>
         </>

@@ -191,7 +191,6 @@ function OrderLineItemRow({
                         className={css.quantityButtonsContainer}
                     >
                         <Button
-                            type="button"
                             tabIndex={0}
                             className={classnames(
                                 css.focusable,
@@ -205,7 +204,6 @@ function OrderLineItemRow({
                             &#9650;
                         </Button>
                         <Button
-                            type="button"
                             tabIndex={0}
                             className={classnames(
                                 css.focusable,

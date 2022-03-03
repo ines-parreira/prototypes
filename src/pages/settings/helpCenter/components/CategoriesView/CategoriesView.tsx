@@ -89,7 +89,6 @@ export const CategoriesViews = ({
                     <Button
                         className="mr-2"
                         intent={ButtonIntent.Primary}
-                        type="button"
                         onClick={onCreateArticle}
                     >
                         <i className="material-icons-outlined mr-1">article</i>
@@ -98,7 +97,6 @@ export const CategoriesViews = ({
 
                     <Button
                         intent={ButtonIntent.Secondary}
-                        type="button"
                         onClick={onCreateCategory}
                     >
                         <i className="material-icons mr-1">list</i>

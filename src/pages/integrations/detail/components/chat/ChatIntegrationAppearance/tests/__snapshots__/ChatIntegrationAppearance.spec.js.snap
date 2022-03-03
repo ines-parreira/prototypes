@@ -573,7 +573,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
             intent="destructive"
             isDisabled={true}
             onConfirm={[Function]}
-            type="button"
           >
             <ButtonIconLabel
               icon="delete"
@@ -920,7 +919,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
             intent="destructive"
             isDisabled={false}
             onConfirm={[Function]}
-            type="button"
           >
             <ButtonIconLabel
               icon="delete"
@@ -1288,7 +1286,6 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
             intent="destructive"
             isDisabled={false}
             onConfirm={[Function]}
-            type="button"
           >
             <ButtonIconLabel
               icon="delete"
@@ -1639,7 +1636,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
             intent="destructive"
             isDisabled={false}
             onConfirm={[Function]}
-            type="button"
           >
             <ButtonIconLabel
               icon="delete"
@@ -2017,7 +2013,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
             intent="destructive"
             isDisabled={false}
             onConfirm={[Function]}
-            type="button"
           >
             <ButtonIconLabel
               icon="delete"

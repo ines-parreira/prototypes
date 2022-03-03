@@ -58,7 +58,7 @@ export class TeamListContainer extends Component<Props, State> {
             <div className={classnames(css.component, 'full-width')}>
                 <PageHeader title="Teams">
                     <Link to="/app/settings/teams/create/">
-                        <Button type="button">Create Team</Button>
+                        <Button>Create Team</Button>
                     </Link>
                 </PageHeader>
 

@@ -316,7 +316,6 @@ export const CsvColumnMatching = ({
                     className="mr-2"
                     isDisabled={!mappingsComplete(fieldsMappings)}
                     intent={ButtonIntent.Primary}
-                    type="button"
                     onClick={() => onImport(fieldsMappings)}
                 >
                     Confirm Import
@@ -327,14 +326,12 @@ export const CsvColumnMatching = ({
                             <Button
                                 className="mr-2"
                                 intent={ButtonIntent.Secondary}
-                                type="button"
                                 onClick={() => onClose()}
                             >
                                 Cancel
                             </Button>
                             <Button
                                 intent={ButtonIntent.Destructive}
-                                type="button"
                                 onClick={onCancel}
                             >
                                 Stop Import
@@ -352,7 +349,6 @@ export const CsvColumnMatching = ({
                     {(onClick) => (
                         <Button
                             intent={ButtonIntent.Secondary}
-                            type="button"
                             onClick={onClick}
                         >
                             Cancel

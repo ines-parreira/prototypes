@@ -417,14 +417,12 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         className="mr-2"
                         intent={ButtonIntent.Primary}
                         isDisabled={!canSaveCurrentAppearance}
-                        type="button"
                         onClick={saveCurrentAppearance}
                     >
                         {updateResponse.loading ? 'Saving...' : 'Save Changes'}
                     </Button>
                     <Button
                         intent={ButtonIntent.Secondary}
-                        type="button"
                         onClick={resetCurrentAppearance}
                     >
                         Cancel

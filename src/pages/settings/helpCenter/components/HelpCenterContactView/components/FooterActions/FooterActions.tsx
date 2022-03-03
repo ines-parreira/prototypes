@@ -8,17 +8,12 @@ const FooterActions: React.FC = () => {
 
     return (
         <footer>
-            <Button
-                intent={ButtonIntent.Primary}
-                type="button"
-                onClick={saveTranslation}
-            >
+            <Button intent={ButtonIntent.Primary} onClick={saveTranslation}>
                 Save Changes
             </Button>
             <Button
                 className="ml-2"
                 intent={ButtonIntent.Secondary}
-                type="button"
                 onClick={resetTranslation}
             >
                 Cancel

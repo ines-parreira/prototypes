@@ -180,7 +180,6 @@ export default class Actions extends Component<Props, State> {
                             className="d-inline-block mr-1"
                         >
                             <Button
-                                type="button"
                                 intent={intent}
                                 onClick={this._openModal(index)}
                             >

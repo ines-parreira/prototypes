@@ -67,14 +67,12 @@ exports[`<ViewSharingModal/> render() should render as private 1`] = `
       id="view-sharing-submit"
       isDisabled={true}
       onClick={[Function]}
-      type="button"
     >
       Update view sharing
     </ForwardRef>
     <ForwardRef
       intent="secondary"
       onClick={[MockFunction]}
-      type="button"
     >
       Cancel
     </ForwardRef>
@@ -149,14 +147,12 @@ exports[`<ViewSharingModal/> render() should render as public 1`] = `
       id="view-sharing-submit"
       isDisabled={true}
       onClick={[Function]}
-      type="button"
     >
       Update view sharing
     </ForwardRef>
     <ForwardRef
       intent="secondary"
       onClick={[MockFunction]}
-      type="button"
     >
       Cancel
     </ForwardRef>
@@ -231,14 +227,12 @@ exports[`<ViewSharingModal/> render() should render as shared 1`] = `
       id="view-sharing-submit"
       isDisabled={true}
       onClick={[Function]}
-      type="button"
     >
       Update view sharing
     </ForwardRef>
     <ForwardRef
       intent="secondary"
       onClick={[MockFunction]}
-      type="button"
     >
       Cancel
     </ForwardRef>

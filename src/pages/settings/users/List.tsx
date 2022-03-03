@@ -58,7 +58,7 @@ export class UserListContainer extends Component<Props, State> {
             <div className={classnames('full-width', css.component)}>
                 <PageHeader title="Users">
                     <Link to="/app/settings/users/add/">
-                        <Button type="button">Add user</Button>
+                        <Button>Add user</Button>
                     </Link>
                 </PageHeader>
 

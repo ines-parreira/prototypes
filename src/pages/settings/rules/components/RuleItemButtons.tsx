@@ -33,7 +33,6 @@ export const RuleItemButtons = ({
                     onClick={onSubmit}
                     isDisabled={!canSubmit}
                     form={`rule-form`}
-                    type="button"
                 >
                     {ruleId ? 'Update rule' : 'Create rule'}
                 </Button>
@@ -58,7 +57,6 @@ export const RuleItemButtons = ({
                         isLoading={isDeleting}
                         onConfirm={onDelete}
                         confirmationContent="Are you sure you want to delete this rule?"
-                        type="button"
                     >
                         <ButtonIconLabel icon="delete">
                             Delete rule

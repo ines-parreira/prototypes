@@ -206,7 +206,6 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                                 </Button>
                                 <ConfirmButton
                                     className="float-right"
-                                    type="button"
                                     onConfirm={() =>
                                         void actions.deleteIntegration(
                                             integration

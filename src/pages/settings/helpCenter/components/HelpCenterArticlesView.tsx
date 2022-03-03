@@ -718,7 +718,6 @@ export const HelpCenterArticlesView: React.FC = () => {
                 <>
                     <Button
                         intent={ButtonIntent.Secondary}
-                        type="button"
                         onClick={onCategoryCreate}
                     >
                         Create Category
@@ -726,7 +725,6 @@ export const HelpCenterArticlesView: React.FC = () => {
                     <Button
                         isDisabled={limitations.createArticle.disabled}
                         intent={ButtonIntent.Primary}
-                        type="button"
                         onClick={onArticleCreate}
                     >
                         Create Article

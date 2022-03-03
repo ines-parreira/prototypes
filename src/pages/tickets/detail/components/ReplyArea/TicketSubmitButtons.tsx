@@ -113,6 +113,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                     {hasTitle || isUpdating ? (
                         <Button
                             id="submit-button"
+                            type="submit"
                             className="mr-2"
                             isDisabled={disabled}
                             tabIndex={5}
@@ -124,6 +125,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                     ) : (
                         <ConfirmButton
                             id="submit-button"
+                            type="submit"
                             confirmationContent={titleConfirmation}
                             className="mr-2"
                             isDisabled={disabled}
@@ -149,6 +151,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                     {hasTitle || isUpdating ? (
                         <Button
                             id="submit-and-close-button"
+                            type="submit"
                             intent={ButtonIntent.Secondary}
                             isDisabled={disabled}
                             onClick={() => this.submit('closed', true)}
@@ -159,6 +162,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                     ) : (
                         <ConfirmButton
                             id="submit-and-close-button"
+                            type="submit"
                             confirmationContent={titleConfirmation}
                             intent={ButtonIntent.Secondary}
                             isDisabled={disabled}

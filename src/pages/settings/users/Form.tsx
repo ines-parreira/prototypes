@@ -250,7 +250,6 @@ export class FormContainer extends Component<Props, State> {
                                     </p>
                                     <Button
                                         intent={ButtonIntent.Secondary}
-                                        type="button"
                                         onClick={() => {
                                             window
                                                 .open(
@@ -288,6 +287,7 @@ export class FormContainer extends Component<Props, State> {
                         )}
                         <FormGroup className="mt-5">
                             <Button
+                                type="submit"
                                 className="mr-2"
                                 isLoading={this.state.isSubmitting}
                             >
@@ -296,7 +296,6 @@ export class FormContainer extends Component<Props, State> {
                             {isUpdate && (
                                 <>
                                     <Button
-                                        type="button"
                                         intent={ButtonIntent.Secondary}
                                         onClick={this._invite}
                                         isLoading={this.state.isInviting}
@@ -308,7 +307,6 @@ export class FormContainer extends Component<Props, State> {
                                     {isCurrentUserAccountOwner &&
                                         !isAgentAccountOwner && (
                                             <ConfirmButton
-                                                type="button"
                                                 intent={
                                                     ButtonIntent.Destructive
                                                 }
@@ -339,7 +337,6 @@ export class FormContainer extends Component<Props, State> {
                                         id="delete-user"
                                         intent={ButtonIntent.Destructive}
                                         onConfirm={this._delete}
-                                        type="button"
                                     >
                                         <ButtonIconLabel icon="delete">
                                             Delete user

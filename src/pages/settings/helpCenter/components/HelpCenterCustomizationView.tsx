@@ -514,16 +514,11 @@ export const HelpCenterCustomizationView = () => {
                         !socialNavigation.isListValid()
                     }
                     intent={ButtonIntent.Primary}
-                    type="button"
                     onClick={handleOnSave}
                 >
                     Save Changes
                 </Button>
-                <Button
-                    intent={ButtonIntent.Secondary}
-                    type="button"
-                    onClick={handleOnReset}
-                >
+                <Button intent={ButtonIntent.Secondary} onClick={handleOnReset}>
                     Cancel
                 </Button>
             </FormGroup>

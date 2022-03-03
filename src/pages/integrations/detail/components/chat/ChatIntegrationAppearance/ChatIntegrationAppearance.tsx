@@ -469,7 +469,6 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                             deleteIntegration(integration)
                                         }
                                         confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                        type="button"
                                         intent={ButtonIntent.Destructive}
                                         isDisabled={isSubmitting}
                                     >

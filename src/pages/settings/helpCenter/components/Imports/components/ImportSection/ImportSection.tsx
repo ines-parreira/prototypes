@@ -263,7 +263,6 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
                 <Button
                     isDisabled={isHotswapImportProgressRequestLoading}
                     intent={ButtonIntent.Secondary}
-                    type="button"
                     onClick={() => setModalState({state: 'NO_FILE_SELECTED'})}
                 >
                     <i className="material-icons mr-2">cloud_upload</i>Import
@@ -313,7 +312,6 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
                                             <Button
                                                 intent={ButtonIntent.Secondary}
                                                 size={ButtonSize.Small}
-                                                type="button"
                                                 onClick={openFileDialog}
                                             >
                                                 Change File
@@ -433,14 +431,12 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
                     <ModalFooter className={css.modalFooter}>
                         <Button
                             intent={ButtonIntent.Secondary}
-                            type="button"
                             onClick={closeModal}
                         >
                             Cancel
                         </Button>
                         <Button
                             intent={ButtonIntent.Primary}
-                            type="button"
                             onClick={handleImport}
                         >
                             Import File

@@ -382,7 +382,6 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                     >
                         <Button
                             intent={ButtonIntent.Secondary}
-                            type="button"
                             className="mr-2"
                             onClick={this._toggle}
                         >
@@ -390,6 +389,7 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                         </Button>
 
                         <ConfirmButton
+                            type="submit"
                             isLoading={isLoading}
                             confirmationContent="This action is irreversible. Are you sure you want to merge these customers?"
                         >

@@ -145,7 +145,6 @@ export default class AddImage extends Component<Props, State> {
                             autoFocus
                         />
                         <Button
-                            type="button"
                             className="ml-2"
                             isDisabled={!this.state.url}
                             onClick={this._submit}

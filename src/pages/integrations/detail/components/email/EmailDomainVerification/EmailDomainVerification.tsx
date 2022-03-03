@@ -101,7 +101,6 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                         <ConfirmButton
                             onConfirm={() => actions.deleteEmailDomain(domain)}
                             confirmationContent="Are you sure you want to delete this domain? Domain verification can take up to 72 hours. Non-verified domains may lead to increased deliverability issues."
-                            type="button"
                             intent={ButtonIntent.Destructive}
                         >
                             <ButtonIconLabel icon="delete">

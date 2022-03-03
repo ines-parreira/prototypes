@@ -290,7 +290,6 @@ export const HelpCenterNewView = ({
                         <Button
                             isDisabled={!canSubmit}
                             intent={ButtonIntent.Primary}
-                            type="button"
                             onClick={handleSubmit}
                         >
                             Add new Help Center
@@ -298,7 +297,6 @@ export const HelpCenterNewView = ({
                         <Button
                             className={css.cancelButton}
                             intent={ButtonIntent.Secondary}
-                            type="button"
                             onClick={navigateToStartView}
                         >
                             Cancel

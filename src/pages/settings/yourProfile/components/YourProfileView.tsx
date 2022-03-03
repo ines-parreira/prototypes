@@ -478,7 +478,9 @@ export default class YourProfileView extends Component<Props, State> {
                             </FormGroup>
                         </div>
 
-                        <Button isLoading={isLoading}>Save Changes</Button>
+                        <Button type="submit" isLoading={isLoading}>
+                            Save Changes
+                        </Button>
                     </Form>
                 </Container>
             </div>

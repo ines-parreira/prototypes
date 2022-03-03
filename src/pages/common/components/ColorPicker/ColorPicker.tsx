@@ -63,7 +63,6 @@ export default function ColorPicker({
         <div className="d-inline-block">
             <Button
                 id={uniqueId}
-                type="button"
                 intent={ButtonIntent.Secondary}
                 onClick={() => setPopupVisible(!isPopupVisible)}
                 ref={buttonEl}

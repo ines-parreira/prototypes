@@ -57,7 +57,6 @@ export const LinkList = ({
                     isDisabled={isLimitExceeded}
                     intent={ButtonIntent.Secondary}
                     style={isLimitExceeded ? {pointerEvents: 'none'} : {}}
-                    type="button"
                     onClick={onAddNew}
                 >
                     <i className="material-icons">add</i>

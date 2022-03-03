@@ -167,7 +167,6 @@ export const HelpCenterInstallationView: React.FC = () => {
                 <Button
                     intent={ButtonIntent.Primary}
                     isDisabled={!isNewSubdomainValid}
-                    type="button"
                     onClick={() =>
                         handleOnUpdateHelpCenter({
                             subdomain: subdomainValue,
@@ -189,7 +188,6 @@ export const HelpCenterInstallationView: React.FC = () => {
                         <div className={css['modal-actions']}>
                             <Button
                                 intent={ButtonIntent.Secondary}
-                                type="button"
                                 onClick={() => {
                                     setDeleteModalConfirmation('')
                                     onClose()
@@ -201,7 +199,6 @@ export const HelpCenterInstallationView: React.FC = () => {
                                 className={css['delete-btn']}
                                 isDisabled={deleteBtnDisabled}
                                 intent={ButtonIntent.Secondary}
-                                type="button"
                                 onClick={handleOnDeleteHelpCenter}
                             >
                                 <i className="material-icons">delete</i>
@@ -248,7 +245,6 @@ export const HelpCenterInstallationView: React.FC = () => {
                         <Button
                             className={css['delete-btn']}
                             intent={ButtonIntent.Secondary}
-                            type="button"
                             onClick={onClick}
                         >
                             <i className="material-icons">delete</i>

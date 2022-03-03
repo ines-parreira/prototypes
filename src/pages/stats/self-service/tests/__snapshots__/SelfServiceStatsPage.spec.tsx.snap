@@ -116,6 +116,7 @@ exports[`<SelfServiceStatsPage /> should render the automation add-on upgrade pa
                   >
                     <button
                       class="wrapper primary medium"
+                      type="button"
                     >
                       <span
                         class="wrapper"

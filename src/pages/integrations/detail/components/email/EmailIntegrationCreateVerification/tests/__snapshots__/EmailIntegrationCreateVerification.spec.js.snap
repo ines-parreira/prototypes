@@ -187,7 +187,6 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         intent="destructive"
         isDisabled={false}
         onConfirm={[Function]}
-        type="button"
       >
         <ButtonIconLabel
           icon="delete"

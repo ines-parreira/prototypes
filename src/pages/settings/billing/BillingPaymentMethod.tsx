@@ -82,10 +82,7 @@ export class BillingPaymentMethodContainer extends Component<
                                                 hasNoSubscription,
                                         })}
                                     >
-                                        <Button
-                                            type="button"
-                                            isDisabled={hasNoSubscription}
-                                        >
+                                        <Button isDisabled={hasNoSubscription}>
                                             Add payment method
                                         </Button>
                                     </Link>
@@ -101,10 +98,7 @@ export class BillingPaymentMethodContainer extends Component<
                                 </div>
                             ) : (
                                 <Link to="/app/settings/billing/change-credit-card">
-                                    <Button
-                                        type="button"
-                                        intent={ButtonIntent.Secondary}
-                                    >
+                                    <Button intent={ButtonIntent.Secondary}>
                                         Change card
                                     </Button>
                                 </Link>
@@ -169,7 +163,6 @@ export class BillingPaymentMethodContainer extends Component<
                             })}
                         >
                             <Button
-                                type="button"
                                 isLoading={isActivatingShopifyBilling}
                                 onClick={() => {
                                     this.setState({
@@ -210,7 +203,6 @@ export class BillingPaymentMethodContainer extends Component<
                             })}
                         >
                             <Button
-                                type="button"
                                 onClick={this.onActivateShopifyBilling}
                                 isLoading={isActivatingShopifyBilling}
                                 isDisabled={hasNoSubscription}

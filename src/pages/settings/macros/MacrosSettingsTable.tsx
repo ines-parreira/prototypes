@@ -209,7 +209,6 @@ export function MacrosSettingsTableContainer({
                                                 )
                                             }}
                                             title="Duplicate macro"
-                                            type="button"
                                         >
                                             file_copy
                                         </IconButton>
@@ -227,7 +226,6 @@ export function MacrosSettingsTableContainer({
                                                 )
                                             }}
                                             title="Delete macro"
-                                            type="button"
                                         >
                                             delete
                                         </IconButton>
@@ -253,7 +251,6 @@ export function MacrosSettingsTableContainer({
                                             onClick={() =>
                                                 handleMacroDelete(macroId)
                                             }
-                                            type="button"
                                         >
                                             Confirm
                                         </Button>

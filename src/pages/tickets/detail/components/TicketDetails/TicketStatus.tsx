@@ -18,17 +18,13 @@ const TicketStatus = ({setQuickStatus, currentStatus}: Props) => {
             <span id="change-status-button">
                 {toClose ? (
                     <Button
-                        type="button"
                         intent={ButtonIntent.Secondary}
                         onClick={() => setQuickStatus(currentStatus)}
                     >
                         <ButtonIconLabel icon="check">Close</ButtonIconLabel>
                     </Button>
                 ) : (
-                    <IconButton
-                        type="button"
-                        onClick={() => setQuickStatus(currentStatus)}
-                    >
+                    <IconButton onClick={() => setQuickStatus(currentStatus)}>
                         check
                     </IconButton>
                 )}

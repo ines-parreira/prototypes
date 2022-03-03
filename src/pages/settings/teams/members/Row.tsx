@@ -74,7 +74,6 @@ export default class Row extends Component<Props, State> {
                             intent={ButtonIntent.Text}
                             onClick={this._deleteTeamMember}
                             isLoading={isDeleting}
-                            type="button"
                         >
                             delete
                         </IconButton>

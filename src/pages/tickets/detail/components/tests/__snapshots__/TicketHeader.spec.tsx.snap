@@ -146,7 +146,6 @@ exports[`<TicketHeader /> should change snooze label and display the clear snooz
         <ForwardRef
           autoFocus={true}
           onClick={[Function]}
-          type="button"
         >
           Confirm
         </ForwardRef>
@@ -201,7 +200,6 @@ exports[`<TicketHeader /> should display the delete action for lead and admin ag
       <ForwardRef
         autoFocus={true}
         onClick={[Function]}
-        type="button"
       >
         Confirm
       </ForwardRef>
@@ -396,7 +394,6 @@ exports[`<TicketHeader /> should render an unread ticket without the "Mark as un
               <ForwardRef
                 autoFocus={true}
                 onClick={[Function]}
-                type="button"
               >
                 Confirm
               </ForwardRef>
@@ -631,7 +628,6 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
               <ForwardRef
                 autoFocus={true}
                 onClick={[Function]}
-                type="button"
               >
                 Confirm
               </ForwardRef>
@@ -932,7 +928,6 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
               <ForwardRef
                 autoFocus={true}
                 onClick={[Function]}
-                type="button"
               >
                 Confirm
               </ForwardRef>

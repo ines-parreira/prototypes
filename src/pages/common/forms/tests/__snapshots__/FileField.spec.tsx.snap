@@ -24,7 +24,6 @@ exports[`<FileField/> render() should display loading when loading 1`] = `
         intent="secondary"
         isDisabled={true}
         onClick={[Function]}
-        type="button"
       >
         <span>
           <i
@@ -68,7 +67,6 @@ exports[`<FileField/> render() should not render preview 1`] = `
         intent="secondary"
         isDisabled={false}
         onClick={[Function]}
-        type="button"
       >
         <span>
           Select a File...
@@ -116,7 +114,6 @@ exports[`<FileField/> render() should render a basic file input 1`] = `
         intent="secondary"
         isDisabled={false}
         onClick={[Function]}
-        type="button"
       >
         <span>
           Select a File...
@@ -163,7 +160,6 @@ exports[`<FileField/> render() should render preview 1`] = `
         intent="secondary"
         isDisabled={false}
         onClick={[Function]}
-        type="button"
       >
         <span>
           Select a File...

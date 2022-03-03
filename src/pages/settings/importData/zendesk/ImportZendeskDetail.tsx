@@ -144,7 +144,6 @@ export const ImportZendeskDetail = (
                             Import summary{' '}
                             <Button
                                 id="learn-button"
-                                type="button"
                                 className={css.learnButton}
                                 intent={ButtonIntent.Secondary}
                                 onClick={() => {
@@ -183,7 +182,6 @@ export const ImportZendeskDetail = (
                                         href="https://docs.gorgias.com/migrating-helpdesks/switching-from-zendesk"
                                     >
                                         <Button
-                                            type="button"
                                             size={ButtonSize.Small}
                                             intent={ButtonIntent.Secondary}
                                         >
@@ -298,13 +296,13 @@ export const ImportZendeskDetail = (
                 ) : null}
                 {importStatus === ImportStatus.Success &&
                     (synchronizationEnabled ? (
-                        <Button type="button" onClick={handleSyncClick}>
+                        <Button onClick={handleSyncClick}>
                             <ButtonIconLabel icon="pause_circle_filled">
                                 Pause
                             </ButtonIconLabel>
                         </Button>
                     ) : (
-                        <Button type="button" onClick={handleSyncClick}>
+                        <Button onClick={handleSyncClick}>
                             <ButtonIconLabel icon="play_circle_filled">
                                 Resume
                             </ButtonIconLabel>

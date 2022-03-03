@@ -265,7 +265,6 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                 Gorgias to Klaviyo.
                                             </p>
                                             <ConfirmButton
-                                                type="button"
                                                 isLoading={isLoading}
                                                 onConfirm={this._syncHistorical}
                                                 confirmationContent="Are you sure you want to sync historical data?"
@@ -497,7 +496,6 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                         {isUpdate && (
                                             <ConfirmButton
                                                 className="float-right"
-                                                type="button"
                                                 onConfirm={
                                                     this._deleteIntegration
                                                 }

@@ -45,6 +45,7 @@ exports[`<OngoingPhoneCall/> should render 1`] = `
     <button
       class="wrapper mute wrapper medium secondary medium"
       data-testid="mute-call-button"
+      type="button"
     >
       <i
         class="material-icons icon"
@@ -55,6 +56,7 @@ exports[`<OngoingPhoneCall/> should render 1`] = `
     <button
       class="wrapper recording wrapper medium secondary medium"
       data-testid="record-call-button"
+      type="button"
     >
       <i
         class="text-danger material-icons icon"
@@ -65,6 +67,7 @@ exports[`<OngoingPhoneCall/> should render 1`] = `
     <button
       class="wrapper wrapper medium destructive medium"
       data-testid="end-call-button"
+      type="button"
     >
       <i
         class="material-icons icon"

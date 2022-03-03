@@ -503,7 +503,6 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                             </Button>
                             {isUpdate && isActive && (
                                 <Button
-                                    type="button"
                                     isLoading={isSubmitting}
                                     intent={ButtonIntent.Destructive}
                                     onClick={() =>
@@ -518,7 +517,6 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
 
                             {isUpdate && !isActive && (
                                 <Button
-                                    type="button"
                                     isLoading={isSubmitting}
                                     onClick={() =>
                                         activateIntegration(
@@ -532,7 +530,6 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                             {isUpdate && (
                                 <ConfirmButton
                                     className="float-right"
-                                    type="button"
                                     onConfirm={() =>
                                         deleteIntegration(integration)
                                     }

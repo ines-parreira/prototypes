@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
 
 import ConfirmButton from '../ConfirmButton'
@@ -17,7 +17,7 @@ jest.mock('reactstrap', () => {
 })
 
 describe('<ConfirmButton />', () => {
-    const defaultProps = {
+    const defaultProps: ComponentProps<typeof ConfirmButton> = {
         id: 'foo',
         confirmationContent: 'Are you sure?',
         confirmationTitle: "I'm a title",
@@ -59,7 +59,9 @@ describe('<ConfirmButton />', () => {
         const handleSubmit = jest.fn()
         const {getByText} = render(
             <form onSubmit={handleSubmit}>
-                <ConfirmButton {...defaultProps}>Click me!</ConfirmButton>
+                <ConfirmButton {...defaultProps} type="submit">
+                    Click me!
+                </ConfirmButton>
             </form>
         )
 
@@ -73,7 +75,9 @@ describe('<ConfirmButton />', () => {
         const {getByText, queryByText} = render(
             <form onSubmit={handleSubmit}>
                 <input type="text" required value="" />
-                <ConfirmButton {...defaultProps}>Click me!</ConfirmButton>
+                <ConfirmButton {...defaultProps} type="submit">
+                    Click me!
+                </ConfirmButton>
             </form>
         )
 

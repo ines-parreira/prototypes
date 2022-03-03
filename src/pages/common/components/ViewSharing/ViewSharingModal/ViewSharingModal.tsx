@@ -96,16 +96,11 @@ export function ViewSharingModalContainer({
                     id="view-sharing-submit"
                     className={css.submit}
                     isDisabled={disabled}
-                    type="button"
                     onClick={() => save(onSaveSuccess)}
                 >
                     Update view sharing
                 </Button>
-                <Button
-                    intent={ButtonIntent.Secondary}
-                    onClick={toggle}
-                    type="button"
-                >
+                <Button intent={ButtonIntent.Secondary} onClick={toggle}>
                     Cancel
                 </Button>
             </ModalFooter>

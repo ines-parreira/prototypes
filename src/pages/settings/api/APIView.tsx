@@ -132,9 +132,7 @@ export class APIViewContainer extends Component<Props, State> {
                 <p className={classnames(css['body-regular'], css.mb24)}>
                     You can create an API Key using the button below.
                 </p>
-                <Button type="button" onClick={this._createApiKey}>
-                    Create API key
-                </Button>
+                <Button onClick={this._createApiKey}>Create API key</Button>
             </div>
         )
     }
@@ -357,10 +355,7 @@ export class APIViewContainer extends Component<Props, State> {
                             </p>
                         </div>
 
-                        <Button
-                            type="button"
-                            onClick={this._subscribeToDeveloperNewsletter}
-                        >
+                        <Button onClick={this._subscribeToDeveloperNewsletter}>
                             Subscribe
                         </Button>
                     </div>

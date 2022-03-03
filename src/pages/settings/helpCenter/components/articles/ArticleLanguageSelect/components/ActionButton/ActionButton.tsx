@@ -10,7 +10,10 @@ import css from './ActionButton.less'
 
 export type ActionButtonVariant = 'danger' | 'neutral'
 
-export type ActionButtonProps = React.ComponentProps<typeof Button> & {
+export type ActionButtonProps = Omit<
+    React.ComponentProps<typeof Button>,
+    'type' | 'intent' | 'id'
+> & {
     help?: React.ReactNode
     variant?: ActionButtonVariant
 }
@@ -32,7 +35,6 @@ export const ActionButton = ({
                     [css.neutral]: variant === 'neutral',
                 })}
                 intent={ButtonIntent.Text}
-                type="button"
                 id={id.current}
             >
                 {children}

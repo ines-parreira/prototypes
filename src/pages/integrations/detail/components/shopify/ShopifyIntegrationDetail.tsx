@@ -370,7 +370,6 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                 <div>
                                     {isUpdate && needScopeUpdate ? (
                                         <Button
-                                            type="button"
                                             className="mr-2"
                                             isLoading={isSubmitting}
                                             onClick={this._updateAppPermissions}
@@ -393,7 +392,6 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                     isUpdate &&
                                     !isActive ? (
                                         <Button
-                                            type="button"
                                             isLoading={isSubmitting}
                                             onClick={activateIntegration}
                                         >
@@ -403,7 +401,6 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                     {isUpdate ? (
                                         <ConfirmButton
                                             className="float-right"
-                                            type="button"
                                             onConfirm={() =>
                                                 deleteIntegration(
                                                     integration

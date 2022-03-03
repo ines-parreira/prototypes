@@ -247,7 +247,6 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                         isLoading={isLoading}
                         onConfirm={importMethod}
                         confirmationContent="Are you sure you want to import emails?"
-                        type="button"
                         intent={ButtonIntent.Primary}
                     >
                         Import emails

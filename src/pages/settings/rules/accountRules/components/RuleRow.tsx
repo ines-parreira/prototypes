@@ -259,7 +259,6 @@ export function RuleRow({
                             void handleDuplicate()
                         }}
                         title="Duplicate rule"
-                        type="button"
                     >
                         file_copy
                     </IconButton>
@@ -276,7 +275,6 @@ export function RuleRow({
                         intent={ButtonIntent.Text}
                         isLoading={isDeleting}
                         title="Delete rule"
-                        type="button"
                         id={`delete-rule-${rule.id}`}
                     >
                         delete

@@ -133,7 +133,9 @@ export default function MissingBillingInformationRow() {
                         )}
                     </ModalBody>
                     <ModalFooter>
-                        <Button isLoading={loading}>Update Address</Button>
+                        <Button type="submit" isLoading={loading}>
+                            Update Address
+                        </Button>
                     </ModalFooter>
                 </Form>
             </Modal>

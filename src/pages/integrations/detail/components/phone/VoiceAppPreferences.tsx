@@ -229,6 +229,7 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
                             )}
                             <div className="mt-5">
                                 <Button
+                                    type="submit"
                                     intent={ButtonIntent.Creation}
                                     isDisabled={!isInitialized}
                                     isLoading={isLoading}
@@ -241,7 +242,6 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
                                     isDisabled={!isInitialized}
                                     isLoading={isDeleting}
                                     onConfirm={handleDelete}
-                                    type="button"
                                     confirmationContent="Are you sure you want to delete this integration? All associated views will be disabled."
                                 >
                                     <ButtonIconLabel icon="delete">

@@ -132,18 +132,10 @@ export const ChangePlanModal = ({
                     </div>
                 </ModalBody>
                 <ModalFooter className={css.footer}>
-                    <Button
-                        type="button"
-                        intent={ButtonIntent.Secondary}
-                        onClick={onClose}
-                    >
+                    <Button intent={ButtonIntent.Secondary} onClick={onClose}>
                         Cancel
                     </Button>
-                    <Button
-                        type="button"
-                        isDisabled={isUpdating}
-                        onClick={onConfirm}
-                    >
+                    <Button isDisabled={isUpdating} onClick={onConfirm}>
                         {confirmLabel}
                     </Button>
                 </ModalFooter>

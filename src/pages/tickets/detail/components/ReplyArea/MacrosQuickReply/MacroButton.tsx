@@ -37,7 +37,6 @@ export const MacroButton = ({macro, applyMacro, onHover}: Props) => {
                 onMouseLeave={() => setPreviewOpen(false)}
                 id={buttonId}
                 size={ButtonSize.Small}
-                type="button"
             >
                 {macro.name}
             </Button>

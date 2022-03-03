@@ -793,6 +793,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
               </span>
               <button
                 class="wrapper primary medium"
+                type="button"
               >
                 Next
               </button>
@@ -1633,6 +1634,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
             >
               <button
                 class="wrapper creation medium"
+                type="button"
               >
                 Create phone number
               </button>
@@ -1904,6 +1906,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
             >
               <button
                 class="wrapper creation medium"
+                type="button"
               >
                 Create phone number
               </button>

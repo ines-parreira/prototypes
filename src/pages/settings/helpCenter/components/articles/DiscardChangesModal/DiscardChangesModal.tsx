@@ -31,7 +31,6 @@ export const DiscardChangesModal = ({
                 <>
                     <Button
                         intent={ButtonIntent.Secondary}
-                        type="button"
                         onClick={onContinueEditing}
                     >
                         Back to Editing
@@ -39,7 +38,6 @@ export const DiscardChangesModal = ({
                     <Button
                         className="ml-3"
                         intent={ButtonIntent.Secondary}
-                        type="button"
                         onClick={onDiscard}
                     >
                         Discard changes

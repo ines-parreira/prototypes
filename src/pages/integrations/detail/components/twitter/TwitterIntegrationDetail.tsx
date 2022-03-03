@@ -257,7 +257,6 @@ export default function TwitterIntegrationDetail({
                                         confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                         isDisabled={isSubmitting}
                                         isLoading={isDeleting}
-                                        type="button"
                                         intent={ButtonIntent.Destructive}
                                     >
                                         <ButtonIconLabel icon="delete">

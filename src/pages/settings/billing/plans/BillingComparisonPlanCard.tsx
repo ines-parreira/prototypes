@@ -195,7 +195,6 @@ export default function BillingComparisonPlanCard({
                         isAutomationChecked={isAutomationChecked}
                     />
                     <Button
-                        type="button"
                         aria-label={switchPlanButtonText}
                         className={css.footerButton}
                         intent={ButtonIntent.Text}

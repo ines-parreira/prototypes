@@ -40,7 +40,6 @@ export default function DialPad({className, call}: Props): JSX.Element {
             <IconButton
                 id="dial-pad-button"
                 data-testid="dial-pad-button"
-                type="button"
                 className={className}
                 intent={ButtonIntent.Secondary}
             >

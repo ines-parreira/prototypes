@@ -183,7 +183,6 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
           </p>
           <ForwardRef
             onClick={[Function]}
-            type="button"
           >
             Create API key
           </ForwardRef>
@@ -237,7 +236,6 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
       </div>
       <ForwardRef
         onClick={[Function]}
-        type="button"
       >
         Subscribe
       </ForwardRef>
@@ -511,7 +509,6 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
       </div>
       <ForwardRef
         onClick={[Function]}
-        type="button"
       >
         Subscribe
       </ForwardRef>

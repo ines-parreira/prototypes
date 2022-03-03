@@ -671,7 +671,6 @@ Sincerely,
                   isDisabled={false}
                   isLoading={false}
                   onClick={[Function]}
-                  type="button"
                 >
                   <button
                     className="wrapper secondary medium"
@@ -688,7 +687,6 @@ Sincerely,
                   intent="destructive"
                   isLoading={false}
                   onConfirm={[Function]}
-                  type="button"
                 >
                   <div
                     onClick={[Function]}

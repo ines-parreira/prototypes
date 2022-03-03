@@ -162,7 +162,6 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                             </div>
                                         ))}
                                         <Button
-                                            type="button"
                                             intent={ButtonIntent.Secondary}
                                             onClick={this._addBusinessHours}
                                         >

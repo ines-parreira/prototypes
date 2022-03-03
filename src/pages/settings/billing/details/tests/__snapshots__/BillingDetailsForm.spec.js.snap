@@ -1028,10 +1028,12 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                         <ForwardRef
                           className="submitButton"
                           isLoading={false}
+                          type="submit"
                         >
                           <button
                             className="wrapper submitButton primary medium"
                             disabled={false}
+                            type="submit"
                           >
                             Update Address
                           </button>
@@ -1920,10 +1922,12 @@ exports[`BillingDetailsForm component should display the form with billing conta
                         <ForwardRef
                           className="submitButton"
                           isLoading={false}
+                          type="submit"
                         >
                           <button
                             className="wrapper submitButton primary medium"
                             disabled={false}
+                            type="submit"
                           >
                             Update Address
                           </button>

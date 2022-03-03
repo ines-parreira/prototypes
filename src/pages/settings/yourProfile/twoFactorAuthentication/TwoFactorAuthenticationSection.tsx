@@ -25,7 +25,7 @@ export default function TwoFactorAuthenticationSection() {
                 <a href={''}> Learn more</a>
             </div>
 
-            <Button type="button" onClick={() => setIsModalOpen(true)}>
+            <Button onClick={() => setIsModalOpen(true)}>
                 Enable Two-Factor Authentication
             </Button>
             {isModalOpen && (

@@ -625,7 +625,6 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                         <ConfirmButton
                             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                             onConfirm={() => deleteIntegration(integration)}
-                            type="button"
                             isLoading={isSubmitting}
                             intent={ButtonIntent.Destructive}
                             className="float-right"

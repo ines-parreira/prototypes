@@ -99,7 +99,6 @@ const PhoneNumbersForm: React.FC<Props> = ({
             <Button
                 isDisabled={disabled}
                 intent={ButtonIntent.Secondary}
-                type="button"
                 onClick={addPhoneNumber}
             >
                 <i className="material-icons">add</i>&nbsp;Add Number

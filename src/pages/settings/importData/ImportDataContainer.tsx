@@ -38,7 +38,7 @@ export const ImportDataContainer = (
                     to="/app/settings/import-data/zendesk"
                     className="float-right"
                 >
-                    <Button type="button">Add account</Button>
+                    <Button>Add account</Button>
                 </Link>
             </PageHeader>
             <Container fluid className={css.pageContainer}>

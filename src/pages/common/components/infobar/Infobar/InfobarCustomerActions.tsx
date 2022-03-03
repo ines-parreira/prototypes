@@ -60,7 +60,6 @@ export default class InfobarCustomerActions extends React.Component<Props> {
                         confirmationContent={message}
                         intent={ButtonIntent.Secondary}
                         onConfirm={setCustomer}
-                        type="button"
                     >
                         Set as customer
                     </ConfirmButton>

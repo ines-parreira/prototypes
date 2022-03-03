@@ -10,7 +10,6 @@ exports[`InfobarCustomerActions component should not render "merge" button becau
     confirmationTitle="Change ticket customer"
     intent="secondary"
     onConfirm={[Function]}
-    type="button"
   >
     Set as customer
   </ConfirmButton>
@@ -46,7 +45,6 @@ exports[`InfobarCustomerActions component should render "set as customer" and "m
     confirmationTitle="Change ticket customer"
     intent="secondary"
     onConfirm={[Function]}
-    type="button"
   >
     Set as customer
   </ConfirmButton>

@@ -50,16 +50,11 @@ export default function DeleteSectionModal({
                     intent={ButtonIntent.Destructive}
                     isLoading={isSubmitting}
                     onClick={onSubmit}
-                    type="button"
                 >
                     <ButtonIconLabel icon="delete">Delete</ButtonIconLabel>
                 </Button>
 
-                <Button
-                    intent={ButtonIntent.Secondary}
-                    type="button"
-                    onClick={onClose}
-                >
+                <Button intent={ButtonIntent.Secondary} onClick={onClose}>
                     Cancel
                 </Button>
             </div>

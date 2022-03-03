@@ -504,7 +504,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     isDisabled={false}
                                     isLoading={false}
                                     onConfirm={[Function]}
-                                    type="button"
                                   >
                                     <ForwardRef
                                       className="disconnect-button"
@@ -513,7 +512,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       isDisabled={false}
                                       isLoading={false}
                                       onClick={[Function]}
-                                      type="button"
                                     >
                                       <button
                                         className="wrapper disconnect-button destructive medium"
@@ -709,7 +707,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     isDisabled={false}
                                     isLoading={false}
                                     onConfirm={[Function]}
-                                    type="button"
                                   >
                                     <ForwardRef
                                       className="disconnect-button"
@@ -718,7 +715,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       isDisabled={false}
                                       isLoading={false}
                                       onClick={[Function]}
-                                      type="button"
                                     >
                                       <button
                                         className="wrapper disconnect-button destructive medium"
@@ -914,7 +910,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     isDisabled={false}
                                     isLoading={false}
                                     onConfirm={[Function]}
-                                    type="button"
                                   >
                                     <ForwardRef
                                       className="disconnect-button"
@@ -923,7 +918,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       isDisabled={false}
                                       isLoading={false}
                                       onClick={[Function]}
-                                      type="button"
                                     >
                                       <button
                                         className="wrapper disconnect-button destructive medium"
@@ -1119,7 +1113,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                     isDisabled={false}
                                     isLoading={false}
                                     onConfirm={[Function]}
-                                    type="button"
                                   >
                                     <ForwardRef
                                       className="disconnect-button"
@@ -1128,7 +1121,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                       isDisabled={false}
                                       isLoading={false}
                                       onClick={[Function]}
-                                      type="button"
                                     >
                                       <button
                                         className="wrapper disconnect-button destructive medium"
@@ -3353,7 +3345,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                     isDisabled={false}
                                     isLoading={false}
                                     onConfirm={[Function]}
-                                    type="button"
                                   >
                                     <ForwardRef
                                       className="disconnect-button"
@@ -3362,7 +3353,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                       isDisabled={false}
                                       isLoading={false}
                                       onClick={[Function]}
-                                      type="button"
                                     >
                                       <button
                                         className="wrapper disconnect-button destructive medium"

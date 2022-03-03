@@ -685,6 +685,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                 >
                   <button
                     class="wrapper primary medium"
+                    type="button"
                   >
                     <span
                       class="wrapper"

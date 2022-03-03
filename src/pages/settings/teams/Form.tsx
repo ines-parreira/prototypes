@@ -183,7 +183,6 @@ export class FormContainer extends Component<Props, State> {
                                     >
                                         <ButtonGroup>
                                             <Button
-                                                type="button"
                                                 className={classnames(
                                                     css.emojiButton,
                                                     {
@@ -222,7 +221,6 @@ export class FormContainer extends Component<Props, State> {
                                             {emoji && (
                                                 <IconButton
                                                     className={css.removeEmoji}
-                                                    type="button"
                                                     intent={
                                                         ButtonIntent.Secondary
                                                     }
@@ -292,6 +290,7 @@ export class FormContainer extends Component<Props, State> {
                                 />
                                 <FormGroup>
                                     <Button
+                                        type="submit"
                                         className="mr-2"
                                         isLoading={this.state.isSubmitting}
                                     >
@@ -313,7 +312,6 @@ export class FormContainer extends Component<Props, State> {
                                             intent={ButtonIntent.Destructive}
                                             onConfirm={this._delete}
                                             className="float-right"
-                                            type="button"
                                         >
                                             <ButtonIconLabel icon="delete">
                                                 Delete team

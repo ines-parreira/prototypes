@@ -138,6 +138,7 @@ export default function SmsAppPreferences({
                             </Row>
                             <div className="mt-5">
                                 <Button
+                                    type="submit"
                                     intent={ButtonIntent.Creation}
                                     isDisabled={!isInitialized}
                                     isLoading={isLoading}
@@ -151,7 +152,6 @@ export default function SmsAppPreferences({
                                     isDisabled={!isInitialized}
                                     isLoading={isDeleting}
                                     onConfirm={handleDelete}
-                                    type="button"
                                     confirmationContent="Are you sure you want to delete this integration? All associated views will be disabled."
                                 >
                                     <ButtonIconLabel icon="delete">

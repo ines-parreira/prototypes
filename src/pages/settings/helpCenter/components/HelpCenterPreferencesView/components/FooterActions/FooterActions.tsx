@@ -13,7 +13,6 @@ export const FooterActions: React.FC = () => {
             <Button
                 isDisabled={!canSavePreferences}
                 intent={ButtonIntent.Primary}
-                type="button"
                 onClick={savePreferences}
             >
                 Save Changes
@@ -21,7 +20,6 @@ export const FooterActions: React.FC = () => {
             <Button
                 className="ml-2"
                 intent={ButtonIntent.Secondary}
-                type="button"
                 onClick={resetPreferences}
             >
                 Cancel

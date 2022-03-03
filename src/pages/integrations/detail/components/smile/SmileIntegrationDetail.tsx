@@ -193,7 +193,6 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                                 )}
                                 <ConfirmButton
                                     className="float-right"
-                                    type="button"
                                     onConfirm={() =>
                                         deleteIntegration(integration)
                                     }

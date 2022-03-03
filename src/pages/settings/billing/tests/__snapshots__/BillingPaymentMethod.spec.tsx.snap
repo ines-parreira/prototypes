@@ -155,7 +155,6 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
                   isDisabled={false}
                   isLoading={false}
                   onClick={[Function]}
-                  type="button"
                 >
                   <button
                     className="wrapper primary medium"
@@ -209,7 +208,6 @@ exports[`BillingPaymentMethod Shopify should render a button to reactivate billi
           <ForwardRef
             isLoading={false}
             onClick={[Function]}
-            type="button"
           >
             Reactivate billing with Shopify
           </ForwardRef>
@@ -251,7 +249,6 @@ exports[`BillingPaymentMethod Shopify should render a disabled button 1`] = `
             isDisabled={true}
             isLoading={false}
             onClick={[Function]}
-            type="button"
           >
             Activate billing with Shopify
           </ForwardRef>
@@ -535,7 +532,6 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                         >
                           <ForwardRef
                             isDisabled={false}
-                            type="button"
                           >
                             <button
                               className="wrapper primary medium"
@@ -729,7 +725,6 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                       >
                         <ForwardRef
                           intent="secondary"
-                          type="button"
                         >
                           <button
                             className="wrapper secondary medium"
@@ -823,7 +818,6 @@ exports[`BillingPaymentMethod Stripe should render a disabled button 1`] = `
             >
               <ForwardRef
                 isDisabled={true}
-                type="button"
               >
                 Add payment method
               </ForwardRef>

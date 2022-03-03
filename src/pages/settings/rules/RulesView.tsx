@@ -163,7 +163,6 @@ export function RulesViewContainer({
                         <Button
                             className="float-right"
                             isDisabled={limitStatus === RuleLimitStatus.Reached}
-                            type="button"
                         >
                             Create new rule
                         </Button>

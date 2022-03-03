@@ -172,14 +172,13 @@ export class Row extends Component<Props, State> {
 
                             <div className="d-flex">
                                 <Button
-                                    type="button"
                                     intent={ButtonIntent.Secondary}
                                     onClick={this._onCancel}
                                     className="mr-2"
                                 >
                                     Cancel
                                 </Button>
-                                <Button>Save</Button>
+                                <Button type="submit">Save</Button>
                             </div>
                         </Form>
                     </td>
@@ -221,7 +220,6 @@ export class Row extends Component<Props, State> {
                     <div className={classNames('cell-wrapper', css.actions)}>
                         <IconButton
                             intent={ButtonIntent.Text}
-                            type="button"
                             onClick={this._onEdit}
                             className={classNames(css.actionButton, 'mr-1')}
                         >
@@ -231,7 +229,6 @@ export class Row extends Component<Props, State> {
                         <IconButton
                             id={`remove-button-${row.get('id') as number}`}
                             intent={ButtonIntent.Text}
-                            type="button"
                             onClick={this._toggleRemoveConfirmation}
                             className={classNames(
                                 css.actionButton,
@@ -253,7 +250,7 @@ export class Row extends Component<Props, State> {
                                     Are you sure you want to delete this tag?{' '}
                                     <b>It will be removed from all tickets</b>.
                                 </p>
-                                <Button type="button" onClick={this._onRemove}>
+                                <Button onClick={this._onRemove}>
                                     Confirm
                                 </Button>
                             </PopoverBody>

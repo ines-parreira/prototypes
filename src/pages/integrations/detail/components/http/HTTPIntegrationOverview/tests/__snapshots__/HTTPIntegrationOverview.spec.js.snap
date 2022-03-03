@@ -235,7 +235,6 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
           intent="destructive"
           isLoading={false}
           onClick={[Function]}
-          type="button"
         >
           Deactivate integration
         </ForwardRef>
@@ -244,7 +243,6 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
           confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
           intent="destructive"
           onConfirm={[Function]}
-          type="button"
         >
           <ButtonIconLabel
             icon="delete"
@@ -503,7 +501,6 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
           intent="destructive"
           isLoading={false}
           onClick={[Function]}
-          type="button"
         >
           Deactivate integration
         </ForwardRef>
@@ -512,7 +509,6 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
           confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
           intent="destructive"
           onConfirm={[Function]}
-          type="button"
         >
           <ButtonIconLabel
             icon="delete"

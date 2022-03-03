@@ -259,13 +259,13 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
         className="mr-2"
         intent="secondary"
         onClick={[Function]}
-        type="button"
       >
         Cancel
       </ForwardRef>
       <ConfirmButton
         confirmationContent="This action is irreversible. Are you sure you want to merge these customers?"
         isLoading={false}
+        type="submit"
       >
         Merge customers
       </ConfirmButton>

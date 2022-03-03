@@ -146,6 +146,7 @@ exports[`<SmsAppPreferences/> render() should render 1`] = `
           >
             <button
               class="wrapper creation medium"
+              type="submit"
             >
               Save changes
             </button>
@@ -320,6 +321,7 @@ exports[`<SmsAppPreferences/> render() should submit a valid payload with the se
             <button
               class="wrapper creation medium isDisabled"
               disabled=""
+              type="submit"
             >
               <div
                 class="spinner spinner-border"

@@ -225,7 +225,9 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                             </Col>
                         </Row>
 
-                        <Button isLoading={isLoading}>Save changes</Button>
+                        <Button type="submit" isLoading={isLoading}>
+                            Save changes
+                        </Button>
                     </Form>
                 </Container>
             </div>

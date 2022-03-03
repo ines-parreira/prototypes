@@ -215,7 +215,6 @@ export class AddLinkContainer extends Component<Props> {
                     <Button
                         isDisabled={!this._isValid()}
                         onClick={this._submit}
-                        type="button"
                     >
                         {this.props.entityKey ? 'Update Link' : 'Insert Link'}
                     </Button>

@@ -67,12 +67,11 @@ export const CustomerDetailContainer = ({
                             activeCustomer.get('id') as number
                         }`}
                     >
-                        <Button type="button" intent={ButtonIntent.Secondary}>
+                        <Button intent={ButtonIntent.Secondary}>
                             Create ticket
                         </Button>
                     </Link>
                     <Button
-                        type="button"
                         intent={ButtonIntent.Creation}
                         onClick={() => setIsCustomerFormOpen(true)}
                     >

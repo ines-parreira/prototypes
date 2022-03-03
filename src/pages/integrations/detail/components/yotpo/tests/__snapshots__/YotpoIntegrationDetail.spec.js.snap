@@ -154,7 +154,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
             intent="destructive"
             isDisabled={false}
             onConfirm={[Function]}
-            type="button"
           >
             <ButtonIconLabel
               icon="delete"
@@ -289,7 +288,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
             intent="destructive"
             isDisabled={false}
             onConfirm={[Function]}
-            type="button"
           >
             <ButtonIconLabel
               icon="delete"
@@ -416,7 +414,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
             intent="destructive"
             isDisabled={false}
             onConfirm={[Function]}
-            type="button"
           >
             <ButtonIconLabel
               icon="delete"
@@ -543,7 +540,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
             intent="destructive"
             isDisabled={true}
             onConfirm={[Function]}
-            type="button"
           >
             <ButtonIconLabel
               icon="delete"
@@ -670,7 +666,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
             intent="destructive"
             isDisabled={false}
             onConfirm={[Function]}
-            type="button"
           >
             <ButtonIconLabel
               icon="delete"

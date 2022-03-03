@@ -283,7 +283,6 @@ export class EventContainer extends React.Component<Props, State> {
                                     showDetails: !this.state.showDetails,
                                 })
                             }
-                            type="button"
                             title="More details"
                         >
                             {this.state.showDetails

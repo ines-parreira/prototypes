@@ -335,7 +335,6 @@ function DraftOrderLineItemRow({
                     </strong>
                     {removable && !isShownInEditOrder && (
                         <IconButton
-                            type="button"
                             intent={ButtonIntent.Text}
                             tabIndex={0}
                             className={css.delete}
@@ -361,7 +360,6 @@ function DraftOrderLineItemRow({
             <td className={classnames(css.numberCol, css.centered)}>
                 {!shouldRestock && (
                     <IconButton
-                        type="button"
                         intent={ButtonIntent.Text}
                         tabIndex={0}
                         className={css.delete}

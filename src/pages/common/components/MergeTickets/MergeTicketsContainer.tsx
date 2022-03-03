@@ -149,7 +149,6 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                             <div className="float-left buttons-bar">
                                 <Button
                                     color="secondary"
-                                    type="button"
                                     onClick={() =>
                                         this.setState({targetTicket: null})
                                     }
@@ -166,7 +165,6 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                             >
                                 <Button
                                     intent={ButtonIntent.Secondary}
-                                    type="button"
                                     className="mr-2"
                                     onClick={this.props.toggleModal}
                                     isDisabled={isLoading}
@@ -174,6 +172,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                                     Cancel
                                 </Button>
                                 <ConfirmButton
+                                    type="submit"
                                     confirmationContent="This action is irreversible. Are you sure you want to merge these tickets?"
                                     isLoading={isLoading}
                                 >

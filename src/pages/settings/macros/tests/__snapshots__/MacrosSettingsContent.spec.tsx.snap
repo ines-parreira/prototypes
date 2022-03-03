@@ -22,9 +22,7 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
       <Link
         to="/app/settings/macros/new"
       >
-        <ForwardRef
-          type="button"
-        >
+        <ForwardRef>
           Create macro
         </ForwardRef>
       </Link>

@@ -48,7 +48,6 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
                 id="bulk-merge-button"
                 isDisabled={disabled}
                 intent={ButtonIntent.Secondary}
-                type="button"
                 className="mr-2 skip-default"
                 onClick={toggleMergeConfirmation}
             >
@@ -68,9 +67,7 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
                         <b>{mergeTagDestination}</b>.<br />
                         <b>This action cannot be undone</b>.
                     </p>
-                    <Button type="button" onClick={handleMergeClick}>
-                        Confirm
-                    </Button>
+                    <Button onClick={handleMergeClick}>Confirm</Button>
                 </PopoverBody>
             </Popover>
         </>

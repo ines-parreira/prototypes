@@ -112,7 +112,6 @@ const AutomationSection = () => {
                 {hasAutomationAddOn ? (
                     <Button
                         className="align-self-end"
-                        type="button"
                         intent={ButtonIntent.Secondary}
                         onClick={() => {
                             setIsAutomationModalOpened(true)

@@ -90,7 +90,6 @@ export class RowContainer extends Component<Props> {
                             }
                             onConfirm={this._deleteAgent}
                             intent={ButtonIntent.Text}
-                            type="button"
                         >
                             <ButtonIconLabel icon="delete" />
                         </ConfirmButton>

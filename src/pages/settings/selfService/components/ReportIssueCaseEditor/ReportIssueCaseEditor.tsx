@@ -385,7 +385,6 @@ const ReportIssueCaseEditor: ComponentType = () => {
 
                                 <Button
                                     intent={ButtonIntent.Secondary}
-                                    type="button"
                                     onClick={handleCancelClick}
                                 >
                                     Cancel
@@ -396,7 +395,6 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                         className={css.deleteButton}
                                         confirmationContent="You are about to delete this case."
                                         onConfirm={handleDeleteClick}
-                                        type="button"
                                         intent={ButtonIntent.Destructive}
                                     >
                                         <ButtonIconLabel icon="delete">

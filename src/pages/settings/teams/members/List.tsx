@@ -230,7 +230,6 @@ export class MembersListContainer extends Component<Props, State> {
                                     />
                                     <Button
                                         intent={ButtonIntent.Secondary}
-                                        type="button"
                                         onClick={
                                             this._deleteTeamMemberSelection
                                         }

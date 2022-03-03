@@ -258,7 +258,6 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
         intent="secondary"
         onClick={[Function]}
         size="small"
-        type="button"
       >
         <ButtonIconLabel
           icon="arrow_back"

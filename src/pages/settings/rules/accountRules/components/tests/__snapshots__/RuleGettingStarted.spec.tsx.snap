@@ -20,11 +20,13 @@ exports[`<RuleGettingStarted /> should render with logo 1`] = `
     >
       <button
         class="wrapper primary medium"
+        type="button"
       >
         Visit rule library
       </button>
       <button
         class="wrapper ml-2 secondary medium"
+        type="button"
       >
         Create rule
       </button>

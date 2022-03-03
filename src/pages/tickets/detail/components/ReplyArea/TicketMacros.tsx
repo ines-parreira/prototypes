@@ -262,7 +262,6 @@ export class TicketMacrosContainer extends Component<Props, State> {
                                         <Button
                                             onClick={this.deleteMacro}
                                             intent={ButtonIntent.Destructive}
-                                            type="button"
                                         >
                                             Delete macro
                                         </Button>
@@ -273,7 +272,6 @@ export class TicketMacrosContainer extends Component<Props, State> {
                                             }
                                             className="float-right"
                                             intent={ButtonIntent.Secondary}
-                                            type="button"
                                         >
                                             Cancel
                                         </Button>
@@ -306,7 +304,6 @@ export class TicketMacrosContainer extends Component<Props, State> {
                         className="d-md-none"
                         intent={ButtonIntent.Secondary}
                         size={ButtonSize.Small}
-                        type="button"
                     >
                         Close
                     </Button>

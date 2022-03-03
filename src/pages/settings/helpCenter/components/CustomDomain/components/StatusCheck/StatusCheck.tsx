@@ -27,7 +27,6 @@ export const StatusCheck = ({
                 className="mr-4"
                 isDisabled={isLoading}
                 intent={ButtonIntent.Primary}
-                type="button"
                 onClick={onCheckStatus}
             >
                 {isLoading ? (

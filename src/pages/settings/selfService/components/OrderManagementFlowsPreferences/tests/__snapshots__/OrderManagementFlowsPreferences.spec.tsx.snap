@@ -223,6 +223,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                         >
                           <button
                             class="wrapper primary medium"
+                            type="button"
                           >
                             <span
                               class="wrapper"
@@ -605,6 +606,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                         >
                           <button
                             class="wrapper primary medium"
+                            type="button"
                           >
                             <span
                               class="wrapper"

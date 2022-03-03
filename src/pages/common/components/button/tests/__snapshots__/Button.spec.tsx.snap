@@ -3,6 +3,7 @@
 exports[`<Button /> should render a button 1`] = `
 <button
   class="wrapper primary medium"
+  type="button"
 />
 `;
 
@@ -10,6 +11,7 @@ exports[`<Button /> should render a spinner when loading 1`] = `
 <button
   class="wrapper primary medium isDisabled"
   disabled=""
+  type="button"
 >
   <div
     class="spinner spinner-border"

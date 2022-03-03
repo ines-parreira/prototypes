@@ -26,7 +26,6 @@ exports[`ManageTags component mounts correctly 1`] = `
         <ForwardRef
           id="create-tag-button"
           onClick={[Function]}
-          type="button"
         >
           Create tag
         </ForwardRef>
@@ -67,7 +66,9 @@ exports[`ManageTags component mounts correctly 1`] = `
                     value=""
                   />
                 </div>
-                <ForwardRef>
+                <ForwardRef
+                  type="submit"
+                >
                   check
                 </ForwardRef>
               </div>

@@ -261,7 +261,6 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                         }
                         onConfirm={handleDelete}
                         isLoading={isDeletePending}
-                        type="button"
                     >
                         <ButtonIconLabel icon="delete">
                             Delete number

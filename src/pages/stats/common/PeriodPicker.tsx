@@ -242,7 +242,6 @@ export const PeriodPickerContainer = ({
                     >
                         <div>
                             <Button
-                                type="button"
                                 intent={ButtonIntent.Secondary}
                                 isDisabled={isDisabled}
                             >

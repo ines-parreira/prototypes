@@ -302,6 +302,7 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
         class="wrapper previousButton wrapper medium secondary medium isDisabled"
         disabled=""
         id="prev-btn"
+        type="button"
       >
         <i
           class="material-icons icon"
@@ -312,6 +313,7 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
       <button
         class="wrapper nextButton wrapper medium secondary medium"
         id="next-btn"
+        type="button"
       >
         <i
           class="material-icons icon"

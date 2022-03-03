@@ -126,7 +126,6 @@ const IvrMenuActionField = ({
                                     <IconButton
                                         intent={ButtonIntent.Text}
                                         onClick={() => setDrawerOpen(false)}
-                                        type="button"
                                         className={css.closeDrawerButton}
                                     >
                                         keyboard_tab
@@ -192,7 +191,6 @@ const IvrMenuActionField = ({
             </Col>
             <Col className={classNames(css.smallColumn, 'pl-0')}>
                 <IconButton
-                    type="button"
                     intent={ButtonIntent.Text}
                     onClick={onRemove}
                     className={css.deleteButton}

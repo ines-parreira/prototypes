@@ -115,11 +115,7 @@ export default function SectionFormModal({
                     >
                         {isNewSection ? 'Create' : 'Update'}
                     </Button>
-                    <Button
-                        intent={ButtonIntent.Secondary}
-                        type="button"
-                        onClick={onClose}
-                    >
+                    <Button intent={ButtonIntent.Secondary} onClick={onClose}>
                         Cancel
                     </Button>
                 </div>

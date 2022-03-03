@@ -536,6 +536,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             class="wrapper primary medium isDisabled"
             data-testid="button-save"
             disabled=""
+            type="button"
           >
             Save
           </button>

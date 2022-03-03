@@ -142,7 +142,6 @@ export default function TwoFactorAuthenticationModal({
                 <>
                     {step === 1 && (
                         <Button
-                            type="button"
                             intent={ButtonIntent.Secondary}
                             onClick={handleCancel}
                             isLoading={isLoading}
@@ -152,7 +151,6 @@ export default function TwoFactorAuthenticationModal({
                     )}
                     {step === 2 && (
                         <Button
-                            type="button"
                             intent={ButtonIntent.Secondary}
                             onClick={handleBack}
                             isLoading={isLoading}

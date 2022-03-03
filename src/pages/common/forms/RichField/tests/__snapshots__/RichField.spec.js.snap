@@ -2670,7 +2670,6 @@ exports[`RichField should render default content state 1`] = `
                                               onMouseDown={[Function]}
                                               size="small"
                                               title="Bold"
-                                              type="button"
                                             >
                                               <ForwardRef
                                                 className="button wrapper small"
@@ -2679,7 +2678,6 @@ exports[`RichField should render default content state 1`] = `
                                                 onMouseDown={[Function]}
                                                 size="small"
                                                 title="Bold"
-                                                type="button"
                                               >
                                                 <button
                                                   className="wrapper button wrapper small secondary small"
@@ -2724,7 +2722,6 @@ exports[`RichField should render default content state 1`] = `
                                               onMouseDown={[Function]}
                                               size="small"
                                               title="Italic"
-                                              type="button"
                                             >
                                               <ForwardRef
                                                 className="button wrapper small"
@@ -2733,7 +2730,6 @@ exports[`RichField should render default content state 1`] = `
                                                 onMouseDown={[Function]}
                                                 size="small"
                                                 title="Italic"
-                                                type="button"
                                               >
                                                 <button
                                                   className="wrapper button wrapper small secondary small"
@@ -2778,7 +2774,6 @@ exports[`RichField should render default content state 1`] = `
                                               onMouseDown={[Function]}
                                               size="small"
                                               title="Underline"
-                                              type="button"
                                             >
                                               <ForwardRef
                                                 className="button wrapper small"
@@ -2787,7 +2782,6 @@ exports[`RichField should render default content state 1`] = `
                                                 onMouseDown={[Function]}
                                                 size="small"
                                                 title="Underline"
-                                                type="button"
                                               >
                                                 <button
                                                   className="wrapper button wrapper small secondary small"
@@ -2878,7 +2872,6 @@ exports[`RichField should render default content state 1`] = `
                                                     onMouseDown={[Function]}
                                                     size="small"
                                                     title="Insert link"
-                                                    type="button"
                                                   >
                                                     <ForwardRef
                                                       className="button wrapper small"
@@ -2887,7 +2880,6 @@ exports[`RichField should render default content state 1`] = `
                                                       onMouseDown={[Function]}
                                                       size="small"
                                                       title="Insert link"
-                                                      type="button"
                                                     >
                                                       <button
                                                         className="wrapper button wrapper small secondary small"
@@ -2958,7 +2950,6 @@ exports[`RichField should render default content state 1`] = `
                                                   onMouseDown={[Function]}
                                                   size="small"
                                                   title="Insert image"
-                                                  type="button"
                                                 >
                                                   <ForwardRef
                                                     className="button wrapper small"
@@ -2967,7 +2958,6 @@ exports[`RichField should render default content state 1`] = `
                                                     onMouseDown={[Function]}
                                                     size="small"
                                                     title="Insert image"
-                                                    type="button"
                                                   >
                                                     <button
                                                       className="wrapper button wrapper small secondary small"
@@ -3034,7 +3024,6 @@ exports[`RichField should render default content state 1`] = `
                                                   onMouseDown={[Function]}
                                                   size="small"
                                                   title="Insert emoji"
-                                                  type="button"
                                                 >
                                                   <ForwardRef
                                                     className="button wrapper small"
@@ -3043,7 +3032,6 @@ exports[`RichField should render default content state 1`] = `
                                                     onMouseDown={[Function]}
                                                     size="small"
                                                     title="Insert emoji"
-                                                    type="button"
                                                   >
                                                     <button
                                                       className="wrapper button wrapper small secondary small"
@@ -8406,7 +8394,6 @@ exports[`RichField should render immutable variable 1`] = `
                                               onMouseDown={[Function]}
                                               size="small"
                                               title="Bold"
-                                              type="button"
                                             >
                                               <ForwardRef
                                                 className="button wrapper small"
@@ -8415,7 +8402,6 @@ exports[`RichField should render immutable variable 1`] = `
                                                 onMouseDown={[Function]}
                                                 size="small"
                                                 title="Bold"
-                                                type="button"
                                               >
                                                 <button
                                                   className="wrapper button wrapper small secondary small"
@@ -8460,7 +8446,6 @@ exports[`RichField should render immutable variable 1`] = `
                                               onMouseDown={[Function]}
                                               size="small"
                                               title="Italic"
-                                              type="button"
                                             >
                                               <ForwardRef
                                                 className="button wrapper small"
@@ -8469,7 +8454,6 @@ exports[`RichField should render immutable variable 1`] = `
                                                 onMouseDown={[Function]}
                                                 size="small"
                                                 title="Italic"
-                                                type="button"
                                               >
                                                 <button
                                                   className="wrapper button wrapper small secondary small"
@@ -8514,7 +8498,6 @@ exports[`RichField should render immutable variable 1`] = `
                                               onMouseDown={[Function]}
                                               size="small"
                                               title="Underline"
-                                              type="button"
                                             >
                                               <ForwardRef
                                                 className="button wrapper small"
@@ -8523,7 +8506,6 @@ exports[`RichField should render immutable variable 1`] = `
                                                 onMouseDown={[Function]}
                                                 size="small"
                                                 title="Underline"
-                                                type="button"
                                               >
                                                 <button
                                                   className="wrapper button wrapper small secondary small"
@@ -8614,7 +8596,6 @@ exports[`RichField should render immutable variable 1`] = `
                                                     onMouseDown={[Function]}
                                                     size="small"
                                                     title="Insert link"
-                                                    type="button"
                                                   >
                                                     <ForwardRef
                                                       className="button wrapper small"
@@ -8623,7 +8604,6 @@ exports[`RichField should render immutable variable 1`] = `
                                                       onMouseDown={[Function]}
                                                       size="small"
                                                       title="Insert link"
-                                                      type="button"
                                                     >
                                                       <button
                                                         className="wrapper button wrapper small secondary small"
@@ -8694,7 +8674,6 @@ exports[`RichField should render immutable variable 1`] = `
                                                   onMouseDown={[Function]}
                                                   size="small"
                                                   title="Insert image"
-                                                  type="button"
                                                 >
                                                   <ForwardRef
                                                     className="button wrapper small"
@@ -8703,7 +8682,6 @@ exports[`RichField should render immutable variable 1`] = `
                                                     onMouseDown={[Function]}
                                                     size="small"
                                                     title="Insert image"
-                                                    type="button"
                                                   >
                                                     <button
                                                       className="wrapper button wrapper small secondary small"
@@ -8770,7 +8748,6 @@ exports[`RichField should render immutable variable 1`] = `
                                                   onMouseDown={[Function]}
                                                   size="small"
                                                   title="Insert emoji"
-                                                  type="button"
                                                 >
                                                   <ForwardRef
                                                     className="button wrapper small"
@@ -8779,7 +8756,6 @@ exports[`RichField should render immutable variable 1`] = `
                                                     onMouseDown={[Function]}
                                                     size="small"
                                                     title="Insert emoji"
-                                                    type="button"
                                                   >
                                                     <button
                                                       className="wrapper button wrapper small secondary small"
@@ -11380,7 +11356,6 @@ exports[`RichField should render mutable variable 1`] = `
                                               onMouseDown={[Function]}
                                               size="small"
                                               title="Bold"
-                                              type="button"
                                             >
                                               <ForwardRef
                                                 className="button wrapper small"
@@ -11389,7 +11364,6 @@ exports[`RichField should render mutable variable 1`] = `
                                                 onMouseDown={[Function]}
                                                 size="small"
                                                 title="Bold"
-                                                type="button"
                                               >
                                                 <button
                                                   className="wrapper button wrapper small secondary small"
@@ -11434,7 +11408,6 @@ exports[`RichField should render mutable variable 1`] = `
                                               onMouseDown={[Function]}
                                               size="small"
                                               title="Italic"
-                                              type="button"
                                             >
                                               <ForwardRef
                                                 className="button wrapper small"
@@ -11443,7 +11416,6 @@ exports[`RichField should render mutable variable 1`] = `
                                                 onMouseDown={[Function]}
                                                 size="small"
                                                 title="Italic"
-                                                type="button"
                                               >
                                                 <button
                                                   className="wrapper button wrapper small secondary small"
@@ -11488,7 +11460,6 @@ exports[`RichField should render mutable variable 1`] = `
                                               onMouseDown={[Function]}
                                               size="small"
                                               title="Underline"
-                                              type="button"
                                             >
                                               <ForwardRef
                                                 className="button wrapper small"
@@ -11497,7 +11468,6 @@ exports[`RichField should render mutable variable 1`] = `
                                                 onMouseDown={[Function]}
                                                 size="small"
                                                 title="Underline"
-                                                type="button"
                                               >
                                                 <button
                                                   className="wrapper button wrapper small secondary small"
@@ -11588,7 +11558,6 @@ exports[`RichField should render mutable variable 1`] = `
                                                     onMouseDown={[Function]}
                                                     size="small"
                                                     title="Insert link"
-                                                    type="button"
                                                   >
                                                     <ForwardRef
                                                       className="button wrapper small"
@@ -11597,7 +11566,6 @@ exports[`RichField should render mutable variable 1`] = `
                                                       onMouseDown={[Function]}
                                                       size="small"
                                                       title="Insert link"
-                                                      type="button"
                                                     >
                                                       <button
                                                         className="wrapper button wrapper small secondary small"
@@ -11668,7 +11636,6 @@ exports[`RichField should render mutable variable 1`] = `
                                                   onMouseDown={[Function]}
                                                   size="small"
                                                   title="Insert image"
-                                                  type="button"
                                                 >
                                                   <ForwardRef
                                                     className="button wrapper small"
@@ -11677,7 +11644,6 @@ exports[`RichField should render mutable variable 1`] = `
                                                     onMouseDown={[Function]}
                                                     size="small"
                                                     title="Insert image"
-                                                    type="button"
                                                   >
                                                     <button
                                                       className="wrapper button wrapper small secondary small"
@@ -11744,7 +11710,6 @@ exports[`RichField should render mutable variable 1`] = `
                                                   onMouseDown={[Function]}
                                                   size="small"
                                                   title="Insert emoji"
-                                                  type="button"
                                                 >
                                                   <ForwardRef
                                                     className="button wrapper small"
@@ -11753,7 +11718,6 @@ exports[`RichField should render mutable variable 1`] = `
                                                     onMouseDown={[Function]}
                                                     size="small"
                                                     title="Insert emoji"
-                                                    type="button"
                                                   >
                                                     <button
                                                       className="wrapper button wrapper small secondary small"

@@ -309,10 +309,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                 className={classnames(css.primaryAction)}
                             >
                                 {!selectionMode && (
-                                    <Button
-                                        type="button"
-                                        onClick={this._addNewMacro}
-                                    >
+                                    <Button onClick={this._addNewMacro}>
                                         <ButtonIconLabel icon="add">
                                             Create macro
                                         </ButtonIconLabel>
@@ -325,7 +322,6 @@ export class MacroModalContainer extends Component<Props, State> {
                                     (selectionMode ? (
                                         <div className="d-inline-block float-right">
                                             <Button
-                                                type="button"
                                                 onClick={
                                                     this._applyMacroAndClose
                                                 }
@@ -337,7 +333,6 @@ export class MacroModalContainer extends Component<Props, State> {
                                                 className="ml-3"
                                                 intent={ButtonIntent.Secondary}
                                                 onClick={this._applyMacro}
-                                                type="button"
                                             >
                                                 Apply macro to {selectedCount}{' '}
                                                 tickets
@@ -360,7 +355,6 @@ export class MacroModalContainer extends Component<Props, State> {
                                                                 ''
                                                             ) as string
                                                         }?`}
-                                                        type="button"
                                                     >
                                                         <ButtonIconLabel icon="delete">
                                                             Delete macro
@@ -376,7 +370,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                                         this._createMacro(e)
                                                     }
                                                 >
-                                                    <Button>
+                                                    <Button type="submit">
                                                         Save new macro
                                                     </Button>
                                                 </form>
@@ -389,7 +383,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                                             this._updateMacro(e)
                                                         }
                                                     >
-                                                        <Button>
+                                                        <Button type="submit">
                                                             Update macro
                                                         </Button>
                                                     </form>
@@ -403,6 +397,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                                         }
                                                     >
                                                         <Button
+                                                            type="submit"
                                                             intent={
                                                                 ButtonIntent.Secondary
                                                             }

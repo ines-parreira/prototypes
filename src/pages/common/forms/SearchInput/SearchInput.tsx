@@ -288,7 +288,6 @@ export default class SearchInput<
                         className={classnames('mr-2', css.backButton)}
                         size={ButtonSize.Small}
                         intent={ButtonIntent.Secondary}
-                        type="button"
                         onClick={this._onBackClicked}
                     >
                         <ButtonIconLabel icon="arrow_back">

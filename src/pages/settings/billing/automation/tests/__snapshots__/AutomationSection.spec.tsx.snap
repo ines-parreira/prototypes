@@ -63,6 +63,7 @@ exports[`<AutomationSection /> should render 1`] = `
       >
         <button
           class="wrapper primary medium"
+          type="button"
         >
           <span
             class="wrapper"
@@ -229,6 +230,7 @@ exports[`<AutomationSection /> should render for customers already with legacy a
       >
         <button
           class="wrapper primary medium"
+          type="button"
         >
           <span
             class="wrapper"
@@ -313,6 +315,7 @@ exports[`<AutomationSection /> should render for trialing customers 1`] = `
         >
           <button
             class="wrapper primary medium"
+            type="button"
           >
             <span
               class="wrapper"

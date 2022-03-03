@@ -319,7 +319,6 @@ export const ReturnsPolicyView = () => {
                                                 loading || !formHasChanged
                                             }
                                             intent={ButtonIntent.Secondary}
-                                            type="button"
                                             onClick={onCancel}
                                         >
                                             Cancel

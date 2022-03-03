@@ -89,6 +89,7 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
                   >
                     <button
                       class="wrapper primary medium"
+                      type="button"
                     >
                       <span
                         class="wrapper"
@@ -203,6 +204,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
                   >
                     <button
                       class="wrapper primary medium"
+                      type="button"
                     >
                       <span
                         class="wrapper"
@@ -316,6 +318,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
                   >
                     <button
                       class="wrapper primary medium"
+                      type="button"
                     >
                       <span
                         class="wrapper"
@@ -430,6 +433,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
                   >
                     <button
                       class="wrapper primary medium"
+                      type="button"
                     >
                       <span
                         class="wrapper"

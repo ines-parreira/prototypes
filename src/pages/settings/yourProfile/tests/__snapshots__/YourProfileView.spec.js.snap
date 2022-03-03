@@ -2706,6 +2706,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
       </div>
       <ForwardRef
         isLoading={false}
+        type="submit"
       >
         Save Changes
       </ForwardRef>

@@ -126,7 +126,6 @@ export const HelpCenterStartView: React.FC = () => {
                     <Button
                         isDisabled={addNewButtonDisabled}
                         intent={ButtonIntent.Primary}
-                        type="button"
                         onClick={() =>
                             history.push(`${HELP_CENTER_BASE_PATH}/new`)
                         }

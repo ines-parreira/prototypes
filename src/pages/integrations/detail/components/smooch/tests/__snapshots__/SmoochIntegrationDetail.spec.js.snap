@@ -224,7 +224,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
               intent="destructive"
               isDisabled={false}
               onConfirm={[Function]}
-              type="button"
             >
               <ButtonIconLabel
                 icon="delete"
@@ -463,7 +462,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
               intent="destructive"
               isDisabled={false}
               onConfirm={[Function]}
-              type="button"
             >
               <ButtonIconLabel
                 icon="delete"
@@ -703,7 +701,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
               intent="destructive"
               isDisabled={true}
               onConfirm={[Function]}
-              type="button"
             >
               <ButtonIconLabel
                 icon="delete"

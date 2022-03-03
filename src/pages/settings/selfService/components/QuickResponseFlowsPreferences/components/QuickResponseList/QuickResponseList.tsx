@@ -230,7 +230,6 @@ const QuickResponseList = () => {
                         <Button
                             intent={ButtonIntent.Secondary}
                             color="secondary"
-                            type="button"
                             onClick={handleClose}
                         >
                             Cancel

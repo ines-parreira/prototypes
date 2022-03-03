@@ -99,7 +99,6 @@ const QuickResponseListItem: React.FC<QuickResponseListItemProps> = ({
                         placement="top"
                         confirmationButtonIntent={ButtonIntent.Destructive}
                         intent={ButtonIntent.Text}
-                        type="button"
                         className={css.actionButton}
                     >
                         <div className="material-icons delete">delete</div>

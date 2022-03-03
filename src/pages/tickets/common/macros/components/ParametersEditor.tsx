@@ -95,7 +95,6 @@ export default class ParametersEditor extends Component<Props> {
                                             ? ButtonIntent.Primary
                                             : ButtonIntent.Secondary
                                     }
-                                    type="button"
                                     id={`parameter-required-${name}-${index!}`}
                                     className="mr-2"
                                     iconClassName="icon-custom icon-asterisk"
@@ -115,7 +114,6 @@ export default class ParametersEditor extends Component<Props> {
                                 </Tooltip>
                                 <IconButton
                                     className="mr-2"
-                                    type="button"
                                     id={`parameter-editable-${name}-${index!}`}
                                     intent={
                                         dict.get('editable')
@@ -140,7 +138,6 @@ export default class ParametersEditor extends Component<Props> {
                                 </Tooltip>
                                 <IconButton
                                     intent={ButtonIntent.Destructive}
-                                    type="button"
                                     id={`parameter-editable-${name}-${index!}`}
                                     onClick={() => this.deleteRow(index!)}
                                 >
@@ -153,7 +150,6 @@ export default class ParametersEditor extends Component<Props> {
                 <IconButton
                     intent={ButtonIntent.Secondary}
                     onClick={this.addRow}
-                    type="button"
                 >
                     add
                 </IconButton>

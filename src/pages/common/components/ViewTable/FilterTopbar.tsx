@@ -441,7 +441,6 @@ export const FilterTopbar = ({
                                         )
                                     )
                                 }}
-                                type="button"
                             >
                                 <ButtonIconLabel icon="delete">
                                     Delete view

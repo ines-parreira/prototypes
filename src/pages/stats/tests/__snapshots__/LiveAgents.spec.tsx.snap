@@ -948,6 +948,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
               class="wrapper previousButton wrapper medium secondary medium isDisabled"
               disabled=""
               id="prev-btn"
+              type="button"
             >
               <i
                 class="material-icons icon"
@@ -958,6 +959,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
             <button
               class="wrapper nextButton wrapper medium secondary medium"
               id="next-btn"
+              type="button"
             >
               <i
                 class="material-icons icon"

@@ -144,6 +144,7 @@ export const ChangePasswordContainer = ({
                 />
 
                 <Button
+                    type="submit"
                     className={css.updatePasswordButton}
                     isDisabled={invalid || !dirty}
                     isLoading={isLoading}

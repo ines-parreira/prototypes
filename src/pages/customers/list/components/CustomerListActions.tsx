@@ -146,11 +146,7 @@ class CustomerListActions extends Component<Props, State> {
                             Are you sure you want to delete {selectedCount}{' '}
                             customer{selectedCount > 1 && 's'}?
                         </p>
-                        <Button
-                            type="button"
-                            autoFocus
-                            onClick={this._bulkDelete}
-                        >
+                        <Button autoFocus onClick={this._bulkDelete}>
                             Confirm
                         </Button>
                     </PopoverBody>

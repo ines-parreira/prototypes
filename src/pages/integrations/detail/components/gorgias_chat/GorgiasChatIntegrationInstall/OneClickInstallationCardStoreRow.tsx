@@ -152,7 +152,6 @@ export const OneClickInstallationCardStoreRow = ({
                         }
                         isDisabled={isInstallationLoading}
                         isLoading={isDisconnectionLoading}
-                        type="button"
                         intent={ButtonIntent.Destructive}
                         confirmationContent={
                             hasLegacyInstallations ? (

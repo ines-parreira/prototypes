@@ -457,7 +457,6 @@ export const GorgiasChatCampaignDetailForm = ({
                                 placement="bottom-end"
                                 onConfirm={_deleteCampaign}
                                 confirmationContent="Are you sure you want to delete this campaign?"
-                                type="button"
                                 intent={ButtonIntent.Destructive}
                                 isDisabled={loading}
                             >

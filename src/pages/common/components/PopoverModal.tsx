@@ -34,7 +34,6 @@ const PopoverModal = ({
                 className={classnames(css.wrapper, className)}
                 ref={ref}
                 intent={ButtonIntent.Secondary}
-                type="button"
                 onClick={togglePopover}
             >
                 <ButtonIconLabel icon="info_outline">

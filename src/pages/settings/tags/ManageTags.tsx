@@ -215,7 +215,6 @@ export class ManageTagsContainer extends Component<Props, State> {
                             />
                             <Button
                                 id="create-tag-button"
-                                type="button"
                                 onClick={this._toggleCreationPopup}
                             >
                                 Create tag
@@ -247,7 +246,10 @@ export class ManageTagsContainer extends Component<Props, State> {
                                                     inline
                                                 />
                                             </div>
-                                            <IconButton isDisabled={isCreating}>
+                                            <IconButton
+                                                type="submit"
+                                                isDisabled={isCreating}
+                                            >
                                                 check
                                             </IconButton>
                                         </div>

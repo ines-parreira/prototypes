@@ -9,6 +9,7 @@ exports[`UpgradeButton should display with custom callback 1`] = `
   >
     <button
       class="wrapper primary medium"
+      type="button"
     >
       <span
         class="wrapper"
@@ -37,6 +38,7 @@ exports[`UpgradeButton should display with custom props 1`] = `
     >
       <button
         class="wrapper primary medium"
+        type="button"
       >
         <span
           class="wrapper"
@@ -64,6 +66,7 @@ exports[`UpgradeButton should display with default props 1`] = `
     >
       <button
         class="wrapper primary medium"
+        type="button"
       >
         <span
           class="wrapper"

@@ -61,7 +61,6 @@ const ReportIssuePolicyView: ComponentType = () => {
             >
                 <Button
                     intent={ButtonIntent.Creation}
-                    type="button"
                     onClick={handleClickNewCase}
                 >
                     <span className="icon material-icons">add</span> New Case

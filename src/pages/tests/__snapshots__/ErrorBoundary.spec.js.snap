@@ -53,6 +53,7 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
       <button
         className="wrapper mr-2 mb-2 float-left primary medium"
         onClick={[Function]}
+        type="button"
       >
         Reload page
       </button>
@@ -65,6 +66,7 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
       <button
         className="wrapper mr-2 mb-2 secondary medium"
         onClick={[Function]}
+        type="button"
       >
         Show details
       </button>

@@ -110,7 +110,7 @@ export function MacrosSettingsContentContainer({
                     />
                     <MacrosManageDropdown />
                     <Link to="/app/settings/macros/new">
-                        <Button type="button">Create macro</Button>
+                        <Button>Create macro</Button>
                     </Link>
                 </div>
             </PageHeader>

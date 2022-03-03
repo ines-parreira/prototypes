@@ -181,7 +181,6 @@ export class FileFieldContainer extends InputField<Props> {
                 )}
 
                 <Button
-                    type="button"
                     intent={ButtonIntent.Secondary}
                     isDisabled={disabled}
                     onClick={this._handleButtonClick}

@@ -173,7 +173,6 @@ export class BillingInvoicesContainer extends Component<Props, State> {
                                                 href={invoicePdfUrl}
                                             >
                                                 <Button
-                                                    type="button"
                                                     intent={
                                                         ButtonIntent.Secondary
                                                     }
@@ -188,7 +187,6 @@ export class BillingInvoicesContainer extends Component<Props, State> {
                                             paymentIntent.get('status') ===
                                                 'requires_source_action' && (
                                                 <Button
-                                                    type="button"
                                                     isLoading={
                                                         confirmingInvoicePayment ===
                                                         invoice.get('id')
@@ -211,7 +209,6 @@ export class BillingInvoicesContainer extends Component<Props, State> {
                                             paymentIntent.get('status') ===
                                                 'requires_source' && (
                                                 <Button
-                                                    type="button"
                                                     isLoading={
                                                         payingInvoice ===
                                                         invoice.get('id')

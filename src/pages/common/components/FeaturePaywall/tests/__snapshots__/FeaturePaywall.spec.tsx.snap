@@ -130,6 +130,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing featu
                 >
                   <button
                     class="wrapper primary medium"
+                    type="button"
                   >
                     <span
                       class="wrapper"
@@ -299,6 +300,7 @@ exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] 
                 >
                   <button
                     class="wrapper primary medium"
+                    type="button"
                   >
                     <span
                       class="wrapper"
@@ -457,6 +459,7 @@ exports[`<FeaturePaywall /> should render paywall for the feature 1`] = `
                 >
                   <button
                     class="wrapper primary medium"
+                    type="button"
                   >
                     <span
                       class="wrapper"

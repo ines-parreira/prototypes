@@ -49,6 +49,7 @@ const Button = forwardRef(function (
         isDisabled,
         isLoading,
         size = ButtonSize.Medium,
+        type = 'button',
         ...otherProps
     }: Props,
     ref: Ref<HTMLButtonElement> | null | undefined
@@ -67,6 +68,7 @@ const Button = forwardRef(function (
                         [css.isDisabled]: isDisabled || isLoading,
                     }
                 )}
+                type={type}
                 disabled={isDisabled || isLoading}
                 ref={ref}
             >

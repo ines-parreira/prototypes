@@ -83,7 +83,6 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                     <Button
                         aria-label="help center preview"
                         intent={ButtonIntent.Secondary}
-                        type="button"
                         onClick={() =>
                             window.open(helpCenterUrl, '_blank')!.focus()
                         }

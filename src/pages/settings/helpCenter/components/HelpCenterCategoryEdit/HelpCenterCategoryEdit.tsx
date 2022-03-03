@@ -303,7 +303,6 @@ export const HelpCenterCategoryEdit = ({
                     <Label for="slug">Slug</Label>
                     <Button
                         intent={ButtonIntent.Text}
-                        type="button"
                         onClick={copyURL}
                         className={css.copyButton}
                     >

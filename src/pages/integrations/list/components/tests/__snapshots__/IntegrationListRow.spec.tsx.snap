@@ -172,6 +172,7 @@ exports[`IntegrationListRow should display an integration with upgrade requireme
           >
             <button
               class="wrapper primary small"
+              type="button"
             >
               <span
                 class="wrapper"

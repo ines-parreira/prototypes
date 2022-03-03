@@ -81,7 +81,6 @@ export class Magento2IntegrationList extends Component<Props> {
                     {isDisabled && !isManual ? (
                         <td className="smallest align-middle">
                             <ConfirmButton
-                                type="button"
                                 isLoading={isSubmitting}
                                 onConfirm={() =>
                                     this._onReactivateOneClick(

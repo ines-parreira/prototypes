@@ -146,7 +146,6 @@ class Error extends Component<Props, State> {
                 <span className="mr-2">
                     <Button
                         id={id}
-                        type="button"
                         onClick={this.retry}
                         isDisabled={!!this.state.loading}
                     >
@@ -166,7 +165,6 @@ class Error extends Component<Props, State> {
                 <span className="mr-2">
                     <Button
                         id={id}
-                        type="button"
                         onClick={this.force}
                         isDisabled={!!this.state.loading}
                     >
@@ -187,7 +185,6 @@ class Error extends Component<Props, State> {
                 <span>
                     <Button
                         id={id}
-                        type="button"
                         intent={ButtonIntent.Secondary}
                         onClick={this.cancel}
                         isDisabled={!!this.state.loading}

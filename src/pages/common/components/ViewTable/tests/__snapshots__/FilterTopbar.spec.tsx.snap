@@ -352,6 +352,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
       <button
         class="wrapper secondary medium"
         title="Export all view tickets"
+        type="button"
       >
         <span
           class="wrapper"
@@ -537,6 +538,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
             </button>
             <button
               class="wrapper toggle medium wrapper medium primary medium"
+              type="button"
             >
               <i
                 class="material-icons icon"

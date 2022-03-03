@@ -148,7 +148,6 @@ exports[`BillingInvoices component should display invoices, without PDF download
               >
                 <ForwardRef
                   intent="secondary"
-                  type="button"
                 >
                   <button
                     className="wrapper secondary medium"

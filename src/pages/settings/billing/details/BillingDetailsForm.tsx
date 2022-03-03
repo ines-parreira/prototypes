@@ -129,6 +129,7 @@ export class BillingDetailsFormContainer extends Component<Props, State> {
                                     />
                                     <div>
                                         <Button
+                                            type="submit"
                                             className={css.submitButton}
                                             isLoading={this.state.isSubmitting}
                                         >

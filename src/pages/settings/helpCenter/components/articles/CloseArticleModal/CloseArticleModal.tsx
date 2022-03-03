@@ -37,7 +37,6 @@ export const CloseArticleModal = ({
                 <div className={css.footerWrapper}>
                     <Button
                         intent={ButtonIntent.Destructive}
-                        type="button"
                         onClick={onDiscard}
                     >
                         Discard changes
@@ -45,7 +44,6 @@ export const CloseArticleModal = ({
                     <div>
                         <Button
                             intent={ButtonIntent.Secondary}
-                            type="button"
                             onClick={onContinueEditing}
                         >
                             Edit article
@@ -54,7 +52,6 @@ export const CloseArticleModal = ({
                             <Button
                                 className={classNames('ml-3', css.confirmBtn)}
                                 intent={ButtonIntent.Primary}
-                                type="button"
                                 onClick={onSave}
                             >
                                 Save article

@@ -424,7 +424,6 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                                                     <b>delete</b> this ticket.
                                                 </p>
                                                 <Button
-                                                    type="button"
                                                     onClick={this._trashTicket}
                                                     autoFocus
                                                 >

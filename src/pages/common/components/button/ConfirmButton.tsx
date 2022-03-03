@@ -30,7 +30,7 @@ export default function ConfirmButton({
     id,
     onConfirm,
     placement = 'bottom',
-    type = 'submit',
+    type,
     ...other
 }: Props) {
     const isMounted = useMountedState()
@@ -85,7 +85,6 @@ export default function ConfirmButton({
                 id={uid}
                 onClick={handleDisplayConfirmation}
                 ref={buttonRef}
-                type="button"
             >
                 {children}
             </Button>

@@ -104,11 +104,7 @@ export default class ObjectListField extends Component<Props> {
                         </Col>
                     </Row>
                 ))}
-                <Button
-                    size={ButtonSize.Small}
-                    type="button"
-                    onClick={this._add}
-                >
+                <Button size={ButtonSize.Small} onClick={this._add}>
                     <ButtonIconLabel icon="add">
                         Add {this.props.fieldName}
                     </ButtonIconLabel>

@@ -21,7 +21,6 @@ export default function ModalContinueButton({
         case 2:
             return (
                 <Button
-                    type="button"
                     onClick={onContinue}
                     isLoading={isLoading}
                     isDisabled={hasError}
@@ -32,7 +31,6 @@ export default function ModalContinueButton({
         case 3:
             return (
                 <Button
-                    type="button"
                     className="full-width"
                     onClick={onFinish}
                     isLoading={isLoading}

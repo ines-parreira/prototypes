@@ -257,7 +257,6 @@ export const CustomDomain = () => {
                     data-testid="create-domain-btn"
                     intent={ButtonIntent.Primary}
                     isDisabled={!domainValue || createDomainDto.loading}
-                    type="button"
                     onClick={handleOnClickAddDomain}
                 >
                     {createDomainDto.loading ? (

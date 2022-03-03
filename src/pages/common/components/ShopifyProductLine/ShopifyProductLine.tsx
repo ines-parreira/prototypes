@@ -221,7 +221,6 @@ export default function ShopifyProductLine({
                     {(onResetStoreChoice || subResults.length > 0) && (
                         <Button
                             className="mr-2"
-                            type="button"
                             onClick={
                                 subResults.length
                                     ? handleBackClicked

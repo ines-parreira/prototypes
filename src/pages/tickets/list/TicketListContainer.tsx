@@ -92,7 +92,7 @@ export const TicketListContainer = ({
                         !isEditMode && (
                             <div className="d-inline-flex align-items-center">
                                 <Link to="/app/ticket/new">
-                                    <Button type="button">Create ticket</Button>
+                                    <Button>Create ticket</Button>
                                 </Link>
                             </div>
                         )

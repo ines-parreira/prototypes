@@ -109,7 +109,6 @@ exports[`BusinessHours component should render default values 1`] = `
               <ForwardRef
                 intent="secondary"
                 onClick={[Function]}
-                type="button"
               >
                 <ButtonIconLabel
                   icon="add"
@@ -1159,7 +1158,6 @@ exports[`BusinessHours component should render values from state 1`] = `
                             <ForwardRef
                               intent="secondary"
                               onClick={[Function]}
-                              type="button"
                             >
                               <button
                                 className="wrapper secondary medium"

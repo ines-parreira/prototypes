@@ -247,7 +247,6 @@ export function MacrosSettingsFormContainer({
                             </Button>
                             {macroId && (
                                 <Button
-                                    type="button"
                                     intent={ButtonIntent.Secondary}
                                     isLoading={isDuplicatePending}
                                     isDisabled={isActionDisabled}
@@ -263,7 +262,6 @@ export function MacrosSettingsFormContainer({
                                     confirmationContent="You are about to delete this macro."
                                     onConfirm={handleDelete}
                                     isLoading={isDeletePending}
-                                    type="button"
                                 >
                                     <ButtonIconLabel icon="delete">
                                         Delete macro
