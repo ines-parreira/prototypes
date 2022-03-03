@@ -109,24 +109,19 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
           type="text"
         />
         <div>
-          <Button
+          <ForwardRef
             className="mr-2"
-            color="success"
             onClick={[Function]}
-            tag="button"
             type="submit"
           >
             Update integration
-          </Button>
-          <Button
-            className=""
-            color="success"
+          </ForwardRef>
+          <ForwardRef
             onClick={[Function]}
-            tag="button"
             type="button"
           >
             Reconnect
-          </Button>
+          </ForwardRef>
           <ConfirmButton
             className="float-right"
             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -237,15 +232,13 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
           type="text"
         />
         <div>
-          <Button
+          <ForwardRef
             className="mr-2"
-            color="success"
             onClick={[Function]}
-            tag="button"
             type="submit"
           >
             Update integration
-          </Button>
+          </ForwardRef>
           <ConfirmButton
             className="float-right"
             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -360,15 +353,13 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           type="text"
         />
         <div>
-          <Button
+          <ForwardRef
             className="mr-2"
-            color="success"
             onClick={[Function]}
-            tag="button"
             type="submit"
           >
             Update integration
-          </Button>
+          </ForwardRef>
           <ConfirmButton
             className="float-right"
             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -483,16 +474,14 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           type="text"
         />
         <div>
-          <Button
-            className="mr-2 btn-loading"
-            color="success"
-            disabled={true}
+          <ForwardRef
+            className="mr-2"
+            isLoading={true}
             onClick={[Function]}
-            tag="button"
             type="submit"
           >
             Update integration
-          </Button>
+          </ForwardRef>
           <ConfirmButton
             className="float-right"
             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -608,15 +597,13 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
           type="text"
         />
         <div>
-          <Button
+          <ForwardRef
             className="mr-2"
-            color="success"
             onClick={[Function]}
-            tag="button"
             type="submit"
           >
             Update integration
-          </Button>
+          </ForwardRef>
           <ConfirmButton
             className="float-right"
             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."

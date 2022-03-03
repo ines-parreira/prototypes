@@ -525,30 +525,38 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                             </Alert>
                           </div>
                         </CardBody>
-                        <Button
+                        <ForwardRef
                           className="copy mr-4"
-                          color="info"
                           data-clipboard-target="#code-snippet"
                           id="copy-code-snippet"
-                          tag="button"
                           type="button"
                         >
                           <button
-                            aria-label={null}
-                            className="copy mr-4 btn btn-info"
+                            className="wrapper copy mr-4 primary medium"
                             data-clipboard-target="#code-snippet"
                             id="copy-code-snippet"
-                            onClick={[Function]}
                             type="button"
                           >
-                            <i
-                              className="material-icons-outlined mr-2"
+                            <ButtonIconLabel
+                              icon="file_copy"
                             >
-                              file_copy
-                            </i>
+                              <span
+                                className="wrapper"
+                              >
+                                <Icon
+                                  className="icon isLeft"
+                                >
+                                  <i
+                                    className="material-icons icon isLeft medium"
+                                  >
+                                    file_copy
+                                  </i>
+                                </Icon>
+                              </span>
+                            </ButtonIconLabel>
                             Copy
                           </button>
-                        </Button>
+                        </ForwardRef>
                       </div>
                     </Card>
                   </CustomInstallationCard>

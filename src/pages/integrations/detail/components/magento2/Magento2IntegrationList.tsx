@@ -2,8 +2,7 @@ import React, {Component} from 'react'
 import {Map, List} from 'immutable'
 import {Link} from 'react-router-dom'
 
-import {Button} from 'reactstrap'
-
+import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {IntegrationType} from '../../../../../models/integration/types'
 import history from '../../../../history'
@@ -98,9 +97,9 @@ export class Magento2IntegrationList extends Component<Props> {
                     ) : null}
                     {isDisabled && isManual ? (
                         <td className="smallest align-middle">
-                            <Button color="success" href={editLink}>
-                                Reconnect
-                            </Button>
+                            <Link to={editLink}>
+                                <Button>Reconnect</Button>
+                            </Link>
                         </td>
                     ) : null}
                     <td className="smallest align-middle">

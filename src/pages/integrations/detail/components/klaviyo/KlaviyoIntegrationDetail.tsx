@@ -2,7 +2,6 @@ import React from 'react'
 import {
     Breadcrumb,
     BreadcrumbItem,
-    Button,
     Col,
     Container,
     Form,
@@ -12,7 +11,6 @@ import {
     Row,
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
-import classNames from 'classnames'
 import type {Map} from 'immutable'
 
 import {
@@ -22,7 +20,7 @@ import {
 import {KLAVIYO_INTEGRATION_TYPE} from 'constants/integration'
 import Alert from 'pages/common/components/Alert/Alert'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -486,14 +484,10 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                     <div>
                                         <Button
                                             type="submit"
-                                            color="success"
-                                            className={classNames('mr-2', {
-                                                'btn-loading': isSubmitting,
-                                            })}
-                                            disabled={
-                                                isActivating ||
-                                                isSubmitting ||
-                                                isDeleting
+                                            className="mr-2"
+                                            isLoading={isSubmitting}
+                                            isDisabled={
+                                                isActivating || isDeleting
                                             }
                                         >
                                             {isUpdate

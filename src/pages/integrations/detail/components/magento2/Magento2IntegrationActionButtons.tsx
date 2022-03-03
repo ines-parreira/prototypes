@@ -1,11 +1,9 @@
-import {Button} from 'reactstrap'
 import React from 'react'
-import classNames from 'classnames'
 import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {deleteIntegration} from '../../../../../state/integrations/actions'
 
@@ -47,11 +45,9 @@ export const Magento2IntegrationActionButtons = ({
         <div>
             <Button
                 type="submit"
-                color="success"
-                className={classNames('mr-2', {
-                    'btn-loading': isSubmitting,
-                })}
-                disabled={submitIsDisabled}
+                className="mr-2"
+                isLoading={isSubmitting}
+                isDisabled={submitIsDisabled}
             >
                 {isUpdate ? 'Update integration' : 'Add integration'}
             </Button>
@@ -70,11 +66,9 @@ export const Magento2IntegrationActionButtons = ({
             {isUpdate && !isActive && isManual ? (
                 <Button
                     type="submit"
-                    color="success"
-                    className={classNames('mr-2', {
-                        'btn-loading': isSubmitting,
-                    })}
-                    disabled={submitIsDisabled}
+                    className="mr-2"
+                    isLoading={isSubmitting}
+                    isDisabled={submitIsDisabled}
                 >
                     Reconnect
                 </Button>

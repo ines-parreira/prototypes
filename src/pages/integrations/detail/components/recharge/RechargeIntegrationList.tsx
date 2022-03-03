@@ -1,10 +1,10 @@
 import React from 'react'
 import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
-import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 import Lightbox from 'react-images'
 
+import Button from 'pages/common/components/button/Button'
 import {getRedirectUri} from '../../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../../models/integration/types'
 import {RootState} from '../../../../../state/types'
@@ -146,13 +146,11 @@ export class RechargeIntegrationList extends React.Component<Props, State> {
                     </td>
                     {isDisabled ? (
                         <td className="smallest align-middle">
-                            <Button
-                                color="success"
-                                href={reactivateUrl}
-                                disabled={isSubmitting}
-                            >
-                                Reconnect
-                            </Button>
+                            <Link to={isSubmitting ? '#' : reactivateUrl}>
+                                <Button type="button" isDisabled={isSubmitting}>
+                                    Reconnect
+                                </Button>
+                            </Link>
                         </td>
                     ) : null}
                     <td className="smallest align-middle">

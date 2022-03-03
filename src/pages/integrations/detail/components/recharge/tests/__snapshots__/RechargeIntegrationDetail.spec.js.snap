@@ -121,7 +121,7 @@ exports[`<RechargeIntegrationDetail/> render() should not render anything about 
           </div>
           <div>
             <button
-              class="btn btn-success"
+              class="wrapper primary medium"
               type="button"
             >
               Reconnect

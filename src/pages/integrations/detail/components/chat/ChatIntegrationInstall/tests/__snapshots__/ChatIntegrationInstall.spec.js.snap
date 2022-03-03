@@ -499,30 +499,38 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                             </Alert>
                           </div>
                         </CardBody>
-                        <Button
+                        <ForwardRef
                           className="copy"
-                          color="info"
                           data-clipboard-target="#code-snippet"
                           id="copy-code-snippet"
-                          tag="button"
                           type="button"
                         >
                           <button
-                            aria-label={null}
-                            className="copy btn btn-info"
+                            className="wrapper copy primary medium"
                             data-clipboard-target="#code-snippet"
                             id="copy-code-snippet"
-                            onClick={[Function]}
                             type="button"
                           >
-                            <i
-                              className="material-icons-outlined mr-2"
+                            <ButtonIconLabel
+                              icon="file_copy"
                             >
-                              file_copy
-                            </i>
+                              <span
+                                className="wrapper"
+                              >
+                                <Icon
+                                  className="icon isLeft"
+                                >
+                                  <i
+                                    className="material-icons icon isLeft medium"
+                                  >
+                                    file_copy
+                                  </i>
+                                </Icon>
+                              </span>
+                            </ButtonIconLabel>
                             Copy
                           </button>
-                        </Button>
+                        </ForwardRef>
                       </div>
                     </Card>
                   </CustomInstallationCard>

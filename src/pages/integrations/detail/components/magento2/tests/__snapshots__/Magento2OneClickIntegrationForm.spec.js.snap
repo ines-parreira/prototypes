@@ -44,7 +44,7 @@ exports[`<Magento2OneClickIntegrationForm/> render() should render the page to c
     </div>
     <div>
       <button
-        class="mr-2 btn btn-success"
+        class="wrapper mr-2 primary medium"
         type="submit"
       >
         Add integration

@@ -1,21 +1,13 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {Map, fromJS} from 'immutable'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
-import classNames from 'classnames'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    Col,
-    Container,
-    Row,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 import {parse} from 'qs'
 import {connect, ConnectedProps} from 'react-redux'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
 import Loader from '../../../../common/components/Loader/Loader'
 import InputField from '../../../../common/forms/InputField'
@@ -184,24 +176,17 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                             <div>
                                 <Button
                                     type="submit"
-                                    color="success"
-                                    className={classNames('mr-2', {
-                                        'btn-loading': isSubmitting,
-                                    })}
+                                    className="mr-2"
                                     onClick={this._handleUpdate}
-                                    disabled={isSubmitting}
+                                    isLoading={isSubmitting}
                                 >
                                     Update integration
                                 </Button>
                                 {!authenticationRequired && !isActive && (
                                     <Button
                                         type="button"
-                                        color="success"
-                                        className={classNames({
-                                            'btn-loading': isSubmitting,
-                                        })}
                                         onClick={this._onReactivate}
-                                        disabled={isSubmitting}
+                                        isLoading={isSubmitting}
                                     >
                                         Reconnect
                                     </Button>

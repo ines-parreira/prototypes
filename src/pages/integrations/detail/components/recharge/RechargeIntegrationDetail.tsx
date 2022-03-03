@@ -1,11 +1,10 @@
+import classnames from 'classnames'
 import React from 'react'
 import {List, Map} from 'immutable'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
-import classNames from 'classnames'
 import {
     Breadcrumb,
     BreadcrumbItem,
-    Button,
     Col,
     Container,
     Label,
@@ -14,7 +13,7 @@ import {
 import {connect, ConnectedProps} from 'react-redux'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import * as integrationHelpers from '../../../../../state/integrations/helpers'
 import {deleteIntegration} from '../../../../../state/integrations/actions'
@@ -22,7 +21,8 @@ import Loader from '../../../../common/components/Loader/Loader'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
 import LinkAlert from '../../../../common/components/Alert/LinkAlert'
-import css from '../../../../settings/settings.less'
+import settingsCss from '../../../../settings/settings.less'
+import css from './RechargeIntegrationList.less'
 
 type Props = {
     integration: Map<any, any>
@@ -110,7 +110,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                     }
                 />
 
-                <Container fluid className={css.pageContainer}>
+                <Container fluid className={settingsCss.pageContainer}>
                     <Row>
                         <Col md="8">
                             {isUpdate &&
@@ -126,7 +126,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                     </p>
                                 ) : (
                                     <LinkAlert
-                                        className={css.mb16}
+                                        className={settingsCss.mb16}
                                         actionHref="/app/customers"
                                         actionLabel="Review imported customers"
                                     >
@@ -178,25 +178,25 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                         (integration, idx) => {
                                             return (
                                                 <Button
-                                                    block
+                                                    type="button"
                                                     key={idx}
                                                     onClick={() =>
                                                         this._installForShopifyStore(
                                                             integration!
                                                         )
                                                     }
-                                                    className={classNames(
-                                                        'mb-2',
-                                                        {
-                                                            'btn-loading':
-                                                                this.state
-                                                                    .integrationLoading ===
-                                                                integration!.get(
-                                                                    'id'
-                                                                ),
-                                                        }
+                                                    className={classnames(
+                                                        css.installButton,
+                                                        'mb-2'
                                                     )}
-                                                    color="secondary"
+                                                    isLoading={
+                                                        this.state
+                                                            .integrationLoading ===
+                                                        integration!.get('id')
+                                                    }
+                                                    intent={
+                                                        ButtonIntent.Secondary
+                                                    }
                                                 >
                                                     <img
                                                         alt="shopify logo"
@@ -218,11 +218,8 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                 {isUpdate && needScopeUpdate && (
                                     <Button
                                         type="button"
-                                        color="info"
-                                        className={classNames('mr-2', {
-                                            'btn-loading': isSubmitting,
-                                        })}
-                                        disabled={isSubmitting}
+                                        className="mr-2"
+                                        isLoading={isSubmitting}
                                         onClick={this._updateAppPermissions}
                                     >
                                         Update app permissions
@@ -231,10 +228,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                 {isUpdate && !isActive && (
                                     <Button
                                         type="button"
-                                        color="success"
-                                        className={classNames({
-                                            'btn-loading': isSubmitting,
-                                        })}
+                                        isLoading={isSubmitting}
                                         onClick={
                                             this._reactivateForShopifyStore
                                         }

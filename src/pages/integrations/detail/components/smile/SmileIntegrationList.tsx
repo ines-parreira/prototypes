@@ -1,9 +1,9 @@
 import React from 'react'
 import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
-import {Button} from 'reactstrap'
 import Lightbox from 'react-images'
 
+import Button from 'pages/common/components/button/Button'
 import {IntegrationType} from '../../../../../models/integration/types'
 import Carousel from '../../../common/Carousel'
 import IntegrationList from '../IntegrationList'
@@ -123,14 +123,15 @@ export default class SmileIntegrationList extends React.Component<
                     </td>
                     {isDisabled ? (
                         <td className="smallest align-middle">
-                            <Button
-                                tag="a"
-                                color="success"
-                                href={redirectUri}
-                                disabled={isSubmitting}
+                            <a
+                                href={isSubmitting ? '#' : redirectUri}
+                                target="_blank"
+                                rel="noopener noreferrer"
                             >
-                                Reconnect
-                            </Button>
+                                <Button isDisabled={isSubmitting}>
+                                    Reconnect
+                                </Button>
+                            </a>
                         </td>
                     ) : null}
                     <td className="smallest align-middle">

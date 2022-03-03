@@ -34,7 +34,7 @@ exports[`<EmailIntegrationList/> render() should render the page when there are 
       </nav>
       <div>
         <button
-          class="btn btn-success"
+          class="wrapper primary medium"
           type="submit"
         >
           Add email address
@@ -98,7 +98,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
       </nav>
       <div>
         <button
-          class="btn btn-success"
+          class="wrapper primary medium"
           type="submit"
         >
           Add email address
@@ -220,7 +220,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
       </nav>
       <div>
         <button
-          class="btn btn-success"
+          class="wrapper primary medium"
           type="submit"
         >
           Add email address
@@ -342,7 +342,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
       </nav>
       <div>
         <button
-          class="btn btn-success"
+          class="wrapper primary medium"
           type="submit"
         >
           Add email address
@@ -454,7 +454,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
       </nav>
       <div>
         <button
-          class="btn btn-success"
+          class="wrapper primary medium"
           type="submit"
         >
           Add email address

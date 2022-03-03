@@ -1,12 +1,13 @@
 import React, {ReactNode} from 'react'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
-import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Container, Table} from 'reactstrap'
 import {parse} from 'qs'
 import moment from 'moment'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 
+import Button from 'pages/common/components/button/Button'
 import {getIntegrationConfig} from '../../../../state/integrations/helpers'
 import {notify} from '../../../../state/notifications/actions'
 import PageHeader from '../../../common/components/PageHeader'
@@ -132,7 +133,6 @@ class IntegrationList extends React.Component<Props> {
                     {!this.props.createIntegrationButtonHidden && (
                         <Button
                             type="submit"
-                            color="success"
                             onClick={this.onButtonClick}
                             className={createIntegrationButtonClassName}
                         >

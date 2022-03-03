@@ -1,8 +1,10 @@
 import React, {ReactNode, Component} from 'react'
 import Clipboard from 'clipboard'
 import classnames from 'classnames'
-import {Alert, Button, Card, CardBody} from 'reactstrap'
+import {Alert, Card, CardBody} from 'reactstrap'
 
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Button from 'pages/common/components/button/Button'
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../constants/integration'
 
 import css from './CustomInstallationCard.less'
@@ -81,13 +83,12 @@ export default class CustomInstallationCard extends Component<Props, State> {
                 <Button
                     id="copy-code-snippet"
                     type="button"
-                    color="info"
                     className={classnames(css.copy, {
                         'mr-4': integrationType === FACEBOOK_INTEGRATION_TYPE,
                     })}
                     data-clipboard-target="#code-snippet"
                 >
-                    <i className="material-icons-outlined mr-2">file_copy</i>
+                    <ButtonIconLabel icon="file_copy" />
                     {this.state.isCopied ? 'Copied!' : 'Copy'}
                 </Button>
             </Card>
