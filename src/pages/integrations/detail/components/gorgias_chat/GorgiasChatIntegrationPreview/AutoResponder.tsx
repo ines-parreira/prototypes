@@ -1,10 +1,8 @@
 import React, {Component} from 'react'
 import classnames from 'classnames'
 
-import {
-    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    EMAIL_CAPTURE_TEXTS,
-} from '../../../../../../config/integrations/gorgias_chat'
+import {GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/gorgias_chat'
+import {CHAT_AUTO_RESPONDER_TEXTS} from '../../../../../../config/integrations'
 
 import css from './ChatIntegrationPreview.less'
 import CustomerInitialMessages from './CustomerInitialMessages'
@@ -22,7 +20,7 @@ export default class OptionalEmailCapture extends Component<Props> {
             this.props
 
         const translatedTexts =
-            EMAIL_CAPTURE_TEXTS[
+            CHAT_AUTO_RESPONDER_TEXTS[
                 language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
             ]
 
