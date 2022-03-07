@@ -43,6 +43,8 @@ export const GorgiasChatIntegrationConnectToStoreCard = ({
             .set('shopify_integration_ids', [
                 selectedShopifyIntegration?.get('id'),
             ])
+            // automatically enable the SSP when connecting a store
+            .set('self_service_deactivated_datetime', null)
 
         const form = {
             id: integration.get('id'),

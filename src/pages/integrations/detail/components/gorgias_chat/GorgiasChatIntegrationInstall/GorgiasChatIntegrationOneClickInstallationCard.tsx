@@ -135,6 +135,7 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
             .set('shop_type', null)
             .set('shop_integration_id', null)
             .set('shopify_integration_ids', [])
+            .set('self_service_deactivated_datetime', new Date().toISOString())
         const form = {
             id: integration.get('id'),
             type: integration.get('type'),

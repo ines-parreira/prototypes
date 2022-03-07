@@ -108,6 +108,7 @@ describe('<GorgiasChatIntegrationConnectToStoreCard/>', () => {
             .set('shop_type', SHOPIFY_INTEGRATION_TYPE)
             .set('shop_integration_id', 3)
             .set('shopify_integration_ids', [3])
+            .set('self_service_deactivated_datetime', null)
 
         expect(mockedUpdateOrCreateIntegration).toHaveBeenCalledWith(
             fromJS({
