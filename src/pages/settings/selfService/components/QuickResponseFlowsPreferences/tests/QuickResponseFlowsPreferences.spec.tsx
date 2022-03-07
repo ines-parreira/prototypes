@@ -170,9 +170,15 @@ describe('<QuickResponseFlowsPreferences />', () => {
             </Provider>
         )
 
-        screen.getByText('First')
-        screen.getByText('Second')
-        screen.getByText('Third')
+        const savedFlows = ['First', 'Second', 'Third']
+        const containerIds = ['configurationColumn', 'previewColumn']
+
+        savedFlows.forEach((flow) => {
+            containerIds.forEach((containerId) => {
+                const container = screen.getByTestId(containerId)
+                within(container).getByText(flow)
+            })
+        })
     })
 
     it('should limit enabled quick response flows to 4', () => {
@@ -182,7 +188,8 @@ describe('<QuickResponseFlowsPreferences />', () => {
             </Provider>
         )
 
-        const disabledResponseRow = screen.getByText('Fifth')
+        const container = screen.getByTestId('configurationColumn')
+        const disabledResponseRow = within(container).getByText('Fifth')
             .parentElement as HTMLElement
         const toggle = within(disabledResponseRow).getByRole('switch')
         expect(toggle.className).toContain('disabled')
@@ -195,7 +202,8 @@ describe('<QuickResponseFlowsPreferences />', () => {
             </Provider>
         )
 
-        const itemToChange = screen.getByText('Second')
+        const container = screen.getByTestId('configurationColumn')
+        const itemToChange = within(container).getByText('Second')
             .parentElement as HTMLElement
         const editButton = within(itemToChange).getByRole('button', {
             name: 'edit',
@@ -250,7 +258,8 @@ describe('<QuickResponseFlowsPreferences />', () => {
             </Provider>
         )
 
-        const itemToChange = screen.getByText('Second')
+        const container = screen.getByTestId('configurationColumn')
+        const itemToChange = within(container).getByText('Second')
             .parentElement as HTMLElement
         const deleteButton = within(itemToChange).getByRole('button', {
             name: 'delete',

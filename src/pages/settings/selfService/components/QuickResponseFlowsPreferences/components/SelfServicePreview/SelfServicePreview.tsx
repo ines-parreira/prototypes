@@ -8,8 +8,12 @@ import gorgiasChatSendMessageIcon from 'assets/img/integrations/gorgias-chat-sen
 import {
     isGorgiasChatIntegration,
     isShopifyIntegration,
+    GorgiasChatPositionAlignmentEnum,
 } from '../../../../../../../models/integration/types'
-import {GORGIAS_CHAT_SSP_TEXTS} from '../../../../../../../config/integrations/gorgias_chat'
+import {
+    GORGIAS_CHAT_SSP_TEXTS,
+    GORGIAS_CHAT_DEFAULT_COLOR,
+} from '../../../../../../../config/integrations/gorgias_chat'
 
 import {useConfigurationData} from '../../../hooks'
 import {getIntegrations} from '../../../../../../../state/integrations/selectors'
@@ -35,7 +39,7 @@ const SelfServicePreview = () => {
                 return integration.name === shopName
             })
 
-        const chatIntegration = integrations
+        const foundIntegration = integrations
             .filter(isGorgiasChatIntegration)
             .find((integration) => {
                 return (
@@ -43,7 +47,28 @@ const SelfServicePreview = () => {
                     shopifyIntegration?.id
                 )
             })
-        return chatIntegration
+
+        if (foundIntegration) {
+            return foundIntegration
+        }
+
+        return {
+            name: 'Chat',
+            meta: {
+                language: 'en-US',
+            },
+            decoration: {
+                avatar_type: 'team-members',
+                avatar_team_picture_url: '',
+                introduction_text: 'How can we help?',
+                main_color: GORGIAS_CHAT_DEFAULT_COLOR,
+                position: {
+                    offsetX: 0,
+                    offsetY: 0,
+                    alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_RIGHT,
+                },
+            },
+        }
     }, [integrations])
 
     const visibleQuickReplies = useMemo(() => {
@@ -54,7 +79,7 @@ const SelfServicePreview = () => {
         )
     }, [selfServiceConfiguration])
 
-    if (!chatIntegration || !selfServiceConfiguration) {
+    if (!selfServiceConfiguration) {
         return null
     }
 

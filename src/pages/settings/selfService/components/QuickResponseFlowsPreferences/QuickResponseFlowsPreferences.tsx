@@ -45,7 +45,7 @@ const QuickResponseFlowsPreferences = () => {
 
             <Container fluid className={settingsCss.pageContainer}>
                 <Row>
-                    <Col>
+                    <Col data-testid="configurationColumn">
                         <h4>Quick Response Flows</h4>
                         <p>
                             Add up to 4 flows that create and send a pre-filled
@@ -67,7 +67,7 @@ const QuickResponseFlowsPreferences = () => {
                         <QuickResponseList />
                     </Col>
 
-                    <Col>
+                    <Col data-testid="previewColumn">
                         <SelfServicePreview />
                     </Col>
                 </Row>
