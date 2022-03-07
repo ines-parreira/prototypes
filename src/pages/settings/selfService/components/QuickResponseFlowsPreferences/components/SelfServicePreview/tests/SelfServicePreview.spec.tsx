@@ -42,6 +42,7 @@ describe('<SelfServicePreview />', () => {
                 },
                 categories: {
                     categoriesById: {},
+                    positions: [],
                 },
                 helpCenters: {
                     helpCentersById: {},
