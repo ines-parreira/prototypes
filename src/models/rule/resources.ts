@@ -42,7 +42,6 @@ export const deactivateRule = async (rule: Rule): Promise<Rule> => {
     const {id} = rule
 
     const res = await client.put(`/api/rules/${id}/`, {
-        ...rule,
         deactivated_datetime: new Date(),
     })
     return res.data as Rule
@@ -51,7 +50,6 @@ export const deactivateRule = async (rule: Rule): Promise<Rule> => {
 export const activateRule = async (rule: Rule): Promise<Rule> => {
     const {id} = rule
     const res = await client.put(`/api/rules/${id}/`, {
-        ...rule,
         deactivated_datetime: null,
     })
     return res.data as Rule
