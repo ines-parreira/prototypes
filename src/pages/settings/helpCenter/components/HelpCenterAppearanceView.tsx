@@ -60,12 +60,13 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const primaryLogo = useFileUpload()
     const lightLogo = useFileUpload()
     const favicon = useFileUpload()
-    const bannerImage = useFileUpload()
     const viewLanguage =
         useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const locales = useSupportedLocales()
     const [selectedLanguage, setSelectedLanguage] = useState(viewLanguage)
     const [bannerText, setBannerText] = useState<string>('')
+    const [bannerImageUrl, setBannerImageUrl] = useState<string>('')
+    const bannerImage = useFileUpload()
 
     const translation = useMemo(() => {
         return helpCenter.translations?.find(
@@ -93,7 +94,14 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
     useEffect(() => {
         setBannerText(translation?.banner_text || '')
+        setBannerImageUrl(translation?.banner_image_url || '')
     }, [translation])
+
+    useEffect(() => {
+        // Discard to reset bannerImage state (isTouched and upload file) when the preview image changes.
+        bannerImage.discardFile()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [bannerImageUrl])
 
     const localeOptions = useMemo(
         () => getLocaleSelectOptions(locales, helpCenter.supported_locales),
@@ -128,7 +136,6 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 payload.brand_logo_url = await getFileUploadURL(primaryLogo)
                 payload.brand_logo_light_url = await getFileUploadURL(lightLogo)
                 payload.favicon_url = await getFileUploadURL(favicon)
-                payload.banner_image_url = await getFileUploadURL(bannerImage)
 
                 const {data: updateHelpCenter} = await client.updateHelpCenter(
                     {
@@ -139,7 +146,8 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
                 let translations = helpCenter.translations
 
-                if (isBannerTextUpdated) {
+                if (isBannerTextUpdated || bannerImage.isTouched) {
+                    const bannerImageUrl = await getFileUploadURL(bannerImage)
                     const {data: updatedTranslation} =
                         await client.updateHelpCenterTranslation(
                             {
@@ -148,6 +156,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             },
                             {
                                 banner_text: bannerText,
+                                banner_image_url: bannerImageUrl,
                             }
                         )
 
@@ -194,7 +203,6 @@ export const HelpCenterAppearanceView: React.FC = () => {
         currentFont,
         primaryLogo,
         favicon,
-        bannerImage,
         lightLogo,
     ])
 
@@ -347,26 +355,17 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 />
             </section>
             <section>
-                <div className={css.heading}>
-                    <h3>Banner settings</h3>
-                    <p>
-                        This is displayed on top of your help center’s{' '}
-                        <strong>home page</strong>.
-                    </p>
-                </div>
-                <div className={css.bannerText}>
-                    <div className={css.bannerTextInput}>
-                        <InputField
-                            type="text"
-                            name="name"
-                            label="Banner title"
-                            help="This title is displayed on your homepage header."
-                            placeholder="Banner title"
-                            value={bannerText}
-                            onChange={setBannerText}
-                        />
+                <div className={css.bannerHeader}>
+                    <div className={css.bannerHeaderText}>
+                        <div className={css.heading}>
+                            <h3>Banner settings</h3>
+                            <p>
+                                This is displayed on top of your help center’s{' '}
+                                <strong>home page</strong>.
+                            </p>
+                        </div>
                     </div>
-                    <div className={css.bannerTextLocale}>
+                    <div className={css.bannerHeaderLocale}>
                         <SelectField
                             fixedWidth={true}
                             value={selectedLanguage}
@@ -376,12 +375,23 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         />
                     </div>
                 </div>
+                <div>
+                    <InputField
+                        type="text"
+                        name="name"
+                        label="Banner title"
+                        help="This title is displayed on your homepage header."
+                        placeholder="Banner title"
+                        value={bannerText}
+                        onChange={setBannerText}
+                    />
+                </div>
                 <ImageUpload
                     id="banner_image"
                     title="Banner Background"
-                    info="Your banner is an image  that’s displayed on the top of your home page."
+                    info="Your banner is an image that’s displayed on the top of your home page."
                     file={bannerImage.payload}
-                    defaultPreview={helpCenter.banner_image_url || ''}
+                    defaultPreview={bannerImageUrl || ''}
                     onChangeFile={bannerImage.changeFile}
                     isTouched={bannerImage.isTouched}
                     isFluid

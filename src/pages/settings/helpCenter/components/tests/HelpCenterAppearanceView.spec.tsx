@@ -14,6 +14,7 @@ import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getL
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import HelpCenterAppearanceView from '../HelpCenterAppearanceView'
+import {getHelpCenterTranslationsResponseFixture} from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
@@ -39,9 +40,9 @@ const mockedUpdateHelpCenter = jest
     .mockResolvedValue({data: getSingleHelpCenterResponseFixture})
 
 const mockedUpdateHelpCenterTranslation = jest.fn()
-const mockedListHelpCenterTranslations = jest.fn().mockResolvedValue({
-    data: {},
-})
+const mockedListHelpCenterTranslations = jest
+    .fn()
+    .mockResolvedValue(getHelpCenterTranslationsResponseFixture)
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
@@ -83,6 +84,22 @@ describe('<HelpCenterAppearanceView />', () => {
         )
 
         expect(container).toMatchSnapshot()
+    })
+
+    it('should have call translation list', async () => {
+        renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <HelpCenterAppearanceView />
+            </Provider>,
+            route
+        )
+
+        await waitFor(() => {
+            expect(mockedListHelpCenterTranslations).toHaveBeenCalledTimes(1)
+            expect(mockedListHelpCenterTranslations).toHaveBeenCalledWith({
+                help_center_id: 1,
+            })
+        })
     })
 
     it('disables "Save Changes" button if there are no changes', () => {
@@ -143,12 +160,7 @@ describe('<HelpCenterAppearanceView />', () => {
         expect(saveBtn.disabled).toBeTruthy()
     })
 
-    it.each([
-        'brand_logo_url',
-        'favicon_url',
-        'brand_logo_light_url',
-        'banner_image_url',
-    ])(
+    it.each(['brand_logo_url', 'favicon_url', 'brand_logo_light_url'])(
         'should update the Help center with the "%s" field set to null after dismissing it',
         async (imageField) => {
             mockedUseCurrentHelpCenter.mockReturnValueOnce({

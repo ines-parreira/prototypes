@@ -899,6 +899,7 @@ declare namespace Components {
       deleted_datetime?: string | null; // date-time
       help_center_id: number;
       banner_text: string | null;
+      banner_image_url?: string | null;
       locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       seo_meta: {
         title: string | null;
@@ -1378,6 +1379,7 @@ declare namespace Components {
        * The banner text of the help center in the `locale`'s translation.
        */
       banner_text?: string | null;
+      banner_image_url?: string | null;
       contact_info?: {
         email: EmailContactInfoDto;
         phone: PhoneContactInfoDto;

@@ -626,56 +626,29 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
         </section>
         <section>
           <div
-            class="heading"
-          >
-            <h3>
-              Banner settings
-            </h3>
-            <p>
-              This is displayed on top of your help center’s
-               
-              <strong>
-                home page
-              </strong>
-              .
-            </p>
-          </div>
-          <div
-            class="bannerText"
+            class="bannerHeader"
           >
             <div
-              class="bannerTextInput"
+              class="bannerHeaderText"
             >
               <div
-                class="InputField form-group"
-                color=""
+                class="heading"
               >
-                <label
-                  class="control-label"
-                  for="id-name"
-                >
-                  Banner title
-                </label>
-                <div
-                  class=""
-                >
-                  <input
-                    class="form-control"
-                    id="id-name"
-                    placeholder="Banner title"
-                    type="text"
-                    value=""
-                  />
-                </div>
-                <small
-                  class="form-text text-muted"
-                >
-                  This title is displayed on your homepage header.
-                </small>
+                <h3>
+                  Banner settings
+                </h3>
+                <p>
+                  This is displayed on top of your help center’s
+                   
+                  <strong>
+                    home page
+                  </strong>
+                  .
+                </p>
               </div>
             </div>
             <div
-              class="bannerTextLocale"
+              class="bannerHeaderLocale"
             >
               <div>
                 <div
@@ -743,6 +716,35 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          <div>
+            <div
+              class="InputField form-group"
+              color=""
+            >
+              <label
+                class="control-label"
+                for="id-name"
+              >
+                Banner title
+              </label>
+              <div
+                class=""
+              >
+                <input
+                  class="form-control"
+                  id="id-name"
+                  placeholder="Banner title"
+                  type="text"
+                  value=""
+                />
+              </div>
+              <small
+                class="form-text text-muted"
+              >
+                This title is displayed on your homepage header.
+              </small>
             </div>
           </div>
           <div

@@ -3356,6 +3356,7 @@
                     },
                     "help_center_id": {"type": "number"},
                     "banner_text": {"type": "string", "nullable": true},
+                    "banner_image_url": {"type": "string", "nullable": true},
                     "locale": {
                         "type": "string",
                         "enum": [
@@ -3572,6 +3573,7 @@
                         "nullable": true,
                         "description": "The banner text of the help center in the `locale`'s translation."
                     },
+                    "banner_image_url": {"type": "string", "nullable": true},
                     "contact_info": {
                         "allOf": [
                             {"$ref": "#/components/schemas/ContactInfoDto"}
