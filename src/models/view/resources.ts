@@ -18,7 +18,10 @@ export const fetchViews = async () => {
 }
 
 export const createView = async (viewDraft: ViewDraft) => {
-    const res = await client.post<View>('/api/views/', viewDraft)
+    const res = await client.post<View>(
+        '/api/views/',
+        _omit(viewDraft, 'search')
+    )
     return res.data
 }
 
@@ -32,7 +35,7 @@ export const updateView = async (id: number, view: Partial<View>) => {
             : {}
     )
     const res = await client.put<SharedView>(`/api/views/${id}/`, {
-        ..._omit(view, 'filters_ast'),
+        ..._omit(view, 'filters_ast', 'search'),
         ...sharedProps,
     })
     return _omit(res.data, ['shared_with_teams', 'shared_with_users']) as View
