@@ -242,14 +242,13 @@ export const FontCatalogueModal = ({
                         ) : (
                             <div className={css.noFontFound}>
                                 <p>
-                                    Sorry, we didn't find a{' '}
-                                    <a href="https://fonts.google.com/">
-                                        google font
-                                    </a>{' '}
-                                    matching your search criteria.
+                                    Sorry, we didn't find a font matching your
+                                    search criteria
                                     <br />
-                                    You can add a custom font in the help center
-                                    following{' '}
+                                    in our font's library.
+                                    <br />
+                                    You can add a custom font in your help
+                                    center following{' '}
                                     <a href="https://docs.gorgias.com/help-center/advanced-help-center-customization-with-html#custom_font">
                                         this documentation
                                     </a>
