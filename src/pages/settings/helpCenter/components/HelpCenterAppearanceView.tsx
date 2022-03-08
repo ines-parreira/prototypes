@@ -22,7 +22,6 @@ import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {FileUpload, useFileUpload} from '../hooks/useFileUpload'
 import {
-    HELP_CENTER_AVAILABLE_FONTS,
     HELP_CENTER_DEFAULT_COLOR,
     HELP_CENTER_DEFAULT_FONT,
     HELP_CENTER_DEFAULT_THEME,
@@ -348,7 +347,6 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     title="Primary font"
                     help="This font will be applied to the website. It will also be applied to articles unless another font is enforced on the article editor side."
                     value={currentFont}
-                    fontOptions={HELP_CENTER_AVAILABLE_FONTS}
                     onChange={(value) => {
                         setCurrentFont(value)
                     }}

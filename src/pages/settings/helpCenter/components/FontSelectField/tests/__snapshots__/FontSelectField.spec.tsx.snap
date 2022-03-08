@@ -1,0 +1,233 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FontSelectField /> matches snapshot 1`] = `
+<div>
+  <label
+    class="control-label"
+  >
+    Title
+  </label>
+  <div>
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle selectFullWidth"
+        >
+          <span
+            class="label"
+            style="min-width: 10px; opacity: 1;"
+          >
+            <span
+              style="font-family: font;"
+            >
+              font
+            </span>
+          </span>
+          <input
+            autocomplete="chrome-off"
+            class="input"
+            style="min-width: 10px;"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="options optionsFullWidth dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        
+        <div>
+          <h6
+            class="action action--focused dropdown-header"
+            tabindex="-1"
+            type="button"
+          >
+            <div
+              class="moreFontsAction"
+            >
+              <i
+                class="moreFontsIcon material-icons mr-2"
+              >
+                add
+              </i>
+              <div>
+                More fonts
+              </div>
+            </div>
+          </h6>
+        </div>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Recently added
+        </h6>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <span
+              style="font-family: Roboto;"
+            >
+              Roboto
+            </span>
+          </span>
+        </button>
+        <div
+          class="dropdown-divider"
+          tabindex="-1"
+        />
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Standard fonts
+        </h6>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <span
+              style="font-family: Arial;"
+            >
+              Arial
+            </span>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <span
+              style="font-family: Georgia;"
+            >
+              Georgia
+            </span>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <span
+              style="font-family: Impact;"
+            >
+              Impact
+            </span>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <span
+              style="font-family: Inter;"
+            >
+              Inter
+            </span>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <span
+              style="font-family: Merriweather;"
+            >
+              Merriweather
+            </span>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <span
+              style="font-family: Source Code Pro;"
+            >
+              Source Code Pro
+            </span>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <span
+              style="font-family: Tahoma;"
+            >
+              Tahoma
+            </span>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <span
+              style="font-family: Times New Roman;"
+            >
+              Times New Roman
+            </span>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <span
+              style="font-family: Verdana;"
+            >
+              Verdana
+            </span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

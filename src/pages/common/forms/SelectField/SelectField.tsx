@@ -127,7 +127,11 @@ export default class SelectField extends Component<Props, State> {
     ): Option[] => {
         // Filter options by search query
         let filteredOptions = options.filter((option) => {
-            if ('isHeader' in option || 'isDivider' in option) {
+            if (
+                'isHeader' in option ||
+                'isDivider' in option ||
+                'isAction' in option
+            ) {
                 return true
             }
 
@@ -154,6 +158,9 @@ export default class SelectField extends Component<Props, State> {
             }
 
             if ('isDivider' in option) {
+                if (index === 0) {
+                    return false
+                }
                 const previousOption = filteredOptions[index - 1]
 
                 if ('isHeader' in previousOption) {
@@ -228,6 +235,12 @@ export default class SelectField extends Component<Props, State> {
                     filteredOptions.length > selectedOptionIndex
                 ) {
                     const selectedOption = filteredOptions[selectedOptionIndex]
+
+                    if ('isAction' in selectedOption) {
+                        selectedOption.onClick && selectedOption.onClick()
+                        this._toggleDropdown()
+                        break
+                    }
 
                     if (
                         'isHeader' in selectedOption ||
@@ -364,7 +377,11 @@ export default class SelectField extends Component<Props, State> {
         const selectMinWidth = fixedWidth
             ? _max(
                   options.map((option: Option) => {
-                      if ('isHeader' in option || 'isDivider' in option) {
+                      if (
+                          'isHeader' in option ||
+                          'isDivider' in option ||
+                          'isAction' in option
+                      ) {
                           return 0
                       }
 
@@ -495,6 +512,39 @@ export default class SelectField extends Component<Props, State> {
                                                 divider
                                                 key={`divider_${index}`}
                                             />
+                                        )
+                                    }
+
+                                    if ('isAction' in item) {
+                                        return (
+                                            <div
+                                                key={`action_${index}`}
+                                                onClick={() => {
+                                                    item.onClick()
+                                                    this._toggleDropdown()
+                                                }}
+                                                onMouseEnter={() => {
+                                                    this.setState({
+                                                        selectedOptionIndex:
+                                                            index,
+                                                    })
+                                                }}
+                                            >
+                                                <DropdownItem
+                                                    header
+                                                    type="button"
+                                                    className={classnames(
+                                                        css.action,
+                                                        {
+                                                            [`${css['action--focused']}`]:
+                                                                index ===
+                                                                selectedOptionIndex,
+                                                        }
+                                                    )}
+                                                >
+                                                    {item.label}
+                                                </DropdownItem>
+                                            </div>
                                         )
                                     }
 

@@ -9,9 +9,11 @@ export type SelectableOption = {
     isDeprecated?: boolean // if the option is deprecated
     isDisabled?: boolean // if the option is greyed out and not selectable
     tooltipText?: ReactNode | string // show text or element on option hover
+    onClick?: () => void // if the option is an action button
 }
 
 export type Option =
     | SelectableOption
     | {label: string; isHeader: true}
+    | {label: ReactNode; isAction: true; onClick: () => void}
     | {isDivider: true}

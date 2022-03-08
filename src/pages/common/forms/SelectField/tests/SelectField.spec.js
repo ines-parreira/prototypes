@@ -402,10 +402,10 @@ describe('SelectField', () => {
         })
     })
 
-    describe('select with headers and dividers', () => {
+    describe('select with headers, dividers and actions', () => {
         const options = [
             {label: 'Group 1', isHeader: true},
-            {label: 'Foo', value: 'foo'},
+            {node: <span>Action 1</span>, isAction: true, onClick: _noop},
             {label: 'Bar', value: 'bar'},
             {isDivider: true},
             {label: 'Group 2', isHeader: true},
@@ -430,7 +430,7 @@ describe('SelectField', () => {
             expect(wrapper.state()).toMatchSnapshot()
         })
 
-        it('ArrowUp/ArrowDown should skip dividers and headers', () => {
+        it('ArrowUp/ArrowDown should skip dividers and headers, but not actions', () => {
             const wrapper = mount(
                 <SelectField {...minProps} options={options} />
             )
@@ -458,12 +458,24 @@ describe('SelectField', () => {
             expect(wrapper.state().selectedOptionIndex).toEqual(1)
         })
 
-        it('Enter/Tab should not be applied for headers and dividers', () => {
+        it('Enter/Tab should not be applied for headers and dividers, but should be applied for actions', () => {
             const onChangeSpy = jest.fn()
+            const onClickSpy = jest.fn()
+
+            const optionsWithSpy = [
+                {label: 'Group 1', isHeader: true},
+                {
+                    node: <span>Action 1</span>,
+                    isAction: true,
+                    onClick: onClickSpy,
+                },
+                {label: 'Bar', value: 'bar'},
+            ]
+
             const wrapper = mount(
                 <SelectField
                     {...minProps}
-                    options={options}
+                    options={optionsWithSpy}
                     onChange={onChangeSpy}
                 />
             )
@@ -477,7 +489,8 @@ describe('SelectField', () => {
 
             wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
             wrapper.find('input').simulate('keyDown', {key: 'Enter'})
-            expect(onChangeSpy.mock.calls.length).toEqual(1)
+            expect(onChangeSpy.mock.calls.length).toEqual(0)
+            expect(onClickSpy.mock.calls.length).toEqual(1)
         })
     })
 })

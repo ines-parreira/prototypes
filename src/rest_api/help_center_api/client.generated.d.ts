@@ -2879,6 +2879,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
   /**
+   * listGoogleFonts - List google fonts
+   */
+  'listGoogleFonts'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
    * getRedirect - Retrieve a redirect
    */
   'getRedirect'(
@@ -3518,6 +3526,16 @@ export interface PathsDictionary {
       data?: Paths.SetNavigationLinksPositions.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.SetNavigationLinksPositions.Responses.$200>
+  }
+  ['/api/help-center/google-fonts']: {
+    /**
+     * listGoogleFonts - List google fonts
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/redirects']: {
     /**

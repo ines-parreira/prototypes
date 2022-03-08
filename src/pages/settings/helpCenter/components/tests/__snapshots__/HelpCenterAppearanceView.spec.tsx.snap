@@ -503,8 +503,38 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 tabindex="-1"
               >
                 
+                <div>
+                  <h6
+                    class="action action--focused dropdown-header"
+                    tabindex="-1"
+                    type="button"
+                  >
+                    <div
+                      class="moreFontsAction"
+                    >
+                      <i
+                        class="moreFontsIcon material-icons mr-2"
+                      >
+                        add
+                      </i>
+                      <div>
+                        More fonts
+                      </div>
+                    </div>
+                  </h6>
+                </div>
+                <div
+                  class="dropdown-divider"
+                  tabindex="-1"
+                />
+                <h6
+                  class="dropdown-header"
+                  tabindex="-1"
+                >
+                  Standard fonts
+                </h6>
                 <button
-                  class="option option--focused dropdown-item"
+                  class="option dropdown-item"
                   role="menuitem"
                   tabindex="0"
                   type="button"

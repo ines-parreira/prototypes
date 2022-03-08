@@ -43,6 +43,13 @@ const mockedUpdateHelpCenterTranslation = jest.fn()
 const mockedListHelpCenterTranslations = jest
     .fn()
     .mockResolvedValue(getHelpCenterTranslationsResponseFixture)
+const mockedListGoogleFonts = jest.fn().mockResolvedValue({
+    data: [
+        {family: 'Roboto', category: 'serif'},
+        {family: 'Adriana', category: 'serif'},
+        {family: 'Tambourin', category: 'serif'},
+    ],
+})
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
@@ -52,6 +59,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
                 updateHelpCenter: mockedUpdateHelpCenter,
                 updateHelpCenterTranslation: mockedUpdateHelpCenterTranslation,
                 listHelpCenterTranslations: mockedListHelpCenterTranslations,
+                listGoogleFonts: mockedListGoogleFonts,
             },
         }),
     }

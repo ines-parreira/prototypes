@@ -2470,6 +2470,16 @@
                 "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
             }
         },
+        "/api/help-center/google-fonts": {
+            "get": {
+                "operationId": "listGoogleFonts",
+                "summary": "List google fonts",
+                "parameters": [],
+                "responses": {"200": {"description": ""}},
+                "tags": ["google-fonts"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/redirects": {
             "post": {
                 "operationId": "createRedirect",

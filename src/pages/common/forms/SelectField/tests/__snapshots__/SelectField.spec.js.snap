@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SelectField select with headers and dividers should filter corresponding headers and dividers when search applied 1`] = `
+exports[`SelectField select with headers, dividers and actions should filter corresponding headers and dividers when search applied 1`] = `
 Object {
   "filteredOptions": Array [
     Object {
@@ -8,8 +8,11 @@ Object {
       "label": "Group 1",
     },
     Object {
-      "label": "Foo",
-      "value": "foo",
+      "isAction": true,
+      "node": <span>
+        Action 1
+      </span>,
+      "onClick": [Function],
     },
     Object {
       "label": "Bar",
@@ -45,12 +48,19 @@ Object {
 }
 `;
 
-exports[`SelectField select with headers and dividers should filter corresponding headers and dividers when search applied 2`] = `
+exports[`SelectField select with headers, dividers and actions should filter corresponding headers and dividers when search applied 2`] = `
 Object {
   "filteredOptions": Array [
     Object {
       "isHeader": true,
       "label": "Group 1",
+    },
+    Object {
+      "isAction": true,
+      "node": <span>
+        Action 1
+      </span>,
+      "onClick": [Function],
     },
     Object {
       "label": "Bar",
