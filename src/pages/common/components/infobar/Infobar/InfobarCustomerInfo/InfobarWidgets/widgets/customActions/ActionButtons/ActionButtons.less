@@ -2,7 +2,7 @@
 
 :local {
     .addButton {
-        display: block !important;
+        display: flex;
         margin-bottom: 8px;
     }
     .editRow {
@@ -76,18 +76,7 @@
     .actionButton {
         overflow: hidden;
         text-overflow: ellipsis;
-    }
-    .dropdownButton {
-        flex: 0 0 auto !important;
-    }
-    .dropdownToggle {
-        padding-left: 6px !important;
-        padding-right: 6px !important;
-        border-radius: 0 0.25rem 0.25rem 0 !important;
-    }
-    .dropdownIcon {
-        font-size: 1.2rem !important;
-        vertical-align: middle !important;
+        flex: 1 0 auto;
     }
     .dropdownItem {
         max-width: 260px;

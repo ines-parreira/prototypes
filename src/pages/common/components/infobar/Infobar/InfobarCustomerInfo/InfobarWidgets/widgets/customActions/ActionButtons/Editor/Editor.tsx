@@ -1,28 +1,27 @@
 import React, {useCallback, useContext, useMemo, useState} from 'react'
-import {Button, ListGroup, Modal} from 'reactstrap'
+import {ListGroup, Modal} from 'reactstrap'
 
 import {Map} from 'immutable'
 import {connect, ConnectedProps, useSelector} from 'react-redux'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     removeEditedWidget,
     startWidgetEdition,
     updateCustomActions,
-} from '../../../../../../../../../../../state/widgets/actions'
-import {getCurrentAccountState} from '../../../../../../../../../../../state/currentAccount/selectors'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../store/middlewares/segmentTracker'
-import {IntegrationContext} from '../../../IntegrationContext'
+} from 'state/widgets/actions'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import {
     Button as ButtonType,
-    OnSubmitButton,
-    OnRemoveButton,
     OnOpenForm,
-} from '../../types'
+    OnRemoveButton,
+    OnSubmitButton,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
-import css from '../ActionButtons.less'
+import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
 
 import Form from './Form'
 import EditableButton from './Button'
@@ -157,11 +156,12 @@ export function Editor({
                 ))}
             </ListGroup>
             <Button
-                type="button"
                 className={css.addButton}
+                intent={ButtonIntent.Secondary}
+                type="button"
                 onClick={() => handleOpenForm()}
             >
-                <i className="material-icons mr-2">add</i>
+                <ButtonIconLabel icon="add" />
                 Add Button
             </Button>
             <Modal

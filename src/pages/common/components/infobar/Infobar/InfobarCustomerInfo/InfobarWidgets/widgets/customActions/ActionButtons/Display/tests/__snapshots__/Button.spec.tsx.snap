@@ -2,7 +2,7 @@
 
 exports[`<Button/> should render a basic button 1`] = `
 <button
-  class="actionButton btn btn-secondary"
+  class="wrapper actionButton secondary medium"
   type="button"
 >
   something

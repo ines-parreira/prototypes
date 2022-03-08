@@ -7,23 +7,22 @@ import React, {
     useState,
 } from 'react'
 import {connect, ConnectedProps, useSelector} from 'react-redux'
-import {Button as ReactStrapButton, DropdownItem} from 'reactstrap'
+import {DropdownItem} from 'reactstrap'
 
-import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from '../../../../../../../../../../../config/actions'
-import {executeAction} from '../../../../../../../../../../../state/infobar/actions'
-import {getPendingActionCallbacks} from '../../../../../../../../../../../state/infobar/selectors'
-import {getCurrentAccountState} from '../../../../../../../../../../../state/currentAccount/selectors'
-import {ContentType} from '../../../../../../../../../../../models/api/types'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../store/middlewares/segmentTracker'
-import {CustomerContext} from '../../../../../InfobarCustomerInfo'
-import {IntegrationContext} from '../../../IntegrationContext'
+import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from 'config/actions'
+import {executeAction} from 'state/infobar/actions'
+import {getPendingActionCallbacks} from 'state/infobar/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {ContentType} from 'models/api/types'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {CustomerContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 
-import {Action} from '../../types'
+import BaseButton, {ButtonIntent} from 'pages/common/components/button/Button'
+import {Action} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
-import css from '../ActionButtons.less'
+import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
+import {AppendPosition} from 'pages/common/components/layout/Group'
 import {mapActionToActionPayload} from './mapActionToActionPayload'
 
 type Props = {
@@ -32,6 +31,7 @@ type Props = {
     action: Action
     openEditor: (index: number, callback: (action: Action) => void) => void
     isDropdown?: boolean
+    appendPosition?: AppendPosition
 }
 
 function Button({
@@ -41,6 +41,7 @@ function Button({
     isDropdown = false,
     openEditor,
     executeAction,
+    appendPosition,
 }: Props & ConnectedProps<typeof connector>) {
     // pending action management
     const getPendingActionCallback = useSelector(getPendingActionCallbacks)
@@ -93,7 +94,7 @@ function Button({
 
     const props = {
         type: 'button',
-        disabled: !!loadingId,
+        isDisabled: !!loadingId,
         onClick: handleClick,
         children: label,
     } as const
@@ -101,7 +102,12 @@ function Button({
     return isDropdown ? (
         <DropdownItem className={css.dropdownItem} {...props} />
     ) : (
-        <ReactStrapButton className={css.actionButton} {...props} />
+        <BaseButton
+            intent={ButtonIntent.Secondary}
+            className={css.actionButton}
+            appendPosition={appendPosition}
+            {...props}
+        />
     )
 }
 

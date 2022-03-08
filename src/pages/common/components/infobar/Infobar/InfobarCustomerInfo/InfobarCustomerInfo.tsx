@@ -3,18 +3,22 @@ import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
-import {Button} from 'reactstrap'
 import Clipboard from 'clipboard'
 
-import {RootState} from '../../../../../../state/types'
-import {itemsWithContext} from '../../../../../../state/widgets/utils'
-import {getDisplayName} from '../../../../../../state/customers/helpers'
-import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../../../models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import {RootState} from 'state/types'
+import {itemsWithContext} from 'state/widgets/utils'
+import {getDisplayName} from 'state/customers/helpers'
+import * as integrationsSelectors from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/types'
 
-import Avatar from '../../../Avatar/Avatar'
-import css from '../../Infobar.less'
-import {areSourcesReady, canDrop, jsonToWidgets} from '../../utils'
+import Avatar from 'pages/common/components/Avatar/Avatar'
+import css from 'pages/common/components/infobar/Infobar.less'
+import {
+    areSourcesReady,
+    canDrop,
+    jsonToWidgets,
+} from 'pages/common/components/infobar/utils'
 
 import CustomerChannels from './CustomerChannels'
 import CustomerNote from './CustomerNote/CustomerNote'
@@ -55,7 +59,7 @@ const GenerateButton = ({
     return (
         <div className="no-result-container mt-5">
             <p>You're not showing any widgets here yet.</p>
-            <Button color="info" onClick={generateWidgets}>
+            <Button type="button" onClick={generateWidgets}>
                 Generate default widgets
             </Button>
         </div>

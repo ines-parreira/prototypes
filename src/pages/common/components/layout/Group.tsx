@@ -28,7 +28,6 @@ export default function Group({
     className,
     orientation = 'horizontal',
 }: Props) {
-    const length = useMemo(() => Children.count(children), [children])
     const appendPosition = useMemo(
         () =>
             orientation === 'vertical'
@@ -37,21 +36,24 @@ export default function Group({
         [orientation]
     )
 
+    const childrenArray = Children.toArray(children)
+    const validChildrenArray = childrenArray.filter((child) =>
+        isValidElement(child)
+    ) as React.ReactElement[]
+
     return (
         <span className={classnames(className, css.group, css[orientation])}>
-            {Children.map(children, (child, index) =>
-                isValidElement(child)
-                    ? cloneElement(child, {
-                          appendPosition:
-                              length < 2
-                                  ? undefined
-                                  : index > 0 && index < length - 1
-                                  ? appendPosition[1]
-                                  : index === 0
-                                  ? appendPosition[0]
-                                  : appendPosition[2],
-                      })
-                    : null
+            {validChildrenArray.map((child, index) =>
+                cloneElement(child, {
+                    appendPosition:
+                        validChildrenArray.length < 2
+                            ? undefined
+                            : index > 0 && index < validChildrenArray.length - 1
+                            ? appendPosition[1]
+                            : index === 0
+                            ? appendPosition[0]
+                            : appendPosition[2],
+                })
             )}
         </span>
     )

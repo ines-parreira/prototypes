@@ -2,22 +2,21 @@
 
 exports[`<ButtonsGroup/> should render with correct label and without a dropdown  1`] = `
 <div>
-  <div
-    class="actionButtons btn-group"
-    role="group"
+  <span
+    class="actionButtons group horizontal"
   >
     <button
-      class="actionButton btn btn-secondary"
+      class="wrapper actionButton secondary medium left"
       type="button"
     >
       renders
     </button>
     <button
-      class="actionButton btn btn-secondary"
+      class="wrapper actionButton secondary medium right"
       type="button"
     >
       ok 1234 Johanna
     </button>
-  </div>
+  </span>
 </div>
 `;

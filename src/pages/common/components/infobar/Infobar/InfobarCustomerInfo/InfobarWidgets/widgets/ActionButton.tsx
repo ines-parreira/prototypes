@@ -6,34 +6,31 @@ import React, {
     FormEvent,
 } from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import classnames from 'classnames'
 import _isUndefined from 'lodash/isUndefined'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
 import _noop from 'lodash/noop'
-import {
-    Button,
-    Form,
-    Label,
-    Popover,
-    PopoverBody,
-    PopoverHeader,
-} from 'reactstrap'
+import {Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
 import InputField from 'pages/common/forms/InputField'
-import SelectField from '../../../../../../forms/SelectField/SelectField'
+import {AppendPosition} from 'pages/common/components/layout/Group'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 
-import {executeAction} from '../../../../../../../../state/infobar/actions'
-import {getPendingActionCallbacks} from '../../../../../../../../state/infobar/selectors'
-import {actionButtonHashForData} from '../../../../../../../../state/infobar/utils'
-import {RootState} from '../../../../../../../../state/types'
-import Tooltip from '../../../../../Tooltip'
-import {CustomerContext, CustomerContextType} from '../../InfobarCustomerInfo'
+import {executeAction} from 'state/infobar/actions'
+import {getPendingActionCallbacks} from 'state/infobar/selectors'
+import {actionButtonHashForData} from 'state/infobar/utils'
+import {RootState} from 'state/types'
+import Tooltip from 'pages/common/components/Tooltip'
+import {
+    CustomerContext,
+    CustomerContextType,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 
 import {IntegrationContext, IntegrationContextType} from './IntegrationContext'
 
-import css from './ActionButton.less'
+import css from './ActionButtons.less'
 import {InfobarModalProps, Option, Parameter} from './types'
 
 type ActionButtonContextType = {
@@ -62,6 +59,8 @@ type Props = {
     customerId: CustomerContextType['customerId']
     integrationId: IntegrationContextType['integrationId']
     setModalOpen?: (param: boolean) => void
+    appendPosition?: AppendPosition
+    className?: string
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -338,7 +337,7 @@ export class ActionButtonContainer extends Component<Props, State> {
                               ]
                             : null}
                         {this.renderActionParameters()}
-                        <Button color="success" block>
+                        <Button type="submit" className="d-block">
                             Confirm
                         </Button>
                     </Form>
@@ -356,23 +355,14 @@ export class ActionButtonContainer extends Component<Props, State> {
             <>
                 <Tag
                     id={this.id}
-                    color="secondary"
-                    size="sm"
-                    className={classnames(css.button, 'action-button')}
-                    disabled={isLoading || hasError}
+                    type="button"
+                    intent={ButtonIntent.Secondary}
+                    isDisabled={isLoading || hasError}
                     onClick={this.toggleUi}
+                    appendPosition={this.props.appendPosition}
                     {...tagOptions}
                 >
-                    <span
-                        id={tooltipTargetID}
-                        style={{
-                            position: 'absolute',
-                            height: '100%',
-                            width: '100%',
-                            top: '0',
-                            left: '0',
-                        }}
-                    />
+                    <span id={tooltipTargetID} />
                     {children}
                 </Tag>
                 {modal ? this.renderModal(modal) : this.renderPopover()}

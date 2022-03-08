@@ -1,7 +1,7 @@
 import React, {ReactNode} from 'react'
 import classnames from 'classnames'
-import {Button} from 'reactstrap'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import expandDown from 'assets/img/infobar/expand-down.svg'
 
 import css from './ShowMore.less'
@@ -16,7 +16,7 @@ export function ShowMore({children, className, onClick}: Props) {
     return (
         <Button
             type="button"
-            color="link"
+            intent={ButtonIntent.Secondary}
             className={classnames(css.container, className)}
             onClick={onClick}
         >

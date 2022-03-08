@@ -2,12 +2,13 @@ import React, {
     FormEvent,
     useCallback,
     useContext,
-    useState,
     useEffect,
+    useState,
 } from 'react'
-import {Button, Form, Popover, PopoverBody} from 'reactstrap'
+import {Form, Popover, PopoverBody} from 'reactstrap'
 import {useSelector} from 'react-redux'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import {
     logEvent,
     SegmentEvent,
@@ -134,15 +135,14 @@ export default function Editor(props: Props) {
                     />
                     <div>
                         <Button
-                            color="primary"
                             type="submit"
                             className="mr-2"
-                            disabled={!canSubmit}
+                            isDisabled={!canSubmit}
                         >
                             Save
                         </Button>
                         <Button
-                            color="secondary"
+                            intent={ButtonIntent.Secondary}
                             type="button"
                             onClick={handleCancel}
                         >

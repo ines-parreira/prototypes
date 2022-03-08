@@ -187,16 +187,14 @@ exports[`CustomerChannels component should display all passed channels (includin
         </Tooltip>
       </span>
     </div>
-    <Button
-      className="container pl-0"
-      color="link"
+    <ForwardRef
+      className="container"
+      intent="secondary"
       onClick={[Function]}
-      tag="button"
       type="button"
     >
       <button
-        aria-label={null}
-        className="container pl-0 btn btn-link"
+        className="wrapper container secondary medium"
         onClick={[Function]}
         type="button"
       >
@@ -207,7 +205,7 @@ exports[`CustomerChannels component should display all passed channels (includin
         />
         More info
       </button>
-    </Button>
+    </ForwardRef>
   </div>
 </CustomerInfoWrapper>
 `;
@@ -848,16 +846,14 @@ exports[`CustomerChannels component should display all passed channels (includin
       </i>
       Last seen on chat: 36 minutes ago
     </p>
-    <Button
-      className="container pl-0"
-      color="link"
+    <ForwardRef
+      className="container"
+      intent="secondary"
       onClick={[Function]}
-      tag="button"
       type="button"
     >
       <button
-        aria-label={null}
-        className="container pl-0 btn btn-link"
+        className="wrapper container secondary medium"
         onClick={[Function]}
         type="button"
       >
@@ -868,7 +864,7 @@ exports[`CustomerChannels component should display all passed channels (includin
         />
         Less info
       </button>
-    </Button>
+    </ForwardRef>
   </div>
 </CustomerInfoWrapper>
 `;

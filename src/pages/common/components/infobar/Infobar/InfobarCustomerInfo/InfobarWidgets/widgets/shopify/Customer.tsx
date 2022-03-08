@@ -4,6 +4,7 @@ import {fromJS, Map} from 'immutable'
 
 import logo from 'assets/img/infobar/shopify.svg'
 
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import * as integrationsSelectors from '../../../../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../../../../state/types'
 import {IntegrationType} from '../../../../../../../../../models/integration/types'
@@ -57,7 +58,7 @@ class AfterTitleContainer extends Component<
                 title: 'Create order',
                 child: (
                     <>
-                        <i className="material-icons mr-2">add</i> Create order
+                        <ButtonIconLabel icon="add" /> Create order
                     </>
                 ),
                 modal: DraftOrderModal,

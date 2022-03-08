@@ -88,7 +88,6 @@ class ListInfobarWidget extends React.Component {
                 ) : (
                     <>
                         <ShowMore
-                            className="pl-0"
                             onClick={() =>
                                 this.setState({
                                     showMoreTimes: this.state.showMoreTimes + 1,

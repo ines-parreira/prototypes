@@ -626,14 +626,14 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
     </div>
     <div>
       <button
-        class="mr-2 btn btn-success disabled"
+        class="wrapper mr-2 primary medium isDisabled"
         disabled=""
         type="button"
       >
         Save changes
       </button>
       <button
-        class="btn btn-secondary disabled"
+        class="wrapper secondary medium isDisabled"
         disabled=""
         type="button"
       >

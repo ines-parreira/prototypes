@@ -6,13 +6,13 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {createStore, applyMiddleware, Reducer} from 'redux'
 
-import * as infobarActions from '../../../../../../../../../../../../state/infobar/actions'
+import * as infobarActions from 'state/infobar/actions'
 const mockedActionId = 'someActionId'
-jest.mock('../../../../../../../../../../../../state/infobar/actions', () => ({
+jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(() => () => mockedActionId),
 }))
 
-import {actionFixture} from '../../../../../../../../../../../../fixtures/infobarCustomActions'
+import {actionFixture} from 'fixtures/infobarCustomActions'
 import Button from '../Button'
 
 const mockStore = configureMockStore([thunk])

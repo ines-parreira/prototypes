@@ -1,13 +1,12 @@
 import React from 'react'
-import {
-    ButtonDropdown,
-    ButtonGroup,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-} from 'reactstrap'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
+import Group from 'pages/common/components/layout/Group'
+import GroupItem from 'pages/common/components/layout/GroupItem'
+import IconButton from 'pages/common/components/button/IconButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
 import ActionButton from './ActionButton'
+import css from './ActionButtons.less'
 
 import {InfobarAction} from './types'
 
@@ -52,7 +51,7 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
         const buttons = actions.slice(0, NB_ACTIONS_DISPLAYED)
         const dropdownButtons = actions.slice(NB_ACTIONS_DISPLAYED)
         return (
-            <ButtonGroup className="action-buttons">
+            <Group className={css.container}>
                 {buttons.map((action) => {
                     return (
                         <ActionButton
@@ -70,41 +69,48 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                     )
                 })}
                 {dropdownButtons.length > 0 && (
-                    <ButtonDropdown
-                        className="action-dropdown"
-                        isOpen={actionDropdownIsOpen}
-                        toggle={this.toggleDropdown}
-                    >
-                        <DropdownToggle
-                            caret
-                            className="caret-only"
-                            type="button"
-                            color="secondary"
-                            size="sm"
-                        />
-                        <DropdownMenu right>
-                            {dropdownButtons.map((action) => {
-                                return (
-                                    <ActionButton
-                                        key={action.key}
-                                        options={action.options}
-                                        payload={payload}
-                                        tag={DropdownItem}
-                                        tagOptions={{toggle: false}}
-                                        popover={action.popover}
-                                        title={action.title}
-                                        modal={action.modal}
-                                        modalData={action.modalData}
-                                        setModalOpen={this.setModalOpen}
+                    <GroupItem>
+                        {(appendPosition) => (
+                            <Dropdown
+                                isOpen={actionDropdownIsOpen}
+                                toggle={this.toggleDropdown}
+                            >
+                                <DropdownToggle tag="span">
+                                    <IconButton
+                                        appendPosition={appendPosition}
+                                        intent={ButtonIntent.Secondary}
                                     >
-                                        {action.child}
-                                    </ActionButton>
-                                )
-                            })}
-                        </DropdownMenu>
-                    </ButtonDropdown>
+                                        arrow_drop_down
+                                    </IconButton>
+                                </DropdownToggle>
+                                <DropdownMenu right>
+                                    {dropdownButtons.map((action) => {
+                                        return (
+                                            <ActionButton
+                                                key={action.key}
+                                                options={action.options}
+                                                payload={payload}
+                                                tag={DropdownItem}
+                                                tagOptions={{
+                                                    toggle: false,
+                                                    className: css.buttonFlex,
+                                                }}
+                                                popover={action.popover}
+                                                title={action.title}
+                                                modal={action.modal}
+                                                modalData={action.modalData}
+                                                setModalOpen={this.setModalOpen}
+                                            >
+                                                {action.child}
+                                            </ActionButton>
+                                        )
+                                    })}
+                                </DropdownMenu>
+                            </Dropdown>
+                        )}
+                    </GroupItem>
                 )}
-            </ButtonGroup>
+            </Group>
         )
     }
 }

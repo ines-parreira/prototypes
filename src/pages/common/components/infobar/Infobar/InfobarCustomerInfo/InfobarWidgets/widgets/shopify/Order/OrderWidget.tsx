@@ -8,19 +8,20 @@ import React, {
 } from 'react'
 import {fromJS, Map} from 'immutable'
 
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     FulfillmentStatus,
     FinancialStatus,
-} from '../../../../../../../../../../constants/integrations/types/shopify'
-import {DatetimeLabel} from '../../../../../../../../utils/labels'
-import ActionButtonsGroup from '../../ActionButtonsGroup'
-import {CardHeaderDetails} from '../../CardHeaderDetails'
-import DraftOrderModal from '../shared/DraftOrderModal/DraftOrderModal'
-import {CardHeaderValue} from '../../CardHeaderValue'
-import {InfobarAction} from '../../types'
-import {IntegrationContext} from '../../IntegrationContext'
-import {ShopifyActionType} from '../types'
-import MoneyAmount from '../../MoneyAmount'
+} from 'constants/integrations/types/shopify'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import {CardHeaderDetails} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderDetails'
+import DraftOrderModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/DraftOrderModal'
+import {CardHeaderValue} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderValue'
+import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import CancelOrderModal from './CancelOrderModal/CancelOrderModal'
 import RefundOrderModal from './RefundOrderModal/RefundOrderModal'
@@ -92,7 +93,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 title: 'Refund order',
                 child: (
                     <>
-                        <i className="material-icons">refresh</i> Refund
+                        <ButtonIconLabel icon="refresh" /> Refund
                     </>
                 ),
                 modal: RefundOrderModal,
@@ -116,7 +117,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 title: 'Cancel order',
                 child: (
                     <>
-                        <i className="material-icons">block</i> Cancel
+                        <ButtonIconLabel icon="block" /> Cancel
                     </>
                 ),
                 modal: CancelOrderModal,
@@ -141,7 +142,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 title: 'Edit order',
                 child: (
                     <>
-                        <i className="material-icons">mode_edit</i> Edit
+                        <ButtonIconLabel icon="mode_edit" /> Edit
                     </>
                 ),
                 modal: EditOrderModal,
@@ -175,7 +176,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 title: 'Duplicate order',
                 child: (
                     <>
-                        <i className="material-icons">filter_none</i> Duplicate
+                        <ButtonIconLabel icon="filter_none" /> Duplicate
                     </>
                 ),
                 modal: DraftOrderModal,

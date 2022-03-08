@@ -1,12 +1,10 @@
 import React from 'react'
 import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
-import {Card, CardBody, Button} from 'reactstrap'
+import {Card, CardBody} from 'reactstrap'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../store/middlewares/segmentTracker'
+import Button from 'pages/common/components/button/Button'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 type Props = {
     customer: Map<any, any>
@@ -108,18 +106,18 @@ export default function AddIntegrationSuggestion({customer}: Props) {
                                     Display customer data here by adding an
                                     integration
                                 </div>
-                                <Button
-                                    tag={Link}
-                                    color="info"
-                                    to="/app/settings/integrations"
-                                    onClick={() => {
-                                        logEvent(
-                                            SegmentEvent.InfobarIntegrationAddClicked
-                                        )
-                                    }}
-                                >
-                                    Add integration
-                                </Button>
+                                <Link to="/app/settings/integrations">
+                                    <Button
+                                        type="button"
+                                        onClick={() => {
+                                            logEvent(
+                                                SegmentEvent.InfobarIntegrationAddClicked
+                                            )
+                                        }}
+                                    >
+                                        Add integration
+                                    </Button>
+                                </Link>
                             </div>
                         </div>
                     </CardBody>

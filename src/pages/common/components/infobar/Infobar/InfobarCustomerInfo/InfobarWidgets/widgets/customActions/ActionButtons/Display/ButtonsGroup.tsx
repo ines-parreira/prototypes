@@ -9,8 +9,7 @@ import React, {
 } from 'react'
 import {useSelector} from 'react-redux'
 import {
-    ButtonDropdown,
-    ButtonGroup,
+    UncontrolledDropdown,
     DropdownMenu,
     DropdownToggle,
     Modal,
@@ -18,17 +17,22 @@ import {
 import {Map} from 'immutable'
 import {useDebounce} from 'react-use'
 
-import {renderTemplate} from '../../../../../../../../../utils/template'
-import {getTicket} from '../../../../../../../../../../../state/ticket/selectors'
-import {getActiveCustomer} from '../../../../../../../../../../../state/customers/selectors'
-import {getCurrentAccountState} from '../../../../../../../../../../../state/currentAccount/selectors'
+import classnames from 'classnames'
+import Group from 'pages/common/components/layout/Group'
+import GroupItem from 'pages/common/components/layout/GroupItem'
+import IconButton from 'pages/common/components/button/IconButton'
+import {ButtonIntent} from 'pages/common/components/button/Button'
+import {renderTemplate} from 'pages/common/utils/template'
+import {getTicket} from 'state/ticket/selectors'
+import {getActiveCustomer} from 'state/customers/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../store/middlewares/segmentTracker'
-import {IntegrationContext} from '../../../IntegrationContext'
-import {Action, Button as ButtonType} from '../../types'
-import css from '../ActionButtons.less'
+    Action,
+    Button as ButtonType,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
 import Button from './Button'
 import ActionEditor from './ActionEditor'
 
@@ -110,16 +114,12 @@ function ButtonsGroup({buttons, source}: Props) {
     )
 
     // dropdown management
-    const [isDropdownOpen, setDropdownOpen] = useState(false)
-    const toggleDropdown = useCallback(() => {
-        setDropdownOpen((isDropdownOpen) => !isDropdownOpen)
-    }, [])
     const displayedButtons = buttons.slice(0, nbButtonDisplayed)
     const dropdownButtons = buttons.slice(nbButtonDisplayed)
 
     return (
         <div ref={containerRef}>
-            <ButtonGroup className={css.actionButtons}>
+            <Group className={classnames(css.actionButtons)}>
                 {displayedButtons.map((button, index) => {
                     return (
                         <Button
@@ -135,45 +135,48 @@ function ButtonsGroup({buttons, source}: Props) {
                     )
                 })}
                 {dropdownButtons.length > 0 && (
-                    <ButtonDropdown
-                        className={css.dropdownButton}
-                        isOpen={isDropdownOpen}
-                        toggle={toggleDropdown}
-                    >
-                        <DropdownToggle className={css.dropdownToggle}>
-                            <i className={`material-icons ${css.dropdownIcon}`}>
-                                more_horiz
-                            </i>
-                        </DropdownToggle>
-                        <DropdownMenu right>
-                            {dropdownButtons.map((button, index) => (
-                                <Button
-                                    key={index}
-                                    index={index + nbButtonDisplayed}
-                                    label={renderTemplate(
-                                        button.label,
-                                        templateContext
-                                    )}
-                                    openEditor={openEditor}
-                                    action={button.action}
-                                    isDropdown
-                                />
-                            ))}
-                        </DropdownMenu>
-                    </ButtonDropdown>
+                    <GroupItem>
+                        {(appendPosition) => (
+                            <UncontrolledDropdown>
+                                <DropdownToggle tag={'span'}>
+                                    <IconButton
+                                        appendPosition={appendPosition}
+                                        intent={ButtonIntent.Secondary}
+                                    >
+                                        more_horiz
+                                    </IconButton>
+                                </DropdownToggle>
+                                <DropdownMenu right>
+                                    {dropdownButtons.map((button, index) => (
+                                        <Button
+                                            key={index}
+                                            index={index + nbButtonDisplayed}
+                                            label={renderTemplate(
+                                                button.label,
+                                                templateContext
+                                            )}
+                                            openEditor={openEditor}
+                                            action={button.action}
+                                            isDropdown
+                                        />
+                                    ))}
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
+                        )}
+                    </GroupItem>
                 )}
-                <Modal
-                    isOpen={isEditorOpen}
+            </Group>
+            <Modal
+                isOpen={isEditorOpen}
+                onClose={handleCloseEditor}
+                backdrop="static"
+            >
+                <ActionEditor
+                    onSubmit={handleSubmit!}
                     onClose={handleCloseEditor}
-                    backdrop="static"
-                >
-                    <ActionEditor
-                        onSubmit={handleSubmit!}
-                        onClose={handleCloseEditor}
-                        action={buttons[editIndex].action}
-                    />
-                </Modal>
-            </ButtonGroup>
+                    action={buttons[editIndex].action}
+                />
+            </Modal>
         </div>
     )
 }

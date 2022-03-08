@@ -1,11 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ShowMore/> render() should render children 1`] = `
-<Button
+<ForwardRef
   className="container foo"
-  color="link"
+  intent="secondary"
   onClick={[Function]}
-  tag="button"
   type="button"
 >
   <img
@@ -14,5 +13,5 @@ exports[`<ShowMore/> render() should render children 1`] = `
     src="test-file-stub"
   />
   Show more
-</Button>
+</ForwardRef>
 `;

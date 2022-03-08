@@ -1,30 +1,32 @@
 import React, {
-    useContext,
-    useState,
-    useMemo,
     memo,
     useCallback,
+    useContext,
     useEffect,
+    useMemo,
+    useState,
 } from 'react'
-import {Button, Collapse, ListGroup} from 'reactstrap'
+import {Collapse, ListGroup} from 'reactstrap'
 import {List, Map} from 'immutable'
 import {connect, ConnectedProps, useSelector} from 'react-redux'
 
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 import expandDown from 'assets/img/infobar/expand-down.svg'
 
 import {
-    updateCustomActions,
-    startWidgetEdition,
     removeEditedWidget,
-} from '../../../../../../../../../../state/widgets/actions'
+    startWidgetEdition,
+    updateCustomActions,
+} from 'state/widgets/actions'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../store/middlewares/segmentTracker'
-import {getCurrentAccountState} from '../../../../../../../../../../state/currentAccount/selectors'
-import {IntegrationContext} from '../../IntegrationContext'
-import {Link as LinkType, SubmitLink} from '../types'
+    Link as LinkType,
+    SubmitLink,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import Editor from './Editor'
 import Link from './Link'
@@ -171,7 +173,7 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
                     {isCollapsible && (
                         <Button
                             type="button"
-                            color="link"
+                            intent={ButtonIntent.Secondary}
                             className={css.collapseButton}
                             onClick={handleToggle}
                         >
@@ -202,10 +204,11 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
                 <>
                     <Button
                         type="button"
-                        className={css.addButton}
                         id={targetId}
+                        className={css.addButton}
+                        intent={ButtonIntent.Secondary}
                     >
-                        <i className="material-icons mr-2">add</i>
+                        <ButtonIconLabel icon="add" />
                         Add Redirection Link
                     </Button>
                     <Editor target={targetId} onSubmit={handleSubmit} />

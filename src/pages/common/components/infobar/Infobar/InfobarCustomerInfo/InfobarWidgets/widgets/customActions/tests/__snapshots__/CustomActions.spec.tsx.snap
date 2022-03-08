@@ -5,23 +5,22 @@ exports[`<ActionButtons/> should render links and buttons  1`] = `
   class="container"
 >
   <div>
-    <div
-      class="actionButtons btn-group"
-      role="group"
+    <span
+      class="actionButtons group horizontal"
     >
       <button
-        class="actionButton btn btn-secondary"
+        class="wrapper actionButton secondary medium left"
         type="button"
       >
         button - I am in snapshots
       </button>
       <button
-        class="actionButton btn btn-secondary"
+        class="wrapper actionButton secondary medium right"
         type="button"
       >
         button - I am in snapshots too
       </button>
-    </div>
+    </span>
   </div>
   <ul
     class="listGroup list-group list-group-flush"
@@ -121,14 +120,18 @@ exports[`<ActionButtons/> should render links and buttons in edition mode 1`] = 
     </li>
   </ul>
   <button
-    class="addButton btn btn-secondary"
+    class="wrapper addButton secondary medium"
     type="button"
   >
-    <i
-      class="material-icons mr-2"
+    <span
+      class="wrapper"
     >
-      add
-    </i>
+      <i
+        class="material-icons icon isLeft medium"
+      >
+        add
+      </i>
+    </span>
     Add Button
   </button>
   <ul
@@ -200,15 +203,19 @@ exports[`<ActionButtons/> should render links and buttons in edition mode 1`] = 
     </li>
   </ul>
   <button
-    class="addButton btn btn-secondary"
+    class="wrapper addButton secondary medium"
     id="custom-action-link-templatePath"
     type="button"
   >
-    <i
-      class="material-icons mr-2"
+    <span
+      class="wrapper"
     >
-      add
-    </i>
+      <i
+        class="material-icons icon isLeft medium"
+      >
+        add
+      </i>
+    </span>
     Add Redirection Link
   </button>
 </div>

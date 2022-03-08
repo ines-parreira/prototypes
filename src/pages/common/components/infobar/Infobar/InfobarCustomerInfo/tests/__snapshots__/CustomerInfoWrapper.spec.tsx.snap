@@ -9,7 +9,7 @@ exports[`CustomerInfoWrapper component should only 2 children and a Show More bu
     b
   </p>
   <button
-    class="container pl-0 btn btn-link"
+    class="wrapper container secondary medium"
     type="button"
   >
     <img
@@ -37,7 +37,7 @@ exports[`CustomerInfoWrapper component should render all 4 children and a Show L
     d
   </p>
   <button
-    class="container pl-0 btn btn-link"
+    class="wrapper container secondary medium"
     type="button"
   >
     <img
@@ -59,7 +59,7 @@ exports[`CustomerInfoWrapper component should render child a and child b with th
     b
   </p>
   <button
-    class="container pl-0 btn btn-link"
+    class="wrapper container secondary medium"
     type="button"
   >
     <img

@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
-import {Form, FormGroup, Button} from 'reactstrap'
+import {Form, FormGroup} from 'reactstrap'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import {isSimpleTemplateWidget} from 'pages/common/components/infobar/utils.tsx'
 import CheckBox from 'pages/common/forms/CheckBox.tsx'
 import InputField from 'pages/common/forms/InputField'
@@ -160,11 +161,11 @@ class PopoverWidgetEditCard extends React.Component {
                 ]}
 
                 <div>
-                    <Button color="primary" type="submit" className="mr-2">
+                    <Button type="submit" className="mr-2">
                         Submit
                     </Button>
                     <Button
-                        color="secondary"
+                        intent={ButtonIntent.Secondary}
                         type="button"
                         onClick={this._closePopup}
                     >

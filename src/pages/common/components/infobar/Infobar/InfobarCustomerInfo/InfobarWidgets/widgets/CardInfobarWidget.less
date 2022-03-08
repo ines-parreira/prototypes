@@ -13,41 +13,6 @@
             color: @classic-neutral-grey-4;
         }
 
-        .action-buttons {
-            position: relative;
-            display: flex;
-            flex-wrap: wrap;
-            margin-top: 8px;
-            padding-right: 24px;
-
-            @media @desktops {
-                padding-right: 0;
-            }
-
-            .action-button {
-                padding: 5px 9px;
-                margin-bottom: 0.4rem;
-                flex: 0;
-
-                @media @desktops {
-                    margin-bottom: 0;
-                }
-
-                &:focus {
-                    outline: none;
-                }
-            }
-
-            .action-dropdown {
-                position: absolute;
-                right: 0;
-
-                @media @desktops {
-                    position: relative;
-                }
-            }
-        }
-
         .content {
             height: auto;
             opacity: 1;
@@ -84,10 +49,6 @@
 
         .dropdown-icon {
             transform: rotate(-180deg);
-        }
-
-        .action-dropdown {
-            display: none;
         }
     }
 

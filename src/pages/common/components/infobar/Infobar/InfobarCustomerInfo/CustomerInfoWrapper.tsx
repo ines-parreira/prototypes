@@ -1,7 +1,7 @@
-import React, {useState, Children, ReactNode} from 'react'
+import React, {Children, ReactNode, useState} from 'react'
 import classnames from 'classnames'
-import {Button} from 'reactstrap'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import expandDown from 'assets/img/infobar/expand-down.svg'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 
@@ -26,8 +26,8 @@ export default function CustomerInfoWrapper({
             {count <= displayedElementsCount ? null : (
                 <Button
                     type="button"
-                    color="link"
-                    className={classnames(css.container, 'pl-0')}
+                    intent={ButtonIntent.Secondary}
+                    className={classnames(css.container)}
                     onClick={() => setOpen((prevState) => !prevState)}
                 >
                     {isOpen ? (

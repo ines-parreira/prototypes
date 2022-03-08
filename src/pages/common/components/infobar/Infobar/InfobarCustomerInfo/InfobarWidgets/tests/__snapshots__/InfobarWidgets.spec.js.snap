@@ -3305,27 +3305,37 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                               className="list-group list-group-flush"
                                                             />
                                                           </ListGroup>
-                                                          <Button
+                                                          <ForwardRef
                                                             className="addButton"
-                                                            color="secondary"
+                                                            intent="secondary"
                                                             onClick={[Function]}
-                                                            tag="button"
                                                             type="button"
                                                           >
                                                             <button
-                                                              aria-label={null}
-                                                              className="addButton btn btn-secondary"
+                                                              className="wrapper addButton secondary medium"
                                                               onClick={[Function]}
                                                               type="button"
                                                             >
-                                                              <i
-                                                                className="material-icons mr-2"
+                                                              <ButtonIconLabel
+                                                                icon="add"
                                                               >
-                                                                add
-                                                              </i>
+                                                                <span
+                                                                  className="wrapper"
+                                                                >
+                                                                  <Icon
+                                                                    className="icon isLeft"
+                                                                  >
+                                                                    <i
+                                                                      className="material-icons icon isLeft medium"
+                                                                    >
+                                                                      add
+                                                                    </i>
+                                                                  </Icon>
+                                                                </span>
+                                                              </ButtonIconLabel>
                                                               Add Button
                                                             </button>
-                                                          </Button>
+                                                          </ForwardRef>
                                                           <Modal
                                                             autoFocus={true}
                                                             backdrop="static"
@@ -3398,28 +3408,37 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                         templatePath="1.template.widgets.0"
                                                         updateCustomActions={[Function]}
                                                       >
-                                                        <Button
+                                                        <ForwardRef
                                                           className="addButton"
-                                                          color="secondary"
                                                           id="custom-action-link-1templatewidgets0"
-                                                          tag="button"
+                                                          intent="secondary"
                                                           type="button"
                                                         >
                                                           <button
-                                                            aria-label={null}
-                                                            className="addButton btn btn-secondary"
+                                                            className="wrapper addButton secondary medium"
                                                             id="custom-action-link-1templatewidgets0"
-                                                            onClick={[Function]}
                                                             type="button"
                                                           >
-                                                            <i
-                                                              className="material-icons mr-2"
+                                                            <ButtonIconLabel
+                                                              icon="add"
                                                             >
-                                                              add
-                                                            </i>
+                                                              <span
+                                                                className="wrapper"
+                                                              >
+                                                                <Icon
+                                                                  className="icon isLeft"
+                                                                >
+                                                                  <i
+                                                                    className="material-icons icon isLeft medium"
+                                                                  >
+                                                                    add
+                                                                  </i>
+                                                                </Icon>
+                                                              </span>
+                                                            </ButtonIconLabel>
                                                             Add Redirection Link
                                                           </button>
-                                                        </Button>
+                                                        </ForwardRef>
                                                         <Editor
                                                           onSubmit={[Function]}
                                                           target="custom-action-link-1templatewidgets0"
@@ -3467,15 +3486,19 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                                 popperClassName="popover show"
                                                                 target={
                                                                   <button
-                                                                    class="addButton btn btn-secondary"
+                                                                    class="wrapper addButton secondary medium"
                                                                     id="custom-action-link-1templatewidgets0"
                                                                     type="button"
                                                                   >
-                                                                    <i
-                                                                      class="material-icons mr-2"
+                                                                    <span
+                                                                      class="wrapper"
                                                                     >
-                                                                      add
-                                                                    </i>
+                                                                      <i
+                                                                        class="material-icons icon isLeft medium"
+                                                                      >
+                                                                        add
+                                                                      </i>
+                                                                    </span>
                                                                     Add Redirection Link
                                                                   </button>
                                                                 }
@@ -4465,27 +4488,37 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                               className="list-group list-group-flush"
                                                             />
                                                           </ListGroup>
-                                                          <Button
+                                                          <ForwardRef
                                                             className="addButton"
-                                                            color="secondary"
+                                                            intent="secondary"
                                                             onClick={[Function]}
-                                                            tag="button"
                                                             type="button"
                                                           >
                                                             <button
-                                                              aria-label={null}
-                                                              className="addButton btn btn-secondary"
+                                                              className="wrapper addButton secondary medium"
                                                               onClick={[Function]}
                                                               type="button"
                                                             >
-                                                              <i
-                                                                className="material-icons mr-2"
+                                                              <ButtonIconLabel
+                                                                icon="add"
                                                               >
-                                                                add
-                                                              </i>
+                                                                <span
+                                                                  className="wrapper"
+                                                                >
+                                                                  <Icon
+                                                                    className="icon isLeft"
+                                                                  >
+                                                                    <i
+                                                                      className="material-icons icon isLeft medium"
+                                                                    >
+                                                                      add
+                                                                    </i>
+                                                                  </Icon>
+                                                                </span>
+                                                              </ButtonIconLabel>
                                                               Add Button
                                                             </button>
-                                                          </Button>
+                                                          </ForwardRef>
                                                           <Modal
                                                             autoFocus={true}
                                                             backdrop="static"
@@ -4558,28 +4591,37 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                         templatePath="2.template.widgets.0"
                                                         updateCustomActions={[Function]}
                                                       >
-                                                        <Button
+                                                        <ForwardRef
                                                           className="addButton"
-                                                          color="secondary"
                                                           id="custom-action-link-2templatewidgets0"
-                                                          tag="button"
+                                                          intent="secondary"
                                                           type="button"
                                                         >
                                                           <button
-                                                            aria-label={null}
-                                                            className="addButton btn btn-secondary"
+                                                            className="wrapper addButton secondary medium"
                                                             id="custom-action-link-2templatewidgets0"
-                                                            onClick={[Function]}
                                                             type="button"
                                                           >
-                                                            <i
-                                                              className="material-icons mr-2"
+                                                            <ButtonIconLabel
+                                                              icon="add"
                                                             >
-                                                              add
-                                                            </i>
+                                                              <span
+                                                                className="wrapper"
+                                                              >
+                                                                <Icon
+                                                                  className="icon isLeft"
+                                                                >
+                                                                  <i
+                                                                    className="material-icons icon isLeft medium"
+                                                                  >
+                                                                    add
+                                                                  </i>
+                                                                </Icon>
+                                                              </span>
+                                                            </ButtonIconLabel>
                                                             Add Redirection Link
                                                           </button>
-                                                        </Button>
+                                                        </ForwardRef>
                                                         <Editor
                                                           onSubmit={[Function]}
                                                           target="custom-action-link-2templatewidgets0"
@@ -4627,15 +4669,19 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                                 popperClassName="popover show"
                                                                 target={
                                                                   <button
-                                                                    class="addButton btn btn-secondary"
+                                                                    class="wrapper addButton secondary medium"
                                                                     id="custom-action-link-2templatewidgets0"
                                                                     type="button"
                                                                   >
-                                                                    <i
-                                                                      class="material-icons mr-2"
+                                                                    <span
+                                                                      class="wrapper"
                                                                     >
-                                                                      add
-                                                                    </i>
+                                                                      <i
+                                                                        class="material-icons icon isLeft medium"
+                                                                      >
+                                                                        add
+                                                                      </i>
+                                                                    </span>
                                                                     Add Redirection Link
                                                                   </button>
                                                                 }

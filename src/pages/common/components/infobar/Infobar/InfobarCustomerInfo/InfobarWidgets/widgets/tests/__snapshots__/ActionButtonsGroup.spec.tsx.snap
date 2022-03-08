@@ -1,10 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ActionButtonsGroup component should not render the dropdown if there 3 or less actions 1`] = `
-<ButtonGroup
-  className="action-buttons"
-  role="group"
-  tag="div"
+<Group
+  className="container"
 >
   <Connect(Component)
     key="action1"
@@ -72,16 +70,14 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
       Option 1
     </div>
   </Connect(Component)>
-</ButtonGroup>
+</Group>
 `;
 
 exports[`ActionButtonsGroup component should render null if there's no actions 1`] = `""`;
 
 exports[`ActionButtonsGroup component should render the dropdown if there more than 3 actions 1`] = `
-<ButtonGroup
-  className="action-buttons"
-  role="group"
-  tag="div"
+<Group
+  className="container"
 >
   <Connect(Component)
     key="action1"
@@ -149,53 +145,8 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
       Option 1
     </div>
   </Connect(Component)>
-  <ButtonDropdown
-    className="action-dropdown"
-    isOpen={false}
-    toggle={[Function]}
-  >
-    <DropdownToggle
-      aria-haspopup={true}
-      caret={true}
-      className="caret-only"
-      color="secondary"
-      size="sm"
-      type="button"
-    />
-    <DropdownMenu
-      flip={true}
-      right={true}
-      tag="div"
-    >
-      <Connect(Component)
-        key="action4"
-        options={
-          Array [
-            Object {
-              "label": "Option 1",
-              "value": "option1",
-            },
-          ]
-        }
-        payload={Object {}}
-        setModalOpen={[Function]}
-        tag={[Function]}
-        tagOptions={
-          Object {
-            "toggle": false,
-          }
-        }
-        title={
-          <div>
-            Option 1
-          </div>
-        }
-      >
-        <div>
-          Option 1
-        </div>
-      </Connect(Component)>
-    </DropdownMenu>
-  </ButtonDropdown>
-</ButtonGroup>
+  <GroupItem>
+    <Component />
+  </GroupItem>
+</Group>
 `;

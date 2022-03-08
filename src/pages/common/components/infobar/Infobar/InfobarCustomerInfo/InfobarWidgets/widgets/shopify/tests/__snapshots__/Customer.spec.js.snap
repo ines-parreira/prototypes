@@ -2,27 +2,29 @@
 
 exports[`<TitleWrapper/> should match snapshot 1`] = `
 <div>
-  <div
-    class="action-buttons btn-group"
-    role="group"
+  <span
+    class="container group horizontal"
   >
     <button
-      class="button action-button btn btn-secondary btn-sm"
+      class="wrapper secondary medium"
       id="action-button-1"
       type="button"
     >
       <span
         id="action-button-1-tooltip-target"
-        style="position: absolute; height: 100%; width: 100%; top: 0px; left: 0px;"
       />
-      <i
-        class="material-icons mr-2"
+      <span
+        class="wrapper"
       >
-        add
-      </i>
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          add
+        </i>
+      </span>
        Create order
     </button>
-  </div>
+  </span>
   <div
     class="container"
   >

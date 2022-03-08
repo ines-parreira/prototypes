@@ -2,23 +2,22 @@
 
 exports[`<ActionButtons/> should render the action buttons if isEditing is set to false 1`] = `
 <div>
-  <div
-    class="actionButtons btn-group"
-    role="group"
+  <span
+    class="actionButtons group horizontal"
   >
     <button
-      class="actionButton btn btn-secondary"
+      class="wrapper actionButton secondary medium left"
       type="button"
     >
       I am in snapshots
     </button>
     <button
-      class="actionButton btn btn-secondary"
+      class="wrapper actionButton secondary medium right"
       type="button"
     >
       I am in snapshots too
     </button>
-  </div>
+  </span>
 </div>
 `;
 

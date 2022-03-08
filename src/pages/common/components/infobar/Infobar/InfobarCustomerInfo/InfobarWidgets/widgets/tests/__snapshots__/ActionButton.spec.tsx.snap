@@ -2,26 +2,15 @@
 
 exports[`ActionButton component should display a single option with a checkbox parameter 1`] = `
 <Fragment>
-  <Button
-    className="button action-button"
-    color="secondary"
-    disabled={false}
+  <ForwardRef
     id="action-button-4"
+    intent="secondary"
+    isDisabled={false}
     onClick={[Function]}
-    size="sm"
-    tag="button"
+    type="button"
   >
     <span
       id="action-button-4-tooltip-target"
-      style={
-        Object {
-          "height": "100%",
-          "left": "0",
-          "position": "absolute",
-          "top": "0",
-          "width": "100%",
-        }
-      }
     />
     <div>
       <i
@@ -31,7 +20,7 @@ exports[`ActionButton component should display a single option with a checkbox p
       </i>
        Little action
     </div>
-  </Button>
+  </ForwardRef>
   <Popover
     isOpen={false}
     placement="bottom"
@@ -89,13 +78,12 @@ exports[`ActionButton component should display a single option with a checkbox p
           type="checkbox"
           value={true}
         />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
+        <ForwardRef
+          className="d-block"
+          type="submit"
         >
           Confirm
-        </Button>
+        </ForwardRef>
       </Form>
     </PopoverBody>
   </Popover>
@@ -104,26 +92,15 @@ exports[`ActionButton component should display a single option with a checkbox p
 
 exports[`ActionButton component should display a single option with a number parameter 1`] = `
 <Fragment>
-  <Button
-    className="button action-button"
-    color="secondary"
-    disabled={false}
+  <ForwardRef
     id="action-button-3"
+    intent="secondary"
+    isDisabled={false}
     onClick={[Function]}
-    size="sm"
-    tag="button"
+    type="button"
   >
     <span
       id="action-button-3-tooltip-target"
-      style={
-        Object {
-          "height": "100%",
-          "left": "0",
-          "position": "absolute",
-          "top": "0",
-          "width": "100%",
-        }
-      }
     />
     <div>
       <i
@@ -133,7 +110,7 @@ exports[`ActionButton component should display a single option with a number par
       </i>
        Little action
     </div>
-  </Button>
+  </ForwardRef>
   <Popover
     isOpen={false}
     placement="bottom"
@@ -195,13 +172,12 @@ exports[`ActionButton component should display a single option with a number par
           type="number"
           value={7}
         />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
+        <ForwardRef
+          className="d-block"
+          type="submit"
         >
           Confirm
-        </Button>
+        </ForwardRef>
       </Form>
     </PopoverBody>
   </Popover>
@@ -210,26 +186,15 @@ exports[`ActionButton component should display a single option with a number par
 
 exports[`ActionButton component should display a single option with a select parameter 1`] = `
 <Fragment>
-  <Button
-    className="button action-button"
-    color="secondary"
-    disabled={false}
+  <ForwardRef
     id="action-button-5"
+    intent="secondary"
+    isDisabled={false}
     onClick={[Function]}
-    size="sm"
-    tag="button"
+    type="button"
   >
     <span
       id="action-button-5-tooltip-target"
-      style={
-        Object {
-          "height": "100%",
-          "left": "0",
-          "position": "absolute",
-          "top": "0",
-          "width": "100%",
-        }
-      }
     />
     <div>
       <i
@@ -239,7 +204,7 @@ exports[`ActionButton component should display a single option with a select par
       </i>
        Little action
     </div>
-  </Button>
+  </ForwardRef>
   <Popover
     isOpen={false}
     placement="bottom"
@@ -318,13 +283,12 @@ exports[`ActionButton component should display a single option with a select par
           type="select"
           value={true}
         />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
+        <ForwardRef
+          className="d-block"
+          type="submit"
         >
           Confirm
-        </Button>
+        </ForwardRef>
       </Form>
     </PopoverBody>
   </Popover>
@@ -333,26 +297,15 @@ exports[`ActionButton component should display a single option with a select par
 
 exports[`ActionButton component should display a single option with a text parameter 1`] = `
 <Fragment>
-  <Button
-    className="button action-button"
-    color="secondary"
-    disabled={false}
+  <ForwardRef
     id="action-button-2"
+    intent="secondary"
+    isDisabled={false}
     onClick={[Function]}
-    size="sm"
-    tag="button"
+    type="button"
   >
     <span
       id="action-button-2-tooltip-target"
-      style={
-        Object {
-          "height": "100%",
-          "left": "0",
-          "position": "absolute",
-          "top": "0",
-          "width": "100%",
-        }
-      }
     />
     <div>
       <i
@@ -362,7 +315,7 @@ exports[`ActionButton component should display a single option with a text param
       </i>
        Little action
     </div>
-  </Button>
+  </ForwardRef>
   <Popover
     isOpen={false}
     placement="bottom"
@@ -421,13 +374,12 @@ exports[`ActionButton component should display a single option with a text param
           type="text"
           value="hello"
         />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
+        <ForwardRef
+          className="d-block"
+          type="submit"
         >
           Confirm
-        </Button>
+        </ForwardRef>
       </Form>
     </PopoverBody>
   </Popover>
@@ -436,26 +388,15 @@ exports[`ActionButton component should display a single option with a text param
 
 exports[`ActionButton component should display a single option with no parameters 1`] = `
 <Fragment>
-  <Button
-    className="button action-button"
-    color="secondary"
-    disabled={false}
+  <ForwardRef
     id="action-button-1"
+    intent="secondary"
+    isDisabled={false}
     onClick={[Function]}
-    size="sm"
-    tag="button"
+    type="button"
   >
     <span
       id="action-button-1-tooltip-target"
-      style={
-        Object {
-          "height": "100%",
-          "left": "0",
-          "position": "absolute",
-          "top": "0",
-          "width": "100%",
-        }
-      }
     />
     <div>
       <i
@@ -465,7 +406,7 @@ exports[`ActionButton component should display a single option with no parameter
       </i>
        Little action
     </div>
-  </Button>
+  </ForwardRef>
   <Popover
     isOpen={false}
     placement="bottom"
@@ -514,13 +455,12 @@ exports[`ActionButton component should display a single option with no parameter
         onSubmit={[Function]}
         tag="form"
       >
-        <Button
-          block={true}
-          color="success"
-          tag="button"
+        <ForwardRef
+          className="d-block"
+          type="submit"
         >
           Confirm
-        </Button>
+        </ForwardRef>
       </Form>
     </PopoverBody>
   </Popover>
@@ -529,26 +469,15 @@ exports[`ActionButton component should display a single option with no parameter
 
 exports[`ActionButton component should display multiple options with a common parameter 1`] = `
 <Fragment>
-  <Button
-    className="button action-button"
-    color="secondary"
-    disabled={false}
+  <ForwardRef
     id="action-button-7"
+    intent="secondary"
+    isDisabled={false}
     onClick={[Function]}
-    size="sm"
-    tag="button"
+    type="button"
   >
     <span
       id="action-button-7-tooltip-target"
-      style={
-        Object {
-          "height": "100%",
-          "left": "0",
-          "position": "absolute",
-          "top": "0",
-          "width": "100%",
-        }
-      }
     />
     <div>
       <i
@@ -558,7 +487,7 @@ exports[`ActionButton component should display multiple options with a common pa
       </i>
        Little action
     </div>
-  </Button>
+  </ForwardRef>
   <Popover
     isOpen={false}
     placement="bottom"
@@ -662,13 +591,12 @@ exports[`ActionButton component should display multiple options with a common pa
           type="text"
           value="hello"
         />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
+        <ForwardRef
+          className="d-block"
+          type="submit"
         >
           Confirm
-        </Button>
+        </ForwardRef>
       </Form>
     </PopoverBody>
   </Popover>
@@ -677,26 +605,15 @@ exports[`ActionButton component should display multiple options with a common pa
 
 exports[`ActionButton component should display multiple options with different parameter 1`] = `
 <Fragment>
-  <Button
-    className="button action-button"
-    color="secondary"
-    disabled={false}
+  <ForwardRef
     id="action-button-8"
+    intent="secondary"
+    isDisabled={false}
     onClick={[Function]}
-    size="sm"
-    tag="button"
+    type="button"
   >
     <span
       id="action-button-8-tooltip-target"
-      style={
-        Object {
-          "height": "100%",
-          "left": "0",
-          "position": "absolute",
-          "top": "0",
-          "width": "100%",
-        }
-      }
     />
     <div>
       <i
@@ -706,7 +623,7 @@ exports[`ActionButton component should display multiple options with different p
       </i>
        Little action
     </div>
-  </Button>
+  </ForwardRef>
   <Popover
     isOpen={false}
     placement="bottom"
@@ -810,13 +727,12 @@ exports[`ActionButton component should display multiple options with different p
           type="text"
           value="hello"
         />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
+        <ForwardRef
+          className="d-block"
+          type="submit"
         >
           Confirm
-        </Button>
+        </ForwardRef>
       </Form>
     </PopoverBody>
   </Popover>
@@ -825,26 +741,15 @@ exports[`ActionButton component should display multiple options with different p
 
 exports[`ActionButton component should display multiple options without parameters 1`] = `
 <Fragment>
-  <Button
-    className="button action-button"
-    color="secondary"
-    disabled={false}
+  <ForwardRef
     id="action-button-6"
+    intent="secondary"
+    isDisabled={false}
     onClick={[Function]}
-    size="sm"
-    tag="button"
+    type="button"
   >
     <span
       id="action-button-6-tooltip-target"
-      style={
-        Object {
-          "height": "100%",
-          "left": "0",
-          "position": "absolute",
-          "top": "0",
-          "width": "100%",
-        }
-      }
     />
     <div>
       <i
@@ -854,7 +759,7 @@ exports[`ActionButton component should display multiple options without paramete
       </i>
        Little action
     </div>
-  </Button>
+  </ForwardRef>
   <Popover
     isOpen={false}
     placement="bottom"
@@ -948,13 +853,12 @@ exports[`ActionButton component should display multiple options without paramete
           }
           value="myLittleAction"
         />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
+        <ForwardRef
+          className="d-block"
+          type="submit"
         >
           Confirm
-        </Button>
+        </ForwardRef>
       </Form>
     </PopoverBody>
   </Popover>

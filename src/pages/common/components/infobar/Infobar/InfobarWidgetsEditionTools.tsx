@@ -1,8 +1,7 @@
 import React from 'react'
-import classnames from 'classnames'
-import {Button} from 'reactstrap'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import {ConnectedAction} from '../../../../../state/types'
 import {
     startEditionMode,
@@ -48,22 +47,18 @@ export default class InfobarWidgetsEditionTools extends React.Component<Props> {
             <div className={css.footer}>
                 <Button
                     type="button"
-                    color="success"
-                    className={classnames('mr-2', {
-                        'btn-loading': isSavingWidgets,
-                    })}
-                    disabled={isSavingWidgets || !isDirty}
+                    className="mr-2"
+                    isLoading={isSavingWidgets}
+                    isDisabled={!isDirty}
                     onClick={this._saveWidgets}
                 >
                     Save changes
                 </Button>
                 <Button
                     type="button"
-                    color="secondary"
-                    className={classnames({
-                        'btn-loading': isSavingWidgets,
-                    })}
-                    disabled={isSavingWidgets || !isDirty}
+                    intent={ButtonIntent.Secondary}
+                    isLoading={isSavingWidgets}
+                    isDisabled={!isDirty}
                     onClick={this._cancelWidgetsUpdates}
                 >
                     Cancel

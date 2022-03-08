@@ -1,11 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Form, Button} from 'reactstrap'
+import {Form} from 'reactstrap'
 import _pick from 'lodash/pick'
 
 import {IntegrationType} from '../../../../../../../../../models/integration/types/index.ts'
 
 import InputField from '../../../../../../../forms/InputField'
+
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 class PopoverWidgetEditField extends React.Component {
     state = {
@@ -78,11 +80,11 @@ class PopoverWidgetEditField extends React.Component {
                 </InputField>
 
                 <div>
-                    <Button color="primary" type="submit" className="mr-2">
+                    <Button type="submit" className="mr-2">
                         Submit
                     </Button>
                     <Button
-                        color="secondary"
+                        intent={ButtonIntent.Secondary}
                         type="button"
                         onClick={this._closePopup}
                     >

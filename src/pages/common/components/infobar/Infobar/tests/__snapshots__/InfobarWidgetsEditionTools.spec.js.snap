@@ -2,75 +2,69 @@
 
 exports[`InfobarWidgetsEditionTools component should render widgets edition tools disabled because the widgets are not dirty 1`] = `
 <div>
-  <Button
+  <ForwardRef
     className="mr-2"
-    color="success"
-    disabled={true}
+    isDisabled={true}
+    isLoading={false}
     onClick={[Function]}
-    tag="button"
     type="button"
   >
     Save changes
-  </Button>
-  <Button
-    className=""
-    color="secondary"
-    disabled={true}
+  </ForwardRef>
+  <ForwardRef
+    intent="secondary"
+    isDisabled={true}
+    isLoading={false}
     onClick={[Function]}
-    tag="button"
     type="button"
   >
     Cancel
-  </Button>
+  </ForwardRef>
 </div>
 `;
 
 exports[`InfobarWidgetsEditionTools component should render widgets edition tools enabled because the widgets are dirty and not being saved 1`] = `
 <div>
-  <Button
+  <ForwardRef
     className="mr-2"
-    color="success"
-    disabled={false}
+    isDisabled={false}
+    isLoading={false}
     onClick={[Function]}
-    tag="button"
     type="button"
   >
     Save changes
-  </Button>
-  <Button
-    className=""
-    color="secondary"
-    disabled={false}
+  </ForwardRef>
+  <ForwardRef
+    intent="secondary"
+    isDisabled={false}
+    isLoading={false}
     onClick={[Function]}
-    tag="button"
     type="button"
   >
     Cancel
-  </Button>
+  </ForwardRef>
 </div>
 `;
 
 exports[`InfobarWidgetsEditionTools component should render widgets edition tools loading and disabled, because the widgets are being saved 1`] = `
 <div>
-  <Button
-    className="mr-2 btn-loading"
-    color="success"
-    disabled={true}
+  <ForwardRef
+    className="mr-2"
+    isDisabled={false}
+    isLoading={true}
     onClick={[Function]}
-    tag="button"
     type="button"
   >
     Save changes
-  </Button>
-  <Button
-    className="btn-loading"
-    color="secondary"
-    disabled={true}
+  </ForwardRef>
+  <ForwardRef
+    intent="secondary"
+    isDisabled={false}
+    isLoading={true}
     onClick={[Function]}
-    tag="button"
     type="button"
   >
     Cancel
-  </Button>
+  </ForwardRef>
 </div>
 `;
