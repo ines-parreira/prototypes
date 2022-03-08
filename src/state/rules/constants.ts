@@ -57,6 +57,10 @@ const ADD_TAGS_ACTION_DEFAULT = {
     tags: '',
 }
 
+const REMOVE_TAGS_ACTION_DEFAULT = {
+    tags: '',
+}
+
 const SET_TAGS_ACTION_DEFAULT = {
     tags: '',
 }
@@ -90,6 +94,7 @@ export const ACTION_DEFAULT_STATE = {
     sendEmail: SEND_EMAIL_ACTION_DEFAULT,
     notify: NOTIFY_ACTION_DEFAULT,
     addTags: ADD_TAGS_ACTION_DEFAULT,
+    removeTags: REMOVE_TAGS_ACTION_DEFAULT,
     setTags: SET_TAGS_ACTION_DEFAULT,
     setStatus: SET_STATUS_ACTION_DEFAULT,
     setSubject: SET_SUBJECT_ACTION_DEFAULT,

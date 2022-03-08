@@ -222,6 +222,11 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         name: 'Add tags',
         validate: validateTags,
     },
+    removeTags: {
+        compact: true,
+        name: 'Remove tags',
+        validate: validateTags,
+    },
     setTags: {
         compact: true,
         name: 'Reset tags',
