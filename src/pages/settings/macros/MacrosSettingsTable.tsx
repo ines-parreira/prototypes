@@ -4,6 +4,7 @@ import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
+import {Link} from 'react-router-dom'
 import IconButton from 'pages/common/components/button/IconButton'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import {
@@ -173,63 +174,82 @@ export function MacrosSettingsTableContainer({
                         const {name, updated_datetime, usage} = macro
                         const deleteButtonId = `delete-button-${macroId}`
 
+                        const to = `/app/settings/macros/${macroId}`
+
                         return (
                             <>
                                 <TableBodyRow
                                     className={css.tableBodyRow}
                                     key={macroId}
-                                    onClick={() => {
-                                        history.push(
-                                            `/app/settings/macros/${macroId}`
-                                        )
-                                    }}
                                 >
-                                    <BodyCell className={css.macroTitle}>
-                                        {name}
-                                    </BodyCell>
-                                    <BodyCell>{usage}</BodyCell>
-                                    <BodyCell className={css.dateCell}>
-                                        {moment(updated_datetime).format(
-                                            'YYYY-MM-DD'
+                                    <td
+                                        className={classnames(
+                                            'link-full-td',
+                                            css.macroTitle
                                         )}
-                                    </BodyCell>
-                                    <BodyCell
+                                    >
+                                        <Link to={to}>
+                                            <div>{name}</div>
+                                        </Link>
+                                    </td>
+                                    <td className="link-full-td">
+                                        <Link to={to}>
+                                            <div>{usage}</div>
+                                        </Link>
+                                    </td>
+                                    <td
+                                        className={classnames(
+                                            'link-full-td',
+                                            css.dateCell
+                                        )}
+                                    >
+                                        <Link to={to}>
+                                            <div>
+                                                {moment(
+                                                    updated_datetime
+                                                ).format('YYYY-MM-DD')}
+                                            </div>
+                                        </Link>
+                                    </td>
+                                    <td
                                         className={classnames(
                                             'smallest',
                                             css.actions
                                         )}
                                     >
-                                        <IconButton
-                                            className="mr-1"
-                                            intent={ButtonIntent.Text}
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                void handleMacroDuplicate(
-                                                    macroId
-                                                )
-                                            }}
-                                            title="Duplicate macro"
-                                        >
-                                            file_copy
-                                        </IconButton>
-                                        <IconButton
-                                            className={classnames(
-                                                'mr-1',
-                                                css.deleteButton
-                                            )}
-                                            id={deleteButtonId}
-                                            intent={ButtonIntent.Text}
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                toggleVisiblePopover(
-                                                    deleteButtonId
-                                                )
-                                            }}
-                                            title="Delete macro"
-                                        >
-                                            delete
-                                        </IconButton>
-                                    </BodyCell>
+                                        <Link to={to}>
+                                            <IconButton
+                                                className="mr-1"
+                                                intent={ButtonIntent.Text}
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    void handleMacroDuplicate(
+                                                        macroId
+                                                    )
+                                                }}
+                                                title="Duplicate macro"
+                                            >
+                                                file_copy
+                                            </IconButton>
+                                            <IconButton
+                                                className={classnames(
+                                                    'mr-1',
+                                                    css.deleteButton
+                                                )}
+                                                id={deleteButtonId}
+                                                intent={ButtonIntent.Text}
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    toggleVisiblePopover(
+                                                        deleteButtonId
+                                                    )
+                                                }}
+                                                title="Delete macro"
+                                            >
+                                                delete
+                                            </IconButton>
+                                        </Link>
+                                    </td>
                                 </TableBodyRow>
                                 <Popover
                                     isOpen={deleteButtonId === visiblePopoverId}

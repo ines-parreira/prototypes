@@ -9,7 +9,6 @@ import {macros as macrosFixtures} from '../../../../fixtures/macro'
 import {MacrosState} from '../../../../state/entities/macros/types'
 import Loader from '../../../common/components/Loader/Loader'
 import HeaderCellProperty from '../../../common/components/table/cells/HeaderCellProperty'
-import TableBodyRow from '../../../common/components/table/TableBodyRow'
 import {MacrosSettingsTableContainer} from '../MacrosSettingsTable'
 import history from '../../../history'
 
@@ -80,22 +79,6 @@ describe('<MacrosSettingsTable/>', () => {
         )
 
         expect(component).toMatchSnapshot()
-    })
-
-    it('should redirect when editing macro', () => {
-        const component = shallow(
-            <MacrosSettingsTableContainer
-                {...minProps}
-                macroIds={[1, 2]}
-                macros={macrosState}
-            />
-        )
-
-        component.find(TableBodyRow).at(0).simulate('click')
-        expect(history.push).toHaveBeenNthCalledWith(
-            1,
-            '/app/settings/macros/1'
-        )
     })
 
     it('should duplicate a macro', (done) => {

@@ -29,42 +29,65 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
     <ForwardRef(TableBodyRow)
       className="tableBodyRow"
       key="1"
-      onClick={[Function]}
     >
-      <ForwardRef
-        className="macroTitle"
+      <td
+        className="link-full-td macroTitle"
       >
-        Waive Fee
-      </ForwardRef>
-      <ForwardRef>
-        1
-      </ForwardRef>
-      <ForwardRef
-        className="dateCell"
+        <Link
+          to="/app/settings/macros/1"
+        >
+          <div>
+            Waive Fee
+          </div>
+        </Link>
+      </td>
+      <td
+        className="link-full-td"
       >
-        2017-08-01
-      </ForwardRef>
-      <ForwardRef
+        <Link
+          to="/app/settings/macros/1"
+        >
+          <div>
+            1
+          </div>
+        </Link>
+      </td>
+      <td
+        className="link-full-td dateCell"
+      >
+        <Link
+          to="/app/settings/macros/1"
+        >
+          <div>
+            2017-08-01
+          </div>
+        </Link>
+      </td>
+      <td
         className="smallest actions"
       >
-        <ForwardRef
-          className="mr-1"
-          intent="text"
-          onClick={[Function]}
-          title="Duplicate macro"
+        <Link
+          to="/app/settings/macros/1"
         >
-          file_copy
-        </ForwardRef>
-        <ForwardRef
-          className="mr-1 deleteButton"
-          id="delete-button-1"
-          intent="text"
-          onClick={[Function]}
-          title="Delete macro"
-        >
-          delete
-        </ForwardRef>
-      </ForwardRef>
+          <ForwardRef
+            className="mr-1"
+            intent="text"
+            onClick={[Function]}
+            title="Duplicate macro"
+          >
+            file_copy
+          </ForwardRef>
+          <ForwardRef
+            className="mr-1 deleteButton"
+            id="delete-button-1"
+            intent="text"
+            onClick={[Function]}
+            title="Delete macro"
+          >
+            delete
+          </ForwardRef>
+        </Link>
+      </td>
     </ForwardRef(TableBodyRow)>
     <Popover
       isOpen={false}
@@ -101,42 +124,65 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
     <ForwardRef(TableBodyRow)
       className="tableBodyRow"
       key="2"
-      onClick={[Function]}
     >
-      <ForwardRef
-        className="macroTitle"
+      <td
+        className="link-full-td macroTitle"
       >
-        Do Not Waive Fee
-      </ForwardRef>
-      <ForwardRef>
-        3
-      </ForwardRef>
-      <ForwardRef
-        className="dateCell"
+        <Link
+          to="/app/settings/macros/2"
+        >
+          <div>
+            Do Not Waive Fee
+          </div>
+        </Link>
+      </td>
+      <td
+        className="link-full-td"
       >
-        2017-08-01
-      </ForwardRef>
-      <ForwardRef
+        <Link
+          to="/app/settings/macros/2"
+        >
+          <div>
+            3
+          </div>
+        </Link>
+      </td>
+      <td
+        className="link-full-td dateCell"
+      >
+        <Link
+          to="/app/settings/macros/2"
+        >
+          <div>
+            2017-08-01
+          </div>
+        </Link>
+      </td>
+      <td
         className="smallest actions"
       >
-        <ForwardRef
-          className="mr-1"
-          intent="text"
-          onClick={[Function]}
-          title="Duplicate macro"
+        <Link
+          to="/app/settings/macros/2"
         >
-          file_copy
-        </ForwardRef>
-        <ForwardRef
-          className="mr-1 deleteButton"
-          id="delete-button-2"
-          intent="text"
-          onClick={[Function]}
-          title="Delete macro"
-        >
-          delete
-        </ForwardRef>
-      </ForwardRef>
+          <ForwardRef
+            className="mr-1"
+            intent="text"
+            onClick={[Function]}
+            title="Duplicate macro"
+          >
+            file_copy
+          </ForwardRef>
+          <ForwardRef
+            className="mr-1 deleteButton"
+            id="delete-button-2"
+            intent="text"
+            onClick={[Function]}
+            title="Delete macro"
+          >
+            delete
+          </ForwardRef>
+        </Link>
+      </td>
     </ForwardRef(TableBodyRow)>
     <Popover
       isOpen={false}
