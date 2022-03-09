@@ -3,7 +3,6 @@ import _pick from 'lodash/pick'
 import React, {useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Container} from 'reactstrap'
-import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
 import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
@@ -23,11 +22,10 @@ import Pagination from 'pages/common/components/Pagination'
 import Search from 'pages/common/components/Search'
 import {RootState} from 'state/types'
 import settingsCss from 'pages/settings/settings.less'
-import Button from 'pages/common/components/button/Button'
 
 import css from './MacrosSettingsContent.less'
 import MacrosSettingsTable from './MacrosSettingsTable'
-import {MacrosManageDropdown} from './MacrosManageDropdown'
+import {MacrosCreateDropdown} from './MacrosCreateDropdown'
 
 type PaginationState = {
     page: number
@@ -108,10 +106,7 @@ export function MacrosSettingsContentContainer({
                         placeholder="Search macros..."
                         searchDebounceTime={300}
                     />
-                    <MacrosManageDropdown />
-                    <Link to="/app/settings/macros/new">
-                        <Button>Create macro</Button>
-                    </Link>
+                    <MacrosCreateDropdown />
                 </div>
             </PageHeader>
             <Container

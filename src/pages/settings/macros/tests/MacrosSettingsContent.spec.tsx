@@ -56,8 +56,8 @@ jest.mock(
         }
 )
 
-jest.mock('../MacrosManageDropdown', () => ({
-    MacrosManageDropdown: () => <div />,
+jest.mock('../MacrosCreateDropdown', () => ({
+    MacrosCreateDropdown: () => <div />,
 }))
 
 const mockToken = axios.CancelToken.source().token

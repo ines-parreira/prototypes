@@ -5,19 +5,20 @@ import {fireEvent, render, waitFor, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 
 import {createJob} from 'models/job/resources'
-import {MacrosManageDropdown} from '../MacrosManageDropdown'
+import {MacrosCreateDropdown} from '../MacrosCreateDropdown'
+import history from '../../../history'
 
 jest.mock('models/job/resources', () => ({
     createJob: jest.fn(() => Promise.resolve()),
 }))
 
-describe('<MacrosManageDropdown/>', () => {
+describe('<MacrosCreateDropdown/>', () => {
     const defaultStore = configureMockStore([thunk])()
 
     it('should render', () => {
         const {container} = render(
             <Provider store={defaultStore}>
-                <MacrosManageDropdown />
+                <MacrosCreateDropdown />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -26,7 +27,7 @@ describe('<MacrosManageDropdown/>', () => {
     it('should start job when download clicked', () => {
         const {getByText} = render(
             <Provider store={defaultStore}>
-                <MacrosManageDropdown />
+                <MacrosCreateDropdown />
             </Provider>
         )
         fireEvent.click(getByText('Export macros as CSV'))
@@ -36,7 +37,7 @@ describe('<MacrosManageDropdown/>', () => {
     it('should show popup when import clicked', async () => {
         const {getByText} = render(
             <Provider store={defaultStore}>
-                <MacrosManageDropdown />
+                <MacrosCreateDropdown />
             </Provider>
         )
         fireEvent.click(getByText('Import macros from CSV'))
@@ -46,6 +47,19 @@ describe('<MacrosManageDropdown/>', () => {
                     'You can import your macros into gorgias using a CSV. More information on macros variables'
                 )
             ).toBeTruthy()
+        )
+    })
+    it('should redirect when creating new macro', () => {
+        const {getByText} = render(
+            <Provider store={defaultStore}>
+                <MacrosCreateDropdown />
+            </Provider>
+        )
+
+        fireEvent.click(getByText('Create macro'))
+        expect(history.push).toHaveBeenNthCalledWith(
+            1,
+            '/app/settings/macros/new'
         )
     })
 })

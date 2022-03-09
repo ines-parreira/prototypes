@@ -18,14 +18,7 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
         placeholder="Search macros..."
         searchDebounceTime={300}
       />
-      <MacrosManageDropdown />
-      <Link
-        to="/app/settings/macros/new"
-      >
-        <ForwardRef>
-          Create macro
-        </ForwardRef>
-      </Link>
+      <MacrosCreateDropdown />
     </div>
   </PageHeader>
   <Container

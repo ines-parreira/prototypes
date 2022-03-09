@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {
+    Button,
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
@@ -14,10 +15,11 @@ import {JobType} from 'models/job/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import history from '../../history'
 
 import MacrosCSVImportPopover from './MacrosCSVImportPopover'
 
-export function MacrosManageDropdown(): JSX.Element {
+export function MacrosCreateDropdown(): JSX.Element {
     const dispatch = useAppDispatch()
     const [isImportOpen, setImportOpen] = useState(false)
     const currentAccount = useSelector(getCurrentAccountState)
@@ -54,7 +56,16 @@ export function MacrosManageDropdown(): JSX.Element {
     return (
         <>
             <UncontrolledButtonDropdown className="mr-2">
-                <DropdownToggle caret>Manage Macros</DropdownToggle>
+                <Button
+                    color="primary"
+                    onClick={() => {
+                        history.push('/app/settings/macros/new')
+                    }}
+                    type="button"
+                >
+                    Create macro
+                </Button>
+                <DropdownToggle caret color="primary" />
                 <DropdownMenu>
                     <DropdownItem onClick={() => setImportOpen(true)}>
                         <i className="icon material-icons md-2 align-text-bottom">
