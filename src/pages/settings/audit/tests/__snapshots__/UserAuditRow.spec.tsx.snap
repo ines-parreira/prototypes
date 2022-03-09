@@ -1,0 +1,234 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserAuditRow/> should not render user when no agents are in store 1`] = `
+<div>
+  <tr>
+    <td>
+      <span
+        class="emptyUser"
+      >
+        No user
+      </span>
+    </td>
+    <td>
+      Macro created
+    </td>
+    <td>
+      Macro #20
+    </td>
+    <td
+      class="smallest"
+    >
+      <span>
+        <span
+          id="datetime-tooltip-ssssssssst"
+        >
+          January 25, 2022 10:39 AM
+        </span>
+      </span>
+    </td>
+  </tr>
+</div>
+`;
+
+exports[`<UserAuditRow/> should render with a link to Customer object type 1`] = `
+<div>
+  <tr>
+    <td>
+      <div>
+        <a
+          to="/app/settings/users/1"
+        >
+          <div
+            class="component d-inline-block"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                a1
+              </span>
+            </div>
+          </div>
+           
+          agent 1
+        </a>
+      </div>
+    </td>
+    <td />
+    <td>
+      <a
+        to="/app/customer/10/"
+      >
+        Customer #10
+      </a>
+    </td>
+    <td
+      class="smallest"
+    >
+      <span>
+        <span
+          id="datetime-tooltip-ssssssssst"
+        >
+          January 25, 2022 10:39 AM
+        </span>
+      </span>
+    </td>
+  </tr>
+</div>
+`;
+
+exports[`<UserAuditRow/> should render with a link to Ticket object type 1`] = `
+<div>
+  <tr>
+    <td>
+      <div>
+        <a
+          to="/app/settings/users/1"
+        >
+          <div
+            class="component d-inline-block"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                a1
+              </span>
+            </div>
+          </div>
+           
+          agent 1
+        </a>
+      </div>
+    </td>
+    <td />
+    <td>
+      <a
+        to="/app/ticket/10/"
+      >
+        Ticket #10
+      </a>
+    </td>
+    <td
+      class="smallest"
+    >
+      <span>
+        <span
+          id="datetime-tooltip-ssssssssst"
+        >
+          January 25, 2022 10:39 AM
+        </span>
+      </span>
+    </td>
+  </tr>
+</div>
+`;
+
+exports[`<UserAuditRow/> should render with a link to User object type 1`] = `
+<div>
+  <tr>
+    <td>
+      <div>
+        <a
+          to="/app/settings/users/1"
+        >
+          <div
+            class="component d-inline-block"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                a1
+              </span>
+            </div>
+          </div>
+           
+          agent 1
+        </a>
+      </div>
+    </td>
+    <td />
+    <td>
+      <a
+        to="/app/customer/10/"
+      >
+        User #10
+      </a>
+    </td>
+    <td
+      class="smallest"
+    >
+      <span>
+        <span
+          id="datetime-tooltip-ssssssssst"
+        >
+          January 25, 2022 10:39 AM
+        </span>
+      </span>
+    </td>
+  </tr>
+</div>
+`;
+
+exports[`<UserAuditRow/> should render with a user, event type and object type 1`] = `
+<div>
+  <tr>
+    <td>
+      <div>
+        <a
+          to="/app/settings/users/1"
+        >
+          <div
+            class="component d-inline-block"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                a1
+              </span>
+            </div>
+          </div>
+           
+          agent 1
+        </a>
+      </div>
+    </td>
+    <td>
+      Macro created
+    </td>
+    <td>
+      Macro #20
+    </td>
+    <td
+      class="smallest"
+    >
+      <span>
+        <span
+          id="datetime-tooltip-ssssssssst"
+        >
+          January 25, 2022 10:39 AM
+        </span>
+      </span>
+    </td>
+  </tr>
+</div>
+`;

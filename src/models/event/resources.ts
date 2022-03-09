@@ -1,5 +1,6 @@
 import qs from 'qs'
 
+import {AxiosRequestConfig} from 'axios'
 import client from '../api/resources'
 import {ApiListResponseCursorPagination} from '../api/types'
 import {deepMapKeysToSnakeCase} from '../api/utils'
@@ -18,7 +19,10 @@ type APIFetchEventsOptions = {
     limit?: number
 }
 
-export const fetchEvents = async (options: FetchEventsOptions = {}) => {
+export const fetchEvents = async (
+    options: FetchEventsOptions = {},
+    config: AxiosRequestConfig = {}
+) => {
     const params: APIFetchEventsOptions = deepMapKeysToSnakeCase(options)
 
     const res = await client.get<ApiListResponseCursorPagination<Event[]>>(
@@ -28,6 +32,7 @@ export const fetchEvents = async (options: FetchEventsOptions = {}) => {
             paramsSerializer: function (params) {
                 return qs.stringify(params, {arrayFormat: 'repeat'})
             },
+            ...config,
         }
     )
     return res

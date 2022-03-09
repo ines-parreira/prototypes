@@ -1,0 +1,867 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UserAuditList/> should fetch events on mount and render a loading spinner 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Audit logs
+    </h1>
+    <div>
+      <div
+        class="d-flex flex-wrap float-right"
+      >
+        <div
+          class="dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            <span>
+              Team member
+            </span>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown dropdown-menu dropdown-menu-right"
+            role="menu"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-item-input dropdownItemInput dropdown-header"
+              tabindex="-1"
+            >
+              <input
+                class="form-control"
+                placeholder="Search items..."
+                type="text"
+                value=""
+              />
+            </h6>
+            <div
+              class="dropdownDivider dropdown-divider"
+              tabindex="-1"
+            />
+            <div
+              class="content"
+            >
+              <div
+                class="wrapperItem"
+              >
+                <label
+                  class="label labelItem"
+                  for="checkbox-1"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-1"
+                    name="checkbox-1"
+                    type="checkbox"
+                  />
+                   agent 1
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+              <div
+                class="wrapperItem"
+              >
+                <label
+                  class="label labelItem"
+                  for="checkbox-2"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-2"
+                    name="checkbox-2"
+                    type="checkbox"
+                  />
+                   agent 2
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            <span>
+              All events
+            </span>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown dropdown-menu dropdown-menu-right"
+            role="menu"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-item-input dropdownItemInput dropdown-header"
+              tabindex="-1"
+            >
+              <input
+                class="form-control"
+                placeholder="Search events..."
+                type="text"
+                value=""
+              />
+            </h6>
+            <button
+              class="component dropdown-item"
+              role="menuitem"
+              tabindex="0"
+            >
+              <div
+                class="checkbox"
+              >
+                <label
+                  class="label quickSelectionOption"
+                  for="checkbox-3"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-3"
+                    name="checkbox-3"
+                    type="checkbox"
+                  />
+                  Select displayed
+                  <div
+                    class="badge"
+                  >
+                    1
+                  </div>
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+            </button>
+            <div
+              class="dropdownDivider dropdown-divider"
+              tabindex="-1"
+            />
+            <div
+              class="content"
+            >
+              <div
+                class="wrapperItem"
+              >
+                <label
+                  class="label labelItem"
+                  for="checkbox-4"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-4"
+                    name="checkbox-4"
+                    type="checkbox"
+                  />
+                   Account created
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button
+            class="wrapper secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                calendar_today
+              </i>
+              <span
+                class="wrapper"
+              >
+                September 30, 2018 12:00 AM - September 30, 2018 11:59 PM
+                <i
+                  class="material-icons icon isRight medium"
+                >
+                  arrow_drop_down
+                </i>
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="manage-requests-description"
+    >
+      <p>
+        User audit logs display recent actions performed by users in Gorgias.
+      </p>
+    </div>
+    <div>
+      Loader
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<UserAuditList/> should render a message to inform the user no events are available 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Audit logs
+    </h1>
+    <div>
+      <div
+        class="d-flex flex-wrap float-right"
+      >
+        <div
+          class="dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            <span>
+              Team member
+            </span>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown dropdown-menu dropdown-menu-right"
+            role="menu"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-item-input dropdownItemInput dropdown-header"
+              tabindex="-1"
+            >
+              <input
+                class="form-control"
+                placeholder="Search items..."
+                type="text"
+                value=""
+              />
+            </h6>
+            <div
+              class="dropdownDivider dropdown-divider"
+              tabindex="-1"
+            />
+            <div
+              class="content"
+            >
+              <div
+                class="wrapperItem"
+              >
+                <label
+                  class="label labelItem"
+                  for="checkbox-5"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-5"
+                    name="checkbox-5"
+                    type="checkbox"
+                  />
+                   agent 1
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+              <div
+                class="wrapperItem"
+              >
+                <label
+                  class="label labelItem"
+                  for="checkbox-6"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-6"
+                    name="checkbox-6"
+                    type="checkbox"
+                  />
+                   agent 2
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            <span>
+              All events
+            </span>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown dropdown-menu dropdown-menu-right"
+            role="menu"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-item-input dropdownItemInput dropdown-header"
+              tabindex="-1"
+            >
+              <input
+                class="form-control"
+                placeholder="Search events..."
+                type="text"
+                value=""
+              />
+            </h6>
+            <button
+              class="component dropdown-item"
+              role="menuitem"
+              tabindex="0"
+            >
+              <div
+                class="checkbox"
+              >
+                <label
+                  class="label quickSelectionOption"
+                  for="checkbox-7"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-7"
+                    name="checkbox-7"
+                    type="checkbox"
+                  />
+                  Select displayed
+                  <div
+                    class="badge"
+                  >
+                    1
+                  </div>
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+            </button>
+            <div
+              class="dropdownDivider dropdown-divider"
+              tabindex="-1"
+            />
+            <div
+              class="content"
+            >
+              <div
+                class="wrapperItem"
+              >
+                <label
+                  class="label labelItem"
+                  for="checkbox-8"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-8"
+                    name="checkbox-8"
+                    type="checkbox"
+                  />
+                   Account created
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button
+            class="wrapper secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                calendar_today
+              </i>
+              <span
+                class="wrapper"
+              >
+                September 30, 2018 12:00 AM - September 30, 2018 11:59 PM
+                <i
+                  class="material-icons icon isRight medium"
+                >
+                  arrow_drop_down
+                </i>
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="manage-requests-description"
+    >
+      <p>
+        User audit logs display recent actions performed by users in Gorgias.
+      </p>
+    </div>
+    <div>
+      There is no event recorded matching these filters.
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<UserAuditList/> should render the fetched events and page navigation 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Audit logs
+    </h1>
+    <div>
+      <div
+        class="d-flex flex-wrap float-right"
+      >
+        <div
+          class="dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            <span>
+              Team member
+            </span>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown dropdown-menu dropdown-menu-right"
+            role="menu"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-item-input dropdownItemInput dropdown-header"
+              tabindex="-1"
+            >
+              <input
+                class="form-control"
+                placeholder="Search items..."
+                type="text"
+                value=""
+              />
+            </h6>
+            <div
+              class="dropdownDivider dropdown-divider"
+              tabindex="-1"
+            />
+            <div
+              class="content"
+            >
+              <div
+                class="wrapperItem"
+              >
+                <label
+                  class="label labelItem"
+                  for="checkbox-13"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-13"
+                    name="checkbox-13"
+                    type="checkbox"
+                  />
+                   agent 1
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+              <div
+                class="wrapperItem"
+              >
+                <label
+                  class="label labelItem"
+                  for="checkbox-14"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-14"
+                    name="checkbox-14"
+                    type="checkbox"
+                  />
+                   agent 2
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="mr-2 dropdown-toggle btn btn-secondary"
+            type="button"
+          >
+            <span>
+              All events
+            </span>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown dropdown-menu dropdown-menu-right"
+            role="menu"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-item-input dropdownItemInput dropdown-header"
+              tabindex="-1"
+            >
+              <input
+                class="form-control"
+                placeholder="Search events..."
+                type="text"
+                value=""
+              />
+            </h6>
+            <button
+              class="component dropdown-item"
+              role="menuitem"
+              tabindex="0"
+            >
+              <div
+                class="checkbox"
+              >
+                <label
+                  class="label quickSelectionOption"
+                  for="checkbox-15"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-15"
+                    name="checkbox-15"
+                    type="checkbox"
+                  />
+                  Select displayed
+                  <div
+                    class="badge"
+                  >
+                    1
+                  </div>
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+            </button>
+            <div
+              class="dropdownDivider dropdown-divider"
+              tabindex="-1"
+            />
+            <div
+              class="content"
+            >
+              <div
+                class="wrapperItem"
+              >
+                <label
+                  class="label labelItem"
+                  for="checkbox-16"
+                >
+                  <input
+                    class="input"
+                    id="checkbox-16"
+                    name="checkbox-16"
+                    type="checkbox"
+                  />
+                   Account created
+                </label>
+                <div
+                  class="caption"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button
+            class="wrapper secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                calendar_today
+              </i>
+              <span
+                class="wrapper"
+              >
+                September 30, 2018 12:00 AM - September 30, 2018 11:59 PM
+                <i
+                  class="material-icons icon isRight medium"
+                >
+                  arrow_drop_down
+                </i>
+              </span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="manage-requests-description"
+    >
+      <p>
+        User audit logs display recent actions performed by users in Gorgias.
+      </p>
+    </div>
+    <div>
+      <table
+        class="table"
+      >
+        <thead>
+          <tr>
+            <th>
+              Team member
+            </th>
+            <th>
+              Event
+            </th>
+            <th>
+              Object
+            </th>
+            <th>
+              Date
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div>
+                <a
+                  to="/app/settings/users/1"
+                >
+                  <div
+                    class="component d-inline-block"
+                    style="width: 26px; height: 26px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                    >
+                      <span
+                        style="line-height: 28px;"
+                      >
+                        a1
+                      </span>
+                    </div>
+                  </div>
+                   
+                  agent 1
+                </a>
+              </div>
+            </td>
+            <td />
+            <td>
+              <a
+                to="/app/ticket/10/"
+              >
+                Ticket #10
+              </a>
+            </td>
+            <td
+              class="smallest"
+            >
+              <span>
+                <span
+                  id="datetime-tooltip-ssssssssst"
+                >
+                  January 25, 2022 10:39 AM
+                </span>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a
+                  to="/app/settings/users/1"
+                >
+                  <div
+                    class="component d-inline-block"
+                    style="width: 26px; height: 26px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                    >
+                      <span
+                        style="line-height: 28px;"
+                      >
+                        a1
+                      </span>
+                    </div>
+                  </div>
+                   
+                  agent 1
+                </a>
+              </div>
+            </td>
+            <td />
+            <td>
+              Macro #20
+            </td>
+            <td
+              class="smallest"
+            >
+              <span>
+                <span
+                  id="datetime-tooltip-ssssssssst"
+                >
+                  January 25, 2022 10:39 AM
+                </span>
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div>
+                <a
+                  to="/app/settings/users/1"
+                >
+                  <div
+                    class="component d-inline-block"
+                    style="width: 26px; height: 26px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                    >
+                      <span
+                        style="line-height: 28px;"
+                      >
+                        a1
+                      </span>
+                    </div>
+                  </div>
+                   
+                  agent 1
+                </a>
+              </div>
+            </td>
+            <td />
+            <td>
+              View #30
+            </td>
+            <td
+              class="smallest"
+            >
+              <span>
+                <span
+                  id="datetime-tooltip-ssssssssst"
+                >
+                  January 25, 2022 10:39 AM
+                </span>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        class="btn-group"
+        role="group"
+      >
+        <button
+          class="wrapper previousButton wrapper medium secondary medium isDisabled"
+          disabled=""
+          id="prev-btn"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            keyboard_arrow_left
+          </i>
+        </button>
+        <button
+          class="wrapper nextButton wrapper medium secondary medium"
+          id="next-btn"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            keyboard_arrow_right
+          </i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

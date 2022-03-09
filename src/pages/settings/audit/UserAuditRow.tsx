@@ -1,32 +1,28 @@
-import React, {Component} from 'react'
+import React, {useCallback, useMemo} from 'react'
 import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
-import {connect, ConnectedProps} from 'react-redux'
+import {useSelector} from 'react-redux'
 import _startCase from 'lodash/startCase'
 
-import {Event} from '../../../models/event/types'
-import Avatar from '../../common/components/Avatar/Avatar'
-import {DatetimeLabel} from '../../common/utils/labels'
-import {getAgents} from '../../../state/agents/selectors'
-import {RootState} from '../../../state/types'
-import {humanizeString} from '../../../utils'
+import Avatar from 'pages/common/components/Avatar/Avatar'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {Event} from 'models/event/types'
+import {getAgents} from 'state/agents/selectors'
+import {humanizeString} from 'utils'
 
 import {DATETIME_LABEL_FORMAT} from './constants'
 import css from './UserAuditRow.less'
 
 type Props = {
     eventItem: Event
-} & ConnectedProps<typeof connector>
+}
 
-export class UserAuditRowContainer extends Component<Props> {
-    _renderUser = (item: Event) => {
-        const {agents} = this.props
-        if (!agents) {
-            return null
-        }
+const UserAuditRow = ({eventItem}: Props) => {
+    const agents = useSelector(getAgents)
 
+    const renderUser = useCallback(() => {
         const user: Map<any, any> | undefined = agents.find(
-            (u: Map<any, any>) => u.get('id') === item.user_id
+            (u: Map<any, any>) => u.get('id') === eventItem.user_id
         )
         if (!user) {
             return <span className={css.emptyUser}>No user</span>
@@ -45,48 +41,41 @@ export class UserAuditRowContainer extends Component<Props> {
                 </Link>
             </div>
         )
-    }
+    }, [eventItem])
 
-    _renderObject = (item: Event) => {
+    const renderObject = useCallback(() => {
         const objectTypeRoutes = {
-            Ticket: `/app/ticket/${item.object_id}/`,
-            Customer: `/app/customer/${item.object_id}/`,
+            Ticket: `/app/ticket/${eventItem.object_id}/`,
+            Customer: `/app/customer/${eventItem.object_id}/`,
             // TODO(customers-migration): remove this when we updated the object type for customers-related events
-            User: `/app/customer/${item.object_id}/`,
+            User: `/app/customer/${eventItem.object_id}/`,
         }
-        const objectType = item.object_type as keyof typeof objectTypeRoutes
-        const text = `${objectType} #${item.object_id}`
+        const objectType =
+            eventItem.object_type as keyof typeof objectTypeRoutes
+        const text = `${objectType} #${eventItem.object_id}`
         if (objectTypeRoutes[objectType]) {
             return <Link to={objectTypeRoutes[objectType]}>{text}</Link>
         }
-        return `${_startCase(objectType)} #${item.object_id}`
-    }
+        return `${_startCase(objectType)} #${eventItem.object_id}`
+    }, [eventItem])
 
-    _renderEventType = (item: Event) => {
-        return humanizeString(item.type)
-    }
+    const eventType = useMemo(() => {
+        return humanizeString(eventItem.type)
+    }, [eventItem])
 
-    render() {
-        const {eventItem} = this.props
-
-        return (
-            <tr>
-                <td>{this._renderUser(eventItem)}</td>
-                <td>{this._renderEventType(eventItem)}</td>
-                <td>{this._renderObject(eventItem)}</td>
-                <td className="smallest">
-                    <DatetimeLabel
-                        dateTime={eventItem.created_datetime}
-                        labelFormat={DATETIME_LABEL_FORMAT}
-                    />
-                </td>
-            </tr>
-        )
-    }
+    return (
+        <tr>
+            <td>{renderUser()}</td>
+            <td>{eventType}</td>
+            <td>{renderObject()}</td>
+            <td className="smallest">
+                <DatetimeLabel
+                    dateTime={eventItem.created_datetime}
+                    labelFormat={DATETIME_LABEL_FORMAT}
+                />
+            </td>
+        </tr>
+    )
 }
 
-const connector = connect((state: RootState) => ({
-    agents: getAgents(state),
-}))
-
-export default connector(UserAuditRowContainer)
+export default UserAuditRow
