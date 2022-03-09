@@ -32,6 +32,16 @@ export const createPhoneNumber = async (
     return res.data
 }
 
+export const updatePhoneNumber = async (
+    phoneNumber: PhoneNumber
+): Promise<PhoneNumber> => {
+    const res = await client.put(
+        `/api/integrations/phone/phone-numbers/${phoneNumber.id}/`,
+        phoneNumber
+    )
+    return res.data as PhoneNumber
+}
+
 export const deletePhoneNumber = async (id: number): Promise<void> => {
     await client.delete(`/api/integrations/phone/phone-numbers/${id}/`)
 }

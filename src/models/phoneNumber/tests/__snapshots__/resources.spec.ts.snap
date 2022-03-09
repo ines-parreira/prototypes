@@ -126,3 +126,60 @@ Object {
   },
 }
 `;
+
+exports[`phone numbers resources updatePhoneNumber should resolve with the updated phone number on success 1`] = `
+Object {
+  "created_datetime": "2021-12-01T18:00:00.000000+00:00",
+  "deleted_datetime": null,
+  "id": 1,
+  "integrations": Array [],
+  "meta": Object {
+    "area_code": 415,
+    "country": "US",
+    "emoji": "👍",
+    "friendly_name": "+1 415 111 2222",
+    "state": "CA",
+    "type": "Local",
+  },
+  "name": "A Phone Number",
+  "phone_number": "+14151112222",
+  "updated_datetime": "2021-12-01T18:00:00.000000+00:00",
+}
+`;
+
+exports[`phone numbers resources updatePhoneNumber should resolve with the updated phone number on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [
+    Object {
+      "data": "{\\"id\\":1,\\"name\\":\\"A Phone Number\\",\\"phone_number\\":\\"+14151112222\\",\\"created_datetime\\":\\"2021-12-01T18:00:00.000000+00:00\\",\\"updated_datetime\\":\\"2021-12-01T18:00:00.000000+00:00\\",\\"deleted_datetime\\":null,\\"meta\\":{\\"type\\":\\"Local\\",\\"emoji\\":\\"👍\\",\\"friendly_name\\":\\"+1 415 111 2222\\",\\"state\\":\\"CA\\",\\"country\\":\\"US\\",\\"area_code\\":415},\\"integrations\\":[]}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/integrations/phone/phone-numbers/1/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+}
+`;

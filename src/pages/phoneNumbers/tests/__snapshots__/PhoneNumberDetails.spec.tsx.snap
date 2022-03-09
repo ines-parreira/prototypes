@@ -2,1310 +2,1506 @@
 
 exports[`<PhoneNumberDetails/> render() should not render the link to an SMS integration for non-preview accounts 1`] = `
 <div>
-  <div
-    class="row"
+  <form
+    class=""
   >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
+      class="row"
     >
       <div
-        class="form-group"
+        class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <label
-          class="control-label"
-          for="phone-number"
-        >
-          Phone number
-        </label>
         <div
-          class="input-group"
+          class="form-group"
         >
+          <label
+            class="control-label"
+            for="name"
+          >
+            Title
+          </label>
           <input
             class="form-control"
-            id="phone-number"
-            readonly=""
+            id="name"
+            placeholder="Ex: Company Support Line"
+            required=""
             type="text"
-            value="+1 813 111 2223"
+            value="Another Phone Number"
           />
-          <div
-            class="input-group-append"
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+            for="phone-number"
           >
-            <button
-              class="copy-phone-number-button btn btn-secondary"
-              data-clipboard-target="#phone-number"
-              type="button"
+            Phone number
+          </label>
+          <div
+            class="input-group"
+          >
+            <input
+              class="form-control"
+              id="phone-number"
+              readonly=""
+              type="text"
+              value="+1 813 111 2223"
+            />
+            <div
+              class="input-group-append"
             >
-              <i
-                class="material-icons mr-2"
+              <button
+                class="copy-phone-number-button btn btn-secondary"
+                data-clipboard-target="#phone-number"
+                type="button"
               >
-                file_copy
-              </i>
-              Copy
-            </button>
+                <i
+                  class="material-icons mr-2"
+                >
+                  file_copy
+                </i>
+                Copy
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="row"
-  >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
+      class="row"
     >
       <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Country
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="Canada"
-        />
-      </div>
-    </div>
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Type
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="TollFree"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="row"
-  >
-    
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Area Code
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="813"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
-    >
-      <h4>
-        Connected integrations
-      </h4>
-      <div
-        class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        class="pr-lg-0 pr-md-3 col-lg-3"
       >
         <div
-          class="col-lg-8"
+          class="form-group"
         >
-          <i
-            class="material-icons md-2 align-middle mr-2"
+          <label
+            class="control-label"
           >
-            phone
-          </i>
-          <strong>
-            Voice
-          </strong>
+            Country
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="Canada"
+          />
         </div>
+      </div>
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
         <div
-          class="appLink col-lg-4"
+          class="form-group"
         >
-          <a
-            to="/app/settings/integrations/phone/new?phoneNumberId=2"
+          <label
+            class="control-label"
+          >
+            Type
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="TollFree"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+          >
+            Area Code
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="813"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-4 row"
+    >
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-6"
+      >
+        <h4>
+          Connected integrations
+        </h4>
+        <div
+          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
           >
             <i
               class="material-icons md-2 align-middle mr-2"
             >
-              add
+              phone
             </i>
-            Add Integration
-          </a>
+            <strong>
+              Voice
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              to="/app/settings/integrations/phone/new?phoneNumberId=2"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
     <div
-      class="mt-4 col"
+      class="mt-4 row"
     >
-      <button
-        class="wrapper destructive medium"
-        id="delete-number"
-        type="button"
+      <div
+        class="mt-4 col-lg-6"
       >
-        <span
-          class="wrapper"
+        <button
+          class="wrapper creation medium"
+          type="submit"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          Save changes
+        </button>
+        <button
+          class="wrapper float-right destructive medium"
+          id="delete-number"
+          type="button"
+        >
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete number
-        </span>
-      </button>
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete number
+          </span>
+        </button>
+      </div>
     </div>
-  </div>
+  </form>
 </div>
 `;
 
 exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link if no existing attached integration 1`] = `
 <div>
-  <div
-    class="row"
+  <form
+    class=""
   >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
+      class="row"
     >
       <div
-        class="form-group"
+        class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <label
-          class="control-label"
-          for="phone-number"
-        >
-          Phone number
-        </label>
         <div
-          class="input-group"
+          class="form-group"
         >
+          <label
+            class="control-label"
+            for="name"
+          >
+            Title
+          </label>
           <input
             class="form-control"
-            id="phone-number"
-            readonly=""
+            id="name"
+            placeholder="Ex: Company Support Line"
+            required=""
             type="text"
-            value="+1 813 111 2223"
+            value="Another Phone Number"
           />
-          <div
-            class="input-group-append"
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+            for="phone-number"
           >
-            <button
-              class="copy-phone-number-button btn btn-secondary"
-              data-clipboard-target="#phone-number"
-              type="button"
+            Phone number
+          </label>
+          <div
+            class="input-group"
+          >
+            <input
+              class="form-control"
+              id="phone-number"
+              readonly=""
+              type="text"
+              value="+1 813 111 2223"
+            />
+            <div
+              class="input-group-append"
             >
-              <i
-                class="material-icons mr-2"
+              <button
+                class="copy-phone-number-button btn btn-secondary"
+                data-clipboard-target="#phone-number"
+                type="button"
               >
-                file_copy
-              </i>
-              Copy
-            </button>
+                <i
+                  class="material-icons mr-2"
+                >
+                  file_copy
+                </i>
+                Copy
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="row"
-  >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
+      class="row"
     >
       <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Country
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="Canada"
-        />
-      </div>
-    </div>
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Type
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="TollFree"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="row"
-  >
-    
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Area Code
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="813"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
-    >
-      <h4>
-        Connected integrations
-      </h4>
-      <div
-        class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        class="pr-lg-0 pr-md-3 col-lg-3"
       >
         <div
-          class="col-lg-8"
+          class="form-group"
         >
-          <i
-            class="material-icons md-2 align-middle mr-2"
+          <label
+            class="control-label"
           >
-            phone
-          </i>
-          <strong>
-            Voice
-          </strong>
+            Country
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="Canada"
+          />
         </div>
+      </div>
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
         <div
-          class="appLink col-lg-4"
+          class="form-group"
         >
-          <a
-            to="/app/settings/integrations/phone/new?phoneNumberId=2"
+          <label
+            class="control-label"
+          >
+            Type
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="TollFree"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+          >
+            Area Code
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="813"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-4 row"
+    >
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-6"
+      >
+        <h4>
+          Connected integrations
+        </h4>
+        <div
+          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
           >
             <i
               class="material-icons md-2 align-middle mr-2"
             >
-              add
+              phone
             </i>
-            Add Integration
-          </a>
+            <strong>
+              Voice
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              to="/app/settings/integrations/phone/new?phoneNumberId=2"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
     <div
-      class="mt-4 col"
+      class="mt-4 row"
     >
-      <button
-        class="wrapper destructive medium"
-        id="delete-number"
-        type="button"
+      <div
+        class="mt-4 col-lg-6"
       >
-        <span
-          class="wrapper"
+        <button
+          class="wrapper creation medium"
+          type="submit"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          Save changes
+        </button>
+        <button
+          class="wrapper float-right destructive medium"
+          id="delete-number"
+          type="button"
+        >
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete number
-        </span>
-      </button>
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete number
+          </span>
+        </button>
+      </div>
     </div>
-  </div>
+  </form>
 </div>
 `;
 
 exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" link if existing attached integration 1`] = `
 <div>
-  <div
-    class="row"
+  <form
+    class=""
   >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
+      class="row"
     >
       <div
-        class="form-group"
+        class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <label
-          class="control-label"
-          for="phone-number"
-        >
-          Phone number
-        </label>
         <div
-          class="input-group"
+          class="form-group"
         >
+          <label
+            class="control-label"
+            for="name"
+          >
+            Title
+          </label>
           <input
             class="form-control"
-            id="phone-number"
-            readonly=""
+            id="name"
+            placeholder="Ex: Company Support Line"
+            required=""
             type="text"
-            value="+1 813 111 2223"
+            value="Another Phone Number"
           />
-          <div
-            class="input-group-append"
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+            for="phone-number"
           >
-            <button
-              class="copy-phone-number-button btn btn-secondary"
-              data-clipboard-target="#phone-number"
-              type="button"
+            Phone number
+          </label>
+          <div
+            class="input-group"
+          >
+            <input
+              class="form-control"
+              id="phone-number"
+              readonly=""
+              type="text"
+              value="+1 813 111 2223"
+            />
+            <div
+              class="input-group-append"
             >
-              <i
-                class="material-icons mr-2"
+              <button
+                class="copy-phone-number-button btn btn-secondary"
+                data-clipboard-target="#phone-number"
+                type="button"
               >
-                file_copy
-              </i>
-              Copy
-            </button>
+                <i
+                  class="material-icons mr-2"
+                >
+                  file_copy
+                </i>
+                Copy
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="row"
-  >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
+      class="row"
     >
       <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Country
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="Canada"
-        />
-      </div>
-    </div>
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Type
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="TollFree"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="row"
-  >
-    
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Area Code
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="813"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
-    >
-      <h4>
-        Connected integrations
-      </h4>
-      <div
-        class="border-bottom py-3 ml-1 mr-1 row"
+        class="pr-lg-0 pr-md-3 col-lg-3"
       >
         <div
-          class="col-lg-8"
+          class="form-group"
         >
-          <i
-            class="material-icons md-2 align-middle mr-2"
+          <label
+            class="control-label"
           >
-            phone
-          </i>
-          <strong>
-            Voice
-          </strong>
+            Country
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="Canada"
+          />
         </div>
+      </div>
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
         <div
-          class="appLink col-lg-4"
+          class="form-group"
         >
-          <a
-            to="/app/settings/integrations/phone/1/preferences"
+          <label
+            class="control-label"
           >
-            Manage Integration
-          </a>
+            Type
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="TollFree"
+          />
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
     <div
-      class="mt-4 col"
+      class="row"
     >
-      <button
-        class="wrapper destructive medium"
-        id="delete-number"
-        type="button"
+      
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
       >
-        <span
-          class="wrapper"
+        <div
+          class="form-group"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          <label
+            class="control-label"
           >
-            delete
-          </i>
-          Delete number
-        </span>
-      </button>
+            Area Code
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="813"
+          />
+        </div>
+      </div>
     </div>
-  </div>
+    <div
+      class="mt-4 row"
+    >
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-6"
+      >
+        <h4>
+          Connected integrations
+        </h4>
+        <div
+          class="border-bottom py-3 ml-1 mr-1 row"
+        >
+          <div
+            class="col-lg-8"
+          >
+            <i
+              class="material-icons md-2 align-middle mr-2"
+            >
+              phone
+            </i>
+            <strong>
+              Voice
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              to="/app/settings/integrations/phone/1/preferences"
+            >
+              Manage Integration
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-4 row"
+    >
+      <div
+        class="mt-4 col-lg-6"
+      >
+        <button
+          class="wrapper creation medium"
+          type="submit"
+        >
+          Save changes
+        </button>
+        <button
+          class="wrapper float-right destructive medium"
+          id="delete-number"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete number
+          </span>
+        </button>
+      </div>
+    </div>
+  </form>
 </div>
 `;
 
 exports[`<PhoneNumberDetails/> render() should render the link to an SMS integration for preview accounts 1`] = `
 <div>
-  <div
-    class="row"
+  <form
+    class=""
   >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
+      class="row"
     >
       <div
-        class="form-group"
+        class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <label
-          class="control-label"
-          for="phone-number"
-        >
-          Phone number
-        </label>
         <div
-          class="input-group"
+          class="form-group"
         >
+          <label
+            class="control-label"
+            for="name"
+          >
+            Title
+          </label>
           <input
             class="form-control"
-            id="phone-number"
-            readonly=""
+            id="name"
+            placeholder="Ex: Company Support Line"
+            required=""
             type="text"
-            value="+1 813 111 2223"
+            value="Another Phone Number"
           />
-          <div
-            class="input-group-append"
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+            for="phone-number"
           >
-            <button
-              class="copy-phone-number-button btn btn-secondary"
-              data-clipboard-target="#phone-number"
-              type="button"
+            Phone number
+          </label>
+          <div
+            class="input-group"
+          >
+            <input
+              class="form-control"
+              id="phone-number"
+              readonly=""
+              type="text"
+              value="+1 813 111 2223"
+            />
+            <div
+              class="input-group-append"
             >
-              <i
-                class="material-icons mr-2"
+              <button
+                class="copy-phone-number-button btn btn-secondary"
+                data-clipboard-target="#phone-number"
+                type="button"
               >
-                file_copy
-              </i>
-              Copy
-            </button>
+                <i
+                  class="material-icons mr-2"
+                >
+                  file_copy
+                </i>
+                Copy
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="row"
-  >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
+      class="row"
     >
       <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Country
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="Canada"
-        />
-      </div>
-    </div>
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Type
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="TollFree"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="row"
-  >
-    
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Area Code
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="813"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
-    >
-      <h4>
-        Connected integrations
-      </h4>
-      <div
-        class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        class="pr-lg-0 pr-md-3 col-lg-3"
       >
         <div
-          class="col-lg-8"
+          class="form-group"
         >
-          <i
-            class="material-icons md-2 align-middle mr-2"
+          <label
+            class="control-label"
           >
-            phone
-          </i>
-          <strong>
-            Voice
-          </strong>
+            Country
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="Canada"
+          />
         </div>
+      </div>
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
         <div
-          class="appLink col-lg-4"
+          class="form-group"
         >
-          <a
-            to="/app/settings/integrations/phone/new?phoneNumberId=2"
+          <label
+            class="control-label"
+          >
+            Type
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="TollFree"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+          >
+            Area Code
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="813"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-4 row"
+    >
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-6"
+      >
+        <h4>
+          Connected integrations
+        </h4>
+        <div
+          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
           >
             <i
               class="material-icons md-2 align-middle mr-2"
             >
-              add
+              phone
             </i>
-            Add Integration
-          </a>
-        </div>
-      </div>
-      <div
-        class="border-bottom py-3 ml-1 mr-1 disabledApp row"
-      >
-        <div
-          class="col-lg-8"
-        >
-          <i
-            class="material-icons md-2 align-middle mr-2"
+            <strong>
+              Voice
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
           >
-            sms
-          </i>
-          <strong>
-            SMS
-          </strong>
+            <a
+              to="/app/settings/integrations/phone/new?phoneNumberId=2"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
         </div>
         <div
-          class="appLink col-lg-4"
+          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
         >
-          <a
-            to="/app/settings/integrations/sms/new?phoneNumberId=2"
+          <div
+            class="col-lg-8"
           >
             <i
               class="material-icons md-2 align-middle mr-2"
             >
-              add
+              sms
             </i>
-            Add Integration
-          </a>
+            <strong>
+              SMS
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              to="/app/settings/integrations/sms/new?phoneNumberId=2"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
     <div
-      class="mt-4 col"
+      class="mt-4 row"
     >
-      <button
-        class="wrapper destructive medium"
-        id="delete-number"
-        type="button"
+      <div
+        class="mt-4 col-lg-6"
       >
-        <span
-          class="wrapper"
+        <button
+          class="wrapper creation medium"
+          type="submit"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          Save changes
+        </button>
+        <button
+          class="wrapper float-right destructive medium"
+          id="delete-number"
+          type="button"
+        >
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete number
-        </span>
-      </button>
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete number
+          </span>
+        </button>
+      </div>
     </div>
-  </div>
+  </form>
 </div>
 `;
 
 exports[`<PhoneNumberDetails/> render() should render with a local US number 1`] = `
 <div>
-  <div
-    class="row"
+  <form
+    class=""
   >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
+      class="row"
     >
       <div
-        class="form-group"
+        class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <label
-          class="control-label"
-          for="phone-number"
-        >
-          Phone number
-        </label>
         <div
-          class="input-group"
+          class="form-group"
         >
+          <label
+            class="control-label"
+            for="name"
+          >
+            Title
+          </label>
           <input
             class="form-control"
-            id="phone-number"
-            readonly=""
+            id="name"
+            placeholder="Ex: Company Support Line"
+            required=""
             type="text"
-            value="+1 415 111 2222"
+            value="A Phone Number"
           />
-          <div
-            class="input-group-append"
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+            for="phone-number"
           >
-            <button
-              class="copy-phone-number-button btn btn-secondary"
-              data-clipboard-target="#phone-number"
-              type="button"
+            Phone number
+          </label>
+          <div
+            class="input-group"
+          >
+            <input
+              class="form-control"
+              id="phone-number"
+              readonly=""
+              type="text"
+              value="+1 415 111 2222"
+            />
+            <div
+              class="input-group-append"
             >
-              <i
-                class="material-icons mr-2"
+              <button
+                class="copy-phone-number-button btn btn-secondary"
+                data-clipboard-target="#phone-number"
+                type="button"
               >
-                file_copy
-              </i>
-              Copy
-            </button>
+                <i
+                  class="material-icons mr-2"
+                >
+                  file_copy
+                </i>
+                Copy
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="row"
-  >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
+      class="row"
     >
       <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Country
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="United States"
-        />
-      </div>
-    </div>
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Type
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="Local"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="row"
-  >
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          State
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="California"
-        />
-      </div>
-    </div>
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Area Code
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="415"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
-    >
-      <h4>
-        Connected integrations
-      </h4>
-      <div
-        class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        class="pr-lg-0 pr-md-3 col-lg-3"
       >
         <div
-          class="col-lg-8"
+          class="form-group"
         >
-          <i
-            class="material-icons md-2 align-middle mr-2"
+          <label
+            class="control-label"
           >
-            phone
-          </i>
-          <strong>
-            Voice
-          </strong>
+            Country
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="United States"
+          />
         </div>
+      </div>
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
         <div
-          class="appLink col-lg-4"
+          class="form-group"
         >
-          <a
-            to="/app/settings/integrations/phone/new?phoneNumberId=1"
+          <label
+            class="control-label"
+          >
+            Type
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="Local"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+          >
+            State
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="California"
+          />
+        </div>
+      </div>
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+          >
+            Area Code
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="415"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-4 row"
+    >
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-6"
+      >
+        <h4>
+          Connected integrations
+        </h4>
+        <div
+          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
           >
             <i
               class="material-icons md-2 align-middle mr-2"
             >
-              add
+              phone
             </i>
-            Add Integration
-          </a>
+            <strong>
+              Voice
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              to="/app/settings/integrations/phone/new?phoneNumberId=1"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
     <div
-      class="mt-4 col"
+      class="mt-4 row"
     >
-      <button
-        class="wrapper destructive medium"
-        id="delete-number"
-        type="button"
+      <div
+        class="mt-4 col-lg-6"
       >
-        <span
-          class="wrapper"
+        <button
+          class="wrapper creation medium"
+          type="submit"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          Save changes
+        </button>
+        <button
+          class="wrapper float-right destructive medium"
+          id="delete-number"
+          type="button"
+        >
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete number
-        </span>
-      </button>
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete number
+          </span>
+        </button>
+      </div>
     </div>
-  </div>
+  </form>
 </div>
 `;
 
 exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`] = `
 <div>
-  <div
-    class="row"
+  <form
+    class=""
   >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
+      class="row"
     >
       <div
-        class="form-group"
+        class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <label
-          class="control-label"
-          for="phone-number"
-        >
-          Phone number
-        </label>
         <div
-          class="input-group"
+          class="form-group"
         >
+          <label
+            class="control-label"
+            for="name"
+          >
+            Title
+          </label>
           <input
             class="form-control"
-            id="phone-number"
-            readonly=""
+            id="name"
+            placeholder="Ex: Company Support Line"
+            required=""
             type="text"
-            value="+44 7123 456789"
+            value="Intl. Phone Number"
           />
-          <div
-            class="input-group-append"
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+            for="phone-number"
           >
-            <button
-              class="copy-phone-number-button btn btn-secondary"
-              data-clipboard-target="#phone-number"
-              type="button"
+            Phone number
+          </label>
+          <div
+            class="input-group"
+          >
+            <input
+              class="form-control"
+              id="phone-number"
+              readonly=""
+              type="text"
+              value="+44 7123 456789"
+            />
+            <div
+              class="input-group-append"
             >
-              <i
-                class="material-icons mr-2"
+              <button
+                class="copy-phone-number-button btn btn-secondary"
+                data-clipboard-target="#phone-number"
+                type="button"
               >
-                file_copy
-              </i>
-              Copy
-            </button>
+                <i
+                  class="material-icons mr-2"
+                >
+                  file_copy
+                </i>
+                Copy
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="row"
-  >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
+      class="row"
     >
       <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Country
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="United Kingdom"
-        />
-      </div>
-    </div>
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Type
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="Mobile"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="row"
-  >
-    
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Area Code
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="7"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
-    >
-      <h4>
-        Connected integrations
-      </h4>
-      <div
-        class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        class="pr-lg-0 pr-md-3 col-lg-3"
       >
         <div
-          class="col-lg-8"
+          class="form-group"
         >
-          <i
-            class="material-icons md-2 align-middle mr-2"
+          <label
+            class="control-label"
           >
-            phone
-          </i>
-          <strong>
-            Voice
-          </strong>
+            Country
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="United Kingdom"
+          />
         </div>
+      </div>
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
         <div
-          class="appLink col-lg-4"
+          class="form-group"
         >
-          <a
-            to="/app/settings/integrations/phone/new?phoneNumberId=3"
+          <label
+            class="control-label"
+          >
+            Type
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="Mobile"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+          >
+            Area Code
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="7"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-4 row"
+    >
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-6"
+      >
+        <h4>
+          Connected integrations
+        </h4>
+        <div
+          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
           >
             <i
               class="material-icons md-2 align-middle mr-2"
             >
-              add
+              phone
             </i>
-            Add Integration
-          </a>
+            <strong>
+              Voice
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              to="/app/settings/integrations/phone/new?phoneNumberId=3"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
     <div
-      class="mt-4 col"
+      class="mt-4 row"
     >
-      <button
-        class="wrapper destructive medium"
-        id="delete-number"
-        type="button"
+      <div
+        class="mt-4 col-lg-6"
       >
-        <span
-          class="wrapper"
+        <button
+          class="wrapper creation medium"
+          type="submit"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          Save changes
+        </button>
+        <button
+          class="wrapper float-right destructive medium"
+          id="delete-number"
+          type="button"
+        >
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete number
-        </span>
-      </button>
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete number
+          </span>
+        </button>
+      </div>
     </div>
-  </div>
+  </form>
 </div>
 `;
 
 exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number 1`] = `
 <div>
-  <div
-    class="row"
+  <form
+    class=""
   >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
+      class="row"
     >
       <div
-        class="form-group"
+        class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <label
-          class="control-label"
-          for="phone-number"
-        >
-          Phone number
-        </label>
         <div
-          class="input-group"
+          class="form-group"
         >
+          <label
+            class="control-label"
+            for="name"
+          >
+            Title
+          </label>
           <input
             class="form-control"
-            id="phone-number"
-            readonly=""
+            id="name"
+            placeholder="Ex: Company Support Line"
+            required=""
             type="text"
-            value="+1 813 111 2223"
+            value="Another Phone Number"
           />
-          <div
-            class="input-group-append"
+        </div>
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+            for="phone-number"
           >
-            <button
-              class="copy-phone-number-button btn btn-secondary"
-              data-clipboard-target="#phone-number"
-              type="button"
+            Phone number
+          </label>
+          <div
+            class="input-group"
+          >
+            <input
+              class="form-control"
+              id="phone-number"
+              readonly=""
+              type="text"
+              value="+1 813 111 2223"
+            />
+            <div
+              class="input-group-append"
             >
-              <i
-                class="material-icons mr-2"
+              <button
+                class="copy-phone-number-button btn btn-secondary"
+                data-clipboard-target="#phone-number"
+                type="button"
               >
-                file_copy
-              </i>
-              Copy
-            </button>
+                <i
+                  class="material-icons mr-2"
+                >
+                  file_copy
+                </i>
+                Copy
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="row"
-  >
     <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
+      class="row"
     >
       <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Country
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="Canada"
-        />
-      </div>
-    </div>
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Type
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="TollFree"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="row"
-  >
-    
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-3"
-    >
-      <div
-        class="form-group"
-      >
-        <label
-          class="control-label"
-        >
-          Area Code
-        </label>
-        <input
-          class="form-control"
-          readonly=""
-          type="text"
-          value="813"
-        />
-      </div>
-    </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
-    <div
-      class="pr-lg-0 pr-md-3 col-lg-6"
-    >
-      <h4>
-        Connected integrations
-      </h4>
-      <div
-        class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        class="pr-lg-0 pr-md-3 col-lg-3"
       >
         <div
-          class="col-lg-8"
+          class="form-group"
         >
-          <i
-            class="material-icons md-2 align-middle mr-2"
+          <label
+            class="control-label"
           >
-            phone
-          </i>
-          <strong>
-            Voice
-          </strong>
+            Country
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="Canada"
+          />
         </div>
+      </div>
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
         <div
-          class="appLink col-lg-4"
+          class="form-group"
         >
-          <a
-            to="/app/settings/integrations/phone/new?phoneNumberId=2"
+          <label
+            class="control-label"
+          >
+            Type
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="TollFree"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="row"
+    >
+      
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-3"
+      >
+        <div
+          class="form-group"
+        >
+          <label
+            class="control-label"
+          >
+            Area Code
+          </label>
+          <input
+            class="form-control"
+            readonly=""
+            type="text"
+            value="813"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-4 row"
+    >
+      <div
+        class="pr-lg-0 pr-md-3 col-lg-6"
+      >
+        <h4>
+          Connected integrations
+        </h4>
+        <div
+          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
           >
             <i
               class="material-icons md-2 align-middle mr-2"
             >
-              add
+              phone
             </i>
-            Add Integration
-          </a>
+            <strong>
+              Voice
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              to="/app/settings/integrations/phone/new?phoneNumberId=2"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="mt-4 row"
-  >
     <div
-      class="mt-4 col"
+      class="mt-4 row"
     >
-      <button
-        class="wrapper destructive medium"
-        id="delete-number"
-        type="button"
+      <div
+        class="mt-4 col-lg-6"
       >
-        <span
-          class="wrapper"
+        <button
+          class="wrapper creation medium"
+          type="submit"
         >
-          <i
-            class="material-icons icon isLeft medium"
+          Save changes
+        </button>
+        <button
+          class="wrapper float-right destructive medium"
+          id="delete-number"
+          type="button"
+        >
+          <span
+            class="wrapper"
           >
-            delete
-          </i>
-          Delete number
-        </span>
-      </button>
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete number
+          </span>
+        </button>
+      </div>
     </div>
-  </div>
+  </form>
 </div>
 `;

@@ -7,6 +7,7 @@ import client from 'models/api/resources'
 import {
     fetchPhoneNumbers,
     createPhoneNumber,
+    updatePhoneNumber,
     deletePhoneNumber,
 } from '../resources'
 
@@ -77,6 +78,26 @@ describe('phone numbers resources', () => {
                 .reply(503, {message: 'error'})
             return expect(
                 createPhoneNumber(phoneNumberDraftMock)
+            ).rejects.toEqual(new Error('Request failed with status code 503'))
+        })
+    })
+
+    describe('updatePhoneNumber', () => {
+        it('should resolve with the updated phone number on success', async () => {
+            mockedServer
+                .onPut(/\/api\/integrations\/phone\/phone-numbers\/\d+\//)
+                .reply(200, phoneNumbersFixtures[0])
+            const res = await updatePhoneNumber(phoneNumbersFixtures[0])
+            expect(res).toMatchSnapshot()
+            expect(mockedServer.history).toMatchSnapshot()
+        })
+
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onPut(/\/api\/integrations\/phone\/phone-numbers\/\d+\//)
+                .reply(503, {message: 'error'})
+            return expect(
+                updatePhoneNumber(phoneNumbersFixtures[0])
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })

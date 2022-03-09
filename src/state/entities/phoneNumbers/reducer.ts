@@ -7,6 +7,7 @@ import {
     phoneNumberCreated,
     phoneNumberDeleted,
     phoneNumberFetched,
+    phoneNumberUpdated,
     phoneNumbersFetched,
 } from './actions'
 
@@ -23,6 +24,9 @@ const phoneNumbersReducer = createReducer<PhoneNumbersState>(
                 delete state[payload]
             })
             .addCase(phoneNumberFetched, (state, {payload}) => {
+                state[payload.id] = payload
+            })
+            .addCase(phoneNumberUpdated, (state, {payload}) => {
                 state[payload.id] = payload
             })
             .addCase(phoneNumbersFetched, (state, {payload}) => {

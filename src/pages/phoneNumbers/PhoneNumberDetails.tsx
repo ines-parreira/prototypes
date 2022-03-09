@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {
     Col,
     Row,
+    Form,
     InputGroupAddon,
     InputGroup,
     Input,
@@ -15,9 +16,15 @@ import Clipboard from 'clipboard'
 import classnames from 'classnames'
 
 import {PhoneNumber, PhoneCountry} from 'models/phoneNumber/types'
-import {deletePhoneNumber} from 'models/phoneNumber/resources'
+import {
+    updatePhoneNumber,
+    deletePhoneNumber,
+} from 'models/phoneNumber/resources'
 import {GorgiasApiError} from 'models/api/types'
-import {phoneNumberDeleted} from 'state/entities/phoneNumbers/actions'
+import {
+    phoneNumberUpdated,
+    phoneNumberDeleted,
+} from 'state/entities/phoneNumbers/actions'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -25,7 +32,7 @@ import {IntegrationType} from 'models/integration/types'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {ButtonIntent} from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import {SMS_INTEGRATION_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 import history from 'pages/history'
 import {errorToChildren} from 'utils'
@@ -51,6 +58,7 @@ const states: States = rawStates
 export function PhoneNumberDetails({phoneNumber}: Props) {
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const [name, setName] = useState(phoneNumber.name)
     const state =
         phoneNumber.meta?.country === PhoneCountry.US
             ? states[phoneNumber.meta.country].find(
@@ -109,10 +117,49 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
         }
     }, [])
 
+    const [{loading: isLoading}, handleSubmit] = useAsyncFn(
+        async (event: React.FormEvent) => {
+            event.preventDefault()
+            try {
+                const res = await updatePhoneNumber({...phoneNumber, name})
+                if (!res) {
+                    return
+                }
+                dispatch(phoneNumberUpdated(res))
+                void dispatch(
+                    notify({
+                        message: 'Successfully updated phone number',
+                        status: NotificationStatus.Success,
+                    })
+                )
+            } catch (error) {
+                void dispatch(
+                    notify({
+                        message: 'Failed to update phone number',
+                        status: NotificationStatus.Error,
+                    })
+                )
+            }
+        },
+        [phoneNumber, name, dispatch]
+    )
+
     return (
-        <>
+        <Form onSubmit={handleSubmit}>
             <Row>
                 <Col lg={6} className="pr-lg-0 pr-md-3">
+                    <FormGroup>
+                        <Label htmlFor="name" className="control-label">
+                            Title
+                        </Label>
+                        <Input
+                            id="name"
+                            value={name}
+                            placeholder="Ex: Company Support Line"
+                            required
+                            onChange={(e) => setName(e.target.value)}
+                        />
+                    </FormGroup>
                     <FormGroup>
                         <Label htmlFor="phone-number" className="control-label">
                             Phone number
@@ -248,8 +295,16 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                 </Col>
             </Row>
             <Row className="mt-4">
-                <Col className="mt-4">
+                <Col lg={6} className="mt-4">
+                    <Button
+                        type="submit"
+                        intent={ButtonIntent.Creation}
+                        isLoading={isLoading}
+                    >
+                        Save changes
+                    </Button>
                     <ConfirmButton
+                        className="float-right"
                         id="delete-number"
                         intent={ButtonIntent.Destructive}
                         confirmationContent={
@@ -268,7 +323,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                     </ConfirmButton>
                 </Col>
             </Row>
-        </>
+        </Form>
     )
 }
 
