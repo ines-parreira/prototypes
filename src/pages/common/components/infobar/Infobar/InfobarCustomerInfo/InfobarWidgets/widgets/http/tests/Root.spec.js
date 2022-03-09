@@ -1,23 +1,33 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import {TitleWrapper} from '../Root.tsx'
 
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {
-        it('should render without link', () => {
-            const component = shallow(
-                <TitleWrapper source={fromJS({})} template={fromJS({})}>
-                    <span>Foo</span>
-                </TitleWrapper>
+        it('should render default', () => {
+            const {container} = render(
+                <TitleWrapper source={fromJS({})} template={fromJS({})} />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render inline', () => {
+            const {container} = render(
+                <TitleWrapper
+                    source={fromJS({})}
+                    isEditing
+                    template={fromJS({})}
+                />
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with a link', () => {
-            const component = shallow(
+            const {container} = render(
                 <TitleWrapper
                     source={fromJS({baz: 'BAZ'})}
                     template={fromJS({
@@ -28,7 +38,33 @@ describe('<TitleWrapper/>', () => {
                 </TitleWrapper>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render with a color tile', () => {
+            const {container} = render(
+                <TitleWrapper
+                    template={fromJS({
+                        meta: {color: '#123'},
+                    })}
+                />
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render with a custom picture', () => {
+            const {container} = render(
+                <TitleWrapper
+                    template={fromJS({
+                        meta: {
+                            pictureUrl: 'http://mypictureurl.com',
+                            color: '#123',
+                        },
+                    })}
+                />
+            )
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

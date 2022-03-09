@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {fromJS} from 'immutable'
 
-import DragWrapper from '../dragging/WidgetsDragWrapper'
+import DragWrapper from '../dragging/WidgetsDragWrapper.tsx'
 
 import SourceWidget from './SourceWidget'
 
@@ -18,7 +18,6 @@ class SourceWidgets extends React.Component {
         return (
             <div className={className}>
                 <DragWrapper
-                    actions={editing && editing.actions}
                     group={{
                         name: 'root',
                         pull: true,

@@ -50,6 +50,18 @@ describe('<FileField/>', () => {
         jest.clearAllMocks()
     })
 
+    describe('handleRemove()', () => {
+        it('should call onChange with an empty string when removing the file', () => {
+            const removeFn = jest.fn()
+            const component = shallow<FileFieldContainer>(
+                <FileFieldContainer {...minProps} onChange={removeFn} />
+            )
+            component.instance().handleRemove()
+
+            expect(removeFn).toHaveBeenCalled()
+        })
+    })
+
     describe('handleOnChange()', () => {
         it('should notify a warning when trying to upload a SVG', async () => {
             const component = shallow<FileFieldContainer>(
@@ -139,6 +151,13 @@ describe('<FileField/>', () => {
         it('should display loading when loading', () => {
             const component = shallow(<FileFieldContainer {...minProps} />)
             component.setState({isUploading: true})
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should display a remove button', () => {
+            const component = shallow(
+                <FileFieldContainer {...minProps} isRemovable />
+            )
             expect(component).toMatchSnapshot()
         })
     })

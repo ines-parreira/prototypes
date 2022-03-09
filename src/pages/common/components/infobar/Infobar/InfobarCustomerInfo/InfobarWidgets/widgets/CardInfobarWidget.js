@@ -7,10 +7,10 @@ import {Card, CardBody, Popover, PopoverBody} from 'reactstrap'
 
 import {renderInfobarTemplate} from '../../../../../../utils/infobar.tsx'
 import {renderTemplate} from '../../../../../../utils/template.ts'
-import DragWrapper from '../../../../../dragging/WidgetsDragWrapper'
+import DragWrapper from '../../../../../dragging/WidgetsDragWrapper.tsx'
 import InfobarWidget from '../InfobarWidget'
 
-import PopoverWidgetEditCard from './forms/PopoverWidgetEditCard'
+import WidgetEdit from './forms/WidgetEdit.tsx'
 import css from './CardInfobarWidget.less'
 import CustomActions from './customActions/index.ts'
 
@@ -103,13 +103,14 @@ export default class CardInfobarWidget extends React.Component {
     startWidgetEdition = (e) => {
         const {parent, isParentList, template, editing} = this.props
 
-        const tp = isParentList
+        const templatePath = isParentList
             ? parent.get('templatePath', '')
             : template.get('templatePath', '')
 
         e.stopPropagation()
+
         if (editing) {
-            editing.actions.startWidgetEdition(tp)
+            editing.actions.startWidgetEdition(templatePath)
         }
     }
 
@@ -123,7 +124,7 @@ export default class CardInfobarWidget extends React.Component {
      * @private
      */
     renderPopover = () => {
-        const {editing} = this.props
+        const {template, editing} = this.props
 
         if (!editing) {
             return null
@@ -138,9 +139,11 @@ export default class CardInfobarWidget extends React.Component {
                 trigger="legacy"
             >
                 <PopoverBody>
-                    <PopoverWidgetEditCard
+                    <WidgetEdit
                         {...this.props}
-                        actions={editing.actions}
+                        isRootWidget={isRootWidget(
+                            template.get('templatePath')
+                        )}
                     />
                 </PopoverBody>
             </Popover>
@@ -179,16 +182,11 @@ export default class CardInfobarWidget extends React.Component {
         return content
     }
 
-    isRootWidget(templatePath) {
-        return (
-            templatePath.match(/.template.widgets.(\d+)$/) ||
-            templatePath.match(/.template.widgets.(\d+).widgets.0$/)
-        )
-    }
-
     shouldDisplayCardWidgetHeader(template, isEditing) {
         const templateTitle = template.get('title')
-        const isTransparent = !template.getIn(['meta', 'displayCard'], true)
+        const isVisible = template.getIn(['meta', 'displayCard'], true)
+        const hasColor = template.getIn(['meta', 'color'], '')
+        const hasPicture = template.getIn(['meta', 'pictureUrl'], '')
         const templateCustomLinks = template.getIn(
             ['meta', 'custom', 'links'],
             fromJS({})
@@ -200,9 +198,11 @@ export default class CardInfobarWidget extends React.Component {
 
         return (
             ((templateTitle ||
+                hasColor ||
+                hasPicture ||
                 templateCustomLinks.size > 0 ||
                 templateCustomButtons.size > 0) &&
-                !isTransparent) ||
+                isVisible) ||
             isEditing
         )
     }
@@ -293,7 +293,7 @@ export default class CardInfobarWidget extends React.Component {
                         </span>
                         {this.renderPopover()}
                         {!!AfterTitle && <AfterTitle {...this.props} />}
-                        {this.isRootWidget(template.get('templatePath')) && (
+                        {isRootWidget(template.get('templatePath')) && (
                             <CustomActions
                                 template={template}
                                 source={source}
@@ -317,7 +317,6 @@ export default class CardInfobarWidget extends React.Component {
                     ) : (
                         shouldDisplayCardContent && (
                             <DragWrapper
-                                actions={editing && editing.actions}
                                 sort
                                 group={{
                                     name: ap.join('.'),
@@ -373,4 +372,11 @@ export default class CardInfobarWidget extends React.Component {
 
         return content
     }
+}
+
+function isRootWidget(templatePath) {
+    return (
+        templatePath.match(/.template.widgets.(\d+)$/) ||
+        templatePath.match(/.template.widgets.(\d+).widgets.0$/)
+    )
 }

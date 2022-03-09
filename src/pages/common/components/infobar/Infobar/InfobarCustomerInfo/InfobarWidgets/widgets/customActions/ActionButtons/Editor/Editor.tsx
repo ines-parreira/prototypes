@@ -28,7 +28,7 @@ import EditableButton from './Button'
 
 type Props = {
     templatePath: string
-    templateAbsolutePath: string
+    templateAbsolutePath: string[]
     source: Map<string, unknown>
     buttons: ButtonType[]
 }

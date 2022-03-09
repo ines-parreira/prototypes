@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import _last from 'lodash/last'
 import {Card, CardBody, CardTitle} from 'reactstrap'
 
-import DragWrapper from '../../dragging/WidgetsDragWrapper'
+import DragWrapper from '../../dragging/WidgetsDragWrapper.tsx'
 import {humanizeString} from '../../../../../utils.ts'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors.ts'
 
@@ -13,7 +13,7 @@ import SourceWidget from '../SourceWidget'
 
 class WrapperSourceWidget extends React.Component {
     render() {
-        const {widget, template, source, editing, parent, getIntegrationById} =
+        const {widget, template, source, parent, getIntegrationById} =
             this.props
 
         const ap = template.get('absolutePath')
@@ -54,7 +54,6 @@ class WrapperSourceWidget extends React.Component {
                 </CardBody>
                 <CardBody className="content">
                     <DragWrapper
-                        actions={editing && editing.actions}
                         group={{
                             name: ap.join('.'),
                             pull: true,
@@ -75,7 +74,6 @@ class WrapperSourceWidget extends React.Component {
                                     parent={template}
                                     template={passedTemplate}
                                     widget={widget}
-                                    editing={editing}
                                 />
                             )
                         })}
@@ -87,7 +85,6 @@ class WrapperSourceWidget extends React.Component {
 }
 
 WrapperSourceWidget.propTypes = {
-    editing: PropTypes.object,
     source: PropTypes.object.isRequired,
     parent: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,

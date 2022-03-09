@@ -25,7 +25,7 @@ describe('<Editor/>', () => {
             {label: 'I am in snapshots too', action},
         ],
         templatePath: 'some.template',
-        templateAbsolutePath: 'some.absolute.template',
+        templateAbsolutePath: ['some', 'absolute', 'template'],
         source: fromJS({}),
         startWidgetEdition: buildActionMock('startWidgetEdition'),
         updateCustomActions: buildActionMock('updateCustomActions'),

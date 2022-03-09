@@ -138,3 +138,9 @@ const store: {
 }
 
 export default ReactSortable
+
+export const isSortableEvent = (
+    evt?: SortableEvent | MoveEvent
+): evt is SortableEvent => {
+    return typeof (evt as SortableEvent)?.item !== 'undefined'
+}

@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import {fromJS} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
-import DragWrapper from '../../../../dragging/WidgetsDragWrapper'
+import DragWrapper from '../../../../dragging/WidgetsDragWrapper.tsx'
 import {compare} from '../../../../../../../utils.ts'
 import {canDisplayWidget} from '../../../utils.tsx'
 import {getSourcePathFromContext} from '../../../../../../../state/widgets/utils.ts'
@@ -284,7 +284,6 @@ class InfobarWidgets extends React.Component {
                 )}
                 <div className={className}>
                     <DragWrapper
-                        actions={editing && editing.actions}
                         sort
                         group={{
                             name: 'root',

@@ -1,5 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<FileField/> render() should display a remove button 1`] = `
+<FormGroup
+  className="InputField"
+  color=""
+  tag="div"
+>
+  <div
+    className=""
+  >
+    <div
+      className="d-flex align-center"
+    >
+      <div
+        className="preview"
+      >
+        <img
+          alt="file preview"
+          src="value"
+        />
+      </div>
+      <ForwardRef
+        intent="secondary"
+        isDisabled={false}
+        onClick={[Function]}
+      >
+        <span>
+          Select a File...
+        </span>
+      </ForwardRef>
+      <ForwardRef
+        aria-label="Remove the file"
+        className="ml-2"
+        intent="destructive"
+        onClick={[Function]}
+      >
+        close
+      </ForwardRef>
+      <Input
+        className="input"
+        disabled={false}
+        id="id-input-1"
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
+        onChange={[Function]}
+        type="file"
+      />
+    </div>
+  </div>
+</FormGroup>
+`;
+
 exports[`<FileField/> render() should display loading when loading 1`] = `
 <FormGroup
   className="InputField"

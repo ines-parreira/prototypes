@@ -72,6 +72,10 @@ type OwnProps = {
         setEditionAsDirty: () => void
         resetWidgets: () => void
         generateAndSetWidgets: (sources: Map<any, any>, context: string) => void
+        removeEditedWidget: (
+            templatePath: string,
+            absolutePath: string[]
+        ) => void
     }
     customer: Map<any, any>
     displayTabs?: boolean
@@ -79,6 +83,14 @@ type OwnProps = {
     isEditing: boolean
     sources: Map<any, any>
     widgets: Map<any, any>
+}
+
+export type Editing = {
+    isEditing: boolean
+    isDragging: boolean
+    actions: OwnProps['actions']
+    state: Map<any, any>
+    canDrop: (arg: string) => boolean
 }
 
 export const InfobarCustomerInfoContainer = ({
@@ -153,7 +165,10 @@ export const InfobarCustomerInfoContainer = ({
             ? widgets.getIn(['_internal', 'editedItems'])
             : contextWidgets
 
-        const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
+        const isDragging = widgets.getIn(
+            ['_internal', 'drag', 'isDragging'],
+            false
+        ) as boolean
 
         const shouldSuggestTemplateGeneration =
             isEditing &&
@@ -188,6 +203,23 @@ export const InfobarCustomerInfoContainer = ({
             return null
         }
 
+        const editing: Editing | undefined = isEditing
+            ? {
+                  isEditing,
+                  isDragging,
+                  actions,
+                  state: widgets,
+                  canDrop: (targetAbsolutePath: string) => {
+                      const group = widgets.getIn([
+                          '_internal',
+                          'drag',
+                          'group',
+                      ])
+                      return canDrop(group, targetAbsolutePath)
+                  },
+              }
+            : undefined
+
         return (
             <CustomerContext.Provider
                 value={{
@@ -199,24 +231,7 @@ export const InfobarCustomerInfoContainer = ({
                     source={sources}
                     widgets={renderedContextWidgets}
                     displayTabs={displayTabs}
-                    editing={
-                        isEditing
-                            ? {
-                                  isEditing,
-                                  isDragging,
-                                  actions,
-                                  state: widgets,
-                                  canDrop: (targetAbsolutePath: string) => {
-                                      const group = widgets.getIn([
-                                          '_internal',
-                                          'drag',
-                                          'group',
-                                      ])
-                                      return canDrop(group, targetAbsolutePath)
-                                  },
-                              }
-                            : undefined
-                    }
+                    editing={editing}
                 />
             </CustomerContext.Provider>
         )

@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WidgetEdit/> should call the correct action when cancelling 1`] = `Array []`;
+
+exports[`<WidgetEdit/> should call the correct action when cancelling 2`] = `
+Array [
+  Array [],
+]
+`;
+
+exports[`<WidgetEdit/> should call the correct action with correct data when submitting the form 1`] = `
+Array [
+  Array [
+    Object {
+      "meta": Object {
+        "color": "#EB144C",
+        "displayCard": true,
+        "link": "https://link.com",
+        "pictureUrl": "file1",
+      },
+      "title": "New Title",
+      "type": "card",
+    },
+  ],
+]
+`;
+
+exports[`<WidgetEdit/> should call the correct action with correct data when submitting the form 2`] = `
+Array [
+  Array [],
+]
+`;
+
+exports[`<WidgetEdit/> should handle the list case 1`] = `
+Array [
+  Array [
+    Object {
+      "meta": Object {
+        "limit": 9,
+        "orderBy": "-value",
+      },
+      "title": "List title",
+      "type": "list",
+      "widgets": Array [
+        Object {
+          "meta": Object {
+            "color": "",
+            "displayCard": true,
+            "link": "",
+            "pictureUrl": "",
+          },
+          "title": "",
+          "type": "card",
+        },
+      ],
+    },
+  ],
+]
+`;
+
+exports[`<WidgetEdit/> should handle the list case 2`] = `
+Array [
+  Array [],
+]
+`;
+
+exports[`<WidgetEdit/> should hide the hidden fields 1`] = `
+<div>
+  <div>
+    <form
+      class=""
+    >
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-card.title"
+        >
+          Title
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-card.title"
+            placeholder="Order {{id}}"
+            type="text"
+            value="Some Title"
+          />
+        </div>
+      </div>
+      <div>
+        <button
+          class="wrapper mr-2 primary medium"
+          type="submit"
+        >
+          Submit
+        </button>
+        <button
+          class="wrapper secondary medium"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`<WidgetEdit/> should render 1`] = `
+<div>
+  <div>
+    <form
+      class=""
+    >
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-card.title"
+        >
+          Title
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-card.title"
+            placeholder="Order {{id}}"
+            type="text"
+            value="Some Title"
+          />
+        </div>
+      </div>
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-card.meta.link"
+        >
+          Link
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="form-control"
+            id="id-card.meta.link"
+            placeholder="http://myapi.com/{{id}}"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="form-group"
+      >
+        <div>
+          <label
+            class="label"
+            for="card.meta.displayCard"
+          >
+            <input
+              checked=""
+              class="input"
+              id="card.meta.displayCard"
+              name="card.meta.displayCard"
+              type="checkbox"
+            />
+            Display card
+          </label>
+          <div
+            class="caption"
+          />
+        </div>
+      </div>
+      <div>
+        <button
+          class="wrapper mr-2 primary medium"
+          type="submit"
+        >
+          Submit
+        </button>
+        <button
+          class="wrapper secondary medium"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

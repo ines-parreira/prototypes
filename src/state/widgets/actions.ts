@@ -25,6 +25,7 @@ import {
     WidgetContextType,
     WidgetDraft,
     WidgetTemplateWidget,
+    WidgetTemplate,
 } from './types'
 
 export function fetchWidgets() {
@@ -188,7 +189,9 @@ export function drop(
     }
 }
 
-export function updateEditedWidget(data: WidgetTemplateWidget) {
+export function updateEditedWidget(
+    data: WidgetTemplate | WidgetTemplateWidget
+) {
     return {
         type: types.UPDATE_EDITED_WIDGET,
         item: data,
@@ -202,7 +205,10 @@ export function updateCustomActions(data: Link[] | Button[]) {
     }
 }
 
-export function removeEditedWidget(templatePath = '', absolutePath = '') {
+export function removeEditedWidget(
+    templatePath = '',
+    absolutePath: string[] = []
+) {
     return {
         type: types.REMOVE_EDITED_WIDGET,
         templatePath,

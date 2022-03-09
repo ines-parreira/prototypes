@@ -8,7 +8,7 @@ import ButtonsGroup from './Display'
 
 type Props = {
     templatePath: string
-    templateAbsolutePath: string
+    templateAbsolutePath: string[]
     immutableButtons: List<Map<string, unknown>>
     source: Map<string, unknown>
     isEditing: boolean

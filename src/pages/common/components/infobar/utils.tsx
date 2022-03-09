@@ -58,8 +58,11 @@ export function isObject(value: any) {
 /**
  * Check if a widget is a simple field (not a card or a list)
  */
-export function isSimpleTemplateWidget(widget: Map<any, any>) {
-    return !['card', 'list'].includes(widget.get('type'))
+export function isSimpleTemplateWidget(
+    widget: Map<string, unknown> | undefined
+) {
+    if (typeof widget === 'undefined') return true
+    return !['card', 'list'].includes(widget.get('type') as string)
 }
 
 /**

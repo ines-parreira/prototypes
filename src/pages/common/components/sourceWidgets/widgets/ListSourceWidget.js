@@ -6,7 +6,7 @@ import SourceWidget from '../SourceWidget'
 
 class ListSourceWidget extends React.Component {
     render() {
-        const {source, widget, template, editing, isParentList} = this.props
+        const {source, widget, template, isParentList} = this.props
 
         const updatedTemplate = template.set(
             'absolutePath',
@@ -37,7 +37,6 @@ class ListSourceWidget extends React.Component {
                                 parent={updatedTemplate}
                                 template={passedTemplate}
                                 widget={widget}
-                                editing={editing}
                             />
                         )
                     })}
@@ -47,7 +46,6 @@ class ListSourceWidget extends React.Component {
 }
 
 ListSourceWidget.propTypes = {
-    editing: PropTypes.object,
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
     template: PropTypes.object.isRequired,

@@ -95,6 +95,7 @@ export default function ColorPicker({
                                     style={{
                                         backgroundColor: color,
                                     }}
+                                    aria-label={`color ${color}`}
                                     onClick={() => handleClickChoice(color)}
                                 />
                             )

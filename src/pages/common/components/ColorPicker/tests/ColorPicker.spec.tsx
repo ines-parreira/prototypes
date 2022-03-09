@@ -59,7 +59,9 @@ describe('<ColorPicker />', () => {
         render(<ColorPicker {...minProps} colors={[buttonColor]} />)
         fireEvent.click(screen.getByRole('button'))
         await screen.findByRole('textbox')
-        fireEvent.click(screen.getAllByRole('button')[1])
+        fireEvent.click(
+            screen.getByRole('button', {name: `color ${buttonColor}`})
+        )
         expect(minProps.onChange).toHaveBeenCalledWith(buttonColor)
     })
 })

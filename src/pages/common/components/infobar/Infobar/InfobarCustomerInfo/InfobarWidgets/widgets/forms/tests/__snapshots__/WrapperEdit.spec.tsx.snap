@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WrapperEdit/> should call the correct action when cancelling 1`] = `Array []`;
+
+exports[`<WrapperEdit/> should call the correct action when cancelling 2`] = `
+Array [
+  Array [],
+]
+`;
+
+exports[`<WrapperEdit/> should call the correct action with correct data when submitting the form 1`] = `
+Array [
+  Array [
+    Object {
+      "meta": Object {
+        "color": "#EB144C",
+      },
+      "type": "wrapper",
+    },
+  ],
+]
+`;
+
+exports[`<WrapperEdit/> should call the correct action with correct data when submitting the form 2`] = `
+Array [
+  Array [],
+]
+`;
+
+exports[`<WrapperEdit/> should render 1`] = `
+<div>
+  <div>
+    <form
+      class=""
+    >
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-input-1"
+        >
+          Border color
+        </label>
+        <div
+          class=""
+        >
+          <div
+            class="d-inline-block"
+          >
+            <button
+              class="wrapper secondary medium"
+              id="color-picker-2"
+              type="button"
+            >
+              Pick a color
+            </button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button
+          class="mr-2 btn btn-primary"
+          type="submit"
+        >
+          Submit
+        </button>
+        <button
+          class="btn btn-secondary"
+          type="button"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

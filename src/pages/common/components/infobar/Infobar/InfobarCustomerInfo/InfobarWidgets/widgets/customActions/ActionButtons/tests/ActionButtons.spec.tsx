@@ -19,7 +19,7 @@ describe('<ActionButtons/>', () => {
             {label: 'I am in snapshots too', action},
         ]),
         templatePath: '',
-        templateAbsolutePath: '',
+        templateAbsolutePath: [],
         source: fromJS({}),
     }
 

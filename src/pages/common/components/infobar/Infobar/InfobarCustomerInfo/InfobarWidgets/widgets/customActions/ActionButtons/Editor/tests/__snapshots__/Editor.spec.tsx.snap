@@ -5,7 +5,11 @@ Array [
   Array [
     "removeEditedWidget",
     "some.template.meta.custom.buttons",
-    "some.absolute.template",
+    Array [
+      "some",
+      "absolute",
+      "template",
+    ],
   ],
   Array [
     "startWidgetEdition",

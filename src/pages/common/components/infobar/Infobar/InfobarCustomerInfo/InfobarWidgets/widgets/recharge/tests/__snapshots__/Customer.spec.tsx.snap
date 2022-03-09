@@ -6,6 +6,7 @@ exports[`Customer TitleWrapper should render custom link because it is set 1`] =
     alt="Recharge"
     class="container"
     src="test-file-stub"
+    style="background-color: rgba(0, 0, 0, 0);"
   />
   <span
     class="container"
@@ -39,6 +40,7 @@ exports[`Customer TitleWrapper should render default link because no custom link
     alt="Recharge"
     class="container"
     src="test-file-stub"
+    style="background-color: rgba(0, 0, 0, 0);"
   />
   <span
     class="container"

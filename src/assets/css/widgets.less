@@ -38,10 +38,6 @@
         word-break: break-word;
         position: relative;
 
-        &.wrapper {
-            box-shadow: none;
-        }
-
         &:not(.transparent):hover {
             box-shadow: 0 2px 9px fade(@classic-neutral-grey-6, 29%);
             z-index: 1;
@@ -121,7 +117,7 @@
     > div > .card > .content > .card,
     > div > .card > .content > .list {
         &:first-child {
-            border-width: 1px 0 0 0;
+            border-width: 0;
             border-radius: 6px 6px 0 0;
         }
 

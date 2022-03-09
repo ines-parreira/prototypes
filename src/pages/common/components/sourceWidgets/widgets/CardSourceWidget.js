@@ -5,14 +5,14 @@ import classnames from 'classnames'
 import _last from 'lodash/last'
 import {Card, CardBody} from 'reactstrap'
 
-import DragWrapper from '../../dragging/WidgetsDragWrapper'
+import DragWrapper from '../../dragging/WidgetsDragWrapper.tsx'
 import {stripLastListsFromPath} from '../../infobar/utils.tsx'
 
 import SourceWidget from '../SourceWidget'
 
 class CardSourceWidget extends React.Component {
     render() {
-        const {source, widget, template, isParentList, editing} = this.props
+        const {source, widget, template, isParentList} = this.props
 
         const ap = template.get('absolutePath')
         const tp = template.get('templatePath')
@@ -32,7 +32,6 @@ class CardSourceWidget extends React.Component {
                 </CardBody>
                 <CardBody className="content">
                     <DragWrapper
-                        actions={editing && editing.actions}
                         group={{
                             name: ap.join('.'),
                             pull: true,
@@ -53,7 +52,6 @@ class CardSourceWidget extends React.Component {
                                     parent={template}
                                     template={passedTemplate}
                                     widget={widget}
-                                    editing={editing}
                                 />
                             )
                         })}
@@ -65,7 +63,6 @@ class CardSourceWidget extends React.Component {
 }
 
 CardSourceWidget.propTypes = {
-    editing: PropTypes.object,
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
     template: PropTypes.object.isRequired,

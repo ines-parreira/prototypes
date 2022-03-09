@@ -1,15 +1,85 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TitleWrapper/> render() should render with a link 1`] = `
-<Fragment>
-  <CardHeaderIcon
+exports[`<TitleWrapper/> render() should render default 1`] = `
+<div
+  style="display: flex; align-items: center;"
+>
+  <img
     alt="HTTP"
+    class="container"
     src="test-file-stub"
   />
-  <CardHeaderTitle>
+  <span
+    class="container"
+  >
     HTTP
-  </CardHeaderTitle>
-  <CardHeaderSubtitle>
+  </span>
+</div>
+`;
+
+exports[`<TitleWrapper/> render() should render inline 1`] = `
+<div
+  style="display: inline-flex; align-items: center;"
+>
+  <img
+    alt="HTTP"
+    class="container"
+    src="test-file-stub"
+  />
+  <span
+    class="container"
+  >
+    HTTP
+  </span>
+</div>
+`;
+
+exports[`<TitleWrapper/> render() should render with a color tile 1`] = `
+<div
+  style="display: flex; align-items: center;"
+>
+  <div
+    class="colorTile"
+    style="background-color: rgb(17, 34, 51);"
+  />
+  <span
+    class="container"
+  >
+    HTTP
+  </span>
+</div>
+`;
+
+exports[`<TitleWrapper/> render() should render with a custom picture 1`] = `
+<div
+  style="display: flex; align-items: center;"
+>
+  <img
+    alt="Widget Icon"
+    class="container"
+    src="http://mypictureurl.com"
+    style="background-color: rgb(17, 34, 51);"
+  />
+  <span
+    class="container"
+  >
+    HTTP
+  </span>
+</div>
+`;
+
+exports[`<TitleWrapper/> render() should render with a link 1`] = `
+<div
+  style="display: flex; align-items: center;"
+>
+  <img
+    alt="HTTP"
+    class="container"
+    src="test-file-stub"
+  />
+  <span
+    class="container"
+  >
     <a
       href="https://foo.bar/?baz=BAZ"
       rel="noopener noreferrer"
@@ -19,23 +89,6 @@ exports[`<TitleWrapper/> render() should render with a link 1`] = `
         Foo
       </span>
     </a>
-  </CardHeaderSubtitle>
-</Fragment>
-`;
-
-exports[`<TitleWrapper/> render() should render without link 1`] = `
-<Fragment>
-  <CardHeaderIcon
-    alt="HTTP"
-    src="test-file-stub"
-  />
-  <CardHeaderTitle>
-    HTTP
-  </CardHeaderTitle>
-  <CardHeaderSubtitle>
-    <span>
-      Foo
-    </span>
-  </CardHeaderSubtitle>
-</Fragment>
+  </span>
+</div>
 `;

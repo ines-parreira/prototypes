@@ -21,7 +21,7 @@ export enum WidgetTemplateWidgetType {
 
 export type WidgetTemplateWidget = {
     order?: number
-    title: string
+    title?: string
     type: WidgetTemplateWidgetType
     widgets?: WidgetTemplateWidget[]
     path?: string
@@ -30,6 +30,9 @@ export type WidgetTemplateWidget = {
 
 export type WidgetTemplate = {
     type?: WidgetTemplateType
+    meta?: {
+        color: string
+    }
     widgets?: WidgetTemplateWidget[]
 }
 

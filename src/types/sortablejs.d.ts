@@ -12,6 +12,7 @@ declare module 'sortablejs' {
             from: HTMLElement
             item: HTMLElement
             oldIndex: number | undefined
+            newIndex: number | undefined
         }
 
         export interface MoveEvent extends Event {
@@ -21,6 +22,8 @@ declare module 'sortablejs' {
         type PullResult = ReadonlyArray<string> | boolean | 'clone'
 
         export interface GroupOptions {
+            name: string
+            put: boolean
             pull?:
                 | PullResult
                 | ((

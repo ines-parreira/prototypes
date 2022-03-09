@@ -2,11 +2,10 @@ import React, {ReactNode} from 'react'
 import {Map} from 'immutable'
 
 import logo from 'assets/img/integrations/http.png'
-
+import {renderTemplate} from 'pages/common/utils/template'
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
-import {renderTemplate} from '../../../../../../../utils/template'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
+import css from './Root.less'
 
 export default function Root() {
     return {
@@ -18,16 +17,36 @@ type Props = {
     children: ReactNode
     source: Map<string, any>
     template: Map<string, any>
+    isEditing: boolean
 }
 
-export function TitleWrapper({children, source, template}: Props) {
+export function TitleWrapper({children, source, template, isEditing}: Props) {
     const link = template.getIn(['meta', 'link']) as string
+    const pictureUrl = template.getIn(['meta', 'pictureUrl'], '') as string
+    const color = template.getIn(['meta', 'color'], '') as string
 
     return (
-        <>
-            <CardHeaderIcon src={logo} alt="HTTP" />
-            <CardHeaderTitle>HTTP</CardHeaderTitle>
-            <CardHeaderSubtitle>
+        <div
+            style={{
+                display: isEditing ? 'inline-flex' : 'flex',
+                alignItems: 'center',
+            }}
+        >
+            {color && !pictureUrl ? (
+                <div
+                    className={css.colorTile}
+                    style={{
+                        backgroundColor: color,
+                    }}
+                />
+            ) : (
+                <CardHeaderIcon
+                    src={pictureUrl || logo}
+                    alt={pictureUrl ? 'Widget Icon' : 'HTTP'}
+                    color={color}
+                />
+            )}
+            <CardHeaderTitle>
                 {link ? (
                     <a
                         href={renderTemplate(link, source.toJS())}
@@ -37,9 +56,9 @@ export function TitleWrapper({children, source, template}: Props) {
                         {children}
                     </a>
                 ) : (
-                    children
+                    children || 'HTTP'
                 )}
-            </CardHeaderSubtitle>
-        </>
+            </CardHeaderTitle>
+        </div>
     )
 }

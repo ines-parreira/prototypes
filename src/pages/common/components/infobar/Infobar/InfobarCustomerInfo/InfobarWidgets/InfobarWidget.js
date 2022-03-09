@@ -18,7 +18,7 @@ import {
 } from '../../../utils.tsx'
 
 import ListInfobarWidget from './widgets/ListInfobarWidget'
-import WrapperInfobarWidget from './widgets/WrapperInfobarWidget'
+import WrapperInfobarWidget from './widgets/WrapperInfobarWidget.tsx'
 import CardInfobarWidget from './widgets/CardInfobarWidget'
 import FieldInfobarWidget from './widgets/FieldInfobarWidget'
 

@@ -38,71 +38,85 @@ exports[`<ColorPicker /> should display popup on button click with default color
               class="popup"
             >
               <button
+                aria-label="color #EB144C"
                 class="choice"
                 style="background-color: rgb(235, 20, 76);"
                 type="button"
               />
               <button
+                aria-label="color #FF6900"
                 class="choice"
                 style="background-color: rgb(255, 105, 0);"
                 type="button"
               />
               <button
+                aria-label="color #FCB900"
                 class="choice"
                 style="background-color: rgb(252, 185, 0);"
                 type="button"
               />
               <button
+                aria-label="color #B5CC18"
                 class="choice"
                 style="background-color: rgb(181, 204, 24);"
                 type="button"
               />
               <button
+                aria-label="color #00D084"
                 class="choice"
                 style="background-color: rgb(0, 208, 132);"
                 type="button"
               />
               <button
+                aria-label="color #7BDCB5"
                 class="choice"
                 style="background-color: rgb(123, 220, 181);"
                 type="button"
               />
               <button
+                aria-label="color #8ED1FC"
                 class="choice"
                 style="background-color: rgb(142, 209, 252);"
                 type="button"
               />
               <button
+                aria-label="color #0693E3"
                 class="choice"
                 style="background-color: rgb(6, 147, 227);"
                 type="button"
               />
               <button
+                aria-label="color #9900EF"
                 class="choice"
                 style="background-color: rgb(153, 0, 239);"
                 type="button"
               />
               <button
+                aria-label="color #E03997"
                 class="choice"
                 style="background-color: rgb(224, 57, 151);"
                 type="button"
               />
               <button
+                aria-label="color #F78DA7"
                 class="choice"
                 style="background-color: rgb(247, 141, 167);"
                 type="button"
               />
               <button
+                aria-label="color #A5673F"
                 class="choice"
                 style="background-color: rgb(165, 103, 63);"
                 type="button"
               />
               <button
+                aria-label="color #ABB8C3"
                 class="choice"
                 style="background-color: rgb(171, 184, 195);"
                 type="button"
               />
               <button
+                aria-label="color #767676"
                 class="choice"
                 style="background-color: rgb(118, 118, 118);"
                 type="button"
@@ -160,6 +174,7 @@ exports[`<ColorPicker /> should display popup on button click with provided colo
               class="popup"
             >
               <button
+                aria-label="color #fff"
                 class="choice"
                 style="background-color: rgb(255, 255, 255);"
                 type="button"

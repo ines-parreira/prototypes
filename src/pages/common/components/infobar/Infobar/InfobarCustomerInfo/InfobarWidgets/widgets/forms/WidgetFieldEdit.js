@@ -9,7 +9,7 @@ import InputField from '../../../../../../../forms/InputField'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
-class PopoverWidgetEditField extends React.Component {
+class WidgetEditField extends React.Component {
     state = {
         title: '',
         type: '',
@@ -96,10 +96,10 @@ class PopoverWidgetEditField extends React.Component {
     }
 }
 
-PopoverWidgetEditField.propTypes = {
+WidgetEditField.propTypes = {
     template: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
 }
 
-export default PopoverWidgetEditField
+export default WidgetEditField

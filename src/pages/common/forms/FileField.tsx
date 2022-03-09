@@ -13,6 +13,7 @@ import {getFileTooLargeError} from 'utils/file'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import InputField, {InputFieldProps} from './InputField'
 import css from './FileField.less'
@@ -28,6 +29,7 @@ export enum UploadType {
 export type Props = {
     noPreview?: boolean
     returnFiles?: boolean
+    isRemovable?: boolean
     uploadType?: UploadType
     maxSize?: number
     params?: Record<string, unknown>
@@ -44,11 +46,17 @@ type State = {
 export class FileFieldContainer extends InputField<Props> {
     static defaultProps: Pick<
         Props,
-        'noPreview' | 'placeholder' | 'returnFiles' | 'type' | 'maxSize'
+        | 'noPreview'
+        | 'placeholder'
+        | 'returnFiles'
+        | 'type'
+        | 'maxSize'
+        | 'isRemovable'
     > = {
         noPreview: false,
         placeholder: 'Select a File...',
         returnFiles: false, // return urls of files only by default
+        isRemovable: false,
         type: 'file',
         maxSize: 0,
     }
@@ -159,12 +167,21 @@ export class FileFieldContainer extends InputField<Props> {
         )
     }
 
+    handleRemove = () => {
+        const inputEl = this.inputRef.current
+        if (inputEl) inputEl.value = ''
+        if (this.props.onChange) {
+            this.props.onChange('')
+        }
+    }
+
     _handleButtonClick = () => {
         this.inputRef.current?.click()
     }
 
     _getField = () => {
-        const {noPreview, placeholder, className, value} = this.props
+        const {noPreview, isRemovable, placeholder, className, value} =
+            this.props
 
         const {isUploading} = this.state
 
@@ -179,7 +196,6 @@ export class FileFieldContainer extends InputField<Props> {
                         <img alt="file preview" src={previewUrl} />
                     </div>
                 )}
-
                 <Button
                     intent={ButtonIntent.Secondary}
                     isDisabled={disabled}
@@ -196,6 +212,16 @@ export class FileFieldContainer extends InputField<Props> {
                         <span>{placeholder}</span>
                     )}
                 </Button>
+                {isRemovable && previewUrl && (
+                    <IconButton
+                        className="ml-2"
+                        intent={ButtonIntent.Destructive}
+                        onClick={this.handleRemove}
+                        aria-label="Remove the file"
+                    >
+                        close
+                    </IconButton>
+                )}
                 <Input
                     id={this.id}
                     innerRef={this.inputRef}
@@ -215,6 +241,7 @@ export class FileFieldContainer extends InputField<Props> {
                         'returnFiles',
                         'notify',
                         'uploadType',
+                        'isRemovable',
                         'maxSize',
                         'value',
                     ])}

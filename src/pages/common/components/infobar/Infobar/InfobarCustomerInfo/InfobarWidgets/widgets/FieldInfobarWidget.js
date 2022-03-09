@@ -6,7 +6,7 @@ import {Popover, PopoverBody} from 'reactstrap'
 
 import {displayLabel} from '../../../../utils.tsx'
 
-import PopoverWidgetEditField from './forms/PopoverWidgetEditField'
+import WidgetFieldEdit from './forms/WidgetFieldEdit'
 
 export default class FieldInfobarWidget extends React.Component {
     static propTypes = {
@@ -122,7 +122,7 @@ export default class FieldInfobarWidget extends React.Component {
                 trigger="legacy"
             >
                 <PopoverBody>
-                    <PopoverWidgetEditField
+                    <WidgetFieldEdit
                         template={template}
                         actions={editing.actions}
                         widget={widget}

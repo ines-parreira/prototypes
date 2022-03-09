@@ -12,5 +12,12 @@ describe('<CardHeaderIcon/>', () => {
 
             expect(component).toMatchSnapshot()
         })
+        it('should render icon with color as background-image', () => {
+            const component = shallow(
+                <CardHeaderIcon alt="Foo" src="foo.png" color="#123" />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
     })
 })

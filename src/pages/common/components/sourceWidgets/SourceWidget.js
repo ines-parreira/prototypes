@@ -10,7 +10,7 @@ import WrapperSourceWidget from './widgets/WrapperSourceWidget'
 
 class SourceWidget extends React.Component {
     render() {
-        const {parent, source, widget, template, editing} = this.props
+        const {parent, source, widget, template} = this.props
 
         const {updatedTemplate, data, type, path} = prepareWidgetToDisplay(
             template,
@@ -28,7 +28,6 @@ class SourceWidget extends React.Component {
                         source={data || fromJS({})}
                         widget={widget}
                         template={updatedTemplate}
-                        editing={editing}
                         parent={parent}
                     />
                 )
@@ -40,7 +39,6 @@ class SourceWidget extends React.Component {
                         source={data || fromJS({})}
                         widget={widget}
                         template={updatedTemplate}
-                        editing={editing}
                     />
                 )
             }
@@ -51,7 +49,6 @@ class SourceWidget extends React.Component {
                         source={data || fromJS({})}
                         widget={widget}
                         template={updatedTemplate}
-                        editing={editing}
                     />
                 )
             }
@@ -68,7 +65,6 @@ class SourceWidget extends React.Component {
 }
 
 SourceWidget.propTypes = {
-    editing: PropTypes.object,
     parent: PropTypes.object,
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,

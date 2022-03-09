@@ -36,7 +36,7 @@ const MAX_VISIBLE_LINKS = 3
 
 type Props = {
     templatePath: string
-    templateAbsolutePath: string
+    templateAbsolutePath: string[]
     source: Map<string, unknown>
     immutableLinks: List<Map<string, unknown>>
     isEditing?: boolean

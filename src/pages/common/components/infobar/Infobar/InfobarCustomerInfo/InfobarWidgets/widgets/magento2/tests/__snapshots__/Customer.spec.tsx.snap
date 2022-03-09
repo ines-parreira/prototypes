@@ -14,6 +14,7 @@ exports[`<TitleWrapper/> render() should render link 1`] = `
     alt="Magento"
     class="container"
     src="test-file-stub"
+    style="background-color: rgba(0, 0, 0, 0);"
   />
   <span
     class="container"

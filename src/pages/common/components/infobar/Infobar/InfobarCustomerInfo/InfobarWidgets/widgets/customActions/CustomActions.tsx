@@ -15,7 +15,7 @@ type Props = {
 function CustomActions(props: Props) {
     const {template, source, isEditing} = props
     const templatePath = template.get('templatePath', '') as string
-    const templateAbsolutePath = template.get('absolutePath', '') as string
+    const templateAbsolutePath = template.get('absolutePath', '') as string[]
     const immutableLinks = template.getIn(
         ['meta', 'custom', 'links'],
         List<Map<string, unknown>>()

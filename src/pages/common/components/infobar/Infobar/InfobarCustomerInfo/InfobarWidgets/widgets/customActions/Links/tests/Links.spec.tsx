@@ -13,8 +13,8 @@ const mockStore = configureMockStore([thunk])
 
 describe('<Links/>', () => {
     const props = {
-        templatePath: 'templatePath',
-        templateAbsolutePath: 'templateAbsolutePath',
+        templatePath: 'template.path',
+        templateAbsolutePath: ['template', 'absolute', 'path'],
         source: fromJS({}),
         startWidgetEdition: jest.fn(),
         updateCustomActions: jest.fn(),
