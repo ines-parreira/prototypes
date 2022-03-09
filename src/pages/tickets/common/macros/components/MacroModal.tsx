@@ -229,6 +229,12 @@ export class MacroModalContainer extends Component<Props, State> {
         })
     }
 
+    _discardChanges = (e: FormEvent) => {
+        e.preventDefault()
+        e.stopPropagation()
+        this._setActions(this.props.currentMacro.get('actions'))
+    }
+
     _deleteMacro = () => {
         const {fetchMacros, deleteMacro} = this.props
         const macroId = this.props.currentMacro.get('id', '')
@@ -309,7 +315,10 @@ export class MacroModalContainer extends Component<Props, State> {
                                 className={classnames(css.primaryAction)}
                             >
                                 {!selectionMode && (
-                                    <Button onClick={this._addNewMacro}>
+                                    <Button
+                                        intent={ButtonIntent.Secondary}
+                                        onClick={this._addNewMacro}
+                                    >
                                         <ButtonIconLabel icon="add">
                                             Create macro
                                         </ButtonIconLabel>
@@ -340,7 +349,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                         </div>
                                     ) : (
                                         <div>
-                                            <div className="d-inline-block float-right">
+                                            <div className="d-inline-block">
                                                 {!isCreatingMacro && (
                                                     <ConfirmButton
                                                         intent={
@@ -375,21 +384,28 @@ export class MacroModalContainer extends Component<Props, State> {
                                                     </Button>
                                                 </form>
                                             ) : (
-                                                <div>
+                                                <div className="float-right">
                                                     <form
-                                                        id="update_macro_form"
-                                                        className="d-inline-block"
+                                                        id="discard_macro_form"
+                                                        className="d-inline-block mr-1"
                                                         onSubmit={(e) =>
-                                                            this._updateMacro(e)
+                                                            this._discardChanges(
+                                                                e
+                                                            )
                                                         }
                                                     >
-                                                        <Button type="submit">
-                                                            Update macro
+                                                        <Button
+                                                            type="submit"
+                                                            intent={
+                                                                ButtonIntent.Secondary
+                                                            }
+                                                        >
+                                                            Discard Changes
                                                         </Button>
                                                     </form>
                                                     <form
                                                         id="duplicate_macro_form"
-                                                        className="d-inline-block ml-1"
+                                                        className="d-inline-block mr-1"
                                                         onSubmit={(e) =>
                                                             this._duplicateMacro(
                                                                 e
@@ -402,7 +418,18 @@ export class MacroModalContainer extends Component<Props, State> {
                                                                 ButtonIntent.Secondary
                                                             }
                                                         >
-                                                            Duplicate macro
+                                                            Duplicate
+                                                        </Button>
+                                                    </form>
+                                                    <form
+                                                        id="update_macro_form"
+                                                        className="d-inline-block"
+                                                        onSubmit={(e) =>
+                                                            this._updateMacro(e)
+                                                        }
+                                                    >
+                                                        <Button type="submit">
+                                                            Update
                                                         </Button>
                                                     </form>
                                                 </div>
