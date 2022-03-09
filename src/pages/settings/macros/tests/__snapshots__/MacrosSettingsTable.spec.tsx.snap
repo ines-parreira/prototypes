@@ -45,6 +45,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         className="link-full-td"
       >
         <Link
+          tabIndex={-1}
           to="/app/settings/macros/1"
         >
           <div>
@@ -56,6 +57,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         className="link-full-td dateCell"
       >
         <Link
+          tabIndex={-1}
           to="/app/settings/macros/1"
         >
           <div>
@@ -66,27 +68,23 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       <td
         className="smallest actions"
       >
-        <Link
-          to="/app/settings/macros/1"
+        <ForwardRef
+          className="mr-1"
+          intent="text"
+          onClick={[Function]}
+          title="Duplicate macro"
         >
-          <ForwardRef
-            className="mr-1"
-            intent="text"
-            onClick={[Function]}
-            title="Duplicate macro"
-          >
-            file_copy
-          </ForwardRef>
-          <ForwardRef
-            className="mr-1 deleteButton"
-            id="delete-button-1"
-            intent="text"
-            onClick={[Function]}
-            title="Delete macro"
-          >
-            delete
-          </ForwardRef>
-        </Link>
+          file_copy
+        </ForwardRef>
+        <ForwardRef
+          className="mr-1 deleteButton"
+          id="delete-button-1"
+          intent="text"
+          onClick={[Function]}
+          title="Delete macro"
+        >
+          delete
+        </ForwardRef>
       </td>
     </ForwardRef(TableBodyRow)>
     <Popover
@@ -140,6 +138,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         className="link-full-td"
       >
         <Link
+          tabIndex={-1}
           to="/app/settings/macros/2"
         >
           <div>
@@ -151,6 +150,7 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         className="link-full-td dateCell"
       >
         <Link
+          tabIndex={-1}
           to="/app/settings/macros/2"
         >
           <div>
@@ -161,27 +161,23 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       <td
         className="smallest actions"
       >
-        <Link
-          to="/app/settings/macros/2"
+        <ForwardRef
+          className="mr-1"
+          intent="text"
+          onClick={[Function]}
+          title="Duplicate macro"
         >
-          <ForwardRef
-            className="mr-1"
-            intent="text"
-            onClick={[Function]}
-            title="Duplicate macro"
-          >
-            file_copy
-          </ForwardRef>
-          <ForwardRef
-            className="mr-1 deleteButton"
-            id="delete-button-2"
-            intent="text"
-            onClick={[Function]}
-            title="Delete macro"
-          >
-            delete
-          </ForwardRef>
-        </Link>
+          file_copy
+        </ForwardRef>
+        <ForwardRef
+          className="mr-1 deleteButton"
+          id="delete-button-2"
+          intent="text"
+          onClick={[Function]}
+          title="Delete macro"
+        >
+          delete
+        </ForwardRef>
       </td>
     </ForwardRef(TableBodyRow)>
     <Popover

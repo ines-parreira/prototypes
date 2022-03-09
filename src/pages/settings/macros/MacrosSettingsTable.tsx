@@ -193,7 +193,7 @@ export function MacrosSettingsTableContainer({
                                         </Link>
                                     </td>
                                     <td className="link-full-td">
-                                        <Link to={to}>
+                                        <Link to={to} tabIndex={-1}>
                                             <div>{usage}</div>
                                         </Link>
                                     </td>
@@ -203,7 +203,7 @@ export function MacrosSettingsTableContainer({
                                             css.dateCell
                                         )}
                                     >
-                                        <Link to={to}>
+                                        <Link to={to} tabIndex={-1}>
                                             <div>
                                                 {moment(
                                                     updated_datetime
@@ -217,38 +217,36 @@ export function MacrosSettingsTableContainer({
                                             css.actions
                                         )}
                                     >
-                                        <Link to={to}>
-                                            <IconButton
-                                                className="mr-1"
-                                                intent={ButtonIntent.Text}
-                                                onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    void handleMacroDuplicate(
-                                                        macroId
-                                                    )
-                                                }}
-                                                title="Duplicate macro"
-                                            >
-                                                file_copy
-                                            </IconButton>
-                                            <IconButton
-                                                className={classnames(
-                                                    'mr-1',
-                                                    css.deleteButton
-                                                )}
-                                                id={deleteButtonId}
-                                                intent={ButtonIntent.Text}
-                                                onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    toggleVisiblePopover(
-                                                        deleteButtonId
-                                                    )
-                                                }}
-                                                title="Delete macro"
-                                            >
-                                                delete
-                                            </IconButton>
-                                        </Link>
+                                        <IconButton
+                                            className="mr-1"
+                                            intent={ButtonIntent.Text}
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                void handleMacroDuplicate(
+                                                    macroId
+                                                )
+                                            }}
+                                            title="Duplicate macro"
+                                        >
+                                            file_copy
+                                        </IconButton>
+                                        <IconButton
+                                            className={classnames(
+                                                'mr-1',
+                                                css.deleteButton
+                                            )}
+                                            id={deleteButtonId}
+                                            intent={ButtonIntent.Text}
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                toggleVisiblePopover(
+                                                    deleteButtonId
+                                                )
+                                            }}
+                                            title="Delete macro"
+                                        >
+                                            delete
+                                        </IconButton>
                                     </td>
                                 </TableBodyRow>
                                 <Popover
