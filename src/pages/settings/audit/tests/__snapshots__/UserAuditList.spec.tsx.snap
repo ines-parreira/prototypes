@@ -57,7 +57,7 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
                 class="wrapperItem"
               >
                 <label
-                  class="label labelItem"
+                  class="label label labelItem"
                   for="checkbox-1"
                 >
                   <input
@@ -68,15 +68,12 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
                   />
                    agent 1
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
               <div
                 class="wrapperItem"
               >
                 <label
-                  class="label labelItem"
+                  class="label label labelItem"
                   for="checkbox-2"
                 >
                   <input
@@ -87,9 +84,6 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
                   />
                    agent 2
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
           </div>
@@ -133,7 +127,7 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
                 class="checkbox"
               >
                 <label
-                  class="label quickSelectionOption"
+                  class="label label quickSelectionOption"
                   for="checkbox-3"
                 >
                   <input
@@ -149,9 +143,6 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
                     1
                   </div>
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </button>
             <div
@@ -165,7 +156,7 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
                 class="wrapperItem"
               >
                 <label
-                  class="label labelItem"
+                  class="label label labelItem"
                   for="checkbox-4"
                 >
                   <input
@@ -176,9 +167,6 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
                   />
                    Account created
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
           </div>
@@ -286,7 +274,7 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
                 class="wrapperItem"
               >
                 <label
-                  class="label labelItem"
+                  class="label label labelItem"
                   for="checkbox-5"
                 >
                   <input
@@ -297,15 +285,12 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
                   />
                    agent 1
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
               <div
                 class="wrapperItem"
               >
                 <label
-                  class="label labelItem"
+                  class="label label labelItem"
                   for="checkbox-6"
                 >
                   <input
@@ -316,9 +301,6 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
                   />
                    agent 2
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
           </div>
@@ -362,7 +344,7 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
                 class="checkbox"
               >
                 <label
-                  class="label quickSelectionOption"
+                  class="label label quickSelectionOption"
                   for="checkbox-7"
                 >
                   <input
@@ -378,9 +360,6 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
                     1
                   </div>
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </button>
             <div
@@ -394,7 +373,7 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
                 class="wrapperItem"
               >
                 <label
-                  class="label labelItem"
+                  class="label label labelItem"
                   for="checkbox-8"
                 >
                   <input
@@ -405,9 +384,6 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
                   />
                    Account created
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
           </div>
@@ -515,7 +491,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                 class="wrapperItem"
               >
                 <label
-                  class="label labelItem"
+                  class="label label labelItem"
                   for="checkbox-13"
                 >
                   <input
@@ -526,15 +502,12 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                   />
                    agent 1
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
               <div
                 class="wrapperItem"
               >
                 <label
-                  class="label labelItem"
+                  class="label label labelItem"
                   for="checkbox-14"
                 >
                   <input
@@ -545,9 +518,6 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                   />
                    agent 2
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
           </div>
@@ -591,7 +561,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                 class="checkbox"
               >
                 <label
-                  class="label quickSelectionOption"
+                  class="label label quickSelectionOption"
                   for="checkbox-15"
                 >
                   <input
@@ -607,9 +577,6 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                     1
                   </div>
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </button>
             <div
@@ -623,7 +590,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                 class="wrapperItem"
               >
                 <label
-                  class="label labelItem"
+                  class="label label labelItem"
                   for="checkbox-16"
                 >
                   <input
@@ -634,9 +601,6 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                   />
                    Account created
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
           </div>
