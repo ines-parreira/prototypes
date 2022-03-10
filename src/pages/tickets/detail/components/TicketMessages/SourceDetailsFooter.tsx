@@ -19,7 +19,7 @@ export default function SourceDetailsFooter(props: Props) {
         <div className={classnames(css.wrapper, props.className)}>
             <SourceActionsFooter
                 source={message.source}
-                meta={message.meta!}
+                meta={message.meta}
                 integrationId={message.integration_id}
                 messageId={message.message_id}
                 isMessageHidden={isMessageHidden}

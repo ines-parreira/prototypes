@@ -1,12 +1,17 @@
 import React from 'react'
 import {mount} from 'enzyme'
 
-import Actions from '../Actions.tsx'
-
 import Button from 'pages/common/components/button/Button'
+import {Action, ActionStatus, TicketMessage} from 'models/ticket/types'
+import {
+    action as defaultAction,
+    message as defaultMessage,
+} from 'models/ticket/tests/mocks'
+
+import Actions from '../Actions'
 
 describe('Actions component', () => {
-    const args = {
+    const args: Action['arguments'] = {
         headers: {
             Authorization: 'auth',
             ContentType: 'application/json',
@@ -19,25 +24,38 @@ describe('Actions component', () => {
         },
     }
 
-    const message = {
+    const message: TicketMessage = {
+        ...defaultMessage,
         actions: [
-            {name: 'setResponseText'},
             {
+                ...defaultAction,
+                status: ActionStatus.Pending,
+                name: 'setResponseText',
+            },
+            {
+                ...defaultAction,
+                status: ActionStatus.Cancelled,
                 name: 'http',
-                status: 'pending',
                 title: 'action1',
                 arguments: args,
             },
-            {name: 'http', status: 'error', title: 'action2', arguments: args},
             {
+                ...defaultAction,
+                status: ActionStatus.Error,
                 name: 'http',
-                status: 'canceled',
+                title: 'action2',
+                arguments: args,
+            },
+            {
+                ...defaultAction,
+                status: ActionStatus.Error,
+                name: 'http',
                 title: 'action3',
                 arguments: args,
             },
             {
+                ...defaultAction,
                 name: 'http',
-                status: 'success',
                 title: 'action4',
                 arguments: args,
             },
@@ -59,14 +77,18 @@ describe('Actions component', () => {
     })
 
     it('should display modal with shopify action details', () => {
-        let messageWithRefund = {
+        const minArguments = {
+            restock: true,
+            order_id: 1234,
+        }
+        const messageWithRefund: TicketMessage = {
+            ...defaultMessage,
             actions: [
                 {
+                    ...defaultAction,
                     name: 'shopifyFullRefundLastOrder',
-                    type: 'user',
-                    status: 'success',
                     title: 'Refund Action',
-                    arguments: {restock: true, order_id: 1234},
+                    arguments: minArguments,
                 },
             ],
         }

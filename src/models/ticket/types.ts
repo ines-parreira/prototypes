@@ -3,9 +3,10 @@ import {
     TicketMessageSourceType,
     TicketStatus,
     TicketVia,
-} from '../../business/types/ticket'
+} from 'business/types/ticket'
+import {FacebookReactionType} from 'constants/integrations/facebook'
+
 import {Event} from '../event/types'
-import {FacebookReactionType} from '../../constants/integrations/facebook'
 
 export type Ticket = {
     id: number
@@ -138,10 +139,13 @@ export type Action = {
         response: string
     }
     arguments?: {
-        headers: Record<string, string>
-        params: Record<string, string>
+        headers?: Record<string, string>
+        params?: Record<string, number>
         form?: Record<string, string>
         json?: Record<string, string>
+        restock?: boolean
+        order_id?: number
+        last_order?: number
     }
 }
 
@@ -149,6 +153,7 @@ export enum ActionStatus {
     Error = 'error',
     Pending = 'pending',
     Success = 'success',
+    Cancelled = 'canceled',
 }
 
 export type SourceType = TicketMessageSourceType
@@ -240,8 +245,10 @@ export type FacebookCarouselTemplate = {
                 type: string
                 title: string
                 url: string
+                webview_height_ratio?: string
             }>
         }>
+        sharable?: boolean
     }
 }
 

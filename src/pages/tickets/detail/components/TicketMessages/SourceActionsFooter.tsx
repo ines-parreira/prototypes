@@ -14,13 +14,13 @@ import prideIcon from 'assets/img/integrations/facebook-reaction-pride.png'
 import careIcon from 'assets/img/integrations/facebook-reaction-care.svg'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {FacebookReactionType} from 'constants/integrations/facebook'
+import Loader from 'pages/common/components/Loader/Loader'
 import {
-    FacebookReactionCounter,
     FacebookReaction,
+    FacebookReactionCounter,
     Meta,
     Source,
 } from 'models/ticket/types'
-import Loader from 'pages/common/components/Loader/Loader'
 import * as infobarActions from 'state/infobar/actions'
 
 import css from './SourceActions.less'
@@ -29,7 +29,7 @@ const classNames = classNamesBind.bind(css)
 
 type Props = {
     source?: Source
-    meta?: Meta
+    meta: Meta | null
     integrationId?: string | number | null
     messageId?: string
     isMessageHidden?: boolean

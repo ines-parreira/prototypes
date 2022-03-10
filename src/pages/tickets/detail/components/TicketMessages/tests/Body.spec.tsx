@@ -1,59 +1,62 @@
 import React from 'react'
 import {mount, shallow} from 'enzyme'
 
-import Body from '../Body.tsx'
+import {message as defaultMessage} from 'models/ticket/tests/mocks'
+import {TicketMessage} from 'models/ticket/types'
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketVia,
-} from '../../../../../../business/types/ticket.ts'
+} from 'business/types/ticket'
+
+import Body from '../Body'
 
 describe('Body', () => {
     it("should display the Facebook carousel if there's matching metadata", () => {
-        const component = mount(
-            <Body
-                message={{
-                    body_text: 'text http://gorgias.io/',
-                    body_html: '',
-                    meta: {
-                        facebook_carousel: [
-                            {
-                                type: 'template',
-                                payload: {
-                                    elements: [
+        const facebookCarouselMessage: TicketMessage = {
+            ...defaultMessage,
+            body_text: 'text http://gorgias.io/',
+            body_html: '',
+            meta: {
+                facebook_carousel: [
+                    {
+                        type: 'template',
+                        payload: {
+                            elements: [
+                                {
+                                    title: 'Fixie bike',
+                                    buttons: [
                                         {
-                                            title: 'Fixie bike',
-                                            buttons: [
-                                                {
-                                                    url: 'https://sfbicycles.myshopify.com/products/fixie-bike',
-                                                    type: 'web_url',
-                                                    title: 'View details',
-                                                    webview_height_ratio:
-                                                        'tall',
-                                                },
-                                                {type: 'element_share'},
-                                                {
-                                                    url: 'https://messenger-commerce.shopifyapps.com/redirect_to_cart',
-                                                    type: 'web_url',
-                                                    title: 'Buy now',
-                                                    webview_height_ratio:
-                                                        'tall',
-                                                },
-                                            ],
-                                            subtitle: '$200.00',
-                                            image_url:
-                                                'https://cdn.shopify.com/s/files/1/1632/0429/products',
+                                            url: 'https://sfbicycles.myshopify.com/products/fixie-bike',
+                                            type: 'web_url',
+                                            title: 'View details',
+                                            webview_height_ratio: 'tall',
+                                        },
+                                        {
+                                            url: 'https://sfbicycles.myshopify.com/products/fixie-bike/share',
+                                            type: 'element_share',
+                                            title: 'Share',
+                                        },
+                                        {
+                                            url: 'https://messenger-commerce.shopifyapps.com/redirect_to_cart',
+                                            type: 'web_url',
+                                            title: 'Buy now',
+                                            webview_height_ratio: 'tall',
                                         },
                                     ],
-                                    sharable: true,
-                                    template_type: 'generic',
+                                    subtitle: '$200.00',
+                                    image_url:
+                                        'https://cdn.shopify.com/s/files/1/1632/0429/products',
                                 },
-                            },
-                        ],
+                            ],
+                            sharable: true,
+                            template_type: 'generic',
+                        },
                     },
-                }}
-            />
-        )
+                ],
+            },
+        }
+        const component = mount(<Body message={facebookCarouselMessage} />)
         expect(component).toMatchSnapshot()
     })
     it("should display the Twitter quoted tweet card if there's matching metadata", () => {
@@ -61,6 +64,7 @@ describe('Body', () => {
         window.IMAGE_PROXY_PUBLIC_SIGN_KEY = 'test-key'
 
         const quotedTweetTicketMessage = {
+            ...defaultMessage,
             sent_datetime: '2021-09-07T01:51:41+00:00',
             channel: TicketChannel.Twitter,
             meta: {
@@ -180,6 +184,7 @@ describe('Body', () => {
 
     it("should display the Yotpo product card if there's matching metadata", () => {
         const productCardTicketMessage = {
+            ...defaultMessage,
             sent_datetime: '2021-09-07T01:51:41+00:00',
             channel: TicketChannel.YotpoReview,
             meta: {

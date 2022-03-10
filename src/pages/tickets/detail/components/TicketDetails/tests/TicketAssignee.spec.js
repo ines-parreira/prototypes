@@ -6,7 +6,9 @@ import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 import {fromJS} from 'immutable'
 
-import TicketAssignee, {TicketAssigneeContainer} from '../TicketAssignee'
+import TicketAssignee, {
+    TicketAssigneeContainer,
+} from '../TicketAssignee/TicketAssignee'
 
 const teams = fromJS({
     all: {

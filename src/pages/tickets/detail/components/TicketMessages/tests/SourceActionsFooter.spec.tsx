@@ -1,28 +1,29 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render} from 'enzyme'
-import configureMockStore from 'redux-mock-store'
 
-import SourceActionsFooter from '../SourceActionsFooter.tsx'
-
+import {FacebookReactionType} from 'constants/integrations/facebook'
 import {
     FACEBOOK_COMMENT_SOURCE,
     FACEBOOK_MENTION_COMMENT_SOURCE,
-} from 'config/ticket.ts'
+} from 'config/ticket'
 import {
-    facebookMessageWithPageReaction,
-    facebookMessageWithCustomerReaction,
-    facebookMessageNoMeta,
-    facebookMessageWithPageAndCustomerReactions,
-    hiddenFacebookMessage,
     duplicatedHiddenFacebookMessage,
-} from 'models/ticket/tests/mocks.ts'
-import * as infobarActions from 'state/infobar/actions.ts'
+    facebookMessageNoMeta,
+    facebookMessageWithCustomerReaction,
+    facebookMessageWithPageAndCustomerReactions,
+    facebookMessageWithPageReaction,
+    hiddenFacebookMessage,
+} from 'models/ticket/tests/mocks'
+
+import {SourceActionsFooter} from '../SourceActionsFooter'
 
 describe('<SourceActionsFooter/>', () => {
-    const mockStore = configureMockStore()
-    const store = mockStore({
-        executeAction: infobarActions.executeAction,
-    })
+    const minProps: ComponentProps<typeof SourceActionsFooter> = {
+        isMessageHidden: false,
+        isMessageDeleted: false,
+        meta: null,
+        executeAction: jest.fn(),
+    }
 
     it.each([FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE])(
         "should only render a `Like` action because it's a Facebook message with no meta",
@@ -30,16 +31,14 @@ describe('<SourceActionsFooter/>', () => {
             const facebookMessage = {
                 ...facebookMessageNoMeta,
             }
-            facebookMessage.source.type = source_type
+            facebookMessage.source!.type = source_type
             const component = render(
                 <SourceActionsFooter
+                    {...minProps}
                     source={facebookMessage.source}
                     meta={facebookMessage.meta}
                     integrationId={facebookMessage.integration_id}
                     messageId={facebookMessage.message_id}
-                    isMessageHidden={false}
-                    isMessageDeleted={false}
-                    store={store}
                 />
             )
             expect(component).toMatchSnapshot()
@@ -52,16 +51,14 @@ describe('<SourceActionsFooter/>', () => {
             const facebookMessage = {
                 ...facebookMessageWithPageReaction,
             }
-            facebookMessage.source.type = source_type
+            facebookMessage.source!.type = source_type
             const component = render(
                 <SourceActionsFooter
+                    {...minProps}
                     source={facebookMessage.source}
                     meta={facebookMessage.meta}
                     integrationId={facebookMessage.integration_id}
                     messageId={facebookMessage.message_id}
-                    isMessageHidden={false}
-                    isMessageDeleted={false}
-                    store={store}
                 />
             )
             expect(component).toMatchSnapshot()
@@ -74,16 +71,14 @@ describe('<SourceActionsFooter/>', () => {
             const facebookMessage = {
                 ...facebookMessageWithCustomerReaction,
             }
-            facebookMessage.source.type = source_type
+            facebookMessage.source!.type = source_type
             const component = render(
                 <SourceActionsFooter
+                    {...minProps}
                     source={facebookMessage.source}
                     meta={facebookMessage.meta}
                     integrationId={facebookMessage.integration_id}
                     messageId={facebookMessage.message_id}
-                    isMessageHidden={false}
-                    isMessageDeleted={false}
-                    store={store}
                 />
             )
             expect(component).toMatchSnapshot()
@@ -96,16 +91,14 @@ describe('<SourceActionsFooter/>', () => {
             const facebookMessage = {
                 ...facebookMessageWithPageAndCustomerReactions,
             }
-            facebookMessage.source.type = source_type
+            facebookMessage.source!.type = source_type
             const component = render(
                 <SourceActionsFooter
+                    {...minProps}
                     source={facebookMessage.source}
                     meta={facebookMessage.meta}
                     integrationId={facebookMessage.integration_id}
                     messageId={facebookMessage.message_id}
-                    isMessageHidden={false}
-                    isMessageDeleted={false}
-                    store={store}
                 />
             )
             expect(component).toMatchSnapshot()
@@ -118,16 +111,15 @@ describe('<SourceActionsFooter/>', () => {
             const facebookMessage = {
                 ...hiddenFacebookMessage,
             }
-            facebookMessage.source.type = source_type
+            facebookMessage.source!.type = source_type
             const component = render(
                 <SourceActionsFooter
+                    {...minProps}
                     source={facebookMessage.source}
                     meta={facebookMessage.meta}
                     integrationId={facebookMessage.integration_id}
                     messageId={facebookMessage.message_id}
                     isMessageHidden={true}
-                    isMessageDeleted={false}
-                    store={store}
                 />
             )
             expect(component).toMatchSnapshot()
@@ -140,16 +132,15 @@ describe('<SourceActionsFooter/>', () => {
             const facebookMessage = {
                 ...hiddenFacebookMessage,
             }
-            facebookMessage.source.type = source_type
+            facebookMessage.source!.type = source_type
             const component = render(
                 <SourceActionsFooter
+                    {...minProps}
                     source={facebookMessage.source}
                     meta={facebookMessage.meta}
                     integrationId={facebookMessage.integration_id}
                     messageId={facebookMessage.message_id}
-                    isMessageHidden={false}
                     isMessageDeleted={true}
-                    store={store}
                 />
             )
             expect(component).toMatchSnapshot()
@@ -162,20 +153,18 @@ describe('<SourceActionsFooter/>', () => {
             const facebookMessage = {
                 ...facebookMessageWithPageAndCustomerReactions,
             }
-            facebookMessage.source.type = source_type
-            facebookMessage.meta.facebook_reactions.page_reaction.reaction_type =
-                'UnknownReaction'
-            facebookMessage.meta.facebook_reactions.customer_reaction.reaction_type =
-                'UnknownReaction'
+            facebookMessage.source!.type = source_type
+            facebookMessage.meta!.facebook_reactions!.page_reaction!.reaction_type =
+                'UnknownReaction' as FacebookReactionType
+            facebookMessage.meta!.facebook_reactions!.customer_reaction!.reaction_type =
+                'UnknownReaction' as FacebookReactionType
             const component = render(
                 <SourceActionsFooter
+                    {...minProps}
                     source={facebookMessage.source}
                     meta={facebookMessage.meta}
                     integrationId={facebookMessage.integration_id}
                     messageId={facebookMessage.message_id}
-                    isMessageHidden={false}
-                    isMessageDeleted={false}
-                    store={store}
                 />
             )
             expect(component).toMatchSnapshot()
@@ -185,17 +174,18 @@ describe('<SourceActionsFooter/>', () => {
     it.each([FACEBOOK_COMMENT_SOURCE, FACEBOOK_MENTION_COMMENT_SOURCE])(
         "should render nothing because it's a duplicated Facebook message",
         (source_type) => {
-            const facebookMessage = {...duplicatedHiddenFacebookMessage}
-            facebookMessage.source.type = source_type
+            const facebookMessage = {
+                ...duplicatedHiddenFacebookMessage,
+            }
+            facebookMessage.source!.type = source_type
             const component = render(
                 <SourceActionsFooter
+                    {...minProps}
                     source={facebookMessage.source}
                     meta={facebookMessage.meta}
                     integrationId={facebookMessage.integration_id}
                     messageId={facebookMessage.message_id}
                     isMessageHidden={true}
-                    isMessageDeleted={false}
-                    store={store}
                 />
             )
             expect(component).toMatchSnapshot()
@@ -204,17 +194,17 @@ describe('<SourceActionsFooter/>', () => {
 
     it("should not render actions because it's an unfetchable mention comment", () => {
         const facebookMessage = {...facebookMessageWithPageAndCustomerReactions}
-        facebookMessage.source.type = FACEBOOK_MENTION_COMMENT_SOURCE
-        facebookMessage.source.extra = {unfetchable: true}
+
+        facebookMessage.source!.type = FACEBOOK_MENTION_COMMENT_SOURCE
+        facebookMessage.source!.extra = {unfetchable: true}
         const component = render(
             <SourceActionsFooter
+                {...minProps}
                 source={facebookMessage.source}
                 meta={facebookMessage.meta}
                 integrationId={facebookMessage.integration_id}
                 messageId={facebookMessage.message_id}
                 isMessageHidden={true}
-                isMessageDeleted={false}
-                store={store}
             />
         )
         expect(component).toMatchSnapshot()

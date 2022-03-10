@@ -4,8 +4,19 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
 <Body
   message={
     Object {
+      "actions": null,
+      "attachments": Array [],
       "body_html": "",
       "body_text": "text http://gorgias.io/",
+      "channel": "email",
+      "created_datetime": "",
+      "external_id": null,
+      "failed_datetime": null,
+      "from_agent": false,
+      "id": 1,
+      "integration_id": null,
+      "isMessage": true,
+      "is_retriable": false,
       "meta": Object {
         "facebook_carousel": Array [
           Object {
@@ -20,7 +31,9 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
                       "webview_height_ratio": "tall",
                     },
                     Object {
+                      "title": "Share",
                       "type": "element_share",
+                      "url": "https://sfbicycles.myshopify.com/products/fixie-bike/share",
                     },
                     Object {
                       "title": "Buy now",
@@ -41,6 +54,29 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
           },
         ],
       },
+      "opened_datetime": null,
+      "public": true,
+      "receiver": Object {
+        "email": "mary.poppins@example.com",
+        "firstname": "Mary",
+        "id": 2,
+        "lastname": "Poppins",
+        "name": "Mary Poppins",
+      },
+      "rule_id": null,
+      "sender": Object {
+        "email": "john.doe@example.com",
+        "firstname": "John",
+        "id": 1,
+        "lastname": "Doe",
+        "name": "John Doe",
+      },
+      "stripped_html": null,
+      "stripped_signature": null,
+      "stripped_text": null,
+      "subject": "Some subject",
+      "uri": "http://example.com/messages/1",
+      "via": "email",
     }
   }
 >
@@ -49,6 +85,8 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
   >
     <Content
       html=""
+      strippedHtml={null}
+      strippedText={null}
       text="text http://gorgias.io/"
     >
       <div>
@@ -77,7 +115,9 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
                       "webview_height_ratio": "tall",
                     },
                     Object {
+                      "title": "Share",
                       "type": "element_share",
+                      "url": "https://sfbicycles.myshopify.com/products/fixie-bike/share",
                     },
                     Object {
                       "title": "Buy now",
@@ -441,6 +481,7 @@ exports[`Body should display the Twitter quoted tweet card if there's matching m
       "integration_id": 18,
       "intents": Array [],
       "isMessage": true,
+      "is_retriable": false,
       "last_sending_error": undefined,
       "message_id": undefined,
       "meta": Object {

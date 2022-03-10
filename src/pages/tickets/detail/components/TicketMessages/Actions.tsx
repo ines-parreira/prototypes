@@ -92,15 +92,15 @@ export default class Actions extends Component<Props, State> {
         return (
             <div>
                 <h3>Headers</h3>
-                {Object.keys(action.arguments!.headers).map((arg, idx) => (
+                {Object.keys(action.arguments!.headers!).map((arg, idx) => (
                     <p key={idx}>
-                        <b>{arg}:</b> {action.arguments!.headers[arg]}
+                        <b>{arg}:</b> {action.arguments!.headers![arg]}
                     </p>
                 ))}
                 <h3>URL Parameters</h3>
-                {Object.keys(action.arguments!.params).map((arg, idx) => (
+                {Object.keys(action.arguments!.params!).map((arg, idx) => (
                     <p key={idx}>
-                        <b>{arg}:</b> {action.arguments!.params[arg]}
+                        <b>{arg}:</b> {action.arguments!.params![arg]}
                     </p>
                 ))}
                 {!!action.arguments!.form && contentType === ContentType.Form && (

@@ -1,25 +1,24 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 
 import {
     duplicatedHiddenFacebookMessage,
     facebookMessageNoMeta,
-} from '../../../../../../models/ticket/tests/mocks.ts'
-import SourceDetailsHeader from '../SourceDetailsHeader.tsx'
+} from '../../../../../../models/ticket/tests/mocks'
+import SourceDetailsHeader from '../SourceDetailsHeader'
 
 describe('<SourceDetailsHeader/>', () => {
+    const minProps: ComponentProps<typeof SourceDetailsHeader> = {
+        message: facebookMessageNoMeta,
+        isLastRead: true,
+        timezone: 'UTC',
+        isMessageDeleted: false,
+    }
     it(
         'should render a DatetimeLabel and the SourceActionsHeader because the message is not duplicated ' +
             'and is not deleted',
         () => {
-            const component = shallow(
-                <SourceDetailsHeader
-                    message={facebookMessageNoMeta}
-                    isLastRead={true}
-                    timezone={'UTC'}
-                    isMessageDeleted={false}
-                />
-            )
+            const component = shallow(<SourceDetailsHeader {...minProps} />)
             expect(component).toMatchSnapshot()
         }
     )
@@ -29,12 +28,7 @@ describe('<SourceDetailsHeader/>', () => {
             'SourceActionsHeader because the message is deleted',
         () => {
             const component = shallow(
-                <SourceDetailsHeader
-                    message={facebookMessageNoMeta}
-                    isLastRead={true}
-                    timezone={'UTC'}
-                    isMessageDeleted={true}
-                />
+                <SourceDetailsHeader {...minProps} isMessageDeleted={true} />
             )
             expect(component).toMatchSnapshot()
         }
@@ -46,10 +40,8 @@ describe('<SourceDetailsHeader/>', () => {
         () => {
             const component = shallow(
                 <SourceDetailsHeader
+                    {...minProps}
                     message={duplicatedHiddenFacebookMessage}
-                    isLastRead={true}
-                    timezone={'UTC'}
-                    isMessageDeleted={false}
                 />
             )
             expect(component).toMatchSnapshot()
@@ -62,9 +54,8 @@ describe('<SourceDetailsHeader/>', () => {
         () => {
             const component = shallow(
                 <SourceDetailsHeader
+                    {...minProps}
                     message={duplicatedHiddenFacebookMessage}
-                    isLastRead={true}
-                    timezone={'UTC'}
                     isMessageDeleted={true}
                 />
             )

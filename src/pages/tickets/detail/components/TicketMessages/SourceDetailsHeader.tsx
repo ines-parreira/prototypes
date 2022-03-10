@@ -1,8 +1,8 @@
 import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 
-import {TicketMessage} from '../../../../../models/ticket/types'
-import {DatetimeLabel} from '../../../../common/utils/labels'
+import {TicketMessage} from 'models/ticket/types'
+import {DatetimeLabel} from 'pages/common/utils/labels'
 
 import SeenIndicator from './SeenIndicator'
 import SourceActionsHeader from './SourceActionsHeader'
@@ -25,8 +25,8 @@ const From = ({label, children}: {label: string; children?: ReactNode}) => (
 
 export default function SourceDetailsHeader(props: Props) {
     const {message, isLastRead, timezone, isMessageDeleted} = props
-    let actionHeader
-    let infoWidget
+    let actionHeader: ReactNode
+    let infoWidget: ReactNode
 
     if (!isMessageDeleted) {
         actionHeader = (
