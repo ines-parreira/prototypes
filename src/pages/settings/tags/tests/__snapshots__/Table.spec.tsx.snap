@@ -11,7 +11,7 @@ exports[`ManageTags Table component should display the same number of rows as th
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="checkbox-1"
           >
             <input
@@ -22,9 +22,6 @@ exports[`ManageTags Table component should display the same number of rows as th
               type="checkbox"
             />
           </label>
-          <div
-            class="caption"
-          />
         </div>
       </td>
       <td>
@@ -113,7 +110,7 @@ exports[`ManageTags Table component should display the same number of rows as th
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="checkbox-2"
           >
             <input
@@ -124,9 +121,6 @@ exports[`ManageTags Table component should display the same number of rows as th
               type="checkbox"
             />
           </label>
-          <div
-            class="caption"
-          />
         </div>
       </td>
       <td>
@@ -191,7 +185,7 @@ exports[`ManageTags Table component should display the same number of rows as th
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="checkbox-3"
           >
             <input
@@ -202,9 +196,6 @@ exports[`ManageTags Table component should display the same number of rows as th
               type="checkbox"
             />
           </label>
-          <div
-            class="caption"
-          />
         </div>
       </td>
       <td>
@@ -269,7 +260,7 @@ exports[`ManageTags Table component should display the same number of rows as th
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="checkbox-4"
           >
             <input
@@ -280,9 +271,6 @@ exports[`ManageTags Table component should display the same number of rows as th
               type="checkbox"
             />
           </label>
-          <div
-            class="caption"
-          />
         </div>
       </td>
       <td>

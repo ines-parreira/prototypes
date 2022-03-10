@@ -21,7 +21,7 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     <div>
       <label
         aria-checked="true"
-        class="container"
+        class="label container"
         for="toggle-button-1"
         role="switch"
       >
@@ -35,6 +35,9 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
         />
         <div
           class="slider"
+        />
+        <div
+          class="label"
         />
       </label>
     </div>

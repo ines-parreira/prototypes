@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TextInput /> should render a disabled input 1`] = `
+<div>
+  <input
+    class="input"
+    disabled=""
+    id="input-text-2"
+    name="input-text-2"
+    type="text"
+    value=""
+  />
+</div>
+`;
+
+exports[`<TextInput /> should render a required input 1`] = `
+<div>
+  <input
+    class="input"
+    id="input-text-3"
+    name="input-text-3"
+    required=""
+    type="text"
+    value=""
+  />
+</div>
+`;
+
+exports[`<TextInput /> should render an enabled input 1`] = `
+<div>
+  <input
+    class="input"
+    id="input-text-1"
+    name="input-text-1"
+    type="text"
+    value=""
+  />
+</div>
+`;
+
+exports[`<TextInput /> should render an input with error state 1`] = `
+<div>
+  <input
+    class="input inputError"
+    id="input-text-4"
+    name="input-text-4"
+    type="text"
+    value=""
+  />
+</div>
+`;

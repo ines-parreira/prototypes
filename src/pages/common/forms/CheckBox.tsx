@@ -11,6 +11,8 @@ import React, {
 import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 
+import Caption from './Caption/Caption'
+import Label from './Label/Label'
 import css from './CheckBox.less'
 
 type Props = {
@@ -56,14 +58,9 @@ function CheckBox(
 
     return (
         <div className={className}>
-            <label
-                className={classnames(
-                    css.label,
-                    {
-                        [css.isDisabled]: isDisabled,
-                    },
-                    labelClassName
-                )}
+            <Label
+                className={classnames(css.label, labelClassName)}
+                isDisabled={isDisabled}
                 htmlFor={id}
             >
                 <input
@@ -78,8 +75,8 @@ function CheckBox(
                     {...props}
                 />
                 {children}
-            </label>
-            <div className={css.caption}>{caption}</div>
+            </Label>
+            {!!caption && <Caption className={css.caption}>{caption}</Caption>}
         </div>
     )
 }

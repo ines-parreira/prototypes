@@ -9,6 +9,8 @@ import React, {
 import _uniqueId from 'lodash/uniqueId'
 import classnames from 'classnames'
 
+import Caption from './Caption/Caption'
+import Label from './Label/Label'
 import css from './ToggleInput.less'
 
 type Props = {
@@ -48,14 +50,14 @@ const ToggleInput = ({
 
     return (
         <div className={className}>
-            <label
+            <Label
                 className={classnames(css.container, {
-                    [css.loading]: isLoading,
-                    [css.disabled]: isDisabled,
+                    [css.loadingLabel]: isLoading,
+                    [css.disabledLabel]: isDisabled,
                 })}
                 htmlFor={id}
+                isDisabled={isDisabled}
                 onClick={handleClick}
-                // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
                 role="switch"
                 aria-label={props['aria-label']}
                 aria-checked={isToggled}
@@ -95,9 +97,9 @@ const ToggleInput = ({
                         />
                     </svg>
                 )}
-                {!!children && <div className={css.label}>{children}</div>}
-            </label>
-            {!!caption && <div className={css.caption}>{caption}</div>}
+                <div className={css.label}>{children}</div>
+            </Label>
+            {!!caption && <Caption className={css.caption}>{caption}</Caption>}
         </div>
     )
 }

@@ -3,10 +3,7 @@
 
 :local {
     .caption {
-        .caption-regular();
-        color: @classic-neutral-grey-4;
         margin-left: 24px;
-        margin-top: 4px;
     }
 
     .input[type='checkbox'] {
@@ -74,21 +71,6 @@
     }
 
     .label {
-        .body-semibold();
-        display: flex;
-        align-items: center;
-        margin-bottom: 0;
-        user-select: none;
         cursor: pointer;
-        transition: color 0.2s linear;
-
-        &.isDisabled {
-            cursor: not-allowed;
-            color: @classic-neutral-grey-4;
-        }
-
-        &.hasCaption {
-            margin-bottom: 4px;
-        }
     }
 }

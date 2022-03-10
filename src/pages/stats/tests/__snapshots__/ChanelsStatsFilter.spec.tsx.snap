@@ -53,7 +53,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="checkbox"
       >
         <label
-          class="label quickSelectionOption"
+          class="label label quickSelectionOption"
           for="checkbox-1"
         >
           <input
@@ -70,9 +70,6 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
             1
           </div>
         </label>
-        <div
-          class="caption"
-        />
       </div>
     </button>
     <div
@@ -86,7 +83,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-2"
         >
           <input
@@ -98,15 +95,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Aircall
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-3"
         >
           <input
@@ -117,15 +111,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Api
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-4"
         >
           <input
@@ -136,15 +127,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Chat
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-5"
         >
           <input
@@ -155,15 +143,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Email
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-6"
         >
           <input
@@ -174,15 +159,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Facebook
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-7"
         >
           <input
@@ -193,15 +175,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Facebook mention
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-8"
         >
           <input
@@ -212,15 +191,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Facebook messenger
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-9"
         >
           <input
@@ -231,15 +207,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Facebook recommendations
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-10"
         >
           <input
@@ -250,15 +223,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Help center
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-11"
         >
           <input
@@ -269,15 +239,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Instagram ad comment
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-12"
         >
           <input
@@ -288,15 +255,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Instagram comment
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-13"
         >
           <input
@@ -307,15 +271,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Instagram mention
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-14"
         >
           <input
@@ -326,15 +287,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Instagram direct message
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-15"
         >
           <input
@@ -345,15 +303,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Phone
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-16"
         >
           <input
@@ -364,15 +319,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Sms
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-17"
         >
           <input
@@ -383,15 +335,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Twitter
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-18"
         >
           <input
@@ -402,15 +351,12 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Twitter direct message
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-19"
         >
           <input
@@ -421,9 +367,6 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           />
            Yotpo review
         </label>
-        <div
-          class="caption"
-        />
       </div>
     </div>
   </div>

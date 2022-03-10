@@ -166,7 +166,7 @@ exports[`<WidgetEdit/> should render 1`] = `
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="card.meta.displayCard"
           >
             <input
@@ -178,9 +178,6 @@ exports[`<WidgetEdit/> should render 1`] = `
             />
             Display card
           </label>
-          <div
-            class="caption"
-          />
         </div>
       </div>
       <div>

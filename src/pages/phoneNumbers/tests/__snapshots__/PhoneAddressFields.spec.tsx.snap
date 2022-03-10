@@ -17,7 +17,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="company"
           >
             <input
@@ -44,7 +44,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="personal"
           >
             <input
@@ -261,7 +261,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="company"
           >
             <input
@@ -287,7 +287,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="personal"
           >
             <input
@@ -505,7 +505,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="company"
           >
             <input
@@ -531,7 +531,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="personal"
           >
             <input
@@ -748,7 +748,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="company"
           >
             <input
@@ -774,7 +774,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       >
         <div>
           <label
-            class="label"
+            class="label label"
             for="personal"
           >
             <input

@@ -866,25 +866,37 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       onClick={[Function]}
                     >
                       <div>
-                        <label
+                        <Label
                           aria-checked={true}
                           className="container"
                           htmlFor="toggle-button-4"
+                          isDisabled={false}
                           onClick={[Function]}
                           role="switch"
                         >
-                          <input
-                            checked={true}
-                            className="input"
-                            disabled={true}
-                            id="toggle-button-4"
-                            name="toggle-button-4"
-                            type="checkbox"
-                          />
-                          <div
-                            className="slider"
-                          />
-                        </label>
+                          <label
+                            aria-checked={true}
+                            className="label container"
+                            htmlFor="toggle-button-4"
+                            onClick={[Function]}
+                            role="switch"
+                          >
+                            <input
+                              checked={true}
+                              className="input"
+                              disabled={true}
+                              id="toggle-button-4"
+                              name="toggle-button-4"
+                              type="checkbox"
+                            />
+                            <div
+                              className="slider"
+                            />
+                            <div
+                              className="label"
+                            />
+                          </label>
+                        </Label>
                       </div>
                     </ToggleInput>
                   </td>
@@ -993,25 +1005,37 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       onClick={[Function]}
                     >
                       <div>
-                        <label
+                        <Label
                           aria-checked={true}
                           className="container"
                           htmlFor="toggle-button-5"
+                          isDisabled={false}
                           onClick={[Function]}
                           role="switch"
                         >
-                          <input
-                            checked={true}
-                            className="input"
-                            disabled={true}
-                            id="toggle-button-5"
-                            name="toggle-button-5"
-                            type="checkbox"
-                          />
-                          <div
-                            className="slider"
-                          />
-                        </label>
+                          <label
+                            aria-checked={true}
+                            className="label container"
+                            htmlFor="toggle-button-5"
+                            onClick={[Function]}
+                            role="switch"
+                          >
+                            <input
+                              checked={true}
+                              className="input"
+                              disabled={true}
+                              id="toggle-button-5"
+                              name="toggle-button-5"
+                              type="checkbox"
+                            />
+                            <div
+                              className="slider"
+                            />
+                            <div
+                              className="label"
+                            />
+                          </label>
+                        </Label>
                       </div>
                     </ToggleInput>
                   </td>
@@ -1120,25 +1144,37 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       onClick={[Function]}
                     >
                       <div>
-                        <label
+                        <Label
                           aria-checked={false}
-                          className="container disabled"
+                          className="container disabledLabel"
                           htmlFor="toggle-button-6"
+                          isDisabled={true}
                           onClick={[Function]}
                           role="switch"
                         >
-                          <input
-                            checked={false}
-                            className="input"
-                            disabled={true}
-                            id="toggle-button-6"
-                            name="toggle-button-6"
-                            type="checkbox"
-                          />
-                          <div
-                            className="slider"
-                          />
-                        </label>
+                          <label
+                            aria-checked={false}
+                            className="label isDisabled container disabledLabel"
+                            htmlFor="toggle-button-6"
+                            onClick={[Function]}
+                            role="switch"
+                          >
+                            <input
+                              checked={false}
+                              className="input"
+                              disabled={true}
+                              id="toggle-button-6"
+                              name="toggle-button-6"
+                              type="checkbox"
+                            />
+                            <div
+                              className="slider"
+                            />
+                            <div
+                              className="label"
+                            />
+                          </label>
+                        </Label>
                       </div>
                     </ToggleInput>
                   </td>
@@ -1571,25 +1607,37 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                       onClick={[Function]}
                     >
                       <div>
-                        <label
+                        <Label
                           aria-checked={true}
                           className="container"
                           htmlFor="toggle-button-1"
+                          isDisabled={false}
                           onClick={[Function]}
                           role="switch"
                         >
-                          <input
-                            checked={true}
-                            className="input"
-                            disabled={true}
-                            id="toggle-button-1"
-                            name="toggle-button-1"
-                            type="checkbox"
-                          />
-                          <div
-                            className="slider"
-                          />
-                        </label>
+                          <label
+                            aria-checked={true}
+                            className="label container"
+                            htmlFor="toggle-button-1"
+                            onClick={[Function]}
+                            role="switch"
+                          >
+                            <input
+                              checked={true}
+                              className="input"
+                              disabled={true}
+                              id="toggle-button-1"
+                              name="toggle-button-1"
+                              type="checkbox"
+                            />
+                            <div
+                              className="slider"
+                            />
+                            <div
+                              className="label"
+                            />
+                          </label>
+                        </Label>
                       </div>
                     </ToggleInput>
                   </td>
@@ -2039,25 +2087,37 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                       onClick={[Function]}
                     >
                       <div>
-                        <label
+                        <Label
                           aria-checked={true}
                           className="container"
                           htmlFor="toggle-button-2"
+                          isDisabled={false}
                           onClick={[Function]}
                           role="switch"
                         >
-                          <input
-                            checked={true}
-                            className="input"
-                            disabled={true}
-                            id="toggle-button-2"
-                            name="toggle-button-2"
-                            type="checkbox"
-                          />
-                          <div
-                            className="slider"
-                          />
-                        </label>
+                          <label
+                            aria-checked={true}
+                            className="label container"
+                            htmlFor="toggle-button-2"
+                            onClick={[Function]}
+                            role="switch"
+                          >
+                            <input
+                              checked={true}
+                              className="input"
+                              disabled={true}
+                              id="toggle-button-2"
+                              name="toggle-button-2"
+                              type="checkbox"
+                            />
+                            <div
+                              className="slider"
+                            />
+                            <div
+                              className="label"
+                            />
+                          </label>
+                        </Label>
                       </div>
                     </ToggleInput>
                   </td>
@@ -2166,25 +2226,37 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                       onClick={[Function]}
                     >
                       <div>
-                        <label
+                        <Label
                           aria-checked={false}
                           className="container"
                           htmlFor="toggle-button-3"
+                          isDisabled={false}
                           onClick={[Function]}
                           role="switch"
                         >
-                          <input
-                            checked={false}
-                            className="input"
-                            disabled={true}
-                            id="toggle-button-3"
-                            name="toggle-button-3"
-                            type="checkbox"
-                          />
-                          <div
-                            className="slider"
-                          />
-                        </label>
+                          <label
+                            aria-checked={false}
+                            className="label container"
+                            htmlFor="toggle-button-3"
+                            onClick={[Function]}
+                            role="switch"
+                          >
+                            <input
+                              checked={false}
+                              className="input"
+                              disabled={true}
+                              id="toggle-button-3"
+                              name="toggle-button-3"
+                              type="checkbox"
+                            />
+                            <div
+                              className="slider"
+                            />
+                            <div
+                              className="label"
+                            />
+                          </label>
+                        </Label>
                       </div>
                     </ToggleInput>
                   </td>

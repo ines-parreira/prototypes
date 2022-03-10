@@ -5,8 +5,9 @@ import React, {
     useImperativeHandle,
     useRef,
 } from 'react'
-import classnames from 'classnames'
 
+import Caption from '../forms/Caption/Caption'
+import Label from '../forms/Label/Label'
 import {RadioFieldOption} from '../forms/RadioFieldSet'
 
 import css from './RadioButton.less'
@@ -39,12 +40,10 @@ function RadioButton(
 
     return (
         <div className={className}>
-            <label
+            <Label
                 htmlFor={value}
-                className={classnames(css.label, {
-                    [css.disabledLabel]: isDisabled,
-                    [css.labelWithCaption]: !!caption,
-                })}
+                isDisabled={isDisabled}
+                className={css.label}
             >
                 <input
                     type="radio"
@@ -57,8 +56,8 @@ function RadioButton(
                     {...props}
                 />
                 {label}
-            </label>
-            {!!caption && <div className={css.caption}>{caption}</div>}
+            </Label>
+            {!!caption && <Caption className={css.caption}>{caption}</Caption>}
         </div>
     )
 }

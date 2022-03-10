@@ -12,7 +12,7 @@ exports[`<StoreRadioButton /> should match snapshot 1`] = `
   >
     <div>
       <label
-        class="label"
+        class="label label"
         for="shopify"
       >
         <input

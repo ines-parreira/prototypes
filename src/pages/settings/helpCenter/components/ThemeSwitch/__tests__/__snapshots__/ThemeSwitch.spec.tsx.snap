@@ -32,7 +32,7 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
       </div>
       <div>
         <label
-          class="label"
+          class="label label"
           for="light"
         >
           <input
@@ -65,7 +65,7 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
       </div>
       <div>
         <label
-          class="label"
+          class="label label"
           for="dark"
         >
           <input

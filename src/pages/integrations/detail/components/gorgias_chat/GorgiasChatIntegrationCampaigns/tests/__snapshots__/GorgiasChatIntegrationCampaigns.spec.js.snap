@@ -209,7 +209,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
               <label
                 aria-checked="true"
                 aria-label="Enable campaign Super campaign"
-                class="container"
+                class="label container"
                 for="toggle-button-1"
                 role="switch"
               >
@@ -224,6 +224,9 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 />
                 <div
                   class="slider"
+                />
+                <div
+                  class="label"
                 />
               </label>
             </div>
@@ -263,7 +266,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
               <label
                 aria-checked="false"
                 aria-label="Enable campaign Not so good campaign"
-                class="container"
+                class="label container"
                 for="toggle-button-2"
                 role="switch"
               >
@@ -277,6 +280,9 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 />
                 <div
                   class="slider"
+                />
+                <div
+                  class="label"
                 />
               </label>
             </div>

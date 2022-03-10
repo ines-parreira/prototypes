@@ -76,7 +76,7 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                   class="checkbox"
                 >
                   <label
-                    class="label quickSelectionOption"
+                    class="label label quickSelectionOption"
                     for="checkbox-1"
                   >
                     <input
@@ -93,9 +93,6 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                       1
                     </div>
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </button>
               <div
@@ -109,7 +106,7 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-2"
                   >
                     <input
@@ -120,15 +117,12 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                     />
                      Api
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-3"
                   >
                     <input
@@ -140,15 +134,12 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                     />
                      Chat
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-4"
                   >
                     <input
@@ -159,15 +150,12 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                     />
                      Email
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-5"
                   >
                     <input
@@ -178,15 +166,12 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                     />
                      Facebook
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-6"
                   >
                     <input
@@ -197,15 +182,12 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                     />
                      Facebook mention
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-7"
                   >
                     <input
@@ -216,15 +198,12 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                     />
                      Facebook messenger
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-8"
                   >
                     <input
@@ -235,15 +214,12 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                     />
                      Instagram ad comment
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-9"
                   >
                     <input
@@ -254,15 +230,12 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                     />
                      Instagram comment
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-10"
                   >
                     <input
@@ -273,15 +246,12 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                     />
                      Phone
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-11"
                   >
                     <input
@@ -292,9 +262,6 @@ exports[`AutomationIntents should render the filters and stats when stats filter
                     />
                      Sms
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </div>
             </div>

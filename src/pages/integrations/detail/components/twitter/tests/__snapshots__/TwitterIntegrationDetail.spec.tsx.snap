@@ -104,7 +104,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                 class="mb-2"
               >
                 <label
-                  class="label"
+                  class="label label"
                   for="tweets_replies_enabled"
                 >
                   <input
@@ -116,15 +116,12 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                   />
                   Enable replies to Tweets
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
               <div
                 class="mb-2"
               >
                 <label
-                  class="label"
+                  class="label label"
                   for="mentions_enabled"
                 >
                   <input
@@ -136,15 +133,12 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                   />
                   Enable Twitter mentions
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
               <div
                 class="mb-2"
               >
                 <label
-                  class="label"
+                  class="label label"
                   for="direct_messages_enabled"
                 >
                   <input
@@ -156,9 +150,6 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                   />
                   Enable Twitter direct messages
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
             <div>

@@ -13,7 +13,7 @@ exports[`<RadioFieldSet /> render() should render a Radio field with label 1`] =
     class="option"
   >
     <label
-      class="label"
+      class="label label"
       for="japanese"
     >
       <input
@@ -30,7 +30,7 @@ exports[`<RadioFieldSet /> render() should render a Radio field with label 1`] =
     class="option"
   >
     <label
-      class="label"
+      class="label label"
       for="mexican"
     >
       <input
@@ -54,7 +54,7 @@ exports[`<RadioFieldSet /> render() should render a disabled RadioField 1`] = `
     class="option"
   >
     <label
-      class="label disabledLabel"
+      class="label isDisabled label"
       for="japanese"
     >
       <input
@@ -72,7 +72,7 @@ exports[`<RadioFieldSet /> render() should render a disabled RadioField 1`] = `
     class="option"
   >
     <label
-      class="label disabledLabel"
+      class="label isDisabled label"
       for="mexican"
     >
       <input
@@ -96,7 +96,7 @@ exports[`<RadioFieldSet /> render() should render an enabled Radio field 1`] = `
     class="option"
   >
     <label
-      class="label"
+      class="label label"
       for="japanese"
     >
       <input
@@ -113,7 +113,7 @@ exports[`<RadioFieldSet /> render() should render an enabled Radio field 1`] = `
     class="option"
   >
     <label
-      class="label"
+      class="label label"
       for="mexican"
     >
       <input
@@ -136,7 +136,7 @@ exports[`<RadioFieldSet /> render() should render captions under radio buttons 1
     class="option"
   >
     <label
-      class="label labelWithCaption"
+      class="label label"
       for="japanese"
     >
       <input
@@ -149,7 +149,7 @@ exports[`<RadioFieldSet /> render() should render captions under radio buttons 1
       sushis and sashimis
     </label>
     <div
-      class="caption"
+      class="caption caption"
     >
       japanese food
     </div>
@@ -158,7 +158,7 @@ exports[`<RadioFieldSet /> render() should render captions under radio buttons 1
     class="option"
   >
     <label
-      class="label labelWithCaption"
+      class="label label"
       for="mexican"
     >
       <input
@@ -170,7 +170,7 @@ exports[`<RadioFieldSet /> render() should render captions under radio buttons 1
       tacos and nachos
     </label>
     <div
-      class="caption"
+      class="caption caption"
     >
       mexican food
     </div>

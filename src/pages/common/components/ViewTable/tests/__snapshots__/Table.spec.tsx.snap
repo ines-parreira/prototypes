@@ -12,7 +12,7 @@ exports[`<Table /> should display a default view 1`] = `
         >
           <div>
             <label
-              class="label"
+              class="label label"
               for="checkbox-2"
             >
               <input
@@ -23,9 +23,6 @@ exports[`<Table /> should display a default view 1`] = `
                 type="checkbox"
               />
             </label>
-            <div
-              class="caption"
-            />
           </div>
         </td>
         <div>
@@ -124,7 +121,7 @@ exports[`<Table /> should display a view with no fields 1`] = `
         >
           <div>
             <label
-              class="label"
+              class="label label"
               for="checkbox-1"
             >
               <input
@@ -135,9 +132,6 @@ exports[`<Table /> should display a view with no fields 1`] = `
                 type="checkbox"
               />
             </label>
-            <div
-              class="caption"
-            />
           </div>
         </td>
       </tr>

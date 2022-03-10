@@ -143,7 +143,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
             class="mb-3"
           >
             <label
-              class="label"
+              class="label label"
               for="checkbox-1"
             >
               <input
@@ -156,7 +156,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
               Restock items
             </label>
             <div
-              class="caption"
+              class="caption caption"
             >
               The claimed quantity for products in this order will be restocked back to your store.
             </div>
@@ -165,7 +165,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
             class="mb-3"
           >
             <label
-              class="label"
+              class="label label"
               for="notify-customer"
             >
               <input
@@ -177,9 +177,6 @@ exports[`<OrderFooter/> render() should render 1`] = `
               />
               Send notification to customer
             </label>
-            <div
-              class="caption"
-            />
           </div>
         </div>
       </div>
@@ -410,7 +407,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
             class="mb-3"
           >
             <label
-              class="label"
+              class="label label"
               for="checkbox-2"
             >
               <input
@@ -423,7 +420,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
               Restock items
             </label>
             <div
-              class="caption"
+              class="caption caption"
             >
               The claimed quantity for products in this order will be restocked back to your store.
             </div>
@@ -432,7 +429,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
             class="mb-3"
           >
             <label
-              class="label"
+              class="label label"
               for="notify-customer"
             >
               <input
@@ -444,9 +441,6 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
               />
               Send notification to customer
             </label>
-            <div
-              class="caption"
-            />
           </div>
         </div>
       </div>

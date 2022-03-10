@@ -34,7 +34,7 @@ exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
       class="checkbox"
     >
       <label
-        class="label"
+        class="label label"
         for="planId2"
       >
         <input
@@ -53,9 +53,6 @@ exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
           </span>
         </div>
       </label>
-      <div
-        class="caption"
-      />
     </div>
     <div
       class="amountContainer"
@@ -134,7 +131,7 @@ exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] =
       class="checkbox"
     >
       <label
-        class="label"
+        class="label label"
         for="planId4"
       >
         <input
@@ -153,9 +150,6 @@ exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] =
           </span>
         </div>
       </label>
-      <div
-        class="caption"
-      />
     </div>
     <div
       class="amountContainer"

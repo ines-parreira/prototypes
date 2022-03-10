@@ -217,7 +217,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                   class="checkbox"
                 >
                   <label
-                    class="label quickSelectionOption"
+                    class="label label quickSelectionOption"
                     for="checkbox-2"
                   >
                     <input
@@ -234,9 +234,6 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                       1
                     </div>
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </button>
               <div

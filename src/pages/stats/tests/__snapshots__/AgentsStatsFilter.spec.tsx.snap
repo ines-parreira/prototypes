@@ -53,7 +53,7 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
         class="checkbox"
       >
         <label
-          class="label quickSelectionOption"
+          class="label label quickSelectionOption"
           for="checkbox-1"
         >
           <input
@@ -70,9 +70,6 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
             2
           </div>
         </label>
-        <div
-          class="caption"
-        />
       </div>
     </button>
     <div
@@ -93,7 +90,7 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
           class="wrapperItem"
         >
           <label
-            class="label labelItem"
+            class="label label labelItem"
             for="checkbox-2"
           >
             <input
@@ -104,15 +101,12 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
             />
             Foo
           </label>
-          <div
-            class="caption"
-          />
         </div>
         <div
           class="wrapperItem"
         >
           <label
-            class="label labelItem"
+            class="label label labelItem"
             for="checkbox-3"
           >
             <input
@@ -123,15 +117,12 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
             />
             Phone team - +1 205-396-3441
           </label>
-          <div
-            class="caption"
-          />
         </div>
         <div
           class="wrapperItem"
         >
           <label
-            class="label labelItem"
+            class="label label labelItem"
             for="checkbox-4"
           >
             <input
@@ -142,9 +133,6 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
             />
             Test
           </label>
-          <div
-            class="caption"
-          />
         </div>
       </div>
       <div
@@ -161,7 +149,7 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-5"
         >
           <input
@@ -173,15 +161,12 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
           />
            Acme Support
         </label>
-        <div
-          class="caption"
-        />
       </div>
       <div
         class="wrapperItem"
       >
         <label
-          class="label labelItem"
+          class="label label labelItem"
           for="checkbox-6"
         >
           <input
@@ -192,9 +177,6 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
           />
            Bob Smith
         </label>
-        <div
-          class="caption"
-        />
       </div>
     </div>
   </div>

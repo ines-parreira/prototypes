@@ -497,23 +497,26 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                           <div
                             className="mb8"
                           >
-                            <label
+                            <Label
                               className="label"
                               htmlFor="send_survey_on_email"
+                              isDisabled={false}
                             >
-                              <input
-                                className="input"
-                                disabled={false}
-                                id="send_survey_on_email"
-                                name="send_survey_on_email"
-                                onChange={[Function]}
-                                type="checkbox"
-                              />
-                              Email
-                            </label>
-                            <div
-                              className="caption"
-                            />
+                              <label
+                                className="label label"
+                                htmlFor="send_survey_on_email"
+                              >
+                                <input
+                                  className="input"
+                                  disabled={false}
+                                  id="send_survey_on_email"
+                                  name="send_survey_on_email"
+                                  onChange={[Function]}
+                                  type="checkbox"
+                                />
+                                Email
+                              </label>
+                            </Label>
                           </div>
                         </ForwardRef(CheckBox)>
                         <ForwardRef(CheckBox)
@@ -521,23 +524,26 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                           onChange={[Function]}
                         >
                           <div>
-                            <label
+                            <Label
                               className="label"
                               htmlFor="send_survey_on_chat"
+                              isDisabled={false}
                             >
-                              <input
-                                className="input"
-                                disabled={false}
-                                id="send_survey_on_chat"
-                                name="send_survey_on_chat"
-                                onChange={[Function]}
-                                type="checkbox"
-                              />
-                              Chat
-                            </label>
-                            <div
-                              className="caption"
-                            />
+                              <label
+                                className="label label"
+                                htmlFor="send_survey_on_chat"
+                              >
+                                <input
+                                  className="input"
+                                  disabled={false}
+                                  id="send_survey_on_chat"
+                                  name="send_survey_on_chat"
+                                  onChange={[Function]}
+                                  type="checkbox"
+                                />
+                                Chat
+                              </label>
+                            </Label>
                           </div>
                         </ForwardRef(CheckBox)>
                       </div>

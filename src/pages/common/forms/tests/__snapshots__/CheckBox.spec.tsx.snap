@@ -3,7 +3,7 @@
 exports[`<CheckBox /> should render a disabled CheckBox 1`] = `
 <div>
   <label
-    class="label isDisabled"
+    class="label isDisabled label"
     for="checkbox-2"
   >
     <input
@@ -15,16 +15,13 @@ exports[`<CheckBox /> should render a disabled CheckBox 1`] = `
     />
     Shopify
   </label>
-  <div
-    class="caption"
-  />
 </div>
 `;
 
 exports[`<CheckBox /> should render an enabled CheckBox 1`] = `
 <div>
   <label
-    class="label"
+    class="label label"
     for="checkbox-1"
   >
     <input
@@ -35,16 +32,13 @@ exports[`<CheckBox /> should render an enabled CheckBox 1`] = `
     />
     Shopify
   </label>
-  <div
-    class="caption"
-  />
 </div>
 `;
 
 exports[`<CheckBox /> should render caption under the checkbox 1`] = `
 <div>
   <label
-    class="label"
+    class="label label"
     for="checkbox-3"
   >
     <input
@@ -56,7 +50,7 @@ exports[`<CheckBox /> should render caption under the checkbox 1`] = `
     Shopify
   </label>
   <div
-    class="caption"
+    class="caption caption"
   >
     first e-commerce platform
   </div>

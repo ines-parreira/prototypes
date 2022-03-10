@@ -373,7 +373,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </div>
               <div>
                 <label
-                  class="label"
+                  class="label label"
                   for="light"
                 >
                   <input
@@ -406,7 +406,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </div>
               <div>
                 <label
-                  class="label"
+                  class="label label"
                   for="dark"
                 >
                   <input
@@ -861,7 +861,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           >
             <label
               aria-checked="false"
-              class="container"
+              class="label container"
               for="toggle-button-3"
               role="switch"
             >
@@ -882,7 +882,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </div>
             </label>
             <div
-              class="caption"
+              class="caption caption"
             >
               Use this toggle to display or hide the search bar in your Help Center.
             </div>
@@ -892,7 +892,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           >
             <label
               aria-checked="true"
-              class="container"
+              class="label container"
               for="toggle-button-4"
               role="switch"
             >
@@ -914,7 +914,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </div>
             </label>
             <div
-              class="caption"
+              class="caption caption"
             >
               Use this toggle to display or hide the Gorgias branding on the footer in Help Center.
             </div>

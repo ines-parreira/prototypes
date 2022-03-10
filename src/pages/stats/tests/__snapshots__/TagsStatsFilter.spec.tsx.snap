@@ -54,7 +54,7 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
         class="checkbox"
       >
         <label
-          class="label quickSelectionOption"
+          class="label label quickSelectionOption"
           for="checkbox-1"
         >
           <input
@@ -71,9 +71,6 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
             2
           </div>
         </label>
-        <div
-          class="caption"
-        />
       </div>
     </button>
     <div
@@ -90,7 +87,7 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
           class="wrapperItem"
         >
           <label
-            class="label labelItem"
+            class="label label labelItem"
             for="checkbox-2"
           >
             <input
@@ -102,15 +99,12 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
             />
              billing
           </label>
-          <div
-            class="caption"
-          />
         </div>
         <div
           class="wrapperItem"
         >
           <label
-            class="label labelItem"
+            class="label label labelItem"
             for="checkbox-3"
           >
             <input
@@ -121,15 +115,12 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
             />
              refund
           </label>
-          <div
-            class="caption"
-          />
         </div>
         <div
           class="wrapperItem"
         >
           <label
-            class="label labelItem"
+            class="label label labelItem"
             for="checkbox-4"
           >
             <input
@@ -141,15 +132,12 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
             />
              refund accepted
           </label>
-          <div
-            class="caption"
-          />
         </div>
         <div
           class="wrapperItem"
         >
           <label
-            class="label labelItem"
+            class="label label labelItem"
             for="checkbox-5"
           >
             <input
@@ -160,9 +148,6 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
             />
              rejected
           </label>
-          <div
-            class="caption"
-          />
         </div>
       </div>
     </div>

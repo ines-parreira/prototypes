@@ -149,7 +149,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </div>
       <div>
         <label
-          class="label"
+          class="label label"
           for="checkbox-1"
         >
           <input
@@ -161,9 +161,6 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
           />
           Use the same as Title
         </label>
-        <div
-          class="caption"
-        />
       </div>
     </div>
     <div
@@ -200,7 +197,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </div>
       <div>
         <label
-          class="label"
+          class="label label"
           for="checkbox-2"
         >
           <input
@@ -212,9 +209,6 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
           />
           Use the same as Excerpt
         </label>
-        <div
-          class="caption"
-        />
       </div>
     </div>
     <div

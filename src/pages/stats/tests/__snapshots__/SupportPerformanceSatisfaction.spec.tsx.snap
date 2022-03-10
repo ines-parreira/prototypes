@@ -76,7 +76,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="checkbox"
                 >
                   <label
-                    class="label quickSelectionOption"
+                    class="label label quickSelectionOption"
                     for="checkbox-1"
                   >
                     <input
@@ -92,9 +92,6 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       0
                     </div>
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </button>
               <div
@@ -145,7 +142,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="checkbox"
                 >
                   <label
-                    class="label quickSelectionOption"
+                    class="label label quickSelectionOption"
                     for="checkbox-2"
                   >
                     <input
@@ -162,9 +159,6 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       1
                     </div>
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </button>
               <div
@@ -178,7 +172,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-3"
                   >
                     <input
@@ -190,15 +184,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     />
                      Chat
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-4"
                   >
                     <input
@@ -209,9 +200,6 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     />
                      Email
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </div>
             </div>
@@ -255,7 +243,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="checkbox"
                 >
                   <label
-                    class="label quickSelectionOption"
+                    class="label label quickSelectionOption"
                     for="checkbox-5"
                   >
                     <input
@@ -272,9 +260,6 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       1
                     </div>
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </button>
               <div
@@ -288,7 +273,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-6"
                   >
                     <input
@@ -299,15 +284,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     />
                      ★★★★★
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-7"
                   >
                     <input
@@ -318,15 +300,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     />
                      ★★★★☆
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-8"
                   >
                     <input
@@ -337,15 +316,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     />
                      ★★★☆☆
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-9"
                   >
                     <input
@@ -357,15 +333,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     />
                      ★★☆☆☆
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-10"
                   >
                     <input
@@ -376,9 +349,6 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     />
                      ★☆☆☆☆
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </div>
             </div>
@@ -422,7 +392,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="checkbox"
                 >
                   <label
-                    class="label quickSelectionOption"
+                    class="label label quickSelectionOption"
                     for="checkbox-11"
                   >
                     <input
@@ -439,9 +409,6 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       1
                     </div>
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </button>
               <div
@@ -462,7 +429,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     class="wrapperItem"
                   >
                     <label
-                      class="label labelItem"
+                      class="label label labelItem"
                       for="checkbox-12"
                     >
                       <input
@@ -473,15 +440,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       />
                       Foo
                     </label>
-                    <div
-                      class="caption"
-                    />
                   </div>
                   <div
                     class="wrapperItem"
                   >
                     <label
-                      class="label labelItem"
+                      class="label label labelItem"
                       for="checkbox-13"
                     >
                       <input
@@ -492,15 +456,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       />
                       Phone team - +1 205-396-3441
                     </label>
-                    <div
-                      class="caption"
-                    />
                   </div>
                   <div
                     class="wrapperItem"
                   >
                     <label
-                      class="label labelItem"
+                      class="label label labelItem"
                       for="checkbox-14"
                     >
                       <input
@@ -511,9 +472,6 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       />
                       Test
                     </label>
-                    <div
-                      class="caption"
-                    />
                   </div>
                 </div>
                 <div
@@ -530,7 +488,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-15"
                   >
                     <input
@@ -542,15 +500,12 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     />
                      Acme Support
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-16"
                   >
                     <input
@@ -561,9 +516,6 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     />
                      Bob Smith
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </div>
             </div>

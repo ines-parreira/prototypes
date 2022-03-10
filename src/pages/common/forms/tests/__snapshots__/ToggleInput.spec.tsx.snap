@@ -4,7 +4,7 @@ exports[`ToggleInput should render caption 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="container"
+    class="label container"
     for="toggle-button-7"
     role="switch"
   >
@@ -26,7 +26,7 @@ exports[`ToggleInput should render caption 1`] = `
     </div>
   </label>
   <div
-    class="caption"
+    class="caption caption"
   >
     caption
   </div>
@@ -37,7 +37,7 @@ exports[`ToggleInput should render label 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="container"
+    class="label container"
     for="toggle-button-6"
     role="switch"
   >
@@ -65,7 +65,7 @@ exports[`ToggleInput should render the button disabled 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="container disabled"
+    class="label isDisabled container disabledLabel"
     for="toggle-button-4"
     role="switch"
   >
@@ -80,6 +80,9 @@ exports[`ToggleInput should render the button disabled 1`] = `
     <div
       class="slider"
     />
+    <div
+      class="label"
+    />
   </label>
 </div>
 `;
@@ -88,7 +91,7 @@ exports[`ToggleInput should render the button loading 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="container loading"
+    class="label container loadingLabel"
     for="toggle-button-3"
     role="switch"
   >
@@ -124,6 +127,9 @@ exports[`ToggleInput should render the button loading 1`] = `
         stroke-width="2"
       />
     </svg>
+    <div
+      class="label"
+    />
   </label>
 </div>
 `;
@@ -132,7 +138,7 @@ exports[`ToggleInput should render the button loading and disabled 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="container loading disabled"
+    class="label isDisabled container loadingLabel disabledLabel"
     for="toggle-button-5"
     role="switch"
   >
@@ -168,6 +174,9 @@ exports[`ToggleInput should render the button loading and disabled 1`] = `
         stroke-width="2"
       />
     </svg>
+    <div
+      class="label"
+    />
   </label>
 </div>
 `;
@@ -176,7 +185,7 @@ exports[`ToggleInput should render the checkbox checked 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="container"
+    class="label container"
     for="toggle-button-1"
     role="switch"
   >
@@ -191,6 +200,9 @@ exports[`ToggleInput should render the checkbox checked 1`] = `
     <div
       class="slider"
     />
+    <div
+      class="label"
+    />
   </label>
 </div>
 `;
@@ -199,7 +211,7 @@ exports[`ToggleInput should render the checkbox unchecked 1`] = `
 <div>
   <label
     aria-checked="false"
-    class="container"
+    class="label container"
     for="toggle-button-2"
     role="switch"
   >
@@ -212,6 +224,9 @@ exports[`ToggleInput should render the checkbox unchecked 1`] = `
     />
     <div
       class="slider"
+    />
+    <div
+      class="label"
     />
   </label>
 </div>

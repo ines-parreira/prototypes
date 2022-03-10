@@ -367,7 +367,7 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
               class="mb-3"
             >
               <label
-                class="label"
+                class="label label"
                 for="checkbox-3"
               >
                 <input
@@ -378,9 +378,6 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
                 />
                 Send invoice to customer
               </label>
-              <div
-                class="caption"
-              />
             </div>
           </div>
           <div
@@ -790,7 +787,7 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
               class="mb-3"
             >
               <label
-                class="label"
+                class="label label"
                 for="checkbox-1"
               >
                 <input
@@ -801,9 +798,6 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
                 />
                 Send invoice to customer
               </label>
-              <div
-                class="caption"
-              />
             </div>
           </div>
           <div
@@ -1007,7 +1001,7 @@ exports[`<EditOrderModal/> should render with an empty order table when data is 
               class="mb-3"
             >
               <label
-                class="label"
+                class="label label"
                 for="checkbox-2"
               >
                 <input
@@ -1018,9 +1012,6 @@ exports[`<EditOrderModal/> should render with an empty order table when data is 
                 />
                 Send invoice to customer
               </label>
-              <div
-                class="caption"
-              />
             </div>
           </div>
           <div

@@ -79,7 +79,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <div>
                     <label
-                      class="label"
+                      class="label label"
                       for="shopify"
                     >
                       <input
@@ -103,7 +103,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 >
                   <div>
                     <label
-                      class="label"
+                      class="label label"
                       for="website"
                     >
                       <input
@@ -944,7 +944,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="option"
                   >
                     <label
-                      class="label"
+                      class="label label"
                       for="team-members"
                     >
                       <input
@@ -961,7 +961,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="option"
                   >
                     <label
-                      class="label labelWithCaption"
+                      class="label label"
                       for="team-picture"
                     >
                       <input
@@ -973,7 +973,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       Use a single image for the whole team
                     </label>
                     <div
-                      class="caption"
+                      class="caption caption"
                     >
                       For example, use your company's logo. The image needs to be a square of 500kb maximum.
                     </div>
@@ -1675,7 +1675,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="option"
                   >
                     <label
-                      class="label"
+                      class="label label"
                       for="team-members"
                     >
                       <input
@@ -1692,7 +1692,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="option"
                   >
                     <label
-                      class="label labelWithCaption"
+                      class="label label"
                       for="team-picture"
                     >
                       <input
@@ -1704,7 +1704,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       Use a single image for the whole team
                     </label>
                     <div
-                      class="caption"
+                      class="caption caption"
                     >
                       For example, use your company's logo. The image needs to be a square of 500kb maximum.
                     </div>
@@ -2404,7 +2404,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     class="option"
                   >
                     <label
-                      class="label"
+                      class="label label"
                       for="team-members"
                     >
                       <input
@@ -2421,7 +2421,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     class="option"
                   >
                     <label
-                      class="label labelWithCaption"
+                      class="label label"
                       for="team-picture"
                     >
                       <input
@@ -2433,7 +2433,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       Use a single image for the whole team
                     </label>
                     <div
-                      class="caption"
+                      class="caption caption"
                     >
                       For example, use your company's logo. The image needs to be a square of 500kb maximum.
                     </div>
@@ -3141,7 +3141,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="option"
                   >
                     <label
-                      class="label"
+                      class="label label"
                       for="team-members"
                     >
                       <input
@@ -3158,7 +3158,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="option"
                   >
                     <label
-                      class="label labelWithCaption"
+                      class="label label"
                       for="team-picture"
                     >
                       <input
@@ -3170,7 +3170,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       Use a single image for the whole team
                     </label>
                     <div
-                      class="caption"
+                      class="caption caption"
                     >
                       For example, use your company's logo. The image needs to be a square of 500kb maximum.
                     </div>
@@ -3870,7 +3870,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="option"
                   >
                     <label
-                      class="label"
+                      class="label label"
                       for="team-members"
                     >
                       <input
@@ -3887,7 +3887,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="option"
                   >
                     <label
-                      class="label labelWithCaption"
+                      class="label label"
                       for="team-picture"
                     >
                       <input
@@ -3899,7 +3899,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       Use a single image for the whole team
                     </label>
                     <div
-                      class="caption"
+                      class="caption caption"
                     >
                       For example, use your company's logo. The image needs to be a square of 500kb maximum.
                     </div>
@@ -4493,7 +4493,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <div>
                     <label
-                      class="label"
+                      class="label label"
                       for="shopify"
                     >
                       <input
@@ -4517,7 +4517,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 >
                   <div>
                     <label
-                      class="label"
+                      class="label label"
                       for="website"
                     >
                       <input

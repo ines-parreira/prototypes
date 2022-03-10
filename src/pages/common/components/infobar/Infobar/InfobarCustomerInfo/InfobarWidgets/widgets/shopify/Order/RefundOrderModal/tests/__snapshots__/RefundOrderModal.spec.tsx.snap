@@ -439,7 +439,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="mb-3"
               >
                 <label
-                  class="label"
+                  class="label label"
                   for="checkbox-2"
                 >
                   <input
@@ -451,7 +451,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                   Restock items
                 </label>
                 <div
-                  class="caption"
+                  class="caption caption"
                 >
                   The claimed quantity for products in this order will be restocked back to your store.
                 </div>
@@ -460,7 +460,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="mb-3"
               >
                 <label
-                  class="label"
+                  class="label label"
                   for="notify-customer"
                 >
                   <input
@@ -472,9 +472,6 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                   />
                   Send notification to customer
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
           </div>
@@ -721,7 +718,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                 class="mb-3"
               >
                 <label
-                  class="label"
+                  class="label label"
                   for="checkbox-1"
                 >
                   <input
@@ -733,7 +730,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                   Restock items
                 </label>
                 <div
-                  class="caption"
+                  class="caption caption"
                 >
                   The claimed quantity for products in this order will be restocked back to your store.
                 </div>
@@ -742,7 +739,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                 class="mb-3"
               >
                 <label
-                  class="label"
+                  class="label label"
                   for="notify-customer"
                 >
                   <input
@@ -754,9 +751,6 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                   />
                   Send notification to customer
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
           </div>

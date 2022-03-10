@@ -3,11 +3,8 @@
 
 :local {
     .caption {
-        color: @classic-neutral-grey-4;
         position: relative;
         left: 50px;
-        margin-top: 4px;
-        .caption-regular();
     }
 
     .container {
@@ -18,13 +15,7 @@
         transition: color 0.2s linear;
     }
 
-    .disabled {
-        color: @classic-neutral-grey-4;
-
-        .label {
-            cursor: not-allowed;
-        }
-
+    .disabledLabel {
         .slider {
             background-color: @classic-neutral-grey-3;
             cursor: not-allowed;
@@ -35,7 +26,7 @@
         }
     }
 
-    .loading {
+    .loadingLabel {
         cursor: not-allowed;
 
         .label {
@@ -81,7 +72,6 @@
     }
 
     .label {
-        .body-semibold();
         cursor: pointer;
         user-select: none;
     }

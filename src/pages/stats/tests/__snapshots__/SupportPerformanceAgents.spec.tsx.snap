@@ -76,7 +76,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                   class="checkbox"
                 >
                   <label
-                    class="label quickSelectionOption"
+                    class="label label quickSelectionOption"
                     for="checkbox-1"
                   >
                     <input
@@ -92,9 +92,6 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       0
                     </div>
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </button>
               <div
@@ -145,7 +142,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                   class="checkbox"
                 >
                   <label
-                    class="label quickSelectionOption"
+                    class="label label quickSelectionOption"
                     for="checkbox-2"
                   >
                     <input
@@ -162,9 +159,6 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       1
                     </div>
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </button>
               <div
@@ -178,7 +172,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-3"
                   >
                     <input
@@ -189,15 +183,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Aircall
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-4"
                   >
                     <input
@@ -208,15 +199,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Api
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-5"
                   >
                     <input
@@ -228,15 +216,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Chat
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-6"
                   >
                     <input
@@ -247,15 +232,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Email
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-7"
                   >
                     <input
@@ -266,15 +248,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Facebook
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-8"
                   >
                     <input
@@ -285,15 +264,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Facebook mention
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-9"
                   >
                     <input
@@ -304,15 +280,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Facebook messenger
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-10"
                   >
                     <input
@@ -323,15 +296,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Facebook recommendations
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-11"
                   >
                     <input
@@ -342,15 +312,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Help center
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-12"
                   >
                     <input
@@ -361,15 +328,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Instagram ad comment
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-13"
                   >
                     <input
@@ -380,15 +344,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Instagram comment
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-14"
                   >
                     <input
@@ -399,15 +360,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Instagram mention
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-15"
                   >
                     <input
@@ -418,15 +376,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Instagram direct message
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-16"
                   >
                     <input
@@ -437,15 +392,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Phone
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-17"
                   >
                     <input
@@ -456,15 +408,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Sms
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-18"
                   >
                     <input
@@ -475,15 +424,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Twitter
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-19"
                   >
                     <input
@@ -494,15 +440,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Twitter direct message
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-20"
                   >
                     <input
@@ -513,9 +456,6 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Yotpo review
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </div>
             </div>
@@ -559,7 +499,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                   class="checkbox"
                 >
                   <label
-                    class="label quickSelectionOption"
+                    class="label label quickSelectionOption"
                     for="checkbox-21"
                   >
                     <input
@@ -576,9 +516,6 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       1
                     </div>
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </button>
               <div
@@ -599,7 +536,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     class="wrapperItem"
                   >
                     <label
-                      class="label labelItem"
+                      class="label label labelItem"
                       for="checkbox-22"
                     >
                       <input
@@ -610,15 +547,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       />
                       Foo
                     </label>
-                    <div
-                      class="caption"
-                    />
                   </div>
                   <div
                     class="wrapperItem"
                   >
                     <label
-                      class="label labelItem"
+                      class="label label labelItem"
                       for="checkbox-23"
                     >
                       <input
@@ -629,15 +563,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       />
                       Phone team - +1 205-396-3441
                     </label>
-                    <div
-                      class="caption"
-                    />
                   </div>
                   <div
                     class="wrapperItem"
                   >
                     <label
-                      class="label labelItem"
+                      class="label label labelItem"
                       for="checkbox-24"
                     >
                       <input
@@ -648,9 +579,6 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                       />
                       Test
                     </label>
-                    <div
-                      class="caption"
-                    />
                   </div>
                 </div>
                 <div
@@ -667,7 +595,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-25"
                   >
                     <input
@@ -679,15 +607,12 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Acme Support
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
                 <div
                   class="wrapperItem"
                 >
                   <label
-                    class="label labelItem"
+                    class="label label labelItem"
                     for="checkbox-26"
                   >
                     <input
@@ -698,9 +623,6 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
                     />
                      Bob Smith
                   </label>
-                  <div
-                    class="caption"
-                  />
                 </div>
               </div>
             </div>

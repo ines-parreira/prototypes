@@ -138,7 +138,7 @@ exports[`<Action/> should render with a Body component 1`] = `
           class="option"
         >
           <label
-            class="label"
+            class="label label"
             for="application/json"
           >
             <input
@@ -155,7 +155,7 @@ exports[`<Action/> should render with a Body component 1`] = `
           class="option"
         >
           <label
-            class="label"
+            class="label label"
             for="application/x-www-form-urlencoded"
           >
             <input

@@ -19,7 +19,7 @@ exports[`<Body/> should render with a json textarea 1`] = `
         class="option"
       >
         <label
-          class="label"
+          class="label label"
           for="application/json"
         >
           <input
@@ -36,7 +36,7 @@ exports[`<Body/> should render with a json textarea 1`] = `
         class="option"
       >
         <label
-          class="label"
+          class="label label"
           for="application/x-www-form-urlencoded"
         >
           <input
@@ -96,7 +96,7 @@ exports[`<Body/> should render with parameter fields 1`] = `
         class="option"
       >
         <label
-          class="label"
+          class="label label"
           for="application/json"
         >
           <input
@@ -112,7 +112,7 @@ exports[`<Body/> should render with parameter fields 1`] = `
         class="option"
       >
         <label
-          class="label"
+          class="label label"
           for="application/x-www-form-urlencoded"
         >
           <input

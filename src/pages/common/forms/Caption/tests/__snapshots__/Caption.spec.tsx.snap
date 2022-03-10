@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Caption /> should render a caption 1`] = `
+<div
+  class="caption"
+>
+  I am a caption
+</div>
+`;
+
+exports[`<Caption /> should render the error instead of the caption 1`] = `
+<div
+  class="caption error"
+>
+  This field cannot be empty
+</div>
+`;

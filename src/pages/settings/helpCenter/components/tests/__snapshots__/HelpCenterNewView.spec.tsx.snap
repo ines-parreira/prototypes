@@ -410,7 +410,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
               </div>
               <div>
                 <label
-                  class="label"
+                  class="label label"
                   for="light"
                 >
                   <input
@@ -443,7 +443,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
               </div>
               <div>
                 <label
-                  class="label"
+                  class="label label"
                   for="dark"
                 >
                   <input

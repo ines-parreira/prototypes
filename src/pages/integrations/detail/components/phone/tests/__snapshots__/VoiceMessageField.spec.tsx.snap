@@ -5,7 +5,7 @@ exports[`<VoiceMessageField /> should render 1`] = `
   class="mb-3"
 >
   <label
-    class="label"
+    class="label label"
     for="voice_recording"
   >
     <input

@@ -458,7 +458,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="mb-3"
               >
                 <label
-                  class="label"
+                  class="label label"
                   for="checkbox-2"
                 >
                   <input
@@ -470,7 +470,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                   Restock items
                 </label>
                 <div
-                  class="caption"
+                  class="caption caption"
                 >
                   The claimed quantity for products in this order will be restocked back to your store.
                 </div>
@@ -479,7 +479,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                 class="mb-3"
               >
                 <label
-                  class="label"
+                  class="label label"
                   for="notify-customer"
                 >
                   <input
@@ -491,9 +491,6 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                   />
                   Send notification to customer
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
           </div>
@@ -759,7 +756,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                 class="mb-3"
               >
                 <label
-                  class="label"
+                  class="label label"
                   for="checkbox-1"
                 >
                   <input
@@ -771,7 +768,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                   Restock items
                 </label>
                 <div
-                  class="caption"
+                  class="caption caption"
                 >
                   The claimed quantity for products in this order will be restocked back to your store.
                 </div>
@@ -780,7 +777,7 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                 class="mb-3"
               >
                 <label
-                  class="label"
+                  class="label label"
                   for="notify-customer"
                 >
                   <input
@@ -792,9 +789,6 @@ exports[`<CancelOrderContainer /> should render with an empty order table when d
                   />
                   Send notification to customer
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
           </div>

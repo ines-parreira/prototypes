@@ -112,7 +112,7 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
         <div>
           <label
             aria-checked="true"
-            class="container disabled"
+            class="label isDisabled container disabledLabel"
             for="toggle-button-1"
             role="switch"
           >
@@ -126,6 +126,9 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
             />
             <div
               class="slider"
+            />
+            <div
+              class="label"
             />
           </label>
         </div>

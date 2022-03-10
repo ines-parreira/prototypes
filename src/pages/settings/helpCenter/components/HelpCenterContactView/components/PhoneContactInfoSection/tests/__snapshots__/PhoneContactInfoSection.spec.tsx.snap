@@ -12,7 +12,7 @@ exports[`<PhoneContactInfoSection /> should render the component 1`] = `
     >
       <label
         aria-checked="false"
-        class="container"
+        class="label container"
         for="toggle-button-1"
         role="switch"
       >

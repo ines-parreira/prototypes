@@ -76,7 +76,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="basic-monthly42"
             >
               <input
@@ -96,9 +96,6 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"
@@ -434,7 +431,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="pro-monthly42"
             >
               <input
@@ -454,9 +451,6 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"
@@ -792,7 +786,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="advanced-monthly42"
             >
               <input
@@ -812,9 +806,6 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"
@@ -1811,7 +1802,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="basic-monthly42"
             >
               <input
@@ -1830,9 +1821,6 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"
@@ -2167,7 +2155,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="pro-monthly42"
             >
               <input
@@ -2186,9 +2174,6 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"
@@ -2524,7 +2509,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="advanced-monthly42"
             >
               <input
@@ -2543,9 +2528,6 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"
@@ -3203,7 +3185,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="basic-monthly42"
             >
               <input
@@ -3222,9 +3204,6 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"
@@ -3559,7 +3538,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="pro-monthly42"
             >
               <input
@@ -3578,9 +3557,6 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"
@@ -3916,7 +3892,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="advanced-monthly42"
             >
               <input
@@ -3935,9 +3911,6 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"
@@ -4602,7 +4575,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="basic-monthly42"
             >
               <input
@@ -4621,9 +4594,6 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"
@@ -4969,7 +4939,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="pro-monthly42"
             >
               <input
@@ -4988,9 +4958,6 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"
@@ -5337,7 +5304,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             class="checkbox"
           >
             <label
-              class="label"
+              class="label label"
               for="advanced-monthly42"
             >
               <input
@@ -5356,9 +5323,6 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
                 </span>
               </div>
             </label>
-            <div
-              class="caption"
-            />
           </div>
           <div
             class="amountContainer"

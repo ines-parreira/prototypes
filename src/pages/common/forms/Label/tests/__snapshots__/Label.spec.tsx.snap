@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Label /> should render a disabled label 1`] = `
+<label
+  class="label isDisabled"
+>
+  I am a label
+</label>
+`;
+
+exports[`<Label /> should render a label 1`] = `
+<label
+  class="label"
+>
+  I am a label
+</label>
+`;
+
+exports[`<Label /> should render a required label 1`] = `
+<label
+  class="label"
+>
+  I am a label
+  <abbr
+    aria-label="required"
+    class="abbr"
+    title="required"
+  >
+    *
+  </abbr>
+</label>
+`;

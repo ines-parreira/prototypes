@@ -55,7 +55,7 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                 class="checkbox"
               >
                 <label
-                  class="label quickSelectionOption"
+                  class="label label quickSelectionOption"
                   for="checkbox-1"
                 >
                   <input
@@ -71,9 +71,6 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                     2
                   </div>
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </button>
             <div
@@ -87,7 +84,7 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                 class="wrapperItem"
               >
                 <label
-                  class="label labelItem"
+                  class="label label labelItem"
                   for="checkbox-2"
                 >
                   <input
@@ -98,15 +95,12 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                   />
                    Auto Close
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
               <div
                 class="wrapperItem"
               >
                 <label
-                  class="label labelItem"
+                  class="label label labelItem"
                   for="checkbox-3"
                 >
                   <input
@@ -117,9 +111,6 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                   />
                    Auto Tag
                 </label>
-                <div
-                  class="caption"
-                />
               </div>
             </div>
           </div>

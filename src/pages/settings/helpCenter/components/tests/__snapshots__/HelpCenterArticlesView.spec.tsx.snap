@@ -421,7 +421,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             </div>
             <div>
               <label
-                class="label"
+                class="label label"
                 for="checkbox-1"
               >
                 <input
@@ -433,9 +433,6 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 />
                 Use the same as Title
               </label>
-              <div
-                class="caption"
-              />
             </div>
           </div>
           <div
@@ -470,7 +467,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             </div>
             <div>
               <label
-                class="label"
+                class="label label"
                 for="checkbox-2"
               >
                 <input
@@ -482,9 +479,6 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 />
                 Use the same as Description
               </label>
-              <div
-                class="caption"
-              />
             </div>
           </div>
           <div

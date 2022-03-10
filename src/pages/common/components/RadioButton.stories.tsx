@@ -6,6 +6,13 @@ import RadioButton from './RadioButton'
 const storyConfig: Meta = {
     title: 'Data Entry/RadioButton',
     component: RadioButton,
+    argTypes: {
+        caption: {
+            control: {
+                type: 'text',
+            },
+        },
+    },
 }
 
 const Template: Story<ComponentProps<typeof RadioButton>> = (props) => (
