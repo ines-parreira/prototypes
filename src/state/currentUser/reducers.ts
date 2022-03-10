@@ -82,6 +82,10 @@ export default function reducer(
             return state.update('is_active', (status) =>
                 _isUndefined(action.status) ? !status : action.status
             )
+
+        case constants.UPDATE_2FA_STATUS:
+            return state.update('has_2fa_enabled', () => action.status)
+
         default:
             return state
     }

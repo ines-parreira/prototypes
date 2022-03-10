@@ -181,3 +181,31 @@ export const toggleActiveStatus =
             })
         }
     }
+
+export const update2FAEnabled =
+    (status: boolean) =>
+    (dispatch: StoreDispatch, getState: () => RootState) => {
+        const {currentUser} = getState()
+        const currentStatus = currentUser.get('has_2fa_enabled')
+
+        // Don't do anything if status didn't change
+        if (status === currentStatus) {
+            return
+        }
+
+        // Show a success notification
+        void dispatch(
+            notify({
+                status: NotificationStatus.Success,
+                message: `Two-Factor Authentication has successfully been ${
+                    status ? 'activated' : 'disabled'
+                }`,
+            })
+        )
+
+        // Update the value in the currentUser object
+        dispatch({
+            type: constants.UPDATE_2FA_STATUS,
+            status,
+        })
+    }

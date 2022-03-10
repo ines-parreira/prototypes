@@ -134,6 +134,28 @@ describe('current user actions', () => {
         })
     })
 
+    describe('update2FAEnabled', () => {
+        it.each([true, false])('should dispatch with status', (status) => {
+            store = mockStore({
+                currentUser: initialState.set('has_2fa_enabled', !status),
+            })
+
+            store.dispatch(actions.update2FAEnabled(status))
+
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('should not dispatch when the status is the same', () => {
+            store = mockStore({
+                currentUser: initialState.set('has_2fa_enabled', true),
+            })
+
+            store.dispatch(actions.update2FAEnabled(true))
+
+            expect(store.getActions()).toEqual([])
+        })
+    })
+
     describe('submitSettingSuccess', () => {
         it('should dispatch the next setting', () => {
             store = mockStore({

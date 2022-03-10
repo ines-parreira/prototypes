@@ -1,0 +1,270 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Deactivate Two-Factor Authentication?
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              
+              Your account will no longer benefit from this extra layer of security.
+            </div>
+            <div
+              class="modalFooter modal-footer"
+            >
+              <button
+                class="wrapper mr-auto secondary medium isDisabled"
+                disabled=""
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="wrapper destructive medium isDisabled"
+                disabled=""
+                type="button"
+              >
+                <div
+                  class="spinner spinner-border"
+                  role="status"
+                >
+                  <span
+                    class="sr-only"
+                  >
+                    Loading...
+                  </span>
+                </div>
+                Deactivate Authentication
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationDisableModal /> should not render the modal when not open 1`] = `
+<body
+  class=""
+>
+  <div />
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Deactivate Two-Factor Authentication?
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              
+              Your account will no longer benefit from this extra layer of security.
+            </div>
+            <div
+              class="modalFooter modal-footer"
+            >
+              <button
+                class="wrapper mr-auto secondary medium"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="wrapper destructive medium"
+                type="button"
+              >
+                Deactivate Authentication
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the deletion failed 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Deactivate Two-Factor Authentication?
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              
+              Your account will no longer benefit from this extra layer of security.
+            </div>
+            <div
+              class="modalFooter modal-footer"
+            >
+              <button
+                class="wrapper mr-auto secondary medium isDisabled"
+                disabled=""
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="wrapper destructive medium isDisabled"
+                disabled=""
+                type="button"
+              >
+                <div
+                  class="spinner spinner-border"
+                  role="status"
+                >
+                  <span
+                    class="sr-only"
+                  >
+                    Loading...
+                  </span>
+                </div>
+                Deactivate Authentication
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;

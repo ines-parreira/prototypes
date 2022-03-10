@@ -16,3 +16,7 @@ export const validateVerificationCode = async (
 export const saveTwoFASecret = async (): Promise<void> => {
     await client.post<void>('/api/2fa/secret', {})
 }
+
+export const deleteTwoFASecret = async (): Promise<void> => {
+    await client.delete<void>('/api/2fa/secret')
+}

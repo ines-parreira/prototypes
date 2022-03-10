@@ -4,6 +4,7 @@ import {AxiosError} from 'axios'
 import {authenticatorData as authenticatorDataFixture} from '../../../fixtures/authenticatorData'
 import client from '../../api/resources'
 import {
+    deleteTwoFASecret,
     fetchAuthenticatorData,
     saveTwoFASecret,
     validateVerificationCode,
@@ -95,6 +96,24 @@ describe('twoFactorAuthentication resources', () => {
 
             await expect(saveTwoFASecret()).rejects.toThrow(
                 new Error('Request failed with status code 503')
+            )
+        })
+    })
+
+    describe('deleteTwoFASecret', () => {
+        it('should resolve with 204 code and empty body on success', async () => {
+            mockedServer.onDelete('/api/2fa/secret').reply(204, {})
+
+            await expect(deleteTwoFASecret()).resolves.not.toThrow()
+        })
+
+        it('should reject an error on fail', async () => {
+            mockedServer
+                .onDelete('/api/2fa/secret')
+                .reply(503, {message: 'error'})
+
+            await expect(deleteTwoFASecret()).rejects.toThrow(
+                'Request failed with status code 503'
             )
         })
     })

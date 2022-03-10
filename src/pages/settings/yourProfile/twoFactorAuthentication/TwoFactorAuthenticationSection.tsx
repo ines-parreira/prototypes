@@ -1,13 +1,24 @@
-import React, {useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import classnames from 'classnames'
 
+import {useSelector} from 'react-redux'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Button from 'pages/common/components/button/Button'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import css from 'pages/settings/settings.less'
+import {getCurrentUserState} from '../../../../state/currentUser/selectors'
+import TwoFactorAuthenticationDisableModal from './TwoFactorAuthenticationDisableModal'
 import TwoFactorAuthenticationModal from './TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 
 export default function TwoFactorAuthenticationSection() {
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const currentUser = useSelector(getCurrentUserState)
+
+    const [isEnableModalOpen, setIsEnableModalOpen] = useState(false)
+    const [isDisableModalOpen, setIsDisableModalOpen] = useState(false)
+
+    const is2FaEnforced = false // TODO(@Nicolas): fetch this from api when adding enforcing mechanism
+    const has2FaEnabled = useMemo(() => {
+        return !!currentUser.get('has_2fa_enabled')
+    }, [currentUser])
 
     return (
         <>
@@ -25,13 +36,30 @@ export default function TwoFactorAuthenticationSection() {
                 <a href={''}> Learn more</a>
             </div>
 
-            <Button onClick={() => setIsModalOpen(true)}>
-                Enable Two-Factor Authentication
-            </Button>
-            {isModalOpen && (
+            {!has2FaEnabled && (
+                <Button onClick={() => setIsEnableModalOpen(true)}>
+                    Enable Two-Factor Authentication
+                </Button>
+            )}
+            {has2FaEnabled && !is2FaEnforced && (
+                <Button
+                    onClick={() => setIsDisableModalOpen(true)}
+                    intent={ButtonIntent.Destructive}
+                >
+                    Disable Two-Factor Authentication
+                </Button>
+            )}
+
+            {isEnableModalOpen && (
                 <TwoFactorAuthenticationModal
-                    isOpen={isModalOpen}
-                    setIsOpen={setIsModalOpen}
+                    isOpen={isEnableModalOpen}
+                    setIsOpen={setIsEnableModalOpen}
+                />
+            )}
+            {isDisableModalOpen && (
+                <TwoFactorAuthenticationDisableModal
+                    isOpen={isDisableModalOpen}
+                    onClose={() => setIsDisableModalOpen(false)}
                 />
             )}
         </>

@@ -150,4 +150,23 @@ describe('current user reducers', () => {
             ).toEqualImmutable(initialState.set('is_active', true))
         })
     })
+
+    it('should handle UPDATE_2FA_STATUS', () => {
+        const action = {
+            type: types.UPDATE_2FA_STATUS,
+            status: false,
+        }
+
+        expect(reducer(initialState, action)).toEqualImmutable(
+            initialState.set('has_2fa_enabled', false)
+        )
+
+        expect(
+            reducer(initialState, {...action, status: true})
+        ).toEqualImmutable(initialState.set('has_2fa_enabled', true))
+
+        expect(
+            reducer(initialState, {...action, status: false})
+        ).toEqualImmutable(initialState.set('has_2fa_enabled', false))
+    })
 })
