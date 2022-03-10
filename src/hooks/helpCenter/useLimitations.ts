@@ -1,5 +1,4 @@
-import {useSelector} from 'react-redux'
-
+import useAppSelector from 'hooks/useAppSelector'
 import {getArticles} from 'state/entities/helpCenter/articles'
 import {
     HELP_CENTER_MAX_ARTICLES,
@@ -13,7 +12,7 @@ type Limitation = {
 }
 
 export const useLimitations = (): {[actionName: string]: Limitation} => {
-    const articles = useSelector(getArticles)
+    const articles = useAppSelector(getArticles)
 
     const articleCreationLimitation = {
         currentNumber: articles.length,

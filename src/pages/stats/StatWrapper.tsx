@@ -10,7 +10,6 @@ import classnames from 'classnames'
 import axios, {AxiosError, CancelToken} from 'axios'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
-import {useSelector} from 'react-redux'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import {
@@ -20,6 +19,7 @@ import {
     TwoDimensionalChart,
 } from 'models/stat/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {downloadStat} from 'models/stat/resources'
 import {saveFileAsDownloaded} from 'utils/file'
 import {notify} from 'state/notifications/actions'
@@ -59,8 +59,8 @@ export default function StatWrapper({
     ...wrapperProps
 }: Props) {
     const dispatch = useAppDispatch()
-    const currentUser = useSelector(getCurrentUser)
-    const account = useSelector(getCurrentAccountState)
+    const currentUser = useAppSelector(getCurrentUser)
+    const account = useAppSelector(getCurrentAccountState)
 
     const [{loading: isDownloading}, handleDownloadStat] = useAsyncFn(
         async (cancelToken: CancelToken) => {

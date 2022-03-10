@@ -1,9 +1,9 @@
 import {useEffect, useMemo, useState} from 'react'
-import {useSelector} from 'react-redux'
 
 import {Paths} from 'rest_api/help_center_api/client.generated'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {Category} from 'models/helpCenter/types'
 import {
     getCategories,
@@ -30,7 +30,7 @@ export const useHelpCenterCategories = (
     params: Omit<Paths.ListCategories.QueryParameters, 'page'>
 ): HelpCenterCategoriesHook => {
     const dispatch = useAppDispatch()
-    const categories = useSelector(getCategories)
+    const categories = useAppSelector(getCategories)
 
     const {client} = useHelpCenterApi()
     const [isLoading, setLoading] = useState(true)

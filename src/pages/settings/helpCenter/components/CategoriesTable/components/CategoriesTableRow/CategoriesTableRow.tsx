@@ -8,7 +8,6 @@ import React, {
 } from 'react'
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
-import {useSelector} from 'react-redux'
 import {usePrevious} from 'react-use'
 import {Badge, Spinner} from 'reactstrap'
 
@@ -35,6 +34,7 @@ import {
 } from 'pages/settings/helpCenter/components/DroppableTableBodyRow'
 import {TableActions} from 'pages/settings/helpCenter/components/TableActions'
 import {DND_ENTITIES} from 'pages/settings/helpCenter/components/CategoriesTable/constants'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from './CategoriesTableRow.less'
 
@@ -175,7 +175,7 @@ export const CategoriesTableRow = ({
     const [isOpen, setOpen] = useState(false)
     const [itemCount, setItemCount] = useState(0)
     const {isLoading, fetchArticles, getArticleCount} = useArticlesActions()
-    const articles = useSelector(
+    const articles = useAppSelector(
         categoryId !== null
             ? getArticlesInCategory(categoryId)
             : getUncategorizedArticles

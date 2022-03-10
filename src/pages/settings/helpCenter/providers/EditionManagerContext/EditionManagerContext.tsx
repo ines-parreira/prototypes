@@ -6,7 +6,6 @@ import React, {
     SetStateAction,
     useEffect,
 } from 'react'
-import {useSelector} from 'react-redux'
 
 import {Article, CreateArticleDto, LocaleCode} from 'models/helpCenter/types'
 import {getViewLanguage} from 'state/ui/helpCenter/selectors'
@@ -14,6 +13,7 @@ import {HelpCenterArticleModalState} from 'pages/settings/helpCenter/components/
 import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
 import {changeViewLanguage} from 'state/ui/helpCenter'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 
 // TODO: move to redux (as UI states?)
 type EditionManagerContextValues = {
@@ -48,7 +48,7 @@ export const EditionManagerContextProvider = (props: {
     const dispatch = useAppDispatch()
 
     const viewLanguage =
-        useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+        useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
     // article & category states
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(

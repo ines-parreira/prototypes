@@ -1,22 +1,20 @@
 import React, {useMemo, useRef, useState} from 'react'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
-import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 import classNames from 'classnames'
 
 import shopify from 'assets/img/integrations/shopify.png'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
-
-import {getHasAutomationAddOn} from '../../../../../state/billing/selectors'
-
-import Modal from '../../../../common/components/Modal'
-import SelectField from '../../../../common/forms/SelectField/SelectField'
-import {IntegrationType} from '../../../../../models/integration/types'
-import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
-import {Option} from '../../../../common/forms/SelectField/types'
-import {HelpCenter} from '../../../../../models/helpCenter/types'
-import Tooltip from '../../../../common/components/Tooltip'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import Modal from 'pages/common/components/Modal'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {IntegrationType} from 'models/integration/types'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {Option} from 'pages/common/forms/SelectField/types'
+import {HelpCenter} from 'models/helpCenter/types'
+import Tooltip from 'pages/common/components/Tooltip'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from './ConnectToShopSection.less'
 
@@ -60,15 +58,15 @@ export const ConnectToShopSection = ({
         helpCenter.shop_name ?? NO_SELECTED_SHOP
     )
 
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const disconnectButtonRef = useRef<HTMLSpanElement>(null)
 
-    const shopifyIntegrations = useSelector(
+    const shopifyIntegrations = useAppSelector(
         getIntegrationsByTypes(IntegrationType.Shopify)
     )
 
-    const chatIntegrations = useSelector(
+    const chatIntegrations = useAppSelector(
         getIntegrationsByTypes(IntegrationType.GorgiasChat)
     )
 

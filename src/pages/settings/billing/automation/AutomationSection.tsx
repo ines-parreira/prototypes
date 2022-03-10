@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import classnames from 'classnames'
 import {Card, CardBody, CardTitle} from 'reactstrap'
 import {Link} from 'react-router-dom'
-import {useSelector} from 'react-redux'
 
 import {
     DEPRECATED_getCurrentPlan,
@@ -16,19 +15,20 @@ import {
 import UpgradeButton from 'pages/common/components/UpgradeButton/UpgradeButton'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import useAppSelector from 'hooks/useAppSelector'
 
 import AutomationSubscriptionModal from './AutomationSubscriptionModal'
 import css from './AutomationSection.less'
 
 const AutomationSection = () => {
-    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
-    const addOnAmount = useSelector(getAddOnAutomationAmountCurrentPlan)
+    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
+    const addOnAmount = useAppSelector(getAddOnAutomationAmountCurrentPlan)
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
-    const isOnTrial = useSelector(isTrialing)
-    const isSelfServeLegacy = useSelector(hasAutomationLegacyFeatures)
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const isOnTrial = useAppSelector(isTrialing)
+    const isSelfServeLegacy = useAppSelector(hasAutomationLegacyFeatures)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     return (
         <Card

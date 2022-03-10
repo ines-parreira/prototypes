@@ -1,12 +1,12 @@
 import {useCallback} from 'react'
 import {TwilioError} from '@twilio/voice-sdk'
-import {useSelector} from 'react-redux'
 
-import {PhoneCallDirection, TwilioErrorCode} from '../../../business/twilio'
-import {setCall, setIsDialing} from '../../../state/twilio/actions'
-import client from '../../../models/api/resources'
-import useAppDispatch from '../../useAppDispatch'
-import {RootState} from '../../../state/types'
+import {PhoneCallDirection, TwilioErrorCode} from 'business/twilio'
+import {setCall, setIsDialing} from 'state/twilio/actions'
+import client from 'models/api/resources'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {RootState} from 'state/types'
 
 import {usePhoneError} from './usePhoneError'
 
@@ -21,7 +21,7 @@ type Options = {
 
 export function useOutboundCall(): (options: Options) => void {
     const dispatch = useAppDispatch()
-    const device = useSelector((state: RootState) => state.twilio.device)
+    const device = useAppSelector((state: RootState) => state.twilio.device)
 
     const {onError, onTwilioError} = usePhoneError({
         // Twilio throws this error when the customer doesn't pick up the call

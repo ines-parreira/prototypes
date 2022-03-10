@@ -1,7 +1,7 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 
+import useAppSelector from 'hooks/useAppSelector'
 import shopify from 'assets/img/integrations/shopify.png'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
@@ -20,10 +20,12 @@ type Props = {
 }
 
 const SelfServiceIntegrationsFilter = ({value = [], onChange}: Props) => {
-    const shopifyIntegrations = useSelector(
+    const shopifyIntegrations = useAppSelector(
         getIntegrationsByTypes(IntegrationType.Shopify)
     )
-    const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)
+    const selfServiceConfigurations = useAppSelector(
+        getSelfServiceConfigurations
+    )
 
     return (
         <SelectFilter

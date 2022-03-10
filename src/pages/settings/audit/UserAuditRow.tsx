@@ -1,7 +1,6 @@
 import React, {useCallback, useMemo} from 'react'
 import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
-import {useSelector} from 'react-redux'
 import _startCase from 'lodash/startCase'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
@@ -9,6 +8,7 @@ import {DatetimeLabel} from 'pages/common/utils/labels'
 import {Event} from 'models/event/types'
 import {getAgents} from 'state/agents/selectors'
 import {humanizeString} from 'utils'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {DATETIME_LABEL_FORMAT} from './constants'
 import css from './UserAuditRow.less'
@@ -18,7 +18,7 @@ type Props = {
 }
 
 const UserAuditRow = ({eventItem}: Props) => {
-    const agents = useSelector(getAgents)
+    const agents = useAppSelector(getAgents)
 
     const renderUser = useCallback(() => {
         const user: Map<any, any> | undefined = agents.find(

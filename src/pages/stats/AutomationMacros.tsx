@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
-import {useSelector} from 'react-redux'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {TicketChannel} from 'business/types/ticket'
 import {MESSAGES_SENT_PER_MACRO, stats as statsConfig} from 'config/stats'
 import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
@@ -21,11 +21,11 @@ import useStatResource from './useStatResource'
 export const AUTOMATION_MACROS_STAT_NAME = 'automation-macros'
 
 export default function AutomationMacros() {
-    const messagingIntegrations = useSelector(getStatsMessagingIntegrations)
-    const integrationsStatsFilter = useSelector(
+    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFilters)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, period} = statsFilters

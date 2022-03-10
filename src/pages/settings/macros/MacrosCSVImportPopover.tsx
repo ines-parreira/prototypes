@@ -4,7 +4,6 @@ import React, {ChangeEvent, useRef, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
-import {useSelector} from 'react-redux'
 
 import {createJob} from 'models/job/resources'
 import {GorgiasApiError} from 'models/api/types'
@@ -20,6 +19,7 @@ import Button, {
 } from 'pages/common/components/button/Button'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
@@ -36,7 +36,7 @@ type Props = {
 export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
     const [pickedFile, setPickedFile] = useState<File | null>(null)
     const hiddenFileInputRef = useRef<HTMLInputElement>(null)
-    const currentAccount = useSelector(getCurrentAccountState)
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const dispatch = useAppDispatch()
 
     const [{loading: isImporting}, handleImport] = useAsyncFn(async () => {

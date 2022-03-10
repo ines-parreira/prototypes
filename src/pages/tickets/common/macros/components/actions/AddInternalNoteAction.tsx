@@ -1,4 +1,3 @@
-import {useSelector} from 'react-redux'
 import React, {useRef} from 'react'
 import {EditorState} from 'draft-js'
 import {
@@ -10,14 +9,14 @@ import {
 } from 'reactstrap'
 import {Map} from 'immutable'
 
-import {insertText} from '../../../../../../utils'
-import {attachEntitiesToVariables} from '../../../../../common/draftjs/plugins/variables/utils.js'
-import {convertToHTML, getPlainText} from '../../../../../../utils/editor'
-import {getVariables} from '../../../../../../config/ticket'
-
-import RichField from '../../../../../common/forms/RichField/RichField'
-import {makeHasIntegrationOfTypes} from '../../../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../../../models/integration/constants'
+import {insertText} from 'utils'
+import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
+import {convertToHTML, getPlainText} from 'utils/editor'
+import {getVariables} from 'config/ticket'
+import RichField from 'pages/common/forms/RichField/RichField'
+import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/constants'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from './AddInternalNoteAction.less'
 
@@ -34,7 +33,7 @@ export default function AddInternalNoteAction({
     index,
     renderVariables = true,
 }: Props) {
-    const hasIntegrationOfTypes = useSelector(makeHasIntegrationOfTypes)
+    const hasIntegrationOfTypes = useAppSelector(makeHasIntegrationOfTypes)
     const richArea = useRef<RichField>(null)
 
     const _insertText = (text: string) => {

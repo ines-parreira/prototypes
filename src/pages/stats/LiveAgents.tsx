@@ -1,8 +1,8 @@
 import React, {useMemo, useCallback} from 'react'
-import {useSelector} from 'react-redux'
 import moment from 'moment-timezone'
 import produce from 'immer'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {stats as statsConfig, USERS_PERFORMANCE_OVERVIEW} from 'config/stats'
 import {getStatsFilters} from 'state/stats/selectors'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
@@ -34,8 +34,8 @@ import StatsFiltersContext from './StatsFiltersContext'
 const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'
 
 function LiveAgents() {
-    const userTimezone = useSelector(getTimezone)
-    const statsFilters = useSelector(getStatsFilters)
+    const userTimezone = useAppSelector(getTimezone)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()

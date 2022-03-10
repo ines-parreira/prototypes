@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
-import {useSelector} from 'react-redux'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {
     getMessagingIntegrationsStatsFilter,
     getStatsFilters,
@@ -28,11 +28,11 @@ import StatsFiltersContext from './StatsFiltersContext'
 const SUPPORT_PERFORMANCE_AGENTS_STAT_NAME = 'support-performance-agents'
 
 export default function SupportPerformanceAgents() {
-    const messagingIntegrations = useSelector(getStatsMessagingIntegrations)
-    const integrationsStatsFilter = useSelector(
+    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFilters)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, agents, period} = statsFilters

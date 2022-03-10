@@ -2,20 +2,20 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {fromJS, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Container, Label} from 'reactstrap'
-import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
 import classnames from 'classnames'
 
-import PageHeader from '../../../../../common/components/PageHeader'
-import {DEPRECATED_getIntegrations} from '../../../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../../../models/integration/types'
-import {fetchSelfServiceConfiguration} from '../../../../../../models/selfServiceConfiguration/resources'
-import ToggleInput from '../../../../../common/forms/ToggleInput'
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
-import useAppDispatch from '../../../../../../hooks/useAppDispatch'
-import Tooltip from '../../../../../common/components/Tooltip'
-import settingsCss from '../../../../../settings/settings.less'
-import ChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import PageHeader from 'pages/common/components/PageHeader'
+import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/types'
+import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {updateOrCreateIntegration} from 'state/integrations/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import Tooltip from 'pages/common/components/Tooltip'
+import settingsCss from 'pages/settings/settings.less'
+import ChatIntegrationNavigation from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationNavigation'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from './GorgiasChatIntegrationSelfService.less'
 
@@ -65,7 +65,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
         [integration]
     )
 
-    const integrations = useSelector(DEPRECATED_getIntegrations)
+    const integrations = useAppSelector(DEPRECATED_getIntegrations)
 
     const shopifyIntegration: Map<any, any> | undefined = integrations.find(
         (shopifyIntegration: Map<any, any>) => {

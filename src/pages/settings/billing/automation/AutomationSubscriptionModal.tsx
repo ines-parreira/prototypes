@@ -2,7 +2,6 @@ import React, {ElementType} from 'react'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 import {useAsyncFn} from 'react-use'
-import {useSelector} from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {getEquivalentRegularPlanId} from 'models/billing/utils'
@@ -17,6 +16,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import useAppSelector from 'hooks/useAppSelector'
 
 import AutomationSubscriptionDescription from './AutomationSubscriptionDescription'
 import css from './AutomationSubscriptionModal.less'
@@ -59,10 +59,10 @@ const AutomationSubscriptionModal = ({
     onClose,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
-    const automationPlan = useSelector(getEquivalentAutomationCurrentPlan)
-    const isSelfServeLegacy = useSelector(hasAutomationLegacyFeatures)
+    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const automationPlan = useAppSelector(getEquivalentAutomationCurrentPlan)
+    const isSelfServeLegacy = useAppSelector(hasAutomationLegacyFeatures)
 
     const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
         useAsyncFn(async (planId) => {

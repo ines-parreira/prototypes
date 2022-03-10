@@ -1,6 +1,5 @@
 import React, {useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
-import {useSelector} from 'react-redux'
 
 import {
     getMessagingIntegrationsStatsFilter,
@@ -22,6 +21,7 @@ import {
 import {TicketChannel} from 'business/types/ticket'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
+import useAppSelector from 'hooks/useAppSelector'
 
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -40,11 +40,11 @@ const SUPPORT_PERFORMANCE_SATISFACTION_STAT_NAME =
     'support-performance-satisfaction'
 
 function SupportPerformanceSatisfaction() {
-    const messagingIntegrations = useSelector(getStatsMessagingIntegrations)
-    const integrationsStatsFilter = useSelector(
+    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFilters)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, score, agents, tags, period} = statsFilters

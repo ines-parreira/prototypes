@@ -1,5 +1,4 @@
 import React, {ComponentProps, useEffect, useState} from 'react'
-import {useSelector} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 
 import {
@@ -12,6 +11,7 @@ import {
 import {AccountFeatures} from 'state/currentAccount/types'
 import {isFeatureEnabled} from 'utils/account'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import useAppSelector from 'hooks/useAppSelector'
 
 import BillingPlanCard from './BillingPlanCard'
 import ChangePlanModal from './ChangePlanModal'
@@ -49,12 +49,12 @@ export default function BillingComparisonPlanCard({
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(
         defaultIsPlanChangeModalOpen
     )
-    const isLegacyPlan = useSelector(hasLegacyPlan)
-    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
-    const regularCurrentPlan = useSelector(getEquivalentRegularCurrentPlan)
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const isLegacyPlan = useAppSelector(hasLegacyPlan)
+    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
+    const regularCurrentPlan = useAppSelector(getEquivalentRegularCurrentPlan)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
-    const equivalentAutomationPlan = useSelector(
+    const equivalentAutomationPlan = useAppSelector(
         getPlan(plan.automation_addon_equivalent_plan!)
     )
     const addOnAmount = equivalentAutomationPlan.get('amount')

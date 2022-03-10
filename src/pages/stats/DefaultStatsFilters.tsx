@@ -1,9 +1,9 @@
 import React, {ReactNode, useEffect, useMemo} from 'react'
-import {useSelector} from 'react-redux'
 import moment from 'moment-timezone'
 import _isEqual from 'lodash/isEqual'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {resetStatsFilters, setStatsFilters} from 'state/stats/actions'
 import {getStatsFilters} from 'state/stats/selectors'
@@ -20,8 +20,8 @@ export default function DefaultStatsFilters({
     notReadyFallback,
 }: Props) {
     const dispatch = useAppDispatch()
-    const userTimezone = useSelector(getTimezone)
-    const statsFilters = useSelector(getStatsFilters)
+    const userTimezone = useAppSelector(getTimezone)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const isReady = useMemo(
         () => !_isEqual(statsFilters, defaultStatsFilters),

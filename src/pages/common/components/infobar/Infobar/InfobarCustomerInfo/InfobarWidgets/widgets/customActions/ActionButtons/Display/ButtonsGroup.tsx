@@ -7,7 +7,6 @@ import React, {
     useState,
     useRef,
 } from 'react'
-import {useSelector} from 'react-redux'
 import {
     UncontrolledDropdown,
     DropdownMenu,
@@ -33,6 +32,8 @@ import {
     Button as ButtonType,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
+import useAppSelector from 'hooks/useAppSelector'
+
 import Button from './Button'
 import ActionEditor from './ActionEditor'
 
@@ -50,8 +51,8 @@ type HandleSubmit = (action: Action) => void
 
 function ButtonsGroup({buttons, source}: Props) {
     // templating management
-    const ticket = useSelector(getTicket)
-    const user = useSelector(getActiveCustomer)
+    const ticket = useAppSelector(getTicket)
+    const user = useAppSelector(getActiveCustomer)
     const templateContext = useMemo(() => {
         return {
             ...(source.toJS() as Record<string, unknown>),
@@ -61,7 +62,7 @@ function ButtonsGroup({buttons, source}: Props) {
     }, [user, source, ticket])
 
     // editor management
-    const currentAccount = useSelector(getCurrentAccountState)
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const {integrationId} = useContext(IntegrationContext)
     const [editIndex, setEditIndex] = useState<number>(0)
     const [isEditorOpen, setEditorOpen] = useState<boolean>(false)

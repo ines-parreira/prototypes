@@ -2,38 +2,38 @@ import React, {useEffect, useState} from 'react'
 import {useDebounce, useAsyncFn} from 'react-use'
 import classnames from 'classnames'
 import {Container} from 'reactstrap'
-import {useSelector} from 'react-redux'
 import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
 import history from 'pages/history'
 
 import Button from 'pages/common/components/button/Button'
-import PageHeader from '../../common/components/PageHeader'
-import Video from '../../common/components/Video/Video'
-import Loader from '../../common/components/Loader/Loader'
-import Alert, {AlertType} from '../../common/components/Alert/Alert'
-import Search from '../../common/components/Search'
+import PageHeader from 'pages/common/components/PageHeader'
+import Video from 'pages/common/components/Video/Video'
+import Loader from 'pages/common/components/Loader/Loader'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Search from 'pages/common/components/Search'
 
-import {RuleLimitStatus} from '../../../state/rules/types'
-import {NotificationStatus} from '../../../state/notifications/types'
-import {rulesFetched} from '../../../state/entities/rules/actions'
+import {RuleLimitStatus} from 'state/rules/types'
+import {NotificationStatus} from 'state/notifications/types'
+import {rulesFetched} from 'state/entities/rules/actions'
 import {
     getRulesLimitStatus,
     getSortedRules,
-} from '../../../state/entities/rules/selectors'
-import {fetchRules} from '../../../models/rule/resources'
+} from 'state/entities/rules/selectors'
+import {fetchRules} from 'models/rule/resources'
 
-import {getSortedRuleRecipes} from '../../../state/entities/ruleRecipes/selectors'
-import {fetchRuleRecipes} from '../../../models/ruleRecipe/resources'
-import {RuleRecipeTag} from '../../../models/ruleRecipe/types'
-import {ruleRecipesFetched} from '../../../state/entities/ruleRecipes/actions'
-import {getCurrentAccountState} from '../../../state/currentAccount/selectors'
+import {getSortedRuleRecipes} from 'state/entities/ruleRecipes/selectors'
+import {fetchRuleRecipes} from 'models/ruleRecipe/resources'
+import {RuleRecipeTag} from 'models/ruleRecipe/types'
+import {ruleRecipesFetched} from 'state/entities/ruleRecipes/actions'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
-import {notify} from '../../../state/notifications/actions'
-import {logEvent, SegmentEvent} from '../../../store/middlewares/segmentTracker'
+import {notify} from 'state/notifications/actions'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
-import settingsCss from '../settings.less'
-import useAppDispatch from '../../../hooks/useAppDispatch'
-import SelectFilter from '../../stats/common/SelectFilter'
+import settingsCss from 'pages/settings/settings.less'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import SelectFilter from 'pages/stats/common/SelectFilter'
 
 import RulesList from './accountRules/RulesList'
 import RuleLibrary from './ruleLibrary/RuleLibrary'
@@ -50,10 +50,10 @@ export function RulesViewContainer({
     location,
 }: Pick<RouteComponentProps, 'location'>) {
     const dispatch = useAppDispatch()
-    const rules = useSelector(getSortedRules)
-    const ruleRecipes = useSelector(getSortedRuleRecipes)
-    const limitStatus = useSelector(getRulesLimitStatus)
-    const currentAccount = useSelector(getCurrentAccountState)
+    const rules = useAppSelector(getSortedRules)
+    const ruleRecipes = useAppSelector(getSortedRuleRecipes)
+    const limitStatus = useAppSelector(getRulesLimitStatus)
+    const currentAccount = useAppSelector(getCurrentAccountState)
 
     const recipeTags = Object.values(RuleRecipeTag)
 

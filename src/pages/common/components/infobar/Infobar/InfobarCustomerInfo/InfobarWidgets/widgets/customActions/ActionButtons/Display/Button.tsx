@@ -6,7 +6,7 @@ import React, {
     useEffect,
     useState,
 } from 'react'
-import {connect, ConnectedProps, useSelector} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {DropdownItem} from 'reactstrap'
 
 import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from 'config/actions'
@@ -23,6 +23,8 @@ import {Action} from 'pages/common/components/infobar/Infobar/InfobarCustomerInf
 
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
 import {AppendPosition} from 'pages/common/components/layout/Group'
+import useAppSelector from 'hooks/useAppSelector'
+
 import {mapActionToActionPayload} from './mapActionToActionPayload'
 
 type Props = {
@@ -44,7 +46,7 @@ function Button({
     appendPosition,
 }: Props & ConnectedProps<typeof connector>) {
     // pending action management
-    const getPendingActionCallback = useSelector(getPendingActionCallbacks)
+    const getPendingActionCallback = useAppSelector(getPendingActionCallbacks)
     const [loadingId, setLoadingId] = useState<string>('')
     useEffect(() => {
         setLoadingId((loadingId) =>
@@ -53,7 +55,7 @@ function Button({
     }, [getPendingActionCallback])
 
     // action trigger management
-    const currentAccount = useSelector(getCurrentAccountState)
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const {customerId} = useContext(CustomerContext)
     const {integrationId} = useContext(IntegrationContext)
     const handleExecuteAction = useCallback(

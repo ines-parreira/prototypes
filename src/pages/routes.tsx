@@ -6,14 +6,14 @@ import {
     RouteComponentProps,
     useLocation,
 } from 'react-router-dom'
-import {useSelector} from 'react-redux'
 import {useUpdateEffect} from 'react-use'
 
-import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
-import {currentAccountHasFeature} from '../state/currentAccount/selectors'
-import {getHasAutomationAddOn} from '../state/billing/selectors'
-import {AccountFeature} from '../state/currentAccount/types'
-import {logPageChange} from '../store/middlewares/segmentTracker'
+import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
+import {currentAccountHasFeature} from 'state/currentAccount/selectors'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {AccountFeature} from 'state/currentAccount/types'
+import {logPageChange} from 'store/middlewares/segmentTracker'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {
     PaywallConfig,
@@ -383,7 +383,7 @@ export function TicketsRoutes({match: {path}}: RouteComponentProps) {
 }
 
 export function StatsRoutes({match: {path}}: RouteComponentProps) {
-    const hasLiveOverviewFeature = useSelector(
+    const hasLiveOverviewFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
 
@@ -773,7 +773,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
 export function SelfServiceSettingsRoutes({
     match: {path},
 }: RouteComponentProps) {
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     return (
         <Switch>

@@ -1,21 +1,20 @@
 import {useCallback, useEffect, useState} from 'react'
 import {useDebounce} from 'react-use'
 import axios, {AxiosError, CancelToken} from 'axios'
-import {useSelector} from 'react-redux'
 import _isEqual from 'lodash/isEqual'
 
-import {Stat, StatsFilters} from '../../models/stat/types'
-import useAppDispatch from '../../hooks/useAppDispatch'
-import {fetchStat} from '../../models/stat/resources'
-import {notify} from '../../state/notifications/actions'
-import {Notification, NotificationStatus} from '../../state/notifications/types'
-import {fetchStatEnded, fetchStatStarted} from '../../state/ui/stats/actions'
-import {statFetched} from '../../state/entities/stats/actions'
-import {errorToChildren} from '../../utils'
-import {RootState} from '../../state/types'
-import {StatsState} from '../../state/entities/stats/types'
-import {StatsState as StatsUIState} from '../../state/ui/stats/types'
-import useCancellableRequest from '../../hooks/useCancellableRequest'
+import {Stat, StatsFilters} from 'models/stat/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {fetchStat} from 'models/stat/resources'
+import {notify} from 'state/notifications/actions'
+import {Notification, NotificationStatus} from 'state/notifications/types'
+import {fetchStatEnded, fetchStatStarted} from 'state/ui/stats/actions'
+import {statFetched} from 'state/entities/stats/actions'
+import {errorToChildren} from 'utils'
+import {StatsState} from 'state/entities/stats/types'
+import {StatsState as StatsUIState} from 'state/ui/stats/types'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import useAppSelector from 'hooks/useAppSelector'
 
 type Params = {
     statName: string
@@ -31,13 +30,12 @@ export default function useStatResource<T>({
     fetchDebounceDelay = 1000,
 }: Params): [Stat<T> | null, boolean, (cursor: string) => void] {
     const dispatch = useAppDispatch()
-    const statsState = useSelector<RootState, StatsState>(
+    const statsState = useAppSelector<StatsState>(
         (state) => state.entities.stats
     )
-    const statsFetchingState = useSelector<
-        RootState,
-        StatsUIState['fetchingMap']
-    >((state) => state.ui.stats.fetchingMap)
+    const statsFetchingState = useAppSelector<StatsUIState['fetchingMap']>(
+        (state) => state.ui.stats.fetchingMap
+    )
     const statKey = `${statName}/${resourceName}`
     const [fetchParams, setFetchParams] = useState<{
         filters: StatsFilters

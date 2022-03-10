@@ -1,29 +1,29 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
 import moment from 'moment-timezone'
 import classnames from 'classnames'
 
 import {
     getCurrentSubscription,
     hasAutomationLegacyFeatures,
-} from '../../../../state/currentAccount/selectors'
+} from 'state/currentAccount/selectors'
 import {
     getAddOnAutomationAmountCurrentPlan,
     DEPRECATED_getCurrentPlan,
     getHasAutomationAddOn,
-} from '../../../../state/billing/selectors'
-import SubscriptionAmount from '../../common/SubscriptionAmount'
-import PlanFeatureMaterialIcon from '../plans/PlanFeatureMaterialIcon'
+} from 'state/billing/selectors'
+import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
+import PlanFeatureMaterialIcon from 'pages/settings/billing/plans/PlanFeatureMaterialIcon'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from './AutomationSubscriptionDescription.less'
 
 const AutomationSubscriptionDescription = () => {
-    const currentSubscription = useSelector(getCurrentSubscription)
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
-    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
+    const currentSubscription = useAppSelector(getCurrentSubscription)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
     const currentSubscriptionStart = currentSubscription.get('start_datetime')
-    const isSelfServeLegacy = useSelector(hasAutomationLegacyFeatures)
-    const addOnAmount = useSelector(getAddOnAutomationAmountCurrentPlan)
+    const isSelfServeLegacy = useAppSelector(hasAutomationLegacyFeatures)
+    const addOnAmount = useAppSelector(getAddOnAutomationAmountCurrentPlan)
 
     return (
         <div className={css.description}>

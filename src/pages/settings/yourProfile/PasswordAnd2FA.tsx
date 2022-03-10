@@ -1,12 +1,12 @@
 import React, {useMemo} from 'react'
 import {Container} from 'reactstrap'
 
-import {useSelector} from 'react-redux'
-import PageHeader from '../../common/components/PageHeader'
-import css from '../settings.less'
+import PageHeader from 'pages/common/components/PageHeader'
+import css from 'pages/settings/settings.less'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUserState} from 'state/currentUser/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 
-import {getCurrentAccountState} from '../../../state/currentAccount/selectors'
-import {getCurrentUserState} from '../../../state/currentUser/selectors'
 import ChangePassword from './ChangePassword'
 import TwoFactorAuthenticationSection from './twoFactorAuthentication/TwoFactorAuthenticationSection'
 import {
@@ -15,8 +15,8 @@ import {
 } from './twoFactorAuthentication/utils'
 
 export default function PasswordAnd2FA() {
-    const currentAccount = useSelector(getCurrentAccountState)
-    const currentUser = useSelector(getCurrentUserState)
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const currentUser = useAppSelector(getCurrentUserState)
 
     const hasPassword = useMemo(() => {
         return !!currentUser.get('has_password')

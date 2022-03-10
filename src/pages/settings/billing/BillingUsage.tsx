@@ -2,7 +2,6 @@ import React, {useCallback, useEffect} from 'react'
 import classnames from 'classnames'
 import moment from 'moment'
 import {Link} from 'react-router-dom'
-import {useSelector} from 'react-redux'
 import {
     Card,
     CardBody,
@@ -13,23 +12,20 @@ import {
 } from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 
-import useAppDispatch from '../../../hooks/useAppDispatch'
-import {fetchCurrentUsage} from '../../../state/billing/actions'
-import {openChat} from '../../../utils'
-import {
-    getCurrentUsage,
-    getPlan,
-    hasLegacyPlan,
-} from '../../../state/billing/selectors'
-import {getCurrentSubscription} from '../../../state/currentAccount/selectors'
-import {getActiveIntegrations} from '../../../state/integrations/selectors'
-import {notify} from '../../../state/notifications/actions'
-import {NotificationStatus} from '../../../state/notifications/types'
-import LegacyPlanBadge from '../../common/components/LegacyPlanBadge'
-import LegacyPlanBanner from '../../common/components/LegacyPlanBanner'
-import Loader from '../../common/components/Loader/Loader'
-import Button, {ButtonIntent} from '../../common/components/button/Button'
-import history from '../../history'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {fetchCurrentUsage} from 'state/billing/actions'
+import {openChat} from 'utils'
+import {getCurrentUsage, getPlan, hasLegacyPlan} from 'state/billing/selectors'
+import {getCurrentSubscription} from 'state/currentAccount/selectors'
+import {getActiveIntegrations} from 'state/integrations/selectors'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import LegacyPlanBadge from 'pages/common/components/LegacyPlanBadge'
+import LegacyPlanBanner from 'pages/common/components/LegacyPlanBanner'
+import Loader from 'pages/common/components/Loader/Loader'
+import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import history from 'pages/history'
+import useAppSelector from 'hooks/useAppSelector'
 
 import AutomationSection from './automation/AutomationSection'
 import CurrentPlanBadge from './plans/CurrentPlanBadge'
@@ -40,11 +36,11 @@ import BillingHeader from './common/BillingHeader'
 const BillingUsage = () => {
     const dispatch = useAppDispatch()
 
-    const accountHasLegacyPlan = useSelector(hasLegacyPlan)
-    const activeIntegrations = useSelector(getActiveIntegrations)
-    const currentSubscription = useSelector(getCurrentSubscription)
-    const currentPlan = useSelector(getPlan(currentSubscription.get('plan')))
-    const currentUsage = useSelector(getCurrentUsage)
+    const accountHasLegacyPlan = useAppSelector(hasLegacyPlan)
+    const activeIntegrations = useAppSelector(getActiveIntegrations)
+    const currentSubscription = useAppSelector(getCurrentSubscription)
+    const currentPlan = useAppSelector(getPlan(currentSubscription.get('plan')))
+    const currentUsage = useAppSelector(getCurrentUsage)
 
     const [{loading: isLoading}, handleCurrentUsageFetch] =
         useAsyncFn(async () => {

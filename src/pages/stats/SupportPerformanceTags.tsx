@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {useSelector} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 
 import {
@@ -11,6 +10,7 @@ import {stats as statsConfig, TICKETS_PER_TAG} from 'config/stats'
 import {getTags} from 'state/tags/selectors'
 import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
+import useAppSelector from 'hooks/useAppSelector'
 
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import StatsPage from './StatsPage'
@@ -25,12 +25,12 @@ import StatsFiltersContext from './StatsFiltersContext'
 const SUPPORT_PERFORMANCE_TAGS_STAT_NAME = 'support-performance-tags'
 
 export default function SupportPerformanceTags() {
-    const tags = useSelector(getTags)
-    const messagingIntegrations = useSelector(getStatsMessagingIntegrations)
-    const integrationsStatsFilter = useSelector(
+    const tags = useAppSelector(getTags)
+    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFilters)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, tags, period} = statsFilters

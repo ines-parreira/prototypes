@@ -1,6 +1,5 @@
 import moment from 'moment'
 import React, {useMemo} from 'react'
-import {useSelector} from 'react-redux'
 
 import {TicketChannel} from 'business/types/ticket'
 import {getTimezone} from 'state/currentUser/selectors'
@@ -19,6 +18,7 @@ import {
 } from 'models/stat/types'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
+import useAppSelector from 'hooks/useAppSelector'
 
 import AgentsStatsFilter from './AgentsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -34,8 +34,8 @@ import css from './LiveOverview.less'
 const LIVE_OVERVIEW_STAT_NAME = 'live-overview'
 
 function LiveOverview() {
-    const userTimezone = useSelector(getTimezone)
-    const statsFilters = useSelector(getStatsFilters)
+    const userTimezone = useAppSelector(getTimezone)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()

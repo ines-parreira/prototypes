@@ -4,10 +4,10 @@ import _last from 'lodash/last'
 import _uniqueId from 'lodash/uniqueId'
 import classnames from 'classnames'
 import {Card, CardBody, Popover, PopoverBody} from 'reactstrap'
-import {useSelector} from 'react-redux'
 
 import {IntegrationType} from 'models/integration/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     removeEditedWidget,
     startWidgetEdition,
@@ -199,13 +199,13 @@ export default function WrapperInfobarWidget({
 }
 
 function useIntegration(absolutePath: string[], widgetType: IntegrationType) {
-    const integrations = useSelector(
+    const integrations = useAppSelector(
         integrationsSelectors.getIntegrationsByTypes(widgetType)
     )
 
     const integrationId = parseInt(_last(absolutePath) || '')
 
-    const integration = useSelector(
+    const integration = useAppSelector(
         integrationsSelectors.getIntegrationById(integrationId)
     )
 

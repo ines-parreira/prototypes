@@ -1,9 +1,9 @@
 import React, {ComponentProps, MouseEvent, useState} from 'react'
-import {useSelector} from 'react-redux'
 
 import {hasLegacyPlan} from 'state/billing/selectors'
 import {openChat} from 'utils'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import useAppSelector from 'hooks/useAppSelector'
 
 import PlanCard, {PlanCardTheme} from './PlanCard'
 import ChangePlanModal from './ChangePlanModal'
@@ -31,7 +31,7 @@ export default function EnterpriseComparisonPlanCard({
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(
         defaultIsPlanChangeModalOpen
     )
-    const isLegacyPlan = useSelector(hasLegacyPlan)
+    const isLegacyPlan = useAppSelector(hasLegacyPlan)
 
     const canChoosePlan = !isUpdating
     const switchPlanButtonText = 'Contact us'

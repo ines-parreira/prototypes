@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
 
@@ -18,6 +17,7 @@ import {
     TwoDimensionalChart,
 } from 'models/stat/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -26,7 +26,6 @@ import {
     getCurrentAccountState,
 } from 'state/currentAccount/selectors'
 import {AccountFeature, CurrentAccountState} from 'state/currentAccount/types'
-import {RootState} from 'state/types'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
 import {getStatsFilters} from 'state/stats/selectors'
@@ -67,14 +66,12 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
     const dispatch = useAppDispatch()
-    const hasSelfServiceStatisticsFeature = useSelector(
+    const hasSelfServiceStatisticsFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.AutomationSelfServiceStatistics)
     )
-    const account = useSelector<RootState, CurrentAccountState>(
-        getCurrentAccountState
-    )
-    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
-    const statsFilters = useSelector(getStatsFilters)
+    const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
+    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {period, integrations} = statsFilters

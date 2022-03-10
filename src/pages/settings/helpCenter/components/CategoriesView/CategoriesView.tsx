@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import {useSelector} from 'react-redux'
 import {Container} from 'reactstrap'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
@@ -17,6 +16,7 @@ import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesAct
 import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
 import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
 import settingsCss from 'pages/settings/settings.less'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from './CategoriesView.less'
 
@@ -34,7 +34,7 @@ export const CategoriesViews = ({
 }: Props): JSX.Element | null => {
     const actions = useCategoriesActions()
     const {getArticleCount} = useArticlesActions()
-    const uncategorizedArticles = useSelector(getUncategorizedArticles)
+    const uncategorizedArticles = useAppSelector(getUncategorizedArticles)
     const {categories, hasMore, isLoading, fetchMore} = useHelpCenterCategories(
         helpCenter.id,
         {

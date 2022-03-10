@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {useSelector} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 
 import {
@@ -22,6 +21,7 @@ import {
 } from 'config/stats'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
+import useAppSelector from 'hooks/useAppSelector'
 
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -39,9 +39,9 @@ import KeyMetricStatWrapper from './KeyMetricStatWrapper'
 const SUPPORT_PERFORMANCE_REVENUE_STAT_NAME = 'support-performance-revenue'
 
 function SupportPerformanceRevenue() {
-    const storeIntegrations = useSelector(getStatsStoreIntegrations)
-    const storeStatsFilter = useSelector(getStoreIntegrationsStatsFilter)
-    const statsFilters = useSelector(getStatsFilters)
+    const storeIntegrations = useAppSelector(getStatsStoreIntegrations)
+    const storeStatsFilter = useAppSelector(getStoreIntegrationsStatsFilter)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, tags, period} = statsFilters
@@ -179,7 +179,7 @@ helping customers through the purchasing journey."
 }
 
 function RevenueOrRestrictedFeaturePage() {
-    const storeIntegrations = useSelector(getStatsStoreIntegrations)
+    const storeIntegrations = useAppSelector(getStatsStoreIntegrations)
     return storeIntegrations.length ? (
         <SupportPerformanceRevenue />
     ) : (

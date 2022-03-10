@@ -92,6 +92,12 @@ module.exports = {
                                 message:
                                     'Please use useAppDispatch from /hooks/useAppDispatch instead.',
                             },
+                            {
+                                name: 'react-redux',
+                                importNames: ['useSelector'],
+                                message:
+                                    'Please use useAppSelector from /hooks/useAppSelector instead.',
+                            },
                         ],
                     },
                 ],

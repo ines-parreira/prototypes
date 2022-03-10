@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 import classNames from 'classnames'
 import {Button, ButtonGroup, CardDeck, Container} from 'reactstrap'
@@ -12,18 +11,19 @@ import {
     hasLegacyPlan,
     makeIsAllowedToChangePlan,
     DEPRECATED_getPlans,
-} from '../../../../state/billing/selectors'
-import {PlanInterval} from '../../../../models/billing/types'
-import {getEquivalentAutomationPlanId} from '../../../../models/billing/utils'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {Subscription} from '../../../../state/billing/types'
-import {updateSubscription} from '../../../../state/currentAccount/actions'
-import {setFutureSubscriptionPlan} from '../../../../state/billing/actions'
-import {getCurrentSubscription} from '../../../../state/currentAccount/selectors'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import SynchronizedScrollTopProvider from '../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
-import SynchronizedScrollTopContainer from '../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
+} from 'state/billing/selectors'
+import {PlanInterval} from 'models/billing/types'
+import {getEquivalentAutomationPlanId} from 'models/billing/utils'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {Subscription} from 'state/billing/types'
+import {updateSubscription} from 'state/currentAccount/actions'
+import {setFutureSubscriptionPlan} from 'state/billing/actions'
+import {getCurrentSubscription} from 'state/currentAccount/selectors'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import SynchronizedScrollTopProvider from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
+import SynchronizedScrollTopContainer from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
 
 import css from './BillingPlansComparison.less'
 import BillingComparisonPlanCard from './BillingComparisonPlanCard'
@@ -43,14 +43,14 @@ export default function BillingPlansComparison({
     onSubscriptionChanged,
 }: Props) {
     const dispatch = useAppDispatch()
-    const plans = useSelector(DEPRECATED_getPlans)
-    const accountHasLegacyPlan = useSelector(hasLegacyPlan)
-    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
-    const regularCurrentPlan = useSelector(getEquivalentRegularCurrentPlan)
+    const plans = useAppSelector(DEPRECATED_getPlans)
+    const accountHasLegacyPlan = useAppSelector(hasLegacyPlan)
+    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
+    const regularCurrentPlan = useAppSelector(getEquivalentRegularCurrentPlan)
     const displayedCurrentPlan = regularCurrentPlan || currentPlan
 
-    const currentSubscription = useSelector(getCurrentSubscription)
-    const isAllowedToChangePlan = useSelector(makeIsAllowedToChangePlan)
+    const currentSubscription = useAppSelector(getCurrentSubscription)
+    const isAllowedToChangePlan = useAppSelector(makeIsAllowedToChangePlan)
     const [selectedInterval, setSelectedInterval] = useState<PlanInterval>(
         currentPlan.get('interval') || PlanInterval.Month
     )
@@ -110,7 +110,7 @@ export default function BillingPlansComparison({
         void handleSubscriptionUpdate(id)
     }
 
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const [isAutomationChecked, setIsAutomationChecked] = useState(
         hasAutomationAddOn || isAutomationAddOnChecked
     )

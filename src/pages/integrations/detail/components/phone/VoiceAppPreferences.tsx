@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import {useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
@@ -27,6 +26,7 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import {PhoneFunction} from 'business/twilio'
 import settingsCss from 'pages/settings/settings.less'
+import useAppSelector from 'hooks/useAppSelector'
 
 import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
 import PhoneIntegrationBreadcrumbs from './PhoneIntegrationBreadcrumbs'
@@ -48,7 +48,7 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
         }
     )
     const phoneNumberId = integration?.meta?.twilio_phone_number_id
-    const phoneNumber = useSelector(getPhoneNumber(phoneNumberId))
+    const phoneNumber = useAppSelector(getPhoneNumber(phoneNumberId))
 
     const dispatch = useAppDispatch()
 

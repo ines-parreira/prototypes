@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {useSelector} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 
 import {
@@ -20,6 +19,7 @@ import {
     StatsFilters,
 } from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
+import useAppSelector from 'hooks/useAppSelector'
 
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
@@ -35,11 +35,11 @@ import {BarStat} from './common/components/charts/BarStat'
 const AUTOMATION_OVERVIEW_STAT_NAME = 'automation-overview'
 
 export default function AutomationOverview() {
-    const messagingIntegrations = useSelector(getStatsMessagingIntegrations)
-    const integrationsStatsFilter = useSelector(
+    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFilters)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, period} = statsFilters

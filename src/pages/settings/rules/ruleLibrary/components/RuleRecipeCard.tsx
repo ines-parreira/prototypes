@@ -1,6 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import _noop from 'lodash/noop'
-import {useSelector} from 'react-redux'
 import {fromJS, List, Map} from 'immutable'
 import _getIn from 'lodash/get'
 import {Badge} from 'reactstrap'
@@ -33,6 +32,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {RuleRecipe, RuleRecipeTag} from 'models/ruleRecipe/types'
 
 import {CodeASTType} from '../../types'
@@ -54,10 +54,10 @@ const tagColors: {[key: string]: string} = {
 function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
     const dispatch = useAppDispatch()
 
-    const existingViews = useSelector(getTicketViews)
-    const existingSections = useSelector(getSectionIdByName)
-    const limitStatus = useSelector(getRulesLimitStatus)
-    const currentAccount = useSelector(getCurrentAccountState)
+    const existingViews = useAppSelector(getTicketViews)
+    const existingSections = useAppSelector(getSectionIdByName)
+    const limitStatus = useAppSelector(getRulesLimitStatus)
+    const currentAccount = useAppSelector(getCurrentAccountState)
 
     const [isModalOpen, setModalOpen] = useState(false)
     const {rule, tags, recipe_tag, views_per_section} = recipe

@@ -2,12 +2,12 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 import axios from 'axios'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
-import {useSelector} from 'react-redux'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import {useLimitations} from 'hooks/helpCenter/useLimitations'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {Event, useModalManager} from 'hooks/useModalManager'
 import {
     Article,
@@ -86,7 +86,7 @@ export const HelpCenterArticlesView: React.FC = () => {
     // static states
     const limitations = useLimitations()
     const viewLanguage =
-        useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+        useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
     // modal instance initializations
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})

@@ -8,7 +8,7 @@ import React, {
 } from 'react'
 import {Collapse, ListGroup} from 'reactstrap'
 import {List, Map} from 'immutable'
-import {connect, ConnectedProps, useSelector} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
@@ -27,6 +27,7 @@ import {
     Link as LinkType,
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import useAppSelector from 'hooks/useAppSelector'
 
 import Editor from './Editor'
 import Link from './Link'
@@ -54,7 +55,7 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
         removeEditedWidget,
     } = props
 
-    const currentAccount = useSelector(getCurrentAccountState)
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const {integrationId} = useContext(IntegrationContext)
 
     const [links, setLinks] = useState<LinkType[]>([])

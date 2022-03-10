@@ -1,17 +1,14 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
-
 import {Breadcrumb, BreadcrumbItem, Container, Row, Col} from 'reactstrap'
 import {Link} from 'react-router-dom'
-import {getHasAutomationAddOn} from '../../../../../state/billing/selectors'
 
-import PageHeader from '../../../../common/components/PageHeader'
-import settingsCss from '../../../settings.less'
-import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
-
-import {GorgiasChatIntegrationSelfServicePaywall} from '../../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
-
-import {useConfigurationData} from '../hooks'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import useAppSelector from 'hooks/useAppSelector'
+import PageHeader from 'pages/common/components/PageHeader'
+import settingsCss from 'pages/settings/settings.less'
+import SelfServicePreferencesNavbar from 'pages/settings/selfService/components/SelfServicePreferencesNavbar'
+import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 
 import SelfServicePreview from './components/SelfServicePreview'
 import QuickResponseList from './components/QuickResponseList'
@@ -19,7 +16,7 @@ import QuickResponseList from './components/QuickResponseList'
 const QuickResponseFlowsPreferences = () => {
     const {integration} = useConfigurationData()
 
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     if (!hasAutomationAddOn) {
         return <GorgiasChatIntegrationSelfServicePaywall />

@@ -1,5 +1,4 @@
 import React, {ComponentProps, useMemo} from 'react'
-import {useSelector} from 'react-redux'
 
 import {
     getMessagingIntegrationsStatsFilter,
@@ -28,6 +27,7 @@ import {
     TOTAL_TICKETS_CREATED,
     TOTAL_TICKETS_REPLIED,
 } from 'config/stats'
+import useAppSelector from 'hooks/useAppSelector'
 
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -46,11 +46,11 @@ import KeyMetricStatWrapper from './KeyMetricStatWrapper'
 const SUPPORT_PERFORMANCE_OVERVIEW_STAT_NAME = 'support-performance-overview'
 
 export default function SupportPerformanceOverview() {
-    const messagingIntegrations = useSelector(getStatsMessagingIntegrations)
-    const integrationsStatsFilter = useSelector(
+    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFilters)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, agents, tags, period} = statsFilters

@@ -1,8 +1,8 @@
 import React, {ComponentProps, useCallback} from 'react'
 import {DropdownItem} from 'reactstrap'
-import {useSelector} from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {mergeStatsFilters} from 'state/stats/actions'
 import {getLabelledTeamsJS} from 'state/teams/selectors'
 import {getLabelledAgentsJS} from 'state/agents/selectors'
@@ -17,8 +17,8 @@ type Props = {
 
 export default function AgentsStatsFilter({value = []}: Props) {
     const dispatch = useAppDispatch()
-    const agents = useSelector(getLabelledAgentsJS)
-    const teams = useSelector(getLabelledTeamsJS)
+    const agents = useAppSelector(getLabelledAgentsJS)
+    const teams = useAppSelector(getLabelledTeamsJS)
 
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
         useCallback(

@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react'
 import axios from 'axios'
-import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -15,9 +14,10 @@ import {
 import {getCategoryById} from 'state/entities/helpCenter/categories'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {MODALS} from '../../constants'
-import {useCategoriesActions} from '../../hooks/useCategoriesActions'
-import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'
+import useAppSelector from 'hooks/useAppSelector'
+import {MODALS} from 'pages/settings/helpCenter/constants'
+import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
+import {HelpCenterCategoryEdit} from 'pages/settings/helpCenter/components/HelpCenterCategoryEdit'
 
 type Props = {
     helpCenter: HelpCenter
@@ -27,7 +27,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
     const dispatch = useAppDispatch()
     const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY)
     const params = getParams() as Category & {isCreate?: boolean}
-    const category = useSelector(getCategoryById(params?.id))
+    const category = useAppSelector(getCategoryById(params?.id))
     const categoriesActions = useCategoriesActions()
 
     const [{loading, value: translation}, getCategoryTranslation] = useAsyncFn(

@@ -8,8 +8,8 @@ import React, {
 } from 'react'
 import axios from 'axios'
 import produce, {Draft} from 'immer'
-import {useSelector} from 'react-redux'
 
+import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     HelpCenter,
@@ -77,7 +77,7 @@ export const HelpCenterPreferencesSettings = ({
     const {client} = useHelpCenterApi()
     const {fetchHelpCenterTranslations} = useHelpCenterActions()
     const viewLanguage =
-        useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+        useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [preferences, updatePreferences] =
         useState<HelpCenterPreferencesState>(defaultPreferences)
 

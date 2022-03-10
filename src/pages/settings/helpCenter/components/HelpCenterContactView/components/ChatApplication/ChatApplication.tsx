@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react'
 import classNames from 'classnames'
 import {Map} from 'immutable'
-import {useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {FormText, Label} from 'reactstrap'
 
@@ -11,6 +10,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 
 import css from './ChatApplication.less'
@@ -20,7 +20,7 @@ const ChatApplication: React.FC = () => {
         translation: {chatApplicationId},
         updateTranslation,
     } = useHelpCenterTranslation()
-    const chatIntegrations = useSelector(
+    const chatIntegrations = useAppSelector(
         getIntegrationsByTypes(IntegrationType.GorgiasChat)
     )
     const chatOptions = useMemo(

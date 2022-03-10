@@ -1,17 +1,16 @@
 import React, {useMemo} from 'react'
 import {useRouteMatch} from 'react-router'
-import {useSelector} from 'react-redux'
 import classNames from 'classnames'
 
-import ChatIntegrationPreview from '../../../../../integrations/detail/components/chat/ChatIntegrationPreview'
-import {SelectableOption} from '../../../../../common/forms/SelectField/types'
+import ChatIntegrationPreview from 'pages/integrations/detail/components/chat/ChatIntegrationPreview'
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import {
     Integration,
     isGorgiasChatIntegration,
     isShopifyIntegration,
-} from '../../../../../../models/integration/types'
-
-import {DEPRECATED_getIntegrations} from '../../../../../../state/integrations/selectors'
+} from 'models/integration/types'
+import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from './Preview.less'
 
@@ -20,7 +19,7 @@ interface PreviewProps {
 }
 
 const Preview = ({reasonOptions}: PreviewProps) => {
-    const immutableIntegrations = useSelector(DEPRECATED_getIntegrations)
+    const immutableIntegrations = useAppSelector(DEPRECATED_getIntegrations)
     const {
         params: {shopName},
     } = useRouteMatch<{

@@ -1,10 +1,10 @@
 import {useState} from 'react'
 import {chain as _chain} from 'lodash'
 import _isNumber from 'lodash/isNumber'
-import {useSelector} from 'react-redux'
 
 import {HelpCenterClient} from 'rest_api/help_center_api/index'
 
+import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     Article,
@@ -64,7 +64,7 @@ export const useArticlesActions = () => {
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
-    const viewLanguage = useSelector(getViewLanguage)
+    const viewLanguage = useAppSelector(getViewLanguage)
     const [isLoading, setIsLoading] = useState(false)
 
     return {

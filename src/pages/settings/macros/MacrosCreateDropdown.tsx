@@ -7,10 +7,10 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import {useSelector} from 'react-redux'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {createJob} from 'models/job/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {JobType} from 'models/job/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -22,7 +22,7 @@ import MacrosCSVImportPopover from './MacrosCSVImportPopover'
 export function MacrosCreateDropdown(): JSX.Element {
     const dispatch = useAppDispatch()
     const [isImportOpen, setImportOpen] = useState(false)
-    const currentAccount = useSelector(getCurrentAccountState)
+    const currentAccount = useAppSelector(getCurrentAccountState)
 
     const _downloadMacros = () => {
         logEvent(SegmentEvent.MacrosExportClicked, {

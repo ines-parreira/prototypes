@@ -10,28 +10,27 @@ import {
     Row,
 } from 'reactstrap'
 import classNames from 'classnames'
-import {useSelector} from 'react-redux'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
-
-import PageHeader from '../../../common/components/PageHeader'
-import SelectField from '../../../common/forms/SelectField/SelectField'
-import Loader from '../../../common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import Loader from 'pages/common/components/Loader/Loader'
 import {
     FilterKeyEnum,
     FilterOperatorEnum,
     ReturnsDropdownOptionsList,
     SelfServiceConfigurationFilter,
-} from '../../../../models/selfServiceConfiguration/types'
-import {selfServiceConfigurationUpdated} from '../../../../state/entities/selfServiceConfigurations/actions'
-import {updateSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
-import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
-import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
-import settingsCss from '../../settings.less'
+} from 'models/selfServiceConfiguration/types'
+import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
+import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import settingsCss from 'pages/settings/settings.less'
 
 import css from './ReturnsPolicyView.less'
 import {useConfigurationData} from './hooks'
@@ -45,8 +44,8 @@ export const ReturnsPolicyView = () => {
 
     const {isLoadingConfig, configuration} = useConfigurationData()
 
-    const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const [eligibilityWindowCondition, setEligibilityWindowCondition] =
         useState('')

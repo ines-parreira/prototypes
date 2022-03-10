@@ -1,6 +1,5 @@
 import React, {useCallback, useMemo} from 'react'
 
-import {useSelector} from 'react-redux'
 import {UncontrolledTooltip} from 'reactstrap'
 
 import {Map} from 'immutable'
@@ -8,17 +7,14 @@ import {Map} from 'immutable'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
-import type {RootState} from '../../../../../../state/types'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../store/middlewares/segmentTracker'
-import {DEPRECATED_getTicket} from '../../../../../../state/ticket/selectors'
-import {TicketState} from '../../../../../../state/ticket/types'
-import {getCurrentAccountState} from '../../../../../../state/currentAccount/selectors'
-import {CurrentAccountState} from '../../../../../../state/currentAccount/types'
-import {getCurrentUser} from '../../../../../../state/currentUser/selectors'
-import {CurrentUserState} from '../../../../../../state/currentUser/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {DEPRECATED_getTicket} from 'state/ticket/selectors'
+import {TicketState} from 'state/ticket/types'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {CurrentAccountState} from 'state/currentAccount/types'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {CurrentUserState} from 'state/currentUser/types'
 
 import {MacroButton} from './MacroButton'
 
@@ -30,11 +26,9 @@ type Props = {
 }
 
 export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
-    const ticket = useSelector<RootState, TicketState>(DEPRECATED_getTicket)
-    const account = useSelector<RootState, CurrentAccountState>(
-        getCurrentAccountState
-    )
-    const user = useSelector<RootState, CurrentUserState>(getCurrentUser)
+    const ticket = useAppSelector<TicketState>(DEPRECATED_getTicket)
+    const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
+    const user = useAppSelector<CurrentUserState>(getCurrentUser)
 
     const baseSegmentPayload = useMemo(
         () => ({

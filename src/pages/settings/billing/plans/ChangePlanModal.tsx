@@ -1,5 +1,4 @@
 import React, {ComponentProps, MouseEventHandler, ReactNode} from 'react'
-import {useSelector} from 'react-redux'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 
@@ -13,6 +12,7 @@ import {
 import SynchronizedScrollTopProvider from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
 import SynchronizedScrollTopContainer from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import useAppSelector from 'hooks/useAppSelector'
 
 import BillingPlanCard from './BillingPlanCard'
 import CurrentPlanBadge from './CurrentPlanBadge'
@@ -48,12 +48,12 @@ export const ChangePlanModal = ({
     onConfirm,
     renderComparedPlan,
 }: Props) => {
-    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
-    const regularCurrentPlan = useSelector(getEquivalentRegularCurrentPlan)
+    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
+    const regularCurrentPlan = useAppSelector(getEquivalentRegularCurrentPlan)
     const plan = regularCurrentPlan || currentPlan
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
-    const addOnAmountCurrentPlan = useSelector(
+    const addOnAmountCurrentPlan = useAppSelector(
         getAddOnAutomationAmountCurrentPlan
     )
 

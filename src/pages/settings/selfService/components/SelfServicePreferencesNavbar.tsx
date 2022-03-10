@@ -1,9 +1,10 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 
-import {useSelector} from 'react-redux'
-import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
-import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
+import useAppSelector from 'hooks/useAppSelector'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+
 import {useConfigurationData} from './hooks'
 
 const SelfServicePreferencesNavbar = () => {
@@ -12,7 +13,7 @@ const SelfServicePreferencesNavbar = () => {
         integration.getIn(['meta', 'shop_name']) as string
     }/preferences`
 
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     return (
         <SecondaryNavbar>

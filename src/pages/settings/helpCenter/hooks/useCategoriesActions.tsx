@@ -1,6 +1,5 @@
 import {chain as _chain} from 'lodash'
 import {useState} from 'react'
-import {useSelector} from 'react-redux'
 
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -22,6 +21,7 @@ import {
     updateCategoryTranslation,
 } from 'state/entities/helpCenter/categories'
 import {getViewLanguage} from 'state/ui/helpCenter'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
@@ -30,7 +30,7 @@ export const useCategoriesActions = () => {
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
     const {client} = useHelpCenterApi()
-    const viewLanguage = useSelector(getViewLanguage)
+    const viewLanguage = useAppSelector(getViewLanguage)
     const [isLoading, setIsLoading] = useState(false)
 
     return {

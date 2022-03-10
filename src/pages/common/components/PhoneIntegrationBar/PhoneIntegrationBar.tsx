@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect} from 'react'
-import {useSelector} from 'react-redux'
 import {Call, Device, TwilioError} from '@twilio/voice-sdk'
 
 import {
@@ -7,14 +6,14 @@ import {
     setDevice,
     setIsDialing,
     setIsRinging,
-} from '../../../../state/twilio/actions'
-import {RootState} from '../../../../state/types'
-import client from '../../../../models/api/resources'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {usePhoneError} from '../../../../hooks/integrations/phone/usePhoneError'
-import {TwilioErrorCode} from '../../../../business/twilio'
+} from 'state/twilio/actions'
+import client from 'models/api/resources'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {usePhoneError} from 'hooks/integrations/phone/usePhoneError'
+import {TwilioErrorCode} from 'business/twilio'
 
 import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
 import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
@@ -22,9 +21,7 @@ import OutgoingPhoneCall from './OutgoingPhoneCall/OutgoingPhoneCall'
 
 export default function PhoneIntegrationBar(): JSX.Element | null {
     useDevice()
-    const {call, isDialing, isRinging} = useSelector(
-        (state: RootState) => state.twilio
-    )
+    const {call, isDialing, isRinging} = useAppSelector((state) => state.twilio)
 
     if (!call) {
         return null
@@ -44,7 +41,7 @@ export default function PhoneIntegrationBar(): JSX.Element | null {
 function useDevice() {
     const dispatch = useAppDispatch()
     const {onErrorMessage, onError} = usePhoneError()
-    const {device} = useSelector((state: RootState) => state.twilio)
+    const {device} = useAppSelector((state) => state.twilio)
     const instantiateDevice = useInstantiateDevice()
 
     useEffect(() => {

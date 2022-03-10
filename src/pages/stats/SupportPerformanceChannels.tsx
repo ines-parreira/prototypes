@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {useSelector} from 'react-redux'
 
 import {
     getMessagingIntegrationsStatsFilter,
@@ -13,6 +12,7 @@ import {
 } from 'config/stats'
 import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
+import useAppSelector from 'hooks/useAppSelector'
 
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
@@ -27,11 +27,11 @@ import StatsFiltersContext from './StatsFiltersContext'
 const SUPPORT_PERFORMANCE_CHANNELS_STAT_NAME = 'support-performance-channels'
 
 export default function SupportPerformanceChannels() {
-    const messagingIntegrations = useSelector(getStatsMessagingIntegrations)
-    const integrationsStatsFilter = useSelector(
+    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const integrationsStatsFilter = useAppSelector(
         getMessagingIntegrationsStatsFilter
     )
-    const statsFilters = useSelector(getStatsFilters)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, period} = statsFilters

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {Map} from 'immutable'
-import {useSelector} from 'react-redux'
 import {useAsyncFn} from 'react-use'
 
+import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {UpdateHelpCenterDto} from 'models/helpCenter/types'
 import {IntegrationType} from 'models/integration/constants'
@@ -21,8 +21,8 @@ import {SelfServiceSection} from './SelfServiceSection'
 
 export const HelpCenterSelfServiceView = (): JSX.Element | null => {
     const helpCenter = useCurrentHelpCenter()
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
-    const integrations = useSelector(DEPRECATED_getIntegrations)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const integrations = useAppSelector(DEPRECATED_getIntegrations)
     const {client} = useHelpCenterApi()
     const dispatch = useAppDispatch()
     const [isLoadingIntegrations, setIsLoadingIntegrations] = useState(true)

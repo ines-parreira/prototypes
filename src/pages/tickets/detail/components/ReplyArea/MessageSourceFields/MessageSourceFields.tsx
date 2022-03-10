@@ -1,19 +1,16 @@
 import React, {ChangeEvent, forwardRef, useEffect, useState} from 'react'
-import {useSelector} from 'react-redux'
 import classnames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
 import _uniq from 'lodash/uniq'
 import _difference from 'lodash/difference'
 import _xor from 'lodash/xor'
 
-import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
-import useAppDispatch from '../../../../../../hooks/useAppDispatch'
-import {SourceAddress} from '../../../../../../models/ticket/types'
-import {RootState} from '../../../../../../state/types'
-import {
-    setReceivers,
-    setSender,
-} from '../../../../../../state/newMessage/actions'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {SourceAddress} from 'models/ticket/types'
+import {RootState} from 'state/types'
+import {setReceivers, setSender} from 'state/newMessage/actions'
 import {
     getNewMessageType,
     makeGetNewMessageSourceProperty,
@@ -21,12 +18,9 @@ import {
     getContactProperties,
     getOptionalContactProperties,
     areNewMessageContactPropertiesFulfilled as getAreNewMessageContactPropertiesFulfilled,
-} from '../../../../../../state/newMessage/selectors'
-import {
-    getEmailChannels,
-    getPhoneChannels,
-} from '../../../../../../state/integrations/selectors'
-import {getPersonLabelFromSource} from '../../../../common/utils.js'
+} from 'state/newMessage/selectors'
+import {getEmailChannels, getPhoneChannels} from 'state/integrations/selectors'
+import {getPersonLabelFromSource} from 'pages/tickets/common/utils.js'
 
 import MultiSelectAsyncField from './components/MultiSelectAsyncField/MultiSelectAsyncField'
 import SenderSelectField from './components/SenderSelectField/SenderSelectField'
@@ -57,33 +51,33 @@ type Props = {
 const MessageSourceFields = forwardRef<MultiSelectAsyncField, Props>(
     function MessageSourceFields({canOpen, isOpenDefault}: Props, ref) {
         const dispatch = useAppDispatch()
-        const sourceType = useSelector(getNewMessageType)
+        const sourceType = useAppSelector(getNewMessageType)
 
-        const allRecipients = useSelector(getNewMessageRecipients)
-        const availableContactProperties = useSelector(
+        const allRecipients = useAppSelector(getNewMessageRecipients)
+        const availableContactProperties = useAppSelector(
             getContactProperties(sourceType)
         )
-        const getNewMessageSourceProperty = useSelector(
+        const getNewMessageSourceProperty = useAppSelector(
             makeGetNewMessageSourceProperty
         )
-        const isNewTicket = useSelector(
+        const isNewTicket = useAppSelector(
             (state: RootState) => !state.ticket.get('id')
         )
-        const areNewMessageContactPropertiesFulfilled = useSelector(
+        const areNewMessageContactPropertiesFulfilled = useAppSelector(
             getAreNewMessageContactPropertiesFulfilled
         )
         const isOpen = isOpenDefault || !areNewMessageContactPropertiesFulfilled
-        const optionalContactProperties = useSelector(
+        const optionalContactProperties = useAppSelector(
             getOptionalContactProperties(sourceType)
         )
 
-        const emailChannels = useSelector(getEmailChannels)
-        const phoneChannels = useSelector(getPhoneChannels)
+        const emailChannels = useAppSelector(getEmailChannels)
+        const phoneChannels = useAppSelector(getPhoneChannels)
         const accountChannels =
             sourceType === TicketMessageSourceType.Phone
                 ? phoneChannels
                 : emailChannels
-        const ticket = useSelector((state: RootState) => state.ticket)
+        const ticket = useAppSelector((state: RootState) => state.ticket)
 
         const [displayedFields, setDisplayedFields] = useState<string[]>([]) // optional fields that are displayed
 

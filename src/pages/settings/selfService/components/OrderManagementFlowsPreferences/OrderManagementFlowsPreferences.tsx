@@ -8,27 +8,24 @@ import {
     Table,
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
-import {useSelector} from 'react-redux'
 import classnames from 'classnames'
 
 import upgradeIcon from 'assets/img/icons/upgrade-icon.svg'
+import useAppSelector from 'hooks/useAppSelector'
+import Tooltip from 'pages/common/components/Tooltip'
+import PageHeader from 'pages/common/components/PageHeader'
+import Loader from 'pages/common/components/Loader/Loader'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import {PolicyEnum} from 'models/selfServiceConfiguration/types'
+import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {openChat} from 'utils'
+import settingsCss from 'pages/settings/settings.less'
+import SelfServicePreferencesNavbar from 'pages/settings/selfService/components/SelfServicePreferencesNavbar'
+import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 
-import Tooltip from '../../../../common/components/Tooltip'
-import PageHeader from '../../../../common/components/PageHeader'
-import Loader from '../../../../common/components/Loader/Loader'
-import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
-import LinkAlert from '../../../../common/components/Alert/LinkAlert'
-
-import {PolicyEnum} from '../../../../../models/selfServiceConfiguration/types'
-import {hasAutomationLegacyFeatures} from '../../../../../state/currentAccount/selectors'
-import {getHasAutomationAddOn} from '../../../../../state/billing/selectors'
-import {GorgiasChatIntegrationSelfServicePaywall} from '../../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
-import {openChat} from '../../../../../utils'
-import settingsCss from '../../../settings.less'
-
-import SelfServicePreferencesNavbar from '../SelfServicePreferencesNavbar'
-
-import {useConfigurationData} from '../hooks'
 import {PolicyRow} from './components/PolicyRow'
 import css from './OrderManagementFlowsPreferences.less'
 
@@ -39,8 +36,8 @@ export const OrderManagementFlowsPreferences = () => {
         configuration,
     } = useConfigurationData()
 
-    const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     if (!(hasSelfServiceV1Features || hasAutomationAddOn)) {
         return <GorgiasChatIntegrationSelfServicePaywall />

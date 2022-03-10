@@ -1,19 +1,19 @@
 import React, {useMemo} from 'react'
-import {useSelector} from 'react-redux'
 import moment, {Moment} from 'moment-timezone'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {
     getBusinessHoursRangesByUserTimezone,
     getBusinessHoursSettings,
-} from '../../../../state/currentAccount/selectors'
-import {getTimezone} from '../../../../state/currentUser/selectors'
+} from 'state/currentAccount/selectors'
+import {getTimezone} from 'state/currentUser/selectors'
 
 import css from './StatCurrentDate.less'
 
 export default function StatCurrentDate() {
-    const userTimezone = useSelector(getTimezone)
-    const accountBusinessHours = useSelector(getBusinessHoursSettings)
-    const businessRanges = useSelector(getBusinessHoursRangesByUserTimezone)
+    const userTimezone = useAppSelector(getTimezone)
+    const accountBusinessHours = useAppSelector(getBusinessHoursSettings)
+    const businessRanges = useAppSelector(getBusinessHoursRangesByUserTimezone)
     const today = useMemo(() => {
         return userTimezone ? moment().tz(userTimezone) : moment()
     }, [userTimezone])

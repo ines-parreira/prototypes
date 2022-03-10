@@ -1,26 +1,26 @@
 import React, {useState} from 'react'
 import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
-import {useSelector} from 'react-redux'
 
-import ToggleInput from '../../../../../common/forms/ToggleInput'
-import {generateConfiguration} from '../../../utils/generateConfiguration'
-import ForwardIcon from '../../../../../integrations/detail/components/ForwardIcon'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {generateConfiguration} from 'pages/settings/selfService/utils/generateConfiguration'
+import ForwardIcon from 'pages/integrations/detail/components/ForwardIcon'
 import {
     PolicyEnum,
     PolicyKey,
     SelfServiceConfiguration,
     ShopType,
-} from '../../../../../../models/selfServiceConfiguration/types'
-import {updateSelfServiceConfiguration} from '../../../../../../models/selfServiceConfiguration/resources'
-import useAppDispatch from '../../../../../../hooks/useAppDispatch'
-import {selfServiceConfigurationUpdated} from '../../../../../../state/entities/selfServiceConfigurations/actions'
-import {notify} from '../../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../../state/notifications/types'
-import {getHasAutomationAddOn} from '../../../../../../state/billing/selectors'
-import AutomationSubscriptionModal from '../../../../billing/automation/AutomationSubscriptionModal'
-import UpgradeButton from '../../../../../common/components/UpgradeButton'
-import {getIconFromUrl} from '../../../../../../utils'
+} from 'models/selfServiceConfiguration/types'
+import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
+import UpgradeButton from 'pages/common/components/UpgradeButton'
+import {getIconFromUrl} from 'utils'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from '../OrderManagementFlowsPreferences.less'
 
@@ -52,7 +52,7 @@ export const PolicyRow = ({
     const [modalImage, setModalImage] = useState('')
     const [modalHeaderDescription, setModalHeaderDescription] = useState('')
 
-    const hasSelfServeAddOn = useSelector(getHasAutomationAddOn)
+    const hasSelfServeAddOn = useAppSelector(getHasAutomationAddOn)
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)

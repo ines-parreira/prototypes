@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import {useSelector} from 'react-redux'
 
 import Paywall from 'pages/common/components/Paywall/Paywall'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
@@ -7,9 +6,9 @@ import AutomationSubscriptionModal from 'pages/settings/billing/automation/Autom
 import {DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {CurrentAccountState} from 'state/currentAccount/types'
-import {RootState} from 'state/types'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getIconFromUrl} from 'utils'
+import useAppSelector from 'hooks/useAppSelector'
 
 const sspAutomationAddonMock = getIconFromUrl(
     'paywalls/screens/gorgias_chat_ssp_automation.png'
@@ -18,10 +17,8 @@ const sspAutomationAddonMock = getIconFromUrl(
 export const GorgiasChatIntegrationSelfServicePaywall = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
-    const account = useSelector<RootState, CurrentAccountState>(
-        getCurrentAccountState
-    )
-    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
+    const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
+    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
 
     const segmentEventToSend = {
         name: SegmentEvent.PaywallUpgradeButtonSelected,

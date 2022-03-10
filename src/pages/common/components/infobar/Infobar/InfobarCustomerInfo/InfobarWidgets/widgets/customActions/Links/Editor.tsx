@@ -6,18 +6,18 @@ import React, {
     useState,
 } from 'react'
 import {Form, Popover, PopoverBody} from 'reactstrap'
-import {useSelector} from 'react-redux'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {ensureHTTPS} from 'utils/url'
+import InputField from 'pages/common/forms/InputField'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../store/middlewares/segmentTracker'
-import {getCurrentAccountState} from '../../../../../../../../../../state/currentAccount/selectors'
-import {ensureHTTPS} from '../../../../../../../../../../utils/url'
-import InputField from '../../../../../../../../forms/InputField'
-import {IntegrationContext} from '../../IntegrationContext'
-import {Link, SubmitLink} from '../types'
+    Link,
+    SubmitLink,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 type Props = {
     target: string
@@ -48,7 +48,7 @@ export default function Editor(props: Props) {
         index,
     } = props
 
-    const currentAccount = useSelector(getCurrentAccountState)
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const {integrationId} = useContext(IntegrationContext)
 
     const [canSubmit, setCanSubmit] = useState(

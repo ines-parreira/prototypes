@@ -1,10 +1,10 @@
 import React, {ComponentProps} from 'react'
-import {useSelector} from 'react-redux'
 
-import {PlanWithCurrencySign} from '../../../../state/billing/types'
-import {hasLegacyPlan} from '../../../../state/billing/selectors'
-import LegacyPlanBadge from '../../../common/components/LegacyPlanBadge'
-import SubscriptionAmount from '../../common/SubscriptionAmount'
+import {PlanWithCurrencySign} from 'state/billing/types'
+import {hasLegacyPlan} from 'state/billing/selectors'
+import LegacyPlanBadge from 'pages/common/components/LegacyPlanBadge'
+import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
+import useAppSelector from 'hooks/useAppSelector'
 
 import PlanCard, {PlanCardTheme} from './PlanCard'
 import {getPlanCardFeaturesForPlan} from './billingPlanFeatures'
@@ -29,7 +29,7 @@ export default function BillingPlanCard({
     headerBadge,
     ...planCardProps
 }: Props) {
-    const accountHasLegacyPlan = useSelector(hasLegacyPlan)
+    const accountHasLegacyPlan = useAppSelector(hasLegacyPlan)
     const badge =
         isCurrentPlan && accountHasLegacyPlan ? (
             <LegacyPlanBadge />

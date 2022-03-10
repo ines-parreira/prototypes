@@ -1,6 +1,5 @@
 import React, {ReactNode, useMemo} from 'react'
 import classNames from 'classnames'
-import {useSelector} from 'react-redux'
 import {Container} from 'reactstrap'
 
 import {HelpCenter} from 'models/helpCenter/types'
@@ -10,6 +9,7 @@ import {getViewLanguage, changeViewLanguage} from 'state/ui/helpCenter'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
+import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {validLocaleCode} from 'models/helpCenter/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -45,7 +45,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
     const dispatch = useAppDispatch()
     const locales = useSupportedLocales()
     const viewLanguage =
-        useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+        useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
     const helpCenterUrl = useMemo(() => {
         const domain = getHelpCenterDomain(helpCenter)

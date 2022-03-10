@@ -7,9 +7,9 @@ import React, {
     useEffect,
     useState,
 } from 'react'
-import {useSelector} from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {ContactInfoDto, HelpCenter} from 'models/helpCenter/types'
 import {getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
@@ -70,7 +70,7 @@ export const HelpCenterTranslation: React.FC<Props> = ({
     const {client} = useHelpCenterApi()
     const {fetchHelpCenterTranslations} = useHelpCenterActions()
     const viewLanguage =
-        useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+        useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [translation, updateTranslation] =
         useState<HelpCenterTranslationState>(defaultTranslation)
 

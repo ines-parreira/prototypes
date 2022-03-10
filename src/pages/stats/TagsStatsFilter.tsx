@@ -1,11 +1,11 @@
 import React, {ComponentProps, useCallback, useState} from 'react'
-import {useSelector} from 'react-redux'
 import {useDebounce} from 'react-use'
 import {CancelToken} from 'axios'
 
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import {FetchTagsOptions, Tag, TagSortableProperties} from 'models/tag/types'
 import {fetchTags} from 'models/tag/resources'
@@ -35,7 +35,7 @@ type Props = {
 
 export default function TagsStatsFilter({value = []}: Props) {
     const dispatch = useAppDispatch()
-    const tags = useSelector((state: RootState) => state.entities.tags)
+    const tags = useAppSelector((state: RootState) => state.entities.tags)
     const [tagIds, setTagIds] = useState<string[]>([])
     const [tagSearch, setTagSearch] = useState('')
     const [debouncedTagSearch, setDebouncedTagSearch] = useState('')

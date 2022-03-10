@@ -1,28 +1,28 @@
 import React, {ComponentProps, useEffect, useState} from 'react'
-import {useSelector} from 'react-redux'
 import classnames from 'classnames'
 import {useAsyncFn} from 'react-use'
 
-import {getSelfServiceConfigurations} from '../../state/entities/selfServiceConfigurations/selectors'
+import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import {
     DEPRECATED_getCurrentPlan,
     getHasAutomationAddOn,
-} from '../../state/billing/selectors'
+} from 'state/billing/selectors'
 import {
     getCurrentAccountState,
     hasAutomationLegacyFeatures,
-} from '../../state/currentAccount/selectors'
-import {SegmentEvent} from '../../store/middlewares/segmentTracker'
-import UpgradeButton from '../common/components/UpgradeButton'
-import AutomationSubscriptionModal from '../settings/billing/automation/AutomationSubscriptionModal'
-import Button from '../common/components/button/Button'
-import history from '../../pages/history'
-import {fetchSelfServiceConfigurations} from '../../models/selfServiceConfiguration/resources'
-import useAppDispatch from '../../hooks/useAppDispatch'
-import {selfServiceConfigurationsFetched} from '../../state/entities/selfServiceConfigurations/actions'
-import {notify} from '../../state/notifications/actions'
-import {NotificationStatus} from '../../state/notifications/types'
-import Loader from '../common/components/Loader/Loader'
+} from 'state/currentAccount/selectors'
+import {SegmentEvent} from 'store/middlewares/segmentTracker'
+import UpgradeButton from 'pages/common/components/UpgradeButton'
+import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
+import Button from 'pages/common/components/button/Button'
+import history from 'pages/history'
+import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import Loader from 'pages/common/components/Loader/Loader'
 
 import {KeyMetricCell} from './common/components/charts/KeyMetricStat/KeyMetricCell'
 import KeyMetricCellWrapper from './common/components/charts/KeyMetricStat/KeyMetricCellWrapper'
@@ -33,13 +33,15 @@ export const AutomationStatsSelfServiceMetric = ({
     ...props
 }: ComponentProps<typeof KeyMetricCell>) => {
     const dispatch = useAppDispatch()
-    const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
-    const hasAutomationLegacy = useSelector(hasAutomationLegacyFeatures)
+    const selfServiceConfigurations = useAppSelector(
+        getSelfServiceConfigurations
+    )
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const hasAutomationLegacy = useAppSelector(hasAutomationLegacyFeatures)
     const hasAccessToSelfService = hasAutomationLegacy || hasAutomationAddOn
 
-    const account = useSelector(getCurrentAccountState)
-    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
+    const account = useAppSelector(getCurrentAccountState)
+    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)

@@ -1,12 +1,11 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
 import {List, Map} from 'immutable'
 import {Badge} from 'reactstrap'
 
 import {DEFAULT_TAG_COLOR} from 'config'
 import {MacroAction} from 'models/macroAction/types'
 import {getTags} from 'state/tags/selectors'
-import {RootState} from 'state/types'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {BaseActionPreview} from './BaseActionPreview'
 import css from './TagActionPreview.less'
@@ -17,7 +16,7 @@ type Props = {
 
 export const TagActionPreview = ({action}: Props) => {
     const tags = action.arguments.tags?.split(',') || []
-    const tagStore = useSelector<RootState, List<any>>(getTags)
+    const tagStore = useAppSelector<List<any>>(getTags)
 
     if (!tags.length) {
         return null

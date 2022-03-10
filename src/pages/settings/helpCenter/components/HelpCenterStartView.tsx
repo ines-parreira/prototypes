@@ -1,5 +1,4 @@
 import React, {useEffect, useCallback, useMemo} from 'react'
-import {useSelector} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import produce from 'immer'
@@ -18,6 +17,7 @@ import {changeHelpCenterId, changeViewLanguage} from 'state/ui/helpCenter'
 import PageHeader from 'pages/common/components/PageHeader'
 import Tooltip from 'pages/common/components/Tooltip'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../providers/SupportedLocales'
@@ -37,7 +37,7 @@ export const HelpCenterStartView: React.FC = () => {
     const history = useHistory()
     const {client} = useHelpCenterApi()
     const localeOptions = useSupportedLocales()
-    const helpCenterList = useSelector(getHelpCenterSortedList)
+    const helpCenterList = useAppSelector(getHelpCenterSortedList)
     const localesByCode = useMemo(
         () => _keyBy<Locale>(localeOptions, 'code'),
         [localeOptions]

@@ -2,7 +2,7 @@ import React, {useCallback, useContext, useMemo, useState} from 'react'
 import {ListGroup, Modal} from 'reactstrap'
 
 import {Map} from 'immutable'
-import {connect, ConnectedProps, useSelector} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -20,7 +20,7 @@ import {
     OnRemoveButton,
     OnSubmitButton,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-
+import useAppSelector from 'hooks/useAppSelector'
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
 
 import Form from './Form'
@@ -42,7 +42,7 @@ export function Editor({
     updateCustomActions,
     removeEditedWidget,
 }: Props & ConnectedProps<typeof connector>) {
-    const currentAccount = useSelector(getCurrentAccountState)
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const {integrationId} = useContext(IntegrationContext)
     const [isFormOpen, setFormOpen] = useState<boolean>(false)
     const [editorIndex, setFormIndex] = useState<number | null>(null)

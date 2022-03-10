@@ -1,5 +1,4 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {useSelector} from 'react-redux'
 import {Container, Table} from 'reactstrap'
 import _isEmpty from 'lodash/isEmpty'
 import moment from 'moment-timezone'
@@ -26,6 +25,7 @@ import SelectFilter from 'pages/stats/common/SelectFilter'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {getMoment} from 'utils/date'
 import {humanizeString} from 'utils'
 
@@ -46,8 +46,8 @@ const eventTypeOptions = Object.values(EventType).map((auditEvent) => ({
 
 const UserAuditList = () => {
     const dispatch = useAppDispatch()
-    const agents = useSelector(getAgents)
-    const auditLogEvents = useSelector((state: RootState) =>
+    const agents = useAppSelector(getAgents)
+    const auditLogEvents = useAppSelector((state: RootState) =>
         Object.values(state.entities.auditLogEvents)
     )
 

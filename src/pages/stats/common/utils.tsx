@@ -1,8 +1,8 @@
 import {useContext, useMemo} from 'react'
 import moment, {Moment} from 'moment'
 import _isNumber from 'lodash/isNumber'
-import {useSelector} from 'react-redux'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {ViewFilter} from 'state/views/types'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
 import {ViewField} from 'models/view/types'
@@ -108,7 +108,7 @@ export const formatDuration = (value: number, precision = 9) => {
 
 export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
     const statsFilters = useContext(StatsFiltersContext)
-    const tagsState = useSelector((state: RootState) => state.entities.tags)
+    const tagsState = useAppSelector((state: RootState) => state.entities.tags)
     return useMemo(() => {
         const filters: ViewFilter[] = []
         const {period, channels, integrations, agents, tags} = statsFilters

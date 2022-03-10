@@ -2,34 +2,34 @@ import React, {FormEvent, useEffect, useState} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Form, Row} from 'reactstrap'
 import classNames from 'classnames'
-import {useSelector} from 'react-redux'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
-import PageHeader from '../../../common/components/PageHeader'
-import SelectField from '../../../common/forms/SelectField/SelectField'
-import Loader from '../../../common/components/Loader/Loader'
-import Tooltip from '../../../common/components/Tooltip'
-import {getCancellationOptionFromEligibilityStatuses} from '../utils/getCancellationOptionFromEligibilityStatuses'
+import PageHeader from 'pages/common/components/PageHeader'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import Loader from 'pages/common/components/Loader/Loader'
+import Tooltip from 'pages/common/components/Tooltip'
+import {getCancellationOptionFromEligibilityStatuses} from 'pages/settings/selfService/utils/getCancellationOptionFromEligibilityStatuses'
 import {
     CancellationsDropdownOptionsList,
     CancellationsOptionToEligibilityStatuses,
-} from '../types'
+} from 'pages/settings/selfService/types'
 import {
     FilterKeyEnum,
     FilterOperatorEnum,
     SelfServiceConfigurationFilter,
     SelfServiceOrderStatusEnum,
-} from '../../../../models/selfServiceConfiguration/types'
-import {updateSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
-import {selfServiceConfigurationUpdated} from '../../../../state/entities/selfServiceConfigurations/actions'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
-import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
-import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
-import settingsCss from '../../settings.less'
+} from 'models/selfServiceConfiguration/types'
+import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import settingsCss from 'pages/settings/settings.less'
 
 import {useConfigurationData} from './hooks'
 import css from './CancellationPolicyView.less'
@@ -43,8 +43,8 @@ export const CancellationsPolicyView = () => {
 
     const {isLoadingConfig, configuration} = useConfigurationData()
 
-    const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
+    const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const [showDeleteButton, setShowDeleteButton] = useState(true)
 

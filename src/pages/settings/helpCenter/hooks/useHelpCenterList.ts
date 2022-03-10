@@ -1,5 +1,4 @@
 import {useEffect, useMemo, useState} from 'react'
-import {useSelector} from 'react-redux'
 
 import {Paths} from 'rest_api/help_center_api/client.generated'
 
@@ -11,6 +10,7 @@ import {
     getHelpCenters,
     helpCentersFetched,
 } from 'state/entities/helpCenter/helpCenters'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {useHelpCenterApi} from './useHelpCenterApi'
 
@@ -30,7 +30,7 @@ export const useHelpCenterList = (
     params: Omit<Paths.ListHelpCenters.QueryParameters, 'page'>
 ): HelpCenterListHook => {
     const dispatch = useAppDispatch()
-    const helpCenters = Object.values(useSelector(getHelpCenters)).map(
+    const helpCenters = Object.values(useAppSelector(getHelpCenters)).map(
         (hc) => hc
     )
 

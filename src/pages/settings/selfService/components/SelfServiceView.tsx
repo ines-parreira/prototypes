@@ -1,26 +1,26 @@
 import React, {useEffect, useState} from 'react'
-import {useSelector} from 'react-redux'
 import {Col, Container, Row, Table} from 'reactstrap'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 
-import PageHeader from '../../../common/components/PageHeader'
-import Tooltip from '../../../common/components/Tooltip'
-import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../models/integration/types'
-import {getSelfServiceConfigurations} from '../../../../state/entities/selfServiceConfigurations/selectors'
-import {SelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/types'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {selfServiceConfigurationsFetched} from '../../../../state/entities/selfServiceConfigurations/actions'
-import {fetchSelfServiceConfigurations} from '../../../../models/selfServiceConfiguration/resources'
-import Loader from '../../../common/components/Loader/Loader'
-import Alert, {AlertType} from '../../../common/components/Alert/Alert'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {GorgiasChatIntegrationSelfServicePaywall} from '../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
-import {getHasAutomationAddOn} from '../../../../state/billing/selectors'
-import {hasAutomationLegacyFeatures} from '../../../../state/currentAccount/selectors'
-import {getIconFromUrl} from '../../../../utils'
+import PageHeader from 'pages/common/components/PageHeader'
+import Tooltip from 'pages/common/components/Tooltip'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/types'
+import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
+import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
+import Loader from 'pages/common/components/Loader/Loader'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
+import {getIconFromUrl} from 'utils'
 import settingsCss from '../../settings.less'
 
 import {IntegrationRow} from './IntegrationRow'
@@ -54,15 +54,17 @@ const _findSelfServiceIntegration = (
 
 export const SelfServiceView = () => {
     const dispatch = useAppDispatch()
-    const hasSelfServiceV1Features = useSelector(hasAutomationLegacyFeatures)
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
-    const shopifyIntegrations = useSelector(
+    const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const shopifyIntegrations = useAppSelector(
         getIntegrationsByTypes(IntegrationType.Shopify)
     )
-    const selfServiceIntegrations = useSelector(
+    const selfServiceIntegrations = useAppSelector(
         getIntegrationsByTypes(IntegrationType.SelfService)
     )
-    const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)
+    const selfServiceConfigurations = useAppSelector(
+        getSelfServiceConfigurations
+    )
 
     const [loading, setLoading] = useState(true)
 

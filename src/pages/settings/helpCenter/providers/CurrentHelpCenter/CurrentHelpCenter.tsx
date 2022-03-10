@@ -1,6 +1,5 @@
 import React, {createContext, useContext, useEffect} from 'react'
 import axios from 'axios'
-import {useSelector} from 'react-redux'
 import {
     Route,
     Switch,
@@ -13,6 +12,7 @@ import {Container} from 'reactstrap'
 import Loader from 'pages/common/components/Loader/Loader'
 import {HelpCenter} from 'models/helpCenter/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {
     changeHelpCenterId,
@@ -51,8 +51,8 @@ export const CurrentHelpCenter: React.FC = () => {
     const location = useLocation()
     const {client} = useHelpCenterApi()
     const helpCenterId = useHelpCenterIdParam()
-    const helpCenter = useSelector(getCurrentHelpCenter)
-    const viewLanguage = useSelector(getViewLanguage)
+    const helpCenter = useAppSelector(getCurrentHelpCenter)
+    const viewLanguage = useAppSelector(getViewLanguage)
 
     useEffect(() => {
         async function init() {

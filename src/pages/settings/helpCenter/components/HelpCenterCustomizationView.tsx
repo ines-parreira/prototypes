@@ -1,10 +1,10 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {useSelector} from 'react-redux'
 import {FormGroup} from 'reactstrap'
 import classNames from 'classnames'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
+import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ExtraHTMLDto,
@@ -39,7 +39,7 @@ export const HelpCenterCustomizationView = () => {
     const {isReady, client} = useHelpCenterApi()
     const helpCenter = useCurrentHelpCenter()
     const selectedLocale =
-        useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+        useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [links, setLinks] = useState<NavigationLink[]>([])
     const [extraHTML, setExtraHTML] = useState<ExtraHTMLDto | null>(null)
 

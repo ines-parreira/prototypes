@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
-import {useSelector} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {getStatsFilters} from 'state/stats/selectors'
 import {
     INTENTS_BREAKDOWN_PER_DAY,
@@ -41,7 +41,7 @@ const AUTOMATION_INTENTS_CHANNELS = [
 ]
 
 export default function AutomationIntents() {
-    const statsFilters = useSelector(getStatsFilters)
+    const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, period} = statsFilters

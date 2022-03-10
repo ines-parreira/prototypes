@@ -1,17 +1,17 @@
 import {useEffect, useState} from 'react'
-import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 import {useParams} from 'react-router-dom'
 
-import {SelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/types'
-import {fetchSelfServiceConfiguration} from '../../../../models/selfServiceConfiguration/resources'
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../models/integration/types'
-import {getSelfServiceConfigurations} from '../../../../state/entities/selfServiceConfigurations/selectors'
-import {selfServiceConfigurationFetched} from '../../../../state/entities/selfServiceConfigurations/actions'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/types'
+import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
+import {selfServiceConfigurationFetched} from 'state/entities/selfServiceConfigurations/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 export const useConfigurationData = () => {
     const dispatch = useAppDispatch()
@@ -19,10 +19,12 @@ export const useConfigurationData = () => {
         shopName: string
         integrationType: string
     }>()
-    const shopifyIntegrations = useSelector(
+    const shopifyIntegrations = useAppSelector(
         getIntegrationsByTypes(IntegrationType.Shopify)
     )
-    const selfServiceConfigurations = useSelector(getSelfServiceConfigurations)
+    const selfServiceConfigurations = useAppSelector(
+        getSelfServiceConfigurations
+    )
 
     const [isLoadingConfig, setIsLoadingConfig] = useState(true)
 

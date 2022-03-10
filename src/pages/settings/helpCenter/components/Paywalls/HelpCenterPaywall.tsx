@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
-import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 
 import helpCenterImagePreview from 'assets/img/paywalls/screens/helpcenter.png'
 import {PlanInterval} from 'models/billing/types'
 import Paywall, {PaywallTheme} from 'pages/common/components/Paywall/Paywall'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     DEPRECATED_getCurrentPlan,
     DEPRECATED_getPlans,
@@ -17,8 +17,8 @@ import HelpCenterChangePlanModal from './HelpCenterChangePlanModal'
 
 const HelpCenterPaywall = (): JSX.Element => {
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(false)
-    const plans = useSelector(DEPRECATED_getPlans)
-    const currentPlan = useSelector(DEPRECATED_getCurrentPlan)
+    const plans = useAppSelector(DEPRECATED_getPlans)
+    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
     const planName = currentPlan.get('name') as string
     const currentPlanName = convertLegacyPlanNameToPublicPlanName(planName)
 

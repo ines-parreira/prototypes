@@ -1,7 +1,6 @@
 import React, {ChangeEvent, useEffect, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
-import {useSelector} from 'react-redux'
 import {
     FormGroup,
     FormText,
@@ -14,6 +13,7 @@ import {
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 import {
     Category,
@@ -87,7 +87,7 @@ export const HelpCenterCategoryEdit = ({
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const viewLanguage =
-        useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+        useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const locales = useSupportedLocales()
     const [title, setTitle] = useState('')
     const [slug, setSlug] = useState('')

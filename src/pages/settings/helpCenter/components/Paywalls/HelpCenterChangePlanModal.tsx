@@ -1,26 +1,21 @@
 import React, {useState} from 'react'
 import {useAsyncFn} from 'react-use'
-import {useSelector} from 'react-redux'
 import {Map} from 'immutable'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import BillingPlanCard from '../../../billing/plans/BillingPlanCard'
-import ChangePlanModal from '../../../billing/plans/ChangePlanModal'
-import {
-    PlanWithCurrencySign,
-    SubscriptionPlan,
-} from '../../../../../state/billing/types'
-import {setFutureSubscriptionPlan} from '../../../../../state/billing/actions'
-import {updateSubscription} from '../../../../../state/currentAccount/actions'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {
-    getPlan,
-    isAllowedToChangePlan,
-} from '../../../../../state/billing/selectors'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import BillingPlanCard from 'pages/settings/billing/plans/BillingPlanCard'
+import ChangePlanModal from 'pages/settings/billing/plans/ChangePlanModal'
+import {PlanWithCurrencySign, SubscriptionPlan} from 'state/billing/types'
+import {setFutureSubscriptionPlan} from 'state/billing/actions'
+import {updateSubscription} from 'state/currentAccount/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getPlan, isAllowedToChangePlan} from 'state/billing/selectors'
 
-import TotalAmount from '../../../billing/plans/TotalAmount'
-import AutomationAmount from '../../../billing/plans/AutomationAmount'
+import TotalAmount from 'pages/settings/billing/plans/TotalAmount'
+import AutomationAmount from 'pages/settings/billing/plans/AutomationAmount'
+
 import OpenChatButton from './components/OpenChatButton'
 
 type Props = {
@@ -41,7 +36,7 @@ const HelpCenterChangePlanModal = ({
     const [isModalAutomationChecked, setModalIsAutomationChecked] =
         useState(hasAutomationAddOn)
 
-    const suitablePlanWithAutomationAddOn = useSelector(
+    const suitablePlanWithAutomationAddOn = useAppSelector(
         getPlan(
             suitablePlanWithoutAutomationAddOn.automation_addon_equivalent_plan!
         )

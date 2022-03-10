@@ -1,16 +1,15 @@
 import React, {ComponentType} from 'react'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 import {Link, useHistory, useRouteMatch} from 'react-router-dom'
-import {useSelector} from 'react-redux'
 
+import useAppSelector from 'hooks/useAppSelector'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
-
-import PageHeader from '../../../../common/components/PageHeader'
-import {GorgiasChatIntegrationSelfServicePaywall} from '../../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
-import {getHasAutomationAddOn} from '../../../../../state/billing/selectors'
-import {getLoading} from '../../../../../state/ui/selfServiceConfigurations/selectors'
-import Loader from '../../../../common/components/Loader/Loader'
-import settingsCss from '../../../settings.less'
+import PageHeader from 'pages/common/components/PageHeader'
+import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getLoading} from 'state/ui/selfServiceConfigurations/selectors'
+import Loader from 'pages/common/components/Loader/Loader'
+import settingsCss from 'pages/settings/settings.less'
 
 import ReportIssueCasesList from './components/ReportIssueCasesList'
 import css from './ReportIssuePolicyView.less'
@@ -21,8 +20,8 @@ const ReportIssuePolicyView: ComponentType = () => {
     } = useRouteMatch<{shopName: string; integrationType: string}>()
     const history = useHistory()
 
-    const hasAutomationAddOn = useSelector(getHasAutomationAddOn)
-    const isLoading = useSelector(getLoading)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const isLoading = useAppSelector(getLoading)
 
     const handleClickNewCase = () => {
         history.push(

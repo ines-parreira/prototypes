@@ -4,10 +4,10 @@ import _truncate from 'lodash/truncate'
 import _uniqueId from 'lodash/uniqueId'
 import {useAsyncFn} from 'react-use'
 import {Card, CardBody, CardHeader, Table} from 'reactstrap'
-import {useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -35,7 +35,7 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
         null
     )
     const [ticketList, setTicketList] = useState<Ticket[]>([])
-    const currentAccount = useSelector(getCurrentAccountState)
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const [{loading}, handleFetchData] = useAsyncFn(async (cursor?: string) => {
         try {
             const {data, meta} = await fetchTicketsByRuleId(ruleId, {

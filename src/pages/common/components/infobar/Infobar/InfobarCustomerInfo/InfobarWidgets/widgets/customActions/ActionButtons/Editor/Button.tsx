@@ -1,14 +1,17 @@
 import React, {memo, useCallback, useMemo} from 'react'
 import {Button as BasicButton, ListGroupItem} from 'reactstrap'
 import {Map} from 'immutable'
-import {useSelector} from 'react-redux'
 
-import {renderTemplate} from '../../../../../../../../../utils/template'
-import {getTicket} from '../../../../../../../../../../../state/ticket/selectors'
-import {getActiveCustomer} from '../../../../../../../../../../../state/customers/selectors'
-import {Button as ButtonType, OnOpenForm, OnRemoveButton} from '../../types'
-
-import css from '../ActionButtons.less'
+import {renderTemplate} from 'pages/common/utils/template'
+import {getTicket} from 'state/ticket/selectors'
+import {getActiveCustomer} from 'state/customers/selectors'
+import useAppSelector from 'hooks/useAppSelector'
+import {
+    Button as ButtonType,
+    OnOpenForm,
+    OnRemoveButton,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
 
 type ButtonProps = {
     index: number
@@ -27,8 +30,8 @@ function Button(props: ButtonProps) {
         onOpenForm,
     } = props
 
-    const ticket = useSelector(getTicket)
-    const user = useSelector(getActiveCustomer)
+    const ticket = useAppSelector(getTicket)
+    const user = useAppSelector(getActiveCustomer)
     const templateContext = useMemo(() => {
         return {
             ...(source.toJS() as Record<string, unknown>),

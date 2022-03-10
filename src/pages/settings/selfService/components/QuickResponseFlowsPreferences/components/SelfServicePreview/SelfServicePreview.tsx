@@ -1,7 +1,5 @@
 import React, {useMemo} from 'react'
 import {useRouteMatch} from 'react-router'
-import {useSelector} from 'react-redux'
-
 import {ListGroup, Button} from 'reactstrap'
 
 import gorgiasChatSendMessageIcon from 'assets/img/integrations/gorgias-chat-send-message-icon.svg'
@@ -9,23 +7,23 @@ import {
     isGorgiasChatIntegration,
     isShopifyIntegration,
     GorgiasChatPositionAlignmentEnum,
-} from '../../../../../../../models/integration/types'
+} from 'models/integration/types'
 import {
     GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_DEFAULT_COLOR,
-} from '../../../../../../../config/integrations/gorgias_chat'
+} from 'config/integrations/gorgias_chat'
+import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
+import {getIntegrations} from 'state/integrations/selectors'
+import GorgiasChatIntegrationPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import useAppSelector from 'hooks/useAppSelector'
 
-import {useConfigurationData} from '../../../hooks'
-import {getIntegrations} from '../../../../../../../state/integrations/selectors'
-
-import GorgiasChatIntegrationPreview from '../../../../../../integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import css from './SelfServicePreview.less'
 import HomePageListGroupItem from './components/HomePageListGroupItem'
 
 const SelfServicePreview = () => {
     const {configuration: selfServiceConfiguration} = useConfigurationData()
 
-    const integrations = useSelector(getIntegrations)
+    const integrations = useAppSelector(getIntegrations)
     const {
         params: {shopName},
     } = useRouteMatch<{

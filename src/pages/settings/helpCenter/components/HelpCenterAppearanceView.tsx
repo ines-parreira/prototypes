@@ -3,7 +3,6 @@ import axios from 'axios'
 import {useAsyncFn} from 'react-use'
 import {FormGroup} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
-import {useSelector} from 'react-redux'
 
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -14,23 +13,30 @@ import {Value} from 'pages/common/forms/SelectField/types'
 import {getViewLanguage} from 'state/ui/helpCenter'
 import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters'
 
-import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {HelpCenter} from '../../../../models/helpCenter/types'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
-import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
-import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {FileUpload, useFileUpload} from '../hooks/useFileUpload'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {HelpCenter} from 'models/helpCenter/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
+import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import {
+    FileUpload,
+    useFileUpload,
+} from 'pages/settings/helpCenter/hooks/useFileUpload'
 import {
     HELP_CENTER_DEFAULT_COLOR,
     HELP_CENTER_DEFAULT_FONT,
     HELP_CENTER_DEFAULT_THEME,
     HELP_CENTER_DEFAULT_LOCALE,
-} from '../constants'
-import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
-import {HelpCenterTheme, isHelpCenterTheme} from '../types'
-import {getLocaleSelectOptions} from '../utils/localeSelectOptions'
-import {useSupportedLocales} from '../providers/SupportedLocales'
+} from 'pages/settings/helpCenter/constants'
+import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import {
+    HelpCenterTheme,
+    isHelpCenterTheme,
+} from 'pages/settings/helpCenter/types'
+import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {ImageUpload} from './ImageUpload'
 import {UpdateToggle} from './UpdateToggle'
@@ -60,7 +66,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const lightLogo = useFileUpload()
     const favicon = useFileUpload()
     const viewLanguage =
-        useSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+        useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const locales = useSupportedLocales()
     const [selectedLanguage, setSelectedLanguage] = useState(viewLanguage)
     const [bannerText, setBannerText] = useState<string>('')

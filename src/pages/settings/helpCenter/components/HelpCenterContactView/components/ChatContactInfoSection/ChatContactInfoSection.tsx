@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import moment from 'moment'
-import {useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {ChatContactInfoDto} from 'models/helpCenter/types'
 import InputField from 'pages/common/forms/InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -40,7 +40,7 @@ const ChatContactInfoSection: React.FC = () => {
         translation: {chatApplicationId, contactInfo},
         updateTranslation,
     } = useHelpCenterTranslation()
-    const businessHours = useSelector(getBusinessHoursSettings)
+    const businessHours = useAppSelector(getBusinessHoursSettings)
 
     const {description, enabled} = contactInfo.chat
 

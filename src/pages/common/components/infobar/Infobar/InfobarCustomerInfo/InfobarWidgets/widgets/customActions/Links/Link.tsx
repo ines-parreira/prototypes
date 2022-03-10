@@ -1,18 +1,19 @@
 import React, {useCallback, useContext, useMemo} from 'react'
 import {ListGroupItem} from 'reactstrap'
 import {Map} from 'immutable'
-import {useSelector} from 'react-redux'
 
-import {renderTemplate} from '../../../../../../../../utils/template'
-import {getTicket} from '../../../../../../../../../../state/ticket/selectors'
-import {getActiveCustomer} from '../../../../../../../../../../state/customers/selectors'
-import {getCurrentAccountState} from '../../../../../../../../../../state/currentAccount/selectors'
+import {renderTemplate} from 'pages/common/utils/template'
+import {getTicket} from 'state/ticket/selectors'
+import {getActiveCustomer} from 'state/customers/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../store/middlewares/segmentTracker'
-import {IntegrationContext} from '../../IntegrationContext'
-import {Link as LinkType, RemoveLink, SubmitLink} from '../types'
+    Link as LinkType,
+    RemoveLink,
+    SubmitLink,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import css from './Links.less'
 import Editor from './Editor'
@@ -38,13 +39,13 @@ export function Link(props: Props) {
         onSubmit,
     } = props
 
-    const currentAccount = useSelector(getCurrentAccountState)
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const {integrationId} = useContext(IntegrationContext)
 
     const {url: linkUrl, label: linkLabel} = link
 
-    const ticket = useSelector(getTicket)
-    const user = useSelector(getActiveCustomer)
+    const ticket = useAppSelector(getTicket)
+    const user = useAppSelector(getActiveCustomer)
 
     const templateContext = useMemo(() => {
         return {

@@ -1,11 +1,11 @@
 import React from 'react'
-import {useSelector} from 'react-redux'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {RootState} from '../../../../../state/types'
-import {hasRole} from '../../../../../utils'
-import {UserRole} from '../../../../../config/types/user'
+import {RootState} from 'state/types'
+import {hasRole} from 'utils'
+import {UserRole} from 'config/types/user'
+import useAppSelector from 'hooks/useAppSelector'
 
 type Props = {
     searchQuery: string
@@ -13,7 +13,7 @@ type Props = {
 }
 
 const MacroNoResults = ({searchQuery, newAction}: Props) => {
-    const currentUser = useSelector((state: RootState) => state.currentUser)
+    const currentUser = useAppSelector((state: RootState) => state.currentUser)
 
     return (
         <div className="no-result-container">

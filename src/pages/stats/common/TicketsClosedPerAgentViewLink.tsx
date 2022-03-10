@@ -1,17 +1,17 @@
 import React, {ReactNode, useMemo} from 'react'
-import {useSelector} from 'react-redux'
 import {List, Map} from 'immutable'
 
-import {getTicketViewField, getTicketViewFieldPath} from '../../../config/views'
-import {ViewField} from '../../../models/view/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
+import {ViewField} from 'models/view/types'
 import {
     logEvent,
     SegmentEvent,
     StatViewLinkClickedStat,
-} from '../../../store/middlewares/segmentTracker'
-import {getAgents} from '../../../state/agents/selectors'
-import {ViewFilter} from '../../../state/views/types'
-import {CollectionOperator, EqualityOperator} from '../../../state/rules/types'
+} from 'store/middlewares/segmentTracker'
+import {getAgents} from 'state/agents/selectors'
+import {ViewFilter} from 'state/views/types'
+import {CollectionOperator, EqualityOperator} from 'state/rules/types'
 
 import {useStatsViewFilters} from './utils'
 import ViewLink from './ViewLink'
@@ -27,7 +27,7 @@ export default function TicketsClosedPerAgentViewLink({
     children,
     unassignedName = 'Unassigned',
 }: Props) {
-    const agents = useSelector(getAgents) as List<Map<any, any>>
+    const agents = useAppSelector(getAgents) as List<Map<any, any>>
     const agent = agents.find(
         (agent) => (agent!.get('name') as string) === agentName
     )

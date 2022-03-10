@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import {useSelector} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
@@ -22,6 +21,7 @@ import {
 } from 'state/integrations/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import settingsCss from 'pages/settings/settings.less'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from './SmsAppPreferences.less'
 
@@ -36,7 +36,7 @@ export default function SmsAppPreferences({
     const [title, setTitle] = useState('')
     const [emoji, setEmoji] = useState<string | null>(null)
     const phoneNumberId = integration?.meta?.twilio_phone_number_id
-    const phoneNumber = useSelector(getPhoneNumber(phoneNumberId))
+    const phoneNumber = useAppSelector(getPhoneNumber(phoneNumberId))
 
     const dispatch = useAppDispatch()
 
