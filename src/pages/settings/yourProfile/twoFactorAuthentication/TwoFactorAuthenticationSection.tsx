@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react'
 import classnames from 'classnames'
 
-import {useSelector} from 'react-redux'
+import useAppSelector from 'hooks/useAppSelector'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button, {ButtonIntent} from 'pages/common/components/button/Button'
 import css from 'pages/settings/settings.less'
@@ -10,7 +10,7 @@ import TwoFactorAuthenticationDisableModal from './TwoFactorAuthenticationDisabl
 import TwoFactorAuthenticationModal from './TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 
 export default function TwoFactorAuthenticationSection() {
-    const currentUser = useSelector(getCurrentUserState)
+    const currentUser = useAppSelector(getCurrentUserState)
 
     const [isEnableModalOpen, setIsEnableModalOpen] = useState(false)
     const [isDisableModalOpen, setIsDisableModalOpen] = useState(false)
