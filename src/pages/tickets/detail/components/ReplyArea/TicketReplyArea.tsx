@@ -410,7 +410,7 @@ export class TicketReplyArea extends Component<Props, State> {
                             <span>
                                 To create a ticket with an internal note, please
                                 <a
-                                    href="https://docs.gorgias.com/video-tutorials/manually-set-the-requester-of-a-ticket-in-gorgias"
+                                    href="https://docs.gorgias.com/ticket/internal-notes#create_a_ticket_with_an_internal_note"
                                     rel="noopener noreferrer"
                                     target="_blank"
                                 >
