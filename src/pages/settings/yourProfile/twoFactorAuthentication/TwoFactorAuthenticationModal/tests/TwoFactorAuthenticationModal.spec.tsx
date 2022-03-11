@@ -99,6 +99,13 @@ describe('<TwoFactorAuthenticationModal />', () => {
             const continueButton = screen.getByText(/Continue/)
             fireEvent.click(continueButton)
 
+            // wait for the loading spinners to disappear
+            await waitFor(() => {
+                expect(() => screen.queryAllByText('Loading...')).toHaveLength(
+                    0
+                )
+            })
+
             expect(baseElement).toMatchSnapshot()
         })
 
