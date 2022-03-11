@@ -16,11 +16,15 @@ exports[`Subscription AfterTitle should display only the activate action because
       <span
         id="action-button-2-tooltip-target"
       />
-      <i
-        class="material-icons"
+      <span
+        class="wrapper"
       >
-        refresh
-      </i>
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          refresh
+        </i>
+      </span>
        Activate
     </button>
   </span>
@@ -58,11 +62,15 @@ exports[`Subscription AfterTitle should display only the cancel action because t
       <span
         id="action-button-1-tooltip-target"
       />
-      <i
-        class="material-icons"
+      <span
+        class="wrapper"
       >
-        block
-      </i>
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          block
+        </i>
+      </span>
        Cancel
     </button>
   </span>

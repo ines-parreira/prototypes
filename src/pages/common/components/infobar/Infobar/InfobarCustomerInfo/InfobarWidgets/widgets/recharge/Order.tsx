@@ -9,6 +9,7 @@ import {fromJS, Map, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import {renderTemplate} from 'pages/common/utils/template'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
@@ -147,7 +148,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 ),
                 child: (
                     <>
-                        <i className="material-icons">refresh</i> Refund
+                        <ButtonIconLabel icon="refresh" /> Refund
                     </>
                 ),
             },

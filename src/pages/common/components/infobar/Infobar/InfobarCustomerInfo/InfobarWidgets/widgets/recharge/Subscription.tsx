@@ -9,6 +9,7 @@ import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     devLog,
     humanizeString,
@@ -104,7 +105,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 ),
                 child: (
                     <>
-                        <i className="material-icons">block</i> Cancel
+                        <ButtonIconLabel icon="block" /> Cancel
                     </>
                 ),
             },
@@ -120,7 +121,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 ),
                 child: (
                     <>
-                        <i className="material-icons">refresh</i> Activate
+                        <ButtonIconLabel icon="refresh" /> Activate
                     </>
                 ),
             },

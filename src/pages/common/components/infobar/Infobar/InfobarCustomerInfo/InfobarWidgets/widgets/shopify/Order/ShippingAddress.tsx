@@ -1,6 +1,7 @@
 import React, {useContext, useMemo} from 'react'
 import {Map} from 'immutable'
 
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ActionButtonsGroup from '../../ActionButtonsGroup'
 import {InfobarAction} from '../../types'
 import {ShopifyActionType} from '../types'
@@ -43,7 +44,7 @@ export function AfterTitle({source}: AfterTitleProps) {
                 title: 'Edit Address',
                 child: (
                     <>
-                        <i className="material-icons">mode_edit</i> Edit
+                        <ButtonIconLabel icon="mode_edit" /> Edit
                     </>
                 ),
                 modal: EditOrderShippingAddressModal,

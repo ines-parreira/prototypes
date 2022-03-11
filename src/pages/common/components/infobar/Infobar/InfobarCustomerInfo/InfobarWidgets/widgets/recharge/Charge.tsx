@@ -13,6 +13,7 @@ import _groupBy from 'lodash/groupBy'
 
 import {LineItem} from 'constants/integrations/types/shopify'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {renderTemplate} from 'pages/common/utils/template'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
 import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
@@ -92,7 +93,7 @@ export class AfterTitle extends React.Component<{
                 ),
                 child: (
                     <>
-                        <i className="material-icons">refresh</i> Refund
+                        <ButtonIconLabel icon="refresh" /> Refund
                     </>
                 ),
             },
@@ -143,7 +144,7 @@ export class SubscriptionAfterTitle extends React.Component<{
                 ),
                 child: (
                     <>
-                        <i className="material-icons mr-1">block</i> Skip
+                        <ButtonIconLabel icon="block" /> Skip
                     </>
                 ),
             },
@@ -159,7 +160,7 @@ export class SubscriptionAfterTitle extends React.Component<{
                 ),
                 child: (
                     <>
-                        <i className="material-icons mr-1">autorenew</i> Unskip
+                        <ButtonIconLabel icon="autorenew" /> Unskip
                     </>
                 ),
             },

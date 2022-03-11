@@ -13,11 +13,15 @@ exports[`Order <AfterTitle/> should display the refund action (because total_pri
       <span
         id="action-button-2-tooltip-target"
       />
-      <i
-        class="material-icons"
+      <span
+        class="wrapper"
       >
-        refresh
-      </i>
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          refresh
+        </i>
+      </span>
        Refund
     </button>
   </span>
@@ -61,11 +65,15 @@ exports[`Order <AfterTitle/> should display the refund action 1`] = `
       <span
         id="action-button-1-tooltip-target"
       />
-      <i
-        class="material-icons"
+      <span
+        class="wrapper"
       >
-        refresh
-      </i>
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          refresh
+        </i>
+      </span>
        Refund
     </button>
   </span>
