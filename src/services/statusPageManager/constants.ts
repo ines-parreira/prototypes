@@ -105,14 +105,19 @@ export const INCIDENT_IMPACT_LABEL = Object.freeze({
         status: NotificationStatus.Error,
         label: 'a major outage',
     },
+    [IncidentImpact.Maintenance]: {
+        level: 0,
+        status: NotificationStatus.Info,
+        label: 'a maintenance',
+    },
 })
 
 export const INCIDENTS_NOTIFICATION_ID = 'status-page-components'
 export const MAINTENANCE_NOTIFICATION_ID = 'status-page-maintenance'
 
 // time before the maintenance event we'll display a notification to the user - used to give users some warning.
-// 7200 minutes = 5 days
-export const MAINTENANCE_NOTIFICATION_BEFORE_MINUTES = 7200
+// 4320 minutes = 3 days
+export const MAINTENANCE_NOTIFICATION_BEFORE_MINUTES = 4320
 
 // polling incidents more often
 export const INCIDENTS_POLLING_INTERVAL_SECONDS = 30
@@ -122,3 +127,6 @@ export const MAINTENANCE_POLLING_INTERVAL_SECONDS = 300
 
 export const DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY =
     'gorgias-statuspage-closed-banners'
+
+export const DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY =
+    'gorgias-statuspage-closed-maintenances'

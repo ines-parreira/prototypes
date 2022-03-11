@@ -10,6 +10,7 @@ export enum IncidentImpact {
     Minor = 'minor',
     Major = 'major',
     Critical = 'critical',
+    Maintenance = 'maintenance',
 }
 
 export enum IncidentStatus {
@@ -53,7 +54,10 @@ export type StatusPageIncidentsResponseData = {
     incidents: StatusPageIncident[]
 }
 
-export type StatusPageScheduledMaintenance = {
+export type StatusPageScheduledMaintenance = Omit<
+    StatusPageIncident,
+    'status'
+> & {
     status: MaintenanceStatus
     scheduled_for: string
     components: StatusPageComponent[]

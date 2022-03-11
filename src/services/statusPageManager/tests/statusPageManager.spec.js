@@ -1,8 +1,6 @@
 import {dismissNotification} from 'reapop'
 import moment from 'moment'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
 import statusPageManager from '../statusPageManager.ts'
 import {
@@ -12,21 +10,16 @@ import {
     MAINTENANCE_NOTIFICATION_ID,
     CLUSTER_GROUP_ID,
     DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
+    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
 } from '../constants.ts'
 import {ComponentStatus, IncidentImpact} from '../types.ts'
 
-import {notify} from '../../../state/notifications/actions.ts'
+import {notify} from 'state/notifications/actions.ts'
+import {IntegrationType} from 'models/integration/constants.ts'
 
-import {
-    FACEBOOK_INTEGRATION_TYPE,
-    GMAIL_INTEGRATION_TYPE,
-} from '../../../constants/integration.ts'
-
-const mockStore = configureMockStore([thunk])
-
-jest.mock('../../../state/notifications/actions.ts', () => {
+jest.mock('state/notifications/actions.ts', () => {
     const notificationActions = jest.requireActual(
-        '../../../state/notifications/actions.ts'
+        'state/notifications/actions.ts'
     )
 
     return {
@@ -107,48 +100,47 @@ describe('statusPageManager', () => {
             )
         })
 
-        it.each(Object.values(IncidentImpact))(
-            'should dispatch notify accordingly with %s impact',
-            (impact) => {
-                statusPageManager.processIncidents({
-                    page: {
-                        url: 'https://status.gorgias.com/',
+        it.each([
+            IncidentImpact.None,
+            IncidentImpact.Minor,
+            IncidentImpact.Major,
+            IncidentImpact.Critical,
+        ])('should dispatch notify accordingly with %s impact', (impact) => {
+            statusPageManager.processIncidents({
+                page: {
+                    url: 'https://status.gorgias.com/',
+                },
+                incidents: [
+                    {
+                        id: 'incident-id',
+                        impact,
+                        components: [
+                            {
+                                name: 'REST API',
+                                status: ComponentStatus.MajorOutage,
+                                group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                            },
+                            {
+                                name: 'GraphQL API',
+                                status: ComponentStatus.PartialOutage,
+                                group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                            },
+                            {
+                                name: 'Operational components should be ignore',
+                                status: ComponentStatus.Operational,
+                                group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                            },
+                            {
+                                name: 'ignored component',
+                                status: ComponentStatus.MajorOutage,
+                                group_id: 'unknown',
+                            },
+                        ],
                     },
-                    incidents: [
-                        {
-                            id: 'incident-id',
-                            impact,
-                            components: [
-                                {
-                                    name: 'REST API',
-                                    status: ComponentStatus.MajorOutage,
-                                    group_id:
-                                        Object.keys(HELPDESK_GROUP_IDS)[0],
-                                },
-                                {
-                                    name: 'GraphQL API',
-                                    status: ComponentStatus.PartialOutage,
-                                    group_id:
-                                        Object.keys(HELPDESK_GROUP_IDS)[0],
-                                },
-                                {
-                                    name: 'Operational components should be ignore',
-                                    status: ComponentStatus.Operational,
-                                    group_id:
-                                        Object.keys(HELPDESK_GROUP_IDS)[0],
-                                },
-                                {
-                                    name: 'ignored component',
-                                    status: ComponentStatus.MajorOutage,
-                                    group_id: 'unknown',
-                                },
-                            ],
-                        },
-                    ],
-                })
-                expect(notify.mock.calls).toMatchSnapshot()
-            }
-        )
+                ],
+            })
+            expect(notify.mock.calls).toMatchSnapshot()
+        })
 
         it('should dispatch as many notifications as there are incidents', () => {
             statusPageManager.processIncidents({
@@ -357,88 +349,10 @@ describe('statusPageManager', () => {
         })
 
         describe('integration filtering', () => {
-            it('should notify if matches an active integration', () => {
-                statusPageManager.store = mockStore({
-                    integrations: fromJS({
-                        integrations: [
-                            {
-                                id: 1,
-                                type: FACEBOOK_INTEGRATION_TYPE,
-                                deactivated_datetime: null,
-                            },
-                        ],
-                    }),
-                })
-                statusPageManager.processIncidents({
-                    page: {
-                        url: 'https://status.gorgias.com/',
-                    },
-                    incidents: [
-                        {
-                            id: 'incident-id',
-                            impact: IncidentImpact.Major,
-                            components: [
-                                {
-                                    id: '72gh1dxg7hnv',
-                                    name: 'Facebook Integration',
-                                    status: ComponentStatus.MajorOutage,
-                                    group_id:
-                                        Object.keys(HELPDESK_GROUP_IDS)[0],
-                                },
-                            ],
-                        },
-                    ],
-                })
-                expect(notify.mock.calls).toMatchSnapshot()
-            })
-
-            it('should not notify if matches an inactive integration', () => {
-                statusPageManager.store = mockStore({
-                    integrations: fromJS({
-                        integrations: [
-                            {
-                                id: 1,
-                                type: FACEBOOK_INTEGRATION_TYPE,
-                                deactivated_datetime: '2020-01-01',
-                            },
-                        ],
-                    }),
-                })
-                statusPageManager.processIncidents({
-                    page: {
-                        url: 'https://status.gorgias.com/',
-                    },
-                    incidents: [
-                        {
-                            id: 'incident-id',
-                            impact: IncidentImpact.Major,
-                            components: [
-                                {
-                                    id: '72gh1dxg7hnv',
-                                    name: 'Facebook Integration',
-                                    status: ComponentStatus.MajorOutage,
-                                    group_id:
-                                        Object.keys(HELPDESK_GROUP_IDS)[0],
-                                },
-                            ],
-                        },
-                    ],
-                })
-                expect(notify).not.toHaveBeenCalled()
-            })
-
             it('should not notify if integration type does not match', () => {
-                statusPageManager.store = mockStore({
-                    integrations: fromJS({
-                        integrations: [
-                            {
-                                id: 1,
-                                type: GMAIL_INTEGRATION_TYPE,
-                                deactivated_datetime: null,
-                            },
-                        ],
-                    }),
-                })
+                statusPageManager.activeIntegrationsTypes = fromJS([
+                    IntegrationType.Gmail,
+                ])
                 statusPageManager.processIncidents({
                     page: {
                         url: 'https://status.gorgias.com/',
@@ -462,23 +376,11 @@ describe('statusPageManager', () => {
                 expect(notify).not.toHaveBeenCalled()
             })
 
-            it('should notify active integrations and filter out inactive ones', () => {
-                statusPageManager.store = mockStore({
-                    integrations: fromJS({
-                        integrations: [
-                            {
-                                id: 1,
-                                type: GMAIL_INTEGRATION_TYPE,
-                                deactivated_datetime: null,
-                            },
-                            {
-                                id: 1,
-                                type: FACEBOOK_INTEGRATION_TYPE,
-                                deactivated_datetime: '2020-01-01',
-                            },
-                        ],
-                    }),
-                })
+            it('should notify active integrations', () => {
+                statusPageManager.activeIntegrationsTypes = fromJS([
+                    IntegrationType.Gmail,
+                    IntegrationType.Facebook,
+                ])
                 statusPageManager.processIncidents({
                     page: {
                         url: 'https://status.gorgias.com/',
@@ -643,6 +545,44 @@ describe('statusPageManager', () => {
                                     name: 'us-random-cluster',
                                     status: ComponentStatus.Operational,
                                     group_id: CLUSTER_GROUP_ID,
+                                },
+                                {
+                                    name: clusterName,
+                                    status: ComponentStatus.Operational,
+                                    group_id: CLUSTER_GROUP_ID,
+                                },
+                            ],
+                        },
+                    ],
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
+            })
+
+            it('should redisplay banner for a hidden maintenance once it is in progress', () => {
+                const clusterName = 'us-east1-abc'
+                window.GORGIAS_CLUSTER = clusterName
+                const id = 'id-of-banner'
+
+                localStorage.setItem(
+                    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
+                    JSON.stringify([id])
+                )
+
+                statusPageManager.processScheduledMaintenances({
+                    page: {
+                        url: 'https://status.gorgias.com/',
+                    },
+                    scheduled_maintenances: [
+                        {
+                            id,
+                            impact: 'maintenance',
+                            status: 'in_progress',
+                            components: [
+                                {
+                                    name: 'REST API',
+                                    status: ComponentStatus.Operational,
+                                    group_id:
+                                        Object.keys(HELPDESK_GROUP_IDS)[0],
                                 },
                                 {
                                     name: clusterName,

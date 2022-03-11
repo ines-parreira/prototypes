@@ -15,9 +15,11 @@ import {tryLocalStorage} from '../common/utils'
 
 import {
     ComponentStatus,
+    IncidentImpact,
     MaintenanceStatus,
     Page,
     StatusPageComponent,
+    StatusPageScheduledMaintenance,
     StatusPageScheduledMaintenanceResponseData,
     StatusPageIncident,
     StatusPageIncidentsResponseData,
@@ -35,6 +37,7 @@ import {
     PAGE_ID,
     INCIDENT_IMPACT_LABEL,
     DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
+    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
 } from './constants'
 
 //$TsFixMe remove once init.js is migrated
@@ -52,12 +55,21 @@ export class StatusPageManager {
     private fetchScheduledMaintenancesInterval: number | null = null
     private fetchUnresolvedIncidentsInterval: number | null = null
     private previousIncidentsIds: string[] = []
+    private activeIntegrationsTypes: ImmutableSet<IntegrationType>
 
     constructor() {
         if (window.StatusPage) {
             // docs: https://status.gorgias.com/api#status
             this.statusPage = new window.StatusPage.page({page: PAGE_ID})
         }
+
+        const activeIntegrations = getActiveIntegrations(this.store.getState())
+        this.activeIntegrationsTypes = activeIntegrations
+            .map(
+                (integration: ImmutableMap<any, any>) =>
+                    integration.get('type') as IntegrationType
+            )
+            .toSet()
     }
 
     startPolling = () => {
@@ -110,7 +122,9 @@ export class StatusPageManager {
         })
     }
 
-    static isIncidentImpactingCurrentCluster({components}: StatusPageIncident) {
+    static isEventImpactingCurrentCluster({
+        components,
+    }: StatusPageIncident | StatusPageScheduledMaintenance) {
         let areClustersAffected = false
 
         for (const component of components) {
@@ -125,8 +139,9 @@ export class StatusPageManager {
     }
 
     static getAffectedComponents(
+        impact: IncidentImpact,
         components: StatusPageComponent[],
-        activeIntegrationsTypes: ImmutableSet<IntegrationType>
+        activeIntegrationsTypes?: ImmutableSet<IntegrationType>
     ) {
         return components.filter((component) => {
             const affectedIntegrationType =
@@ -139,10 +154,14 @@ export class StatusPageManager {
                 return false
             }
 
-            if (groupName && component.status !== ComponentStatus.Operational) {
+            if (
+                groupName &&
+                (impact === IncidentImpact.Maintenance ||
+                    component.status !== ComponentStatus.Operational)
+            ) {
                 if (
                     affectedIntegrationType &&
-                    !activeIntegrationsTypes.includes(affectedIntegrationType)
+                    !activeIntegrationsTypes?.includes(affectedIntegrationType)
                 ) {
                     return false
                 }
@@ -151,49 +170,42 @@ export class StatusPageManager {
         })
     }
 
-    static hideNotification(id: string) {
+    static hideNotification(id: string, localStorageKey: string) {
         const notificationIds: string[] =
-            StatusPageManager.getSavedNotificationIds()
+            StatusPageManager.getSavedNotificationIds(localStorageKey)
         notificationIds.push(id)
-        StatusPageManager.saveNotificationIds(notificationIds)
+        StatusPageManager.saveNotificationIds(notificationIds, localStorageKey)
     }
 
-    static saveNotificationIds(notificationIds: string[]) {
+    static saveNotificationIds(
+        notificationIds: string[],
+        localStorageKey: string
+    ) {
         tryLocalStorage(() =>
             window.localStorage.setItem(
-                DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
+                localStorageKey,
                 JSON.stringify(notificationIds)
             )
         )
     }
 
-    static getSavedNotificationIds(): string[] {
+    static getSavedNotificationIds(localStorageKey: string): string[] {
         return JSON.parse(
-            window.localStorage.getItem(
-                DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY
-            ) || '[]'
+            window.localStorage.getItem(localStorageKey) || '[]'
         ) as string[]
     }
 
     processIncidents = (data: StatusPageIncidentsResponseData) => {
-        const activeIntegrations = getActiveIntegrations(this.store.getState())
-        const activeIntegrationsTypes: ImmutableSet<IntegrationType> =
-            activeIntegrations
-                .map(
-                    (integration: ImmutableMap<any, any>) =>
-                        integration.get('type') as IntegrationType
-                )
-                .toSet()
-
         const relevantIncidents = data.incidents
             .filter((incident) =>
-                StatusPageManager.isIncidentImpactingCurrentCluster(incident)
+                StatusPageManager.isEventImpactingCurrentCluster(incident)
             )
             .map((incident) => ({
                 ...incident,
                 components: StatusPageManager.getAffectedComponents(
+                    incident.impact,
                     incident.components,
-                    activeIntegrationsTypes
+                    this.activeIntegrationsTypes
                 ),
             }))
             .filter((incident) => incident.components.length)
@@ -208,12 +220,16 @@ export class StatusPageManager {
 
         const relevantIncidentsIds = relevantIncidents.map(({id}) => id)
         // notifications dismissed by user are retrieved in localStorage
-        const closedNotificationIds: string[] =
-            StatusPageManager.getSavedNotificationIds()
-        const cleanedNotificationIds = closedNotificationIds.filter(
-            (id: string) => relevantIncidentsIds.includes(id)
+        const closedNotificationIds = StatusPageManager.getSavedNotificationIds(
+            DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY
         )
-        StatusPageManager.saveNotificationIds(cleanedNotificationIds)
+        const cleanedNotificationIds = closedNotificationIds.filter((id) =>
+            relevantIncidentsIds.includes(id)
+        )
+        StatusPageManager.saveNotificationIds(
+            cleanedNotificationIds,
+            DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY
+        )
 
         for (const incident of relevantIncidents) {
             if (!closedNotificationIds.includes(incident.id)) {
@@ -263,7 +279,10 @@ export class StatusPageManager {
                         dismissible: false,
                         closable: true,
                         onClose: () =>
-                            StatusPageManager.hideNotification(incident.id),
+                            StatusPageManager.hideNotification(
+                                incident.id,
+                                DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY
+                            ),
                     } as any) as any
                 )
             }
@@ -273,93 +292,131 @@ export class StatusPageManager {
     processScheduledMaintenances = (
         data: StatusPageScheduledMaintenanceResponseData
     ) => {
-        const notification = {
-            label: '',
-            groupNames: new Set(),
-            componentNames: new Set(),
-        }
-
         // remove all previous maintenance notifications
         this.store.dispatch(dismissNotification(MAINTENANCE_NOTIFICATION_ID))
 
-        for (const maintenance of data.scheduled_maintenances) {
-            const clusters = maintenance.components.filter(
-                (component) => component.group_id === CLUSTER_GROUP_ID
-            )
+        const now = moment()
 
-            if (
-                clusters.length &&
-                !clusters.find(
-                    (cluster) => cluster.name === window.GORGIAS_CLUSTER
+        const [maintenance] = data.scheduled_maintenances
+            .filter((maintenance) => {
+                const isOnCurrentCluster =
+                    StatusPageManager.isEventImpactingCurrentCluster(
+                        maintenance
+                    )
+
+                const startsInMinutes = moment(maintenance.scheduled_for).diff(
+                    now,
+                    'minutes'
                 )
-            ) {
-                return
-            }
 
-            const now = moment()
-            const scheduledFor = moment(maintenance.scheduled_for)
-            const startsInMinutes = moment(maintenance.scheduled_for).diff(
-                now,
-                'minutes'
+                const isInTimeRange =
+                    maintenance.status !== MaintenanceStatus.Completed &&
+                    !(
+                        maintenance.status === MaintenanceStatus.Scheduled &&
+                        startsInMinutes >
+                            MAINTENANCE_NOTIFICATION_BEFORE_MINUTES
+                    )
+
+                return isOnCurrentCluster && isInTimeRange
+            })
+            .map((maintenance) => ({
+                ...maintenance,
+                components: StatusPageManager.getAffectedComponents(
+                    maintenance.impact,
+                    maintenance.components,
+                    this.activeIntegrationsTypes
+                ),
+            }))
+            .filter((maintenance) => maintenance.components.length)
+
+        if (maintenance) {
+            // notifications dismissed by user are retrieved in localStorage
+            const closedNotificationIds =
+                StatusPageManager.getSavedNotificationIds(
+                    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY
+                )
+            const cleanedNotificationIds = closedNotificationIds.filter(
+                (id) => maintenance.id === id
+            )
+            StatusPageManager.saveNotificationIds(
+                cleanedNotificationIds,
+                DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY
             )
 
-            if (maintenance.status === MaintenanceStatus.Completed) {
-                continue
-            }
-
-            // don't show maintenance events that are scheduled in the distant future.
+            // when maintenance is in progress and banner was previously closed,
+            // display it again, so remove it from local storage
             if (
-                maintenance.status === MaintenanceStatus.Scheduled &&
-                startsInMinutes > MAINTENANCE_NOTIFICATION_BEFORE_MINUTES
+                maintenance.status === MaintenanceStatus.InProgress &&
+                cleanedNotificationIds.includes(maintenance.id)
             ) {
-                continue
+                StatusPageManager.saveNotificationIds(
+                    cleanedNotificationIds.filter(
+                        (id) => id !== maintenance.id
+                    ),
+                    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY
+                )
             }
 
-            // get affected component groups and names
-            for (const component of maintenance.components) {
-                const groupName = HELPDESK_GROUP_IDS[component.group_id]
-                if (!groupName) {
-                    continue
+            if (
+                !closedNotificationIds.includes(maintenance.id) ||
+                (closedNotificationIds.includes(maintenance.id) &&
+                    maintenance.status === MaintenanceStatus.InProgress)
+            ) {
+                const notification = {
+                    label: '',
+                    groupNames: new Set(),
+                    componentNames: new Set(),
                 }
-                notification.groupNames.add(groupName)
-                if (notification.componentNames.size < 5) {
-                    notification.componentNames.add(component.name)
-                } else {
-                    break
+
+                // get affected component groups and names
+                for (const component of maintenance.components) {
+                    const groupName = HELPDESK_GROUP_IDS[component.group_id]
+                    if (!groupName) {
+                        continue
+                    }
+                    notification.groupNames.add(groupName)
+                    if (notification.componentNames.size < 5) {
+                        notification.componentNames.add(component.name)
+                    } else {
+                        break
+                    }
                 }
-            }
 
-            if (!notification.groupNames.size) {
-                continue
-            }
+                const scheduledFor = moment(maintenance.scheduled_for)
+                const startsInMinutes = scheduledFor.diff(now, 'minutes')
+                const startText = startsInMinutes > 0 ? 'will start' : 'started'
 
-            const startText = startsInMinutes > 0 ? 'will start' : 'started'
-            const message = `A scheduled maintenance for
+                const message = `A scheduled maintenance for
 ${Array.from(notification.groupNames).join(' & ')} affecting
 ${Array.from(notification.componentNames).join(
     ', '
 )} ${startText} <em>${scheduledFor.fromNow()}</em>.
 
 Find out more on our <a href="${
-                data.page.url
-            }" target="_blank" rel="noreferrer noopener">status page</a>.`
+                    data.page.url
+                }" target="_blank" rel="noreferrer noopener">status page</a>.`
 
-            this.store.dispatch(
-                notify({
-                    id: MAINTENANCE_NOTIFICATION_ID,
-                    status:
-                        maintenance.status === MaintenanceStatus.Scheduled
-                            ? NotificationStatus.Info
-                            : NotificationStatus.Warning,
-                    style: NotificationStyle.Banner,
-                    message: message,
-                    allowHTML: true,
-                    dismissible: false,
-                    showIcon: true,
-                }) as any
-            )
-
-            return // only take a single maintenance at a time.
+                this.store.dispatch(
+                    notify({
+                        id: MAINTENANCE_NOTIFICATION_ID,
+                        status:
+                            maintenance.status === MaintenanceStatus.Scheduled
+                                ? NotificationStatus.Info
+                                : NotificationStatus.Warning,
+                        style: NotificationStyle.Banner,
+                        message,
+                        allowHTML: true,
+                        dismissible: false,
+                        closable: true,
+                        showIcon: true,
+                        onClose: () =>
+                            StatusPageManager.hideNotification(
+                                maintenance.id,
+                                DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY
+                            ),
+                    }) as any
+                )
+            }
         }
     }
 }

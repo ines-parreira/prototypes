@@ -38,7 +38,7 @@ Array [
 ]
 `;
 
-exports[`statusPageManager processIncidents() integration filtering should notify active integrations and filter out inactive ones 1`] = `
+exports[`statusPageManager processIncidents() integration filtering should notify active integrations 1`] = `
 Array [
   Array [
     Object {
@@ -47,26 +47,7 @@ Array [
       "dismissible": false,
       "id": "status-page-components-incident-id",
       "message": "
-                Currently experiencing a partial outage in our API affecting Gmail Integration component.
-                Find out more on our <a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a>.",
-      "onClose": [Function],
-      "status": "error",
-      "style": "banner",
-    },
-  ],
-]
-`;
-
-exports[`statusPageManager processIncidents() integration filtering should notify if matches an active integration 1`] = `
-Array [
-  Array [
-    Object {
-      "allowHTML": true,
-      "closable": true,
-      "dismissible": false,
-      "id": "status-page-components-incident-id",
-      "message": "
-                Currently experiencing a partial outage in our API affecting Facebook Integration component.
+                Currently experiencing a partial outage in our API affecting Facebook Integration, Gmail Integration components.
                 Find out more on our <a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a>.",
       "onClose": [Function],
       "status": "error",
@@ -209,6 +190,7 @@ Array [
   Array [
     Object {
       "allowHTML": true,
+      "closable": true,
       "dismissible": false,
       "id": "status-page-maintenance",
       "message": "A scheduled maintenance for
@@ -216,6 +198,7 @@ API affecting
 REST API started <em>a few seconds ago</em>.
 
 Find out more on our <a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a>.",
+      "onClose": [Function],
       "showIcon": true,
       "status": "warning",
       "style": "banner",
@@ -229,6 +212,7 @@ Array [
   Array [
     Object {
       "allowHTML": true,
+      "closable": true,
       "dismissible": false,
       "id": "status-page-maintenance",
       "message": "A scheduled maintenance for
@@ -236,6 +220,29 @@ API affecting
 REST API started <em>a few seconds ago</em>.
 
 Find out more on our <a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a>.",
+      "onClose": [Function],
+      "showIcon": true,
+      "status": "warning",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
+exports[`statusPageManager processScheduledMaintenances() cluster filtering should redisplay banner for a hidden maintenance once it is in progress 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "closable": true,
+      "dismissible": false,
+      "id": "status-page-maintenance",
+      "message": "A scheduled maintenance for
+API affecting
+REST API started <em>a few seconds ago</em>.
+
+Find out more on our <a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a>.",
+      "onClose": [Function],
       "showIcon": true,
       "status": "warning",
       "style": "banner",
@@ -251,6 +258,7 @@ Array [
   Array [
     Object {
       "allowHTML": true,
+      "closable": true,
       "dismissible": false,
       "id": "status-page-maintenance",
       "message": "A scheduled maintenance for
@@ -258,6 +266,7 @@ API affecting
 REST API, GraphQL API will start <em>in 2 minutes</em>.
 
 Find out more on our <a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a>.",
+      "onClose": [Function],
       "showIcon": true,
       "status": "warning",
       "style": "banner",
@@ -271,6 +280,7 @@ Array [
   Array [
     Object {
       "allowHTML": true,
+      "closable": true,
       "dismissible": false,
       "id": "status-page-maintenance",
       "message": "A scheduled maintenance for
@@ -278,6 +288,7 @@ API affecting
 REST API, GraphQL API will start <em>in 2 minutes</em>.
 
 Find out more on our <a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a>.",
+      "onClose": [Function],
       "showIcon": true,
       "status": "info",
       "style": "banner",
@@ -291,6 +302,7 @@ Array [
   Array [
     Object {
       "allowHTML": true,
+      "closable": true,
       "dismissible": false,
       "id": "status-page-maintenance",
       "message": "A scheduled maintenance for
@@ -298,6 +310,7 @@ API affecting
 REST API, GraphQL API will start <em>in 2 minutes</em>.
 
 Find out more on our <a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a>.",
+      "onClose": [Function],
       "showIcon": true,
       "status": "warning",
       "style": "banner",
