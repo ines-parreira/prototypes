@@ -166,6 +166,7 @@ export enum SegmentEvent {
     CustomActionButtonsParamClosed = 'widget/custom-button/params-modal-closed',
     MenuUserLinkClicked = 'menu-user-link-clicked',
     MenuMainLinkClicked = 'menu-main-link-clicked',
+    TicketFailedReview = 'ticket-failed-review',
 }
 
 export enum StatViewLinkClickedStat {

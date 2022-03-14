@@ -8,7 +8,7 @@ import {dismissNotification} from 'reapop'
 import {Moment} from 'moment'
 import {compressToEncodedURIComponent} from 'lz-string'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import {TicketStatus, TicketMessageSourceType} from 'business/types/ticket'
 import {DEFAULT_ACTIONS} from 'config'
 import {ViewType} from 'models/view/constants'
 import browserNotification from 'services/browserNotification'
@@ -131,7 +131,7 @@ export const fetchTicketReplyMacro = () => ({
 })
 
 export const ticketPartialUpdate =
-    (args: Record<string, unknown>) =>
+    (args: Record<string, unknown>, id?: number) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -141,7 +141,7 @@ export const ticketPartialUpdate =
         }
 
         const {ticket} = getState()
-        const ticketId = ticket.get('id') as number
+        const ticketId = id || (ticket.get('id') as number)
 
         // do not send to server if it's a partial update on a new ticket
         if (!ticketId) {
@@ -973,6 +973,7 @@ export const handleMessageError =
                 primary: true,
                 name: 'Review',
                 onClick: () => {
+                    logEvent(SegmentEvent.TicketFailedReview)
                     history.push(`/app/ticket/${json.ticket_id}`)
                 },
             },
@@ -986,6 +987,9 @@ export const handleMessageError =
             )
         }
 
+        void dispatch(
+            ticketPartialUpdate({status: TicketStatus.Open}, json.ticket_id)
+        )
         void dispatch(
             notify({
                 status: NotificationStatus.Error,

@@ -165,6 +165,18 @@ describe('ticket actions', () => {
                 .dispatch(actions.ticketPartialUpdate(update))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
+
+        it('should update a ticket with the passed id instead of the current one', () => {
+            mockServer.onPut('/api/tickets/2/').reply(200, {data: {id: 2}})
+
+            store = mockStore({
+                ticket: fromJS({id: 1}),
+            })
+
+            return store
+                .dispatch(actions.ticketPartialUpdate(update, 2))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
     })
 
     it('addTags()', () => {
@@ -529,9 +541,12 @@ describe('ticket actions', () => {
     })
 
     describe('handleMessageError()', () => {
-        it('should fetch the ticket because the user is currently on it', () => {
+        it('should fetch the ticket because the user is currently on it and reopen the ticket', (done) => {
             mockServer
                 .onGet('/api/tickets/1/')
+                .reply(200, {id: 1, messages: []})
+            mockServer
+                .onPut('/api/tickets/1/')
                 .reply(200, {id: 1, messages: []})
             const json = {
                 ticket_id: '1',
@@ -543,14 +558,17 @@ describe('ticket actions', () => {
                     },
                 },
             } as unknown as TicketMessageFailedEvent
-            return store
-                .dispatch(actions.handleMessageError(json))
-                .then(() => expect(store.getActions()).toMatchSnapshot())
+
+            void store.dispatch(actions.handleMessageError(json))
+            setImmediate(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                done()
+            })
         })
 
-        it('should not fetch the ticket because the user is not currently on it', () => {
+        it('should not fetch the ticket because the user is not currently on it and reopen the ticket', (done) => {
             mockServer
-                .onGet('/api/tickets/2/')
+                .onPut('/api/tickets/2/')
                 .reply(200, {id: 2, messages: []})
 
             const json = {
@@ -564,9 +582,11 @@ describe('ticket actions', () => {
                 },
             } as unknown as TicketMessageFailedEvent
 
-            return store
-                .dispatch(actions.handleMessageError(json))
-                .then(() => expect(store.getActions()).toMatchSnapshot())
+            void store.dispatch(actions.handleMessageError(json))
+            setImmediate(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                done()
+            })
         })
     })
 

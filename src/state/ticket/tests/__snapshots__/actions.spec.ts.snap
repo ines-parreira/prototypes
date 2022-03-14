@@ -1591,8 +1591,14 @@ Array [
 
 exports[`ticket actions handleMessageActionError() should not fetch the ticket because the user is not currently on it 1`] = `Array []`;
 
-exports[`ticket actions handleMessageError() should fetch the ticket because the user is currently on it 1`] = `
+exports[`ticket actions handleMessageError() should fetch the ticket because the user is currently on it and reopen the ticket 1`] = `
 Array [
+  Object {
+    "args": Object {
+      "status": "open",
+    },
+    "type": "TICKET_PARTIAL_UPDATE_START",
+  },
   Object {
     "resp": Object {
       "id": 1,
@@ -1674,10 +1680,33 @@ Array [
     "sender": Immutable.Map {},
     "type": "NEW_MESSAGE_SET_SENDER",
   },
+  Object {
+    "resp": Object {
+      "id": 1,
+      "messages": Array [],
+    },
+    "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
+  },
 ]
 `;
 
-exports[`ticket actions handleMessageError() should not fetch the ticket because the user is not currently on it 1`] = `Array []`;
+exports[`ticket actions handleMessageError() should not fetch the ticket because the user is not currently on it and reopen the ticket 1`] = `
+Array [
+  Object {
+    "args": Object {
+      "status": "open",
+    },
+    "type": "TICKET_PARTIAL_UPDATE_START",
+  },
+  Object {
+    "resp": Object {
+      "id": 2,
+      "messages": Array [],
+    },
+    "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
+  },
+]
+`;
 
 exports[`ticket actions hideAuditLogEvents() should dispatch REMOVE_TICKET_AUDIT_LOG_EVENTS action 1`] = `
 Array [
@@ -2013,6 +2042,25 @@ Array [
 `;
 
 exports[`ticket actions ticketPartialUpdate() fails because new ticket 1`] = `Array []`;
+
+exports[`ticket actions ticketPartialUpdate() should update a ticket with the passed id instead of the current one 1`] = `
+Array [
+  Object {
+    "args": Object {
+      "subject": "new title",
+    },
+    "type": "TICKET_PARTIAL_UPDATE_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Object {
+        "id": 2,
+      },
+    },
+    "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
+  },
+]
+`;
 
 exports[`ticket actions ticketPartialUpdate() success 1`] = `
 Array [
