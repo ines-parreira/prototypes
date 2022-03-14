@@ -162,7 +162,7 @@ exports[`<FilterTopbar /> render should not render delete button when creating n
         class="footer"
       >
         <button
-          class="wrapper creation medium"
+          class="wrapper primary medium"
           type="submit"
         >
           Create view

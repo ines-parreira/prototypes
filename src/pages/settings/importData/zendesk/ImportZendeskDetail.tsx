@@ -25,10 +25,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
 import Tooltip from 'pages/common/components/Tooltip'
 import settingsCss from 'pages/settings/settings.less'
-import Button, {
-    ButtonIntent,
-    ButtonSize,
-} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel, {
     ButtonIconPosition,
 } from 'pages/common/components/button/ButtonIconLabel'
@@ -145,7 +142,7 @@ export const ImportZendeskDetail = (
                             <Button
                                 id="learn-button"
                                 className={css.learnButton}
-                                intent={ButtonIntent.Secondary}
+                                intent="secondary"
                                 onClick={() => {
                                     setIsPopoverOpened(!isPopoverOpened)
                                 }}
@@ -181,10 +178,7 @@ export const ImportZendeskDetail = (
                                         className="mb-1"
                                         href="https://docs.gorgias.com/migrating-helpdesks/switching-from-zendesk"
                                     >
-                                        <Button
-                                            size={ButtonSize.Small}
-                                            intent={ButtonIntent.Secondary}
-                                        >
+                                        <Button size="small" intent="secondary">
                                             <ButtonIconLabel
                                                 icon="arrow_forward"
                                                 position={

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import Tooltip from '../../../../common/components/Tooltip'
 
@@ -55,7 +55,7 @@ export const LinkList = ({
                 <Button
                     className={css['add-link']}
                     isDisabled={isLimitExceeded}
-                    intent={ButtonIntent.Secondary}
+                    intent="secondary"
                     style={isLimitExceeded ? {pointerEvents: 'none'} : {}}
                     onClick={onAddNew}
                 >

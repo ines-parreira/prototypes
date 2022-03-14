@@ -14,7 +14,7 @@ import {
 } from 'models/rule/resources'
 import {RuleRecipe} from 'models/ruleRecipe/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
@@ -253,7 +253,7 @@ export function RuleRow({
                 >
                     <IconButton
                         className={classnames(css.actionButton, 'mr-1')}
-                        intent={ButtonIntent.Text}
+                        intent="text"
                         onClick={(e) => {
                             e.stopPropagation()
                             void handleDuplicate()
@@ -272,7 +272,7 @@ export function RuleRow({
                             e.stopPropagation()
                             toggleShowDeleteConfirmation()
                         }}
-                        intent={ButtonIntent.Text}
+                        intent="text"
                         isLoading={isDeleting}
                         title="Delete rule"
                         id={`delete-rule-${rule.id}`}
@@ -311,10 +311,7 @@ export function RuleRow({
                         You are about to delete <b>{rule.name || 'this'}</b>{' '}
                         rule.
                     </p>
-                    <Button
-                        intent={ButtonIntent.Destructive}
-                        onClick={handleDelete}
-                    >
+                    <Button intent="destructive" onClick={handleDelete}>
                         Confirm
                     </Button>
                 </PopoverBody>
@@ -330,10 +327,7 @@ export function RuleRow({
                 <PopoverBody>
                     <p>You are about to deactivate {rule.name} rule.</p>
 
-                    <Button
-                        intent={ButtonIntent.Destructive}
-                        onClick={handleDeactivate}
-                    >
+                    <Button intent="destructive" onClick={handleDeactivate}>
                         Confirm
                     </Button>
                 </PopoverBody>

@@ -12,7 +12,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
 import PageHeader from 'pages/common/components/PageHeader'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
 import PhoneIntegrationsList from 'pages/integrations/detail/components/phone/PhoneIntegrationsList'
@@ -63,7 +63,6 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                             <BreadcrumbItem active>Voice</BreadcrumbItem>
                         </Breadcrumb>
                         <Button
-                            intent={ButtonIntent.Creation}
                             onClick={() =>
                                 history.push(
                                     '/app/settings/integrations/phone/new'

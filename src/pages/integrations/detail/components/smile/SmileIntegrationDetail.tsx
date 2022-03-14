@@ -7,7 +7,7 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
 import Loader from '../../../../common/components/Loader/Loader'
 import InputField from '../../../../common/forms/InputField'
@@ -198,7 +198,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                                     }
                                     confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                     isDisabled={isSubmitting}
-                                    intent={ButtonIntent.Destructive}
+                                    intent="destructive"
                                 >
                                     <ButtonIconLabel icon="delete">
                                         Delete integration

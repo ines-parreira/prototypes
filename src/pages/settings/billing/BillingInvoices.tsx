@@ -7,7 +7,7 @@ import {Map} from 'immutable'
 
 import {SHOPIFY_PAYMENT_SERVICE} from 'constants/billing'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from 'pages/common/components/Loader/Loader'
 import GorgiasApi from 'services/gorgiasApi'
@@ -172,11 +172,7 @@ export class BillingInvoicesContainer extends Component<Props, State> {
                                                 target="_self"
                                                 href={invoicePdfUrl}
                                             >
-                                                <Button
-                                                    intent={
-                                                        ButtonIntent.Secondary
-                                                    }
-                                                >
+                                                <Button intent="secondary">
                                                     <ButtonIconLabel icon="file_copy">
                                                         Download PDF
                                                     </ButtonIconLabel>

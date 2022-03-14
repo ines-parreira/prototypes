@@ -13,7 +13,6 @@ import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 
 import VoiceMessageField from './VoiceMessageField'
 import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'
@@ -124,7 +123,7 @@ const IvrMenuActionField = ({
                                 <h3>Add message</h3>
                                 <Drawer.HeaderActions>
                                     <IconButton
-                                        intent={ButtonIntent.Text}
+                                        intent="text"
                                         onClick={() => setDrawerOpen(false)}
                                         className={css.closeDrawerButton}
                                     >
@@ -191,7 +190,7 @@ const IvrMenuActionField = ({
             </Col>
             <Col className={classNames(css.smallColumn, 'pl-0')}>
                 <IconButton
-                    intent={ButtonIntent.Text}
+                    intent="text"
                     onClick={onRemove}
                     className={css.deleteButton}
                 >

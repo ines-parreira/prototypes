@@ -4,7 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import {Action} from '../../../../../models/ticket/types'
 import Tooltip from '../../../../common/components/Tooltip'
 import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
@@ -185,7 +185,7 @@ class Error extends Component<Props, State> {
                 <span>
                     <Button
                         id={id}
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         onClick={this.cancel}
                         isDisabled={!!this.state.loading}
                     >

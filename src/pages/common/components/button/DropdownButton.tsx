@@ -1,7 +1,7 @@
 import React, {ComponentProps, forwardRef, Ref} from 'react'
 import classnames from 'classnames'
 
-import Button, {ButtonSize} from './Button'
+import Button from './Button'
 import css from './DropdownButton.less'
 import IconButton from './IconButton'
 
@@ -16,7 +16,7 @@ const DropdownButton = forwardRef(
         {
             children,
             className,
-            size = ButtonSize.Medium,
+            size = 'medium',
             onToggleClick,
             toggleId,
             toggleRef,

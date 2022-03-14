@@ -6,7 +6,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
 import GroupItem from 'pages/common/components/layout/GroupItem'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -146,11 +146,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
     )
 
     const buttonsForUnchangedPublished = () => (
-        <Button
-            className={css.submitButton}
-            intent={ButtonIntent.Primary}
-            isDisabled={true}
-        >
+        <Button className={css.submitButton} isDisabled={true}>
             Published
         </Button>
     )
@@ -158,11 +154,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
     const buttonsForUnchangedNotPublished = (
         mode: ArticleModeUnchangedNotPublished
     ) => (
-        <Button
-            className={css.submitButton}
-            intent={ButtonIntent.Primary}
-            onClick={mode.onPublish}
-        >
+        <Button className={css.submitButton} onClick={mode.onPublish}>
             Publish Article
         </Button>
     )
@@ -185,7 +177,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
             <div className={css.buttonsWrapper}>
                 {savingButtons(articleMode)}
 
-                <Button intent={ButtonIntent.Secondary} onClick={onDiscard}>
+                <Button intent="secondary" onClick={onDiscard}>
                     Discard changes
                 </Button>
 
@@ -229,7 +221,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                 {canDelete(articleMode) && (
                     <Button
                         className={css.deleteButton}
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         onClick={() => setPendingDeleteArticle(true)}
                     >
                         <i className="material-icons">delete</i>

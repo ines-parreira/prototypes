@@ -4,7 +4,7 @@ import {AxiosError} from 'axios'
 import {connect} from 'react-redux'
 import {Map} from 'immutable'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 import client from 'models/api/resources'
@@ -120,7 +120,7 @@ const DeleteButton = ({url}: ButtonProps) => {
     return (
         <ConfirmButton
             className="float-right"
-            intent={ButtonIntent.Destructive}
+            intent="destructive"
             isDisabled={isRequestPending}
             onConfirm={deleteRecording}
             confirmationContent="You are about to delete this call recording. You cannot recover a deleted recording."
@@ -135,7 +135,7 @@ const DownloadButton = ({url}: ButtonProps) => {
 
     return (
         <Button
-            intent={ButtonIntent.Secondary}
+            intent="secondary"
             isDisabled={isRequestPending}
             onClick={downloadRecording}
         >

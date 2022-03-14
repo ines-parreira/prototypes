@@ -18,7 +18,7 @@ import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
 import InputField from 'pages/common/forms/InputField'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -189,7 +189,7 @@ export class FormContainer extends Component<Props, State> {
                                                         [css.hasEmoji]: !!emoji,
                                                     }
                                                 )}
-                                                intent={ButtonIntent.Secondary}
+                                                intent="secondary"
                                                 id="add-emoji"
                                                 onClick={
                                                     this._toggleEmojiPicker
@@ -221,9 +221,7 @@ export class FormContainer extends Component<Props, State> {
                                             {emoji && (
                                                 <IconButton
                                                     className={css.removeEmoji}
-                                                    intent={
-                                                        ButtonIntent.Secondary
-                                                    }
+                                                    intent="secondary"
                                                     onClick={() =>
                                                         this.setState({
                                                             team: team.setIn(
@@ -309,7 +307,7 @@ export class FormContainer extends Component<Props, State> {
                                                     closed.
                                                 </span>
                                             }
-                                            intent={ButtonIntent.Destructive}
+                                            intent="destructive"
                                             onConfirm={this._delete}
                                             className="float-right"
                                         >

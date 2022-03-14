@@ -12,7 +12,7 @@ import {
     saveTwoFASecret as saveTwoFASecretResource,
     validateVerificationCode as validateVerificationCodeResource,
 } from '../../../../../models/twoFactorAuthentication/resources'
-import Button, {ButtonIntent} from '../../../../common/components/button/Button'
+import Button from '../../../../common/components/button/Button'
 import ModalContinueButton from './ModalContinueButton'
 import ModalStep from './ModalStep'
 import ModalBanners from './ModalBanners'
@@ -142,7 +142,7 @@ export default function TwoFactorAuthenticationModal({
                 <>
                     {step === 1 && (
                         <Button
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             onClick={handleCancel}
                             isLoading={isLoading}
                         >
@@ -151,7 +151,7 @@ export default function TwoFactorAuthenticationModal({
                     )}
                     {step === 2 && (
                         <Button
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             onClick={handleBack}
                             isLoading={isLoading}
                         >

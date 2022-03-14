@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import {Container, Row, Col} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from '../../../../common/components/Loader/Loader'
@@ -316,7 +316,7 @@ export class MacroModalContainer extends Component<Props, State> {
                             >
                                 {!selectionMode && (
                                     <Button
-                                        intent={ButtonIntent.Secondary}
+                                        intent="secondary"
                                         onClick={this._addNewMacro}
                                     >
                                         <ButtonIconLabel icon="add">
@@ -340,7 +340,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                             </Button>
                                             <Button
                                                 className="ml-3"
-                                                intent={ButtonIntent.Secondary}
+                                                intent="secondary"
                                                 onClick={this._applyMacro}
                                             >
                                                 Apply macro to {selectedCount}{' '}
@@ -352,9 +352,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                             <div className="d-inline-block">
                                                 {!isCreatingMacro && (
                                                     <ConfirmButton
-                                                        intent={
-                                                            ButtonIntent.Destructive
-                                                        }
+                                                        intent="destructive"
                                                         onConfirm={
                                                             this._deleteMacro
                                                         }
@@ -396,9 +394,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                                     >
                                                         <Button
                                                             type="submit"
-                                                            intent={
-                                                                ButtonIntent.Secondary
-                                                            }
+                                                            intent="secondary"
                                                         >
                                                             Discard Changes
                                                         </Button>
@@ -414,9 +410,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                                     >
                                                         <Button
                                                             type="submit"
-                                                            intent={
-                                                                ButtonIntent.Secondary
-                                                            }
+                                                            intent="secondary"
                                                         >
                                                             Duplicate
                                                         </Button>

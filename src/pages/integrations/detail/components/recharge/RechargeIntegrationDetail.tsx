@@ -13,7 +13,7 @@ import {
 import {connect, ConnectedProps} from 'react-redux'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import * as integrationHelpers from '../../../../../state/integrations/helpers'
 import {deleteIntegration} from '../../../../../state/integrations/actions'
@@ -194,9 +194,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                                             .integrationLoading ===
                                                         integration!.get('id')
                                                     }
-                                                    intent={
-                                                        ButtonIntent.Secondary
-                                                    }
+                                                    intent="secondary"
                                                 >
                                                     <img
                                                         alt="shopify logo"
@@ -246,7 +244,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                             deleteIntegration(integration)
                                         }
                                         confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                        intent={ButtonIntent.Destructive}
+                                        intent="destructive"
                                     >
                                         <ButtonIconLabel icon="delete">
                                             Delete integration

@@ -5,7 +5,7 @@ import _clone from 'lodash/clone'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import {
@@ -381,7 +381,7 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                         ref={this.buttonsRef}
                     >
                         <Button
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             className="mr-2"
                             onClick={this._toggle}
                         >

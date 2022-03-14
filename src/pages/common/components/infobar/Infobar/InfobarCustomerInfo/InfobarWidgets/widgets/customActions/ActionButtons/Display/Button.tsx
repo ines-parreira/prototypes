@@ -18,7 +18,7 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {CustomerContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 
-import BaseButton, {ButtonIntent} from 'pages/common/components/button/Button'
+import BaseButton from 'pages/common/components/button/Button'
 import {Action} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
@@ -105,7 +105,7 @@ function Button({
         <DropdownItem className={css.dropdownItem} {...props} />
     ) : (
         <BaseButton
-            intent={ButtonIntent.Secondary}
+            intent="secondary"
             className={css.actionButton}
             appendPosition={appendPosition}
             {...props}

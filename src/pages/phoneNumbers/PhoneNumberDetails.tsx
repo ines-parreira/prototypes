@@ -32,7 +32,7 @@ import {IntegrationType} from 'models/integration/types'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import {SMS_INTEGRATION_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 import history from 'pages/history'
 import {errorToChildren} from 'utils'
@@ -296,17 +296,13 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
             </Row>
             <Row className="mt-4">
                 <Col lg={6} className="mt-4">
-                    <Button
-                        type="submit"
-                        intent={ButtonIntent.Creation}
-                        isLoading={isLoading}
-                    >
+                    <Button type="submit" isLoading={isLoading}>
                         Save changes
                     </Button>
                     <ConfirmButton
                         className="float-right"
                         id="delete-number"
-                        intent={ButtonIntent.Destructive}
+                        intent="destructive"
                         confirmationContent={
                             <span>
                                 You are about to <strong>delete</strong> this

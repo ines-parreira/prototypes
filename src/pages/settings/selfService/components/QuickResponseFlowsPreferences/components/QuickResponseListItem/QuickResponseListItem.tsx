@@ -2,7 +2,6 @@ import React, {useState, useEffect, useMemo} from 'react'
 import classNames from 'classnames'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Tooltip from 'pages/common/components/Tooltip'
 
@@ -97,8 +96,8 @@ const QuickResponseListItem: React.FC<QuickResponseListItemProps> = ({
                         }
                         onConfirm={onDeleteConfirmation}
                         placement="top"
-                        confirmationButtonIntent={ButtonIntent.Destructive}
-                        intent={ButtonIntent.Text}
+                        confirmationButtonIntent="destructive"
+                        intent="text"
                         className={css.actionButton}
                     >
                         <div className="material-icons delete">delete</div>

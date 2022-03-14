@@ -2,7 +2,7 @@ import React, {useRef} from 'react'
 import classNames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import Tooltip from '../../../../../../../common/components/Tooltip'
 
@@ -34,7 +34,7 @@ export const ActionButton = ({
                     [css.danger]: variant === 'danger',
                     [css.neutral]: variant === 'neutral',
                 })}
-                intent={ButtonIntent.Text}
+                intent="text"
                 id={id.current}
             >
                 {children}

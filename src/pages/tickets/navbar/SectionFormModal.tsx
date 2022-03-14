@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import React from 'react'
 import {Form} from 'reactstrap'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/InputField'
 import {SectionDraft} from '../../../models/section/types'
 import Modal from '../../common/components/Modal'
@@ -115,7 +115,7 @@ export default function SectionFormModal({
                     >
                         {isNewSection ? 'Create' : 'Update'}
                     </Button>
-                    <Button intent={ButtonIntent.Secondary} onClick={onClose}>
+                    <Button intent="secondary" onClick={onClose}>
                         Cancel
                     </Button>
                 </div>

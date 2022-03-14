@@ -2,7 +2,7 @@ import React, {useState, useMemo} from 'react'
 import {useLatest} from 'react-use'
 import {Table, Form, FormGroup, FormText, Label, Input} from 'reactstrap'
 import {produce} from 'immer'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import Modal from 'pages/common/components/Modal'
 import ReactSortable from 'pages/common/components/dragging/ReactSortable'
@@ -213,7 +213,7 @@ const QuickResponseList = () => {
                 </Table>
             )}
 
-            <Button intent={ButtonIntent.Primary} onClick={handleAddFlow}>
+            <Button onClick={handleAddFlow}>
                 <span className="material-icons">add</span>
                 Add flow
             </Button>
@@ -228,14 +228,13 @@ const QuickResponseList = () => {
                 footer={
                     <>
                         <Button
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             color="secondary"
                             onClick={handleClose}
                         >
                             Cancel
                         </Button>
                         <Button
-                            intent={ButtonIntent.Primary}
                             type="submit"
                             form="quickResponseForm"
                             isDisabled={!!error}

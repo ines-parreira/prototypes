@@ -12,7 +12,7 @@ import {uploadFiles} from 'utils'
 import {getFileTooLargeError} from 'utils/file'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import InputField, {InputFieldProps} from './InputField'
@@ -197,7 +197,7 @@ export class FileFieldContainer extends InputField<Props> {
                     </div>
                 )}
                 <Button
-                    intent={ButtonIntent.Secondary}
+                    intent="secondary"
                     isDisabled={disabled}
                     onClick={this._handleButtonClick}
                 >
@@ -215,7 +215,7 @@ export class FileFieldContainer extends InputField<Props> {
                 {isRemovable && previewUrl && (
                     <IconButton
                         className="ml-2"
-                        intent={ButtonIntent.Destructive}
+                        intent="destructive"
                         onClick={this.handleRemove}
                         aria-label="Remove the file"
                     >

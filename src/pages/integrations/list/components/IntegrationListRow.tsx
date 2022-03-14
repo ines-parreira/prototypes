@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
-import {ButtonSize} from 'pages/common/components/button/Button'
 import {
     logEvent,
     SegmentEvent,
@@ -69,7 +68,7 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
                     {integrationConfig.get('requiredPlanName') && (
                         <UpgradeButton
                             className="ml-3 py-0 px-1"
-                            size={ButtonSize.Small}
+                            size="small"
                             state={{
                                 openedPlanModal:
                                     integrationConfig.get('requiredPlanName'),

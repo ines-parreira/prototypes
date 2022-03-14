@@ -25,7 +25,6 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 type OwnProps = {
@@ -195,7 +194,7 @@ export class EmailIntegrationCreateVerification extends Component<
                     onConfirm={() => deleteIntegration(integration)}
                     confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                     isDisabled={this.state.isDisabled}
-                    intent={ButtonIntent.Destructive}
+                    intent="destructive"
                     className="float-right"
                 >
                     <ButtonIconLabel icon="delete">

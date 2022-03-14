@@ -1,7 +1,7 @@
 import React, {Children, ReactNode, useState} from 'react'
 import classnames from 'classnames'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import expandDown from 'assets/img/infobar/expand-down.svg'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 
@@ -26,7 +26,7 @@ export default function CustomerInfoWrapper({
             {count <= displayedElementsCount ? null : (
                 <Button
                     type="button"
-                    intent={ButtonIntent.Secondary}
+                    intent="secondary"
                     className={classnames(css.container)}
                     onClick={() => setOpen((prevState) => !prevState)}
                 >

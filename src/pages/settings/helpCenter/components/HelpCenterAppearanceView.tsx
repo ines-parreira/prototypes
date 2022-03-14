@@ -4,7 +4,7 @@ import {useAsyncFn} from 'react-use'
 import {FormGroup} from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/InputField'
 import {validLocaleCode} from 'models/helpCenter/utils'
@@ -429,16 +429,12 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 <FormGroup>
                     <Button
                         className="mr-2"
-                        intent={ButtonIntent.Primary}
                         isDisabled={!canSaveCurrentAppearance}
                         onClick={saveCurrentAppearance}
                     >
                         {updateResponse.loading ? 'Saving...' : 'Save Changes'}
                     </Button>
-                    <Button
-                        intent={ButtonIntent.Secondary}
-                        onClick={resetCurrentAppearance}
-                    >
+                    <Button intent="secondary" onClick={resetCurrentAppearance}>
                         Cancel
                     </Button>
                 </FormGroup>

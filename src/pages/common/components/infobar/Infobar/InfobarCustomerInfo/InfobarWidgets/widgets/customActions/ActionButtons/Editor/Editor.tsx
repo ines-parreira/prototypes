@@ -4,7 +4,7 @@ import {ListGroup, Modal} from 'reactstrap'
 import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     removeEditedWidget,
@@ -157,7 +157,7 @@ export function Editor({
             </ListGroup>
             <Button
                 className={css.addButton}
-                intent={ButtonIntent.Secondary}
+                intent="secondary"
                 type="button"
                 onClick={() => handleOpenForm()}
             >

@@ -11,10 +11,7 @@ import helpdocsLogo from 'assets/img/integrations/helpdocs.png'
 import reamazeLogo from 'assets/img/integrations/reamaze.png'
 import intercomLogo from 'assets/img/integrations/intercom.png'
 
-import Button, {
-    ButtonIntent,
-    ButtonSize,
-} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -262,7 +259,7 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
             {!isHotswapImportInProgress && (
                 <Button
                     isDisabled={isHotswapImportProgressRequestLoading}
-                    intent={ButtonIntent.Secondary}
+                    intent="secondary"
                     onClick={() => setModalState({state: 'NO_FILE_SELECTED'})}
                 >
                     <i className="material-icons mr-2">cloud_upload</i>Import
@@ -310,8 +307,8 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
 
                                         <div>
                                             <Button
-                                                intent={ButtonIntent.Secondary}
-                                                size={ButtonSize.Small}
+                                                intent="secondary"
+                                                size="small"
                                                 onClick={openFileDialog}
                                             >
                                                 Change File
@@ -429,18 +426,10 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
                 </ModalBody>
                 {shouldShowModalFooter && (
                     <ModalFooter className={css.modalFooter}>
-                        <Button
-                            intent={ButtonIntent.Secondary}
-                            onClick={closeModal}
-                        >
+                        <Button intent="secondary" onClick={closeModal}>
                             Cancel
                         </Button>
-                        <Button
-                            intent={ButtonIntent.Primary}
-                            onClick={handleImport}
-                        >
-                            Import File
-                        </Button>
+                        <Button onClick={handleImport}>Import File</Button>
                     </ModalFooter>
                 )}
             </Modal>

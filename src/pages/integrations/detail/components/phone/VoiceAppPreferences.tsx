@@ -15,7 +15,7 @@ import {phoneNumberFetched} from 'state/entities/phoneNumbers/actions'
 import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import CheckBox from 'pages/common/forms/CheckBox'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
@@ -230,7 +230,6 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
                             <div className="mt-5">
                                 <Button
                                     type="submit"
-                                    intent={ButtonIntent.Creation}
                                     isDisabled={!isInitialized}
                                     isLoading={isLoading}
                                 >
@@ -238,7 +237,7 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
                                 </Button>
                                 <ConfirmButton
                                     className="float-right"
-                                    intent={ButtonIntent.Destructive}
+                                    intent="destructive"
                                     isDisabled={!isInitialized}
                                     isLoading={isDeleting}
                                     onConfirm={handleDelete}

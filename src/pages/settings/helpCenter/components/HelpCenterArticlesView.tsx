@@ -3,7 +3,7 @@ import axios from 'axios'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import {useLimitations} from 'hooks/helpCenter/useLimitations'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -716,15 +716,11 @@ export const HelpCenterArticlesView: React.FC = () => {
             helpCenter={helpCenter}
             actions={
                 <>
-                    <Button
-                        intent={ButtonIntent.Secondary}
-                        onClick={onCategoryCreate}
-                    >
+                    <Button intent="secondary" onClick={onCategoryCreate}>
                         Create Category
                     </Button>
                     <Button
                         isDisabled={limitations.createArticle.disabled}
-                        intent={ButtonIntent.Primary}
                         onClick={onArticleCreate}
                     >
                         Create Article

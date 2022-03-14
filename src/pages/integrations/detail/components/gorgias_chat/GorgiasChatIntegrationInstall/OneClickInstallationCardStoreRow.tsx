@@ -6,7 +6,6 @@ import shopifyLogo from 'assets/img/integrations/shopify.png'
 import warningIcon from 'assets/img/icons/warning.svg'
 import Tooltip from 'pages/common/components/Tooltip'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 
 import css from './OneClickInstallationCardStoreRow.less'
 
@@ -152,7 +151,7 @@ export const OneClickInstallationCardStoreRow = ({
                         }
                         isDisabled={isInstallationLoading}
                         isLoading={isDisconnectionLoading}
-                        intent={ButtonIntent.Destructive}
+                        intent="destructive"
                         confirmationContent={
                             hasLegacyInstallations ? (
                                 <>

@@ -7,7 +7,7 @@ import {IntegrationType} from '../../../../../../../../../models/integration/typ
 
 import InputField from '../../../../../../../forms/InputField'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 class WidgetEditField extends React.Component {
     state = {
@@ -84,7 +84,7 @@ class WidgetEditField extends React.Component {
                         Submit
                     </Button>
                     <Button
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         type="button"
                         onClick={this._closePopup}
                     >

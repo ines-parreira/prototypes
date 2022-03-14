@@ -20,7 +20,7 @@ import {
 import {KLAVIYO_INTEGRATION_TYPE} from 'constants/integration'
 import Alert from 'pages/common/components/Alert/Alert'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -505,9 +505,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                     isDeleting
                                                 }
                                                 confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                                intent={
-                                                    ButtonIntent.Destructive
-                                                }
+                                                intent="destructive"
                                             >
                                                 <ButtonIconLabel icon="delete">
                                                     Delete integration

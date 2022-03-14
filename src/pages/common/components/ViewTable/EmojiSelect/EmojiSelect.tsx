@@ -3,7 +3,7 @@ import {Popover} from 'reactstrap'
 import {EmojiData, BaseEmoji} from 'emoji-mart'
 import classNames from 'classnames'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import EmojiPicker from '../../EmojiPicker/EmojiPicker'
 
@@ -57,7 +57,7 @@ const EmojiSelect = (props: Props) => {
                         />
                         {emoji && (
                             <Button
-                                intent={ButtonIntent.Text}
+                                intent="text"
                                 className={css.clearButton}
                                 onClick={() => {
                                     onEmojiClear()

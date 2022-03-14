@@ -11,22 +11,11 @@ import {AppendPosition} from 'pages/common/components/layout/Group'
 
 import css from './Button.less'
 
-export enum ButtonIntent {
-    Primary = 'primary',
-    Secondary = 'secondary',
-    Text = 'text',
-    Creation = 'creation',
-    Destructive = 'destructive',
-}
-
-export enum ButtonSize {
-    Medium = 'medium',
-    Small = 'small',
-}
+type ButtonSize = 'medium' | 'small'
 
 type Props = {
     appendPosition?: AppendPosition
-    intent?: ButtonIntent
+    intent?: 'primary' | 'secondary' | 'text' | 'destructive'
     isDisabled?: boolean
     isLoading?: boolean
     size?: ButtonSize
@@ -37,7 +26,7 @@ type ButtonContextState = {
 }
 
 export const ButtonContext = createContext<ButtonContextState>({
-    size: ButtonSize.Medium,
+    size: 'medium',
 })
 
 const Button = forwardRef(function (
@@ -45,10 +34,10 @@ const Button = forwardRef(function (
         appendPosition,
         children,
         className,
-        intent = ButtonIntent.Primary,
+        intent = 'primary',
         isDisabled,
         isLoading,
-        size = ButtonSize.Medium,
+        size = 'medium',
         type = 'button',
         ...otherProps
     }: Props,

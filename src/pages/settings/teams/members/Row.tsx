@@ -6,7 +6,6 @@ import {Map} from 'immutable'
 import CheckBox from 'pages/common/forms/CheckBox'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import {RoleLabel} from 'pages/common/utils/labels'
 
@@ -71,7 +70,7 @@ export default class Row extends Component<Props, State> {
                     <span className={css.delete}>
                         <IconButton
                             className={css.deleteButton}
-                            intent={ButtonIntent.Text}
+                            intent="text"
                             onClick={this._deleteTeamMember}
                             isLoading={isDeleting}
                         >

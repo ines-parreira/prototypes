@@ -17,7 +17,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import Alert from 'pages/common/components/Alert/Alert'
 import InputField from 'pages/common/forms/InputField'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import history from 'pages/history'
@@ -164,7 +164,6 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                         )}
                         <Button
                             type="submit"
-                            intent={ButtonIntent.Creation}
                             isLoading={isLoading}
                             isDisabled={country === PhoneCountry.FR}
                         >

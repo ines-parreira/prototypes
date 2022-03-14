@@ -1,5 +1,5 @@
 import React from 'react'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
 import robot from 'assets/img/rule-upsell-robot.svg'
@@ -17,12 +17,10 @@ export default function UpsellComponent({goToLibrary}: Props) {
                 <h2>Start by installing a template</h2>
                 <p>Automate your workflow with rules</p>
                 <div className={css.buttonWrapper}>
-                    <Button onClick={goToLibrary} intent={ButtonIntent.Primary}>
-                        Visit rule library
-                    </Button>
+                    <Button onClick={goToLibrary}>Visit rule library</Button>
                     <Button
                         className="ml-2"
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         onClick={() => history.push('/app/settings/rules/new')}
                     >
                         Create rule

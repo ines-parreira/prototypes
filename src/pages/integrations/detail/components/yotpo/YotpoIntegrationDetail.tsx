@@ -14,7 +14,6 @@ import {fromJS, Map} from 'immutable'
 
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -213,7 +212,7 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                                     }
                                     confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                     isDisabled={!!isSubmitting}
-                                    intent={ButtonIntent.Destructive}
+                                    intent="destructive"
                                 >
                                     <ButtonIconLabel icon="delete">
                                         Delete integration

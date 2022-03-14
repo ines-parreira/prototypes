@@ -3,7 +3,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import {Form} from 'reactstrap'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Modal from '../Modal'
@@ -164,7 +164,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                                 ref={this.buttonsRef}
                             >
                                 <Button
-                                    intent={ButtonIntent.Secondary}
+                                    intent="secondary"
                                     className="mr-2"
                                     onClick={this.props.toggleModal}
                                     isDisabled={isLoading}

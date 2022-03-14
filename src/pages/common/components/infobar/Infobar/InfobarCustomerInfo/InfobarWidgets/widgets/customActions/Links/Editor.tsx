@@ -7,7 +7,7 @@ import React, {
 } from 'react'
 import {Form, Popover, PopoverBody} from 'reactstrap'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {ensureHTTPS} from 'utils/url'
@@ -142,7 +142,7 @@ export default function Editor(props: Props) {
                             Save
                         </Button>
                         <Button
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             type="button"
                             onClick={handleCancel}
                         >

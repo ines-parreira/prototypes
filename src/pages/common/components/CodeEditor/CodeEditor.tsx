@@ -1,7 +1,8 @@
 import React, {useRef, useState} from 'react'
 import _uniqueId from 'lodash/uniqueId'
 import classnames from 'classnames'
-import Button, {ButtonIntent} from '../../components/button/Button'
+
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from '../../components/button/ButtonIconLabel'
 
 import Tooltip from '../Tooltip'
@@ -93,7 +94,7 @@ function CodeEditor({title, tooltip, disabled, ...props}: Props) {
                         <Button
                             onClick={onCopy}
                             className={css.copyButton}
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                         >
                             <ButtonIconLabel icon="content_copy">
                                 {isCopied ? 'Copied!' : 'Copy'}

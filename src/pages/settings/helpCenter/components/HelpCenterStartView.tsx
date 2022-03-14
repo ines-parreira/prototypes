@@ -4,7 +4,7 @@ import {Container} from 'reactstrap'
 import produce from 'immer'
 import _keyBy from 'lodash/keyBy'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 
@@ -125,7 +125,6 @@ export const HelpCenterStartView: React.FC = () => {
                 <div id="add-new-help-center-button-wrapper">
                     <Button
                         isDisabled={addNewButtonDisabled}
-                        intent={ButtonIntent.Primary}
                         onClick={() =>
                             history.push(`${HELP_CENTER_BASE_PATH}/new`)
                         }

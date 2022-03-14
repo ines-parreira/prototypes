@@ -20,7 +20,6 @@ import classnames from 'classnames'
 import Group from 'pages/common/components/layout/Group'
 import GroupItem from 'pages/common/components/layout/GroupItem'
 import IconButton from 'pages/common/components/button/IconButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import {renderTemplate} from 'pages/common/utils/template'
 import {getTicket} from 'state/ticket/selectors'
 import {getActiveCustomer} from 'state/customers/selectors'
@@ -142,7 +141,7 @@ function ButtonsGroup({buttons, source}: Props) {
                                 <DropdownToggle tag={'span'}>
                                     <IconButton
                                         appendPosition={appendPosition}
-                                        intent={ButtonIntent.Secondary}
+                                        intent="secondary"
                                     >
                                         more_horiz
                                     </IconButton>

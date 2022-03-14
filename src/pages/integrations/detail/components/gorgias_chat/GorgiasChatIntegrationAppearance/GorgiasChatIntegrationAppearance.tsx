@@ -52,7 +52,6 @@ import InputField from 'pages/common/forms/InputField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import GorgiasChatIntegrationNavigation from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import MessageContentPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
@@ -846,7 +845,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                         ) as unknown as Promise<any>
                                     }
                                     confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                    intent={ButtonIntent.Destructive}
+                                    intent="destructive"
                                     isDisabled={isSubmitting}
                                 >
                                     <ButtonIconLabel icon="delete">

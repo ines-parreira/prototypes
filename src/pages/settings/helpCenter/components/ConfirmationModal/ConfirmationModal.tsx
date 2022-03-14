@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import classNames from 'classnames'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import Modal from '../../../../common/components/Modal'
 
@@ -11,7 +11,7 @@ export type ConfirmationModalProps = {
     children: React.ReactNode
     className?: string
     cancelText?: React.ReactNode
-    confirmIntent?: ButtonIntent
+    confirmIntent?: ComponentProps<typeof Button>['intent']
     confirmText: React.ReactNode
     isOpen: boolean
     style?: React.CSSProperties
@@ -24,7 +24,7 @@ export const ConfirmationModal = ({
     children,
     className,
     cancelText = 'Cancel',
-    confirmIntent = ButtonIntent.Destructive,
+    confirmIntent = 'destructive',
     confirmText,
     isOpen,
     style,
@@ -41,7 +41,7 @@ export const ConfirmationModal = ({
             footerClassName={css.actions}
             footer={
                 <>
-                    <Button intent={ButtonIntent.Secondary} onClick={onClose}>
+                    <Button intent="secondary" onClick={onClose}>
                         {cancelText}
                     </Button>
                     <Button

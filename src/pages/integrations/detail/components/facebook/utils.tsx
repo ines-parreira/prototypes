@@ -1,7 +1,6 @@
 import React from 'react'
 import {Map} from 'immutable'
 
-import {ButtonSize} from 'pages/common/components/button/Button'
 import UpgradeButton from '../../../../common/components/UpgradeButton/UpgradeButton'
 import {SegmentEvent} from '../../../../../store/middlewares/segmentTracker'
 import {AccountFeature} from '../../../../../state/currentAccount/types'
@@ -278,7 +277,7 @@ export function getInstagramDMSettingsInlineComponent(
 
         return (
             <UpgradeButton
-                size={ButtonSize.Small}
+                size="small"
                 className="ml-1 py-0 px-1"
                 segmentEventToSend={segmentEventToSend}
             />

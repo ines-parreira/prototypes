@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Container} from 'reactstrap'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import {Category, HelpCenter} from 'models/helpCenter/types'
 import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
@@ -86,19 +86,12 @@ export const CategoriesViews = ({
                         Write your first article or create your first category
                         to be displayed in your very own Help Center.
                     </p>
-                    <Button
-                        className="mr-2"
-                        intent={ButtonIntent.Primary}
-                        onClick={onCreateArticle}
-                    >
+                    <Button className="mr-2" onClick={onCreateArticle}>
                         <i className="material-icons-outlined mr-1">article</i>
                         Create Article
                     </Button>
 
-                    <Button
-                        intent={ButtonIntent.Secondary}
-                        onClick={onCreateCategory}
-                    >
+                    <Button intent="secondary" onClick={onCreateCategory}>
                         <i className="material-icons mr-1">list</i>
                         Create Category
                     </Button>

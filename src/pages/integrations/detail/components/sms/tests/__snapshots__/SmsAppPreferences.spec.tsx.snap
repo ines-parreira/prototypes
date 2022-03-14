@@ -145,7 +145,7 @@ exports[`<SmsAppPreferences/> render() should render 1`] = `
             class="mt-5"
           >
             <button
-              class="wrapper creation medium"
+              class="wrapper primary medium"
               type="submit"
             >
               Save changes
@@ -319,7 +319,7 @@ exports[`<SmsAppPreferences/> render() should submit a valid payload with the se
             class="mt-5"
           >
             <button
-              class="wrapper creation medium isDisabled"
+              class="wrapper primary medium isDisabled"
               disabled=""
               type="submit"
             >

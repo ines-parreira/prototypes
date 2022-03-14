@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import css from 'pages/settings/settings.less'
 import {getCurrentUserState} from '../../../../state/currentUser/selectors'
 import TwoFactorAuthenticationDisableModal from './TwoFactorAuthenticationDisableModal'
@@ -44,7 +44,7 @@ export default function TwoFactorAuthenticationSection() {
             {has2FaEnabled && !is2FaEnforced && (
                 <Button
                     onClick={() => setIsDisableModalOpen(true)}
-                    intent={ButtonIntent.Destructive}
+                    intent="destructive"
                 >
                     Disable Two-Factor Authentication
                 </Button>

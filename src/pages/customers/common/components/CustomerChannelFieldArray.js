@@ -4,7 +4,7 @@ import _clone from 'lodash/clone'
 import {FormGroup, Label, Row, Col} from 'reactstrap'
 
 import InputField from 'pages/common/forms/InputField'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
@@ -55,7 +55,7 @@ class CustomerChannelFieldArray extends React.Component {
                         </Col>
                         <Col md="2" xs="3">
                             <IconButton
-                                intent={ButtonIntent.Destructive}
+                                intent="destructive"
                                 type="button"
                                 onClick={() => this._remove(index)}
                             >
@@ -64,11 +64,7 @@ class CustomerChannelFieldArray extends React.Component {
                         </Col>
                     </Row>
                 ))}
-                <Button
-                    type="button"
-                    intent={ButtonIntent.Secondary}
-                    onClick={this._add}
-                >
+                <Button type="button" intent="secondary" onClick={this._add}>
                     <ButtonIconLabel icon="add">{addLabel}</ButtonIconLabel>
                 </Button>
             </FormGroup>

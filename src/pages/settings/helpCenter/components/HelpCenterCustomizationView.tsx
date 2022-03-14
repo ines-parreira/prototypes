@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {FormGroup} from 'reactstrap'
 import classNames from 'classnames'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -513,12 +513,11 @@ export const HelpCenterCustomizationView = () => {
                         !footerNavigation.isListValid() ||
                         !socialNavigation.isListValid()
                     }
-                    intent={ButtonIntent.Primary}
                     onClick={handleOnSave}
                 >
                     Save Changes
                 </Button>
-                <Button intent={ButtonIntent.Secondary} onClick={handleOnReset}>
+                <Button intent="secondary" onClick={handleOnReset}>
                     Cancel
                 </Button>
             </FormGroup>

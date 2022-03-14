@@ -4,7 +4,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import Modal from '../../../common/components/Modal'
 import css from '../../../common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal.less'
 import {deleteTwoFASecret} from '../../../../models/twoFactorAuthentication/resources'
-import Button, {ButtonIntent} from '../../../common/components/button/Button'
+import Button from '../../../common/components/button/Button'
 import {update2FAEnabled} from '../../../../state/currentUser/actions'
 import Alert, {AlertType} from '../../../common/components/Alert/Alert'
 
@@ -50,7 +50,7 @@ export default function TwoFactorAuthenticationDisableModal({
             footer={
                 <>
                     <Button
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         onClick={onClose}
                         isDisabled={isLoading}
                         className="mr-auto"
@@ -58,7 +58,7 @@ export default function TwoFactorAuthenticationDisableModal({
                         Cancel
                     </Button>
                     <Button
-                        intent={ButtonIntent.Destructive}
+                        intent="destructive"
                         onClick={disableTwoFa}
                         isLoading={isLoading}
                     >

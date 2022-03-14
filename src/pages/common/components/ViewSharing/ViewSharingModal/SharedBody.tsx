@@ -3,7 +3,6 @@ import {List, Map} from 'immutable'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import classnames from 'classnames'
 
-import {ButtonIntent, ButtonSize} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import UncontrolledPeopleSearchInput from '../../../forms/PeopleSearchInput/UncontrolledPeopleSearchInput'
@@ -60,9 +59,9 @@ export default function SharedBody({
                         >
                             <IconButton
                                 className="float-right text-danger"
-                                intent={ButtonIntent.Text}
+                                intent="text"
                                 onClick={() => onRemoveTeam(team)}
-                                size={ButtonSize.Small}
+                                size="small"
                             >
                                 close
                             </IconButton>
@@ -99,9 +98,9 @@ export default function SharedBody({
                         >
                             <IconButton
                                 className="float-right text-danger"
-                                intent={ButtonIntent.Text}
+                                intent="text"
                                 onClick={() => onRemoveUser(user)}
-                                size={ButtonSize.Small}
+                                size="small"
                             >
                                 close
                             </IconButton>

@@ -16,7 +16,7 @@ import {parse} from 'qs'
 
 import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -407,7 +407,7 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                                 ) as unknown as Promise<void>
                                             }
                                             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                            intent={ButtonIntent.Destructive}
+                                            intent="destructive"
                                         >
                                             <ButtonIconLabel icon="delete">
                                                 Delete integration

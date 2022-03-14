@@ -33,7 +33,6 @@ import {
 import {RootState} from 'state/types'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 import FacebookLoginButton from './FacebookLoginButton/FacebookLoginButton'
@@ -626,7 +625,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                             onConfirm={() => deleteIntegration(integration)}
                             isLoading={isSubmitting}
-                            intent={ButtonIntent.Destructive}
+                            intent="destructive"
                             className="float-right"
                         >
                             <ButtonIconLabel icon="delete">

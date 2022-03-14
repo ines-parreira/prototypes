@@ -6,7 +6,7 @@ import {Emoji} from 'emoji-mart'
 import {isProduction, isStaging} from '../utils/environment'
 import {reportError} from '../utils/errors'
 
-import Button, {ButtonIntent} from './common/components/button/Button'
+import Button from './common/components/button/Button'
 import css from './ErrorBoundary.less'
 
 type Props = {
@@ -82,7 +82,7 @@ export class ErrorBoundary extends PureComponent<Props, State> {
                 </Button>
                 <Button
                     className="mr-2 mb-2"
-                    intent={ButtonIntent.Secondary}
+                    intent="secondary"
                     onClick={this._onToggle}
                 >
                     Show details

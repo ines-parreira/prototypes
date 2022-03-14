@@ -182,7 +182,7 @@ exports[`<PhoneNumberDetails/> render() should not render the link to an SMS int
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper creation medium"
+          class="wrapper primary medium"
           type="submit"
         >
           Save changes
@@ -391,7 +391,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper creation medium"
+          class="wrapper primary medium"
           type="submit"
         >
           Save changes
@@ -595,7 +595,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper creation medium"
+          class="wrapper primary medium"
           type="submit"
         >
           Save changes
@@ -834,7 +834,7 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper creation medium"
+          class="wrapper primary medium"
           type="submit"
         >
           Save changes
@@ -1061,7 +1061,7 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper creation medium"
+          class="wrapper primary medium"
           type="submit"
         >
           Save changes
@@ -1270,7 +1270,7 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper creation medium"
+          class="wrapper primary medium"
           type="submit"
         >
           Save changes
@@ -1479,7 +1479,7 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper creation medium"
+          class="wrapper primary medium"
           type="submit"
         >
           Save changes

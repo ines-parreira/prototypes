@@ -16,10 +16,7 @@ import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import classnames from 'classnames'
 
-import Button, {
-    ButtonIntent,
-    ButtonSize,
-} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import GorgiasApi, {SearchResultType} from 'services/gorgiasApi'
 
@@ -286,8 +283,8 @@ export default class SearchInput<
                 {subResults.length ? (
                     <Button
                         className={classnames('mr-2', css.backButton)}
-                        size={ButtonSize.Small}
-                        intent={ButtonIntent.Secondary}
+                        size="small"
+                        intent="secondary"
                         onClick={this._onBackClicked}
                     >
                         <ButtonIconLabel icon="arrow_back">

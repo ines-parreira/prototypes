@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -18,7 +18,7 @@ const TicketStatus = ({setQuickStatus, currentStatus}: Props) => {
             <span id="change-status-button">
                 {toClose ? (
                     <Button
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         onClick={() => setQuickStatus(currentStatus)}
                     >
                         <ButtonIconLabel icon="check">Close</ButtonIconLabel>

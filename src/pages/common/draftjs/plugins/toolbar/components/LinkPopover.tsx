@@ -4,7 +4,6 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {RootState} from 'state/types'
 import IconButton from 'pages/common/components/button/IconButton'
-import {ButtonIntent, ButtonSize} from 'pages/common/components/button/Button'
 
 import css from './LinkPopover.less'
 
@@ -94,8 +93,8 @@ export class LinkPopoverContainer extends Component<Props, State> {
                     </a>
                     {this.props.onEdit && (
                         <IconButton
-                            size={ButtonSize.Small}
-                            intent={ButtonIntent.Secondary}
+                            size="small"
+                            intent="secondary"
                             onClick={this._onEditClick}
                             className={css.edit}
                         >
@@ -104,8 +103,8 @@ export class LinkPopoverContainer extends Component<Props, State> {
                     )}
                     {this.props.onDelete && (
                         <IconButton
-                            size={ButtonSize.Small}
-                            intent={ButtonIntent.Secondary}
+                            size="small"
+                            intent="secondary"
                             className={css.delete}
                             onClick={this._onDeleteClick}
                         >

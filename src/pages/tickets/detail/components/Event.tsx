@@ -7,7 +7,6 @@ import _capitalize from 'lodash/capitalize'
 import _isObject from 'lodash/isObject'
 import JSONPretty from 'react-json-pretty'
 
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import {IntegrationType} from '../../../../models/integration/types'
 import {RootState} from '../../../../state/types'
@@ -277,7 +276,7 @@ export class EventContainer extends React.Component<Props, State> {
                         <AgentLabel name={user.get('name') as string} />
 
                         <IconButton
-                            intent={ButtonIntent.Text}
+                            intent="text"
                             onClick={() =>
                                 this.setState({
                                     showDetails: !this.state.showDetails,

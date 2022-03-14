@@ -3,7 +3,7 @@ import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 import {Link, useHistory, useRouteMatch} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
@@ -58,10 +58,7 @@ const ReportIssuePolicyView: ComponentType = () => {
                     </Breadcrumb>
                 }
             >
-                <Button
-                    intent={ButtonIntent.Creation}
-                    onClick={handleClickNewCase}
-                >
+                <Button onClick={handleClickNewCase}>
                     <span className="icon material-icons">add</span> New Case
                 </Button>
             </PageHeader>

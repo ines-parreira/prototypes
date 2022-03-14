@@ -15,7 +15,7 @@ import {updateSubscription} from 'state/currentAccount/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 
 import AutomationSubscriptionDescription from './AutomationSubscriptionDescription'
@@ -41,7 +41,7 @@ const DefaultFooter = ({
     onConfirm,
 }: Pick<Props, 'confirmLabel' | 'onClose'> & FooterProps) => (
     <ModalFooter className={css.footer}>
-        <Button intent={ButtonIntent.Secondary} onClick={onClose}>
+        <Button intent="secondary" onClick={onClose}>
             Cancel
         </Button>
         <Button isLoading={isUpdating} onClick={onConfirm}>
@@ -119,13 +119,13 @@ const AutomationSubscriptionModal = ({
                     className={classnames(css.footer, css.footerUnsubscribe)}
                 >
                     <Button
-                        intent={ButtonIntent.Destructive}
+                        intent="destructive"
                         onClick={handleUnsubscribeClick}
                         isLoading={isSubscriptionUpdating}
                     >
                         Cancel subscription
                     </Button>
-                    <Button intent={ButtonIntent.Secondary} onClick={onClose}>
+                    <Button intent="secondary" onClick={onClose}>
                         OK
                     </Button>
                 </ModalFooter>

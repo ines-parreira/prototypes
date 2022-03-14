@@ -2,7 +2,7 @@ import React, {ComponentProps, MouseEvent, useState} from 'react'
 
 import {hasLegacyPlan} from 'state/billing/selectors'
 import {openChat} from 'utils'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 
 import PlanCard, {PlanCardTheme} from './PlanCard'
@@ -59,7 +59,7 @@ export default function EnterpriseComparisonPlanCard({
                     <Button
                         aria-label={switchPlanButtonText}
                         className={css.footerButton}
-                        intent={ButtonIntent.Text}
+                        intent="text"
                         isLoading={isUpdating}
                         isDisabled={!canChoosePlan}
                         onClick={() => {

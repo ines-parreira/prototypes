@@ -3,7 +3,7 @@ import _uniqueId from 'lodash/uniqueId'
 import {Popover, PopoverBody, Input} from 'reactstrap'
 
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import css from './ColorPicker.less'
 
@@ -63,7 +63,7 @@ export default function ColorPicker({
         <div className="d-inline-block">
             <Button
                 id={uniqueId}
-                intent={ButtonIntent.Secondary}
+                intent="secondary"
                 onClick={() => setPopupVisible(!isPopupVisible)}
                 ref={buttonEl}
             >

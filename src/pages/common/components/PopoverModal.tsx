@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import React, {useRef, useState, ReactNode, RefObject} from 'react'
 import {Popover, PopoverHeader, PopoverBody, PopoverProps} from 'reactstrap'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './PopoverModal.less'
@@ -33,7 +33,7 @@ const PopoverModal = ({
             <Button
                 className={classnames(css.wrapper, className)}
                 ref={ref}
-                intent={ButtonIntent.Secondary}
+                intent="secondary"
                 onClick={togglePopover}
             >
                 <ButtonIconLabel icon="info_outline">

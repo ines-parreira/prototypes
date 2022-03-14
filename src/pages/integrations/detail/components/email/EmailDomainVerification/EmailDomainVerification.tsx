@@ -19,7 +19,6 @@ import {UserRole} from 'config/types/user'
 import settingsCss from 'pages/settings/settings.less'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import css from './EmailDomainVerification.less'
 import RecordsTable from './components/RecordsTable'
@@ -101,7 +100,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                         <ConfirmButton
                             onConfirm={() => actions.deleteEmailDomain(domain)}
                             confirmationContent="Are you sure you want to delete this domain? Domain verification can take up to 72 hours. Non-verified domains may lead to increased deliverability issues."
-                            intent={ButtonIntent.Destructive}
+                            intent="destructive"
                         >
                             <ButtonIconLabel icon="delete">
                                 Delete

@@ -7,7 +7,6 @@ import facebookIcon from 'assets/img/integrations/facebook-dark-icon.svg'
 import facebookMessengerIcon from 'assets/img/integrations/facebook-messenger-dark-event-icon.svg'
 import InstagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
 import InstagramIcon from 'assets/img/integrations/instagram-icon-blue.svg'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import {Actor, Meta, Source} from '../../../../../models/ticket/types'
@@ -169,7 +168,7 @@ export default function PrivateReplyEvent({event, isLast}: Props): JSX.Element {
 
         expandButton = (
             <IconButton
-                intent={ButtonIntent.Text}
+                intent="text"
                 onClick={() => setDisplayErrorDetails(!displayErrorDetails)}
                 title="More details"
             >

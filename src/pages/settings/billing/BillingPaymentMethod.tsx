@@ -16,7 +16,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {RootState} from 'state/types'
 import {PaymentMethodType} from 'state/billing/types'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import css from './BillingPaymentMethod.less'
 import BillingHeader from './common/BillingHeader'
@@ -98,7 +98,7 @@ export class BillingPaymentMethodContainer extends Component<
                                 </div>
                             ) : (
                                 <Link to="/app/settings/billing/change-credit-card">
-                                    <Button intent={ButtonIntent.Secondary}>
+                                    <Button intent="secondary">
                                         Change card
                                     </Button>
                                 </Link>

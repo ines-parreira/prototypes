@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import uniq from 'lodash/uniq'
 import ReactList from 'react-list'
 import Modal from 'pages/common/components/Modal'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import Search from 'pages/common/components/Search'
 
@@ -124,7 +124,7 @@ export const FontCatalogueModal = ({
             footer={
                 <>
                     <Button
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         type="button"
                         onClick={() => {
                             closeModal()
@@ -134,7 +134,6 @@ export const FontCatalogueModal = ({
                         Cancel
                     </Button>
                     <Button
-                        intent={ButtonIntent.Primary}
                         type="button"
                         onClick={() => {
                             closeModal()

@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 import shopify from 'assets/img/integrations/shopify.png'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import Modal from 'pages/common/components/Modal'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -177,7 +177,7 @@ export const ConnectToShopSection = ({
                             </p>
 
                             <Button
-                                intent={ButtonIntent.Destructive}
+                                intent="destructive"
                                 onClick={() => {
                                     setDisconnectModalOpen(false)
                                     setSelectedShop(NO_SELECTED_SHOP)
@@ -190,10 +190,7 @@ export const ConnectToShopSection = ({
                     </Popover>
                 </div>
             ) : (
-                <Button
-                    intent={ButtonIntent.Primary}
-                    onClick={() => setConnectModalOpen(true)}
-                >
+                <Button onClick={() => setConnectModalOpen(true)}>
                     Connect
                 </Button>
             )}
@@ -206,7 +203,7 @@ export const ConnectToShopSection = ({
                 footer={
                     <div>
                         <Button
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             onClick={() => setConnectModalOpen(false)}
                         >
                             Cancel
@@ -215,7 +212,6 @@ export const ConnectToShopSection = ({
                         <Button
                             className="ml-3"
                             isDisabled={selectedShop === NO_SELECTED_SHOP}
-                            intent={ButtonIntent.Primary}
                             onClick={() => {
                                 onUpdate({
                                     shop_name: selectedShop,

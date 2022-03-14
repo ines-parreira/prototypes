@@ -14,7 +14,7 @@ import {IntegrationType} from 'models/integration/constants'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {updateEditedWidget, stopWidgetEdition} from 'state/widgets/actions'
 import {WidgetTemplateWidgetType} from 'state/widgets/types'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ColorField from 'pages/common/forms/ColorField'
 import {isSimpleTemplateWidget} from 'pages/common/components/infobar/utils'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -255,7 +255,7 @@ const WidgetEdit = ({
                         Submit
                     </Button>
                     <Button
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         type="button"
                         onClick={handleClose}
                     >

@@ -3,10 +3,7 @@ import _trim from 'lodash/trim'
 import _clone from 'lodash/clone'
 import {Row, Col} from 'reactstrap'
 
-import Button, {
-    ButtonIntent,
-    ButtonSize,
-} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/InputField'
@@ -95,7 +92,7 @@ export default class ObjectListField extends Component<Props> {
                         <Col xs="auto">
                             <IconButton
                                 className="float-right"
-                                intent={ButtonIntent.Destructive}
+                                intent="destructive"
                                 onClick={() => this._remove(index)}
                                 title={`Remove ${this.props.fieldName}`}
                             >
@@ -104,7 +101,7 @@ export default class ObjectListField extends Component<Props> {
                         </Col>
                     </Row>
                 ))}
-                <Button size={ButtonSize.Small} onClick={this._add}>
+                <Button size="small" onClick={this._add}>
                     <ButtonIconLabel icon="add">
                         Add {this.props.fieldName}
                     </ButtonIconLabel>

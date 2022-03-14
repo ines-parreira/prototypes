@@ -15,7 +15,7 @@ import {insertText} from '../../../../../../utils.ts'
 import {convertToHTML, getPlainText} from '../../../../../../utils/editor.tsx'
 import {getVariables} from '../../../../../../config/ticket.ts'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 @connect((state) => {
     return {
@@ -95,7 +95,7 @@ export default class SetResponseTextAction extends React.Component {
                 </UncontrolledButtonDropdown>
             ) : (
                 <Button
-                    intent={ButtonIntent.Text}
+                    intent="text"
                     style={{color: 'inherit'}}
                     onClick={() => {
                         this._insertText(category.value)

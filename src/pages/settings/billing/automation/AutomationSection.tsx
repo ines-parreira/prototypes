@@ -14,7 +14,7 @@ import {
 } from 'state/currentAccount/selectors'
 import UpgradeButton from 'pages/common/components/UpgradeButton/UpgradeButton'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 
 import AutomationSubscriptionModal from './AutomationSubscriptionModal'
@@ -112,7 +112,7 @@ const AutomationSection = () => {
                 {hasAutomationAddOn ? (
                     <Button
                         className="align-self-end"
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         onClick={() => {
                             setIsAutomationModalOpened(true)
                         }}

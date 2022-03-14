@@ -27,7 +27,7 @@ import Tooltip from '../../Tooltip'
 import InfobarLayout from '../InfobarLayout'
 import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer'
 import Search from '../../Search'
-import Button, {ButtonIntent} from '../../button/Button'
+import Button from '../../button/Button'
 import ButtonIconLabel from '../../button/ButtonIconLabel'
 import IconButton from '../../button/IconButton'
 
@@ -344,7 +344,7 @@ export const Infobar = ({
                             'd-none d-md-inline-block ml-2 btn-transparent'
                         )}
                         id="toggle-widgets-edition-button"
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         isDisabled={!canEditWidgets}
                         onClick={toggleEditionMode}
                     >
@@ -365,7 +365,7 @@ export const Infobar = ({
                             <div className="m-3">
                                 <Button
                                     className={css.selectionBackButton}
-                                    intent={ButtonIntent.Secondary}
+                                    intent="secondary"
                                     onClick={resetSelected}
                                 >
                                     <ButtonIconLabel icon="arrow_back">
@@ -443,7 +443,7 @@ export const Infobar = ({
                         <>
                             <div className="m-3">
                                 <Button
-                                    intent={ButtonIntent.Secondary}
+                                    intent="secondary"
                                     onClick={() => resetSearch()}
                                 >
                                     <ButtonIconLabel icon="arrow_back">

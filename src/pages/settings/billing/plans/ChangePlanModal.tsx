@@ -11,7 +11,7 @@ import {
 } from 'state/billing/selectors'
 import SynchronizedScrollTopProvider from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
 import SynchronizedScrollTopContainer from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 
 import BillingPlanCard from './BillingPlanCard'
@@ -132,7 +132,7 @@ export const ChangePlanModal = ({
                     </div>
                 </ModalBody>
                 <ModalFooter className={css.footer}>
-                    <Button intent={ButtonIntent.Secondary} onClick={onClose}>
+                    <Button intent="secondary" onClick={onClose}>
                         Cancel
                     </Button>
                     <Button isDisabled={isUpdating} onClick={onConfirm}>

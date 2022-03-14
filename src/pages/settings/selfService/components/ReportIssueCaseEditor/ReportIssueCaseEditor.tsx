@@ -18,7 +18,7 @@ import {
 import {Link, useRouteMatch, useHistory} from 'react-router-dom'
 import produce from 'immer'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import InputField from 'pages/common/forms/InputField'
 import {
@@ -365,7 +365,6 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                         isDisabled={
                                             Object.keys(errors).length > 0
                                         }
-                                        intent={ButtonIntent.Primary}
                                         type="submit"
                                     >
                                         {caseIndex === 'new'
@@ -384,7 +383,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                 )}
 
                                 <Button
-                                    intent={ButtonIntent.Secondary}
+                                    intent="secondary"
                                     onClick={handleCancelClick}
                                 >
                                     Cancel
@@ -395,7 +394,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                         className={css.deleteButton}
                                         confirmationContent="You are about to delete this case."
                                         onConfirm={handleDeleteClick}
-                                        intent={ButtonIntent.Destructive}
+                                        intent="destructive"
                                     >
                                         <ButtonIconLabel icon="delete">
                                             Delete case

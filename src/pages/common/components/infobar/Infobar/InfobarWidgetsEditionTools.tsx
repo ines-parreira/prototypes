@@ -1,7 +1,7 @@
 import React from 'react'
 import {fromJS, List, Map} from 'immutable'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import {ConnectedAction} from '../../../../../state/types'
 import {
     startEditionMode,
@@ -56,7 +56,7 @@ export default class InfobarWidgetsEditionTools extends React.Component<Props> {
                 </Button>
                 <Button
                     type="button"
-                    intent={ButtonIntent.Secondary}
+                    intent="secondary"
                     isLoading={isSavingWidgets}
                     isDisabled={!isDirty}
                     onClick={this._cancelWidgetsUpdates}

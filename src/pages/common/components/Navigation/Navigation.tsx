@@ -1,7 +1,6 @@
 import React from 'react'
 import {ButtonGroup} from 'reactstrap'
 
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './Navigation.less'
@@ -30,7 +29,7 @@ export default function Navigation({
             <IconButton
                 className={css.previousButton}
                 id="prev-btn"
-                intent={ButtonIntent.Secondary}
+                intent="secondary"
                 isDisabled={!hasPrevItems}
                 onClick={fetchPrevItems}
             >
@@ -39,7 +38,7 @@ export default function Navigation({
             <IconButton
                 className={css.nextButton}
                 id="next-btn"
-                intent={ButtonIntent.Secondary}
+                intent="secondary"
                 isDisabled={!hasNextItems}
                 onClick={fetchNextItems}
             >

@@ -2,7 +2,7 @@ import React, {useMemo, useState} from 'react'
 import produce from 'immer'
 import _keyBy from 'lodash/keyBy'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import {Locale} from 'models/helpCenter/types'
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
@@ -122,14 +122,14 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
                 footer={
                     <div className={css['footer-actions']}>
                         <Button
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             onClick={handleOnCancelDeleteLocale}
                         >
                             Cancel
                         </Button>
                         <Button
                             className={css['delete-btn']}
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             onClick={handleOnClickDeleteLocale}
                         >
                             <i className="material-icons">delete</i>

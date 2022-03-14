@@ -22,7 +22,6 @@ import {
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 type Props = {
@@ -257,7 +256,7 @@ export default function TwitterIntegrationDetail({
                                         confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
                                         isDisabled={isSubmitting}
                                         isLoading={isDeleting}
-                                        intent={ButtonIntent.Destructive}
+                                        intent="destructive"
                                     >
                                         <ButtonIconLabel icon="delete">
                                             Remove Twitter Account

@@ -17,7 +17,7 @@ import {phoneNumberCreated} from 'state/entities/phoneNumbers/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import Modal from 'pages/common/components/Modal'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import Alert from 'pages/common/components/Alert/Alert'
 import InputField from 'pages/common/forms/InputField'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -154,7 +154,7 @@ export default function PhoneNumberCreateModalForm({
                                         <div className={css.buttons}>
                                             <Button
                                                 className="mr-2"
-                                                intent={ButtonIntent.Secondary}
+                                                intent="secondary"
                                                 onClick={() =>
                                                     setStep(
                                                         Step.PhoneInformation
@@ -164,7 +164,6 @@ export default function PhoneNumberCreateModalForm({
                                                 Back
                                             </Button>
                                             <Button
-                                                intent={ButtonIntent.Creation}
                                                 isDisabled={
                                                     country === PhoneCountry.FR
                                                 }
@@ -180,7 +179,6 @@ export default function PhoneNumberCreateModalForm({
                         )}
                         {!shouldValidateAddress(country) && (
                             <Button
-                                intent={ButtonIntent.Creation}
                                 isDisabled={country === PhoneCountry.FR}
                                 isLoading={isLoading}
                                 onClick={onSubmit}

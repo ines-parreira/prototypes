@@ -12,10 +12,10 @@ import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import _get from 'lodash/get'
 import {useMountedState} from 'react-use'
 
-import Button, {ButtonIntent} from './Button'
+import Button from './Button'
 
 type Props = {
-    confirmationButtonIntent?: ButtonIntent
+    confirmationButtonIntent?: ComponentProps<typeof Button>['intent']
     confirmationContent?: ReactNode
     confirmationTitle?: string
     onConfirm?: () => void

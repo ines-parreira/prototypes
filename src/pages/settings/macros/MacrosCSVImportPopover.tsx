@@ -13,10 +13,7 @@ import {notify} from 'state/notifications/actions'
 import {saveFileAsDownloaded} from 'utils/file'
 import {uploadFiles} from 'utils'
 import Loader from 'pages/common/components/Loader/Loader'
-import Button, {
-    ButtonIntent,
-    ButtonSize,
-} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -183,8 +180,8 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
 
                                     <div>
                                         <Button
-                                            intent={ButtonIntent.Secondary}
-                                            size={ButtonSize.Small}
+                                            intent="secondary"
+                                            size="small"
                                             onClick={openFileDialog}
                                         >
                                             Change File
@@ -236,7 +233,7 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
             </ModalBody>
             {shouldShowModalFooter && (
                 <ModalFooter className={css.modalFooter}>
-                    <Button intent={ButtonIntent.Secondary} onClick={onClose}>
+                    <Button intent="secondary" onClick={onClose}>
                         Cancel
                     </Button>
                     <Button onClick={() => handleImport()}>Import File</Button>

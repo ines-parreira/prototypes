@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import Modal from '../../../../../common/components/Modal'
 
@@ -29,15 +29,12 @@ export const DiscardChangesModal = ({
             footerClassName={css.actions}
             footer={
                 <>
-                    <Button
-                        intent={ButtonIntent.Secondary}
-                        onClick={onContinueEditing}
-                    >
+                    <Button intent="secondary" onClick={onContinueEditing}>
                         Back to Editing
                     </Button>
                     <Button
                         className="ml-3"
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         onClick={onDiscard}
                     >
                         Discard changes

@@ -13,7 +13,7 @@ import {
     FormGroup,
 } from 'reactstrap'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {DEFAULT_ACTIONS} from 'config'
@@ -247,7 +247,7 @@ export function MacrosSettingsFormContainer({
                             </Button>
                             {macroId && (
                                 <Button
-                                    intent={ButtonIntent.Secondary}
+                                    intent="secondary"
                                     isLoading={isDuplicatePending}
                                     isDisabled={isActionDisabled}
                                     onClick={handleMacroDuplicate}
@@ -258,7 +258,7 @@ export function MacrosSettingsFormContainer({
                             {macroId && (
                                 <ConfirmButton
                                     className="float-right"
-                                    intent={ButtonIntent.Destructive}
+                                    intent="destructive"
                                     confirmationContent="You are about to delete this macro."
                                     onConfirm={handleDelete}
                                     isLoading={isDeletePending}

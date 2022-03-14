@@ -1,7 +1,7 @@
 import React, {ComponentProps, forwardRef, Ref} from 'react'
 import classnames from 'classnames'
 
-import Button, {ButtonSize} from './Button'
+import Button from './Button'
 import css from './IconButton.less'
 
 type Props = {
@@ -15,7 +15,7 @@ const IconButton = forwardRef(
             children,
             className,
             iconClassName = 'material-icons',
-            size = ButtonSize.Medium,
+            size = 'medium',
             ...others
         }: Props,
         ref: Ref<HTMLButtonElement> | null | undefined

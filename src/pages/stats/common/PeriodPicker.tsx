@@ -7,7 +7,7 @@ import DateRangePicker, {
 } from 'react-bootstrap-daterangepicker'
 import {Tooltip} from 'reactstrap'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel, {
     ButtonIconPosition,
 } from 'pages/common/components/button/ButtonIconLabel'
@@ -241,10 +241,7 @@ export const PeriodPickerContainer = ({
                         }}
                     >
                         <div>
-                            <Button
-                                intent={ButtonIntent.Secondary}
-                                isDisabled={isDisabled}
-                            >
+                            <Button intent="secondary" isDisabled={isDisabled}>
                                 <ButtonIconLabel icon="calendar_today">
                                     <ButtonIconLabel
                                         icon="arrow_drop_down"

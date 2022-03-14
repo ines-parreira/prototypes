@@ -6,7 +6,6 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import {
@@ -335,7 +334,7 @@ function DraftOrderLineItemRow({
                     </strong>
                     {removable && !isShownInEditOrder && (
                         <IconButton
-                            intent={ButtonIntent.Text}
+                            intent="text"
                             tabIndex={0}
                             className={css.delete}
                             onClick={() => onDelete(index)}
@@ -360,7 +359,7 @@ function DraftOrderLineItemRow({
             <td className={classnames(css.numberCol, css.centered)}>
                 {!shouldRestock && (
                     <IconButton
-                        intent={ButtonIntent.Text}
+                        intent="text"
                         tabIndex={0}
                         className={css.delete}
                         onClick={clickFunc}

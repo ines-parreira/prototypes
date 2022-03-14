@@ -7,7 +7,7 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {ContentType, HttpMethod} from 'models/api/types'
 import {EventType} from 'models/event/types'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -504,7 +504,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                             {isUpdate && isActive && (
                                 <Button
                                     isLoading={isSubmitting}
-                                    intent={ButtonIntent.Destructive}
+                                    intent="destructive"
                                     onClick={() =>
                                         deactivateIntegration(
                                             integration.get('id')
@@ -534,7 +534,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                         deleteIntegration(integration)
                                     }
                                     confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                    intent={ButtonIntent.Destructive}
+                                    intent="destructive"
                                 >
                                     <ButtonIconLabel icon="delete">
                                         Delete integration

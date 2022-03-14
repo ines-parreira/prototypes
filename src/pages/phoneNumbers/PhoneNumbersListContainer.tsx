@@ -13,7 +13,7 @@ import {getCurrentAccountFeatures} from 'state/currentAccount/selectors'
 import {AccountFeatures} from 'state/currentAccount/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import PhoneNumbersLimitAlert from 'pages/phoneNumbers/PhoneNumbersLimitAlert'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -62,7 +62,6 @@ export function PhoneNumbersListContainer() {
         <div className="full-width">
             <PageHeader title="Phone Numbers">
                 <Button
-                    intent={ButtonIntent.Creation}
                     isDisabled={isLimitReacted}
                     onClick={() =>
                         history.push('/app/settings/phone-numbers/new')

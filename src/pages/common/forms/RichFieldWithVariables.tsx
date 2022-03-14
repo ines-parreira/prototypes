@@ -11,7 +11,7 @@ import classNames from 'classnames'
 
 import {insertText} from 'utils'
 import {getVariables} from 'config/ticket'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
 import ButtonIconLabel, {
     ButtonIconPosition,
@@ -80,7 +80,7 @@ export default class RichFieldWithVariables extends Component<Props> {
                                     <DropdownToggle tag="div">
                                         <Button
                                             className={css.toolbarItem}
-                                            intent={ButtonIntent.Text}
+                                            intent="text"
                                         >
                                             <ButtonIconLabel
                                                 icon="arrow_drop_down"
@@ -115,7 +115,7 @@ export default class RichFieldWithVariables extends Component<Props> {
                             <Button
                                 key={index}
                                 className={css.toolbarItem}
-                                intent={ButtonIntent.Text}
+                                intent="text"
                                 onClick={() => {
                                     this._insertText(category.value!)
                                 }}

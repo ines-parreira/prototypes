@@ -16,7 +16,7 @@ import {
 } from 'state/customers/selectors'
 import * as customersHelpers from 'state/customers/helpers'
 import {RootState} from 'state/types'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import css from './CustomerDetailContainer.less'
 
@@ -67,14 +67,9 @@ export const CustomerDetailContainer = ({
                             activeCustomer.get('id') as number
                         }`}
                     >
-                        <Button intent={ButtonIntent.Secondary}>
-                            Create ticket
-                        </Button>
+                        <Button intent="secondary">Create ticket</Button>
                     </Link>
-                    <Button
-                        intent={ButtonIntent.Creation}
-                        onClick={() => setIsCustomerFormOpen(true)}
-                    >
+                    <Button onClick={() => setIsCustomerFormOpen(true)}>
                         Edit customer
                     </Button>
                 </div>

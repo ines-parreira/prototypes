@@ -32,7 +32,6 @@ import css from 'pages/settings/settings.less'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
 type Props = {
@@ -244,7 +243,7 @@ export class SmoochIntegrationDetail extends Component<Props, State> {
                                             deleteIntegration(integration)
                                         }
                                         confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                        intent={ButtonIntent.Destructive}
+                                        intent="destructive"
                                         isDisabled={isSubmitting}
                                     >
                                         <ButtonIconLabel icon="delete">

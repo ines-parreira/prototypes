@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, ComponentType} from 'react'
 import Clipboard from 'clipboard'
 import _uniqueId from 'lodash/uniqueId'
 
-import Button, {ButtonIntent} from '../../components/button/Button'
+import Button from '../../components/button/Button'
 import ButtonIconLabel from '../../components/button/ButtonIconLabel'
 import css from './withClipboardButton.less'
 
@@ -50,7 +50,7 @@ export function withClipboardButton(
                         id={`${idRef.current}-button`}
                         className={css['copy-button']}
                         data-clipboard-target={`#${idRef.current}`}
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                     >
                         <ButtonIconLabel icon="content_copy">
                             {isCopied ? 'Copied!' : 'Copy'}

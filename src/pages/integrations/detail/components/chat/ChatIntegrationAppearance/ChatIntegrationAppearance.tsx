@@ -35,7 +35,6 @@ import {
 import {IntegrationType, IntegrationDecoration} from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import ColorField from 'pages/common/forms/ColorField'
@@ -469,7 +468,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                             deleteIntegration(integration)
                                         }
                                         confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                        intent={ButtonIntent.Destructive}
+                                        intent="destructive"
                                         isDisabled={isSubmitting}
                                     >
                                         <ButtonIconLabel icon="delete">

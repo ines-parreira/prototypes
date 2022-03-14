@@ -7,7 +7,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import {CreateHelpCenterDto} from 'models/helpCenter/types'
 import {validLocaleCode} from 'models/helpCenter/utils'
@@ -287,16 +287,12 @@ export const HelpCenterNewView = ({
                     </section>
 
                     <div className="d-flex">
-                        <Button
-                            isDisabled={!canSubmit}
-                            intent={ButtonIntent.Primary}
-                            onClick={handleSubmit}
-                        >
+                        <Button isDisabled={!canSubmit} onClick={handleSubmit}>
                             Add new Help Center
                         </Button>
                         <Button
                             className={css.cancelButton}
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             onClick={navigateToStartView}
                         >
                             Cancel

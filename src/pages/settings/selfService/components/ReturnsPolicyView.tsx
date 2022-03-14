@@ -11,7 +11,7 @@ import {
 } from 'reactstrap'
 import classNames from 'classnames'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -305,7 +305,6 @@ export const ReturnsPolicyView = () => {
                                             isDisabled={
                                                 loading || !formHasChanged
                                             }
-                                            intent={ButtonIntent.Primary}
                                             type="submit"
                                         >
                                             Save changes
@@ -317,7 +316,7 @@ export const ReturnsPolicyView = () => {
                                             isDisabled={
                                                 loading || !formHasChanged
                                             }
-                                            intent={ButtonIntent.Secondary}
+                                            intent="secondary"
                                             onClick={onCancel}
                                         >
                                             Cancel

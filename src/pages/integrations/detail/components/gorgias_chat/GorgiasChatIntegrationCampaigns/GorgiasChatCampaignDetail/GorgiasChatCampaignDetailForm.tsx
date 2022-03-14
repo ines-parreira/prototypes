@@ -30,7 +30,6 @@ import history from 'pages/history'
 import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './GorgiasChatCampaignDetailForm.less'
@@ -457,7 +456,7 @@ export const GorgiasChatCampaignDetailForm = ({
                                 placement="bottom-end"
                                 onConfirm={_deleteCampaign}
                                 confirmationContent="Are you sure you want to delete this campaign?"
-                                intent={ButtonIntent.Destructive}
+                                intent="destructive"
                                 isDisabled={loading}
                             >
                                 <ButtonIconLabel icon="delete">

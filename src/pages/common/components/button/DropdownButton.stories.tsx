@@ -1,7 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
-import {ButtonIntent, ButtonSize} from './Button'
 import DropdownButton from './DropdownButton'
 
 const storyConfig: Meta = {
@@ -56,10 +55,10 @@ const templateParameters = {
 
 const defaultProps: Partial<ComponentProps<typeof DropdownButton>> = {
     children: 'Click me!',
-    color: ButtonIntent.Primary,
+    color: 'primary',
     isDisabled: false,
     isLoading: false,
-    size: ButtonSize.Medium,
+    size: 'medium',
 }
 
 export const Primary = Template.bind({})
@@ -69,28 +68,21 @@ Primary.parameters = templateParameters
 export const Secondary = Template.bind({})
 Secondary.args = {
     ...defaultProps,
-    intent: ButtonIntent.Secondary,
+    intent: 'secondary',
 }
 Secondary.parameters = templateParameters
 
 export const Text = Template.bind({})
 Text.args = {
     ...defaultProps,
-    intent: ButtonIntent.Text,
+    intent: 'text',
 }
 Text.parameters = templateParameters
-
-export const Creation = Template.bind({})
-Creation.args = {
-    ...defaultProps,
-    intent: ButtonIntent.Creation,
-}
-Creation.parameters = templateParameters
 
 export const Destructive = Template.bind({})
 Destructive.args = {
     ...defaultProps,
-    intent: ButtonIntent.Destructive,
+    intent: 'destructive',
 }
 Destructive.parameters = templateParameters
 

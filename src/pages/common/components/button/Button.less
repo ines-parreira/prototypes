@@ -27,11 +27,11 @@
         }
 
         &:hover:not(.isDisabled) {
-            box-shadow: 0px 1px 2px fade(black, 16%);
+            box-shadow: 0px 1px 2px fade(@modern-neutral-neutral-6, 16%);
         }
 
         &:hover:active {
-            box-shadow: inset 0px 1px 2px fade(black, 16%);
+            box-shadow: inset 0px 1px 2px fade(@modern-neutral-neutral-6, 16%);
         }
 
         &.small {
@@ -103,8 +103,8 @@
         color: @classic-main-primary;
 
         &:hover {
+            background-color: @classic-main-primary-0;
             box-shadow: none;
-            color: @classic-main-primary-1;
         }
 
         &:active {
@@ -115,21 +115,6 @@
         &.isDisabled {
             background: none;
             border-color: transparent;
-        }
-    }
-
-    .wrapper.creation {
-        background-color: @classic-feedback-success;
-        border-color: @classic-feedback-success-3;
-
-        &:hover {
-            background-color: @classic-feedback-success-2;
-            border-color: @classic-feedback-success;
-        }
-
-        &:active {
-            background-color: @classic-feedback-success-3;
-            border-color: @classic-feedback-success-4;
         }
     }
 

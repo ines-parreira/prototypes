@@ -1633,7 +1633,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
               class="footer modal-footer"
             >
               <button
-                class="wrapper creation medium"
+                class="wrapper primary medium"
                 type="button"
               >
                 Create phone number
@@ -1905,7 +1905,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
               class="footer modal-footer"
             >
               <button
-                class="wrapper creation medium"
+                class="wrapper primary medium"
                 type="button"
               >
                 Create phone number

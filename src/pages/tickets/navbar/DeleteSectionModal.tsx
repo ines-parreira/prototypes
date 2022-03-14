@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Section} from '../../../models/section/types'
 import Modal from '../../common/components/Modal'
@@ -47,14 +47,14 @@ export default function DeleteSectionModal({
             <div className="float-left mt-3">
                 <Button
                     className="mr-2"
-                    intent={ButtonIntent.Destructive}
+                    intent="destructive"
                     isLoading={isSubmitting}
                     onClick={onSubmit}
                 >
                     <ButtonIconLabel icon="delete">Delete</ButtonIconLabel>
                 </Button>
 
-                <Button intent={ButtonIntent.Secondary} onClick={onClose}>
+                <Button intent="secondary" onClick={onClose}>
                     Cancel
                 </Button>
             </div>

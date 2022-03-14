@@ -17,7 +17,7 @@ import {AxiosError} from 'axios'
 import {MetaByAgentRole, User, UserDraft, UserRole} from 'config/types/user'
 import {ORDERED_ROLES_META_BY_USER_ROLE} from 'config/user'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import InputField from 'pages/common/forms/InputField'
@@ -249,7 +249,7 @@ export class FormContainer extends Component<Props, State> {
                                         within the dashboard.
                                     </p>
                                     <Button
-                                        intent={ButtonIntent.Secondary}
+                                        intent="secondary"
                                         onClick={() => {
                                             window
                                                 .open(
@@ -296,7 +296,7 @@ export class FormContainer extends Component<Props, State> {
                             {isUpdate && (
                                 <>
                                     <Button
-                                        intent={ButtonIntent.Secondary}
+                                        intent="secondary"
                                         onClick={this._invite}
                                         isLoading={this.state.isInviting}
                                     >
@@ -307,9 +307,7 @@ export class FormContainer extends Component<Props, State> {
                                     {isCurrentUserAccountOwner &&
                                         !isAgentAccountOwner && (
                                             <ConfirmButton
-                                                intent={
-                                                    ButtonIntent.Destructive
-                                                }
+                                                intent="destructive"
                                                 id="set-owner"
                                                 className={'ml-2'}
                                                 onConfirm={() =>
@@ -335,7 +333,7 @@ export class FormContainer extends Component<Props, State> {
                                             </span>
                                         }
                                         id="delete-user"
-                                        intent={ButtonIntent.Destructive}
+                                        intent="destructive"
                                         onConfirm={this._delete}
                                     >
                                         <ButtonIconLabel icon="delete">

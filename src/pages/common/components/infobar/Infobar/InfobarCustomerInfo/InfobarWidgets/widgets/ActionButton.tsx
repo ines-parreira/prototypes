@@ -12,7 +12,7 @@ import _uniqueId from 'lodash/uniqueId'
 import _noop from 'lodash/noop'
 import {Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
 import InputField from 'pages/common/forms/InputField'
 import {AppendPosition} from 'pages/common/components/layout/Group'
@@ -356,7 +356,7 @@ export class ActionButtonContainer extends Component<Props, State> {
                 <Tag
                     id={this.id}
                     type="button"
-                    intent={ButtonIntent.Secondary}
+                    intent="secondary"
                     isDisabled={isLoading || hasError}
                     onClick={this.toggleUi}
                     appendPosition={this.props.appendPosition}

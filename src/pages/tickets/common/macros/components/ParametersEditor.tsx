@@ -3,7 +3,6 @@ import {Map, List} from 'immutable'
 import {Row, Col} from 'reactstrap'
 
 import InputField from 'pages/common/forms/InputField'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Tooltip from '../../../../common/components/Tooltip'
 import {MAX_HEADER_LENGTH} from '../../../../../config'
@@ -92,8 +91,8 @@ export default class ParametersEditor extends Component<Props> {
                                 <IconButton
                                     intent={
                                         dict.get('required')
-                                            ? ButtonIntent.Primary
-                                            : ButtonIntent.Secondary
+                                            ? 'primary'
+                                            : 'secondary'
                                     }
                                     id={`parameter-required-${name}-${index!}`}
                                     className="mr-2"
@@ -117,8 +116,8 @@ export default class ParametersEditor extends Component<Props> {
                                     id={`parameter-editable-${name}-${index!}`}
                                     intent={
                                         dict.get('editable')
-                                            ? ButtonIntent.Primary
-                                            : ButtonIntent.Secondary
+                                            ? 'primary'
+                                            : 'secondary'
                                     }
                                     onClick={() =>
                                         this.changeValue(
@@ -137,7 +136,7 @@ export default class ParametersEditor extends Component<Props> {
                                     {editableTitle}
                                 </Tooltip>
                                 <IconButton
-                                    intent={ButtonIntent.Destructive}
+                                    intent="destructive"
                                     id={`parameter-editable-${name}-${index!}`}
                                     onClick={() => this.deleteRow(index!)}
                                 >
@@ -147,10 +146,7 @@ export default class ParametersEditor extends Component<Props> {
                         </Row>
                     )
                 })}
-                <IconButton
-                    intent={ButtonIntent.Secondary}
-                    onClick={this.addRow}
-                >
+                <IconButton intent="secondary" onClick={this.addRow}>
                     add
                 </IconButton>
             </div>

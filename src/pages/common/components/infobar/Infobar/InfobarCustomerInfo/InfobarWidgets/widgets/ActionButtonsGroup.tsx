@@ -4,7 +4,6 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import Group from 'pages/common/components/layout/Group'
 import GroupItem from 'pages/common/components/layout/GroupItem'
 import IconButton from 'pages/common/components/button/IconButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import ActionButton from './ActionButton'
 import css from './ActionButtons.less'
 
@@ -78,7 +77,7 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                                 <DropdownToggle tag="span">
                                     <IconButton
                                         appendPosition={appendPosition}
-                                        intent={ButtonIntent.Secondary}
+                                        intent="secondary"
                                     >
                                         arrow_drop_down
                                     </IconButton>

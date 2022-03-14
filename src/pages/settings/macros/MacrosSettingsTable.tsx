@@ -6,7 +6,7 @@ import {Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
 import {Link} from 'react-router-dom'
 import IconButton from 'pages/common/components/button/IconButton'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import {
     OrderDirection,
     MetaSortOptions,
@@ -219,7 +219,7 @@ export function MacrosSettingsTableContainer({
                                     >
                                         <IconButton
                                             className="mr-1"
-                                            intent={ButtonIntent.Text}
+                                            intent="text"
                                             onClick={(e) => {
                                                 e.stopPropagation()
                                                 void handleMacroDuplicate(
@@ -236,7 +236,7 @@ export function MacrosSettingsTableContainer({
                                                 css.deleteButton
                                             )}
                                             id={deleteButtonId}
-                                            intent={ButtonIntent.Text}
+                                            intent="text"
                                             onClick={(e) => {
                                                 e.stopPropagation()
                                                 toggleVisiblePopover(
@@ -265,7 +265,7 @@ export function MacrosSettingsTableContainer({
                                             <b>{name || 'this'}</b> macro.
                                         </p>
                                         <Button
-                                            intent={ButtonIntent.Destructive}
+                                            intent="destructive"
                                             onClick={() =>
                                                 handleMacroDelete(macroId)
                                             }

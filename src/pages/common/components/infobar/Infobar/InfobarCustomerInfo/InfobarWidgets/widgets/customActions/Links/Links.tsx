@@ -11,7 +11,7 @@ import {List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 import expandDown from 'assets/img/infobar/expand-down.svg'
 
@@ -174,7 +174,7 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
                     {isCollapsible && (
                         <Button
                             type="button"
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             className={css.collapseButton}
                             onClick={handleToggle}
                         >
@@ -207,7 +207,7 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
                         type="button"
                         id={targetId}
                         className={css.addButton}
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                     >
                         <ButtonIconLabel icon="add" />
                         Add Redirection Link

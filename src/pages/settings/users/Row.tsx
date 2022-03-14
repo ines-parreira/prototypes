@@ -4,7 +4,6 @@ import classnames from 'classnames'
 import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -89,7 +88,7 @@ export class RowContainer extends Component<Props> {
                                 </span>
                             }
                             onConfirm={this._deleteAgent}
-                            intent={ButtonIntent.Text}
+                            intent="text"
                         >
                             <ButtonIconLabel icon="delete" />
                         </ConfirmButton>

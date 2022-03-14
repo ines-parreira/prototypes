@@ -1,7 +1,7 @@
 import React, {ReactNode, useState} from 'react'
 import {Container, FormGroup, UncontrolledTooltip} from 'reactstrap'
 import classNames from 'classnames'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import HeaderCellProperty from '../../../../../../common/components/table/cells/HeaderCellProperty'
 import TableBody from '../../../../../../common/components/table/TableBody'
@@ -315,7 +315,6 @@ export const CsvColumnMatching = ({
                 <Button
                     className="mr-2"
                     isDisabled={!mappingsComplete(fieldsMappings)}
-                    intent={ButtonIntent.Primary}
                     onClick={() => onImport(fieldsMappings)}
                 >
                     Confirm Import
@@ -325,15 +324,12 @@ export const CsvColumnMatching = ({
                         <div className={css['modal-actions']}>
                             <Button
                                 className="mr-2"
-                                intent={ButtonIntent.Secondary}
+                                intent="secondary"
                                 onClick={() => onClose()}
                             >
                                 Cancel
                             </Button>
-                            <Button
-                                intent={ButtonIntent.Destructive}
-                                onClick={onCancel}
-                            >
+                            <Button intent="destructive" onClick={onCancel}>
                                 Stop Import
                             </Button>
                         </div>
@@ -347,10 +343,7 @@ export const CsvColumnMatching = ({
                     title="Are you sure you want to stop importing?"
                 >
                     {(onClick) => (
-                        <Button
-                            intent={ButtonIntent.Secondary}
-                            onClick={onClick}
-                        >
+                        <Button intent="secondary" onClick={onClick}>
                             Cancel
                         </Button>
                     )}

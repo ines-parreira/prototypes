@@ -2,7 +2,7 @@ import React, {useCallback, useState} from 'react'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {List, Map} from 'immutable'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 export type Props = {
@@ -47,7 +47,7 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
             <Button
                 id="bulk-merge-button"
                 isDisabled={disabled}
-                intent={ButtonIntent.Secondary}
+                intent="secondary"
                 className="mr-2 skip-default"
                 onClick={toggleMergeConfirmation}
             >

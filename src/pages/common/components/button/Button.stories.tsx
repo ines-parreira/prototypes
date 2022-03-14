@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
-import Button, {ButtonIntent, ButtonSize} from './Button'
+import Button from './Button'
 
 const storyConfig: Meta = {
     title: 'General/Button/Button',
@@ -42,10 +42,10 @@ const templateParameters = {
 
 const defaultProps: ComponentProps<typeof Button> = {
     children: 'Click me!',
-    intent: ButtonIntent.Primary,
+    intent: 'primary',
     isDisabled: false,
     isLoading: false,
-    size: ButtonSize.Medium,
+    size: 'medium',
 }
 
 export const Primary = Template.bind({})
@@ -55,28 +55,21 @@ Primary.parameters = templateParameters
 export const Secondary = Template.bind({})
 Secondary.args = {
     ...defaultProps,
-    intent: ButtonIntent.Secondary,
+    intent: 'secondary',
 }
 Secondary.parameters = templateParameters
 
 export const Text = Template.bind({})
 Text.args = {
     ...defaultProps,
-    intent: ButtonIntent.Text,
+    intent: 'text',
 }
 Text.parameters = templateParameters
-
-export const Creation = Template.bind({})
-Creation.args = {
-    ...defaultProps,
-    intent: ButtonIntent.Creation,
-}
-Creation.parameters = templateParameters
 
 export const Destructive = Template.bind({})
 Destructive.args = {
     ...defaultProps,
-    intent: ButtonIntent.Destructive,
+    intent: 'destructive',
 }
 Destructive.parameters = templateParameters
 

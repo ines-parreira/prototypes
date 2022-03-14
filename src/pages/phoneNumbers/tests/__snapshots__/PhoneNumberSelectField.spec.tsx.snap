@@ -461,7 +461,7 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
               class="footer modal-footer"
             >
               <button
-                class="wrapper creation medium"
+                class="wrapper primary medium"
                 type="button"
               >
                 Create phone number

@@ -27,7 +27,6 @@ import SelectField from 'pages/common/forms/SelectField/SelectField.tsx'
 import RichField from 'pages/common/forms/RichField'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader.tsx'
 import {AgentLabel} from 'pages/common/utils/labels.tsx'
 
@@ -593,7 +592,7 @@ export class CampaignForm extends React.Component {
                                     onConfirm={this._deleteCampaign}
                                     confirmationContent="Are you sure you want to delete this campaign?"
                                     type="button"
-                                    intent={ButtonIntent.Destructive}
+                                    intent="destructive"
                                     isDisabled={this.state.loading}
                                 >
                                     <ButtonIconLabel icon="delete">

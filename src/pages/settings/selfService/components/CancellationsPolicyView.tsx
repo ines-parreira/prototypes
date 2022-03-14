@@ -3,7 +3,7 @@ import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Form, Row} from 'reactstrap'
 import classNames from 'classnames'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -271,7 +271,6 @@ export const CancellationsPolicyView = () => {
                                                 eligibilityWindowOptionValue ===
                                                     configCancelOrderStatusEligibility
                                             }
-                                            intent={ButtonIntent.Primary}
                                             type="submit"
                                         >
                                             Save changes
@@ -285,7 +284,7 @@ export const CancellationsPolicyView = () => {
                                                 eligibilityWindowOptionValue ===
                                                     configCancelOrderStatusEligibility
                                             }
-                                            intent={ButtonIntent.Secondary}
+                                            intent="secondary"
                                             onClick={onCancel}
                                         >
                                             Cancel

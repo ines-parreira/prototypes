@@ -3,7 +3,7 @@ import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {deleteIntegration} from '../../../../../state/integrations/actions'
 
@@ -77,7 +77,7 @@ export const Magento2IntegrationActionButtons = ({
                     className="float-right"
                     onConfirm={() => deleteIntegration(integration)}
                     confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                    intent={ButtonIntent.Destructive}
+                    intent="destructive"
                 >
                     <ButtonIconLabel icon="delete">
                         Delete integration

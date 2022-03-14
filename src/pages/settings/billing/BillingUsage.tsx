@@ -23,7 +23,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import LegacyPlanBadge from 'pages/common/components/LegacyPlanBadge'
 import LegacyPlanBanner from 'pages/common/components/LegacyPlanBanner'
 import Loader from 'pages/common/components/Loader/Loader'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -182,7 +182,7 @@ const BillingUsage = () => {
                     <div className={css.description}>
                         Please select a plan before updating you payment method.
                         <Button
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             onClick={() => {
                                 history.push('/app/settings/billing/plans')
                             }}

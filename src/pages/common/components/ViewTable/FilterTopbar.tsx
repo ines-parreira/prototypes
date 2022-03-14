@@ -61,7 +61,7 @@ import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../utils/withCancellableRequest'
 import ViewSharingButton from '../ViewSharing/ViewSharingButton'
-import Button, {ButtonIntent} from '../button/Button'
+import Button from '../button/Button'
 import DropdownButton from '../button/DropdownButton'
 
 import Filters from './Filters/ViewFilters'
@@ -277,7 +277,7 @@ export const FilterTopbar = ({
                     <div className={css.cardActions}>
                         {!tickets.isEmpty() && type === 'ticket' && (
                             <Button
-                                intent={ButtonIntent.Secondary}
+                                intent="secondary"
                                 onClick={createExportTicketJob}
                                 isDisabled={isLaunchingJob}
                                 title="Export all view tickets"
@@ -366,7 +366,6 @@ export const FilterTopbar = ({
                                             </p>
                                             <Button
                                                 type="submit"
-                                                intent={ButtonIntent.Creation}
                                                 onClick={handleClickUpdate}
                                             >
                                                 Confirm
@@ -388,7 +387,6 @@ export const FilterTopbar = ({
                                 </ButtonDropdown>
                             ) : (
                                 <Button
-                                    intent={ButtonIntent.Creation}
                                     isLoading={isSubmitting}
                                     isDisabled={
                                         isSubmitting || !areFiltersValid
@@ -402,7 +400,7 @@ export const FilterTopbar = ({
                             {!isSearch && (
                                 <Button
                                     type="submit"
-                                    intent={ButtonIntent.Secondary}
+                                    intent="secondary"
                                     className="ml-2"
                                     isDisabled={isSubmitting}
                                     onClick={cancel}
@@ -421,7 +419,7 @@ export const FilterTopbar = ({
                         {!isSearch && !isSystemView && isUpdate && (
                             <ConfirmButton
                                 id="delete-view"
-                                intent={ButtonIntent.Destructive}
+                                intent="destructive"
                                 confirmationContent={
                                     <span>
                                         You are about to <b>delete</b> this view

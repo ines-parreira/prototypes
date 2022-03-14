@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import {FormGroup, Label} from 'reactstrap'
 import {produce} from 'immer'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import {ContactPhoneNumber} from '../../../../../../../../models/helpCenter/types'
 import InputField from '../../../../../../../common/forms/InputField'
@@ -98,7 +98,7 @@ const PhoneNumbersForm: React.FC<Props> = ({
             )}
             <Button
                 isDisabled={disabled}
-                intent={ButtonIntent.Secondary}
+                intent="secondary"
                 onClick={addPhoneNumber}
             >
                 <i className="material-icons">add</i>&nbsp;Add Number

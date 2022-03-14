@@ -4,7 +4,7 @@ import {Map} from 'immutable'
 import classnames from 'classnames'
 import {useDebounce} from 'react-use'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import {
     getOrderLineItemDiscountedPrice,
     getOrderLineItemPrice,
@@ -197,7 +197,7 @@ function OrderLineItemRow({
                                 css.quantityBtn,
                                 css.quantityBtnUp
                             )}
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             isDisabled={quantity === maxQuantity}
                             onClick={onQuantityUp}
                         >
@@ -210,7 +210,7 @@ function OrderLineItemRow({
                                 css.quantityBtn,
                                 css.quantityBtnDown
                             )}
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             isDisabled={quantity === 0}
                             onClick={onQuantityDown}
                         >

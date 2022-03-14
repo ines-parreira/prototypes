@@ -10,7 +10,7 @@ import {
 } from 'state/billing/selectors'
 import {AccountFeatures} from 'state/currentAccount/types'
 import {isFeatureEnabled} from 'utils/account'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 
 import BillingPlanCard from './BillingPlanCard'
@@ -197,7 +197,7 @@ export default function BillingComparisonPlanCard({
                     <Button
                         aria-label={switchPlanButtonText}
                         className={css.footerButton}
-                        intent={ButtonIntent.Text}
+                        intent="text"
                         isDisabled={!canChoosePlan}
                         isLoading={isUpdating}
                         onClick={() => {

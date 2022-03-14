@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
@@ -39,7 +39,7 @@ export const RuleItemButtons = ({
                 {ruleId && (
                     <Button
                         id={`rule-item-duplicate`}
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         type="submit"
                         className="ml-3"
                         isDisabled={!canDuplicate}
@@ -53,7 +53,7 @@ export const RuleItemButtons = ({
                 <div>
                     <ConfirmButton
                         id={`rule-item-delete`}
-                        intent={ButtonIntent.Destructive}
+                        intent="destructive"
                         isLoading={isDeleting}
                         onConfirm={onDelete}
                         confirmationContent="Are you sure you want to delete this rule?"

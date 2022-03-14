@@ -4,7 +4,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
 import classNames from 'classnames'
 
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
@@ -77,7 +76,7 @@ export function OngoingPhoneCall({
                 />
                 <DialPad className={css.dialPad} call={call} />
                 <IconButton
-                    intent={ButtonIntent.Secondary}
+                    intent="secondary"
                     data-testid="mute-call-button"
                     className={css.mute}
                     onClick={onToggleMute}
@@ -87,7 +86,7 @@ export function OngoingPhoneCall({
                 <IconButton
                     data-testid="record-call-button"
                     className={css.recording}
-                    intent={ButtonIntent.Secondary}
+                    intent="secondary"
                     isDisabled={isRequestPending}
                     onClick={startRecording}
                     iconClassName={classNames('text-danger', {
@@ -99,7 +98,7 @@ export function OngoingPhoneCall({
                 </IconButton>
                 <IconButton
                     data-testid="end-call-button"
-                    intent={ButtonIntent.Destructive}
+                    intent="destructive"
                     onClick={onDisconnect}
                 >
                     call_end

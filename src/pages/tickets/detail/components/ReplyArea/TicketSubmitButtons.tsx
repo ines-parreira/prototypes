@@ -4,7 +4,7 @@ import _sample from 'lodash/sample'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {RootState} from '../../../../../state/types'
 import shortcutManager from '../../../../../services/shortcutManager'
@@ -152,7 +152,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                         <Button
                             id="submit-and-close-button"
                             type="submit"
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             isDisabled={disabled}
                             onClick={() => this.submit('closed', true)}
                             isLoading={loading}
@@ -164,7 +164,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             id="submit-and-close-button"
                             type="submit"
                             confirmationContent={titleConfirmation}
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             isDisabled={disabled}
                             onConfirm={() => this.submit('closed', true)}
                             isLoading={loading}

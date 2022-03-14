@@ -3,7 +3,7 @@ import axios from 'axios'
 import _debounce from 'lodash/debounce'
 import {useHistory, useLocation} from 'react-router-dom'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import {Paths} from 'rest_api/help_center_api/client.generated'
 
@@ -165,7 +165,6 @@ export const HelpCenterInstallationView: React.FC = () => {
                 error={subdomainError}
             >
                 <Button
-                    intent={ButtonIntent.Primary}
                     isDisabled={!isNewSubdomainValid}
                     onClick={() =>
                         handleOnUpdateHelpCenter({
@@ -187,7 +186,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                     actions={(onClose) => (
                         <div className={css['modal-actions']}>
                             <Button
-                                intent={ButtonIntent.Secondary}
+                                intent="secondary"
                                 onClick={() => {
                                     setDeleteModalConfirmation('')
                                     onClose()
@@ -198,7 +197,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                             <Button
                                 className={css['delete-btn']}
                                 isDisabled={deleteBtnDisabled}
-                                intent={ButtonIntent.Secondary}
+                                intent="secondary"
                                 onClick={handleOnDeleteHelpCenter}
                             >
                                 <i className="material-icons">delete</i>
@@ -244,7 +243,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                     {(onClick) => (
                         <Button
                             className={css['delete-btn']}
-                            intent={ButtonIntent.Secondary}
+                            intent="secondary"
                             onClick={onClick}
                         >
                             <i className="material-icons">delete</i>

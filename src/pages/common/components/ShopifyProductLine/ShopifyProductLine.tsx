@@ -6,7 +6,7 @@ import {Map} from 'immutable'
 
 import classnames from 'classnames'
 
-import Button, {ButtonSize} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 
@@ -226,7 +226,7 @@ export default function ShopifyProductLine({
                                     ? handleBackClicked
                                     : onResetStoreChoice
                             }
-                            size={ButtonSize.Small}
+                            size="small"
                             tabIndex={-1}
                         >
                             <ButtonIconLabel icon="arrow_back">

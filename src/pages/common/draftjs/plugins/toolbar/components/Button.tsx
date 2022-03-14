@@ -1,7 +1,6 @@
 import React, {MouseEvent} from 'react'
 import classnames from 'classnames'
 
-import {ButtonIntent, ButtonSize} from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './Button.less'
@@ -19,7 +18,7 @@ const Button = (props: Props) => (
         className={classnames(css.button, {
             [css.isActive]: props.isActive,
         })}
-        intent={ButtonIntent.Secondary}
+        intent="secondary"
         onClick={(e: MouseEvent) => {
             e.preventDefault()
             if (!props.isDisabled) {
@@ -27,7 +26,7 @@ const Button = (props: Props) => (
             }
         }}
         onMouseDown={(e: MouseEvent) => e.preventDefault()}
-        size={ButtonSize.Small}
+        size="small"
         title={props.name}
     >
         {props.icon}

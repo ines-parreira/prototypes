@@ -3,7 +3,6 @@ import {action} from '@storybook/addon-actions'
 import {Meta, Story} from '@storybook/react'
 import _omit from 'lodash/omit'
 
-import {ButtonIntent, ButtonSize} from './Button'
 import ConfirmButton from './ConfirmButton'
 
 const storyConfig: Meta = {
@@ -13,7 +12,10 @@ const storyConfig: Meta = {
             control: {
                 type: 'select',
                 options: {
-                    ...ButtonIntent,
+                    Primary: 'primary',
+                    Secondary: 'secondary',
+                    Text: 'text',
+                    Destructive: 'destructive',
                 },
             },
         },
@@ -31,7 +33,8 @@ const storyConfig: Meta = {
             control: {
                 type: 'select',
                 options: {
-                    ...ButtonSize,
+                    Medium: 'medium',
+                    Small: 'small',
                 },
             },
         },
@@ -81,10 +84,10 @@ const templateParameters = {
 
 const defaultProps: ComponentProps<typeof ConfirmButton> = {
     children: 'Click me!',
-    intent: ButtonIntent.Primary,
+    intent: 'primary',
     isDisabled: false,
     isLoading: false,
-    size: ButtonSize.Medium,
+    size: 'medium',
     confirmationContent: <>Are you sure?</>,
     confirmationTitle: "I'm a title",
 }

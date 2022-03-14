@@ -10,7 +10,7 @@ import {fromJS, Map, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import GorgiasApi from '../../../../../services/gorgiasApi'
 import {notify} from '../../../../../state/notifications/actions'
 import {RootState} from '../../../../../state/types'
@@ -100,7 +100,7 @@ export function ViewSharingModalContainer({
                 >
                     Update view sharing
                 </Button>
-                <Button intent={ButtonIntent.Secondary} onClick={toggle}>
+                <Button intent="secondary" onClick={toggle}>
                     Cancel
                 </Button>
             </ModalFooter>

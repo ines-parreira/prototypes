@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
 
@@ -10,16 +10,12 @@ export const FooterActions: React.FC = () => {
 
     return (
         <footer>
-            <Button
-                isDisabled={!canSavePreferences}
-                intent={ButtonIntent.Primary}
-                onClick={savePreferences}
-            >
+            <Button isDisabled={!canSavePreferences} onClick={savePreferences}>
                 Save Changes
             </Button>
             <Button
                 className="ml-2"
-                intent={ButtonIntent.Secondary}
+                intent="secondary"
                 onClick={resetPreferences}
             >
                 Cancel

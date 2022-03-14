@@ -32,7 +32,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -205,7 +205,6 @@ function PhoneIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
                             </FormGroup>
                             <Button
                                 type="submit"
-                                intent={ButtonIntent.Creation}
                                 isLoading={isLoading}
                                 className={classnames('mt-5', 'mb-5')}
                             >

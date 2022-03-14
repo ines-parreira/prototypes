@@ -6,7 +6,7 @@ import classNames from 'classnames'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/InputField'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ColorPicker from '../../common/components/ColorPicker/ColorPicker'
 import {TagLabel} from '../../common/utils/labels'
@@ -172,7 +172,7 @@ export class Row extends Component<Props, State> {
 
                             <div className="d-flex">
                                 <Button
-                                    intent={ButtonIntent.Secondary}
+                                    intent="secondary"
                                     onClick={this._onCancel}
                                     className="mr-2"
                                 >
@@ -219,7 +219,7 @@ export class Row extends Component<Props, State> {
                 <td className="smallest">
                     <div className={classNames('cell-wrapper', css.actions)}>
                         <IconButton
-                            intent={ButtonIntent.Text}
+                            intent="text"
                             onClick={this._onEdit}
                             className={classNames(css.actionButton, 'mr-1')}
                         >
@@ -228,7 +228,7 @@ export class Row extends Component<Props, State> {
 
                         <IconButton
                             id={`remove-button-${row.get('id') as number}`}
-                            intent={ButtonIntent.Text}
+                            intent="text"
                             onClick={this._toggleRemoveConfirmation}
                             className={classNames(
                                 css.actionButton,

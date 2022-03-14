@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 export type Props = {
@@ -26,7 +26,7 @@ const BulkDeleteButton = ({onBulkDelete, disabled}: Props) => {
             <Button
                 isDisabled={disabled}
                 id="bulk-remove-button"
-                intent={ButtonIntent.Secondary}
+                intent="secondary"
                 className="mr-2 skip-default"
                 onClick={toggleRemoveConfirmation}
             >

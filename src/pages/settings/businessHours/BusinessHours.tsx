@@ -15,7 +15,7 @@ import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import settingsCss from '../settings.less'
@@ -162,7 +162,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                             </div>
                                         ))}
                                         <Button
-                                            intent={ButtonIntent.Secondary}
+                                            intent="secondary"
                                             onClick={this._addBusinessHours}
                                         >
                                             <ButtonIconLabel icon="add">

@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
+import React, {Component, ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import _get from 'lodash/get'
 import classnames from 'classnames'
 
 import {getActionTemplate} from 'utils'
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Modal from 'pages/common/components/Modal'
 import {JSONTree} from 'pages/common/components/JSONTree'
@@ -155,17 +155,18 @@ export default class Actions extends Component<Props, State> {
         return (
             <div className={classnames(css.component, 'mt-3')}>
                 {backActions.map((action, index) => {
-                    let intent = ButtonIntent.Primary
+                    let intent: ComponentProps<typeof Button>['intent'] =
+                        'primary'
                     let icon = 'check'
 
                     if (action.status === ActionStatus.Error) {
-                        intent = ButtonIntent.Destructive
+                        intent = 'destructive'
                         icon = 'close'
                     } else if (action.status === ActionStatus.Pending) {
-                        intent = ButtonIntent.Secondary
+                        intent = 'secondary'
                         icon = 'refresh'
                     } else if ((action.status as any) === 'canceled') {
-                        intent = ButtonIntent.Destructive
+                        intent = 'destructive'
                         icon = 'block'
                     }
 

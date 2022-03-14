@@ -7,7 +7,7 @@ import {RootState} from '../../../../state/types'
 import {hasRole} from '../../../../utils'
 import {AGENT_ROLE} from '../../../../config/user'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
-import Button, {ButtonIntent} from '../button/Button'
+import Button from '../button/Button'
 import ButtonIconLabel from '../button/ButtonIconLabel'
 
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'
@@ -32,7 +32,7 @@ export function ViewSharingButtonContainer({currentUser, view}: Props) {
     return (
         <>
             <Button
-                intent={ButtonIntent.Secondary}
+                intent="secondary"
                 onClick={toggle}
                 isDisabled={!isEditable}
                 id="view-sharing-button"

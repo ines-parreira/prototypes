@@ -1,7 +1,7 @@
 import React from 'react'
 import {fromJS, Map} from 'immutable'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {isCurrentlyOnTicket} from '../../../../../utils'
 
@@ -58,7 +58,7 @@ export default class InfobarCustomerActions extends React.Component<Props> {
                         className="mr-2"
                         confirmationTitle="Change ticket customer"
                         confirmationContent={message}
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         onConfirm={setCustomer}
                     >
                         Set as customer
@@ -66,7 +66,7 @@ export default class InfobarCustomerActions extends React.Component<Props> {
                 ) : null}
                 {isDifferentCustomer ? (
                     <Button
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         onClick={() => {
                             toggleMergeCustomerModal(true)
                             // TODO(customers-migration): ask confirmation to update this event

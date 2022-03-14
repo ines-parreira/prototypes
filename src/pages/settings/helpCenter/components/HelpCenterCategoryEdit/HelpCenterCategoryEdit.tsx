@@ -10,7 +10,7 @@ import {
     Label,
 } from 'reactstrap'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -302,7 +302,7 @@ export const HelpCenterCategoryEdit = ({
                 <FormGroup className={classNames(css.textfield, css.required)}>
                     <Label for="slug">Slug</Label>
                     <Button
-                        intent={ButtonIntent.Text}
+                        intent="text"
                         onClick={copyURL}
                         className={css.copyButton}
                     >
@@ -393,7 +393,6 @@ export const HelpCenterCategoryEdit = ({
             <Drawer.Footer>
                 <Button
                     data-testid="button-save"
-                    intent={ButtonIntent.Primary}
                     isDisabled={!canSaveCategory}
                     onClick={handleOnSave}
                 >
@@ -402,7 +401,7 @@ export const HelpCenterCategoryEdit = ({
                 {category?.id && onDelete && (
                     <Button
                         className={css['delete-btn']}
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         onClick={() => setPendingDeleteCategory(true)}
                     >
                         <i className="material-icons mr-2">delete</i>

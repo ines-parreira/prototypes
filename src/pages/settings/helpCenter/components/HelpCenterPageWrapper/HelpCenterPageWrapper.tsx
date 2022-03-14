@@ -7,7 +7,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 
 import {getViewLanguage, changeViewLanguage} from 'state/ui/helpCenter'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -82,7 +82,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                     )}
                     <Button
                         aria-label="help center preview"
-                        intent={ButtonIntent.Secondary}
+                        intent="secondary"
                         onClick={() =>
                             window.open(helpCenterUrl, '_blank')!.focus()
                         }

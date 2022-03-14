@@ -42,7 +42,6 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isGorgiasSupportAddress, displayRestrictedSymbols} from 'utils'
 import {convertToHTML} from 'utils/editor'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {ButtonIntent} from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 type Props = {
@@ -247,7 +246,6 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                         isLoading={isLoading}
                         onConfirm={importMethod}
                         confirmationContent="Are you sure you want to import emails?"
-                        intent={ButtonIntent.Primary}
                     >
                         Import emails
                     </ConfirmButton>
@@ -562,7 +560,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                             className="float-right"
                             onConfirm={() => deleteIntegration(integration)}
                             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                            intent={ButtonIntent.Destructive}
+                            intent="destructive"
                         >
                             <ButtonIconLabel icon="delete">
                                 Delete email address

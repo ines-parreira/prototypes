@@ -23,7 +23,7 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
         </button>
       </a>
       <button
-        class="wrapper creation medium"
+        class="wrapper primary medium"
         type="button"
       >
         Edit customer

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
 import {useAsyncFn} from 'react-use'
 
-import Button, {ButtonIntent} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {CustomDomain as CustomDomainEntity} from '../../../../../models/helpCenter/types'
@@ -255,7 +255,6 @@ export const CustomDomain = () => {
             {!currentDomain?.status && (
                 <Button
                     data-testid="create-domain-btn"
-                    intent={ButtonIntent.Primary}
                     isDisabled={!domainValue || createDomainDto.loading}
                     onClick={handleOnClickAddDomain}
                 >

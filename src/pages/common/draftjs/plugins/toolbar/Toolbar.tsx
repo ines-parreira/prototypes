@@ -3,10 +3,7 @@ import React, {Component, ReactNode, DragEvent} from 'react'
 
 import {connect, ConnectedProps} from 'react-redux'
 
-import Button, {
-    ButtonIntent,
-    ButtonSize,
-} from 'pages/common/components/button/Button'
+import Button from 'pages/common/components/button/Button'
 import {RootState} from '../../../../../state/types'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../../models/integration/types'
@@ -63,8 +60,8 @@ export class Toolbar extends Component<Props, State> {
             <Button
                 className={css.button}
                 key={index}
-                intent={ButtonIntent.Secondary}
-                size={ButtonSize.Small}
+                intent="secondary"
+                size="small"
             >
                 {button}
             </Button>
