@@ -8,6 +8,7 @@ import {RootState} from '../../../../../state/types'
 import {fetchMacros, getMacro} from '../../../../../state/macro/actions'
 import useCancellableRequest from '../../../../../hooks/useCancellableRequest'
 import {Macro} from '../../../../../state/macro/types'
+import {MacroActionName} from '../../../../../models/macroAction/types'
 
 import Select from './ReactSelect'
 import {useOptions} from './hooks'
@@ -71,8 +72,12 @@ const MacroSelect = ({
                         const actionTemplate = getActionTemplate(
                             action.get('name')
                         )
-                        return (actionTemplate &&
-                            actionTemplate.execution === 'back') as boolean
+                        return (
+                            !!actionTemplate &&
+                            actionTemplate.execution === 'back' &&
+                            actionTemplate.name !==
+                                MacroActionName.AddInternalNote
+                        )
                     })
                     .isEmpty()
             ) as List<any>
