@@ -75,6 +75,7 @@ exports[`<BillingUsage/> should display price 1`] = `
       </div>
       <div
         class="card-body card-body"
+        data-candu-id="billing-subscription-usage"
       >
         <div>
           <div
@@ -315,6 +316,7 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
       </div>
       <div
         class="card-body card-body"
+        data-candu-id="billing-subscription-usage"
       >
         <div>
           <div

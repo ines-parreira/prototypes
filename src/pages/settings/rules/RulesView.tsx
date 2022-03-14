@@ -182,7 +182,10 @@ export function RulesViewContainer({
                     settingsCss.pageContainer
                 )}
             >
-                <div className={css.header}>
+                <div
+                    className={css.header}
+                    data-candu-id="rules-list-description"
+                >
                     {activeTab === RuleTabs.AccountRules && (
                         <>
                             <p>

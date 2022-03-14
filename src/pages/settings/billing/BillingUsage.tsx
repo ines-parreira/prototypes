@@ -178,7 +178,10 @@ const BillingUsage = () => {
                 >
                     No active plan
                 </CardTitle>
-                <CardBody className={css['card-body']}>
+                <CardBody
+                    data-candu-id="billing-trial-usage"
+                    className={css['card-body']}
+                >
                     <div className={css.description}>
                         Please select a plan before updating you payment method.
                         <Button
@@ -236,7 +239,10 @@ const BillingUsage = () => {
                             <CurrentPlanBadge planName={planName} />
                         )}
                     </CardTitle>
-                    <CardBody className={css['card-body']}>
+                    <CardBody
+                        data-candu-id="billing-subscription-usage"
+                        className={css['card-body']}
+                    >
                         {renderTicketUsage()}
                         {renderIntegrationUsage()}
                         <div className={css.description}>

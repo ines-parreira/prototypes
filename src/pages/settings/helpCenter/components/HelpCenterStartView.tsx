@@ -147,7 +147,11 @@ export const HelpCenterStartView: React.FC = () => {
                 </Tooltip>
             </PageHeader>
 
-            <Container fluid className={settingsCss.pageContainer}>
+            <Container
+                fluid
+                className={settingsCss.pageContainer}
+                data-candu-id="help-center-description"
+            >
                 <p>
                     Help Center is a tool that makes it easier to answer your
                     client’s questions in an organic way. Set up a dedicated

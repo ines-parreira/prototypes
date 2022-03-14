@@ -163,6 +163,7 @@ exports[`<RulesView/> should render the rule library view 1`] = `
   >
     <div
       class="header"
+      data-candu-id="rules-list-description"
     >
       <div
         class="libraryHeader"
@@ -248,6 +249,7 @@ exports[`<RulesView/> should render the rule views 1`] = `
   >
     <div
       class="header"
+      data-candu-id="rules-list-description"
     >
       <p>
         Rules provide a way to automatically perform actions on tickets, like tagging, assigning or even responding. Hover a row to show the rule description. Learn more about how to setup rules

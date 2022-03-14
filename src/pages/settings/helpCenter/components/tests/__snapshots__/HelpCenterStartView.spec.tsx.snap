@@ -37,6 +37,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
     </div>
     <div
       class="pageContainer container-fluid"
+      data-candu-id="help-center-description"
     >
       <p>
         Help Center is a tool that makes it easier to answer your client’s questions in an organic way. Set up a dedicated site to sideload your support flow.
