@@ -152,8 +152,11 @@ export default class InfobarWidget extends React.Component {
             case 'card': {
                 data = fromJS(data || {})
 
+                if (!Map.isMap(data)) {
+                    return null
+                }
                 // do not display card if there is no data to display in it
-                if (!isEditing && (!Map.isMap(data) || data.isEmpty())) {
+                if (!isEditing && data.isEmpty()) {
                     return null
                 }
 
