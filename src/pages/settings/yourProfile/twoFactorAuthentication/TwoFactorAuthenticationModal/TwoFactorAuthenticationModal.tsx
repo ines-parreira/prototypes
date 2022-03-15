@@ -7,12 +7,14 @@ import React, {
 } from 'react'
 import {AxiosError} from 'axios'
 import Modal from '../../../../common/components/Modal'
-import css from '../../../../common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal.less'
 import {
     saveTwoFASecret as saveTwoFASecretResource,
     validateVerificationCode as validateVerificationCodeResource,
+    createRecoveryCodes as createRecoveryCodesResource,
 } from '../../../../../models/twoFactorAuthentication/resources'
 import Button from '../../../../common/components/button/Button'
+import {RecoveryCode} from '../../../../../models/twoFactorAuthentication/types'
+import css from './TwoFactorAuthenticationModal.less'
 import ModalContinueButton from './ModalContinueButton'
 import ModalStep from './ModalStep'
 import ModalBanners from './ModalBanners'
@@ -30,15 +32,23 @@ export default function TwoFactorAuthenticationModal({
     onCancel,
     onFinish,
 }: OwnProps) {
-    const [step, setStep] = useState(3)
+    const [step, setStep] = useState(1)
+    const [isEnforced, setIsEnforced] = useState(false)
     const [errorText, setErrorText] = useState('')
     const [verificationCode, setVerificationCode] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [recoveryCodes, setRecoveryCodes] = useState([] as RecoveryCode[])
+    const [isRecoveryCodesSaved, setIsRecoveryCodesSaved] = useState(false)
 
     const resetModalState = useCallback(() => {
         setStep(1)
+        // TODO(@ionut): fetch this from api when adding enforcing mechanism
+        setIsEnforced(false)
         setErrorText('')
         setVerificationCode('')
+        setIsLoading(false)
+        setRecoveryCodes([] as RecoveryCode[])
+        setIsRecoveryCodesSaved(false)
     }, [])
 
     const handleCancel = useCallback(() => {
@@ -62,8 +72,6 @@ export default function TwoFactorAuthenticationModal({
             return
         }
         resetModalState()
-
-        setStep(step - 1)
     }, [step, resetModalState])
 
     const validateVerificationCode = useCallback(async () => {
@@ -83,6 +91,23 @@ export default function TwoFactorAuthenticationModal({
             return
         }
     }, [verificationCode])
+
+    const createRecoveryCodes = useCallback(async () => {
+        try {
+            setErrorText('')
+            setRecoveryCodes(await createRecoveryCodesResource())
+
+            return true
+        } catch (error) {
+            const {response} = error as AxiosError<{error: {msg: string}}>
+            if (response) {
+                setErrorText(response.data.error.msg)
+            }
+
+            console.error(error)
+            return
+        }
+    }, [])
 
     const saveTwoFASecret = useCallback(async () => {
         try {
@@ -108,6 +133,7 @@ export default function TwoFactorAuthenticationModal({
 
         if (step === 2) {
             setIsLoading(true)
+
             const isVerificationCodeValid = await validateVerificationCode()
             if (!isVerificationCodeValid) {
                 setIsLoading(false)
@@ -120,24 +146,31 @@ export default function TwoFactorAuthenticationModal({
                 return
             }
 
+            const isRecoveryCodesCreated = await createRecoveryCodes()
+            if (!isRecoveryCodesCreated) {
+                setIsLoading(false)
+                return
+            }
+
             setIsLoading(false)
         }
 
         setStep(step + 1)
-    }, [step, validateVerificationCode, saveTwoFASecret])
+    }, [step, validateVerificationCode, saveTwoFASecret, createRecoveryCodes])
 
     useEffect(() => {
         resetModalState()
-    }, [])
+    }, [resetModalState])
 
     return (
         <Modal
             isOpen={isOpen}
             header="Setup 2FA"
+            headerClassName={isEnforced ? css.hideCloseButton : ''}
             onClose={handleCancel}
+            dismissible={!isEnforced}
+            backdrop="static"
             style={{maxWidth: '600px'}}
-            footerClassName={css['modal-footer']}
-            bodyClassName={css['modal-body']}
             footer={
                 <>
                     {step === 1 && (
@@ -162,22 +195,30 @@ export default function TwoFactorAuthenticationModal({
                         currentStep={step}
                         isLoading={isLoading}
                         hasError={
-                            !!errorText || (step === 2 && !verificationCode)
+                            !!errorText ||
+                            (step === 2 && !verificationCode) ||
+                            (step === 3 && !isRecoveryCodesSaved)
                         }
                         onContinue={handleContinue}
                         onFinish={handleFinish}
                     />
                 </>
             }
-            dismissible={false}
         >
-            <ModalBanners currentStep={step} errorText={errorText} />
+            <ModalBanners
+                currentStep={step}
+                errorText={errorText}
+                isEnforced={isEnforced}
+            />
             <ModalStep
                 currentStep={step}
                 errorText={errorText}
                 setErrorText={setErrorText}
                 setVerificationCode={setVerificationCode}
                 setIsLoading={setIsLoading}
+                recoveryCodes={recoveryCodes}
+                isRecoveryCodesSaved={isRecoveryCodesSaved}
+                setIsRecoveryCodesSaved={setIsRecoveryCodesSaved}
             />
         </Modal>
     )

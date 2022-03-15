@@ -1,6 +1,6 @@
 import client from '../api/resources'
 
-import {AuthenticatorData} from './types'
+import {AuthenticatorData, RecoveryCode} from './types'
 
 export const fetchAuthenticatorData = async (): Promise<AuthenticatorData> => {
     const res = await client.get<AuthenticatorData>('/api/2fa/authenticator')
@@ -15,6 +15,11 @@ export const validateVerificationCode = async (
 
 export const saveTwoFASecret = async (): Promise<void> => {
     await client.post<void>('/api/2fa/secret', {})
+}
+
+export const createRecoveryCodes = async (): Promise<RecoveryCode[]> => {
+    const res = await client.post<RecoveryCode[]>('/api/2fa/recovery-codes', {})
+    return res.data
 }
 
 export const deleteTwoFASecret = async (): Promise<void> => {

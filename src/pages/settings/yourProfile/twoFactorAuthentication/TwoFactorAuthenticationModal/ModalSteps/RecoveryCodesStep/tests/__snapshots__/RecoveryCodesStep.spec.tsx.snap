@@ -1,0 +1,381 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RecoveryCodesStep /> handleDownload() should trigger download of recovery codes 1`] = `
+Array [
+  Array [
+    "href",
+    "data:text/plain;base64,YWJjZGVmZ2gwMQphYmNkZWZnaDAyCmFiY2RlZmdoMDMKYWJjZGVmZ2gwNAphYmNkZWZnaDA1CmFiY2RlZmdoMDYKYWJjZGVmZ2gwNwphYmNkZWZnaDA4CmFiY2RlZmdoMDkKYWJjZGVmZ2gxMAphYmNkZWZnaDExCmFiY2RlZmdoMTIKYWJjZGVmZ2gxMwphYmNkZWZnaDE0CmFiY2RlZmdoMTUKYWJjZGVmZ2gxNg==",
+  ],
+  Array [
+    "download",
+    "gorgiasRecoveryCodes.txt",
+  ],
+]
+`;
+
+exports[`<RecoveryCodesStep /> render() should render the component with the recovery codes 1`] = `
+<div>
+  <div
+    class="textSection mb16"
+  >
+    Before you leave, keep your recovery codes in a safe place. They're the only alternative way to access your account.
+  </div>
+  <ul
+    class="recoveryCodesContainer mb16"
+  >
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh01
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh02
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh03
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh04
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh05
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh06
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh07
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh08
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh09
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh10
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh11
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh12
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh13
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh14
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh15
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh16
+    </li>
+  </ul>
+  <div
+    class="actionButtonsContainer mb16"
+  >
+    <button
+      class="wrapper actionButton mr8 secondary medium"
+      type="button"
+    >
+      <span
+        class="wrapper"
+      >
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          download
+        </i>
+        Download
+      </span>
+    </button>
+    <a
+      class="actionAnchor mr8"
+      href="http://localhost/2fa/recovery-codes/print"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <button
+        class="wrapper actionButton secondary medium"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            print
+          </i>
+          Print
+        </span>
+      </button>
+    </a>
+    <button
+      class="wrapper actionButton secondary medium"
+      data-clipboard-text="abcdefgh01
+abcdefgh02
+abcdefgh03
+abcdefgh04
+abcdefgh05
+abcdefgh06
+abcdefgh07
+abcdefgh08
+abcdefgh09
+abcdefgh10
+abcdefgh11
+abcdefgh12
+abcdefgh13
+abcdefgh14
+abcdefgh15
+abcdefgh16"
+      id="copyRecoveryCodes"
+      type="button"
+    >
+      <span
+        class="wrapper"
+      >
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          content_copy
+        </i>
+        Copy
+      </span>
+    </button>
+  </div>
+  <div>
+    <div>
+      <label
+        class="label label checkBox"
+        for="isRecoveryCodesSaved"
+      >
+        <input
+          checked=""
+          class="input"
+          id="isRecoveryCodesSaved"
+          name="isRecoveryCodesSaved"
+          type="checkbox"
+        />
+        I've saved my recovery codes
+      </label>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RecoveryCodesStep /> render() should render the component with the recovery codes 2`] = `
+<div>
+  <div
+    class="textSection mb16"
+  >
+    Before you leave, keep your recovery codes in a safe place. They're the only alternative way to access your account.
+  </div>
+  <ul
+    class="recoveryCodesContainer mb16"
+  >
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh01
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh02
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh03
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh04
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh05
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh06
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh07
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh08
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh09
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh10
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh11
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh12
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh13
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh14
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh15
+    </li>
+    <li
+      class="recoveryCodesItem"
+    >
+      abcdefgh16
+    </li>
+  </ul>
+  <div
+    class="actionButtonsContainer mb16"
+  >
+    <button
+      class="wrapper actionButton mr8 secondary medium"
+      type="button"
+    >
+      <span
+        class="wrapper"
+      >
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          download
+        </i>
+        Download
+      </span>
+    </button>
+    <a
+      class="actionAnchor mr8"
+      href="http://localhost/2fa/recovery-codes/print"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <button
+        class="wrapper actionButton secondary medium"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            print
+          </i>
+          Print
+        </span>
+      </button>
+    </a>
+    <button
+      class="wrapper actionButton secondary medium"
+      data-clipboard-text="abcdefgh01
+abcdefgh02
+abcdefgh03
+abcdefgh04
+abcdefgh05
+abcdefgh06
+abcdefgh07
+abcdefgh08
+abcdefgh09
+abcdefgh10
+abcdefgh11
+abcdefgh12
+abcdefgh13
+abcdefgh14
+abcdefgh15
+abcdefgh16"
+      id="copyRecoveryCodes"
+      type="button"
+    >
+      <span
+        class="wrapper"
+      >
+        <i
+          class="material-icons icon isLeft medium"
+        >
+          content_copy
+        </i>
+        Copy
+      </span>
+    </button>
+  </div>
+  <div>
+    <div>
+      <label
+        class="label label checkBox"
+        for="isRecoveryCodesSaved"
+      >
+        <input
+          class="input"
+          id="isRecoveryCodesSaved"
+          name="isRecoveryCodesSaved"
+          type="checkbox"
+        />
+        I've saved my recovery codes
+      </label>
+    </div>
+  </div>
+</div>
+`;

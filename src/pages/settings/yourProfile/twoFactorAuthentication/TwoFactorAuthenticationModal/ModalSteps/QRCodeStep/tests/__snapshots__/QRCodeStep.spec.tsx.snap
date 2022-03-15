@@ -21,7 +21,7 @@ exports[`<QRCodeStep /> render() should render the component with the loading co
     ) on your phone.
   </div>
   <div
-    class="headingBold"
+    class="headingBold mt24"
   >
     Step 2: Scan the QR code
   </div>
@@ -77,7 +77,7 @@ exports[`<QRCodeStep /> render() should render the component with the qr code 1`
     ) on your phone.
   </div>
   <div
-    class="headingBold"
+    class="headingBold mt24"
   >
     Step 2: Scan the QR code
   </div>
@@ -122,7 +122,7 @@ exports[`<QRCodeStep /> render() should render the component without the qrcode 
     ) on your phone.
   </div>
   <div
-    class="headingBold"
+    class="headingBold mt24"
   >
     Step 2: Scan the QR code
   </div>

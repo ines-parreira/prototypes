@@ -9,6 +9,7 @@ import {
 } from 'reactstrap'
 import Clipboard from 'clipboard'
 import {AuthenticatorData} from '../../../../../../../models/twoFactorAuthentication/types'
+import ButtonIconLabel from '../../../../../../common/components/button/ButtonIconLabel'
 import css from './CantScanQRCode.less'
 
 type OwnProps = {
@@ -96,15 +97,14 @@ export default function CantScanQRCode({authenticatorData}: OwnProps) {
                                             className="copy-authenticator-field"
                                             data-clipboard-target={`#authenticatorField${index}`}
                                         >
-                                            <i className="material-icons mr-2">
-                                                file_copy
-                                            </i>
-                                            {copiedAuthenticatorField ===
-                                            authenticatorData[
-                                                key as keyof AuthenticatorData
-                                            ]
-                                                ? 'Copied!'
-                                                : 'Copy'}
+                                            <ButtonIconLabel icon="file_copy">
+                                                {copiedAuthenticatorField ===
+                                                authenticatorData[
+                                                    key as keyof AuthenticatorData
+                                                ]
+                                                    ? 'Copied!'
+                                                    : 'Copy'}
+                                            </ButtonIconLabel>
                                         </Button>
                                     </InputGroupAddon>
                                 </InputGroup>

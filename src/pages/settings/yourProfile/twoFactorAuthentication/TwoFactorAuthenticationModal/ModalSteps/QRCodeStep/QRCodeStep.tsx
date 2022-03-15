@@ -7,9 +7,11 @@ import React, {
 } from 'react'
 import QRCode from 'qrcode'
 
+import classnames from 'classnames'
 import {fetchAuthenticatorData} from '../../../../../../../models/twoFactorAuthentication/resources'
 import {AuthenticatorData} from '../../../../../../../models/twoFactorAuthentication/types'
 import Loader from '../../../../../../common/components/Loader/Loader'
+import modalStepsCss from '../ModalSteps.less'
 import css from './QRCodeStep.less'
 import CantScanQRCode from './CantScanQRCode'
 
@@ -62,10 +64,10 @@ export default function QRCodeStep({
 
     return (
         <>
-            <div className={css.headingBold}>
+            <div className={modalStepsCss.headingBold}>
                 Step 1: Download an authenticator app
             </div>
-            <div className={css.textSection}>
+            <div className={modalStepsCss.textSection}>
                 Download and install any authenticator app (
                 <a
                     href="https://support.google.com/accounts/answer/1066447"
@@ -76,8 +78,15 @@ export default function QRCodeStep({
                 </a>
                 ) on your phone.
             </div>
-            <div className={css.headingBold}>Step 2: Scan the QR code</div>
-            <div className={css.textSection}>
+            <div
+                className={classnames(
+                    modalStepsCss.headingBold,
+                    modalStepsCss.mt24
+                )}
+            >
+                Step 2: Scan the QR code
+            </div>
+            <div className={modalStepsCss.textSection}>
                 Open the authenticator app and scan the image below using your
                 phone’s camera.
             </div>

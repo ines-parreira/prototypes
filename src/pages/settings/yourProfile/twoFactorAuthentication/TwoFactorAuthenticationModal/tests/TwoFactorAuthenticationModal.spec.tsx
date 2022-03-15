@@ -9,10 +9,12 @@ import {
 import TwoFactorAuthenticationModal from '../TwoFactorAuthenticationModal'
 import {authenticatorData} from '../../../../../../fixtures/authenticatorData'
 import {
+    createRecoveryCodes,
     fetchAuthenticatorData,
     saveTwoFASecret,
     validateVerificationCode,
 } from '../../../../../../models/twoFactorAuthentication/resources'
+import {recoveryCodes as recoveryCodesFixture} from '../../../../../../fixtures/recoveryCodes'
 
 jest.mock('models/twoFactorAuthentication/resources')
 const fetchAuthenticatorDataMock =
@@ -25,6 +27,10 @@ const validateVerificationCodeMock =
 
 const saveTwoFASecretMock = saveTwoFASecret as jest.MockedFunction<
     typeof saveTwoFASecret
+>
+
+const createRecoveryCodesMock = createRecoveryCodes as jest.MockedFunction<
+    typeof createRecoveryCodes
 >
 
 describe('<TwoFactorAuthenticationModal />', () => {
@@ -198,6 +204,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
             it('should render modal with Recovery codes step because validation is successful and the secret was saved to the database', async () => {
                 validateVerificationCodeMock.mockResolvedValue()
                 saveTwoFASecretMock.mockResolvedValue()
+                createRecoveryCodesMock.mockResolvedValue(recoveryCodesFixture)
 
                 const {baseElement} = render(
                     <TwoFactorAuthenticationModal {...minProps} />
@@ -206,6 +213,38 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 await validateInput(baseElement)
 
                 expect(baseElement).toMatchSnapshot('Recovery codes step')
+            })
+
+            it('should call setIsOpen with false value which closes the modal because the process has been finished', async () => {
+                const setIsOpenMock = jest.fn()
+                validateVerificationCodeMock.mockResolvedValue()
+                saveTwoFASecretMock.mockResolvedValue()
+                createRecoveryCodesMock.mockResolvedValue(recoveryCodesFixture)
+
+                const {baseElement} = render(
+                    <TwoFactorAuthenticationModal
+                        {...minProps}
+                        setIsOpen={setIsOpenMock}
+                    />
+                )
+
+                await validateInput(baseElement)
+
+                const checkbox = screen.getByText(
+                    "I've saved my recovery codes"
+                )
+                fireEvent.click(checkbox)
+
+                await waitFor(() => {
+                    expect(
+                        screen.getByText(/Continue/).getAttribute('disabled')
+                    ).toBe(null)
+                })
+
+                const continueButton = screen.getByText(/Continue/)
+                fireEvent.click(continueButton)
+
+                expect(setIsOpenMock).toHaveBeenCalledWith(false)
             })
         })
 
@@ -220,9 +259,17 @@ describe('<TwoFactorAuthenticationModal />', () => {
             const continueButton = screen.getByText(/Continue/)
             fireEvent.click(continueButton)
 
+            // wait for the loading spinners to disappear
+            await waitFor(() => {
+                expect(() => screen.queryAllByText('Loading...')).toHaveLength(
+                    0
+                )
+            })
+
             const backButton = screen.getByText(/Back/)
             fireEvent.click(backButton)
 
+            // wait for the loading spinners to disappear
             await waitFor(() => {
                 expect(() => screen.queryAllByText('Loading...')).toHaveLength(
                     0
@@ -238,12 +285,6 @@ describe('<TwoFactorAuthenticationModal />', () => {
         it('should call setIsOpen with false value which closes the modal on cancel', async () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
             const setIsOpenMock = jest.fn()
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            const useStateMock: any = (useState: any) => [
-                useState,
-                setIsOpenMock,
-            ]
-            jest.spyOn(React, 'useState').mockImplementation(useStateMock)
 
             const {baseElement} = render(
                 <TwoFactorAuthenticationModal

@@ -22,7 +22,7 @@ export default function ValidateVerificationCodeStep({
                 authenticator app.
             </div>
             <InputField
-                type="text"
+                type="number"
                 name="verificationCode"
                 placeholder="Enter 6-digit verification code from app"
                 onChange={(value) => {

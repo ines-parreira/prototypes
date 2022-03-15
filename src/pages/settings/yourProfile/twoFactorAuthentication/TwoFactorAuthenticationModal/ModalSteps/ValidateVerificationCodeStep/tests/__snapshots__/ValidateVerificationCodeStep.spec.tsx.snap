@@ -23,7 +23,7 @@ exports[`<ValidateVerificationCodeStep /> render() should render the component w
         class="form-control"
         id="id-verificationCode"
         placeholder="Enter 6-digit verification code from app"
-        type="text"
+        type="number"
       />
     </div>
   </div>

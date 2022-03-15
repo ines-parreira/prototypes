@@ -55,12 +55,16 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
             class="copy-authenticator-field btn btn-secondary"
             data-clipboard-target="#authenticatorField0"
           >
-            <i
-              class="material-icons mr-2"
+            <span
+              class="wrapper"
             >
-              file_copy
-            </i>
-            Copy
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                file_copy
+              </i>
+              Copy
+            </span>
           </button>
         </div>
       </div>
@@ -91,12 +95,16 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
             class="copy-authenticator-field btn btn-secondary"
             data-clipboard-target="#authenticatorField1"
           >
-            <i
-              class="material-icons mr-2"
+            <span
+              class="wrapper"
             >
-              file_copy
-            </i>
-            Copy
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                file_copy
+              </i>
+              Copy
+            </span>
           </button>
         </div>
       </div>
@@ -127,12 +135,16 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
             class="copy-authenticator-field btn btn-secondary"
             data-clipboard-target="#authenticatorField2"
           >
-            <i
-              class="material-icons mr-2"
+            <span
+              class="wrapper"
             >
-              file_copy
-            </i>
-            Copy
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                file_copy
+              </i>
+              Copy
+            </span>
           </button>
         </div>
       </div>

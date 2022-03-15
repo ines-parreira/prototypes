@@ -22,6 +22,12 @@ exports[`<ModalBanners /> render() should render the appropriate banners based o
 </div>
 `;
 
+exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 1- 2`] = `
+<div>
+  
+</div>
+`;
+
 exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 1-Foo error banner 1`] = `
 <div>
   <div
@@ -40,6 +46,27 @@ exports[`<ModalBanners /> render() should render the appropriate banners based o
       </span>
     </div>
   </div>
+  <div
+    class="banner bannerError"
+  >
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+    <div
+      class="bannerText"
+    >
+      <span>
+        Foo error banner
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 1-Foo error banner 2`] = `
+<div>
   <div
     class="banner bannerError"
   >
@@ -86,8 +113,46 @@ exports[`<ModalBanners /> render() should render the appropriate banners based o
 </div>
 `;
 
+exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 3- 1`] = `
+<div>
+  <div
+    class="banner bannerSuccess"
+  >
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+    <div
+      class="bannerText"
+    >
+      <span>
+        Two-factor authentication enabled.
+      </span>
+    </div>
+  </div>
+  
+</div>
+`;
+
 exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 3-Foo error banner 1`] = `
 <div>
+  <div
+    class="banner bannerSuccess"
+  >
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+    <div
+      class="bannerText"
+    >
+      <span>
+        Two-factor authentication enabled.
+      </span>
+    </div>
+  </div>
   <div
     class="banner bannerError"
   >
@@ -104,12 +169,6 @@ exports[`<ModalBanners /> render() should render the appropriate banners based o
       </span>
     </div>
   </div>
-</div>
-`;
-
-exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 4- 1`] = `
-<div>
-  
 </div>
 `;
 

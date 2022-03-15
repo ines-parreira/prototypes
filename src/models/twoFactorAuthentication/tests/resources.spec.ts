@@ -2,8 +2,10 @@ import MockAdapter from 'axios-mock-adapter'
 
 import {AxiosError} from 'axios'
 import {authenticatorData as authenticatorDataFixture} from '../../../fixtures/authenticatorData'
+import {recoveryCodes as recoveryCodesFixture} from '../../../fixtures/recoveryCodes'
 import client from '../../api/resources'
 import {
+    createRecoveryCodes,
     deleteTwoFASecret,
     fetchAuthenticatorData,
     saveTwoFASecret,
@@ -95,6 +97,28 @@ describe('twoFactorAuthentication resources', () => {
                 .reply(503, {message: 'error'})
 
             await expect(saveTwoFASecret()).rejects.toThrow(
+                new Error('Request failed with status code 503')
+            )
+        })
+    })
+
+    describe('createRecoveryCodes', () => {
+        it('should resolve with a list of RecoveryCode on success', async () => {
+            mockedServer
+                .onPost('/api/2fa/recovery-codes')
+                .reply(200, recoveryCodesFixture)
+
+            const res = await createRecoveryCodes()
+
+            expect(res).toStrictEqual(recoveryCodesFixture)
+        })
+
+        it('should reject an error on fail', async () => {
+            mockedServer
+                .onPost('/api/2fa/recovery-codes')
+                .reply(503, {message: 'error'})
+
+            await expect(createRecoveryCodes()).rejects.toThrow(
                 new Error('Request failed with status code 503')
             )
         })
