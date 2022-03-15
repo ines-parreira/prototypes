@@ -2,6 +2,7 @@ import classnames from 'classnames'
 import {List, fromJS} from 'immutable'
 import React, {useMemo, useState, Fragment} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
+import _camelCase from 'lodash/camelCase'
 
 import {IntegrationType} from '../../../../../models/integration/types'
 import {
@@ -47,6 +48,7 @@ export function MemberExpressionContainer({
         IntegrationType.Magento2,
         IntegrationType.Recharge,
         IntegrationType.Smile,
+        IntegrationType.SelfService,
     ],
     actions,
 }: OwnProps & ConnectedProps<typeof connector>) {
@@ -71,7 +73,8 @@ export function MemberExpressionContainer({
     const filteredCategories = useMemo(() => {
         return IDENTIFIER_CATEGORIES.filter((category) => {
             const currentIntegration = filteredIntegrationTypes.find(
-                (integrationType) => category.value.startsWith(integrationType)
+                (integrationType) =>
+                    category.value.startsWith(_camelCase(integrationType))
             )
 
             return !currentIntegration || hasIntegrationType(currentIntegration)

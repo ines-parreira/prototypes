@@ -217,6 +217,31 @@ describe('ast', () => {
             })
         })
 
+        describe('SelfServiceFlowSelect', () => {
+            it('should render SelfServiceFlowSelect field', () => {
+                const leftsiblings = fromJS([
+                    'definitions',
+                    'TicketMessage',
+                    'properties',
+                    'self_service_flow',
+                ])
+                const value = 'flow'
+                const rule = fromJS({
+                    code_ast: astCodeEq,
+                })
+                expect(
+                    shallow(
+                        <Widget
+                            {...commonProps}
+                            value={value}
+                            leftsiblings={leftsiblings}
+                            rule={rule}
+                        />
+                    )
+                ).toMatchSnapshot()
+            })
+        })
+
         describe('should handle change', () => {
             let modifyCodeASTSpy: jest.MockedFunction<any>
             let getCondition: jest.MockedFunction<any>

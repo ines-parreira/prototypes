@@ -55,6 +55,8 @@ export function getCategoryFromPath(path: string[]): IdentifierCategoryKey {
         return IdentifierCategoryKey.SmileCustomer
     } else if (jointPath.includes('ticket.customer')) {
         return IdentifierCategoryKey.Customer
+    } else if (path.includes('self_service_flow')) {
+        return IdentifierCategoryKey.SelfServiceFlow
     }
     return path[0] as IdentifierCategoryKey
 }

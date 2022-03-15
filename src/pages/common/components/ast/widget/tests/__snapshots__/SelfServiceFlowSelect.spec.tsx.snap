@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelfServiceFlowSelect /> should render component with no selected items 1`] = `
+<div
+  style="display: inline-block; vertical-align: middle;"
+>
+  <div>
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle"
+        >
+          <span
+            class="label placeholder"
+            style="min-width: 10px; opacity: 1;"
+          >
+            Select an option
+          </span>
+          <input
+            autocomplete="chrome-off"
+            class="input"
+            style="min-width: 10px;"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="options dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          No result
+        </h6>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<SelfServiceFlowSelect /> should render component with selected item 1`] = `
+<div
+  style="display: inline-block; vertical-align: middle;"
+>
+  <div>
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle"
+        >
+          <span
+            class="label placeholder"
+            style="min-width: 10px; opacity: 1;"
+          >
+            Select an option
+          </span>
+          <input
+            autocomplete="chrome-off"
+            class="input"
+            style="min-width: 10px;"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="options dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          No result
+        </h6>
+      </div>
+    </div>
+  </div>
+</div>
+`;

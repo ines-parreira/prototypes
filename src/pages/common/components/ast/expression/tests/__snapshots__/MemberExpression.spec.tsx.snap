@@ -235,6 +235,27 @@ exports[`<MemberExpression/> should render 1`] = `
           </i>
         </span>
       </button>
+      <button
+        class="option dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="optionContent"
+        >
+          <span
+            class="categoryLabel"
+          >
+            Self Service
+          </span>
+          <i
+            class="optionArrow material-icons"
+          >
+            keyboard_arrow_right
+          </i>
+        </span>
+      </button>
     </div>
   </div>
 </div>

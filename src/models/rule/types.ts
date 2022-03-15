@@ -13,6 +13,7 @@ export enum IdentifierCategoryKey {
     RechargeLastSubscription = 'rechargeLastSubscription',
     RechargeCustomer = 'rechargeCustomer',
     SmileCustomer = 'smileCustomer',
+    SelfServiceFlow = 'selfServiceFlow',
 }
 
 export enum IdentifierCategoryValue {
@@ -26,6 +27,7 @@ export enum IdentifierCategoryValue {
     ShopifyCustomer = 'Shopify Customer',
     ShopifyLastOrder = 'Shopify Last Order',
     SmileCustomer = 'Smile Customer',
+    SelfServiceFlow = 'Self Service',
 }
 
 export enum IdentifierSubCategoryValue {

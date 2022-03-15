@@ -49,6 +49,10 @@ export const IDENTIFIER_CATEGORIES: {
         label: IdentifierCategoryValue.SmileCustomer,
         value: IdentifierCategoryKey.SmileCustomer,
     },
+    {
+        label: IdentifierCategoryValue.SelfServiceFlow,
+        value: IdentifierCategoryKey.SelfServiceFlow,
+    },
 ]
 
 export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
@@ -410,6 +414,18 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             text: 'customer vip tier',
             value: 'ticket.customer.integrations.smile.customer.vip_tier.name',
         },
+    ],
+    [IdentifierCategoryKey.SelfServiceFlow]: [
+        {
+            label: 'Order management flow',
+            text: 'order management flow',
+            value: 'message.self_service_flow.order_management_flow',
+        },
+        // {
+        //     label: 'Quick response flow',
+        //     text: 'quick response flow',
+        //     value: 'message.self_service_flow.quick_response_flow',
+        // },
     ],
 }
 

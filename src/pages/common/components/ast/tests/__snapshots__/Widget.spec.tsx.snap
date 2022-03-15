@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ast Widget SelfServiceFlowSelect should render SelfServiceFlowSelect field 1`] = `
+<InputField
+  caseInsensitive={false}
+  inline={false}
+  onChange={[Function]}
+  placeholder=""
+  required={false}
+  type="text"
+  value="flow"
+/>
+`;
+
 exports[`ast Widget TagsSelect should render case sensitive TagsSelect field (tags properties) 1`] = `
 <Connect(TagsSelectContainer)
   caseInsensitive={false}

@@ -1,6 +1,6 @@
 import React, {Component, ComponentProps} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {List, Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import drop from 'lodash/drop'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
@@ -30,6 +30,7 @@ import {RuleOperation} from '../../../../state/rules/types'
 import {RuleItemActions} from '../../../settings/rules/types'
 import {IntegrationType} from '../../../../models/integration/types'
 import {RootState} from '../../../../state/types'
+import {BASIC_OPERATORS} from '../../../../config'
 
 import {IntentsSentimentsSelect} from './widget/IntentsSentimentsSelect'
 import TagsSelect from './widget/TagsSelect'
@@ -39,6 +40,7 @@ import AssigneeUserSelect from './widget/AssigneeUserSelect'
 import MacroSelect from './widget/MacroSelect'
 import StatusSelect from './widget/StatusSelect'
 import Select from './widget/ReactSelect'
+import SelfServiceFlowSelect from './widget/SelfServiceFlowSelect'
 
 type Property = {
     key: {
@@ -398,6 +400,11 @@ export class Widget extends Component<Props, State> {
             // operators are using simple select widget, all we need is the options
             let operators = schemas.getIn(left) as Map<any, any>
 
+            // Explicit operators for `message.self_service_flow` attributes
+            if (left.includes('self_service_flow')) {
+                operators = fromJS(BASIC_OPERATORS)
+            }
+
             if (operators) {
                 // exclude deprecated operators which are not already used
                 operators = operators.filter(
@@ -451,6 +458,13 @@ export class Widget extends Component<Props, State> {
                 widget.type !== 'tags-select'
             ) {
                 caseInsensitive = true
+            }
+
+            if (left.includes('order_management_flow')) {
+                widget.type = 'self-service-order-management-flow-select'
+            }
+            if (left.includes('quick_response_flow')) {
+                widget.type = 'self-service-quick-response-flow-select'
             }
 
             if (right) {
@@ -589,6 +603,24 @@ export class Widget extends Component<Props, State> {
                     <IntegrationSelect
                         {...widget}
                         onChange={this._handleChange}
+                    />
+                )
+            case 'self-service-order-management-flow-select':
+                return (
+                    <SelfServiceFlowSelect
+                        {...widget}
+                        className={className}
+                        onChange={this._handleChange}
+                        flowType={'order-management'}
+                    />
+                )
+            case 'self-service-quick-response-flow-select':
+                return (
+                    <SelfServiceFlowSelect
+                        {...widget}
+                        className={className}
+                        onChange={this._handleChange}
+                        flowType={'quick-response'}
                     />
                 )
             case 'snooze-picker':
