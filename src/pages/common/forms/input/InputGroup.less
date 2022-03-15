@@ -1,0 +1,47 @@
+@import '~css/new/colors';
+
+:local {
+    .wrapper {
+        align-items: center;
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 4px;
+        box-sizing: border-box;
+        height: 32px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+        &.hasError {
+            border-color: @classic-feedback-error;
+        }
+
+        &.isFocused {
+            overflow: hidden;
+            border-color: @classic-main-primary;
+            box-shadow: 0 0 0 2px fadeout(@classic-main-primary, 80%);
+        }
+
+        &.right,
+        &.center {
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+        }
+
+        &.left,
+        &.center {
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        &.top,
+        &.middle {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        &.bottom,
+        &.middle {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            margin-top: -1px;
+        }
+    }
+}

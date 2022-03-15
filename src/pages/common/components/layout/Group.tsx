@@ -2,7 +2,9 @@ import classnames from 'classnames'
 import React, {
     Children,
     cloneElement,
+    createContext,
     isValidElement,
+    ReactElement,
     ReactNode,
     useMemo,
 } from 'react'
@@ -20,12 +22,20 @@ export type AppendPosition =
 type Props = {
     children: ReactNode
     className?: string
+    isDisabled?: boolean
     orientation?: 'horizontal' | 'vertical'
 }
+
+type GroupContextState = {
+    isDisabled?: boolean
+}
+
+export const GroupContext = createContext<GroupContextState>({})
 
 export default function Group({
     children,
     className,
+    isDisabled,
     orientation = 'horizontal',
 }: Props) {
     const appendPosition = useMemo(
@@ -35,26 +45,29 @@ export default function Group({
                 : ['left', 'center', 'right'],
         [orientation]
     )
-
-    const childrenArray = Children.toArray(children)
-    const validChildrenArray = childrenArray.filter((child) =>
-        isValidElement(child)
-    ) as React.ReactElement[]
+    const validChildren = useMemo<ReactElement[]>(
+        () => Children.toArray(children).filter(isValidElement),
+        [children]
+    )
 
     return (
-        <span className={classnames(className, css.group, css[orientation])}>
-            {validChildrenArray.map((child, index) =>
-                cloneElement(child, {
-                    appendPosition:
-                        validChildrenArray.length < 2
-                            ? undefined
-                            : index > 0 && index < validChildrenArray.length - 1
-                            ? appendPosition[1]
-                            : index === 0
-                            ? appendPosition[0]
-                            : appendPosition[2],
-                })
-            )}
-        </span>
+        <GroupContext.Provider value={{isDisabled}}>
+            <span
+                className={classnames(className, css.group, css[orientation])}
+            >
+                {validChildren.map((child, index) =>
+                    cloneElement(child, {
+                        appendPosition:
+                            validChildren.length < 2
+                                ? undefined
+                                : index > 0 && index < validChildren.length - 1
+                                ? appendPosition[1]
+                                : index === 0
+                                ? appendPosition[0]
+                                : appendPosition[2],
+                    })
+                )}
+            </span>
+        </GroupContext.Provider>
     )
 }

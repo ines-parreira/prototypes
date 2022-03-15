@@ -3,11 +3,16 @@ import React, {
     createContext,
     forwardRef,
     Ref,
+    useContext,
 } from 'react'
 import classnames from 'classnames'
 import {Spinner} from 'reactstrap'
 
-import {AppendPosition} from 'pages/common/components/layout/Group'
+import {
+    AppendPosition,
+    GroupContext,
+} from 'pages/common/components/layout/Group'
+import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
 
 import css from './Button.less'
 
@@ -43,6 +48,9 @@ const Button = forwardRef(function (
     }: Props,
     ref: Ref<HTMLButtonElement> | null | undefined
 ) {
+    const context = useContext(GroupContext)
+    const isInsideInputGroup = !!useContext(InputGroupContext)
+
     return (
         <ButtonContext.Provider value={{size}}>
             <button
@@ -54,11 +62,13 @@ const Button = forwardRef(function (
                     css[size],
                     css[appendPosition || ''],
                     {
-                        [css.isDisabled]: isDisabled || isLoading,
+                        [css.isDisabled]:
+                            context?.isDisabled || isDisabled || isLoading,
+                        [css.isAuxiliaryButton]: isInsideInputGroup,
                     }
                 )}
+                disabled={context?.isDisabled || isDisabled || isLoading}
                 type={type}
-                disabled={isDisabled || isLoading}
                 ref={ref}
             >
                 {isLoading && <Spinner className={css.spinner} />}

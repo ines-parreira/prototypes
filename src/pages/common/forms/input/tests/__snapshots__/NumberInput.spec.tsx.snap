@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NumberInput /> should render a number input 1`] = `
+<span
+  class="wrapper group horizontal"
+>
+  <input
+    appendposition="left"
+    class="input"
+    max="Infinity"
+    min="-Infinity"
+    type="number"
+    value="6"
+  />
+  <span
+    class="controls group vertical"
+  >
+    <button
+      class="wrapper button wrapper small secondary small top"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
+      >
+        arrow_drop_up
+      </i>
+    </button>
+    <button
+      class="wrapper button wrapper small secondary small bottom"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
+      >
+        arrow_drop_down
+      </i>
+    </button>
+  </span>
+</span>
+`;

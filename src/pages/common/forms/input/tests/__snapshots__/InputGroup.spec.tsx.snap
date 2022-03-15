@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InputGroup /> should render a group input wrapper 1`] = `
+<span
+  class="wrapper group horizontal"
+>
+  <button
+    class="wrapper secondary medium left isAuxiliaryButton"
+    type="button"
+  >
+    Foo
+  </button>
+  <span
+    class="wrapper center isNested group horizontal"
+  >
+    <input
+      appendposition="left"
+      class="input"
+      max="Infinity"
+      min="-Infinity"
+      type="number"
+      value=""
+    />
+    <span
+      class="controls group vertical"
+    >
+      <button
+        class="wrapper button wrapper small secondary small top isAuxiliaryButton"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          arrow_drop_up
+        </i>
+      </button>
+      <button
+        class="wrapper button wrapper small secondary small bottom isAuxiliaryButton"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          arrow_drop_down
+        </i>
+      </button>
+    </span>
+  </span>
+  <button
+    class="wrapper secondary medium center isAuxiliaryButton"
+    type="button"
+  >
+    Bar
+  </button>
+  <button
+    class="wrapper secondary medium right isAuxiliaryButton"
+    type="button"
+  >
+    Baz
+  </button>
+</span>
+`;
