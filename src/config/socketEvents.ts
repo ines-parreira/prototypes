@@ -1,6 +1,7 @@
 import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
 
 import * as agentsActions from '../state/agents/actions'
@@ -300,6 +301,7 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'ticket-message-failed',
         onReceive: function (json) {
+            logEvent(SegmentEvent.TicketMessageFailed, {data: json})
             reduxStore.dispatch(
                 ticketActions.handleMessageError(
                     json as TicketMessageFailedEvent

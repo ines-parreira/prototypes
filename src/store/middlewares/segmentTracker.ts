@@ -167,6 +167,7 @@ export enum SegmentEvent {
     MenuUserLinkClicked = 'menu-user-link-clicked',
     MenuMainLinkClicked = 'menu-main-link-clicked',
     TicketFailedReview = 'ticket-failed-review',
+    TicketMessageFailed = 'ticket-message-failed',
 }
 
 export enum StatViewLinkClickedStat {
