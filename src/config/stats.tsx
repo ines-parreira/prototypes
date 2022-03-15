@@ -1390,6 +1390,11 @@ export const stats = toImmutable<
             tooltip: 'Average distribution of the different self-service flows',
         },
         lines: {
+            quick_responses: {
+                label: 'Quick response',
+                color: '#C593A4',
+                disabledLink: '/app/settings/self-service',
+            },
             track: {
                 label: 'Track (automated)',
                 color: '#4A8DF9',

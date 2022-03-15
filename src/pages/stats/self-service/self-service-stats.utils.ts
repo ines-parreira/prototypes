@@ -6,7 +6,7 @@ export const hasShopifyIntegrationSSPEnabled = (
     shopifyIntegration: Map<any, any>,
     selfServiceConfigurations: SelfServiceConfiguration[]
 ): boolean => {
-    const shopifyIntegationhasSSP = selfServiceConfigurations.find(
+    const shopifyIntegrationHasSSP = selfServiceConfigurations.find(
         (configuration) => {
             return (
                 configuration.shop_name ===
@@ -16,5 +16,5 @@ export const hasShopifyIntegrationSSPEnabled = (
         }
     )
 
-    return !!shopifyIntegationhasSSP
+    return !!shopifyIntegrationHasSSP
 }

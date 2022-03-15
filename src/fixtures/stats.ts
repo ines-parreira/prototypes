@@ -1709,6 +1709,10 @@ export const selfServiceFlowsDistribution: Stat<TwoDimensionalChart> = {
                     data: [0, 0, 0, 0, 0, 0, 0],
                 },
                 {
+                    name: 'quick_responses',
+                    data: [0, 0, 0, 0, 0, 0, 0],
+                },
+                {
                     name: 'other_tickets',
                     data: [1, 0, 0, 0, 1, 0, 0],
                 },

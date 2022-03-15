@@ -59,6 +59,19 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
       />
       <span
         className="disabled-legend-label mr-4 mb-2"
+        key="quick_responses"
+      >
+        <span
+          className="disabled-legend-label-circle mr-2"
+        />
+        <Link
+          to="/app/settings/self-service"
+        >
+          Enable Quick response flow
+        </Link>
+      </span>
+      <span
+        className="disabled-legend-label mr-4 mb-2"
         key="returns"
       >
         <span

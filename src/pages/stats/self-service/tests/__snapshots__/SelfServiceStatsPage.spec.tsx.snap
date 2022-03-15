@@ -572,6 +572,15 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
               >
                 <span
                   class="circle mr-2"
+                  style="background: rgb(197, 147, 164);"
+                />
+                Quick response
+              </span>
+              <span
+                class="label mr-4 mb-2"
+              >
+                <span
+                  class="circle mr-2"
                   style="background: rgb(210, 215, 222);"
                 />
                 Live chat tickets
@@ -694,6 +703,27 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                     style="background: rgb(253, 155, 90);"
                   />
                   Cancel
+                </div>
+                <div
+                  class="data"
+                >
+                  0
+                   (
+                  0
+                  %)
+                </div>
+              </div>
+              <div
+                class="bar-total-data-wrapper"
+              >
+                <div
+                  class="label mr-4 mb-2"
+                >
+                  <span
+                    class="circle mr-2"
+                    style="background: rgb(197, 147, 164);"
+                  />
+                  Quick response
                 </div>
                 <div
                   class="data"
