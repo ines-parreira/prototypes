@@ -1,11 +1,18 @@
 import {CancelToken} from 'axios'
 import _snakeCase from 'lodash/snakeCase'
 
+import qs from 'qs'
 import {deepMapKeysToSnakeCase} from '../api/utils'
 import client from '../api/resources'
-import {ApiListResponsePagination} from '../api/types'
+import {ApiListResponse, ApiListResponsePagination} from '../api/types'
 
-import {Macro, MacroDraft, FetchMacrosOptions} from './types'
+import {
+    Macro,
+    MacroDraft,
+    FetchMacrosOptions,
+    MacrosProperties,
+    MacroPropertiesOptions,
+} from './types'
 
 type APIFetchMacrosOptions = {
     fallback_order_by?: FetchMacrosOptions['fallbackOrderBy']
@@ -51,4 +58,20 @@ export const updateMacro = async (macro: Macro): Promise<Macro> => {
 
 export const deleteMacro = async (id: number): Promise<void> => {
     await client.delete(`/api/macros/${id}/`)
+}
+
+export const fetchMacrosProperties = async (
+    fields: MacroPropertiesOptions[]
+): Promise<MacrosProperties> => {
+    const params = {fields}
+    const res = await client.get<ApiListResponse<MacrosProperties, null>>(
+        '/api/macros/parameters_options/',
+        {
+            params,
+            paramsSerializer: (params) => {
+                return qs.stringify(params, {arrayFormat: 'repeat'})
+            },
+        }
+    )
+    return res.data.data
 }

@@ -34,3 +34,13 @@ export type FetchMacrosOptions = {
     search?: string
     ticketId?: number
 }
+
+export type MacrosProperties = {
+    [MacroPropertiesOptions.Languages]?: string[]
+    [MacroPropertiesOptions.Tags]?: string[]
+}
+
+export enum MacroPropertiesOptions {
+    Languages = 'languages',
+    Tags = 'tags',
+}
