@@ -153,6 +153,7 @@ type GroupElement = ReactElement<ComponentProps<typeof Group>, typeof Group>
 type Props = {
     children?: ReactNode
     className?: string
+    toggleClassName?: string
     dropdownMenu?: ComponentType<ComponentProps<typeof DropdownMenu>>
     isDisabled?: boolean
     isMultiple?: boolean
@@ -180,6 +181,7 @@ const SelectFilter = ({
     plural = 'items',
     singular = 'item',
     value,
+    toggleClassName = 'mr-2',
 }: Props) => {
     const [search, setSearch] = useState('')
     const [selectedGroupIds, setSelectedGroupIds] = useState<Value[]>([])
@@ -359,7 +361,7 @@ const SelectFilter = ({
                 >
                     <DropdownToggle
                         caret
-                        className="mr-2"
+                        className={toggleClassName}
                         color="secondary"
                         type="button"
                         disabled={isDisabled}

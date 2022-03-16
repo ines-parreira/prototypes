@@ -10,11 +10,17 @@ describe('<FontSelectField />', () => {
             AGENT_ADDED_FONTS,
             JSON.stringify(['Roboto', 'Aclonica'])
         )
-        render(<FontSelectField title="Title" value="Inter" onChange={_noop} />)
+        render(
+            <FontSelectField
+                title="Title"
+                value="Abracadabra"
+                onChange={_noop}
+            />
+        )
 
         const link = document.querySelector('link') as HTMLLinkElement
         expect(link.href).toStrictEqual(
-            'https://fonts.googleapis.com/css2?family=Roboto&family=Aclonica&display=swap'
+            'https://fonts.googleapis.com/css2?family=Roboto&family=Aclonica&family=Abracadabra&display=swap'
         )
     })
 
@@ -27,29 +33,32 @@ describe('<FontSelectField />', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should display recently added if fonts in local storage', () => {
+    it('should display headers if fonts in local storage', () => {
         localStorage.setItem(AGENT_ADDED_FONTS, JSON.stringify(['Roboto']))
         const {getByText} = render(
             <FontSelectField title="Title" value="font" onChange={_noop} />
         )
 
-        getByText('Recently added')
+        getByText('RECENTLY ADDED')
+        getByText('STANDARD FONTS')
     })
 
-    it('should not display recently added if one font in local storage and it is currently used', () => {
+    it('should not display headers if one font in local storage and it is currently used', () => {
         localStorage.setItem(AGENT_ADDED_FONTS, JSON.stringify(['Roboto']))
         const {queryByText} = render(
             <FontSelectField title="Title" value="Roboto" onChange={_noop} />
         )
 
-        expect(queryByText('Recently added')).toBeNull()
+        expect(queryByText('RECENTLY ADDED')).toBeNull()
+        expect(queryByText('STANDARD FONTS')).toBeNull()
     })
 
-    it('should not display recently added if no fonts in local storage', () => {
+    it('should not display headers if no fonts in local storage', () => {
         const {queryByText} = render(
             <FontSelectField title="Title" value="Roboto" onChange={_noop} />
         )
 
-        expect(queryByText('Recently added')).toBeNull()
+        expect(queryByText('RECENTLY ADDED')).toBeNull()
+        expect(queryByText('STANDARD FONTS')).toBeNull()
     })
 })

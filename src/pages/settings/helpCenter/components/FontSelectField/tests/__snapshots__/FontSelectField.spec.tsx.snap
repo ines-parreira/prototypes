@@ -41,7 +41,7 @@ exports[`<FontSelectField /> matches snapshot 1`] = `
       </div>
       <div
         aria-hidden="true"
-        class="options optionsFullWidth dropdown-menu"
+        class="options longDropdown optionsFullWidth dropdown-menu"
         role="menu"
         tabindex="-1"
       >
@@ -74,7 +74,7 @@ exports[`<FontSelectField /> matches snapshot 1`] = `
           class="dropdown-header"
           tabindex="-1"
         >
-          Recently added
+          RECENTLY ADDED
         </h6>
         <button
           class="option dropdown-item"
@@ -98,7 +98,7 @@ exports[`<FontSelectField /> matches snapshot 1`] = `
           class="dropdown-header"
           tabindex="-1"
         >
-          Standard fonts
+          STANDARD FONTS
         </h6>
         <button
           class="option dropdown-item"

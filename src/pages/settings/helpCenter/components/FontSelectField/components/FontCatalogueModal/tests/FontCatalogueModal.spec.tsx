@@ -158,7 +158,7 @@ describe('<FontCatalogueModal />', () => {
         )
 
         const selectedFontsContainer = (
-            getByText('Selected Fonts:').closest('div') as HTMLElement
+            getByText('Selected Fonts').closest('div') as HTMLElement
         ).parentNode as HTMLElement
 
         within(selectedFontsContainer).getByText('Roboto')
@@ -198,7 +198,7 @@ describe('<FontCatalogueModal />', () => {
         )
 
         const selectedFontsContainer = (
-            getByText('Selected Fonts:').closest('div') as HTMLElement
+            getByText('Selected Fonts').closest('div') as HTMLElement
         ).parentNode as HTMLElement
 
         const fontInFontList = getByText('Roboto')
@@ -220,7 +220,7 @@ describe('<FontCatalogueModal />', () => {
         )
 
         const selectedFontsContainer = (
-            getByText('Selected Fonts:').closest('div') as HTMLElement
+            getByText('Selected Fonts').closest('div') as HTMLElement
         ).parentNode as HTMLElement
 
         const fontInFontList = getByText('Roboto')
@@ -248,11 +248,42 @@ describe('<FontCatalogueModal />', () => {
 
         fireEvent.click(getByText('Roboto'))
         fireEvent.click(getByText('Adriana'))
-        fireEvent.click(getByText('Add Selected Fonts'))
+        fireEvent.click(getByText('Save Selected Fonts'))
 
         expect(setItem).toHaveBeenCalledWith(
             AGENT_ADDED_FONTS,
             '["Adriana","Roboto"]'
         )
+    })
+
+    it('should disable save button if no changes have been made, and allow to save otherwise', () => {
+        const setItem = jest.spyOn(window.localStorage.__proto__, 'setItem')
+
+        const {getByText} = render(
+            <FontCatalogueModal {...defaultProps} isModalOpen />
+        )
+
+        const submitButton = getByText(
+            'Save Selected Fonts'
+        ) as HTMLButtonElement
+        expect(submitButton.disabled).toBe(true)
+
+        fireEvent.click(getByText('Adriana'))
+        expect(submitButton.disabled).toBe(false)
+
+        const selectedFontsContainer = (
+            getByText('Selected Fonts').closest('div') as HTMLElement
+        ).parentNode as HTMLElement
+        const fontInSelectedList = within(selectedFontsContainer)
+            .getByText('Adriana')
+            .closest('div') as HTMLDivElement
+
+        fireEvent.click(within(fontInSelectedList).getByText('close'))
+        expect(submitButton.disabled).toBe(true)
+
+        fireEvent.click(getByText('Adriana'))
+        fireEvent.click(submitButton)
+
+        expect(setItem).toHaveBeenCalledWith(AGENT_ADDED_FONTS, '["Adriana"]')
     })
 })

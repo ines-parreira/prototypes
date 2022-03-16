@@ -111,7 +111,7 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
     <small
       class="form-text text-muted"
     >
-      This will be used as your primary color in hyperlinks, pagination and icons.
+      This color will be used for hyperlinks, section titles, pagination buttons and icons.
     </small>
   </div>
 </div>

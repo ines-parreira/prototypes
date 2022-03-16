@@ -27,7 +27,7 @@ export type ImageUploadProps = Pick<DropZoneProps, 'id' | 'accept' | 'size'> & {
     file?: File
     isFluid?: boolean
     isTouched?: boolean
-    info: string
+    info?: string
     title: string
     style?: CSSProperties
     onChangeFile: (file: File | undefined) => void

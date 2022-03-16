@@ -452,7 +452,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             <small
               class="form-text text-muted"
             >
-              This will be used as your primary color in hyperlinks, pagination and icons.
+              This color will be used for hyperlinks, section titles, pagination buttons and icons.
             </small>
           </div>
         </section>
@@ -462,7 +462,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           <label
             class="control-label"
           >
-            Primary font
+            Primary Font
           </label>
           <div>
             <div
@@ -498,7 +498,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               </div>
               <div
                 aria-hidden="true"
-                class="options optionsFullWidth dropdown-menu"
+                class="options longDropdown optionsFullWidth dropdown-menu"
                 role="menu"
                 tabindex="-1"
               >
@@ -523,16 +523,6 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                     </div>
                   </h6>
                 </div>
-                <div
-                  class="dropdown-divider"
-                  tabindex="-1"
-                />
-                <h6
-                  class="dropdown-header"
-                  tabindex="-1"
-                >
-                  Standard fonts
-                </h6>
                 <button
                   class="option dropdown-item"
                   role="menuitem"
@@ -651,7 +641,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           <small
             class="form-text text-muted"
           >
-            This font will be applied to the website. It will also be applied to articles unless another font is enforced on the article editor side.
+            This font will be applied to the website and set by default to new articles. This will override the default font in existing articles.
           </small>
         </section>
         <section>
@@ -770,11 +760,6 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                   value=""
                 />
               </div>
-              <small
-                class="form-text text-muted"
-              >
-                This title is displayed on your homepage header.
-              </small>
             </div>
           </div>
           <div
@@ -784,12 +769,6 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               class="container"
             >
               Banner Background
-              <i
-                class="help material-icons-outlined ml-2"
-                role="img"
-              >
-                info
-              </i>
             </div>
             <label
               class="wrapper"

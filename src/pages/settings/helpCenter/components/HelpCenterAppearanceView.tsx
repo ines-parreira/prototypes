@@ -350,8 +350,8 @@ export const HelpCenterAppearanceView: React.FC = () => {
             </section>
             <section style={{marginTop: -20}}>
                 <FontSelectField
-                    title="Primary font"
-                    help="This font will be applied to the website. It will also be applied to articles unless another font is enforced on the article editor side."
+                    title="Primary Font"
+                    help="This font will be applied to the website and set by default to new articles. This will override the default font in existing articles."
                     value={currentFont}
                     onChange={(value) => {
                         setCurrentFont(value)
@@ -384,7 +384,6 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         type="text"
                         name="name"
                         label="Banner title"
-                        help="This title is displayed on your homepage header."
                         placeholder="Banner title"
                         value={bannerText}
                         onChange={setBannerText}
@@ -393,7 +392,6 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 <ImageUpload
                     id="banner_image"
                     title="Banner Background"
-                    info="Your banner is an image that’s displayed on the top of your home page."
                     file={bannerImage.payload}
                     defaultPreview={bannerImageUrl || ''}
                     onChangeFile={bannerImage.changeFile}

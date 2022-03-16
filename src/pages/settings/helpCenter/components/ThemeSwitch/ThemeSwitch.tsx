@@ -51,7 +51,7 @@ export const ThemeSwitch: FunctionComponent<ThemeSwitchProps> = ({
 
             <ColorField
                 label="Primary Color"
-                help="This will be used as your primary color in hyperlinks, pagination and icons."
+                help="This color will be used for hyperlinks, section titles, pagination buttons and icons."
                 value={currentColor}
                 onChange={onColorChange}
             />

@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import uniq from 'lodash/uniq'
 import ReactList from 'react-list'
+import _isEqual from 'lodash/isEqual'
 import Modal from 'pages/common/components/Modal'
 import Button from 'pages/common/components/button/Button'
 import SelectFilter from 'pages/stats/common/SelectFilter'
@@ -113,6 +114,19 @@ export const FontCatalogueModal = ({
         setSelectedCategories([])
     }
 
+    const canSaveSelectedFonts = useMemo(() => {
+        if (
+            !_isEqual(
+                recentlyAddedFonts.sort((a, b) => (a > b ? 1 : -1)),
+                selectedFonts
+            )
+        ) {
+            return true
+        }
+
+        return false
+    }, [recentlyAddedFonts, selectedFonts])
+
     return (
         <Modal
             isOpen={isModalOpen}
@@ -140,8 +154,9 @@ export const FontCatalogueModal = ({
                             saveFontsInLocalStorage(selectedFonts)
                             setFontsFromLocalStorage(selectedFonts)
                         }}
+                        isDisabled={!canSaveSelectedFonts}
                     >
-                        Add Selected Fonts
+                        Save Selected Fonts
                     </Button>
                 </>
             }
@@ -166,6 +181,7 @@ export const FontCatalogueModal = ({
                                     setSelectedCategories(values as string[])
                                 }
                                 value={selectedCategories}
+                                toggleClassName=""
                             >
                                 {categories.map((category) => (
                                     <SelectFilter.Item
@@ -258,7 +274,7 @@ export const FontCatalogueModal = ({
                     </div>
                 </div>
                 <div className={css.selectedFontsContainerList}>
-                    <div className={css.fontListTitle}>Selected Fonts:</div>
+                    <div className={css.fontListTitle}>Selected Fonts</div>
                     <div className={css.selectedFontList}>
                         {selectedFonts.map((font) => (
                             <div key={font} className={css.selectedFont}>
