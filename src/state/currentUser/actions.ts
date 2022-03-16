@@ -185,8 +185,9 @@ export const toggleActiveStatus =
 export const update2FAEnabled =
     (status: boolean) =>
     (dispatch: StoreDispatch, getState: () => RootState) => {
-        const {currentUser} = getState()
-        const currentStatus = currentUser.get('has_2fa_enabled')
+        const currentStatus: boolean = currentUserSelectors.has2FaEnabled(
+            getState()
+        )
 
         // Don't do anything if status didn't change
         if (status === currentStatus) {

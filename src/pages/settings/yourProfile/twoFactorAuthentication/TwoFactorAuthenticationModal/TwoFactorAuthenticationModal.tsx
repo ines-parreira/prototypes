@@ -13,6 +13,8 @@ import {
     createRecoveryCodes as createRecoveryCodesResource,
 } from '../../../../../models/twoFactorAuthentication/resources'
 import Button from '../../../../common/components/button/Button'
+import useAppDispatch from '../../../../../hooks/useAppDispatch'
+import {update2FAEnabled} from '../../../../../state/currentUser/actions'
 import {RecoveryCode} from '../../../../../models/twoFactorAuthentication/types'
 import css from './TwoFactorAuthenticationModal.less'
 import ModalContinueButton from './ModalContinueButton'
@@ -32,6 +34,7 @@ export default function TwoFactorAuthenticationModal({
     onCancel,
     onFinish,
 }: OwnProps) {
+    const dispatch = useAppDispatch()
     const [step, setStep] = useState(1)
     const [isEnforced, setIsEnforced] = useState(false)
     const [errorText, setErrorText] = useState('')
@@ -152,6 +155,7 @@ export default function TwoFactorAuthenticationModal({
                 return
             }
 
+            void dispatch(update2FAEnabled(true))
             setIsLoading(false)
         }
 

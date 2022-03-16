@@ -120,6 +120,12 @@ export const isActive = createSelector<RootState, boolean, CurrentUserState>(
     (state) => state.get('is_active') !== false
 )
 
+export const has2FaEnabled = createSelector<
+    RootState,
+    boolean,
+    CurrentUserState
+>(getCurrentUserState, (state) => !!state.get('has_2fa_enabled'))
+
 export const getTimezone = createSelector<
     RootState,
     string | null,

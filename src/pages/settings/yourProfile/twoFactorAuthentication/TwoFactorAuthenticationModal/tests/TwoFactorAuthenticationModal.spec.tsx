@@ -6,6 +6,9 @@ import {
     waitFor,
     waitForElementToBeRemoved,
 } from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import TwoFactorAuthenticationModal from '../TwoFactorAuthenticationModal'
 import {authenticatorData} from '../../../../../../fixtures/authenticatorData'
 import {
@@ -38,6 +41,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
         isOpen: true,
         setIsOpen: jest.fn(),
     }
+    const store = configureMockStore([thunk])()
 
     const renderInitialModal = async (baseElement: HTMLElement) => {
         // Wait until the show class is added to the modal
@@ -56,7 +60,12 @@ describe('<TwoFactorAuthenticationModal />', () => {
     describe('render()', () => {
         it('should not render the modal', () => {
             const {baseElement} = render(
-                <TwoFactorAuthenticationModal {...minProps} isOpen={false} />
+                <Provider store={store}>
+                    <TwoFactorAuthenticationModal
+                        {...minProps}
+                        isOpen={false}
+                    />
+                </Provider>
             )
             expect(baseElement).toMatchSnapshot()
         })
@@ -65,7 +74,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
 
             const {baseElement} = render(
-                <TwoFactorAuthenticationModal {...minProps} />
+                <Provider store={store}>
+                    <TwoFactorAuthenticationModal {...minProps} />
+                </Provider>
             )
 
             await renderInitialModal(baseElement)
@@ -80,7 +91,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
             fetchAuthenticatorDataMock.mockRejectedValue({foo: 'api error'})
 
             const {baseElement} = render(
-                <TwoFactorAuthenticationModal {...minProps} />
+                <Provider store={store}>
+                    <TwoFactorAuthenticationModal {...minProps} />
+                </Provider>
             )
 
             await renderInitialModal(baseElement)
@@ -97,7 +110,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
 
             const {baseElement} = render(
-                <TwoFactorAuthenticationModal {...minProps} />
+                <Provider store={store}>
+                    <TwoFactorAuthenticationModal {...minProps} />
+                </Provider>
             )
 
             await renderInitialModal(baseElement)
@@ -176,7 +191,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 saveTwoFASecretMock.mockResolvedValue()
 
                 const {baseElement} = render(
-                    <TwoFactorAuthenticationModal {...minProps} />
+                    <Provider store={store}>
+                        <TwoFactorAuthenticationModal {...minProps} />
+                    </Provider>
                 )
 
                 await validateInput(baseElement)
@@ -194,7 +211,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 })
 
                 const {baseElement} = render(
-                    <TwoFactorAuthenticationModal {...minProps} />
+                    <Provider store={store}>
+                        <TwoFactorAuthenticationModal {...minProps} />
+                    </Provider>
                 )
 
                 await validateInput(baseElement)
@@ -207,7 +226,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 createRecoveryCodesMock.mockResolvedValue(recoveryCodesFixture)
 
                 const {baseElement} = render(
-                    <TwoFactorAuthenticationModal {...minProps} />
+                    <Provider store={store}>
+                        <TwoFactorAuthenticationModal {...minProps} />
+                    </Provider>
                 )
 
                 await validateInput(baseElement)
@@ -222,10 +243,12 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 createRecoveryCodesMock.mockResolvedValue(recoveryCodesFixture)
 
                 const {baseElement} = render(
-                    <TwoFactorAuthenticationModal
-                        {...minProps}
-                        setIsOpen={setIsOpenMock}
-                    />
+                    <Provider store={store}>
+                        <TwoFactorAuthenticationModal
+                            {...minProps}
+                            setIsOpen={setIsOpenMock}
+                        />
+                    </Provider>
                 )
 
                 await validateInput(baseElement)
@@ -251,7 +274,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
         it('should render modal with QR code step after pressing back button', async () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
             const {baseElement} = render(
-                <TwoFactorAuthenticationModal {...minProps} />
+                <Provider store={store}>
+                    <TwoFactorAuthenticationModal {...minProps} />
+                </Provider>
             )
 
             await renderInitialModal(baseElement)
@@ -287,11 +312,13 @@ describe('<TwoFactorAuthenticationModal />', () => {
             const setIsOpenMock = jest.fn()
 
             const {baseElement} = render(
-                <TwoFactorAuthenticationModal
-                    {...minProps}
-                    isOpen
-                    setIsOpen={setIsOpenMock}
-                />
+                <Provider store={store}>
+                    <TwoFactorAuthenticationModal
+                        {...minProps}
+                        isOpen
+                        setIsOpen={setIsOpenMock}
+                    />
+                </Provider>
             )
 
             await renderInitialModal(baseElement)

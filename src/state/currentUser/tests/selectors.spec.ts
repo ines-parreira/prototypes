@@ -153,4 +153,15 @@ describe('current user selectors', () => {
         expect(selectors.isLoading('currentUser')(state)).toBe(true)
         expect(selectors.isLoading('unknown')(state)).toBe(false)
     })
+
+    it('has2FaEnabled', () => {
+        state = {currentUser: fromJS({})} as RootState
+        expect(selectors.has2FaEnabled(state)).toBe(false)
+
+        state = {currentUser: fromJS({has_2fa_enabled: true})} as RootState
+        expect(selectors.has2FaEnabled(state)).toBe(true)
+
+        state = {currentUser: fromJS({has_2fa_enabled: false})} as RootState
+        expect(selectors.has2FaEnabled(state)).toBe(false)
+    })
 })

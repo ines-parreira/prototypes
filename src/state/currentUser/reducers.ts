@@ -78,6 +78,7 @@ export default function reducer(
                 settings.push(fromJS(action.resp))
             )
         }
+
         case constants.TOGGLE_ACTIVE_STATUS:
             return state.update('is_active', (status) =>
                 _isUndefined(action.status) ? !status : action.status
