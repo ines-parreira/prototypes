@@ -22,6 +22,7 @@ PR).
 -   [Don't write actions with Axios calls](#dont-write-actions-with-axios-calls)
 -   [Migration to Functional Components](#migration-to-functional-components)
 -   [Don't use relative parent imports](#dont-use-relative-parent-imports)
+-   [Union Types vs Enums](#union-types-vs-enums)
 
 ## Migration from Js to Ts
 
@@ -184,8 +185,143 @@ The only allowed relative parent import is the import of the Component Under Tes
 import Foo from '../Foo'
 
 describe('Foo', () => {
-  // ...
+    // ...
 })
 ```
 
 When modifying the existing code, please consider migrating the _relative parent imports_ to the _absolute imports_.
+
+## Union Types vs Enums
+
+Please use enums in the following cases:
+
+1. To model Back-End value objects
+
+**Reason**: Front-End uses domain model entities and value objects in all layers,
+but the Front-End does not control them. When the model changes, we need to refactor
+all usages of the value object with confidence that string union types do not provide.
+
+Bad use case:
+
+```ts
+export type Channel = 'chat' | 'email'
+
+export type TicketMessage = {
+    channel: Channel
+}
+```
+
+Good use case:
+
+```ts
+export enum Channel {
+  Chat = 'chat',
+  Email = 'email'
+}
+
+export type TicketMessage = {
+  channel: Channel
+}
+```
+
+2. When values need to be iterated over
+
+**Reason**: It is technically impossible to iterate over a string union type,
+as it does not emit runtime code. The workaround (an additional value-exhaustive constant)
+is error-prone and not as elegant as using the enum.
+
+Bad use case:
+
+```ts
+// pizza.ts
+export type PizzaTopping = 'pepperoni' | 'pineapple'
+export const PIZZA_TOPPINGS: PizzaTopping[] = ['pepperoni', 'pineapple']
+
+// recipe.ts
+import {PIZZA_TOPPINGS} from './pizza'
+
+for (const topping of PIZZA_TOPPINGS) {
+    // ...
+}
+```
+
+Good use case:
+
+```ts
+// pizza.ts
+export enum PizzaTopping {
+    Pepperoni = 'pepperoni',
+    Pineapple = 'pineapple',
+}
+
+// recipe.ts
+import {PizzaTopping} from './pizza'
+
+for (const topping of Object.values(PizzaTopping)) {
+    // ...
+}
+```
+
+Please use Union Types in other cases:
+
+Bad use case:
+
+```tsx
+// Item.tsx
+enum ItemPosition {
+    Left = 'left',
+    Center = 'center',
+    Right = 'right',
+}
+
+type Props = {
+    position: ItemPosition
+    children?: ReactNode
+}
+
+export function Item({position, children}: Props) {
+    return <div className={css[position]}>{children}</div>
+}
+
+// List.tsx
+import Item, {ItemPosition} from './Item'
+
+export default function List() {
+    return (
+        <>
+            <Item position={ItemPosition.Left}>Foo</Item>
+            <Item position={ItemPosition.Center}>Foo</Item>
+            <Item position={ItemPosition.Right}>Foo</Item>
+        </>
+    )
+}
+```
+
+Good use case:
+
+```tsx
+// Item.tsx
+type ItemPosition = 'left' | 'center' | 'right'
+
+type Props = {
+    position: ItemPosition
+    children?: ReactNode
+}
+
+export default function Item({position, children}: Props) {
+    return <div className={css[position]}>{children}</div>
+}
+
+// List.tsx
+import Item from './Item'
+
+export default function List() {
+    return (
+        <>
+            <Item position="left">Foo</Item>
+            <Item position="center">Foo</Item>
+            <Item position="right">Foo</Item>
+        </>
+    )
+}
+```
