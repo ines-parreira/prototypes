@@ -184,6 +184,38 @@ describe('utils', () => {
                     })
                 ).toBe('{{x|datetime_relative(alert(123))}}')
             })
+
+            it('should render variable with negative index array', () => {
+                expect(
+                    renderTemplate('{{x.messages[-1].from_agent}}', {
+                        x: {
+                            messages: [{from_agent: true}, {from_agent: false}],
+                        },
+                    })
+                ).toBe('false')
+            })
+
+            it('should render variable with negative index and datetime format ', () => {
+                expect(
+                    renderTemplate(
+                        '{{x.messages[-1].created_datetime|datetime_format("MMMM d YYYY")}}',
+                        {
+                            x: {
+                                messages: [
+                                    {
+                                        created_datetime:
+                                            '2021-03-11T18:14:21.191818+00:00',
+                                    },
+                                    {
+                                        created_datetime:
+                                            '2022-03-11T18:14:21.191818+00:00',
+                                    },
+                                ],
+                            },
+                        }
+                    )
+                ).toBe('March 11 2022')
+            })
         })
     })
 })

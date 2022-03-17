@@ -1,5 +1,4 @@
-import _get from 'lodash/get'
-import _isNull from 'lodash/isNull'
+import _ from 'lodash'
 import _unescape from 'lodash/unescape'
 import _trim from 'lodash/trim'
 import moment from 'moment'
@@ -8,7 +7,10 @@ import {Customer} from '../../../state/customers/types'
 import {Ticket} from '../../../state/newMessage/types'
 
 export const filterRegex = /([\w_]+)\(([^(]*)\)/
-export const templateRegex = /{{([a-zA-Z0-9.\[\]"'_]+)\|?([\w_]+\([^(]*\))?}}/g
+export const templateRegex =
+    /{{([a-zA-Z0-9.\[\]"'_\-]+)\|?([\w_]+\([^(]*\))?}}/g
+export const indexArrayRegex = /\[(?:\-)?\d+\]/
+export const stringStartIndexArrayRegex = /^\[(?:\-)?\d+\]/
 
 /**
  * Transforms a formatting string pattern in LDML to `moment.js` format.
@@ -64,8 +66,25 @@ export const renderTemplate = (
         templateRegex,
         (match: string, variable: string, filter: string): string => {
             try {
-                let value = _get(context, variable, '') as string
-                value = _isNull(value) ? '' : value
+                let tempVariable = variable
+                let obj = _.chain(context)
+                variable.split(indexArrayRegex).forEach((path) => {
+                    const rex = new RegExp('^' + _.escapeRegExp(path))
+                    tempVariable = tempVariable.replace(rex, '')
+
+                    // @ts-ignore
+                    obj = obj.get(_.trimStart(path, '.'))
+                    const index = tempVariable.match(stringStartIndexArrayRegex)
+                    if (index) {
+                        // @ts-ignore
+                        obj = obj.nth(_trim(index[0], '[]')) // eslint-disable-line
+                        tempVariable = _.trimStart(tempVariable, index[0])
+                    }
+                })
+
+                // @ts-ignore
+                let value = obj.value() as string
+                value = _.isNil(value) ? '' : value
 
                 if (filter) {
                     const filterMatch = filterRegex.exec(filter)
