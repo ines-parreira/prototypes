@@ -1,23 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
 
 import IntegrationList from '../IntegrationList.tsx'
-import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 import history from '../../../../history.ts'
 
-import AircallIntegrationListItem from './AircallIntegrationListItem'
+import AircallIntegrationListItem from './AircallIntegrationListItem.tsx'
 
-@connect(null, {
-    activate: integrationsActions.activateIntegration,
-    deactivate: integrationsActions.deactivateIntegration,
-})
 export default class AircallIntegrationList extends React.Component {
     static propTypes = {
         integrations: PropTypes.object.isRequired,
         loading: PropTypes.object.isRequired,
-        activate: PropTypes.func.isRequired,
-        deactivate: PropTypes.func.isRequired,
     }
 
     render() {
@@ -31,13 +23,11 @@ export default class AircallIntegrationList extends React.Component {
             </span>
         )
 
-        const integrationToItemDisplay = (int) => {
+        const integrationToItemDisplay = (integration) => {
             return (
                 <AircallIntegrationListItem
-                    key={int.get('id')}
-                    activate={this.props.activate}
-                    deactivate={this.props.deactivate}
-                    integration={int}
+                    key={integration.get('id')}
+                    integration={integration.toJS()}
                 />
             )
         }
