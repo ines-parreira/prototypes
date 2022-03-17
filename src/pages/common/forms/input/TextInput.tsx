@@ -1,13 +1,27 @@
-import React, {forwardRef, InputHTMLAttributes, Ref, useMemo} from 'react'
+import React, {
+    cloneElement,
+    ComponentProps,
+    forwardRef,
+    InputHTMLAttributes,
+    isValidElement,
+    ReactElement,
+    Ref,
+    useMemo,
+} from 'react'
 import _uniqueId from 'lodash/uniqueId'
 import classnames from 'classnames'
+
+import IconInput from './IconInput'
 
 import css from './TextInput.less'
 
 type Props = {
     hasError?: boolean
+    inputClassName?: string
     isDisabled?: boolean
     isRequired?: boolean
+    leftIcon?: ReactElement<ComponentProps<typeof IconInput>, typeof IconInput>
+    rightIcon?: ReactElement<ComponentProps<typeof IconInput>, typeof IconInput>
     onChange: (nextValue: string) => void
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -18,9 +32,12 @@ function TextInput(
     {
         className,
         hasError = false,
+        inputClassName,
         isDisabled = false,
         isRequired = false,
         id,
+        leftIcon,
+        rightIcon,
         onChange,
         type,
         value,
@@ -31,15 +48,26 @@ function TextInput(
     const inputId = useMemo(() => id || _uniqueId('input-text-'), [id])
 
     return (
-        <div className={className}>
+        <div
+            className={classnames(
+                css.wrapper,
+                {[css.isDisabled]: isDisabled},
+                className
+            )}
+        >
+            {leftIcon &&
+                isValidElement(leftIcon) &&
+                cloneElement(leftIcon, {position: 'left'})}
             <input
                 type={type || 'text'}
                 className={classnames(
                     css.input,
                     {
                         [css.inputError]: hasError,
+                        [css.hasLeftIcon]: !!leftIcon,
+                        [css.hasRightIcon]: !!rightIcon,
                     },
-                    className
+                    inputClassName
                 )}
                 value={value}
                 id={inputId}
@@ -50,6 +78,9 @@ function TextInput(
                 ref={ref}
                 {...props}
             />
+            {rightIcon &&
+                isValidElement(rightIcon) &&
+                cloneElement(rightIcon, {position: 'right'})}
         </div>
     )
 }

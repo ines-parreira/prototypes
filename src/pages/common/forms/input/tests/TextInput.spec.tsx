@@ -3,8 +3,11 @@ import {fireEvent, render} from '@testing-library/react'
 
 import TextInput from '../TextInput'
 
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+
 describe('<TextInput />', () => {
     const minProps: ComponentProps<typeof TextInput> = {
+        className: 'class-for-wrapper',
         onChange: jest.fn(),
     }
 
@@ -26,6 +29,14 @@ describe('<TextInput />', () => {
 
     it('should render a required input', () => {
         const {container} = render(<TextInput {...minProps} isRequired />)
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render with a custom className for the input', () => {
+        const {container} = render(
+            <TextInput {...minProps} inputClassName="custom-class-for-input" />
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })

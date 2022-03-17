@@ -1,6 +1,7 @@
 import React, {ComponentProps, useState} from 'react'
 import {Meta, Story} from '@storybook/react'
 
+import IconInput from './IconInput'
 import TextInput from './TextInput'
 
 const storyConfig: Meta = {
@@ -42,6 +43,20 @@ const Template: Story<ComponentProps<typeof TextInput>> = (props) => {
     return <TextInput {...props} value={value} onChange={setValue} />
 }
 
+const TemplateWithIcons: Story<ComponentProps<typeof TextInput>> = (props) => {
+    const [value, setValue] = useState('')
+
+    return (
+        <TextInput
+            {...props}
+            value={value}
+            onChange={setValue}
+            leftIcon={<IconInput icon="search" />}
+            rightIcon={<IconInput icon="block" onClick={() => setValue('')} />}
+        />
+    )
+}
+
 const templateParameters = {
     controls: {
         include: ['hasError', 'isDisabled', 'isRequired', 'placeholder'],
@@ -50,5 +65,8 @@ const templateParameters = {
 
 export const Default = Template.bind({})
 Default.parameters = templateParameters
+
+export const WithIcons = TemplateWithIcons.bind({})
+WithIcons.parameters = templateParameters
 
 export default storyConfig

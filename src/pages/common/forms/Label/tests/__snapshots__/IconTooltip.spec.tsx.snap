@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IconTooltip /> should render an Icon 1`] = `
+<div
+  class="wrapper"
+>
+  <i
+    class="material-icons-outlined icon"
+    id="tooltip-42"
+  >
+    info
+  </i>
+</div>
+`;

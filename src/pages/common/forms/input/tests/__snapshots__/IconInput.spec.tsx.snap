@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IconInput /> should render an icon 1`] = `
+<i
+  class="material-icons icon iconClassName"
+>
+  check
+</i>
+`;

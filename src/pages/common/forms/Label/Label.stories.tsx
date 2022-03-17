@@ -2,6 +2,7 @@ import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
 import Label from './Label'
+import IconTooltip from './IconTooltip'
 
 const storyConfig: Meta = {
     title: 'Data Entry/Label',
@@ -36,6 +37,16 @@ const TemplateWithIcon: Story<ComponentProps<typeof Label>> = ({
     </Label>
 )
 
+const TemplateWithIconTooltip: Story<ComponentProps<typeof Label>> = ({
+    children,
+    ...props
+}: ComponentProps<typeof Label>) => (
+    <Label {...props}>
+        {children}
+        <IconTooltip>More information here</IconTooltip>
+    </Label>
+)
+
 const defaultProps: ComponentProps<typeof Label> = {
     children: 'Name',
 }
@@ -53,5 +64,9 @@ Default.parameters = templateParameters
 export const WithIcon = TemplateWithIcon.bind({})
 WithIcon.args = defaultProps
 WithIcon.parameters = templateParameters
+
+export const WithIconTooltip = TemplateWithIconTooltip.bind({})
+WithIconTooltip.args = defaultProps
+WithIconTooltip.parameters = templateParameters
 
 export default storyConfig

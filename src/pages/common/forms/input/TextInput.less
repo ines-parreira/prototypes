@@ -33,14 +33,13 @@
         ::placeholder {
             color: @classic-neutral-grey-4;
         }
-    }
 
-    .inputError {
-        border-color: @classic-feedback-error;
+        &.hasLeftIcon {
+            padding-left: 35px;
+        }
 
-        &:focus {
-            border-color: @classic-feedback-error;
-            box-shadow: 0 0 0 2px fade(@classic-feedback-error, 20%);
+        &.hasRightIcon {
+            padding-right: 35px;
         }
     }
 
@@ -51,5 +50,13 @@
             border-color: @classic-feedback-error;
             box-shadow: 0 0 0 2px fade(@classic-feedback-error, 20%);
         }
+    }
+
+    .isDisabled {
+        cursor: not-allowed;
+    }
+
+    .wrapper {
+        position: relative;
     }
 }

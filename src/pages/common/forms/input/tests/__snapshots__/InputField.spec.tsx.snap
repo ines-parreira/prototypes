@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InputField /> should display a caption 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    <input
+      aria-describedby="input-text-42-caption"
+      class="input"
+      id="input-text-42"
+      name="input-text-42"
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    class="caption"
+    id="input-text-42-caption"
+  >
+    Caption
+  </div>
+</div>
+`;
+
+exports[`<InputField /> should display a label 1`] = `
+<div>
+  <label
+    class="label label"
+    for="input-text-42"
+  >
+    Label
+  </label>
+  <div
+    class="wrapper"
+  >
+    <input
+      class="input"
+      id="input-text-42"
+      name="input-text-42"
+      type="text"
+      value=""
+    />
+  </div>
+</div>
+`;
+
+exports[`<InputField /> should render an input field 1`] = `
+<div
+  class="inputFieldClassName"
+>
+  <div
+    class="wrapper"
+  >
+    <input
+      class="input"
+      id="input-text-42"
+      name="input-text-42"
+      type="text"
+      value=""
+    />
+  </div>
+</div>
+`;
