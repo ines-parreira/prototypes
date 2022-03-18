@@ -2,7 +2,7 @@ import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
 import Button from './Button'
-import ButtonIconLabel, {ButtonIconPosition} from './ButtonIconLabel'
+import ButtonIconLabel from './ButtonIconLabel'
 
 const storyConfig: Meta = {
     title: 'General/Button/ButtonIconLabel',
@@ -31,7 +31,7 @@ const UsageTemplate: Story<ComponentProps<typeof ButtonIconLabel>> = (
 const defaultProps: ComponentProps<typeof ButtonIconLabel> = {
     children: 'Click me!',
     icon: 'calendar_today',
-    position: ButtonIconPosition.Left,
+    position: 'left',
 }
 
 export const Default = Template.bind({})

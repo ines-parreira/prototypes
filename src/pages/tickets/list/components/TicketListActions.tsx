@@ -11,7 +11,6 @@ import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
 import {bindActionCreators} from 'redux'
 import {
-    Button,
     ButtonDropdown,
     DropdownItem,
     DropdownMenu,
@@ -25,24 +24,29 @@ import {
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
-import shortcutManager from '../../../../services/shortcutManager'
-import * as viewsActions from '../../../../state/views/actions'
-import * as ticketsActions from '../../../../state/tickets/actions'
-import * as viewsSelectors from '../../../../state/views/selectors'
-import {getAgents} from '../../../../state/agents/selectors'
-import {getTeams} from '../../../../state/teams/selectors'
-import {RootState} from '../../../../state/types'
-import {AGENT_ROLE} from '../../../../config/user'
-import {AgentLabel, TeamLabel} from '../../../common/utils/labels'
-import {hasRole} from '../../../../utils'
-import TagDropdownMenu from '../../../common/components/TagDropdownMenu/TagDropdownMenu'
+import shortcutManager from 'services/shortcutManager'
+import * as viewsActions from 'state/views/actions'
+import * as ticketsActions from 'state/tickets/actions'
+import * as viewsSelectors from 'state/views/selectors'
+import {getAgents} from 'state/agents/selectors'
+import {getTeams} from 'state/teams/selectors'
+import {RootState} from 'state/types'
+import {AGENT_ROLE} from 'config/user'
+import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
+import {hasRole} from 'utils'
+import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
+import Group from 'pages/common/components/layout/Group'
+import GroupItem from 'pages/common/components/layout/GroupItem'
+import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
-} from '../../../common/utils/withCancellableRequest'
-import history from '../../../history'
-import {JobType} from '../../../../models/job/types'
-import {getTickets} from '../../../../state/tickets/selectors'
-import {UserRole} from '../../../../config/types/user'
+} from 'pages/common/utils/withCancellableRequest'
+import history from 'pages/history'
+import {JobType} from 'models/job/types'
+import {getTickets} from 'state/tickets/selectors'
+import {UserRole} from 'config/types/user'
 
 import css from './TicketListActions.less'
 
@@ -419,21 +423,34 @@ export const TicketListActionsContainer = ({
     return (
         <div className="d-none d-md-inline-flex align-items-center">
             <div className="d-inline-flex align-items-center">
-                <UncontrolledButtonDropdown className="mr-2" size="sm">
-                    <Button
-                        type="button"
-                        color="secondary"
-                        onClick={() => bulkUpdate('status', 'closed')}
-                        disabled={isDisabled}
-                    >
-                        Close
-                    </Button>
-                    <DropdownToggle
-                        caret
-                        type="button"
-                        color="secondary"
-                        disabled={isDisabled}
-                    />
+                <UncontrolledButtonDropdown className="mr-2">
+                    <Group>
+                        <Button
+                            intent="secondary"
+                            onClick={() => bulkUpdate('status', 'closed')}
+                            isDisabled={isDisabled}
+                            size="small"
+                        >
+                            Close
+                        </Button>
+                        <GroupItem>
+                            {(appendPosition) => (
+                                <DropdownToggle
+                                    tag="span"
+                                    disabled={isDisabled}
+                                >
+                                    <IconButton
+                                        appendPosition={appendPosition}
+                                        intent="secondary"
+                                        size="small"
+                                        isDisabled={isDisabled}
+                                    >
+                                        arrow_drop_down
+                                    </IconButton>
+                                </DropdownToggle>
+                            )}
+                        </GroupItem>
+                    </Group>
                     <DropdownMenu right>
                         <DropdownItem header>SET STATUS</DropdownItem>
                         <DropdownItem
@@ -447,30 +464,42 @@ export const TicketListActionsContainer = ({
                 </UncontrolledButtonDropdown>
                 <ButtonDropdown
                     className="mr-2"
-                    size="sm"
                     isOpen={openDropdown === ActionDropdown.Agents}
                     toggle={toggleAgentsDropdown}
                     a11y={false}
                 >
-                    <Button
-                        type="button"
-                        color="secondary"
-                        onClick={() =>
-                            bulkUpdate('assignee_user', {
-                                id: currentUser.get('id'),
-                                name: currentUser.get('name'),
-                            })
-                        }
-                        disabled={isDisabled}
-                    >
-                        Assign to me
-                    </Button>
-                    <DropdownToggle
-                        caret
-                        type="button"
-                        color="secondary"
-                        disabled={isDisabled}
-                    />
+                    <Group>
+                        <Button
+                            intent="secondary"
+                            size="small"
+                            onClick={() =>
+                                bulkUpdate('assignee_user', {
+                                    id: currentUser.get('id'),
+                                    name: currentUser.get('name'),
+                                })
+                            }
+                            isDisabled={isDisabled}
+                        >
+                            Assign to me
+                        </Button>
+                        <GroupItem>
+                            {(appendPosition) => (
+                                <DropdownToggle
+                                    tag="span"
+                                    disabled={isDisabled}
+                                >
+                                    <IconButton
+                                        appendPosition={appendPosition}
+                                        intent="secondary"
+                                        size="small"
+                                        isDisabled={isDisabled}
+                                    >
+                                        arrow_drop_down
+                                    </IconButton>
+                                </DropdownToggle>
+                            )}
+                        </GroupItem>
+                    </Group>
                     <DropdownMenu
                         right
                         className={css['assignee-dropdown-list']}
@@ -547,16 +576,22 @@ export const TicketListActionsContainer = ({
                     className="mr-2"
                     isOpen={openDropdown === ActionDropdown.Teams}
                     toggle={toggleTeamsDropdown}
-                    size="sm"
                     a11y={false}
                 >
-                    <DropdownToggle
-                        caret
-                        type="button"
-                        color="secondary"
-                        disabled={isDisabled}
-                    >
-                        Assign to team
+                    <DropdownToggle tag="span" disabled={isDisabled}>
+                        <Button
+                            intent="secondary"
+                            size="small"
+                            isDisabled={isDisabled}
+                            className="skip-default"
+                        >
+                            <ButtonIconLabel
+                                icon="arrow_drop_down"
+                                position="right"
+                            >
+                                Assign to team
+                            </ButtonIconLabel>
+                        </Button>
                     </DropdownToggle>
                     <DropdownMenu
                         right
@@ -632,16 +667,22 @@ export const TicketListActionsContainer = ({
                     className="mr-2"
                     isOpen={openDropdown === ActionDropdown.Tags}
                     toggle={toggleTagsDropdown}
-                    size="sm"
                     a11y={false}
                 >
-                    <DropdownToggle
-                        caret
-                        type="button"
-                        color="secondary"
-                        disabled={isDisabled}
-                    >
-                        Add tag
+                    <DropdownToggle tag="span" disabled={isDisabled}>
+                        <Button
+                            intent="secondary"
+                            size="small"
+                            isDisabled={isDisabled}
+                            className="skip-default"
+                        >
+                            <ButtonIconLabel
+                                icon="arrow_drop_down"
+                                position="right"
+                            >
+                                Add tag
+                            </ButtonIconLabel>
+                        </Button>
                     </DropdownToggle>
                     <TagDropdownMenu right disabled={isDisabled}>
                         <DropdownItem header className="mb-2">
@@ -666,14 +707,21 @@ export const TicketListActionsContainer = ({
                         {renderTagsMenu()}
                     </TagDropdownMenu>
                 </ButtonDropdown>
-                <UncontrolledButtonDropdown size="sm">
-                    <DropdownToggle
-                        color="secondary"
-                        type="button"
-                        caret
-                        disabled={isDisabled}
-                    >
-                        More
+                <UncontrolledButtonDropdown>
+                    <DropdownToggle tag="span" disabled={isDisabled}>
+                        <Button
+                            intent="secondary"
+                            size="small"
+                            isDisabled={isDisabled}
+                            className="skip-default"
+                        >
+                            <ButtonIconLabel
+                                icon="arrow_drop_down"
+                                position="right"
+                            >
+                                More
+                            </ButtonIconLabel>
+                        </Button>
                     </DropdownToggle>
                     <DropdownMenu right>
                         <DropdownItem type="button" onClick={openMacroModal}>
@@ -754,7 +802,6 @@ export const TicketListActionsContainer = ({
                         </p>
                         <Button
                             type="submit"
-                            color="success"
                             onClick={
                                 isActiveViewTrashView ? bulkDelete : bulkTrash
                             }

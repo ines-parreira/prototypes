@@ -13,9 +13,7 @@ import {insertText} from 'utils'
 import {getVariables} from 'config/ticket'
 import Button from 'pages/common/components/button/Button'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
-import ButtonIconLabel, {
-    ButtonIconPosition,
-} from 'pages/common/components/button/ButtonIconLabel'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import RichField from './RichField/RichField'
 import css from './RichFieldWithVariables.less'
@@ -84,9 +82,7 @@ export default class RichFieldWithVariables extends Component<Props> {
                                         >
                                             <ButtonIconLabel
                                                 icon="arrow_drop_down"
-                                                position={
-                                                    ButtonIconPosition.Right
-                                                }
+                                                position="right"
                                             >
                                                 {category.name}
                                             </ButtonIconLabel>

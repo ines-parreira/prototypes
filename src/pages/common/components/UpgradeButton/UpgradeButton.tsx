@@ -3,9 +3,7 @@ import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel, {
-    ButtonIconPosition,
-} from 'pages/common/components/button/ButtonIconLabel'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     logEvent,
     SegmentEvent,
@@ -59,10 +57,7 @@ const UpgradeButton = ({
                             onClick(e)
                         }}
                     >
-                        <ButtonIconLabel
-                            icon="auto_awesome"
-                            position={ButtonIconPosition.Right}
-                        >
+                        <ButtonIconLabel icon="auto_awesome" position="right">
                             {label}
                         </ButtonIconLabel>
                     </Button>
@@ -77,7 +72,7 @@ const UpgradeButton = ({
                         >
                             <ButtonIconLabel
                                 icon="auto_awesome"
-                                position={ButtonIconPosition.Right}
+                                position="right"
                             >
                                 {label}
                             </ButtonIconLabel>

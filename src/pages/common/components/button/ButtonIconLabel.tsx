@@ -4,10 +4,7 @@ import React, {ReactNode, useContext} from 'react'
 import {ButtonContext} from './Button'
 import css from './ButtonIconLabel.less'
 
-export enum ButtonIconPosition {
-    Left = 'left',
-    Right = 'right',
-}
+type ButtonIconPosition = 'left' | 'right'
 
 type Props = {
     children?: ReactNode
@@ -22,11 +19,11 @@ export default function ButtonIconLabel({
     className,
     icon,
     iconClassName,
-    position = ButtonIconPosition.Left,
+    position = 'left',
 }: Props) {
     return (
         <span className={classnames(css.wrapper, className)}>
-            {position === ButtonIconPosition.Left && (
+            {position === 'left' && (
                 <Icon
                     className={classnames(css.icon, css.isLeft, iconClassName)}
                 >
@@ -34,7 +31,7 @@ export default function ButtonIconLabel({
                 </Icon>
             )}
             {children}
-            {position === ButtonIconPosition.Right && (
+            {position === 'right' && (
                 <Icon
                     className={classnames(css.icon, css.isRight, iconClassName)}
                 >

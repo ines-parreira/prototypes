@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import ButtonIconLabel, {ButtonIconPosition} from '../ButtonIconLabel'
+import ButtonIconLabel from '../ButtonIconLabel'
 
 describe('<ButtonIconLabel />', () => {
     it('should render an icon label', () => {
@@ -14,10 +14,7 @@ describe('<ButtonIconLabel />', () => {
 
     it('should render a right positioned icon when passing the right position', () => {
         const {container} = render(
-            <ButtonIconLabel
-                icon="calendar_today"
-                position={ButtonIconPosition.Right}
-            >
+            <ButtonIconLabel icon="calendar_today" position="right">
                 Click me!
             </ButtonIconLabel>
         )

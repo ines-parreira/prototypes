@@ -66,9 +66,9 @@ describe('TicketListActions component', () => {
         const buttons = getAllByRole('button')
         for (const button of buttons) {
             if (isEnabled) {
-                expect(button.classList).not.toContain('disabled')
+                expect(button.classList).not.toContain('isDisabled')
             } else {
-                expect(button.classList).toContain('disabled')
+                expect(button.classList).toContain('isDisabled')
             }
         }
     }

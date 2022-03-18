@@ -26,9 +26,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import Tooltip from 'pages/common/components/Tooltip'
 import settingsCss from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel, {
-    ButtonIconPosition,
-} from 'pages/common/components/button/ButtonIconLabel'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import {ImportStatus} from './types'
 import {getImportCompletionDate} from './utils'
@@ -181,9 +179,7 @@ export const ImportZendeskDetail = (
                                         <Button size="small" intent="secondary">
                                             <ButtonIconLabel
                                                 icon="arrow_forward"
-                                                position={
-                                                    ButtonIconPosition.Right
-                                                }
+                                                position="right"
                                             >
                                                 Learn more
                                             </ButtonIconLabel>

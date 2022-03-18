@@ -8,9 +8,7 @@ import DateRangePicker, {
 import {Tooltip} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel, {
-    ButtonIconPosition,
-} from 'pages/common/components/button/ButtonIconLabel'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {RootState} from '../../../state/types'
 import {getTimezone} from '../../../state/currentUser/selectors'
 
@@ -245,7 +243,7 @@ export const PeriodPickerContainer = ({
                                 <ButtonIconLabel icon="calendar_today">
                                     <ButtonIconLabel
                                         icon="arrow_drop_down"
-                                        position={ButtonIconPosition.Right}
+                                        position="right"
                                     >
                                         {label}
                                     </ButtonIconLabel>

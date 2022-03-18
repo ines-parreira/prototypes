@@ -23,28 +23,37 @@ exports[`TicketListActions component should not render export tickets button for
     class="d-inline-flex align-items-center"
   >
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Close
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left isDisabled"
+          disabled=""
+          type="button"
         >
-          Toggle Dropdown
+          Close
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          disabled=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right isDisabled"
+            disabled=""
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -68,28 +77,37 @@ exports[`TicketListActions component should not render export tickets button for
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Assign to me
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left isDisabled"
+          disabled=""
+          type="button"
         >
-          Toggle Dropdown
+          Assign to me
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          disabled=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right isDisabled"
+            disabled=""
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -136,17 +154,31 @@ exports[`TicketListActions component should not render export tickets button for
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        Assign to team
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Assign to team
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -193,17 +225,31 @@ exports[`TicketListActions component should not render export tickets button for
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        Add tag
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Add tag
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -230,17 +276,31 @@ exports[`TicketListActions component should not render export tickets button for
       </div>
     </div>
     <div
-      class="btn-group btn-group-sm"
+      class="btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        More
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            More
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -273,28 +333,37 @@ exports[`TicketListActions component should not render the delete button for bas
     class="d-inline-flex align-items-center"
   >
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Close
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left isDisabled"
+          disabled=""
+          type="button"
         >
-          Toggle Dropdown
+          Close
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          disabled=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right isDisabled"
+            disabled=""
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -318,28 +387,37 @@ exports[`TicketListActions component should not render the delete button for bas
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Assign to me
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left isDisabled"
+          disabled=""
+          type="button"
         >
-          Toggle Dropdown
+          Assign to me
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          disabled=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right isDisabled"
+            disabled=""
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -386,17 +464,31 @@ exports[`TicketListActions component should not render the delete button for bas
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        Assign to team
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Assign to team
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -443,17 +535,31 @@ exports[`TicketListActions component should not render the delete button for bas
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        Add tag
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Add tag
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -480,17 +586,31 @@ exports[`TicketListActions component should not render the delete button for bas
       </div>
     </div>
     <div
-      class="btn-group btn-group-sm"
+      class="btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        More
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            More
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -523,26 +643,34 @@ exports[`TicketListActions component should render agents options in assign agen
     class="d-inline-flex align-items-center"
   >
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary"
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Close
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left"
+          type="button"
         >
-          Toggle Dropdown
+          Close
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -566,26 +694,34 @@ exports[`TicketListActions component should render agents options in assign agen
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary"
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Assign to me
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left"
+          type="button"
         >
-          Toggle Dropdown
+          Assign to me
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -723,16 +859,29 @@ exports[`TicketListActions component should render agents options in assign agen
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
+        class=""
       >
-        Assign to team
-      </button>
+        <button
+          class="wrapper skip-default secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Assign to team
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -779,16 +928,29 @@ exports[`TicketListActions component should render agents options in assign agen
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
+        class=""
       >
-        Add tag
-      </button>
+        <button
+          class="wrapper skip-default secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Add tag
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -814,16 +976,29 @@ exports[`TicketListActions component should render agents options in assign agen
       </div>
     </div>
     <div
-      class="btn-group btn-group-sm"
+      class="btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
+        class=""
       >
-        More
-      </button>
+        <button
+          class="wrapper skip-default secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            More
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -876,26 +1051,34 @@ exports[`TicketListActions component should render enabled buttons when some tic
     class="d-inline-flex align-items-center"
   >
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary"
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Close
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left"
+          type="button"
         >
-          Toggle Dropdown
+          Close
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -919,26 +1102,34 @@ exports[`TicketListActions component should render enabled buttons when some tic
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary"
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Assign to me
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left"
+          type="button"
         >
-          Toggle Dropdown
+          Assign to me
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -985,16 +1176,29 @@ exports[`TicketListActions component should render enabled buttons when some tic
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
+        class=""
       >
-        Assign to team
-      </button>
+        <button
+          class="wrapper skip-default secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Assign to team
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -1041,16 +1245,29 @@ exports[`TicketListActions component should render enabled buttons when some tic
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
+        class=""
       >
-        Add tag
-      </button>
+        <button
+          class="wrapper skip-default secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Add tag
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -1076,16 +1293,29 @@ exports[`TicketListActions component should render enabled buttons when some tic
       </div>
     </div>
     <div
-      class="btn-group btn-group-sm"
+      class="btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
+        class=""
       >
-        More
-      </button>
+        <button
+          class="wrapper skip-default secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            More
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -1138,28 +1368,37 @@ exports[`TicketListActions component should render export tickets button for age
     class="d-inline-flex align-items-center"
   >
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Close
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left isDisabled"
+          disabled=""
+          type="button"
         >
-          Toggle Dropdown
+          Close
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          disabled=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right isDisabled"
+            disabled=""
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -1183,28 +1422,37 @@ exports[`TicketListActions component should render export tickets button for age
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Assign to me
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left isDisabled"
+          disabled=""
+          type="button"
         >
-          Toggle Dropdown
+          Assign to me
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          disabled=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right isDisabled"
+            disabled=""
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -1251,17 +1499,31 @@ exports[`TicketListActions component should render export tickets button for age
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        Assign to team
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Assign to team
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -1308,17 +1570,31 @@ exports[`TicketListActions component should render export tickets button for age
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        Add tag
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Add tag
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -1345,17 +1621,31 @@ exports[`TicketListActions component should render export tickets button for age
       </div>
     </div>
     <div
-      class="btn-group btn-group-sm"
+      class="btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        More
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            More
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -1408,26 +1698,34 @@ exports[`TicketListActions component should render teams in assign team dropdown
     class="d-inline-flex align-items-center"
   >
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary"
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Close
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left"
+          type="button"
         >
-          Toggle Dropdown
+          Close
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -1451,26 +1749,34 @@ exports[`TicketListActions component should render teams in assign team dropdown
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary"
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Assign to me
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left"
+          type="button"
         >
-          Toggle Dropdown
+          Assign to me
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -1517,16 +1823,29 @@ exports[`TicketListActions component should render teams in assign team dropdown
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
+        class=""
       >
-        Assign to team
-      </button>
+        <button
+          class="wrapper skip-default secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Assign to team
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -1664,16 +1983,29 @@ exports[`TicketListActions component should render teams in assign team dropdown
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
+        class=""
       >
-        Add tag
-      </button>
+        <button
+          class="wrapper skip-default secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Add tag
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -1699,16 +2031,29 @@ exports[`TicketListActions component should render teams in assign team dropdown
       </div>
     </div>
     <div
-      class="btn-group btn-group-sm"
+      class="btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary"
-        type="button"
+        class=""
       >
-        More
-      </button>
+        <button
+          class="wrapper skip-default secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            More
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -1761,28 +2106,37 @@ exports[`TicketListActions component should render the delete action for lead an
     class="d-inline-flex align-items-center"
   >
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Close
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left isDisabled"
+          disabled=""
+          type="button"
         >
-          Toggle Dropdown
+          Close
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          disabled=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right isDisabled"
+            disabled=""
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -1806,28 +2160,37 @@ exports[`TicketListActions component should render the delete action for lead an
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Assign to me
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left isDisabled"
+          disabled=""
+          type="button"
         >
-          Toggle Dropdown
+          Assign to me
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          disabled=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right isDisabled"
+            disabled=""
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -1874,17 +2237,31 @@ exports[`TicketListActions component should render the delete action for lead an
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        Assign to team
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Assign to team
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -1931,17 +2308,31 @@ exports[`TicketListActions component should render the delete action for lead an
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        Add tag
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Add tag
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -1968,17 +2359,31 @@ exports[`TicketListActions component should render the delete action for lead an
       </div>
     </div>
     <div
-      class="btn-group btn-group-sm"
+      class="btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        More
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            More
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -2031,28 +2436,37 @@ exports[`TicketListActions component should render the special actions for lead 
     class="d-inline-flex align-items-center"
   >
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Close
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left isDisabled"
+          disabled=""
+          type="button"
         >
-          Toggle Dropdown
+          Close
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          disabled=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right isDisabled"
+            disabled=""
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -2076,28 +2490,37 @@ exports[`TicketListActions component should render the special actions for lead 
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
-        class="btn btn-secondary disabled"
-        disabled=""
-        type="button"
+      <span
+        class="group horizontal"
       >
-        Assign to me
-      </button>
-      <button
-        aria-expanded="false"
-        aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
-        disabled=""
-        type="button"
-      >
-        <span
-          class="sr-only"
+        <button
+          class="wrapper secondary small left isDisabled"
+          disabled=""
+          type="button"
         >
-          Toggle Dropdown
+          Assign to me
+        </button>
+        <span
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          disabled=""
+        >
+          <button
+            class="wrapper wrapper small secondary small right isDisabled"
+            disabled=""
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              arrow_drop_down
+            </i>
+          </button>
         </span>
-      </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -2144,17 +2567,31 @@ exports[`TicketListActions component should render the special actions for lead 
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        Assign to team
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Assign to team
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="assignee-dropdown-list dropdown-menu dropdown-menu-right"
@@ -2201,17 +2638,31 @@ exports[`TicketListActions component should render the special actions for lead 
       </div>
     </div>
     <div
-      class="mr-2 btn-group btn-group-sm"
+      class="mr-2 btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        Add tag
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            Add tag
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
@@ -2238,17 +2689,31 @@ exports[`TicketListActions component should render the special actions for lead 
       </div>
     </div>
     <div
-      class="btn-group btn-group-sm"
+      class="btn-group"
     >
-      <button
+      <span
         aria-expanded="false"
         aria-haspopup="true"
-        class="dropdown-toggle btn btn-secondary disabled"
+        class=""
         disabled=""
-        type="button"
       >
-        More
-      </button>
+        <button
+          class="wrapper skip-default secondary small isDisabled"
+          disabled=""
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            More
+            <i
+              class="material-icons icon isRight small"
+            >
+              arrow_drop_down
+            </i>
+          </span>
+        </button>
+      </span>
       <div
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
