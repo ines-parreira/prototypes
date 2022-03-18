@@ -28,6 +28,8 @@ type Props = {
     headerDescription?: string
     isOpen: boolean
     onClose: () => void
+    onSubscribe?: () => void
+    fade?: boolean
 }
 type FooterProps = {
     onConfirm: () => void
@@ -57,6 +59,8 @@ const AutomationSubscriptionModal = ({
     headerDescription,
     isOpen,
     onClose,
+    onSubscribe,
+    fade = true,
 }: Props) => {
     const dispatch = useAppDispatch()
     const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
@@ -92,8 +96,12 @@ const AutomationSubscriptionModal = ({
         ? 'Confirm automation add-on subscription'
         : 'Confirm automation subscription'
 
-    const onConfirm = () =>
-        automationPlan && handleSubscriptionUpdate(automationPlan.get('id'))
+    const onConfirm = () => {
+        automationPlan &&
+            handleSubscriptionUpdate(automationPlan.get('id')).then(
+                () => onSubscribe && onSubscribe()
+            )
+    }
 
     const handleUnsubscribeClick = () => {
         void handleSubscriptionUpdate(
@@ -102,7 +110,13 @@ const AutomationSubscriptionModal = ({
     }
 
     return (
-        <Modal isOpen={isOpen} toggle={onClose} className={css.modal} centered>
+        <Modal
+            isOpen={isOpen}
+            toggle={onClose}
+            className={css.modal}
+            fade={fade}
+            centered
+        >
             <ModalHeader toggle={onClose}>{header}</ModalHeader>
             <ModalBody className={css.modalBody}>
                 <AutomationSubscriptionDescription />

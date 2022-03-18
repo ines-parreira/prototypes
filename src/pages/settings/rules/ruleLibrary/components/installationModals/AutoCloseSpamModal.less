@@ -1,0 +1,73 @@
+@import '~css/new/colorTokens';
+
+:local .wrapper {
+    .bordered,
+    &.bordered {
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 4px;
+        padding: 16px;
+    }
+
+    .titleWrapper {
+        margin-bottom: 8px;
+        .title {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 28px;
+        }
+    }
+    .count {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+    .container {
+        display: flex;
+        gap: 16px;
+    }
+    .description {
+        flex-basis: 50%;
+    }
+    .descriptionBlock {
+        margin-top: 8px;
+        margin-bottom: 16px;
+        p {
+            color: @classic-neutral-grey-5;
+        }
+    }
+    .example {
+        flex-basis: 50%;
+        min-height: 100%;
+        margin-top: 24px;
+        justify-content: center;
+        display: flex;
+        gap: 16px;
+        flex-direction: column;
+        background-color: @classic-neutral-grey-1;
+    }
+    .fakeTicket {
+        padding: 16px;
+        height: 80px;
+        display: flex;
+        margin-left: auto;
+        margin-right: auto;
+        flex-direction: column;
+        box-shadow: 1px 1px 8px rgba(22, 22, 22, 0.24);
+        border-radius: 10px;
+        background-color: white;
+        width: 300px;
+        .fakeTicketTitleWrapper {
+            display: flex;
+            justify-content: space-between;
+        }
+        .fakeTicketTitle {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .fakeTicketDescription {
+            color: @classic-neutral-grey-5;
+        }
+        .fakeTicketClosed {
+            height: 18px;
+        }
+    }
+}

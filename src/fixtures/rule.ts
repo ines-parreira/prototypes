@@ -1,6 +1,5 @@
 import esprima from 'esprima'
-
-import {Rule, RuleType} from '../state/rules/types'
+import {ManagedRule, Rule, RuleType} from '../state/rules/types'
 
 export const emptyRule = {
     id: 1,
@@ -16,6 +15,21 @@ export const emptyRule = {
     type: RuleType.User,
     uri: '/api/rule/17',
 } as Rule
+
+export const emptyManagedRule = {
+    id: 1,
+    description: 'foo',
+    name: 'my rule',
+    code_ast: {},
+    code: '',
+    event_types: '',
+    deactivated_datetime: null,
+    created_datetime: '2020-01-01T00:00:00',
+    updated_datetime: '2020-01-01T00:00:00',
+    priority: 100,
+    type: RuleType.Managed,
+    uri: '/api/rule/1',
+} as ManagedRule
 
 export const rule = {
     priority: 6,

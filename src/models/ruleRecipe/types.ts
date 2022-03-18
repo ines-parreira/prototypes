@@ -14,4 +14,5 @@ export type RuleRecipe = {
     views_per_section: {[section: string]: ViewDraft[]}
     triggered_count: number
     recipe_tag: string
+    type?: string
 }

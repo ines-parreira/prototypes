@@ -3,15 +3,14 @@ import {useAsyncFn} from 'react-use'
 import moment from 'moment'
 import classnames from 'classnames'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
-import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 
-import {
-    activateRule,
-    deactivateRule,
-    createRule,
-    deleteRule,
-} from 'models/rule/resources'
+import useAppSelector from 'hooks/useAppSelector'
+import useAppDispatch from 'hooks/useAppDispatch'
+
+import {getHasAutomationAddOn} from 'state/billing/selectors'
+
+import {deactivateRule, createRule, deleteRule} from 'models/rule/resources'
 import {RuleRecipe} from 'models/ruleRecipe/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
@@ -23,28 +22,30 @@ import {
     ruleUpdated,
     ruleDeleted,
 } from 'state/entities/rules/actions'
-import {ruleRecipes} from 'state/entities/ruleRecipes/selectors'
+import {getSortedRuleRecipes} from 'state/entities/ruleRecipes/selectors'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
-import {Rule} from 'state/rules/types'
-import {RootState} from 'state/types'
+import {Rule, RuleType} from 'state/rules/types'
 
 import css from './RuleRow.less'
 
 type Props = {
     rule: Rule
     canDuplicate: boolean
+    handleUpgrade: (id: number) => void
+    onActivate: (id: number) => Promise<void>
 }
 
 export function RuleRow({
     rule,
     canDuplicate,
-    notify,
-    ruleCreated,
-    ruleDeleted,
-    ruleUpdated,
-    ruleRecipes,
-}: Props & ConnectedProps<typeof connector>) {
+    handleUpgrade,
+    onActivate,
+}: Props) {
+    const dispatch = useAppDispatch()
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const ruleRecipes = useAppSelector(getSortedRuleRecipes)
+
     const [isDescriptionOpen, setDescriptionOpen] = useState(false)
     const [showToggleConfirmation, setShowToggleConfirmation] = useState(false)
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
@@ -80,12 +81,14 @@ export function RuleRow({
                     code_ast: rule.code_ast,
                     deactivated_datetime: null,
                 })
-                ruleCreated(newRule)
+                void dispatch(ruleCreated(newRule))
                 history.push(`/app/settings/rules/${newRule.id}`)
-                void notify({
-                    message: 'Rule duplicated successfully',
-                    status: NotificationStatus.Success,
-                })
+                void dispatch(
+                    notify({
+                        message: 'Rule duplicated successfully',
+                        status: NotificationStatus.Success,
+                    })
+                )
             } catch (error) {
                 void notify({
                     status: NotificationStatus.Error,
@@ -104,60 +107,58 @@ export function RuleRow({
     const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
         try {
             await deleteRule(rule.id)
-            ruleDeleted(rule.id)
+            void dispatch(ruleDeleted(rule.id))
             void notify({
                 status: NotificationStatus.Success,
                 message: `Successfully deleted rule ${rule.name}`,
             })
         } catch (error) {
-            void notify({
-                status: NotificationStatus.Error,
-                message: 'Failed to delete rule',
-            })
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Failed to delete rule',
+                })
+            )
         }
     })
 
-    const handleActivate = async () => {
-        try {
-            const res = await activateRule(rule)
-            ruleUpdated(res)
-            void notify({
-                status: NotificationStatus.Success,
-                message: 'Rule activated successfully',
-            })
-        } catch (error) {
-            void notify({
-                status: NotificationStatus.Error,
-                message: 'Unable to deactivate rule',
-            })
+    const handleActivate = () => {
+        if (!hasAutomationAddOn && rule.type === RuleType.Managed) {
+            handleUpgrade(rule.id)
+            return
         }
+        void onActivate(rule.id)
     }
 
     const handleDeactivate = async () => {
         try {
-            const res = await deactivateRule(rule)
-            ruleUpdated(res)
-            void notify({
-                status: NotificationStatus.Success,
-                message: 'Rule deactivated successfully',
-            })
+            const res = await deactivateRule(rule.id)
+            void dispatch(ruleUpdated(res))
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Rule deactivated successfully',
+                })
+            )
         } catch (error) {
-            void notify({
-                status: NotificationStatus.Error,
-                message: 'Unable to deactivate rule',
-            })
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Unable to deactivate rule',
+                })
+            )
         }
         toggleShowToggleConfirmation()
     }
 
-    const toggleActivation = async (
+    const toggleActivation = (
         value: boolean,
         event: MouseEvent<HTMLLabelElement>
     ) => {
         event.stopPropagation()
         const checked = !!rule.deactivated_datetime
         if (checked) {
-            await handleActivate()
+            void handleActivate()
         } else {
             toggleShowToggleConfirmation()
         }
@@ -238,6 +239,20 @@ export function RuleRow({
                                     Rule Library
                                 </Badge>
                             )}
+                            {rule.type === 'managed' && (
+                                <Badge
+                                    className={classnames(
+                                        'ml-2',
+                                        css.fromLibraryBadge
+                                    )}
+                                    type={ColorType.Grey}
+                                >
+                                    <i className="material-icons mr-1">
+                                        auto_awesome
+                                    </i>
+                                    Managed Rule
+                                </Badge>
+                            )}
                         </div>
                     </Link>
                 </td>
@@ -259,6 +274,7 @@ export function RuleRow({
                             void handleDuplicate()
                         }}
                         title="Duplicate rule"
+                        isDisabled={rule.type === RuleType.Managed}
                     >
                         file_copy
                     </IconButton>
@@ -335,15 +351,4 @@ export function RuleRow({
         </>
     )
 }
-const connector = connect(
-    (state: RootState) => ({
-        ruleRecipes: ruleRecipes(state),
-    }),
-    {
-        ruleCreated,
-        ruleUpdated,
-        ruleDeleted,
-        notify,
-    }
-)
-export default connector(RuleRow)
+export default RuleRow

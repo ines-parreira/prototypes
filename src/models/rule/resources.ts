@@ -21,7 +21,7 @@ export const createRule = async (rule: RuleDraft): Promise<Rule> => {
 }
 
 export const updateRule = async (
-    rule: RuleDraft & {id: number}
+    rule: Partial<RuleDraft> & {id: number}
 ): Promise<Rule> => {
     const res = await client.put(`/api/rules/${rule.id}/`, rule)
     return res.data as Rule
@@ -38,17 +38,14 @@ export const reorderRules = async (
     return res.data as Rule[]
 }
 
-export const deactivateRule = async (rule: Rule): Promise<Rule> => {
-    const {id} = rule
-
+export const deactivateRule = async (id: number): Promise<Rule> => {
     const res = await client.put(`/api/rules/${id}/`, {
         deactivated_datetime: new Date(),
     })
     return res.data as Rule
 }
 
-export const activateRule = async (rule: Rule): Promise<Rule> => {
-    const {id} = rule
+export const activateRule = async (id: number): Promise<Rule> => {
     const res = await client.put(`/api/rules/${id}/`, {
         deactivated_datetime: null,
     })

@@ -11,7 +11,7 @@ type Props = {
     canSubmit: boolean
     canDuplicate: boolean
     isDeleting: boolean
-    onDuplicate: () => void
+    onDuplicate?: () => void
     onDelete: () => void
     onSubmit: () => void
 }
@@ -36,7 +36,7 @@ export const RuleItemButtons = ({
                 >
                     {ruleId ? 'Update rule' : 'Create rule'}
                 </Button>
-                {ruleId && (
+                {ruleId && !!onDuplicate && (
                     <Button
                         id={`rule-item-duplicate`}
                         intent="secondary"

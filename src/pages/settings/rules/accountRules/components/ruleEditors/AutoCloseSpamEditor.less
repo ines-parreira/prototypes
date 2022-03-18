@@ -1,0 +1,36 @@
+@import '~css/new/colorTokens';
+:local .container {
+    h3 {
+        height: 28px;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 28px;
+        margin-bottom: 4px;
+    }
+    h4 {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+    }
+    .listWrapper {
+        :global(.badge-secondary) {
+            padding: 4px 6px !important;
+        }
+        .allowList {
+            :global(.badge-secondary) {
+                background-color: @classic-neutral-grey-2 !important;
+                color: @classic-neutral-grey-6 !important;
+                padding: 4px 6px !important;
+            }
+        }
+        .blockList {
+            :global(.badge-secondary) {
+                background-color: @classic-feedback-error-0 !important;
+                color: @classic-feedback-error-3 !important;
+                padding: 4px 6px !important;
+            }
+        }
+        margin-top: 26px;
+        margin-bottom: 26px;
+    }
+}

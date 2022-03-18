@@ -1,0 +1,276 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutoCloseSpamModal/> should render the autoclose spam body when automation add-on is not subscribed 1`] = `
+<div
+  class="wrapper bordered"
+>
+  <div
+    class="titleWrapper"
+  >
+    <span
+      class="title"
+    >
+      my rule
+    </span>
+  </div>
+  <div
+    class="container"
+  >
+    <div
+      class="description"
+    >
+      <div
+        class="count"
+      >
+        <div
+          class="targetTitle"
+        >
+          target up to
+        </div>
+        <div
+          class="targetValue"
+        >
+          <span
+            class="bold"
+          >
+            10
+          </span>
+           
+          tickets/month
+        </div>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          Close unwanted emails
+        </h4>
+        <p>
+          This rule automatically checks and closes emails that are not related to a customer support request (e.g. newsletters, sales outreach messages...)
+        </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          Allow or block some email addresses
+        </h4>
+        <p>
+          You'll be able to add allowed email addresses and blocked email addresses in the rules settings, allowing a more precise control on your workflow. Emails coming from the allowed or blocked lists will respectively never or always be closed by this rule.
+        </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          Monitor closed tickets 
+        </h4>
+        <p>
+          All the auto closed tickets are tagged with an "auto-close" and "non-support-related" tags. This will allow you to find them easily in case you want to monitor which tickets the rule is closing.
+        </p>
+      </div>
+    </div>
+    <div
+      class="example bordered"
+    >
+      <div
+        class="fakeTicket"
+      >
+        <div
+          class="fakeTicketTitleWrapper"
+        >
+          <span
+            class="fakeTicketTitle"
+          >
+            Newsletter
+          </span>
+          <div
+            class="badge fakeTicketClosed"
+          >
+            closed
+          </div>
+        </div>
+        <div
+          class="fakeTicketDescription"
+        >
+          Check out our new product!
+        </div>
+      </div>
+      <div
+        class="fakeTicket"
+      >
+        <div
+          class="fakeTicketTitleWrapper"
+        >
+          <span
+            class="fakeTicketTitle"
+          >
+            Product question
+          </span>
+        </div>
+        <div
+          class="fakeTicketDescription"
+        >
+          I have ordered...
+        </div>
+      </div>
+      <div
+        class="fakeTicket"
+      >
+        <div
+          class="fakeTicketTitleWrapper"
+        >
+          <span
+            class="fakeTicketTitle"
+          >
+            Promotion! -50%...
+          </span>
+          <div
+            class="badge fakeTicketClosed"
+          >
+            closed
+          </div>
+        </div>
+        <div
+          class="fakeTicketDescription"
+        >
+          Until Monday all of our products...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutoCloseSpamModal/> should render the autoclose spam body when automation add-on is subscribed 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="container"
+  >
+    <div
+      class="description"
+    >
+      <div
+        class="count"
+      >
+        <div
+          class="targetTitle"
+        >
+          target up to
+        </div>
+        <div
+          class="targetValue"
+        >
+          <span
+            class="bold"
+          >
+            10
+          </span>
+           
+          tickets/month
+        </div>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          Close unwanted emails
+        </h4>
+        <p>
+          This rule automatically checks and closes emails that are not related to a customer support request (e.g. newsletters, sales outreach messages...)
+        </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          Allow or block some email addresses
+        </h4>
+        <p>
+          You'll be able to add allowed email addresses and blocked email addresses in the rules settings, allowing a more precise control on your workflow. Emails coming from the allowed or blocked lists will respectively never or always be closed by this rule.
+        </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        <h4>
+          Monitor closed tickets 
+        </h4>
+        <p>
+          All the auto closed tickets are tagged with an "auto-close" and "non-support-related" tags. This will allow you to find them easily in case you want to monitor which tickets the rule is closing.
+        </p>
+      </div>
+    </div>
+    <div
+      class="example bordered"
+    >
+      <div
+        class="fakeTicket"
+      >
+        <div
+          class="fakeTicketTitleWrapper"
+        >
+          <span
+            class="fakeTicketTitle"
+          >
+            Newsletter
+          </span>
+          <div
+            class="badge fakeTicketClosed"
+          >
+            closed
+          </div>
+        </div>
+        <div
+          class="fakeTicketDescription"
+        >
+          Check out our new product!
+        </div>
+      </div>
+      <div
+        class="fakeTicket"
+      >
+        <div
+          class="fakeTicketTitleWrapper"
+        >
+          <span
+            class="fakeTicketTitle"
+          >
+            Product question
+          </span>
+        </div>
+        <div
+          class="fakeTicketDescription"
+        >
+          I have ordered...
+        </div>
+      </div>
+      <div
+        class="fakeTicket"
+      >
+        <div
+          class="fakeTicketTitleWrapper"
+        >
+          <span
+            class="fakeTicketTitle"
+          >
+            Promotion! -50%...
+          </span>
+          <div
+            class="badge fakeTicketClosed"
+          >
+            closed
+          </div>
+        </div>
+        <div
+          class="fakeTicketDescription"
+        >
+          Until Monday all of our products...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

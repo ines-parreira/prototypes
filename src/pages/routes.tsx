@@ -58,7 +58,7 @@ import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionS
 import MacrosSettingsContent from './settings/macros/MacrosSettingsContent'
 import MacrosSettingsForm from './settings/macros/MacrosSettingsForm'
 import RulesView from './settings/rules/RulesView'
-import RulesSettingsForm from './settings/rules/accountRules/RuleDetailForm'
+import RuleDetailForm from './settings/rules/accountRules/RuleDetailForm'
 import Access from './settings/access/index.js'
 import TeamList from './settings/users/List'
 import TeamForm from './settings/users/Form'
@@ -920,10 +920,7 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                 path={`${path}/new`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
-                        RulesSettingsForm,
-                        AGENT_ROLE
-                    ),
+                    content: withUserRoleRequired(RuleDetailForm, AGENT_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -931,10 +928,7 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                 path={`${path}/:ruleId`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
-                        RulesSettingsForm,
-                        AGENT_ROLE
-                    ),
+                    content: withUserRoleRequired(RuleDetailForm, AGENT_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />

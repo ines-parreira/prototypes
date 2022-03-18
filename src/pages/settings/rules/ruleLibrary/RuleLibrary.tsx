@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import _noop from 'lodash/noop'
 import classnames from 'classnames'
 
-import {Rule} from 'models/rule/types'
+import {Rule} from 'state/rules/types'
 import {RuleRecipe} from 'models/ruleRecipe/types'
 
 import RuleRecipeCard from './components/RuleRecipeCard'

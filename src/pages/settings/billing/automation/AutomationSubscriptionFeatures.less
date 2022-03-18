@@ -1,0 +1,33 @@
+@import '~css/new/colorTokens';
+
+:local .features {
+    display: flex;
+    margin: 16px 0 0 0;
+
+    li span:first-child {
+        align-self: center;
+    }
+
+    .featureListItem {
+        flex-grow: 1;
+        flex-basis: 0;
+        &:not(:last-child) {
+            margin-right: 40px;
+        }
+    }
+
+    .featureIcon {
+        --feature-icon-color: @classic-main-primary;
+        --feature-icon-size: 20px;
+        font-size: 20px;
+        flex-shrink: 0;
+        background-color: @classic-main-primary-0;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-self: flex-start;
+    }
+}

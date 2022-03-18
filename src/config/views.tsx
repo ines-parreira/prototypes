@@ -361,7 +361,6 @@ export const views = fromJS([
                         ? ViewVisibility.Private
                         : ViewVisibility.Public,
             })
-
             if (filters) {
                 view = view.merge({
                     filters,

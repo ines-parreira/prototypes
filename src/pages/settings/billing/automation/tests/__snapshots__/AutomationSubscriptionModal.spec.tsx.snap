@@ -158,8 +158,7 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                       </i>
                     </span>
                     <span>
-                      Track, Return, Cancel & Custom
-                       
+                      Track, Return, Cancel & Custom 
                       <b>
                         workflows
                       </b>

@@ -99,8 +99,7 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
         </i>
       </span>
       <span>
-        Track, Return, Cancel & Custom
-         
+        Track, Return, Cancel & Custom 
         <b>
           workflows
         </b>
@@ -219,8 +218,7 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
         </i>
       </span>
       <span>
-        Track, Return, Cancel & Custom
-         
+        Track, Return, Cancel & Custom 
         <b>
           workflows
         </b>

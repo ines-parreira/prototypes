@@ -1,5 +1,121 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
+<tr
+  class="draggable row"
+  data-id="1"
+  id="1"
+>
+  <td
+    class="smallest align-middle"
+  >
+    <i
+      class="material-icons text-faded drag-handle dragHandle"
+    >
+      drag_indicator
+    </i>
+  </td>
+  <td
+    class="smallest align-middle position-relative"
+  >
+    <div>
+      <label
+        aria-checked="true"
+        class="label container"
+        for="toggle-button-2"
+        role="switch"
+      >
+        <input
+          checked=""
+          class="input"
+          disabled=""
+          id="toggle-button-2"
+          name="toggle-button-2"
+          type="checkbox"
+        />
+        <div
+          class="slider"
+        />
+        <div
+          class="label"
+        />
+      </label>
+    </div>
+    <div
+      class="toggleActivation"
+      id="toggle-data-1"
+    />
+  </td>
+  <td
+    class="link-full-td align-middle middle-column"
+    id="rule-name-1"
+  >
+    <a
+      to="/app/settings/rules/1"
+    >
+      <div>
+        <span
+          class="mr-2 name"
+        >
+          my rule
+        </span>
+        <div
+          class="badge ml-2 fromLibraryBadge"
+        >
+          <i
+            class="material-icons mr-1"
+          >
+            auto_awesome
+          </i>
+          Managed Rule
+        </div>
+      </div>
+    </a>
+  </td>
+  <td
+    class="link-full-td align-middle"
+  >
+    <a
+      to="/app/settings/rules/1"
+    >
+      <div
+        class="text-faded"
+      >
+        2020-01-01
+      </div>
+    </a>
+  </td>
+  <td
+    class="align-middle smallest actions"
+  >
+    <button
+      class="wrapper actionButton mr-1 wrapper medium text medium isDisabled"
+      disabled=""
+      title="Duplicate rule"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
+      >
+        file_copy
+      </i>
+    </button>
+    <button
+      class="wrapper actionButton deleteActionButton mr-1 wrapper medium text medium"
+      id="delete-rule-1"
+      title="Delete rule"
+      type="button"
+    >
+      <i
+        class="material-icons icon"
+      >
+        delete
+      </i>
+    </button>
+  </td>
+</tr>
+`;
+
 exports[`<RuleRow /> should render a row with a rule 1`] = `
 <tr
   class="draggable row"

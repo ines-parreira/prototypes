@@ -1,24 +1,32 @@
 import React, {ComponentProps} from 'react'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import {fireEvent, render, waitFor} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
 
-import history from '../../../../../history'
-import {emptyRule as ruleFixture} from '../../../../../../fixtures/rule'
-import {emptyRuleRecipeFixture as ruleRecipeFixture} from '../../../../../../fixtures/ruleRecipe'
-import {createRule, deleteRule} from '../../../../../../models/rule/resources'
+import {emptyManagedRule, emptyRule as ruleFixture} from 'fixtures/rule'
+import {
+    emptyRuleRecipeFixture,
+    emptyRuleRecipeFixture as ruleRecipeFixture,
+} from 'fixtures/ruleRecipe'
+
+import {createRule, deleteRule} from 'models/rule/resources'
+
+import {RootState, StoreDispatch} from 'state/types'
 import {
     ruleCreated,
     ruleDeleted,
     ruleUpdated,
-} from '../../../../../../state/entities/rules/actions'
+} from 'state/entities/rules/actions'
 
 import {RuleRow} from '../RuleRow'
 
-jest.mock('../../../../../../models/rule/resources')
-jest.mock('../../../../../history')
-jest.mock('../../../../../../state/entities/rules/actions')
+jest.mock('models/rule/resources')
+jest.mock('pages/history')
+jest.mock('state/entities/rules/actions')
 
 describe('<RuleRow />', () => {
-    const notifyMock = jest.fn()
     const ruleCreatedMock = ruleCreated as jest.MockedFunction<
         typeof ruleCreated
     >
@@ -34,22 +42,48 @@ describe('<RuleRow />', () => {
 
     const minProps: ComponentProps<typeof RuleRow> = {
         rule: ruleFixture,
-        ruleRecipes: {},
         canDuplicate: true,
-        ruleCreated: ruleCreatedMock,
-        ruleDeleted: ruleDeletedMock,
-        ruleUpdated: ruleUpdatedMock,
-        notify: notifyMock,
+        handleUpgrade: jest.fn(),
+        onActivate: jest.fn(),
     }
+
+    const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
+        thunk,
+    ])
+    const store = mockStore({
+        billing: fromJS({plans: []}),
+        entities: {
+            ruleRecipes: {
+                [emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture,
+            },
+        },
+    } as RootState)
+
     beforeEach(() => {
         jest.clearAllMocks()
     })
     it('should render a row with a rule', () => {
-        const {container} = render(<RuleRow {...minProps} />)
+        const {container} = render(
+            <Provider store={store}>
+                <RuleRow {...minProps} />)
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+    it('should render a row with a managed rule tab', () => {
+        const {container} = render(
+            <Provider store={store}>
+                <RuleRow {...minProps} rule={emptyManagedRule} />
+            </Provider>
+        )
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should show description on hover', async () => {
-        const {getByText, queryByText} = render(<RuleRow {...minProps} />)
+        const {getByText, queryByText} = render(
+            <Provider store={store}>
+                <RuleRow {...minProps} />)
+            </Provider>
+        )
         fireEvent.mouseEnter(getByText(ruleFixture.name))
         await waitFor(() => {
             const popoverHeader = queryByText(/foo/i)
@@ -60,7 +94,9 @@ describe('<RuleRow />', () => {
         const rule = {...ruleFixture, description: ''}
 
         const {getByText, queryByText} = render(
-            <RuleRow {...minProps} rule={rule} />
+            <Provider store={store}>
+                <RuleRow {...minProps} />)
+            </Provider>
         )
         fireEvent.mouseEnter(getByText(rule.name))
         await waitFor(() => {
@@ -68,21 +104,25 @@ describe('<RuleRow />', () => {
             expect(popoverHeader).toBeNull()
         })
     })
-    it('should duplicate rule and redirect on click', async () => {
+    it('should duplicate rule ', async () => {
         createRuleMock.mockResolvedValue(ruleFixture)
-        const {getByText} = render(<RuleRow {...minProps} />)
+        const {getByText} = render(
+            <Provider store={store}>
+                <RuleRow {...minProps} />)
+            </Provider>
+        )
         fireEvent.click(getByText(/file_copy/i))
         await waitFor(() => {
             expect(ruleCreatedMock).toHaveBeenCalled()
-            expect(history.push).toHaveBeenNthCalledWith(
-                1,
-                '/app/settings/rules/1'
-            )
         })
     })
     it('should prompt confirm and then delete rule on click', async () => {
         deleteRuleMock.mockResolvedValue()
-        const {getByText} = render(<RuleRow {...minProps} />)
+        const {getByText} = render(
+            <Provider store={store}>
+                <RuleRow {...minProps} />)
+            </Provider>
+        )
         fireEvent.click(getByText(/delete/i))
         fireEvent.click(getByText(/confirm/i))
         await waitFor(() => {
@@ -90,7 +130,11 @@ describe('<RuleRow />', () => {
         })
     })
     it('should deactivate on toggle button', async () => {
-        const {getByText, getByRole} = render(<RuleRow {...minProps} />)
+        const {getByText, getByRole} = render(
+            <Provider store={store}>
+                <RuleRow {...minProps} />)
+            </Provider>
+        )
         fireEvent.click(getByRole('checkbox'))
         fireEvent.click(getByText(/confirm/i))
         await waitFor(() => {
@@ -103,11 +147,13 @@ describe('<RuleRow />', () => {
             deactivated_datetime: '2020-01-01T00:00:00',
         }
         const {getByRole} = render(
-            <RuleRow {...minProps} rule={deactivatedRule} />
+            <Provider store={store}>
+                <RuleRow {...minProps} rule={deactivatedRule} />)
+            </Provider>
         )
         fireEvent.click(getByRole('checkbox'))
         await waitFor(() => {
-            expect(ruleUpdatedMock).toHaveBeenCalled()
+            expect(minProps.onActivate).toHaveBeenCalled()
         })
     })
     it('should display a badge if the rule comes from the library', () => {
@@ -117,11 +163,9 @@ describe('<RuleRow />', () => {
             name: `[${ruleRecipeFixture.recipe_tag}] ${ruleRecipeFixture.rule.name}`,
         }
         const {getByText} = render(
-            <RuleRow
-                {...minProps}
-                rule={rule}
-                ruleRecipes={{['1']: ruleRecipeFixture}}
-            />
+            <Provider store={store}>
+                <RuleRow {...minProps} rule={rule} />)
+            </Provider>
         )
         expect(getByText(/rule library/gi)).toBeTruthy()
     })

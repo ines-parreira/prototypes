@@ -1,18 +1,21 @@
 import React, {ComponentProps} from 'react'
+import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {render} from '@testing-library/react'
 import _noop from 'lodash/noop'
 
-import {emptyRuleRecipeFixture} from '../../../../../fixtures/ruleRecipe'
-import {RuleRecipeTag} from '../../../../../models/ruleRecipe/types'
+import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
+import {billingState} from 'fixtures/billing'
+import {RuleRecipeTag} from 'models/ruleRecipe/types'
 import RuleLibrary from '../RuleLibrary'
 
 describe('<RuleLibrary/>', () => {
     const mockStore = configureMockStore([thunk])
     const defaultStore = mockStore({
         entities: {},
+        billing: fromJS(billingState),
     })
     const minProps: ComponentProps<typeof RuleLibrary> = {
         recipes: [

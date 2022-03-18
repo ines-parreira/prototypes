@@ -13,11 +13,12 @@ import {
 } from '../../../../../state/entities/rules/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {fetchRules} from '../../../../../models/rule/resources'
-import {emptyRule} from '../../../../../fixtures/rule'
+import {emptyRule, rules} from '../../../../../fixtures/rule'
 import {getEmptyRule} from '../../../../../state/rules/utils'
 import {Rule} from '../../../../../state/rules/types'
 import {ApiListResponsePagination} from '../../../../../models/api/types'
 import history from '../../../../history'
+import {billingState} from '../../../../../fixtures/billing'
 
 import {RootState} from '../../../../../state/types'
 
@@ -27,7 +28,10 @@ jest.mock('../../../../../state/entities/rules/actions')
 jest.mock('../../../../../models/rule/resources')
 
 const mockStore = configureMockStore([thunk])
-const defaultStore: Partial<RootState> = {}
+const defaultStore: Partial<RootState> = {
+    billing: fromJS(billingState),
+    entities: {rules: {'1': rules[0]}} as any,
+}
 
 describe('<RuleSettingsForm />', () => {
     const mockDate = jest.spyOn(global.Date, 'now').mockImplementation(() => 0)
@@ -77,13 +81,13 @@ describe('<RuleSettingsForm />', () => {
     })
 
     describe('rendering', () => {
-        it('should render an empty form when no rule id', () => {
+        it('should render an empty form when no rule id', async () => {
             const {container} = render(
                 <Provider store={mockStore(defaultStore)}>
                     <RuleDetailForm {...minProps} />
                 </Provider>
             )
-            expect(container.firstChild).toMatchSnapshot()
+            await waitFor(() => expect(container.firstChild).toMatchSnapshot())
         })
 
         it('should render a loader when rule id before fetched', () => {
@@ -117,12 +121,15 @@ describe('<RuleSettingsForm />', () => {
             fetchRulesMock.mockRejectedValue('error')
             render(
                 <Provider store={mockStore(defaultStore)}>
-                    <RuleDetailForm {...minProps} match={matchProp} />
+                    <RuleDetailForm
+                        {...minProps}
+                        match={{...matchProp, params: {ruleId: '404'}}}
+                    />
                 </Provider>
             )
             await waitFor(() => {
                 expect(notifyMock).toHaveBeenNthCalledWith(1, {
-                    message: 'Failed to fetch rules',
+                    message: 'Could not find rule with id: 404',
                     status: NotificationStatus.Error,
                 })
             })

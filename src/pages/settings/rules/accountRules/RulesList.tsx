@@ -1,6 +1,8 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Table} from 'reactstrap'
 import classnames from 'classnames'
+
+import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import ReactSortable from '../../../common/components/dragging/ReactSortable'
@@ -9,10 +11,13 @@ import {
     RuleLimitStatus,
     RulePriority,
 } from '../../../../state/rules/types'
-import {reorderRules} from '../../../../models/rule/resources'
+import {activateRule, reorderRules} from '../../../../models/rule/resources'
 import {NotificationStatus} from '../../../../state/notifications/types'
 import {notify} from '../../../../state/notifications/actions'
-import {rulesReordered} from '../../../../state/entities/rules/actions'
+import {
+    rulesReordered,
+    ruleUpdated,
+} from '../../../../state/entities/rules/actions'
 
 import RuleRow from './components/RuleRow'
 import UpsellComponent from './components/RuleGettingStarted'
@@ -54,6 +59,35 @@ export function RulesList({rules, limitStatus, handleGoToLibrary}: Props) {
             )
             rulesReordered(oldPriorities)
         }
+    }
+
+    const [managedRuleUpgradeID, setManagedRuleUpgradeID] = useState<
+        number | undefined
+    >()
+
+    const handleActivate = async (id: number) => {
+        try {
+            const res = await activateRule(id)
+            void dispatch(ruleUpdated(res))
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Rule activated successfully',
+                })
+            )
+        } catch (error) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Unable to deactivate rule',
+                })
+            )
+        }
+    }
+
+    const handleUpgrade = () => {
+        void handleActivate(managedRuleUpgradeID!)
+        setManagedRuleUpgradeID(undefined)
     }
 
     const hasOnlyDefaultRules = useMemo(
@@ -102,11 +136,19 @@ export function RulesList({rules, limitStatus, handleGoToLibrary}: Props) {
                                 canDuplicate={
                                     limitStatus !== RuleLimitStatus.Reached
                                 }
+                                handleUpgrade={setManagedRuleUpgradeID}
+                                onActivate={handleActivate}
                             />
                         ))}
                     </ReactSortable>
                 </Table>
             )}
+            <AutomationSubscriptionModal
+                onClose={() => setManagedRuleUpgradeID(undefined)}
+                confirmLabel="Upgrade and reactivate"
+                onSubscribe={handleUpgrade}
+                isOpen={!!managedRuleUpgradeID}
+            />
             {hasOnlyDefaultRules && (
                 <UpsellComponent goToLibrary={handleGoToLibrary} />
             )}

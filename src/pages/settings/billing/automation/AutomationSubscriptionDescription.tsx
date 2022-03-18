@@ -1,6 +1,5 @@
 import React from 'react'
 import moment from 'moment-timezone'
-import classnames from 'classnames'
 
 import {
     getCurrentSubscription,
@@ -12,8 +11,9 @@ import {
     getHasAutomationAddOn,
 } from 'state/billing/selectors'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
-import PlanFeatureMaterialIcon from 'pages/settings/billing/plans/PlanFeatureMaterialIcon'
 import useAppSelector from 'hooks/useAppSelector'
+
+import AutomationSubscriptionFeatures from './AutomationSubscriptionFeatures'
 
 import css from './AutomationSubscriptionDescription.less'
 
@@ -79,53 +79,7 @@ const AutomationSubscriptionDescription = () => {
                     />
                 )}
             </div>
-            {!hasAutomationAddOn && (
-                <div className={css.features}>
-                    {[
-                        {
-                            icon: 'low_priority',
-                            label: (
-                                <>
-                                    Track, Return, Cancel & Custom{' '}
-                                    <b>workflows</b>
-                                </>
-                            ),
-                        },
-                        {
-                            icon: 'slow_motion_video',
-                            label: (
-                                <>
-                                    Self-service portal in <b>chat</b> and{' '}
-                                    <b>help center</b>
-                                </>
-                            ),
-                        },
-                        {
-                            icon: 'insights',
-                            label: (
-                                <>
-                                    Self-service <b>statistics</b>
-                                </>
-                            ),
-                        },
-                    ].map(({icon, label}) => (
-                        <li
-                            key={icon}
-                            className={classnames(
-                                'd-flex align-items-center',
-                                css.featureListItem
-                            )}
-                        >
-                            <span
-                                className={classnames(css.featureIcon, 'mr-3')}
-                            >
-                                <PlanFeatureMaterialIcon icon={icon} />
-                            </span>
-                            <span>{label}</span>
-                        </li>
-                    ))}
-                </div>
-            )}
+            {!hasAutomationAddOn && <AutomationSubscriptionFeatures />}
         </div>
     )
 }

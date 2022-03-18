@@ -9,6 +9,7 @@ export type RuleDraft = {
     description: string
     event_types: RuleEvent | string
     name: string
+    type?: RuleType
 }
 
 export type Rule = RuleDraft & {
@@ -16,7 +17,6 @@ export type Rule = RuleDraft & {
     id: number
     priority: number
     schedule: Maybe<string>
-    type: RuleType
     updated_datetime: string
     uri: string
 }
@@ -72,6 +72,7 @@ export enum RuleEvent {
 export enum RuleType {
     User = 'user',
     System = 'system',
+    Managed = 'managed',
 }
 
 export enum EqualityOperator {
@@ -111,4 +112,25 @@ export enum RuleLimitStatus {
     NonReaching = 'nonReaching',
     Reaching = 'reaching',
     Reached = 'reached',
+}
+
+// Managed Rule Typing
+export enum ManagedRulesSlugs {
+    AutoCloseSpam = 'non-support-related-emails',
+}
+export type ManagedRuleEmptySettings = {
+    slug: ManagedRulesSlugs
+}
+
+export type ManagedRuleSettings<T = ManagedRuleEmptySettings> =
+    ManagedRuleEmptySettings & T
+
+export type AutoCloseSpamSettings = {
+    allow_list?: string[]
+    block_list?: string[]
+}
+
+export type ManagedRule<T = ManagedRuleEmptySettings> = Rule & {
+    settings: ManagedRuleSettings<T>
+    type: RuleType.Managed
 }

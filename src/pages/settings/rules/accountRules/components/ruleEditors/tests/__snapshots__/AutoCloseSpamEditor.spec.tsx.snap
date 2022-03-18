@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutoCloseSpamEditor/> should render correctly 1`] = `
+<div
+  class="container"
+>
+  <h3>
+    Rule description
+  </h3>
+  <p>
+    This rules leverages machine learning to auto-close tickets unrelated to a customer support request.
+  </p>
+  <p>
+    For best results, make sure that this rule is triggering before all other rules by putting it at the top of your rule list.
+  </p>
+  <p>
+    <a
+      to="[object Object]"
+    >
+      You can see tickets closed by this rule anytime using this link
+    </a>
+  </p>
+  <div
+    class="listWrapper"
+  >
+    <h4>
+      Accept list
+    </h4>
+    <p>
+      Emails in the following list will never be closed by this auto close rule.
+    </p>
+    <div
+      class="MultiSelectField allowList"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="inputContainer multiSelectOptionField-dropdown"
+        >
+          <div
+            class="dropdown"
+          >
+            <div
+              aria-expanded="false"
+              aria-haspopup="true"
+              class=""
+              data-toggle="dropdown"
+            >
+              <input
+                class="input"
+                placeholder="Add items..."
+                value=""
+              />
+            </div>
+            <div
+              aria-hidden="true"
+              class="options dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-header"
+                tabindex="-1"
+              >
+                No result
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="listWrapper"
+  >
+    <h4>
+      Block list
+    </h4>
+    <p>
+      Emails in the following list will always be closed by this auto close rule.
+    </p>
+    <div
+      class="MultiSelectField blockList"
+    >
+      <div
+        class="container"
+      >
+        <div
+          class="inputContainer multiSelectOptionField-dropdown"
+        >
+          <div
+            class="dropdown"
+          >
+            <div
+              aria-expanded="false"
+              aria-haspopup="true"
+              class=""
+              data-toggle="dropdown"
+            >
+              <input
+                class="input"
+                placeholder="Add items..."
+                value=""
+              />
+            </div>
+            <div
+              aria-hidden="true"
+              class="options dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              <h6
+                class="dropdown-header"
+                tabindex="-1"
+              >
+                No result
+              </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

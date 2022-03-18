@@ -8,10 +8,19 @@ import {toRGBA} from 'utils'
 import history from 'pages/history'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
-import {Rule, RuleLimitStatus, RuleOperation} from 'state/rules/types'
+import {
+    ManagedRule,
+    Rule,
+    RuleLimitStatus,
+    RuleOperation,
+    RuleType,
+} from 'state/rules/types'
 import {createRule} from 'models/rule/resources'
 import {ruleCreated} from 'state/entities/rules/actions'
-import {getRulesLimitStatus} from 'state/entities/rules/selectors'
+import {
+    getRulesLimitStatus,
+    getSortedRules,
+} from 'state/entities/rules/selectors'
 
 import {createTag, fetchTags} from 'models/tag/resources'
 import {tagCreated} from 'state/entities/tags/actions'
@@ -58,7 +67,7 @@ function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
     const existingSections = useAppSelector(getSectionIdByName)
     const limitStatus = useAppSelector(getRulesLimitStatus)
     const currentAccount = useAppSelector(getCurrentAccountState)
-
+    const rules = useAppSelector(getSortedRules)
     const [isModalOpen, setModalOpen] = useState(false)
     const {rule, tags, recipe_tag, views_per_section} = recipe
 
@@ -168,8 +177,9 @@ function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
     }
 
     const renderTags = useCallback(() => {
-        return (
-            !!recipe_tag && (
+        const badges = []
+        if (!!recipe_tag) {
+            badges.push(
                 <Badge
                     key={recipe_tag}
                     cssModule={{badge: css.badge}}
@@ -184,10 +194,27 @@ function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
                     {recipe_tag}
                 </Badge>
             )
-        )
+        }
+        if (recipe.rule.type === 'managed') {
+            const text = managedRuleId ? 'Installed' : 'Managed rule'
+            badges.push(
+                <Badge
+                    color="light"
+                    key="managed-rule"
+                    cssModule={{badge: css.badge}}
+                >
+                    <i className="material-icons mr-2">auto_awesome</i>
+                    {text}
+                </Badge>
+            )
+        }
+        return <>{badges}</>
     }, [recipe_tag])
 
-    const handleInstall = async (shouldCreateViews: boolean) => {
+    const handleInstall = async (
+        shouldCreateViews: boolean,
+        shouldGoToRule = false
+    ) => {
         void dispatch(
             notify({
                 message: 'Installing rule',
@@ -270,6 +297,9 @@ function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
                 ...segmentEventProps,
                 views_installed: shouldCreateViews,
             })
+            if (shouldGoToRule) {
+                history.push(`/app/settings/rules/${newRule.id}`)
+            }
         } catch (error) {
             void dispatch(
                 notify({
@@ -281,8 +311,27 @@ function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
         }
     }
 
+    const managedRuleId = rules.find(
+        (rule) =>
+            rule.type === RuleType.Managed &&
+            recipe.rule.type === RuleType.Managed &&
+            (rule as ManagedRule).settings.slug ===
+                (recipe.rule as ManagedRule).settings.slug
+    )?.id
+
+    const shouldInstall =
+        !managedRuleId && limitStatus !== RuleLimitStatus.Reached
+
+    const handleClick = () => {
+        if (managedRuleId) {
+            history.push(`/app/settings/rules/${managedRuleId}`)
+        } else {
+            setModalOpen(true)
+        }
+    }
+
     return (
-        <div className={css.card} onClick={() => setModalOpen(true)}>
+        <div className={css.card} onClick={handleClick}>
             <div className={css.content}>
                 <div className={css.title}>{rule.name}</div>
                 <div className={css.description}>
@@ -303,7 +352,8 @@ function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
                     handleRule={handleRule}
                     isOpen={isModalOpen}
                     onToggle={handleModalToggle}
-                    shouldInstall={limitStatus !== RuleLimitStatus.Reached}
+                    shouldInstall={shouldInstall}
+                    managedRuleId={managedRuleId}
                 />
             </div>
         </div>

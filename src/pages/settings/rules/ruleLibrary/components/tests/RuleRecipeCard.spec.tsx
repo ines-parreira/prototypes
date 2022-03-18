@@ -4,6 +4,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {render, act, fireEvent, waitFor} from '@testing-library/react'
 import _noop from 'lodash/noop'
+import {fromJS} from 'immutable'
 
 import {createView} from 'models/view/resources'
 import {createTag} from 'models/tag/resources'
@@ -13,7 +14,8 @@ import {createSection} from 'models/section/resources'
 import {
     emptyRuleRecipeFixture,
     emptyRuleRecipeFixtureWithSections,
-} from '../../../../../../fixtures/ruleRecipe'
+} from 'fixtures/ruleRecipe'
+import {billingState} from 'fixtures/billing'
 
 import RuleRecipeCard from '../RuleRecipeCard'
 
@@ -55,6 +57,7 @@ describe('<RuleRecipeCard/>', () => {
 
     let defaultStore = mockStore({
         entities: {},
+        billing: fromJS(billingState),
     })
     const minProps = {
         recipe: emptyRuleRecipeFixture,
@@ -64,6 +67,7 @@ describe('<RuleRecipeCard/>', () => {
     beforeEach(() => {
         defaultStore = mockStore({
             entities: {},
+            billing: fromJS(billingState),
         })
         createRuleMock.mockReset()
         createViewMock.mockReset()
