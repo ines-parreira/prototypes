@@ -463,13 +463,30 @@ exports[`<Form /> should render with 2FA information when enabled 1`] = `
         >
           Two-Factor Authentication
         </label>
-        <p>
+        <div
+          class="twoFaStatusContainer"
+        >
           <div
             class="badge badge"
           >
             Active
           </div>
-        </p>
+          <button
+            class="wrapper ml-2 text medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                update
+              </i>
+              Reset 2FA Token
+            </span>
+          </button>
+        </div>
       </div>
       <div
         class="mt-5 form-group"

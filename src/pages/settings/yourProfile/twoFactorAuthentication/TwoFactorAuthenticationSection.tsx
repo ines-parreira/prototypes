@@ -63,9 +63,15 @@ export default function TwoFactorAuthenticationSection() {
             )}
             {isDisableModalOpen && (
                 <TwoFactorAuthenticationDisableModal
+                    title="Deactivate Two-Factor Authentication?"
+                    actionButtonText="Deactivate Authentication"
                     isOpen={isDisableModalOpen}
                     onClose={() => setIsDisableModalOpen(false)}
-                />
+                    onSuccess={() => setIsDisableModalOpen(false)}
+                >
+                    Your account will no longer benefit from this extra layer of
+                    security.
+                </TwoFactorAuthenticationDisableModal>
             )}
         </>
     )

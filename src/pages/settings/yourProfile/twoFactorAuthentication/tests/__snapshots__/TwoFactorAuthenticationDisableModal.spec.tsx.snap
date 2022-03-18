@@ -13,7 +13,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
       class=""
     >
       <div
-        class="modal"
+        class="modal show"
         role="dialog"
         style="display: block;"
         tabindex="-1"
@@ -32,7 +32,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
               <h5
                 class="modal-title"
               >
-                Deactivate Two-Factor Authentication?
+                Foo title
               </h5>
               <button
                 aria-label="Close"
@@ -50,34 +50,107 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
               class="modal-body"
             >
               
-              Your account will no longer benefit from this extra layer of security.
+              Foo 
+              <b>
+                body
+              </b>
             </div>
             <div
               class="modalFooter modal-footer"
             >
               <button
-                class="wrapper mr-auto secondary medium isDisabled"
-                disabled=""
+                class="wrapper mr-auto secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper destructive medium isDisabled"
-                disabled=""
+                class="wrapper destructive medium"
                 type="button"
               >
-                <div
-                  class="spinner spinner-border"
-                  role="status"
+                Foo action button text
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function 2`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Foo title
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
                 >
-                  <span
-                    class="sr-only"
-                  >
-                    Loading...
-                  </span>
-                </div>
-                Deactivate Authentication
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              
+              Foo 
+              <b>
+                body
+              </b>
+            </div>
+            <div
+              class="modalFooter modal-footer"
+            >
+              <button
+                class="wrapper mr-auto secondary medium"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="wrapper destructive medium"
+                type="button"
+              >
+                Foo action button text
               </button>
             </div>
           </div>
@@ -112,7 +185,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
       class=""
     >
       <div
-        class="modal"
+        class="modal show"
         role="dialog"
         style="display: block;"
         tabindex="-1"
@@ -131,7 +204,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
               <h5
                 class="modal-title"
               >
-                Deactivate Two-Factor Authentication?
+                Foo title
               </h5>
               <button
                 aria-label="Close"
@@ -149,7 +222,10 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
               class="modal-body"
             >
               
-              Your account will no longer benefit from this extra layer of security.
+              Foo 
+              <b>
+                body
+              </b>
             </div>
             <div
               class="modalFooter modal-footer"
@@ -164,7 +240,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
                 class="wrapper destructive medium"
                 type="button"
               >
-                Deactivate Authentication
+                Foo action button text
               </button>
             </div>
           </div>
@@ -191,7 +267,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
       class=""
     >
       <div
-        class="modal"
+        class="modal show"
         role="dialog"
         style="display: block;"
         tabindex="-1"
@@ -210,7 +286,7 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
               <h5
                 class="modal-title"
               >
-                Deactivate Two-Factor Authentication?
+                Foo title
               </h5>
               <button
                 aria-label="Close"
@@ -227,35 +303,148 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
             <div
               class="modal-body"
             >
-              
-              Your account will no longer benefit from this extra layer of security.
+              <div
+                class="alert error mb-3"
+              >
+                <div
+                  class="iconContainer"
+                >
+                  <img
+                    alt="icon"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div
+                  class="content"
+                >
+                  <span
+                    class="label"
+                  >
+                    foo error deleteTwoFASecretMock
+                  </span>
+                </div>
+              </div>
+              Foo 
+              <b>
+                body
+              </b>
             </div>
             <div
               class="modalFooter modal-footer"
             >
               <button
-                class="wrapper mr-auto secondary medium isDisabled"
-                disabled=""
+                class="wrapper mr-auto secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper destructive medium isDisabled"
-                disabled=""
+                class="wrapper destructive medium"
                 type="button"
               >
+                Foo action button text
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the deletion failed 2`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Foo title
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              <div
+                class="alert error mb-3"
+              >
                 <div
-                  class="spinner spinner-border"
-                  role="status"
+                  class="iconContainer"
+                >
+                  <img
+                    alt="icon"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div
+                  class="content"
                 >
                   <span
-                    class="sr-only"
+                    class="label"
                   >
-                    Loading...
+                    foo error deleteTwoFASecretMock
                   </span>
                 </div>
-                Deactivate Authentication
+              </div>
+              Foo 
+              <b>
+                body
+              </b>
+            </div>
+            <div
+              class="modalFooter modal-footer"
+            >
+              <button
+                class="wrapper mr-auto secondary medium"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="wrapper destructive medium"
+                type="button"
+              >
+                Foo action button text
               </button>
             </div>
           </div>

@@ -41,6 +41,7 @@ import {toJS} from 'utils'
 import settingsCss from '../settings.less'
 
 import {checkAccessTo2FA} from '../yourProfile/twoFactorAuthentication/utils'
+import TwoFactorAuthenticationDisableModal from '../yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
 import css from './Form.less'
 
 type OwnProps = {
@@ -58,6 +59,7 @@ type State = {
     isSubmitting: boolean
     name: string
     role: UserRole
+    isDisableModalOpen: boolean
 }
 
 export class FormContainer extends Component<Props, State> {
@@ -74,6 +76,7 @@ export class FormContainer extends Component<Props, State> {
         isSubmitting: false,
         name: '',
         role: UserRole.BasicAgent,
+        isDisableModalOpen: false,
     }
 
     componentDidMount() {
@@ -264,27 +267,81 @@ export class FormContainer extends Component<Props, State> {
                                 </PopoverModal>
                             </div>
                         </RichDropdown>
-                        {checkAccessTo2FA(this.props.accountDomain) && (
-                            <FormGroup>
-                                <Label className="control-label">
-                                    Two-Factor Authentication
-                                </Label>
-                                <p>
-                                    <Badge
-                                        className={css.badge}
-                                        type={
-                                            has2FaEnabled
-                                                ? ColorType.Success
-                                                : ColorType.Error
-                                        }
-                                    >
-                                        {has2FaEnabled
-                                            ? 'Active'
-                                            : 'Not Active'}
-                                    </Badge>
-                                </p>
-                            </FormGroup>
-                        )}
+                        {isUpdate &&
+                            checkAccessTo2FA(this.props.accountDomain) && (
+                                <>
+                                    <FormGroup>
+                                        <Label className="control-label">
+                                            Two-Factor Authentication
+                                        </Label>
+                                        <div
+                                            className={css.twoFaStatusContainer}
+                                        >
+                                            <Badge
+                                                className={css.badge}
+                                                type={
+                                                    has2FaEnabled
+                                                        ? ColorType.Success
+                                                        : ColorType.Error
+                                                }
+                                            >
+                                                {has2FaEnabled
+                                                    ? 'Active'
+                                                    : 'Not Active'}
+                                            </Badge>
+                                            {has2FaEnabled && (
+                                                <Button
+                                                    type="button"
+                                                    intent="text"
+                                                    className="ml-2"
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            ...this.state,
+                                                            isDisableModalOpen:
+                                                                true,
+                                                        })
+                                                    }}
+                                                >
+                                                    <ButtonIconLabel icon="update">
+                                                        Reset 2FA Token
+                                                    </ButtonIconLabel>
+                                                </Button>
+                                            )}
+                                        </div>
+                                    </FormGroup>
+                                    {this.state.isDisableModalOpen && (
+                                        <TwoFactorAuthenticationDisableModal
+                                            user={toJS(this.state.agent)}
+                                            title="Reset 2FA Token?"
+                                            actionButtonText="Reset token"
+                                            isOpen={
+                                                this.state.isDisableModalOpen
+                                            }
+                                            onClose={() => {
+                                                this.setState({
+                                                    ...this.state,
+                                                    isDisableModalOpen: false,
+                                                })
+                                            }}
+                                            onSuccess={() => {
+                                                this.setState({
+                                                    ...this.state,
+                                                    isDisableModalOpen: false,
+                                                    agent: this.state.agent.set(
+                                                        'has_2fa_enabled',
+                                                        false
+                                                    ),
+                                                })
+                                            }}
+                                        >
+                                            If you enforced Two-Factor
+                                            Authentication (2FA) for all users,{' '}
+                                            <b>{this.state.name}</b> will have
+                                            to setup 2FA again.
+                                        </TwoFactorAuthenticationDisableModal>
+                                    )}
+                                </>
+                            )}
                         <FormGroup className="mt-5">
                             <Button
                                 type="submit"

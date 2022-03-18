@@ -47,7 +47,7 @@ describe('<Form />', () => {
         const {container, findByText} = render(
             <FormContainer {...minProps} accountDomain="acme" />
         )
-        await findByText('Save user')
+        await findByText('Reset 2FA Token')
 
         expect(container.firstChild).toMatchSnapshot()
     })

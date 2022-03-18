@@ -38,6 +38,7 @@ export type User = UserDraft & {
     roles: [{name: UserRole}]
     settings: UserSetting[]
     timezone: string | null
+    has_2fa_enabled: boolean
 }
 
 export type EditableUserProfile = {

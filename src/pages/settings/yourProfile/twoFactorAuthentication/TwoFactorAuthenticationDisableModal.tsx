@@ -1,34 +1,60 @@
-import React, {useCallback, useState} from 'react'
+import React, {ReactNode, useCallback, useState} from 'react'
 import {AxiosError} from 'axios'
 import useAppDispatch from 'hooks/useAppDispatch'
-import Modal from '../../../common/components/Modal'
-import css from '../../../common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal.less'
-import {deleteTwoFASecret} from '../../../../models/twoFactorAuthentication/resources'
-import Button from '../../../common/components/button/Button'
-import {update2FAEnabled} from '../../../../state/currentUser/actions'
-import Alert, {AlertType} from '../../../common/components/Alert/Alert'
+import {User} from 'config/types/user'
+import Modal from 'pages/common/components/Modal'
+import css from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal.less'
+import {deleteTwoFASecret} from 'models/twoFactorAuthentication/resources'
+import Button from 'pages/common/components/button/Button'
+import {update2FAEnabled} from 'state/currentUser/actions'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 
 export type OwnProps = {
+    user?: User
+    title: string
+    actionButtonText: string
+    children: ReactNode
     isOpen: boolean
     onClose: () => void
+    onSuccess: () => void
 }
 
 export default function TwoFactorAuthenticationDisableModal({
+    user,
+    title,
+    actionButtonText,
+    children,
     isOpen,
     onClose,
+    onSuccess,
 }: OwnProps) {
     const dispatch = useAppDispatch()
 
     const [errorText, setErrorText] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
-    const disableTwoFa = useCallback(async () => {
+    const disableTwoFA = useCallback(async () => {
         try {
             setIsLoading(true)
             setErrorText('')
-            await deleteTwoFASecret()
-            void dispatch(update2FAEnabled(false))
-            onClose()
+
+            if (!user) {
+                await deleteTwoFASecret()
+                void dispatch(update2FAEnabled(false))
+            } else {
+                await deleteTwoFASecret(user.id)
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: `Two-Factor Authentication token has been reset for <b>${user.name}</b>.`,
+                        allowHTML: true,
+                    })
+                )
+            }
+
+            onSuccess()
         } catch (error) {
             const {response} = error as AxiosError<{error: {msg: string}}>
             if (response) {
@@ -38,12 +64,12 @@ export default function TwoFactorAuthenticationDisableModal({
         } finally {
             setIsLoading(false)
         }
-    }, [dispatch, onClose])
+    }, [dispatch, onSuccess, user])
 
     return (
         <Modal
             isOpen={isOpen}
-            header="Deactivate Two-Factor Authentication?"
+            header={title}
             onClose={onClose}
             style={{maxWidth: '600px'}}
             footerClassName={css.modalFooter}
@@ -59,10 +85,10 @@ export default function TwoFactorAuthenticationDisableModal({
                     </Button>
                     <Button
                         intent="destructive"
-                        onClick={disableTwoFa}
+                        onClick={disableTwoFA}
                         isLoading={isLoading}
                     >
-                        Deactivate Authentication
+                        {actionButtonText}
                     </Button>
                 </>
             }
@@ -72,8 +98,7 @@ export default function TwoFactorAuthenticationDisableModal({
                     {errorText}
                 </Alert>
             )}
-            Your account will no longer benefit from this extra layer of
-            security.
+            {children}
         </Modal>
     )
 }

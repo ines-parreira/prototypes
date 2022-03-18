@@ -125,20 +125,26 @@ describe('twoFactorAuthentication resources', () => {
     })
 
     describe('deleteTwoFASecret', () => {
-        it('should resolve with 204 code and empty body on success', async () => {
-            mockedServer.onDelete('/api/2fa/secret').reply(204, {})
+        it.each([undefined, 1])(
+            'should resolve with 204 code and empty body on success',
+            async (userId) => {
+                mockedServer.onDelete('/api/2fa/secret').reply(204, {})
 
-            await expect(deleteTwoFASecret()).resolves.not.toThrow()
-        })
+                await expect(deleteTwoFASecret(userId)).resolves.not.toThrow()
+            }
+        )
 
-        it('should reject an error on fail', async () => {
-            mockedServer
-                .onDelete('/api/2fa/secret')
-                .reply(503, {message: 'error'})
+        it.each([undefined, 1])(
+            'should reject an error on fail',
+            async (userId) => {
+                mockedServer
+                    .onDelete('/api/2fa/secret')
+                    .reply(503, {message: 'error'})
 
-            await expect(deleteTwoFASecret()).rejects.toThrow(
-                'Request failed with status code 503'
-            )
-        })
+                await expect(deleteTwoFASecret(userId)).rejects.toThrow(
+                    'Request failed with status code 503'
+                )
+            }
+        )
     })
 })

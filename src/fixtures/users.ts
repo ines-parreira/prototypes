@@ -34,4 +34,5 @@ export const user: User = {
         },
     ],
     updated_datetime: '2016-12-22T19:36:12.489432+00:00',
+    has_2fa_enabled: false,
 }

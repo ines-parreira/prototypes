@@ -23,6 +23,7 @@ export const agents: User[] = [
         country: 'US',
         language: 'en-US',
         timezone: 'UTC',
+        has_2fa_enabled: false,
     },
     {
         lastname: 'Smith',
@@ -46,6 +47,7 @@ export const agents: User[] = [
         country: 'US',
         language: 'en-US',
         timezone: 'UTC',
+        has_2fa_enabled: false,
     },
 ]
 export const locations = {
