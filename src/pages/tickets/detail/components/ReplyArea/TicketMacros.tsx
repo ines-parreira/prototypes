@@ -19,7 +19,7 @@ import {
     deleteMacro,
     fetchMacrosParamsTypes,
 } from '../../../../../state/macro/actions'
-import Preview from '../../../common/macros/Preview.js'
+import Preview from '../../../common/macros/Preview'
 import Tooltip from '../../../../common/components/Tooltip'
 import Loader from '../../../../common/components/Loader/Loader'
 import MacroList from '../../../common/macros/components/MacroList'

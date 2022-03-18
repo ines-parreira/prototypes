@@ -1,21 +1,23 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS, Map} from 'immutable'
 
-import {UserRole} from '../../../../../../config/types/user'
-import {user} from '../../../../../../fixtures/users'
+import {RootState} from 'state/types'
+import {UserRole} from 'config/types/user'
+import {user} from 'fixtures/users'
+
 import MacroNoResults from '../MacroNoResults'
 
 const mockStore = configureMockStore([thunk])
 
 describe('<MacroNoResults />', () => {
-    const defaultState = {
+    const defaultState: Partial<RootState> = {
         currentUser: fromJS(user),
     }
-    const minProps = {
+    const minProps: ComponentProps<typeof MacroNoResults> = {
         searchQuery: '',
         newAction: jest.fn(),
     }

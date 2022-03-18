@@ -1,12 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 
-import {TICKET_STATUSES} from '../../../../../../config.ts'
-import InputField from '../../../../../common/forms/InputField'
+import {TICKET_STATUSES} from 'config'
+import InputField from 'pages/common/forms/InputField'
 
-export default class SetStatusAction extends React.Component {
+type Props = {
+    action: Map<string, any>
+    index: number
+    updateActionArgs: (index: number, args: Map<string, any>) => void
+}
+
+export default class SetStatusAction extends React.Component<Props> {
     componentDidMount() {
         const {index, action, updateActionArgs} = this.props
         const status =
@@ -36,10 +41,4 @@ export default class SetStatusAction extends React.Component {
             </div>
         )
     }
-}
-
-SetStatusAction.propTypes = {
-    action: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
-    updateActionArgs: PropTypes.func.isRequired,
 }

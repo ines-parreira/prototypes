@@ -1,37 +1,34 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
+import React, {Component} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {
     UncontrolledButtonDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
 } from 'reactstrap'
-
-import {attachEntitiesToVariables} from '../../../../../common/draftjs/plugins/variables/utils'
-import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
-import RichField from '../../../../../common/forms/RichField'
-import {insertText} from '../../../../../../utils.ts'
-import {convertToHTML, getPlainText} from '../../../../../../utils/editor.tsx'
-import {getVariables} from '../../../../../../config/ticket.ts'
+import {Map} from 'immutable'
+import {EditorState} from 'draft-js'
 
 import Button from 'pages/common/components/button/Button'
+import {insertText} from 'utils'
+import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
+import {getVariables} from 'config/ticket'
+import {convertToHTML, getPlainText} from 'utils/editor'
+import {RootState} from 'state/types'
+import {IntegrationType} from 'models/integration/types'
+import RichField from 'pages/common/forms/RichField/RichField'
+import * as integrationsSelectors from 'state/integrations/selectors'
 
-@connect((state) => {
-    return {
-        hasIntegrationOfTypes:
-            integrationsSelectors.makeHasIntegrationOfTypes(state),
-    }
-})
-export default class SetResponseTextAction extends React.Component {
-    static propTypes = {
-        action: PropTypes.object.isRequired,
-        index: PropTypes.number.isRequired,
-        updateActionArgs: PropTypes.func.isRequired,
-        hasIntegrationOfTypes: PropTypes.func.isRequired,
-    }
+type Props = {
+    action: Map<string, any>
+    index: number
+    updateActionArgs: (index: number, args: Map<string, any>) => void
+} & ConnectedProps<typeof connector>
 
-    _insertText = (text) => {
+export class SetResponseTextAction extends Component<Props> {
+    richArea?: RichField | null
+
+    _insertText = (text: string) => {
         if (!this.richArea) {
             return
         }
@@ -45,8 +42,8 @@ export default class SetResponseTextAction extends React.Component {
         this.richArea.setEditorState(editorState)
     }
 
-    _setResponseText = (editorState) => {
-        const args = this.props.action.get('arguments')
+    _setResponseText = (editorState: EditorState) => {
+        const args: Map<any, any> = this.props.action.get('arguments')
         const contentState = editorState.getCurrentContent()
         this.props.updateActionArgs(
             this.props.index,
@@ -60,10 +57,13 @@ export default class SetResponseTextAction extends React.Component {
     _renderInsertVariable = () => {
         const {hasIntegrationOfTypes} = this.props
 
-        const variables = getVariables()
+        const variables = getVariables(null)
 
         return variables.map((category, index) => {
-            if (category.integration && !hasIntegrationOfTypes(category.type)) {
+            if (
+                category.integration &&
+                !hasIntegrationOfTypes(category.type as IntegrationType)
+            ) {
                 return null
             }
 
@@ -98,7 +98,7 @@ export default class SetResponseTextAction extends React.Component {
                     intent="text"
                     style={{color: 'inherit'}}
                     onClick={() => {
-                        this._insertText(category.value)
+                        this._insertText(category.value!)
                     }}
                     type="button"
                 >
@@ -132,3 +132,12 @@ export default class SetResponseTextAction extends React.Component {
         )
     }
 }
+
+const connector = connect((state: RootState) => {
+    return {
+        hasIntegrationOfTypes:
+            integrationsSelectors.makeHasIntegrationOfTypes(state),
+    }
+})
+
+export default connector(SetResponseTextAction)

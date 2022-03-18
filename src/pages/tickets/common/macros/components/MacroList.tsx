@@ -4,16 +4,14 @@ import _noop from 'lodash/noop'
 import {List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
-import InfiniteScroll from '../../../../common/components/InfiniteScroll/InfiniteScroll'
-import {scrollToReactNode} from '../../../../common/utils/keyboard'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import {scrollToReactNode} from 'pages/common/utils/keyboard'
+import {fetchMacrosParamsTypes} from 'state/macro/actions'
+import {getCurrentUser} from 'state/currentUser/selectors'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {RootState} from 'state/types'
+
 import {isMacroDisabled} from '../utils'
-import {fetchMacrosParamsTypes} from '../../../../../state/macro/actions'
-import {getCurrentUser} from '../../../../../state/currentUser/selectors'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../store/middlewares/segmentTracker'
-import {RootState} from '../../../../../state/types'
 
 import css from './MacroList.less'
 
@@ -25,7 +23,7 @@ type Props = {
     search: string
     page: number
     totalPages: number
-    className: string
+    className?: string
     disableExternalActions?: boolean
     fetchMacros: (params: fetchMacrosParamsTypes) => Promise<void>
 } & ConnectedProps<typeof connector>

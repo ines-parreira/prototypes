@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
@@ -8,8 +8,8 @@ import {TicketTags} from '../TicketTags'
 
 describe('TicketTags component', () => {
     const user: Map<any, any> = fromJS(fromJS(agents[0]))
-    const minProps = {
-        addTags: jest.fn(),
+    const minProps: Omit<ComponentProps<typeof TicketTags>, 'transparent'> = {
+        addTag: jest.fn(),
         cancelFieldEnumSearchCancellable: jest.fn(),
         fieldEnumSearchCancellable: jest.fn(() => Promise.resolve(fromJS([]))),
         removeTag: jest.fn(),

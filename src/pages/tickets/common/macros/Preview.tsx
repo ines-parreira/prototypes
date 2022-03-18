@@ -1,60 +1,66 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {Component, ComponentProps} from 'react'
 import classnames from 'classnames'
 import {Badge} from 'reactstrap'
+import {Map} from 'immutable'
 
-import css from './Preview.less'
-
-import {TicketMessageSourceType} from 'business/types/ticket.ts'
-import {isRichType} from 'config/ticket.ts'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {isRichType} from 'config/ticket'
 import {getIconFromActionType} from 'models/macroAction/helpers'
+
 import {actionTypeToName} from 'models/macroAction/types'
-import RichField from 'pages/common/forms/RichField'
+import RichField from 'pages/common/forms/RichField/RichField'
+
 import {
     TagLabel,
     AgentLabel,
     StatusLabel,
     TimedeltaLabel,
     TeamLabel,
-} from 'pages/common/utils/labels.tsx'
+} from 'pages/common/utils/labels'
 import {
     fileIconFromContentType,
     getSortedIntegrationActions,
-} from 'pages/tickets/common/utils'
-import {getActionTemplate} from 'utils.ts'
-import {sanitizeHtmlForFacebookMessenger} from 'utils/html.ts'
+} from 'pages/tickets/common/utils.js'
+import {getActionTemplate} from 'utils'
+import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
 
-class Preview extends React.Component {
-    renderAddAttachments = (attachments) => {
+import css from './Preview.less'
+
+type Props = {
+    displayHTML?: boolean
+    actions: Map<any, any>
+    ticketMessageSourceType?: TicketMessageSourceType
+    className?: string
+}
+
+class Preview extends Component<Props> {
+    renderAddAttachments = (attachments: Map<any, any>) => {
         if (!attachments) {
             return null
         }
         return (
             <div className="mb-3">
                 <strong className="text-muted mr-2">Attach files:</strong>
-                {attachments
-                    .getIn(['arguments', 'attachments'])
-                    .map((file, index) => (
-                        <Badge
-                            key={index}
-                            color="secondary"
-                            className="mr-1 mb-1"
-                        >
-                            <i className="material-icons mr-2">
-                                {fileIconFromContentType(
-                                    file.get('content_type')
-                                )}
-                            </i>
-                            {file.get('name')}
-                        </Badge>
-                    ))}
+                {(
+                    attachments.getIn(['arguments', 'attachments']) as Map<
+                        any,
+                        any
+                    >
+                ).map((file: Map<any, any>, index: number) => (
+                    <Badge key={index} color="secondary" className="mr-1 mb-1">
+                        <i className="material-icons mr-2">
+                            {fileIconFromContentType(file.get('content_type'))}
+                        </i>
+                        {file.get('name')}
+                    </Badge>
+                ))}
             </div>
         )
     }
 
-    renderResponseText(responseTextAction) {
+    renderResponseText(responseTextAction: Map<string, any>) {
         if (responseTextAction) {
-            const value = {
+            const value: ComponentProps<typeof RichField>['value'] = {
                 text: responseTextAction.getIn(['arguments', 'body_text']),
             }
 
@@ -67,7 +73,7 @@ class Preview extends React.Component {
             if (
                 this.props.displayHTML ||
                 (hasSourceType &&
-                    isRichType(this.props.ticketMessageSourceType))
+                    isRichType(this.props.ticketMessageSourceType!))
             ) {
                 value.html = responseTextAction.getIn([
                     'arguments',
@@ -98,7 +104,7 @@ class Preview extends React.Component {
         }
     }
 
-    renderSetStatus(setStatusAction) {
+    renderSetStatus(setStatusAction: Map<string, any>) {
         if (setStatusAction) {
             return (
                 <div className={css.macroData}>
@@ -111,7 +117,7 @@ class Preview extends React.Component {
         }
     }
 
-    renderSnoozeTicket(snoozeTicketAction) {
+    renderSnoozeTicket(snoozeTicketAction: Map<string, any>) {
         if (snoozeTicketAction) {
             const duration = snoozeTicketAction.getIn([
                 'arguments',
@@ -126,7 +132,7 @@ class Preview extends React.Component {
         }
     }
 
-    renderAddTags(addTagsActions) {
+    renderAddTags(addTagsActions: Map<string, any>) {
         if (!addTagsActions || !addTagsActions.size) {
             return null
         }
@@ -135,9 +141,8 @@ class Preview extends React.Component {
             <div className={classnames(css.macroData, css.addTagWrapper)}>
                 <strong className="text-muted mr-2">Add tags:</strong>
                 {addTagsActions
-                    .map((action) =>
-                        action
-                            .getIn(['arguments', 'tags'], '')
+                    .map((action: Map<string, any>) =>
+                        (action.getIn(['arguments', 'tags'], '') as string)
                             .split(',')
                             .map((tag) => <TagLabel key={tag}>{tag}</TagLabel>)
                     )
@@ -146,7 +151,7 @@ class Preview extends React.Component {
         )
     }
 
-    renderSetAssignee(setAssigneeAction) {
+    renderSetAssignee(setAssigneeAction: Map<string, any>) {
         if (!setAssigneeAction) {
             return null
         }
@@ -170,7 +175,7 @@ class Preview extends React.Component {
         )
     }
 
-    renderSetTeamAssignee(setTeamAssigneeAction) {
+    renderSetTeamAssignee(setTeamAssigneeAction: Map<string, any>) {
         if (!setTeamAssigneeAction) {
             return null
         }
@@ -194,7 +199,7 @@ class Preview extends React.Component {
         )
     }
 
-    renderSetSubject(setSubjectAction) {
+    renderSetSubject(setSubjectAction: Map<string, any>) {
         if (!setSubjectAction) {
             return null
         }
@@ -209,7 +214,10 @@ class Preview extends React.Component {
         )
     }
 
-    renderBackActions(integrationType, integrationActions) {
+    renderBackActions(
+        integrationType: string,
+        integrationActions: Map<any, any>
+    ) {
         if (!integrationActions || !integrationActions.size) {
             return null
         }
@@ -223,10 +231,10 @@ class Preview extends React.Component {
                     {actionTypeToName[integrationType]} actions:
                 </strong>
                 {integrationActions
-                    .map((action, idx) => (
+                    .map((action: Map<string, unknown>, index: number) => (
                         <div
                             className={css.integrationAction}
-                            key={`integration-action-${idx}`}
+                            key={`integration-action-${index}`}
                         >
                             <img
                                 alt={`${integrationType} logo`}
@@ -250,46 +258,49 @@ class Preview extends React.Component {
         }
 
         const addTagsActions = actions.filter(
-            (action) => action.get('name') === 'addTags'
+            (action: Map<any, any>) => action.get('name') === 'addTags'
         )
         const responseTextAction = actions.find(
-            (action) => action.get('name') === 'setResponseText'
+            (action: Map<string, any>) =>
+                action.get('name') === 'setResponseText'
         )
         const setStatusAction = actions.find(
-            (action) => action.get('name') === 'setStatus'
+            (action: Map<string, any>) => action.get('name') === 'setStatus'
         )
         const snoozeTicketAction = actions.find(
-            (action) => action.get('name') === 'snoozeTicket'
+            (action: Map<string, any>) => action.get('name') === 'snoozeTicket'
         )
         const setAssigneeAction = actions.find(
-            (action) => action.get('name') === 'setAssignee'
+            (action: Map<string, any>) => action.get('name') === 'setAssignee'
         )
         const setTeamAssigneeAction = actions.find(
-            (action) => action.get('name') === 'setTeamAssignee'
+            (action: Map<string, any>) =>
+                action.get('name') === 'setTeamAssignee'
         )
         const setSubjectAction = actions.find(
-            (action) => action.get('name') === 'setSubject'
+            (action: Map<string, any>) => action.get('name') === 'setSubject'
         )
         const addAttachmentsActions = actions.find(
-            (action) => action.get('name') === 'addAttachments'
+            (action: Map<any, any>) => action.get('name') === 'addAttachments'
         )
         const backActions = actions.filter(
-            (action) =>
-                getActionTemplate(action.get('name')).execution === 'back'
+            (action: Map<string, any>) =>
+                getActionTemplate(action.get('name'))?.execution === 'back'
         )
 
-        const sortedBackActions = getSortedIntegrationActions(backActions)
+        const sortedBackActions: Map<string, any> =
+            getSortedIntegrationActions(backActions)
 
         return (
             <div className={classnames(css.component, className)}>
                 {this.renderSetStatus(setStatusAction)}
                 {this.renderSnoozeTicket(snoozeTicketAction)}
-                {this.renderAddTags(addTagsActions)}
+                {this.renderAddTags(addTagsActions as Map<string, any>)}
                 {this.renderSetAssignee(setAssigneeAction)}
                 {this.renderSetTeamAssignee(setTeamAssigneeAction)}
                 {this.renderSetSubject(setSubjectAction)}
                 {sortedBackActions
-                    .map((v, k) => this.renderBackActions(k, v))
+                    .map((v, k) => this.renderBackActions(k!, v))
                     .toList()
                     .toJS()}
                 {this.renderAddAttachments(addAttachmentsActions)}
@@ -297,13 +308,6 @@ class Preview extends React.Component {
             </div>
         )
     }
-}
-
-Preview.propTypes = {
-    displayHTML: PropTypes.bool,
-    actions: PropTypes.object.isRequired,
-    ticketMessageSourceType: PropTypes.string,
-    className: PropTypes.string,
 }
 
 export default Preview

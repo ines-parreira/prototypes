@@ -3,7 +3,7 @@ import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
 import React from 'react'
-import Preview from '../Preview.js'
+import Preview from '../Preview'
 import {
     addInternalNoteAction,
     addTagsAction,

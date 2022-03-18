@@ -1,35 +1,42 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {Row, Col, FormGroup, Label} from 'reactstrap'
-
-import ParametersEditor from '../ParametersEditor.tsx'
 
 import {
     AVAILABLE_HTTP_METHODS,
     JSON_CONTENT_TYPE,
     FORM_CONTENT_TYPE,
     HTTP_METHOD_GET,
-} from 'config.ts'
-import {validateWebhookURL, validateWebhookURLToPattern} from 'utils.ts'
+} from 'config'
+import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import InputField from 'pages/common/forms/InputField'
-import JsonField from 'pages/common/forms/JsonField.tsx'
+import JsonField from 'pages/common/forms/JsonField'
 
-export default class HttpAction extends React.Component {
-    _setTitle = (title) => {
+import ParametersEditor from '../ParametersEditor'
+
+type Props = {
+    action: Map<string, any>
+    index: number
+    updateActionArgs: (index: number, args: Map<string, any>) => void
+    updateActionTitle: (index: number, title: string) => void
+}
+
+export default class HttpAction extends React.Component<Props> {
+    _setTitle = (title: string) => {
         this.props.updateActionTitle(this.props.index, title)
     }
 
-    _setArgument = (name, value) => {
-        this.props.updateActionArgs(
-            this.props.index,
-            this.props.action.get('arguments', fromJS({})).set(name, value)
+    _setArgument = (name: string, value: unknown) => {
+        const args: Map<string, any> = this.props.action.get(
+            'arguments',
+            fromJS({})
         )
+        this.props.updateActionArgs(this.props.index, args.set(name, value))
     }
 
-    _renderBody = (action) => {
+    _renderBody = (action: Map<string, any>) => {
         if (action.getIn(['arguments', 'method']) === HTTP_METHOD_GET) {
             return null
         }
@@ -158,11 +165,4 @@ export default class HttpAction extends React.Component {
             </div>
         )
     }
-}
-
-HttpAction.propTypes = {
-    action: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
-    updateActionArgs: PropTypes.func.isRequired,
-    updateActionTitle: PropTypes.func.isRequired,
 }

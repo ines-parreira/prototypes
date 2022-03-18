@@ -1,9 +1,13 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {Component} from 'react'
+import {Map} from 'immutable'
 
 import Preview from '../Preview'
 
-export default class MacroPreview extends React.Component {
+type Props = {
+    currentMacro: Map<any, any>
+}
+
+export default class MacroPreview extends Component<Props> {
     render() {
         const {currentMacro} = this.props
 
@@ -33,8 +37,4 @@ export default class MacroPreview extends React.Component {
             </div>
         )
     }
-}
-
-MacroPreview.propTypes = {
-    currentMacro: PropTypes.object,
 }

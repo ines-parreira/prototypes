@@ -449,7 +449,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
 
                         <TicketTags
                             ticketTags={ticket.get('tags')}
-                            addTags={addTags}
+                            addTag={addTags}
                             removeTag={removeTag}
                             transparent
                         />

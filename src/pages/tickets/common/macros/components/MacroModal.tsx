@@ -32,7 +32,7 @@ import {makeGetViewCount} from '../../../../../state/views/selectors'
 
 import css from './MacroModal.less'
 import MacroNoResults from './MacroNoResults'
-import MacroPreview from './MacroPreview.js'
+import MacroPreview from './MacroPreview'
 import MacroEdit from './MacroEdit'
 import MacroModalList from './MacroModalList'
 

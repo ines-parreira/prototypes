@@ -9,7 +9,7 @@ import {
     MacroActionName,
 } from '../../../../../../../models/macroAction/types'
 import {getActionTemplate} from '../../../../../../../utils'
-import Preview from '../../../../../common/macros/Preview.js'
+import Preview from '../../../../../common/macros/Preview'
 
 import TagActionPreview from './TagActionPreview'
 import {SimpleActionPreview} from './SimpleActionPreview'

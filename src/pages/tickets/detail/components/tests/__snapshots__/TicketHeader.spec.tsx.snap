@@ -414,7 +414,7 @@ exports[`<TicketHeader /> should render an unread ticket without the "Mark as un
         setQuickStatus={[Function]}
       />
       <Connect(Component)
-        addTags={[MockFunction]}
+        addTag={[MockFunction]}
         removeTag={[MockFunction]}
         transparent={true}
       />
@@ -648,7 +648,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
         setQuickStatus={[Function]}
       />
       <Connect(Component)
-        addTags={[MockFunction]}
+        addTag={[MockFunction]}
         removeTag={[MockFunction]}
         transparent={true}
       />
@@ -716,7 +716,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
       className="d-inline-flex"
     >
       <Connect(Component)
-        addTags={[MockFunction]}
+        addTag={[MockFunction]}
         removeTag={[MockFunction]}
         transparent={true}
       />
@@ -948,7 +948,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
         setQuickStatus={[Function]}
       />
       <Connect(Component)
-        addTags={[MockFunction]}
+        addTag={[MockFunction]}
         removeTag={[MockFunction]}
         transparent={true}
       />
@@ -1145,7 +1145,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
         setQuickStatus={[Function]}
       />
       <Connect(Component)
-        addTags={[MockFunction]}
+        addTag={[MockFunction]}
         removeTag={[MockFunction]}
         transparent={true}
       />

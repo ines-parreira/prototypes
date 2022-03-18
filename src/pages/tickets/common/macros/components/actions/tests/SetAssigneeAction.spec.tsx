@@ -1,20 +1,20 @@
 import {shallow} from 'enzyme'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 
-import SetAssigneeAction from '../SetAssigneeAction.tsx'
+import SetAssigneeAction from '../SetAssigneeAction'
 
 describe('<SetAssigneeAction/>', () => {
     describe('render()', () => {
-        const updateActionArgs = jest.fn()
+        const minProps: ComponentProps<typeof SetAssigneeAction> = {
+            action: fromJS({}),
+            index: 1,
+            updateActionArgs: jest.fn(),
+        }
 
         it('should render user dropdown', () => {
             const component = shallow(
-                <SetAssigneeAction
-                    action={fromJS({})}
-                    handleUsers
-                    updateActionArgs={updateActionArgs}
-                />
+                <SetAssigneeAction {...minProps} handleUsers />
             )
 
             expect(component).toMatchSnapshot()
@@ -22,11 +22,7 @@ describe('<SetAssigneeAction/>', () => {
 
         it('should render team dropdown', () => {
             const component = shallow(
-                <SetAssigneeAction
-                    action={fromJS({})}
-                    handleTeams
-                    updateActionArgs={updateActionArgs}
-                />
+                <SetAssigneeAction {...minProps} handleTeams />
             )
 
             expect(component).toMatchSnapshot()
@@ -35,6 +31,7 @@ describe('<SetAssigneeAction/>', () => {
         it('should render user dropdown with current assignee', () => {
             const component = shallow(
                 <SetAssigneeAction
+                    {...minProps}
                     action={fromJS({
                         arguments: {
                             assignee_user: fromJS({
@@ -45,7 +42,6 @@ describe('<SetAssigneeAction/>', () => {
                         },
                     })}
                     handleUsers
-                    updateActionArgs={updateActionArgs}
                 />
             )
 
@@ -55,6 +51,7 @@ describe('<SetAssigneeAction/>', () => {
         it('should render team dropdown with current assignee', () => {
             const component = shallow(
                 <SetAssigneeAction
+                    {...minProps}
                     action={fromJS({
                         arguments: {
                             assignee_team: fromJS({
@@ -65,7 +62,6 @@ describe('<SetAssigneeAction/>', () => {
                         },
                     })}
                     handleTeams
-                    updateActionArgs={updateActionArgs}
                 />
             )
 

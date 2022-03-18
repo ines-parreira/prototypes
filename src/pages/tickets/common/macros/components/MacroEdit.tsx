@@ -10,33 +10,33 @@ import {
 } from 'reactstrap'
 
 import InputField from 'pages/common/forms/InputField'
-import {generateDefaultAction} from '../../../../../state/macro/utils'
+import {Attachment} from 'models/ticket/types'
+import {generateDefaultAction} from 'state/macro/utils'
+import {MacroActionName} from 'models/macroAction/types'
+import {IntegrationType} from 'models/integration/types'
+import {RootState} from 'state/types'
+import {getActionTemplate, humanizeString} from 'utils'
+import {ACTION_TEMPLATES} from 'config'
 
 import * as ticketTypes from '../../../../../state/ticket/constants'
 import * as newMessageTypes from '../../../../../state/newMessage/constants'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
-import {ACTION_TEMPLATES} from '../../../../../config'
 import {getSortedIntegrationActionsNames} from '../../utils.js'
-import {Attachment, ActionTemplate} from '../../../../../types'
-import {getActionTemplate, humanizeString} from '../../../../../utils'
-import {RootState} from '../../../../../state/types'
-import {IntegrationType} from '../../../../../models/integration/types'
-import {MacroActionName} from '../../../../../models/macroAction/types'
 
-import SetStatusAction from './actions/SetStatusAction.js'
-import SetSubjectAction from './actions/SetSubjectAction.js'
-import SetResponseTextAction from './actions/SetResponseTextAction.js'
+import SetStatusAction from './actions/SetStatusAction'
+import SetSubjectAction from './actions/SetSubjectAction'
+import SetResponseTextAction from './actions/SetResponseTextAction'
 import SetAssigneeAction from './actions/SetAssigneeAction'
-import AddTagsAction from './actions/AddTagsAction.js'
-import HttpAction from './actions/HttpAction.js'
-import AddAttachmentsAction from './actions/AddAttachmentsAction.js'
-import IntegrationAction from './actions/IntegrationAction.js'
+import AddTagsAction from './actions/AddTagsAction'
+import HttpAction from './actions/HttpAction'
+import AddAttachmentsAction from './actions/AddAttachmentsAction'
+import IntegrationAction from './actions/IntegrationAction'
 import AddInternalNoteAction from './actions/AddInternalNoteAction'
 import SnoozeTicketAction from './actions/SnoozeTicketAction'
 
 import css from './MacroEdit.less'
 
-type OwnProps = {
+type Props = {
     actions: List<any>
     agents: List<any>
     className?: string
@@ -44,14 +44,9 @@ type OwnProps = {
     name: string
     setActions: (actions: List<any>) => void
     setName: (name: string) => void
-}
+} & ConnectedProps<typeof connector>
 
-//$TsFixMe waiting on config.js to be migrated
-const typeSafeActionTemplates = ACTION_TEMPLATES as ActionTemplate[]
-
-export class MacroEdit extends Component<
-    OwnProps & ConnectedProps<typeof connector>
-> {
+export class MacroEdit extends Component<Props> {
     _updateActionArguments = (index: number, args = fromJS({})) => {
         const actions = this.props.actions.setIn([index, 'arguments'], args)
         this.props.setActions(actions)
@@ -77,8 +72,7 @@ export class MacroEdit extends Component<
     _addAttachment = (index: number, files: Attachment[]) => {
         const actions = this.props.actions.updateIn(
             [index, 'arguments', 'attachments'],
-            (attachments: List<any>) =>
-                attachments.concat(fromJS(files)) as List<any>
+            (attachments: List<any>) => attachments.concat(fromJS(files))
         )
         this.props.setActions(actions)
     }
@@ -93,12 +87,11 @@ export class MacroEdit extends Component<
 
     renderNewActionMenu = () => {
         // front actions executed on client
-        const ticketActions = typeSafeActionTemplates
-            .filter(
-                (template) =>
-                    template.execution === 'front' ||
-                    template.name === MacroActionName.AddInternalNote
-            )
+        const ticketActions = ACTION_TEMPLATES.filter(
+            (template) =>
+                template.execution === 'front' ||
+                template.name === MacroActionName.AddInternalNote
+        )
             // remove actions that have already been used
             .filter(
                 (action) =>
@@ -109,7 +102,7 @@ export class MacroEdit extends Component<
             )
 
         // external actions executed on server
-        const externalActions = typeSafeActionTemplates.filter(
+        const externalActions = ACTION_TEMPLATES.filter(
             (template) =>
                 template.execution === 'back' &&
                 template.name !== MacroActionName.AddInternalNote
@@ -169,7 +162,7 @@ export class MacroEdit extends Component<
         }
 
         // external actions executed on server
-        const externalActions = typeSafeActionTemplates.filter(
+        const externalActions = ACTION_TEMPLATES.filter(
             (template) => template.execution === 'back'
         )
         // external actions with externalType grouped by externalType

@@ -1,15 +1,17 @@
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {fromJS, List} from 'immutable'
 import {render, fireEvent} from '@testing-library/react'
 
-import {MacroListContainer} from '../MacroList.tsx'
-import {user} from '../../../../../../fixtures/users.ts'
-import {logEvent} from '../../../../../../store/middlewares/segmentTracker.ts'
+import {user} from 'fixtures/users'
+import {logEvent} from 'store/middlewares/segmentTracker'
+
+import {MacroListContainer} from '../MacroList'
 
 jest.mock('../../../../../../store/middlewares/segmentTracker.ts')
+const logEventMock = logEvent as jest.Mock
 
 describe('MacroList component', () => {
-    const macros = fromJS([
+    const macros: List<any> = fromJS([
         {id: 1, name: 'Pizza Pepperoni'},
         {id: 2, name: 'Pizza Capricciosa'},
         {
@@ -19,17 +21,27 @@ describe('MacroList component', () => {
         },
     ])
 
+    const minProps: ComponentProps<typeof MacroListContainer> = {
+        macros: macros,
+        currentMacro: macros.first(),
+        onClickItem: jest.fn(),
+        onHoverItem: jest.fn(),
+        search: '',
+        page: 1,
+        totalPages: 1,
+        fetchMacros: jest.fn(),
+        currentUser: fromJS({}),
+        dispatch: jest.fn(),
+    }
     it('should render the macro list', () => {
-        const {container} = render(
-            <MacroListContainer macros={macros} currentMacro={macros.first()} />
-        )
+        const {container} = render(<MacroListContainer {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render active and disabled macros', () => {
         const {container} = render(
             <MacroListContainer
-                macros={macros}
+                {...minProps}
                 currentMacro={macros.get(1)}
                 disableExternalActions={true}
             />
@@ -40,13 +52,13 @@ describe('MacroList component', () => {
     it('should send event to segment on send', () => {
         const {getAllByText} = render(
             <MacroListContainer
-                macros={macros}
+                {...minProps}
                 currentMacro={macros.get(1)}
                 disableExternalActions={true}
                 currentUser={fromJS(user)}
             />
         )
         fireEvent.click(getAllByText('Pizza Capricciosa')[0])
-        expect(logEvent.mock.calls).toMatchSnapshot()
+        expect(logEventMock.mock.calls).toMatchSnapshot()
     })
 })

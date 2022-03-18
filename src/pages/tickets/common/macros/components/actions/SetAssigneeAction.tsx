@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import {fromJS, Map} from 'immutable'
 
-import TicketAssignee from '../../../../detail/components/TicketDetails/TicketAssignee/TicketAssignee'
+import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
 
 import css from './SetAssigneeAction.less'
 
 type Props = {
-    action: Map<any, any>
+    action: Map<string, any>
     index: number
     handleTeams?: boolean
     handleUsers?: boolean

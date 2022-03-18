@@ -9,16 +9,16 @@ import _isUndefined from 'lodash/isUndefined'
 import {Dropdown, DropdownItem, DropdownToggle, Input} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
-import shortcutManager from '../../../../../services/shortcutManager/index'
-import {fieldEnumSearch} from '../../../../../state/views/actions'
-import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
-import {TagLabel} from '../../../../common/utils/labels'
+import {RootState} from 'state/types'
+import {hasRole} from 'utils'
+import {UserRole} from 'config/types/user'
+import {fieldEnumSearch} from 'state/views/actions'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
-} from '../../../../common/utils/withCancellableRequest'
-import {hasRole} from '../../../../../utils'
-import {UserRole} from '../../../../../config/types/user'
-import {RootState} from '../../../../../state/types'
+} from 'pages/common/utils/withCancellableRequest'
+import shortcutManager from 'services/shortcutManager'
+import {TagLabel} from 'pages/common/utils/labels'
+import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 
 import css from './TicketTags.less'
 
@@ -26,7 +26,7 @@ const LIMIT_TAGS_SEARCH = 15
 
 type OwnProps = {
     ticketTags: List<any>
-    addTags: (tag: string) => void
+    addTag: (tag: string) => void
     removeTag: (tag: string) => void
     transparent: boolean
 }
@@ -51,7 +51,7 @@ export class TicketTags extends Component<Props, State> {
         transparent: false,
     }
 
-    state = {
+    state: State = {
         dropdownOpen: false,
         enum: fromJS([]) as List<any>,
         isLoading: false,
@@ -115,7 +115,7 @@ export class TicketTags extends Component<Props, State> {
             return
         }
 
-        this.props.addTags(name)
+        this.props.addTag(name)
         const search = ''
         this.setState({search})
         this.queryResults(search)

@@ -42,7 +42,7 @@ import PasswordAnd2FA from './settings/yourProfile/PasswordAnd2FA'
 import APIView from './settings/api/APIView'
 
 import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
-import StatsNavbarContainer from './stats/common/StatsNavbarContainer.js'
+import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
 import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer'
 import withUserRoleRequired from './common/components/UserRoleRequired'

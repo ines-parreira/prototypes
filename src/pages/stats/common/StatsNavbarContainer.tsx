@@ -1,8 +1,8 @@
 import React from 'react'
 
-import Navbar from '../../common/components/Navbar.tsx'
+import Navbar from '../../common/components/Navbar'
 
-import StatsNavbarView from './components/StatsNavbarView.tsx'
+import StatsNavbarView from './components/StatsNavbarView'
 
 export default class StatsNavbarContainer extends React.Component {
     render() {

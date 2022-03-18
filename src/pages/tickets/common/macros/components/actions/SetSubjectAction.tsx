@@ -1,16 +1,21 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {Input} from 'reactstrap'
 
-export default class SetSubjectAction extends React.Component {
+type Props = {
+    action: Map<string, any>
+    index: number
+    updateActionArgs: (index: number, args: Map<string, any>) => void
+}
+
+export default class SetSubjectAction extends React.Component<Props> {
     componentDidMount() {
         if (!this.props.action.getIn(['arguments', 'subject'])) {
-            this.props.updateActionArgs(this.props.index, {})
+            this.props.updateActionArgs(this.props.index, fromJS({}))
         }
     }
 
-    _updateSubject = (subject) => {
+    _updateSubject = (subject: string) => {
         this.props.updateActionArgs(this.props.index, fromJS({subject}))
     }
 
@@ -29,10 +34,4 @@ export default class SetSubjectAction extends React.Component {
             </div>
         )
     }
-}
-
-SetSubjectAction.propTypes = {
-    action: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
-    updateActionArgs: PropTypes.func.isRequired,
 }
