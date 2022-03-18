@@ -526,18 +526,18 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
         <div
           class="btn-group"
         >
-          <div
-            class="wrapper"
+          <span
+            class="group horizontal"
           >
             <button
-              class="wrapper mainAction medium primary medium"
-              id="update-view-button"
-              type="submit"
+              class="wrapper primary medium left"
+              id="confirm-0"
+              type="button"
             >
-              Update view
+              Update View
             </button>
             <button
-              class="wrapper toggle medium wrapper medium primary medium"
+              class="wrapper wrapper medium primary medium right"
               type="button"
             >
               <i
@@ -546,7 +546,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
                 arrow_drop_down
               </i>
             </button>
-          </div>
+          </span>
           <span
             aria-expanded="false"
             aria-haspopup="true"
@@ -586,7 +586,22 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
           No changes have been made.
         </span>
       </div>
-      <div />
+      <button
+        class="wrapper destructive medium"
+        id="delete-view"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            delete
+          </i>
+          Delete view
+        </span>
+      </button>
     </div>
   </div>
 </div>

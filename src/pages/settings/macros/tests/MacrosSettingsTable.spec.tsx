@@ -1,4 +1,4 @@
-import {shallow} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
 
 import Button from 'pages/common/components/button/Button'
@@ -14,6 +14,17 @@ import history from '../../../history'
 
 jest.mock('../../../history')
 jest.mock('../../../../models/macro/resources')
+
+jest.mock('reactstrap', () => {
+    const reactstrap: Record<string, unknown> = jest.requireActual('reactstrap')
+
+    return {
+        ...reactstrap,
+        Popover: (props: Record<string, any>) => {
+            return props.isOpen ? <div {...props}>{props.children}</div> : null
+        },
+    }
+})
 
 describe('<MacrosSettingsTable/>', () => {
     const macrosState: MacrosState = macrosFixtures.reduce(
@@ -130,7 +141,7 @@ describe('<MacrosSettingsTable/>', () => {
     })
 
     it('should delete macro', (done) => {
-        const component = shallow(
+        const component = mount(
             <MacrosSettingsTableContainer
                 {...minProps}
                 macroIds={[1, 2]}
@@ -139,7 +150,7 @@ describe('<MacrosSettingsTable/>', () => {
         )
 
         component.find(IconButton).at(1).simulate('click', mockClickEvent)
-        component.find(Button).at(0).simulate('click')
+        component.find(Button).at(2).simulate('click')
         setImmediate(() => {
             expect(mockMacroDeleted).toHaveBeenNthCalledWith(1, 1)
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
@@ -163,7 +174,7 @@ describe('<MacrosSettingsTable/>', () => {
                 },
             },
         })
-        const component = shallow(
+        const component = mount(
             <MacrosSettingsTableContainer
                 {...minProps}
                 macroIds={[1, 2]}
@@ -172,7 +183,7 @@ describe('<MacrosSettingsTable/>', () => {
         )
 
         component.find(IconButton).at(1).simulate('click', mockClickEvent)
-        component.find(Button).at(0).simulate('click')
+        component.find(Button).at(2).simulate('click')
         setImmediate(() => {
             expect(mockNotify.mock.calls[0]).toMatchSnapshot()
             done()

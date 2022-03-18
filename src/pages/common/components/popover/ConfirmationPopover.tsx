@@ -1,0 +1,120 @@
+import React, {
+    ComponentProps,
+    MutableRefObject,
+    ReactNode,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
+import {useMountedState} from 'react-use'
+import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import _get from 'lodash/get'
+
+import Button from 'pages/common/components/button/Button'
+
+type Props = {
+    buttonProps?: ComponentProps<typeof Button>
+    children: (props: {
+        uid: string
+        onDisplayConfirmation: (event: SyntheticEvent) => void
+        elementRef: MutableRefObject<any>
+    }) => ReactNode
+    content?: ReactNode
+    id?: string
+    onConfirm?: () => void
+    placement?: ComponentProps<typeof Popover>['placement']
+    title?: ReactNode
+} & Omit<ComponentProps<typeof Popover>, 'target'>
+
+export default function ConfirmationPopover({
+    buttonProps,
+    children,
+    content,
+    id,
+    isOpen,
+    onConfirm,
+    placement = 'bottom',
+    title = 'Are you sure?',
+    ...other
+}: Props) {
+    const isMounted = useMountedState()
+    const uid = useMemo(() => id || `confirm-${Date.now()}`, [])
+    const [isOpened, setIsOpened] = useState(false)
+    const elementRef = useRef<HTMLElement | null>(null)
+    const hideTimeoutRef = useRef<number | null>(null)
+    const container = useMemo(
+        () =>
+            buttonProps?.type === 'submit'
+                ? elementRef.current?.parentElement || undefined
+                : undefined,
+        [elementRef.current]
+    )
+
+    useEffect(
+        () => () => {
+            if (hideTimeoutRef.current) {
+                window.clearTimeout(hideTimeoutRef.current)
+            }
+        },
+        []
+    )
+
+    const handleDisplayConfirmation = useCallback((event: SyntheticEvent) => {
+        if (buttonProps?.type === 'submit') {
+            const form: HTMLFormElement = _get(event, ['target', 'form'])
+
+            if (form && !form.checkValidity()) {
+                return
+            }
+        }
+        event.preventDefault()
+        event.stopPropagation()
+        setIsOpened(true)
+    }, [])
+
+    const handleConfirmation = useCallback(() => {
+        if (onConfirm) {
+            onConfirm()
+        }
+
+        hideTimeoutRef.current = window.setTimeout(() => {
+            setIsOpened(false)
+        }, 20)
+    }, [onConfirm])
+
+    return (
+        <>
+            {children({
+                uid,
+                onDisplayConfirmation: handleDisplayConfirmation,
+                elementRef,
+            })}
+
+            {isMounted && (
+                <Popover
+                    container={container}
+                    isOpen={isOpen || isOpened}
+                    placement={placement}
+                    target={uid}
+                    onClick={(event) => event.stopPropagation()}
+                    toggle={() => setIsOpened(false)}
+                    trigger="legacy"
+                    {...other}
+                >
+                    <PopoverHeader>{title}</PopoverHeader>
+
+                    <PopoverBody>
+                        <p>{content}</p>
+
+                        <Button {...buttonProps} onClick={handleConfirmation}>
+                            Confirm
+                        </Button>
+                    </PopoverBody>
+                </Popover>
+            )}
+        </>
+    )
+}

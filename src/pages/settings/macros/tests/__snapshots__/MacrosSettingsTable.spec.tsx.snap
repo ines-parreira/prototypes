@@ -76,49 +76,30 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         >
           file_copy
         </ForwardRef>
-        <ForwardRef
-          className="mr-1 deleteButton"
+        <ConfirmationPopover
+          buttonProps={
+            Object {
+              "intent": "destructive",
+            }
+          }
+          content={
+            <React.Fragment>
+              You are about to delete
+               
+              <b>
+                Waive Fee
+              </b>
+               macro.
+            </React.Fragment>
+          }
           id="delete-button-1"
-          intent="text"
-          onClick={[Function]}
-          title="Delete macro"
+          onConfirm={[Function]}
+          placement="left"
         >
-          delete
-        </ForwardRef>
+          <Component />
+        </ConfirmationPopover>
       </td>
     </ForwardRef(TableBodyRow)>
-    <Popover
-      isOpen={false}
-      placement="left"
-      placementPrefix="bs-popover"
-      target="delete-button-1"
-      toggle={[Function]}
-      trigger="legacy"
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          You are about to delete
-           
-          <b>
-            Waive Fee
-          </b>
-           macro.
-        </p>
-        <ForwardRef
-          intent="destructive"
-          onClick={[Function]}
-        >
-          Confirm
-        </ForwardRef>
-      </PopoverBody>
-    </Popover>
     <ForwardRef(TableBodyRow)
       className="tableBodyRow"
       key="2"
@@ -169,49 +150,30 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         >
           file_copy
         </ForwardRef>
-        <ForwardRef
-          className="mr-1 deleteButton"
+        <ConfirmationPopover
+          buttonProps={
+            Object {
+              "intent": "destructive",
+            }
+          }
+          content={
+            <React.Fragment>
+              You are about to delete
+               
+              <b>
+                Do Not Waive Fee
+              </b>
+               macro.
+            </React.Fragment>
+          }
           id="delete-button-2"
-          intent="text"
-          onClick={[Function]}
-          title="Delete macro"
+          onConfirm={[Function]}
+          placement="left"
         >
-          delete
-        </ForwardRef>
+          <Component />
+        </ConfirmationPopover>
       </td>
     </ForwardRef(TableBodyRow)>
-    <Popover
-      isOpen={false}
-      placement="left"
-      placementPrefix="bs-popover"
-      target="delete-button-2"
-      toggle={[Function]}
-      trigger="legacy"
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          You are about to delete
-           
-          <b>
-            Do Not Waive Fee
-          </b>
-           macro.
-        </p>
-        <ForwardRef
-          intent="destructive"
-          onClick={[Function]}
-        >
-          Confirm
-        </ForwardRef>
-      </PopoverBody>
-    </Popover>
   </ForwardRef(TableBody)>
 </TableWrapper>
 `;

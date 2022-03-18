@@ -1,4 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {
+    MouseEvent,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 import {
@@ -8,17 +14,19 @@ import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
-    Popover,
-    PopoverBody,
-    PopoverHeader,
     UncontrolledDropdown,
     ButtonDropdown,
 } from 'reactstrap'
 import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
 
 import useAppSelector from 'hooks/useAppSelector'
+import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import IconButton from 'pages/common/components/button/IconButton'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import Group from 'pages/common/components/layout/Group'
+import GroupItem from 'pages/common/components/layout/GroupItem'
 import {getConfigByName} from 'config/views'
 import {SYSTEM_VIEW_CATEGORY} from 'constants/view'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -61,8 +69,6 @@ import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../utils/withCancellableRequest'
 import ViewSharingButton from '../ViewSharing/ViewSharingButton'
-import Button from '../button/Button'
-import DropdownButton from '../button/DropdownButton'
 
 import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'
@@ -86,7 +92,6 @@ export const FilterTopbar = ({
 }: Props) => {
     const dispatch = useAppDispatch()
 
-    const [askUpdateConfirmation, setAskUpdateConfirmation] = useState(false)
     const [showNoChangeFeedback, setShowNoChangeFeedback] = useState(false)
     const [isDropdownOpen, toggleDropdownOpen] = useState<boolean>(false)
     const timeoutChangeFeedbackRef = useRef<Maybe<number>>(null)
@@ -122,16 +127,6 @@ export const FilterTopbar = ({
         }
     }, [activeView, areFiltersValid, previousActiveView])
 
-    useUpdateEffect(() => {
-        if (
-            previousActiveView &&
-            previousActiveView.get('editMode') !== activeView.get('editMode') &&
-            askUpdateConfirmation
-        ) {
-            setAskUpdateConfirmation(false)
-        }
-    }, [activeView, previousActiveView])
-
     const [{loading: isSubmitting}, submitView] = useAsyncFn(
         async (view: Map<any, any>) => {
             try {
@@ -166,8 +161,6 @@ export const FilterTopbar = ({
         if (!areFiltersValid) {
             return
         }
-
-        setAskUpdateConfirmation(false)
 
         await submitView(activeView)
     }
@@ -207,8 +200,6 @@ export const FilterTopbar = ({
     }
 
     const cancel = () => {
-        setAskUpdateConfirmation(false)
-
         if (isUpdate) {
             dispatch(resetView())
             void dispatch(fetchViewItems())
@@ -235,19 +226,21 @@ export const FilterTopbar = ({
         await submitView(newActiveView)
     }
 
-    const toggleUpdateConfirmation = () => {
-        if (!askUpdateConfirmation && !isViewDirty) {
-            timeoutChangeFeedbackRef.current &&
-                window.clearTimeout(timeoutChangeFeedbackRef.current)
-            setShowNoChangeFeedback(true)
-            timeoutChangeFeedbackRef.current = window.setTimeout(
-                () => setShowNoChangeFeedback(false),
-                2000
-            )
-        } else {
-            setAskUpdateConfirmation(!askUpdateConfirmation)
-        }
-    }
+    const handleClickValidation = useCallback(
+        (e: MouseEvent) => {
+            if (!isViewDirty) {
+                timeoutChangeFeedbackRef.current &&
+                    window.clearTimeout(timeoutChangeFeedbackRef.current)
+                setShowNoChangeFeedback(true)
+                timeoutChangeFeedbackRef.current = window.setTimeout(
+                    () => setShowNoChangeFeedback(false),
+                    2000
+                )
+                e.stopPropagation()
+            }
+        },
+        [isViewDirty]
+    )
 
     const isSystemView = activeView.get('category') === SYSTEM_VIEW_CATEGORY
 
@@ -335,43 +328,71 @@ export const FilterTopbar = ({
                                         toggleDropdownOpen(!isDropdownOpen)
                                     }}
                                 >
-                                    <DropdownButton
-                                        type="submit"
-                                        id="update-view-button"
-                                        isLoading={isSubmitting}
-                                        isDisabled={
-                                            isSubmitting || !areFiltersValid
-                                        }
-                                        onToggleClick={() =>
-                                            toggleDropdownOpen(!isDropdownOpen)
-                                        }
-                                    >
-                                        Update view
-                                    </DropdownButton>
+                                    <Group>
+                                        <GroupItem>
+                                            {(appendPosition) => (
+                                                <ConfirmationPopover
+                                                    buttonProps={{
+                                                        type: 'submit',
+                                                    }}
+                                                    content={
+                                                        <>
+                                                            You are about to
+                                                            edit this view for{' '}
+                                                            <b>all users</b>.
+                                                        </>
+                                                    }
+                                                    popperClassName={
+                                                        css.editPopover
+                                                    }
+                                                    onConfirm={
+                                                        handleClickUpdate
+                                                    }
+                                                >
+                                                    {({
+                                                        uid,
+                                                        onDisplayConfirmation,
+                                                        elementRef,
+                                                    }) => (
+                                                        <Button
+                                                            appendPosition={
+                                                                appendPosition
+                                                            }
+                                                            id={uid}
+                                                            isLoading={
+                                                                isSubmitting
+                                                            }
+                                                            isDisabled={
+                                                                !areFiltersValid
+                                                            }
+                                                            onClick={
+                                                                onDisplayConfirmation
+                                                            }
+                                                            onClickCapture={
+                                                                handleClickValidation
+                                                            }
+                                                            ref={elementRef}
+                                                        >
+                                                            Update View
+                                                        </Button>
+                                                    )}
+                                                </ConfirmationPopover>
+                                            )}
+                                        </GroupItem>
+                                        <IconButton
+                                            onClick={() =>
+                                                toggleDropdownOpen(
+                                                    !isDropdownOpen
+                                                )
+                                            }
+                                            isDisabled={
+                                                isSubmitting || !areFiltersValid
+                                            }
+                                        >
+                                            arrow_drop_down
+                                        </IconButton>
+                                    </Group>
                                     <DropdownToggle tag="span" />
-                                    <Popover
-                                        placement="bottom"
-                                        isOpen={askUpdateConfirmation}
-                                        target="update-view-button"
-                                        toggle={toggleUpdateConfirmation}
-                                        trigger="legacy"
-                                    >
-                                        <PopoverHeader>
-                                            Are you sure?
-                                        </PopoverHeader>
-                                        <PopoverBody>
-                                            <p>
-                                                You are about to edit this view
-                                                for <b>all users</b>.
-                                            </p>
-                                            <Button
-                                                type="submit"
-                                                onClick={handleClickUpdate}
-                                            >
-                                                Confirm
-                                            </Button>
-                                        </PopoverBody>
-                                    </Popover>
                                     <DropdownMenu right>
                                         <DropdownItem
                                             key="open"

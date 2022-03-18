@@ -1,8 +1,8 @@
-import React, {useCallback, useState} from 'react'
-import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 export type Props = {
     disabled: boolean
@@ -10,45 +10,32 @@ export type Props = {
 }
 
 const BulkDeleteButton = ({onBulkDelete, disabled}: Props) => {
-    const [askRemoveConfirmation, setAskRemoveConfirmation] = useState(false)
-
-    const toggleRemoveConfirmation = useCallback(() => {
-        setAskRemoveConfirmation(!askRemoveConfirmation)
-    }, [askRemoveConfirmation])
-
-    const handleDeleteClick = useCallback(() => {
-        setAskRemoveConfirmation(false)
-        onBulkDelete()
-    }, [onBulkDelete])
-
     return (
-        <>
-            <Button
-                isDisabled={disabled}
-                id="bulk-remove-button"
-                intent="secondary"
-                className="mr-2 skip-default"
-                onClick={toggleRemoveConfirmation}
-            >
-                <ButtonIconLabel icon="delete">Delete</ButtonIconLabel>
-            </Button>
-            <Popover
-                placement="bottom"
-                isOpen={askRemoveConfirmation}
-                target="bulk-remove-button"
-                toggle={toggleRemoveConfirmation}
-                trigger="legacy"
-            >
-                <PopoverHeader>Are you sure?</PopoverHeader>
-                <PopoverBody>
-                    <p>
-                        Are you sure you want to delete these tags?{' '}
-                        <b>They will be removed from all tickets</b>.
-                    </p>
-                    <Button onClick={handleDeleteClick}>Confirm</Button>
-                </PopoverBody>
-            </Popover>
-        </>
+        <ConfirmationPopover
+            buttonProps={{
+                intent: 'destructive',
+            }}
+            content={
+                <>
+                    Are you sure you want to delete these tags?{' '}
+                    <b>They will be removed from all tickets</b>.
+                </>
+            }
+            id="bulk-remove-button"
+            onConfirm={onBulkDelete}
+        >
+            {({uid, onDisplayConfirmation}) => (
+                <Button
+                    isDisabled={disabled}
+                    id={uid}
+                    intent="secondary"
+                    className="mr-2 skip-default"
+                    onClick={onDisplayConfirmation}
+                >
+                    <ButtonIconLabel icon="delete">Delete</ButtonIconLabel>
+                </Button>
+            )}
+        </ConfirmationPopover>
     )
 }
 

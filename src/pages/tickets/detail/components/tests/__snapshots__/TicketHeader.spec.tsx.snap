@@ -1,1178 +1,1195 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicketHeader /> should change snooze label and display the clear snooze action when ticket is snoozed 1`] = `
-<DropdownMenu
-  className="actionsDropdown"
-  flip={true}
-  right={true}
-  tag="div"
->
-  <DropdownItem
-    onClick={[Function]}
-    tag="button"
-    toggle={true}
-    type="button"
-  >
-    <i
-      className="icon material-icons"
-    >
-      snooze
-    </i>
-    Change snooze time
-  </DropdownItem>
-  <DropdownItem
-    onClick={[Function]}
-    tag="button"
-    toggle={true}
-    type="button"
-  >
-    <i
-      className="icon material-icons"
-    >
-      timer_off
-    </i>
-    Clear snooze
-  </DropdownItem>
-  <DropdownItem
-    onClick={[Function]}
-    tag="button"
-    toggle={true}
-    type="button"
-  >
-    <i
-      className="icon material-icons"
-    >
-      call_merge
-    </i>
-    Merge ticket
-  </DropdownItem>
-  <DropdownItem
-    onClick={[Function]}
-    tag="button"
-    toggle={true}
-    type="button"
-  >
-    <i
-      className="icon material-icons"
-    >
-      markunread_mailbox
-    </i>
-    Mark as unread
-  </DropdownItem>
-  <DropdownItem
-    onClick={[Function]}
-    tag="button"
-    toggle={true}
-    type="button"
-  >
-    <i
-      className="icon material-icons"
-    >
-      event_note
-    </i>
-    Display
-     
-    all events
-  </DropdownItem>
-  <DropdownItem
-    onClick={[Function]}
-    tag="button"
-    toggle={true}
-    type="button"
-  >
-    <i
-      className="icon material-icons"
-    >
-      print
-    </i>
-    Print ticket
-  </DropdownItem>
-  <DropdownItem
-    onClick={[Function]}
-    tag="button"
-    toggle={true}
-    type="button"
-  >
-    <span>
-      <i
-        className="icon material-icons"
-      >
-        not_interested
-      </i>
-      Mark as spam
-    </span>
-  </DropdownItem>
-  <DropdownItem
-    onClick={[Function]}
-    tag="button"
-    toggle={true}
-    type="button"
-  >
-    <div
-      className="text-danger"
-    >
-      <i
-        className="icon material-icons"
-      >
-        delete
-      </i>
-      Delete
-    </div>
-    <Popover
-      fade={false}
-      isOpen={false}
-      placement="bottom"
-      placementPrefix="bs-popover"
-      target="ticket-actions-button"
-      toggle={[Function]}
-      trigger="legacy"
-    >
-      <PopoverHeader
-        tag="h3"
-      >
-        Are you sure?
-      </PopoverHeader>
-      <PopoverBody
-        tag="div"
-      >
-        <p>
-          You are about to
-           
-          <b>
-            delete
-          </b>
-           this ticket.
-        </p>
-        <ForwardRef
-          autoFocus={true}
-          onClick={[Function]}
-        >
-          Confirm
-        </ForwardRef>
-      </PopoverBody>
-    </Popover>
-  </DropdownItem>
-</DropdownMenu>
-`;
-
-exports[`<TicketHeader /> should display the delete action for lead and admin agents 1`] = `
-<DropdownItem
-  onClick={[Function]}
-  tag="button"
-  toggle={true}
-  type="button"
->
-  <div
-    className="text-danger"
-  >
-    <i
-      className="icon material-icons"
-    >
-      delete
-    </i>
-    Delete
-  </div>
-  <Popover
-    fade={false}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
-    target="ticket-actions-button"
-    toggle={[Function]}
-    trigger="legacy"
-  >
-    <PopoverHeader
-      tag="h3"
-    >
-      Are you sure?
-    </PopoverHeader>
-    <PopoverBody
-      tag="div"
-    >
-      <p>
-        You are about to
-         
-        <b>
-          delete
-        </b>
-         this ticket.
-      </p>
-      <ForwardRef
-        autoFocus={true}
-        onClick={[Function]}
-      >
-        Confirm
-      </ForwardRef>
-    </PopoverBody>
-  </Popover>
-</DropdownItem>
-`;
-
-exports[`<TicketHeader /> should display the snooze icon when the snooze picker is opened 1`] = `
-<DropdownToggle
-  aria-haspopup={true}
-  className="btn-transparent"
-  color="secondary"
-  id="ticket-actions-button"
-  size="sm"
-  type="button"
->
-  <i
-    className="material-icons md-2"
-  >
-    snooze
-  </i>
-</DropdownToggle>
-`;
-
-exports[`<TicketHeader /> should render an unread ticket without the "Mark as unread" action 1`] = `
-<div
-  className="component"
-  id="TicketHeader"
->
-  <div
-    className="d-flex justify-content-between mb-2"
-  >
-    <EditableTitle
-      className="mr-2 editableTitle"
-      focus={false}
-      placeholder="Subject"
-      size="xl"
-      style={Object {}}
-      title="foo"
-      update={[MockFunction]}
-    />
-    <TicketSnooze
-      className="headerIcon"
-      timezone="America/Los_Angeles"
-    />
-    <TicketTrash
-      className="headerIcon"
-      trashed={false}
-    />
-    <TicketSpam
-      className="headerIcon"
-      spam={false}
-    />
-    <UncontrolledDropdown>
-      <DropdownToggle
-        aria-haspopup={true}
-        className="btn-transparent"
-        color="secondary"
-        id="ticket-actions-button"
-        size="sm"
-        type="button"
-      >
-        <i
-          className="material-icons md-2"
-        >
-          more_vert
-        </i>
-      </DropdownToggle>
-      <TicketSnoozePicker
-        isOpen={false}
-        onSubmit={[Function]}
-        timezone="America/Los_Angeles"
-        toggle={[Function]}
-      />
-      <DropdownMenu
-        className="actionsDropdown"
-        flip={true}
-        right={true}
-        tag="div"
-      >
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <i
-            className="icon material-icons"
-          >
-            snooze
-          </i>
-          Snooze
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <i
-            className="icon material-icons"
-          >
-            call_merge
-          </i>
-          Merge ticket
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <i
-            className="icon material-icons"
-          >
-            event_note
-          </i>
-          Display
-           
-          all events
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <i
-            className="icon material-icons"
-          >
-            print
-          </i>
-          Print ticket
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <span>
-            <i
-              className="icon material-icons"
-            >
-              not_interested
-            </i>
-            Mark as spam
-          </span>
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <div
-            className="text-danger"
-          >
-            <i
-              className="icon material-icons"
-            >
-              delete
-            </i>
-            Delete
-          </div>
-          <Popover
-            fade={false}
-            isOpen={false}
-            placement="bottom"
-            placementPrefix="bs-popover"
-            target="ticket-actions-button"
-            toggle={[Function]}
-            trigger="legacy"
-          >
-            <PopoverHeader
-              tag="h3"
-            >
-              Are you sure?
-            </PopoverHeader>
-            <PopoverBody
-              tag="div"
-            >
-              <p>
-                You are about to
-                 
-                <b>
-                  delete
-                </b>
-                 this ticket.
-              </p>
-              <ForwardRef
-                autoFocus={true}
-                onClick={[Function]}
-              >
-                Confirm
-              </ForwardRef>
-            </PopoverBody>
-          </Popover>
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledDropdown>
-  </div>
-  <div
-    className="d-flex justify-content-between"
-  >
-    <div
-      className="d-inline-flex"
-    >
-      <TicketStatus
-        currentStatus="open"
-        setQuickStatus={[Function]}
-      />
-      <Connect(Component)
-        addTag={[MockFunction]}
-        removeTag={[MockFunction]}
-        transparent={true}
-      />
-    </div>
-    <div
-      className="d-inline-flex align-items-top"
-    >
-      <Connect(TicketAssigneeContainer)
-        className="assignee"
-        direction="right"
-        setTeam={[MockFunction]}
-        setUser={[MockFunction]}
-        transparent={true}
-      />
-    </div>
-  </div>
-  <Connect(MergeTicketsContainer)
-    isOpen={false}
-    sourceTicket={
-      Immutable.Map {
-        "id": 1,
-        "is_unread": true,
-        "subject": "foo",
-        "status": "open",
-      }
-    }
-    toggleModal={[Function]}
-  />
-</div>
-`;
-
 exports[`<TicketHeader /> should render existing ticket 1`] = `
 <div
-  className="component"
+  class="component"
   id="TicketHeader"
 >
   <div
-    className="d-flex justify-content-between mb-2"
+    class="d-flex justify-content-between mb-2"
   >
-    <EditableTitle
-      className="mr-2 editableTitle"
-      focus={false}
+    <input
+      class="mr-2 editableTitle component form-control-xl form-control"
       placeholder="Subject"
-      size="xl"
-      style={Object {}}
-      title="foo"
-      update={[MockFunction]}
+      tabindex="1"
+      type="text"
+      value="Great ticket"
     />
-    <TicketSnooze
-      className="headerIcon"
-      timezone="America/Los_Angeles"
-    />
-    <TicketTrash
-      className="headerIcon"
-      trashed={false}
-    />
-    <TicketSpam
-      className="headerIcon"
-      spam={false}
-    />
-    <UncontrolledDropdown>
-      <DropdownToggle
-        aria-haspopup={true}
-        className="btn-transparent"
-        color="secondary"
+    <div
+      class="dropdown"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="btn-transparent btn btn-secondary btn-sm"
         id="ticket-actions-button"
-        size="sm"
         type="button"
       >
         <i
-          className="material-icons md-2"
+          class="material-icons md-2"
         >
           more_vert
         </i>
-      </DropdownToggle>
-      <TicketSnoozePicker
-        isOpen={false}
-        onSubmit={[Function]}
-        timezone="America/Los_Angeles"
-        toggle={[Function]}
-      />
-      <DropdownMenu
-        className="actionsDropdown"
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <span />
+      <div
+        aria-hidden="true"
+        class="actionsDropdown dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             snooze
           </i>
           Snooze
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             call_merge
           </i>
           Merge ticket
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
-          >
-            markunread_mailbox
-          </i>
-          Mark as unread
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             event_note
           </i>
           Display
            
           all events
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             print
           </i>
           Print ticket
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span>
             <i
-              className="icon material-icons"
+              class="icon material-icons"
             >
               not_interested
             </i>
             Mark as spam
           </span>
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <div
-            className="text-danger"
+            class="text-danger"
           >
             <i
-              className="icon material-icons"
+              class="icon material-icons"
             >
               delete
             </i>
             Delete
           </div>
-          <Popover
-            fade={false}
-            isOpen={false}
-            placement="bottom"
-            placementPrefix="bs-popover"
-            target="ticket-actions-button"
-            toggle={[Function]}
-            trigger="legacy"
-          >
-            <PopoverHeader
-              tag="h3"
-            >
-              Are you sure?
-            </PopoverHeader>
-            <PopoverBody
-              tag="div"
-            >
-              <p>
-                You are about to
-                 
-                <b>
-                  delete
-                </b>
-                 this ticket.
-              </p>
-              <ForwardRef
-                autoFocus={true}
-                onClick={[Function]}
-              >
-                Confirm
-              </ForwardRef>
-            </PopoverBody>
-          </Popover>
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledDropdown>
+        </button>
+      </div>
+    </div>
   </div>
   <div
-    className="d-flex justify-content-between"
+    class="d-flex justify-content-between"
   >
     <div
-      className="d-inline-flex"
+      class="d-inline-flex"
     >
-      <TicketStatus
-        currentStatus="open"
-        setQuickStatus={[Function]}
-      />
-      <Connect(Component)
-        addTag={[MockFunction]}
-        removeTag={[MockFunction]}
-        transparent={true}
-      />
+      <div
+        class="d-inline-block mr-2"
+      >
+        <span
+          id="change-status-button"
+        >
+          <button
+            class="wrapper secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                check
+              </i>
+              Close
+            </span>
+          </button>
+        </span>
+      </div>
+      <div
+        class="d-none d-md-inline-flex align-items-center flex-wrap ml-2 mr-2 mb-1"
+      >
+        <span
+          class="badge-tag tagLabel badge badge-secondary"
+          style="color: rgb(128, 136, 214);"
+        >
+          <span>
+            refund
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </span>
+        <div
+          class="addTags dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="btn-transparent btn btn-secondary btn-sm"
+            type="button"
+          >
+            <i
+              class="material-icons md-1 align-middle"
+            >
+              add
+            </i>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              ADD TAG:
+            </h6>
+            <h6
+              class="dropdown-item-input dropdown-header"
+              tabindex="-1"
+            />
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <div
-      className="d-inline-flex align-items-top"
+      class="d-inline-flex align-items-top"
     >
-      <Connect(TicketAssigneeContainer)
-        className="assignee"
-        direction="right"
-        setTeam={[MockFunction]}
-        setUser={[MockFunction]}
-        transparent={true}
-      />
+      <div
+        class="assignee dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="toggle btn-transparent dropdown-toggle btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  AP
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+              style="max-width: 100px;"
+            >
+              Alex Plugaru
+            </span>
+          </div>
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdown-menu dropdown-menu-right"
+          role="menu"
+          style="width: 260px;"
+          tabindex="-1"
+        >
+          <h6
+            class="dropdown-header"
+            tabindex="-1"
+          >
+            ASSIGN TO:
+          </h6>
+          <h6
+            class="dropdown-item-input dropdown-header"
+            tabindex="-1"
+          />
+          <div>
+            <button
+              class="assigneeItem dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <div
+                class="AgentLabel assigneeLabel"
+              >
+                <div
+                  class="component avatar"
+                  style="width: 26px; height: 26px;"
+                >
+                  <div
+                    class="initials"
+                    style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                  >
+                    <span
+                      style="line-height: 28px;"
+                    >
+                      AP
+                    </span>
+                  </div>
+                </div>
+                <span
+                  class="name"
+                >
+                  Alex Plugaru
+                </span>
+              </div>
+              <i
+                class="material-icons md-2"
+              >
+                close
+              </i>
+            </button>
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+            <h6
+              class="text-uppercase dropdown-header"
+              tabindex="-1"
+            >
+              Users
+            </h6>
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              Could not find any user
+            </h6>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <Connect(MergeTicketsContainer)
-    isOpen={false}
-    sourceTicket={
-      Immutable.Map {
-        "id": 1,
-        "subject": "foo",
-        "status": "open",
-      }
-    }
-    toggleModal={[Function]}
-  />
 </div>
 `;
 
 exports[`<TicketHeader /> should render new ticket 1`] = `
 <div
-  className="component"
+  class="component"
   id="TicketHeader"
 >
   <div
-    className="d-flex justify-content-between mb-2"
+    class="d-flex justify-content-between mb-2"
   >
-    <EditableTitle
-      className="mr-2 editableTitle"
-      focus={true}
+    <input
+      class="mr-2 editableTitle component edit-mode form-control-xl form-control"
       placeholder="Subject"
-      size="xl"
-      style={Object {}}
-      title="foo"
-      update={[MockFunction]}
-    />
-    <TicketSnooze
-      className="headerIcon"
-      timezone="America/Los_Angeles"
-    />
-    <TicketTrash
-      className="headerIcon"
-      trashed={false}
-    />
-    <TicketSpam
-      className="headerIcon"
-      spam={false}
+      tabindex="1"
+      type="text"
+      value="Great ticket"
     />
   </div>
   <div
-    className="d-flex justify-content-between"
+    class="d-flex justify-content-between"
   >
     <div
-      className="d-inline-flex"
+      class="d-inline-flex"
     >
-      <Connect(Component)
-        addTag={[MockFunction]}
-        removeTag={[MockFunction]}
-        transparent={true}
-      />
+      <div
+        class="d-none d-md-inline-flex align-items-center flex-wrap ml-2 mr-2 mb-1"
+      >
+        <span
+          class="badge-tag tagLabel badge badge-secondary"
+          style="color: rgb(128, 136, 214);"
+        >
+          <span>
+            refund
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </span>
+        <div
+          class="addTags dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="btn-transparent btn btn-secondary btn-sm"
+            type="button"
+          >
+            <i
+              class="material-icons md-1 align-middle"
+            >
+              add
+            </i>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              ADD TAG:
+            </h6>
+            <h6
+              class="dropdown-item-input dropdown-header"
+              tabindex="-1"
+            />
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <div
-      className="d-inline-flex align-items-top"
+      class="d-inline-flex align-items-top"
     >
-      <Connect(TicketAssigneeContainer)
-        className="assignee"
-        direction="right"
-        setTeam={[MockFunction]}
-        setUser={[MockFunction]}
-        transparent={true}
-      />
+      <div
+        class="assignee dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="toggle btn-transparent dropdown-toggle btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  AP
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+              style="max-width: 100px;"
+            >
+              Alex Plugaru
+            </span>
+          </div>
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdown-menu dropdown-menu-right"
+          role="menu"
+          style="width: 260px;"
+          tabindex="-1"
+        >
+          <h6
+            class="dropdown-header"
+            tabindex="-1"
+          >
+            ASSIGN TO:
+          </h6>
+          <h6
+            class="dropdown-item-input dropdown-header"
+            tabindex="-1"
+          />
+          <div>
+            <button
+              class="assigneeItem dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <div
+                class="AgentLabel assigneeLabel"
+              >
+                <div
+                  class="component avatar"
+                  style="width: 26px; height: 26px;"
+                >
+                  <div
+                    class="initials"
+                    style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                  >
+                    <span
+                      style="line-height: 28px;"
+                    >
+                      AP
+                    </span>
+                  </div>
+                </div>
+                <span
+                  class="name"
+                >
+                  Alex Plugaru
+                </span>
+              </div>
+              <i
+                class="material-icons md-2"
+              >
+                close
+              </i>
+            </button>
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+            <h6
+              class="text-uppercase dropdown-header"
+              tabindex="-1"
+            >
+              Users
+            </h6>
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              Could not find any user
+            </h6>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <Connect(MergeTicketsContainer)
-    isOpen={false}
-    sourceTicket={
-      Immutable.Map {
-        "subject": "foo",
-        "status": "open",
-      }
-    }
-    toggleModal={[Function]}
-  />
 </div>
 `;
 
 exports[`<TicketHeader /> should render spam ticket 1`] = `
 <div
-  className="component"
+  class="component"
   id="TicketHeader"
 >
   <div
-    className="d-flex justify-content-between mb-2"
+    class="d-flex justify-content-between mb-2"
   >
-    <EditableTitle
-      className="mr-2 editableTitle"
-      focus={false}
+    <input
+      class="mr-2 editableTitle component form-control-xl form-control"
       placeholder="Subject"
-      size="xl"
-      style={Object {}}
-      title="foo"
-      update={[MockFunction]}
+      tabindex="1"
+      type="text"
+      value="Great ticket"
     />
-    <TicketSnooze
-      className="headerIcon"
-      timezone="America/Los_Angeles"
-    />
-    <TicketTrash
-      className="headerIcon"
-      trashed={false}
-    />
-    <TicketSpam
-      className="headerIcon"
-      spam={true}
-    />
-    <UncontrolledDropdown>
-      <DropdownToggle
-        aria-haspopup={true}
-        className="btn-transparent"
-        color="secondary"
+    <div
+      class="headerIcon"
+    >
+      <i
+        class="icon material-icons text-danger"
+        id="ticket-header-spam-icon"
+      >
+        flag
+      </i>
+    </div>
+    <div
+      class="dropdown"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="btn-transparent btn btn-secondary btn-sm"
         id="ticket-actions-button"
-        size="sm"
         type="button"
       >
         <i
-          className="material-icons md-2"
+          class="material-icons md-2"
         >
           more_vert
         </i>
-      </DropdownToggle>
-      <TicketSnoozePicker
-        isOpen={false}
-        onSubmit={[Function]}
-        timezone="America/Los_Angeles"
-        toggle={[Function]}
-      />
-      <DropdownMenu
-        className="actionsDropdown"
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <span />
+      <div
+        aria-hidden="true"
+        class="actionsDropdown dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             snooze
           </i>
           Snooze
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             call_merge
           </i>
           Merge ticket
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
-          >
-            markunread_mailbox
-          </i>
-          Mark as unread
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             event_note
           </i>
           Display
            
           all events
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             print
           </i>
           Print ticket
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span>
             <i
-              className="icon material-icons"
+              class="icon material-icons"
             >
               undo
             </i>
             Unmark as spam
           </span>
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <div
-            className="text-danger"
+            class="text-danger"
           >
             <i
-              className="icon material-icons"
+              class="icon material-icons"
             >
               delete
             </i>
             Delete
           </div>
-          <Popover
-            fade={false}
-            isOpen={false}
-            placement="bottom"
-            placementPrefix="bs-popover"
-            target="ticket-actions-button"
-            toggle={[Function]}
-            trigger="legacy"
-          >
-            <PopoverHeader
-              tag="h3"
-            >
-              Are you sure?
-            </PopoverHeader>
-            <PopoverBody
-              tag="div"
-            >
-              <p>
-                You are about to
-                 
-                <b>
-                  delete
-                </b>
-                 this ticket.
-              </p>
-              <ForwardRef
-                autoFocus={true}
-                onClick={[Function]}
-              >
-                Confirm
-              </ForwardRef>
-            </PopoverBody>
-          </Popover>
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledDropdown>
+        </button>
+      </div>
+    </div>
   </div>
   <div
-    className="d-flex justify-content-between"
+    class="d-flex justify-content-between"
   >
     <div
-      className="d-inline-flex"
+      class="d-inline-flex"
     >
-      <TicketStatus
-        currentStatus="open"
-        setQuickStatus={[Function]}
-      />
-      <Connect(Component)
-        addTag={[MockFunction]}
-        removeTag={[MockFunction]}
-        transparent={true}
-      />
+      <div
+        class="d-inline-block mr-2"
+      >
+        <span
+          id="change-status-button"
+        >
+          <button
+            class="wrapper secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                check
+              </i>
+              Close
+            </span>
+          </button>
+        </span>
+      </div>
+      <div
+        class="d-none d-md-inline-flex align-items-center flex-wrap ml-2 mr-2 mb-1"
+      >
+        <span
+          class="badge-tag tagLabel badge badge-secondary"
+          style="color: rgb(128, 136, 214);"
+        >
+          <span>
+            refund
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </span>
+        <div
+          class="addTags dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="btn-transparent btn btn-secondary btn-sm"
+            type="button"
+          >
+            <i
+              class="material-icons md-1 align-middle"
+            >
+              add
+            </i>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              ADD TAG:
+            </h6>
+            <h6
+              class="dropdown-item-input dropdown-header"
+              tabindex="-1"
+            />
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <div
-      className="d-inline-flex align-items-top"
+      class="d-inline-flex align-items-top"
     >
-      <Connect(TicketAssigneeContainer)
-        className="assignee"
-        direction="right"
-        setTeam={[MockFunction]}
-        setUser={[MockFunction]}
-        transparent={true}
-      />
+      <div
+        class="assignee dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="toggle btn-transparent dropdown-toggle btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  AP
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+              style="max-width: 100px;"
+            >
+              Alex Plugaru
+            </span>
+          </div>
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdown-menu dropdown-menu-right"
+          role="menu"
+          style="width: 260px;"
+          tabindex="-1"
+        >
+          <h6
+            class="dropdown-header"
+            tabindex="-1"
+          >
+            ASSIGN TO:
+          </h6>
+          <h6
+            class="dropdown-item-input dropdown-header"
+            tabindex="-1"
+          />
+          <div>
+            <button
+              class="assigneeItem dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <div
+                class="AgentLabel assigneeLabel"
+              >
+                <div
+                  class="component avatar"
+                  style="width: 26px; height: 26px;"
+                >
+                  <div
+                    class="initials"
+                    style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                  >
+                    <span
+                      style="line-height: 28px;"
+                    >
+                      AP
+                    </span>
+                  </div>
+                </div>
+                <span
+                  class="name"
+                >
+                  Alex Plugaru
+                </span>
+              </div>
+              <i
+                class="material-icons md-2"
+              >
+                close
+              </i>
+            </button>
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+            <h6
+              class="text-uppercase dropdown-header"
+              tabindex="-1"
+            >
+              Users
+            </h6>
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              Could not find any user
+            </h6>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <Connect(MergeTicketsContainer)
-    isOpen={false}
-    sourceTicket={
-      Immutable.Map {
-        "id": 1,
-        "spam": true,
-        "subject": "foo",
-        "status": "open",
-      }
-    }
-    toggleModal={[Function]}
-  />
 </div>
 `;
 
 exports[`<TicketHeader /> should render trashed ticket 1`] = `
 <div
-  className="component"
+  class="component"
   id="TicketHeader"
 >
   <div
-    className="d-flex justify-content-between mb-2"
+    class="d-flex justify-content-between mb-2"
   >
-    <EditableTitle
-      className="mr-2 editableTitle"
-      focus={false}
+    <input
+      class="mr-2 editableTitle component form-control-xl form-control"
       placeholder="Subject"
-      size="xl"
-      style={Object {}}
-      title="foo"
-      update={[MockFunction]}
+      tabindex="1"
+      type="text"
+      value="Great ticket"
     />
-    <TicketSnooze
-      className="headerIcon"
-      timezone="America/Los_Angeles"
-    />
-    <TicketTrash
-      className="headerIcon"
-      trashed={true}
-    />
-    <TicketSpam
-      className="headerIcon"
-      spam={false}
-    />
-    <UncontrolledDropdown>
-      <DropdownToggle
-        aria-haspopup={true}
-        className="btn-transparent"
-        color="secondary"
+    <div
+      class="headerIcon"
+    >
+      <i
+        class="icon material-icons text-danger"
+        id="ticket-header-trash-icon"
+      >
+        delete
+      </i>
+    </div>
+    <div
+      class="dropdown"
+    >
+      <button
+        aria-expanded="false"
+        aria-haspopup="true"
+        class="btn-transparent btn btn-secondary btn-sm"
         id="ticket-actions-button"
-        size="sm"
         type="button"
       >
         <i
-          className="material-icons md-2"
+          class="material-icons md-2"
         >
           more_vert
         </i>
-      </DropdownToggle>
-      <TicketSnoozePicker
-        isOpen={false}
-        onSubmit={[Function]}
-        timezone="America/Los_Angeles"
-        toggle={[Function]}
-      />
-      <DropdownMenu
-        className="actionsDropdown"
-        flip={true}
-        right={true}
-        tag="div"
+      </button>
+      <span />
+      <div
+        aria-hidden="true"
+        class="actionsDropdown dropdown-menu dropdown-menu-right"
+        role="menu"
+        tabindex="-1"
       >
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             snooze
           </i>
           Snooze
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             call_merge
           </i>
           Merge ticket
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
-          >
-            markunread_mailbox
-          </i>
-          Mark as unread
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-          type="button"
-        >
-          <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             event_note
           </i>
           Display
            
           all events
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             print
           </i>
           Print ticket
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <span>
             <i
-              className="icon material-icons"
+              class="icon material-icons"
             >
               not_interested
             </i>
             Mark as spam
           </span>
-        </DropdownItem>
-        <DropdownItem
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
+        </button>
+        <button
+          class="dropdown-item"
+          role="menuitem"
+          tabindex="0"
           type="button"
         >
           <i
-            className="icon material-icons"
+            class="icon material-icons"
           >
             undo
           </i>
           Undelete
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledDropdown>
+        </button>
+      </div>
+    </div>
   </div>
   <div
-    className="d-flex justify-content-between"
+    class="d-flex justify-content-between"
   >
     <div
-      className="d-inline-flex"
+      class="d-inline-flex"
     >
-      <TicketStatus
-        currentStatus="open"
-        setQuickStatus={[Function]}
-      />
-      <Connect(Component)
-        addTag={[MockFunction]}
-        removeTag={[MockFunction]}
-        transparent={true}
-      />
+      <div
+        class="d-inline-block mr-2"
+      >
+        <span
+          id="change-status-button"
+        >
+          <button
+            class="wrapper secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                check
+              </i>
+              Close
+            </span>
+          </button>
+        </span>
+      </div>
+      <div
+        class="d-none d-md-inline-flex align-items-center flex-wrap ml-2 mr-2 mb-1"
+      >
+        <span
+          class="badge-tag tagLabel badge badge-secondary"
+          style="color: rgb(128, 136, 214);"
+        >
+          <span>
+            refund
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </span>
+        <div
+          class="addTags dropdown"
+        >
+          <button
+            aria-expanded="false"
+            aria-haspopup="true"
+            class="btn-transparent btn btn-secondary btn-sm"
+            type="button"
+          >
+            <i
+              class="material-icons md-1 align-middle"
+            >
+              add
+            </i>
+          </button>
+          <div
+            aria-hidden="true"
+            class="dropdown-menu"
+            role="menu"
+            style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+            tabindex="-1"
+          >
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              ADD TAG:
+            </h6>
+            <h6
+              class="dropdown-item-input dropdown-header"
+              tabindex="-1"
+            />
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+          </div>
+        </div>
+      </div>
     </div>
     <div
-      className="d-inline-flex align-items-top"
+      class="d-inline-flex align-items-top"
     >
-      <Connect(TicketAssigneeContainer)
-        className="assignee"
-        direction="right"
-        setTeam={[MockFunction]}
-        setUser={[MockFunction]}
-        transparent={true}
-      />
+      <div
+        class="assignee dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="toggle btn-transparent dropdown-toggle btn btn-secondary"
+          type="button"
+        >
+          <div
+            class="AgentLabel"
+          >
+            <div
+              class="component avatar"
+              style="width: 26px; height: 26px;"
+            >
+              <div
+                class="initials"
+                style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+              >
+                <span
+                  style="line-height: 28px;"
+                >
+                  AP
+                </span>
+              </div>
+            </div>
+            <span
+              class="name"
+              style="max-width: 100px;"
+            >
+              Alex Plugaru
+            </span>
+          </div>
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdown-menu dropdown-menu-right"
+          role="menu"
+          style="width: 260px;"
+          tabindex="-1"
+        >
+          <h6
+            class="dropdown-header"
+            tabindex="-1"
+          >
+            ASSIGN TO:
+          </h6>
+          <h6
+            class="dropdown-item-input dropdown-header"
+            tabindex="-1"
+          />
+          <div>
+            <button
+              class="assigneeItem dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <div
+                class="AgentLabel assigneeLabel"
+              >
+                <div
+                  class="component avatar"
+                  style="width: 26px; height: 26px;"
+                >
+                  <div
+                    class="initials"
+                    style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+                  >
+                    <span
+                      style="line-height: 28px;"
+                    >
+                      AP
+                    </span>
+                  </div>
+                </div>
+                <span
+                  class="name"
+                >
+                  Alex Plugaru
+                </span>
+              </div>
+              <i
+                class="material-icons md-2"
+              >
+                close
+              </i>
+            </button>
+            <div
+              class="dropdown-divider"
+              tabindex="-1"
+            />
+            <h6
+              class="text-uppercase dropdown-header"
+              tabindex="-1"
+            >
+              Users
+            </h6>
+            <h6
+              class="dropdown-header"
+              tabindex="-1"
+            >
+              Could not find any user
+            </h6>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <Connect(MergeTicketsContainer)
-    isOpen={false}
-    sourceTicket={
-      Immutable.Map {
-        "id": 1,
-        "trashed_datetime": true,
-        "subject": "foo",
-        "status": "open",
-      }
-    }
-    toggleModal={[Function]}
-  />
 </div>
 `;

@@ -5,7 +5,6 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {view as viewFixture} from '../../../../../fixtures/views'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import * as utils from '../../../../../utils'
@@ -79,13 +78,6 @@ jest.mock('../Filters/ViewFilters', () => {
 jest.mock('../../ViewSharing/ViewSharingButton', () => () => (
     <button>View Sharing Button</button>
 ))
-
-jest.mock(
-    'pages/common/components/button/ConfirmButton',
-    () =>
-        ({onConfirm}: ComponentProps<typeof ConfirmButton>) =>
-            <div onClick={onConfirm} />
-)
 
 beforeEach(() => {
     jest.clearAllMocks()
@@ -364,7 +356,7 @@ describe('<FilterTopbar />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText('Update view'))
+        fireEvent.click(getByText('Update View'))
 
         await waitFor(() => {
             fireEvent.click(getByText('Confirm'))
@@ -463,7 +455,7 @@ describe('<FilterTopbar />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText('Update view'))
+        fireEvent.click(getByText('Update View'))
         await waitFor(() => {
             expect(getByText('Confirm')).toBeTruthy()
         })
@@ -510,7 +502,7 @@ describe('<FilterTopbar />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText('Update view'))
+        fireEvent.click(getByText('Update View'))
         await waitFor(() => {
             expect(getByText('Confirm')).toBeTruthy()
         })
@@ -531,7 +523,7 @@ describe('<FilterTopbar />', () => {
             </Provider>
         )
 
-        fireEvent.click(getByText('Update view'))
+        fireEvent.click(getByText('Update View'))
         await waitFor(() => {
             expect(
                 getByText(/No changes have been made/i).classList.contains(

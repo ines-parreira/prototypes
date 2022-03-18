@@ -1,13 +1,14 @@
 import React, {Component, FormEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
-import {Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {Form} from 'reactstrap'
 import classNames from 'classnames'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/InputField'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import ColorPicker from '../../common/components/ColorPicker/ColorPicker'
 import {TagLabel} from '../../common/utils/labels'
 import {toJS} from '../../../utils'
@@ -27,7 +28,6 @@ type State = {
     name?: string
     description?: string
     decoration: Map<any, any>
-    askRemoveConfirmation: boolean
 }
 
 export class Row extends Component<Props, State> {
@@ -37,7 +37,6 @@ export class Row extends Component<Props, State> {
         decoration: fromJS({
             color: '',
         }),
-        askRemoveConfirmation: false,
     }
 
     _setStateFromRow = (row: Map<any, any>) => {
@@ -94,7 +93,6 @@ export class Row extends Component<Props, State> {
     }
 
     _onRemove = () => {
-        this.setState({askRemoveConfirmation: false})
         return this.props.remove(this.props.row.get('id')).then(() => {
             this.props.refresh()
         })
@@ -114,12 +112,6 @@ export class Row extends Component<Props, State> {
 
     _changeColor = (value: string) => {
         this.setState({decoration: this.state.decoration.set('color', value)})
-    }
-
-    _toggleRemoveConfirmation = () => {
-        this.setState({
-            askRemoveConfirmation: !this.state.askRemoveConfirmation,
-        })
     }
 
     render() {
@@ -226,35 +218,34 @@ export class Row extends Component<Props, State> {
                             edit
                         </IconButton>
 
-                        <IconButton
-                            id={`remove-button-${row.get('id') as number}`}
-                            intent="text"
-                            onClick={this._toggleRemoveConfirmation}
-                            className={classNames(
-                                css.actionButton,
-                                css.deleteActionButton
-                            )}
-                        >
-                            delete
-                        </IconButton>
-                        <Popover
-                            placement="left"
-                            isOpen={this.state.askRemoveConfirmation}
-                            target={`remove-button-${row.get('id') as number}`}
-                            toggle={this._toggleRemoveConfirmation}
-                            trigger="legacy"
-                        >
-                            <PopoverHeader>Are you sure?</PopoverHeader>
-                            <PopoverBody>
-                                <p>
+                        <ConfirmationPopover
+                            buttonProps={{
+                                intent: 'destructive',
+                            }}
+                            content={
+                                <>
                                     Are you sure you want to delete this tag?{' '}
                                     <b>It will be removed from all tickets</b>.
-                                </p>
-                                <Button onClick={this._onRemove}>
-                                    Confirm
-                                </Button>
-                            </PopoverBody>
-                        </Popover>
+                                </>
+                            }
+                            id={`remove-button-${row.get('id') as number}`}
+                            onConfirm={this._onRemove}
+                            placement="left"
+                        >
+                            {({uid, onDisplayConfirmation}) => (
+                                <IconButton
+                                    id={uid}
+                                    intent="text"
+                                    onClick={onDisplayConfirmation}
+                                    className={classNames(
+                                        css.actionButton,
+                                        css.deleteActionButton
+                                    )}
+                                >
+                                    delete
+                                </IconButton>
+                            )}
+                        </ConfirmationPopover>
                     </div>
                 </td>
             </tr>

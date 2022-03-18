@@ -1,9 +1,9 @@
 import React, {useCallback, useState} from 'react'
-import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import {List, Map} from 'immutable'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
 export type Props = {
     selectedNum: number
@@ -14,10 +14,9 @@ export type Props = {
 }
 
 const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
-    const [askMergeConfirmation, setAskMergeConfirmation] = useState(false)
     const [mergeTagDestination, setMergeTagDestination] = useState('')
 
-    const toggleMergeConfirmation = useCallback(() => {
+    const handleMergeConfirmation = useCallback(() => {
         const destID = meta
             .filter((meta: Map<any, any>) => meta.get('selected') as boolean)
             .keySeq()
@@ -32,45 +31,41 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
                 )
                 .first() as Map<any, any>
         ).get('name', '')
-        setAskMergeConfirmation(!askMergeConfirmation)
         setMergeTagDestination(destName)
-    }, [tags, meta, askMergeConfirmation])
+    }, [tags, meta])
 
     const handleMergeClick = useCallback(() => {
         setMergeTagDestination('')
-        setAskMergeConfirmation(false)
         onMerge()
     }, [onMerge])
 
     return (
-        <>
-            <Button
-                id="bulk-merge-button"
-                isDisabled={disabled}
-                intent="secondary"
-                className="mr-2 skip-default"
-                onClick={toggleMergeConfirmation}
-            >
-                <ButtonIconLabel icon="call_merge">Merge</ButtonIconLabel>
-            </Button>
-            <Popover
-                placement="bottom"
-                isOpen={askMergeConfirmation}
-                target="bulk-merge-button"
-                toggle={toggleMergeConfirmation}
-                trigger="legacy"
-            >
-                <PopoverHeader>Are you sure?</PopoverHeader>
-                <PopoverBody>
-                    <p>
-                        You are about to merge {selectedNum} tags into{' '}
-                        <b>{mergeTagDestination}</b>.<br />
-                        <b>This action cannot be undone</b>.
-                    </p>
-                    <Button onClick={handleMergeClick}>Confirm</Button>
-                </PopoverBody>
-            </Popover>
-        </>
+        <ConfirmationPopover
+            content={
+                <>
+                    You are about to merge {selectedNum} tags into{' '}
+                    <b>{mergeTagDestination}</b>.<br />
+                    <b>This action cannot be undone</b>.
+                </>
+            }
+            id="bulk-merge-button"
+            onConfirm={handleMergeClick}
+        >
+            {({uid, onDisplayConfirmation}) => (
+                <Button
+                    id={uid}
+                    isDisabled={disabled}
+                    intent="secondary"
+                    className="mr-2 skip-default"
+                    onClick={(event) => {
+                        handleMergeConfirmation()
+                        onDisplayConfirmation(event)
+                    }}
+                >
+                    <ButtonIconLabel icon="call_merge">Merge</ButtonIconLabel>
+                </Button>
+            )}
+        </ConfirmationPopover>
     )
 }
 

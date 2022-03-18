@@ -1,12 +1,11 @@
 import classnames from 'classnames'
 import moment from 'moment'
-import React, {useState} from 'react'
+import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
 import {Link} from 'react-router-dom'
 import IconButton from 'pages/common/components/button/IconButton'
-import Button from 'pages/common/components/button/Button'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {
     OrderDirection,
     MetaSortOptions,
@@ -57,11 +56,6 @@ export function MacrosSettingsTableContainer({
     onSortOptionsChange,
     sortOptions,
 }: OwnProps & ConnectedProps<typeof connector>) {
-    const [visiblePopoverId, setVisiblePopoverId] =
-        useState<Maybe<string>>(null)
-    const toggleVisiblePopover = (nextId: string) => {
-        setVisiblePopoverId(nextId === visiblePopoverId ? null : nextId)
-    }
     const handleMacroDelete = async (macroId: number) => {
         try {
             await deleteMacro(macroId)
@@ -172,109 +166,96 @@ export function MacrosSettingsTableContainer({
                             return null
                         }
                         const {name, updated_datetime, usage} = macro
-                        const deleteButtonId = `delete-button-${macroId}`
 
                         const to = `/app/settings/macros/${macroId}`
 
                         return (
-                            <>
-                                <TableBodyRow
-                                    className={css.tableBodyRow}
-                                    key={macroId}
+                            <TableBodyRow
+                                className={css.tableBodyRow}
+                                key={macroId}
+                            >
+                                <td
+                                    className={classnames(
+                                        'link-full-td',
+                                        css.macroTitle
+                                    )}
                                 >
-                                    <td
-                                        className={classnames(
-                                            'link-full-td',
-                                            css.macroTitle
-                                        )}
-                                    >
-                                        <Link to={to}>
-                                            <div>{name}</div>
-                                        </Link>
-                                    </td>
-                                    <td className="link-full-td">
-                                        <Link to={to} tabIndex={-1}>
-                                            <div>{usage}</div>
-                                        </Link>
-                                    </td>
-                                    <td
-                                        className={classnames(
-                                            'link-full-td',
-                                            css.dateCell
-                                        )}
-                                    >
-                                        <Link to={to} tabIndex={-1}>
-                                            <div>
-                                                {moment(
-                                                    updated_datetime
-                                                ).format('YYYY-MM-DD')}
-                                            </div>
-                                        </Link>
-                                    </td>
-                                    <td
-                                        className={classnames(
-                                            'smallest',
-                                            css.actions
-                                        )}
-                                    >
-                                        <IconButton
-                                            className="mr-1"
-                                            intent="text"
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                void handleMacroDuplicate(
-                                                    macroId
-                                                )
-                                            }}
-                                            title="Duplicate macro"
-                                        >
-                                            file_copy
-                                        </IconButton>
-                                        <IconButton
-                                            className={classnames(
-                                                'mr-1',
-                                                css.deleteButton
+                                    <Link to={to}>
+                                        <div>{name}</div>
+                                    </Link>
+                                </td>
+                                <td className="link-full-td">
+                                    <Link to={to} tabIndex={-1}>
+                                        <div>{usage}</div>
+                                    </Link>
+                                </td>
+                                <td
+                                    className={classnames(
+                                        'link-full-td',
+                                        css.dateCell
+                                    )}
+                                >
+                                    <Link to={to} tabIndex={-1}>
+                                        <div>
+                                            {moment(updated_datetime).format(
+                                                'YYYY-MM-DD'
                                             )}
-                                            id={deleteButtonId}
-                                            intent="text"
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                toggleVisiblePopover(
-                                                    deleteButtonId
-                                                )
-                                            }}
-                                            title="Delete macro"
-                                        >
-                                            delete
-                                        </IconButton>
-                                    </td>
-                                </TableBodyRow>
-                                <Popover
-                                    isOpen={deleteButtonId === visiblePopoverId}
-                                    placement="left"
-                                    target={deleteButtonId}
-                                    toggle={() =>
-                                        toggleVisiblePopover(deleteButtonId)
-                                    }
-                                    trigger="legacy"
+                                        </div>
+                                    </Link>
+                                </td>
+                                <td
+                                    className={classnames(
+                                        'smallest',
+                                        css.actions
+                                    )}
                                 >
-                                    <PopoverHeader>Are you sure?</PopoverHeader>
-                                    <PopoverBody>
-                                        <p>
-                                            You are about to delete{' '}
-                                            <b>{name || 'this'}</b> macro.
-                                        </p>
-                                        <Button
-                                            intent="destructive"
-                                            onClick={() =>
-                                                handleMacroDelete(macroId)
-                                            }
-                                        >
-                                            Confirm
-                                        </Button>
-                                    </PopoverBody>
-                                </Popover>
-                            </>
+                                    <IconButton
+                                        className="mr-1"
+                                        intent="text"
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            void handleMacroDuplicate(macroId)
+                                        }}
+                                        title="Duplicate macro"
+                                    >
+                                        file_copy
+                                    </IconButton>
+                                    <ConfirmationPopover
+                                        buttonProps={{
+                                            intent: 'destructive',
+                                        }}
+                                        content={
+                                            <>
+                                                You are about to delete{' '}
+                                                <b>{name || 'this'}</b> macro.
+                                            </>
+                                        }
+                                        id={`delete-button-${macroId}`}
+                                        onConfirm={() =>
+                                            handleMacroDelete(macroId)
+                                        }
+                                        placement="left"
+                                    >
+                                        {({uid, onDisplayConfirmation}) => (
+                                            <IconButton
+                                                className={classnames(
+                                                    'mr-1',
+                                                    css.deleteButton
+                                                )}
+                                                id={uid}
+                                                intent="text"
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    onDisplayConfirmation(e)
+                                                }}
+                                                title="Delete macro"
+                                            >
+                                                delete
+                                            </IconButton>
+                                        )}
+                                    </ConfirmationPopover>
+                                </td>
+                            </TableBodyRow>
                         )
                     })
                 )}
