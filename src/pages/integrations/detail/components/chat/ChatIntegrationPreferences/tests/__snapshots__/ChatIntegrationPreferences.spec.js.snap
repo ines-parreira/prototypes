@@ -290,19 +290,19 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
                 options={
                   Array [
                     Object {
-                      "label": "\\"Thanks for reaching out! Our team will get back to you shortly\\"",
+                      "label": "\\"Thanks for reaching out! Our team will get back to you shortly.\\"",
                       "value": "reply-shortly",
                     },
                     Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a few minutes\\"",
+                      "label": "\\"Thanks for reaching out! We typically reply in a few minutes.\\"",
                       "value": "reply-in-minutes",
                     },
                     Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a few hours\\"",
+                      "label": "\\"Thanks for reaching out! We typically reply in a few hours.\\"",
                       "value": "reply-in-hours",
                     },
                     Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a day\\"",
+                      "label": "\\"Thanks for reaching out! We typically reply in a day.\\"",
                       "value": "reply-in-day",
                     },
                   ]
@@ -600,19 +600,19 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
                 options={
                   Array [
                     Object {
-                      "label": "\\"Thanks for reaching out! Our team will get back to you shortly\\"",
+                      "label": "\\"Thanks for reaching out! Our team will get back to you shortly.\\"",
                       "value": "reply-shortly",
                     },
                     Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a few minutes\\"",
+                      "label": "\\"Thanks for reaching out! We typically reply in a few minutes.\\"",
                       "value": "reply-in-minutes",
                     },
                     Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a few hours\\"",
+                      "label": "\\"Thanks for reaching out! We typically reply in a few hours.\\"",
                       "value": "reply-in-hours",
                     },
                     Object {
-                      "label": "\\"Thanks for reaching out! We typically reply in a day\\"",
+                      "label": "\\"Thanks for reaching out! We typically reply in a day.\\"",
                       "value": "reply-in-day",
                     },
                   ]
