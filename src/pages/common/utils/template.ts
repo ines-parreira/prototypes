@@ -68,19 +68,33 @@ export const renderTemplate = (
             try {
                 let tempVariable = variable
                 let obj = _.chain(context)
-                variable.split(indexArrayRegex).forEach((path) => {
-                    const rex = new RegExp('^' + _.escapeRegExp(path))
-                    tempVariable = tempVariable.replace(rex, '')
 
-                    // @ts-ignore
-                    obj = obj.get(_.trimStart(path, '.'))
-                    const index = tempVariable.match(stringStartIndexArrayRegex)
-                    if (index) {
+                variable
+                    .split(indexArrayRegex)
+                    .filter((path) => {
+                        return path !== ''
+                    })
+                    .forEach((path) => {
+                        const rex = new RegExp('^' + _.escapeRegExp(path))
+                        tempVariable = tempVariable.replace(rex, '')
+
                         // @ts-ignore
-                        obj = obj.nth(_trim(index[0], '[]')) // eslint-disable-line
-                        tempVariable = _.trimStart(tempVariable, index[0])
-                    }
-                })
+                        obj = obj.get(_.trimStart(path, '.'))
+                        const index = tempVariable.match(
+                            stringStartIndexArrayRegex
+                        )
+                        if (index) {
+                            const key = _trim(index[0], '[]')
+                            if (parseInt(key) >= 0) {
+                                // @ts-ignore
+                                obj = obj.get(key) // eslint-disable-line
+                            } else {
+                                // @ts-ignore
+                                obj = obj.nth(key) // eslint-disable-line
+                            }
+                            tempVariable = _.trimStart(tempVariable, index[0])
+                        }
+                    })
 
                 // @ts-ignore
                 let value = obj.value() as string

@@ -216,6 +216,70 @@ describe('utils', () => {
                     )
                 ).toBe('March 11 2022')
             })
+
+            it('should render variable with mix of array and dicts', () => {
+                expect(
+                    renderTemplate(
+                        '{{x.customer.integrations[14].orders[0].created_at}}',
+                        {
+                            x: {
+                                customer: {
+                                    integrations: {
+                                        14: {
+                                            orders: [
+                                                {
+                                                    created_at:
+                                                        '2020-05-12T08:14:21.191818+00:00',
+                                                },
+                                            ],
+                                        },
+                                    },
+                                },
+                            },
+                        }
+                    )
+                ).toBe('2020-05-12T08:14:21.191818+00:00')
+            })
+
+            it('should render variable with mix of array and dicts', () => {
+                expect(
+                    renderTemplate(
+                        '{{x.customer.integrations.14.orders[0].created_at}}',
+                        {
+                            x: {
+                                customer: {
+                                    integrations: {
+                                        14: {
+                                            orders: [
+                                                {
+                                                    created_at:
+                                                        '2020-05-12T08:14:21.191818+00:00',
+                                                },
+                                            ],
+                                        },
+                                    },
+                                },
+                            },
+                        }
+                    )
+                ).toBe('2020-05-12T08:14:21.191818+00:00')
+            })
+
+            it('should render variable ending with an accessor', () => {
+                expect(
+                    renderTemplate('{{x.customer.integrations.14.orders[0]}}', {
+                        x: {
+                            customer: {
+                                integrations: {
+                                    14: {
+                                        orders: ['foo'],
+                                    },
+                                },
+                            },
+                        },
+                    })
+                ).toBe('foo')
+            })
         })
     })
 })

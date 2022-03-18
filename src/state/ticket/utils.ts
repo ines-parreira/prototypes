@@ -5,6 +5,10 @@ import _isArray from 'lodash/isArray'
 import _toLower from 'lodash/toLower'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
+import _first from 'lodash/first'
+import _last from 'lodash/last'
+import _set from 'lodash/set'
+import _get from 'lodash/get'
 
 import {SOURCE_VALUE_PROP} from '../../config'
 import {INTEGRATION_TYPE_WITH_VARIABLES} from '../../config/integrations'
@@ -814,10 +818,22 @@ export const replaceVariables = (
         })
     }
 
-    return renderObject(newArgument, {
+    const context = {
         ticket: ticket ? ticket.toJS() : ticket,
         current_user: currentUser ? currentUser.toJS() : currentUser,
-    })
+    }
+    _set(
+        context,
+        ['ticket', 'first_message'],
+        _first(_get(context, ['ticket', 'messages']))
+    )
+    _set(
+        context,
+        ['ticket', 'last_message'],
+        _last(_get(context, ['ticket', 'messages']))
+    )
+
+    return renderObject(newArgument, context)
 }
 
 export const nestedReplace = (
