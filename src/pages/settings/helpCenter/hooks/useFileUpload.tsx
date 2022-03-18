@@ -27,11 +27,7 @@ export function useFileUpload(): FileUpload {
 
     const uploadFile = async () => {
         if (isTouched && localFile) {
-            return uploadFiles([localFile]).then((response) => {
-                setIsTouched(false)
-
-                return response[0]
-            })
+            return uploadFiles([localFile]).then((response) => response[0])
         }
 
         return null

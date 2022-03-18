@@ -1,0 +1,59 @@
+@import '~css/new/colors';
+
+:local {
+    .imageContainer {
+        position: relative;
+        width: 680px;
+        height: 150px;
+
+        .actionButtonContainer {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            display: flex;
+            gap: 8px;
+            z-index: 1;
+
+            .actionButton {
+                padding: 2px 8px;
+                background-color: @classic-neutral-grey-2;
+                color: @classic-neutral-grey-6;
+                border: 1px solid @classic-neutral-grey-3;
+                border-radius: 4px;
+            }
+        }
+
+        .actionButtonContainerRepositioning {
+            bottom: 12px;
+        }
+
+        .boundingBox {
+            height: 146px;
+        }
+
+        .image {
+            width: 676px;
+            height: 146px;
+        }
+    }
+
+    .repositioning {
+        cursor: row-resize;
+        margin-bottom: 0.5rem;
+        border: 2px dashed @classic-neutral-grey-3;
+        border-radius: 10px;
+        background-color: @classic-neutral-grey-2;
+    }
+
+    .helpText {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .highlight {
+        color: @classic-feedback-error;
+        font-weight: 600;
+        cursor: pointer;
+    }
+}

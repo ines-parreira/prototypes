@@ -1,13 +1,4 @@
-import React, {
-    MouseEvent as ReactMouseEvent,
-    ChangeEvent,
-    CSSProperties,
-    FunctionComponent,
-    useState,
-    useEffect,
-    createRef,
-} from 'react'
-import classNames from 'classnames'
+import React, {FunctionComponent, createRef} from 'react'
 
 import {
     Title,
@@ -18,98 +9,60 @@ import {
     DropZoneProps,
 } from '../../../../common/components/ImageUpload'
 
+import {useLocalImage} from './hooks'
+
 import css from './ImageUpload.less'
 
-export type ImageUploadProps = Pick<DropZoneProps, 'id' | 'accept' | 'size'> & {
-    className?: string
+export type ImageUploadProps = Pick<
+    DropZoneProps,
+    'id' | 'accept' | 'imageRole'
+> & {
     defaultPreview?: string
     helpTextProps?: HelpTextProps
     file?: File
-    isFluid?: boolean
     isTouched?: boolean
     info?: string
     title: string
-    style?: CSSProperties
     onChangeFile: (file: File | undefined) => void
 }
 
 export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
-    className,
     defaultPreview,
     file,
     info,
-    size,
-    isFluid,
+    imageRole,
     isTouched = false,
     id,
     title,
-    style,
     onChangeFile,
     helpTextProps,
     accept = 'image/jpeg,image/png',
 }: ImageUploadProps) => {
     const inputRef = createRef<HTMLInputElement>()
-    const [localImage, setLocalImage] = useState<File>()
 
-    const handleOnDropFile = (event: DragEvent) => {
-        if (event?.dataTransfer) {
-            const file = Array.from(event.dataTransfer?.files)[0]
-            if (file) {
-                setLocalImage(file)
-                onChangeFile(file)
-            }
-        }
-    }
+    const {
+        handleOnChangeFile,
+        handleOnDropFile,
+        handleOnRemoveFile,
+        localImage,
+    } = useLocalImage({file, onChangeFile, isTouched})
 
-    const handleOnChangeFile = (
-        event: ChangeEvent<HTMLInputElement>,
-        ref: HTMLInputElement | null
-    ) => {
-        if (event?.target?.files) {
-            const file = Array.from(event.target.files)[0]
-            if (file) {
-                setLocalImage(file)
-                onChangeFile(file)
-
-                // ?    Reset the inner input value to be able to
-                // ? upload the same file if the current change is cleared
-                if (ref) {
-                    ref.value = ''
-                }
-            }
-        }
-    }
-
-    const handleOnRemoveFile = (event: ReactMouseEvent<HTMLDivElement>) => {
-        event.preventDefault()
-        setLocalImage(undefined)
-        onChangeFile(undefined)
-    }
-
-    useEffect(() => {
-        if (file) {
-            setLocalImage(file)
-        }
-    }, [file])
-
-    useEffect(() => {
-        if (!isTouched && localImage) {
-            setLocalImage(undefined)
-        }
-    }, [isTouched, localImage])
+    const closeSpan = (
+        <span className={css.close} onClickCapture={handleOnRemoveFile}>
+            <i className="material-icons-outlined">close</i>
+        </span>
+    )
 
     let content = (
         <div className={css.content}>
-            <DropText size={size} />
+            <DropText imageRole={imageRole} />
         </div>
     )
 
     if (!isTouched && defaultPreview) {
         content = (
             <>
-                <span className={css.close} onClickCapture={handleOnRemoveFile}>
-                    <i className="material-icons-outlined">close</i>
-                </span>
+                {closeSpan}
                 <div className={css.content}>
                     <img
                         className={css.preview}
@@ -124,9 +77,7 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
     if (localImage) {
         content = (
             <>
-                <span className={css.close} onClickCapture={handleOnRemoveFile}>
-                    <i className="material-icons-outlined">close</i>
-                </span>
+                {closeSpan}
                 <div className={css.content}>
                     <img
                         className={css.preview}
@@ -139,7 +90,7 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
     }
 
     return (
-        <div className={classNames(css.container, className)} style={style}>
+        <div className={css.container}>
             <Title help={info} Tooltip={{style: {width: 180}}}>
                 {title}
             </Title>
@@ -147,13 +98,10 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
                 id={id}
                 accept={accept}
                 inputRef={inputRef}
-                size={size}
-                style={isFluid ? {width: '100%'} : {}}
+                imageRole={imageRole}
                 onDrop={handleOnDropFile}
                 onChange={handleOnChangeFile}
-                className={classNames(css['drop-zone'], {
-                    [css['drop-zone-small']]: size === 'small',
-                })}
+                className={css.dropZone}
             >
                 {content}
             </DropZone>

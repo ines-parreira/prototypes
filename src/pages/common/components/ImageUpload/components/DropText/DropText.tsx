@@ -4,24 +4,25 @@ import React, {FC} from 'react'
 import imageIcon from 'assets/img/icons/image-icon.svg'
 
 import css from './DropText.less'
+import {DropZoneProps} from './../../../../components/ImageUpload'
 
 type DropTextProps = {
-    size?: 'default' | 'small'
+    imageRole?: DropZoneProps['imageRole']
 }
 
 export const DropText: FC<DropTextProps> = ({
-    size = 'default',
+    imageRole = 'default',
 }: DropTextProps) => {
     return (
         <div className={css.wrapper}>
             <img
                 className={classNames(css.icon, {
-                    [css['icon-small']]: size === 'small',
+                    [css['icon-small']]: imageRole === 'favicon',
                 })}
                 src={imageIcon}
                 alt="upload"
             />
-            {!(size === 'small') && (
+            {!(imageRole === 'favicon') && (
                 <div className={css.text}>
                     <span>Drop your image here, or</span>
                     <span className={css.browseInput}>browse</span>

@@ -5,7 +5,6 @@ import React, {
     useCallback,
     useEffect,
     useState,
-    CSSProperties,
     ChangeEvent,
     RefObject,
 } from 'react'
@@ -26,8 +25,7 @@ export type DropZoneProps = {
     className?: string
     inputRef?: RefObject<HTMLInputElement>
     name?: string
-    size?: 'default' | 'small'
-    style?: CSSProperties
+    imageRole?: 'default' | 'logo' | 'favicon' | 'bannerImage'
     onDragIn?: (event: DragEvent) => void
     onDragOut?: (event: DragEvent) => void
     onDrop?: (event: DragEvent) => void
@@ -44,8 +42,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
     className,
     inputRef = createRef<HTMLInputElement>(),
     name,
-    size = 'default',
-    style,
+    imageRole = 'default',
     onDragIn,
     onDragOut,
     onDrop,
@@ -150,13 +147,15 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
                     className={classNames(
                         {
                             [css.container]: true,
-                            [css.small]: size === 'small',
+                            [css.default]: imageRole === 'default',
+                            [css.favicon]: imageRole === 'favicon',
+                            [css.logo]: imageRole === 'logo',
+                            [css.bannerImage]: imageRole === 'bannerImage',
                             [css.rejected]: isDragRejected,
                             [css.accepted]: isDragging && !isDragRejected,
                         },
                         className
                     )}
-                    style={style}
                 >
                     <div className={css.content}>{children}</div>
                 </div>

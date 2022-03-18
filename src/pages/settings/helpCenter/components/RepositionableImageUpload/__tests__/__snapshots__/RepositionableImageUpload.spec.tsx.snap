@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RepositionableImageUpload /> matches snapshot with preview 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="container"
+    >
+      Banner Background
+      <i
+        class="help material-icons-outlined ml-2"
+        role="img"
+      >
+        info
+      </i>
+    </div>
+    <label
+      class="wrapper"
+      data-testid="dropZone"
+      for="banner_image"
+    >
+      <div
+        class="container default dropZone"
+      >
+        <div
+          class="content"
+        >
+          <div
+            class="imageContainer"
+            data-testid="draggable-container"
+          >
+            <img
+              alt="imageUrl"
+              class="image image"
+              src="imageUrl"
+              style="object-position: center 50%;"
+            />
+          </div>
+        </div>
+      </div>
+    </label>
+    <input
+      accept="image/jpeg,image/png"
+      id="banner_image"
+      style="display: none;"
+      type="file"
+    />
+    <div
+      class="helpText"
+    >
+      <div
+        class="container"
+      >
+        <span
+          class="highlight clickable"
+        >
+          upload
+        </span>
+        <br />
+        <span>
+          text
+        </span>
+      </div>
+      <div
+        class="highlight"
+      >
+        Remove image
+      </div>
+    </div>
+  </div>
+</div>
+`;

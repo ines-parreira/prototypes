@@ -2938,11 +2938,6 @@
                         "nullable": true,
                         "description": "Should be a valid URL."
                     },
-                    "banner_image_url": {
-                        "type": "string",
-                        "nullable": true,
-                        "description": "Should be a valid URL."
-                    },
                     "search_deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if search feature is deactivated for this Help center.",
@@ -3027,7 +3022,6 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "banner_image_url": {"type": "string", "nullable": true},
                     "search_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
@@ -3183,11 +3177,6 @@
                         "description": "Should be a valid URL."
                     },
                     "brand_logo_light_url": {
-                        "type": "string",
-                        "nullable": true,
-                        "description": "Should be a valid URL."
-                    },
-                    "banner_image_url": {
                         "type": "string",
                         "nullable": true,
                         "description": "Should be a valid URL."
@@ -3367,6 +3356,7 @@
                     "help_center_id": {"type": "number"},
                     "banner_text": {"type": "string", "nullable": true},
                     "banner_image_url": {"type": "string", "nullable": true},
+                    "banner_image_vertical_offset": {"type": "number"},
                     "locale": {
                         "type": "string",
                         "enum": [
@@ -3403,6 +3393,7 @@
                     "updated_datetime",
                     "help_center_id",
                     "banner_text",
+                    "banner_image_vertical_offset",
                     "locale",
                     "seo_meta",
                     "contact_info",
@@ -3584,6 +3575,7 @@
                         "description": "The banner text of the help center in the `locale`'s translation."
                     },
                     "banner_image_url": {"type": "string", "nullable": true},
+                    "banner_image_vertical_offset": {"type": "number"},
                     "contact_info": {
                         "allOf": [
                             {"$ref": "#/components/schemas/ContactInfoDto"}

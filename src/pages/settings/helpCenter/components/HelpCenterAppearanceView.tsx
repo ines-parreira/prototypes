@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {createRef, useEffect, useMemo, useState} from 'react'
 import axios from 'axios'
 import {useAsyncFn} from 'react-use'
 import {FormGroup} from 'reactstrap'
@@ -37,13 +37,16 @@ import {
 import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import useAppSelector from 'hooks/useAppSelector'
+import {Client, Components} from 'rest_api/help_center_api/client.generated'
 
 import {ImageUpload} from './ImageUpload'
 import {UpdateToggle} from './UpdateToggle'
 import {FontSelectField} from './FontSelectField/FontSelectField'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {ThemeSwitch} from './ThemeSwitch'
+import {ImageRepositioningModal} from './ImageRepositioningModal'
 import css from './HelpCenterAppearanceView.less'
+import {RepositionableImageUpload} from './RepositionableImageUpload/RepositionableImageUpload'
 
 export const HelpCenterAppearanceView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -72,6 +75,9 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const [bannerText, setBannerText] = useState<string>('')
     const [bannerImageUrl, setBannerImageUrl] = useState<string>('')
     const bannerImage = useFileUpload()
+    const [localImage, setLocalImage] = useState<File | undefined>(undefined)
+    const bannerInputRef = createRef<HTMLInputElement>()
+    const [isSavingBannerImage, setIsSavingBannerImage] = useState(false)
 
     const translation = useMemo(() => {
         return helpCenter.translations?.find(
@@ -95,6 +101,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
     useEffect(() => {
         void fetchHelpCenterTranslations()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -127,6 +134,55 @@ export const HelpCenterAppearanceView: React.FC = () => {
         }
 
         return undefined
+    }
+
+    const bannerImageSubmitWrapper = async (
+        callback: () => Promise<{
+            updatedTranslation: Components.Schemas.HelpCenterTranslationEntity
+        }>
+    ) => {
+        if (client && helpCenter) {
+            try {
+                const {updatedTranslation} = await callback()
+
+                const translations = helpCenter.translations?.map(
+                    (translation) =>
+                        translation.locale === updatedTranslation.locale
+                            ? updatedTranslation
+                            : translation
+                )
+
+                dispatch(
+                    helpCenterUpdated({
+                        ...helpCenter,
+                        translations,
+                    })
+                )
+
+                void dispatch(
+                    notify({
+                        message: 'Help Center updated with success',
+                        status: NotificationStatus.Success,
+                    })
+                )
+            } catch (err) {
+                const errorMessage =
+                    axios.isAxiosError(err) && err.response?.status === 413
+                        ? 'one or more files are larger than the size limit.'
+                        : 'please try again later.'
+
+                void dispatch(
+                    notify({
+                        message: `Failed to update the Help Center: ${errorMessage}`,
+                        status: NotificationStatus.Error,
+                    })
+                )
+
+                console.error(err)
+            }
+        }
+
+        throw Error('client or help center ID are missing!')
     }
 
     const [updateResponse, saveCurrentAppearance] = useAsyncFn(async () => {
@@ -256,12 +312,12 @@ export const HelpCenterAppearanceView: React.FC = () => {
         primaryLogo.discardFile()
         lightLogo.discardFile()
         favicon.discardFile()
-        bannerImage.discardFile()
     }
 
     const resetCurrentAppearance = () => {
         setSelectedTheme(helpCenterTheme)
         setCurrentColor(helpCenterColor)
+        bannerImage.discardFile()
         discardAllFiles()
     }
 
@@ -293,6 +349,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     id="primary_logo"
                     title="Standard Logo"
                     info="Used in the main navigation when with the light theme."
+                    imageRole="logo"
                     file={primaryLogo.payload}
                     defaultPreview={helpCenter.brand_logo_url || ''}
                     onChangeFile={primaryLogo.changeFile}
@@ -309,6 +366,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     id="light_logo"
                     title="Light Logo"
                     info="Used in the main navigation when with the dark theme."
+                    imageRole="logo"
                     file={lightLogo.payload}
                     defaultPreview={helpCenter.brand_logo_light_url || ''}
                     onChangeFile={lightLogo.changeFile}
@@ -325,6 +383,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     id="favicon"
                     title="Favicon"
                     info="This is shown in each browser beside your website’s name."
+                    imageRole="favicon"
                     file={favicon.payload}
                     defaultPreview={helpCenter.favicon_url || ''}
                     onChangeFile={favicon.changeFile}
@@ -337,7 +396,6 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         text: 'recommended size 64 x 64',
                     }}
                     accept="image/png,image/jpeg,image/x-icon"
-                    size="small"
                 />
             </section>
             <section>
@@ -389,20 +447,80 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         onChange={setBannerText}
                     />
                 </div>
-                <ImageUpload
+                <RepositionableImageUpload
                     id="banner_image"
                     title="Banner Background"
+                    imageRole="bannerImage"
                     file={bannerImage.payload}
                     defaultPreview={bannerImageUrl || ''}
-                    onChangeFile={bannerImage.changeFile}
+                    onChangeFile={(payload: File | undefined) => {
+                        bannerImage.changeFile(payload)
+                        setLocalImage(payload)
+                    }}
                     isTouched={bannerImage.isTouched}
-                    isFluid
                     helpTextProps={{
                         highlight: getImageUploadHighlightText(
                             bannerImage,
-                            helpCenter.banner_image_url
+                            bannerImageUrl
                         ),
                         text: 'recommended size 1440 x 316 - Maximum 10 MB',
+                    }}
+                    verticalOffset={translation?.banner_image_vertical_offset}
+                    inputRef={bannerInputRef}
+                    onSubmit={async (offset: number) => {
+                        const callback = async () => {
+                            const {data: updatedTranslation} = await (
+                                client as Client
+                            ).updateHelpCenterTranslation(
+                                {
+                                    help_center_id: helpCenter.id,
+                                    locale: selectedLanguage,
+                                },
+                                {
+                                    banner_image_vertical_offset: offset,
+                                }
+                            )
+
+                            return {updatedTranslation}
+                        }
+                        await bannerImageSubmitWrapper(callback)
+                    }}
+                    isSavingBannerImage={isSavingBannerImage}
+                />
+
+                <ImageRepositioningModal
+                    localImage={localImage}
+                    closeModal={() => {
+                        setLocalImage(undefined)
+                        bannerImage.discardFile()
+                    }}
+                    bannerInputRef={bannerInputRef}
+                    onSubmit={async (offset: number) => {
+                        const callback = async () => {
+                            setIsSavingBannerImage(true)
+                            try {
+                                const bannerImageUrl = await getFileUploadURL(
+                                    bannerImage
+                                )
+                                const {data: updatedTranslation} = await (
+                                    client as Client
+                                ).updateHelpCenterTranslation(
+                                    {
+                                        help_center_id: helpCenter.id,
+                                        locale: selectedLanguage,
+                                    },
+                                    {
+                                        banner_image_url: bannerImageUrl,
+                                        banner_image_vertical_offset: offset,
+                                    }
+                                )
+
+                                return {updatedTranslation}
+                            } finally {
+                                setIsSavingBannerImage(false)
+                            }
+                        }
+                        await bannerImageSubmitWrapper(callback)
                     }}
                 />
             </section>
@@ -430,7 +548,9 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         isDisabled={!canSaveCurrentAppearance}
                         onClick={saveCurrentAppearance}
                     >
-                        {updateResponse.loading ? 'Saving...' : 'Save Changes'}
+                        {updateResponse.loading || isSavingBannerImage
+                            ? 'Saving...'
+                            : 'Save Changes'}
                     </Button>
                     <Button intent="secondary" onClick={resetCurrentAppearance}>
                         Cancel

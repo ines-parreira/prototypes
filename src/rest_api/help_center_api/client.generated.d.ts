@@ -692,10 +692,6 @@ declare namespace Components {
        */
       brand_logo_light_url?: string | null;
       /**
-       * Should be a valid URL.
-       */
-      banner_image_url?: string | null;
-      /**
        * Boolean indicating if search feature is deactivated for this Help center.
        * example:
        * false
@@ -880,7 +876,6 @@ declare namespace Components {
       favicon_url?: string | null;
       brand_logo_url?: string | null;
       brand_logo_light_url?: string | null;
-      banner_image_url?: string | null;
       search_deactivated_datetime: string | null; // date-time
       powered_by_deactivated_datetime: string | null; // date-time
       algolia_api_key: string | null;
@@ -900,6 +895,7 @@ declare namespace Components {
       help_center_id: number;
       banner_text: string | null;
       banner_image_url?: string | null;
+      banner_image_vertical_offset: number;
       locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       seo_meta: {
         title: string | null;
@@ -1327,10 +1323,6 @@ declare namespace Components {
        */
       brand_logo_light_url?: string | null;
       /**
-       * Should be a valid URL.
-       */
-      banner_image_url?: string | null;
-      /**
        * Boolean indicating if search feature is deactivated for this Help center.
        * example:
        * false
@@ -1380,6 +1372,7 @@ declare namespace Components {
        */
       banner_text?: string | null;
       banner_image_url?: string | null;
+      banner_image_vertical_offset?: number;
       contact_info?: {
         email: EmailContactInfoDto;
         phone: PhoneContactInfoDto;

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DraggablePreviewImage /> matches snapshot 1`] = `
+<div>
+  <div
+    class="imageContainer"
+    data-testid="draggable-container"
+  >
+    <img
+      class="image image"
+      style="object-position: center 50%;"
+    />
+  </div>
+</div>
+`;

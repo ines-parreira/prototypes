@@ -22,7 +22,7 @@ exports[`<ImageUpload /> matches snapshot 1`] = `
       for="jest-file"
     >
       <div
-        class="container drop-zone"
+        class="container default dropZone"
       >
         <div
           class="content"

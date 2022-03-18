@@ -154,7 +154,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               for="primary_logo"
             >
               <div
-                class="container drop-zone"
+                class="container logo dropZone"
               >
                 <div
                   class="content"
@@ -227,7 +227,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               for="light_logo"
             >
               <div
-                class="container drop-zone"
+                class="container logo dropZone"
               >
                 <div
                   class="content"
@@ -300,7 +300,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               for="favicon"
             >
               <div
-                class="container small drop-zone drop-zone-small"
+                class="container favicon dropZone"
               >
                 <div
                   class="content"
@@ -776,8 +776,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               for="banner_image"
             >
               <div
-                class="container drop-zone"
-                style="width: 100%;"
+                class="container bannerImage dropZone"
               >
                 <div
                   class="content"
@@ -817,17 +816,22 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               type="file"
             />
             <div
-              class="container"
+              class="helpText"
             >
-              <span
-                class="highlight clickable"
+              <div
+                class="container"
               >
-                Upload image
-              </span>
-              <br />
-              <span>
-                recommended size 1440 x 316 - Maximum 10 MB
-              </span>
+                <span
+                  class="highlight clickable"
+                >
+                  Upload image
+                </span>
+                <br />
+                <span>
+                  recommended size 1440 x 316 - Maximum 10 MB
+                </span>
+              </div>
+              
             </div>
           </div>
         </section>

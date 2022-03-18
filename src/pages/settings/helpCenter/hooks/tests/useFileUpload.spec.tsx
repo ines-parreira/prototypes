@@ -1,15 +1,9 @@
 import {act} from '@testing-library/react'
 import {renderHook} from 'react-hooks-testing-library'
 
-import {uploadFiles} from '../../../../../utils'
+import * as utils from '../../../../../utils'
 
 import {useFileUpload} from '../useFileUpload'
-
-jest.mock('../../../../../utils', () => {
-    return {
-        uploadFiles: jest.fn().mockResolvedValue([]),
-    }
-})
 
 describe('useFileUpload()', () => {
     const dummyFile = new File(['foo'], 'foo.txt', {
@@ -49,23 +43,23 @@ describe('useFileUpload()', () => {
         expect(result.current.payload).toEqual(undefined)
     })
 
-    it('calls `uploadFiles` only if we have new changes', async () => {
-        const {result, waitForNextUpdate} = renderHook(useFileUpload)
+    it('calls `uploadFiles` only if we have new changes', () => {
+        const uploadFilesSpy = jest
+            .spyOn(utils, 'uploadFiles')
+            .mockResolvedValue([])
+
+        const {result} = renderHook(useFileUpload)
 
         void act(async () => {
             await result.current.uploadFile()
         })
 
-        expect(uploadFiles).not.toHaveBeenCalled()
+        expect(uploadFilesSpy).not.toHaveBeenCalled()
 
         void act(async () => {
             result.current.changeFile(dummyFile)
             await result.current.uploadFile()
+            expect(uploadFilesSpy).toHaveBeenCalled()
         })
-
-        await waitForNextUpdate()
-
-        expect(uploadFiles).toHaveBeenCalled()
-        expect(result.current.isTouched).toBeFalsy()
     })
 })

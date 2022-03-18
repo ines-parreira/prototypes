@@ -5,21 +5,20 @@
     }
 
     .preview {
-        max-width: 100%;
+        display: flex;
         max-height: 100%;
+        max-width: 100%;
     }
 
     .content {
-        position: relative;
-
         display: flex;
         justify-content: center;
         align-items: center;
-
+        overflow: hidden;
+        border-radius: 10px;
+        pointer-events: none;
         width: 100%;
         height: 100%;
-
-        pointer-events: none;
     }
 
     .close {
@@ -36,15 +35,9 @@
         }
     }
 
-    .drop-zone {
-        width: 100%;
-        height: 145px;
-
-        &.drop-zone-small {
-            .close {
-                top: 2px;
-                right: 2px;
-            }
-        }
+    .dropZone {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }

@@ -8,7 +8,7 @@ exports[`<DropZone> matches snapshot 1`] = `
     for="dropZone"
   >
     <div
-      class="container"
+      class="container default"
     >
       <div
         class="content"

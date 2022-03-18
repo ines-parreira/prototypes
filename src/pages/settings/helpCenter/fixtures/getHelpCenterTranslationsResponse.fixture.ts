@@ -11,6 +11,7 @@ export const getHelpCenterTranslationsResponseFixture: Components.Schemas.HelpCe
                 banner_text: 'Hi, This banner text is somewhat, very custom',
                 banner_image_url:
                     'https://i.picsum.photos/id/36/1440/316.jpg?hmac=yA9HAWLxyHZGQz-6Ywx2IlE2lETzlJOIoQLL0t6-9mU',
+                banner_image_vertical_offset: 0,
                 seo_meta: {title: null, description: null},
                 contact_info: {
                     email: {
@@ -50,6 +51,7 @@ export const getHelpCenterTranslationsResponseFixture: Components.Schemas.HelpCe
                 help_center_id: 1,
                 banner_text: 'Bonjour, comment puis-je vous aider ?',
                 banner_image_url: null,
+                banner_image_vertical_offset: 0,
                 seo_meta: {title: null, description: null},
                 contact_info: {
                     email: {

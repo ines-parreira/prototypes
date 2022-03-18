@@ -1,0 +1,62 @@
+@import '~css/new/colors';
+
+:local {
+    .modal-centered {
+        max-width: 800px;
+        top: 50%;
+        transform: translateY(-50%) !important;
+    }
+
+    .footerWrapper {
+        display: flex;
+        justify-content: space-between;
+        background-color: @classic-neutral-grey-2;
+
+        .actionButtonsContainer {
+            display: flex;
+            gap: 8px;
+        }
+    }
+
+    .modalBody {
+        width: 100%;
+        padding: 16px;
+        display: flex;
+        justify-content: center;
+        height: 197px;
+
+        .container {
+            position: relative;
+            width: 768px;
+            border: 2px dashed @classic-neutral-grey-3;
+            border-radius: 10px;
+            background-color: @classic-neutral-grey-2;
+            height: 169px;
+            cursor: row-resize;
+        }
+    }
+
+    .tooltip {
+        color: white;
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 6px;
+        padding: 2px 8px;
+    }
+
+    .boundingBox {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 165px;
+    }
+
+    .image {
+        position: absolute;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+        height: 165px;
+    }
+}

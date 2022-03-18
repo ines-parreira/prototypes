@@ -85,7 +85,6 @@ export const getSingleHelpCenterResponseFixture: Components.Schemas.HelpCenterEn
         favicon_url: null,
         brand_logo_url: null,
         brand_logo_light_url: null,
-        banner_image_url: null,
         search_deactivated_datetime: '2021-05-17T18:21:42.022Z',
         powered_by_deactivated_datetime: null,
         algolia_api_key: null,
