@@ -164,7 +164,7 @@ export function RulesViewContainer({
                             className="float-right"
                             isDisabled={limitStatus === RuleLimitStatus.Reached}
                         >
-                            Create new rule
+                            Create rule
                         </Button>
                     </Link>
                 </div>

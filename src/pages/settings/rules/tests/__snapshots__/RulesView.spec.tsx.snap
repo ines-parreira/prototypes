@@ -138,7 +138,7 @@ exports[`<RulesView/> should render the rule library view 1`] = `
             class="wrapper float-right primary medium"
             type="button"
           >
-            Create new rule
+            Create rule
           </button>
         </a>
       </div>
@@ -224,7 +224,7 @@ exports[`<RulesView/> should render the rule views 1`] = `
             class="wrapper float-right primary medium"
             type="button"
           >
-            Create new rule
+            Create rule
           </button>
         </a>
       </div>
