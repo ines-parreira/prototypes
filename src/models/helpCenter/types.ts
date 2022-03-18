@@ -47,8 +47,8 @@ export type UpdateCategoryTranslationDto =
 
 export type CategoriesListPage = Components.Schemas.CategoriesListPageDto
 export type CategoryWithLocalTranslation =
-    Components.Schemas.CategoryWithLocalTranslation
-export type CategoryTranslation = Components.Schemas.CategoryTranslationEntity
+    Components.Schemas.CategoryWithLocalTranslationDto
+export type CategoryTranslation = Components.Schemas.CategoryTranslationDto
 export type CategoryTranslationSeoMeta =
     Components.Schemas.CategoryTranslationSeoMeta
 export type LocalCategoryTranslation =

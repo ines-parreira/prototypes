@@ -23,7 +23,9 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                     title: null,
                     description: null,
                 },
+                parent_category_id: null,
             },
+            parent_category_id: null,
         },
         {
             created_datetime: '2021-06-01T09:46:30.044Z',
@@ -46,7 +48,9 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                     title: null,
                     description: null,
                 },
+                parent_category_id: null,
             },
+            parent_category_id: null,
         },
         {
             created_datetime: '2021-06-01T09:46:30.044Z',
@@ -69,7 +73,9 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                     title: null,
                     description: null,
                 },
+                parent_category_id: null,
             },
+            parent_category_id: null,
         },
         {
             created_datetime: '2021-06-01T09:46:30.044Z',
@@ -91,7 +97,9 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                     title: null,
                     description: null,
                 },
+                parent_category_id: null,
             },
+            parent_category_id: null,
         },
     ],
     object: 'list',
@@ -127,5 +135,7 @@ export const getSingleCategoryEnglish: Category = {
         created_datetime: '2021-06-01T09:46:30.044Z',
         updated_datetime: '2021-06-01T09:46:30.044Z',
         deleted_datetime: null,
+        parent_category_id: null,
     },
+    parent_category_id: null,
 }
