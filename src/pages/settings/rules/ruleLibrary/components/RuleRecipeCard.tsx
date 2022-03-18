@@ -196,7 +196,7 @@ function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
             )
         }
         if (recipe.rule.type === 'managed') {
-            const text = managedRuleId ? 'Installed' : 'Managed rule'
+            const text = managedRuleId ? 'Installed' : 'Managed'
             badges.push(
                 <Badge
                     color="light"
