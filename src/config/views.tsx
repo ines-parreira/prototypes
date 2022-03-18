@@ -383,10 +383,11 @@ export const views = fromJS([
                     ViewField.Status,
                     ViewField.Customer,
                     ViewField.Created,
+                    ViewField.Updated,
                     ViewField.LastMessage,
                 ],
                 type: ViewType.TicketList,
-                order_by: 'last_message_datetime',
+                order_by: 'updated_datetime',
             })
 
             if (filters) {
