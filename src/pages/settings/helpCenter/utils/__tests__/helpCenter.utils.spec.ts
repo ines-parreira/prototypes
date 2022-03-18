@@ -59,15 +59,15 @@ describe('slugify()', () => {
     describe('it removes unauthorized characters and trailing whitespace', () => {
         expect(
             slugify(
-                "Title *one*; title two, title 'three' / four. Title five ?!  "
+                "Title *one*; title two, title $ #'three' / four. Title five ?! "
             )
-        ).toEqual('title-one-title-two-title-three--four-title-five')
+        ).toEqual('title-one-title-two-title-dollar-three--four-title-five')
     })
 
     // * read more: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI#description
-    describe('it does not encode reserved characters', () => {
+    describe('it does not encode reserved characters and replace problematic ones', () => {
         expect(slugify(`@ & = + $ - _ ~ ( ) #`)).toEqual(
-            `@-&-=-+-$---_-~-(-)-#`
+            `@-&-=-+-dollar---_-~-(-)`
         )
     })
 

@@ -77,7 +77,8 @@ export function slugify(value: string): string {
         const valueWithoutAccents = removeAccents(value)
         return encodeURI(
             valueWithoutAccents
-                .replace(/[/;:.',*?!]/g, '')
+                .replace(/[/;:.',*?!#]/g, '')
+                .replace(/\$/g, 'dollar') // for SEO
                 .trim()
                 .replace(/ /g, '-')
                 .toLowerCase()
