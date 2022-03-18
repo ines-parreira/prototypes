@@ -31,73 +31,76 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       key="1"
     >
       <td
-        className="link-full-td macroTitle"
+        className="macroTitle wrapper"
       >
         <Link
           to="/app/settings/macros/1"
         >
-          <div>
+          <BodyCellContent>
             Waive Fee
-          </div>
+          </BodyCellContent>
         </Link>
       </td>
       <td
-        className="link-full-td"
+        className="wrapper"
       >
         <Link
           tabIndex={-1}
           to="/app/settings/macros/1"
         >
-          <div>
+          <BodyCellContent>
             1
-          </div>
+          </BodyCellContent>
         </Link>
       </td>
       <td
-        className="link-full-td dateCell"
+        className="wrapper dateCell"
       >
         <Link
           tabIndex={-1}
           to="/app/settings/macros/1"
         >
-          <div>
+          <BodyCellContent>
             2017-08-01
-          </div>
+          </BodyCellContent>
         </Link>
       </td>
       <td
-        className="smallest actions"
+        className="wrapper smallest actions"
       >
-        <ForwardRef
-          className="mr-1"
-          intent="text"
-          onClick={[Function]}
-          title="Duplicate macro"
-        >
-          file_copy
-        </ForwardRef>
-        <ConfirmationPopover
-          buttonProps={
-            Object {
-              "intent": "destructive",
+        <BodyCellContent>
+          <ForwardRef
+            className="mr-1"
+            intent="text"
+            onClick={[Function]}
+            title="Duplicate macro"
+          >
+            file_copy
+          </ForwardRef>
+          <ConfirmationPopover
+            buttonProps={
+              Object {
+                "intent": "destructive",
+              }
             }
-          }
-          content={
-            <React.Fragment>
-              You are about to delete
-               
-              <b>
-                Waive Fee
-              </b>
-               macro.
-            </React.Fragment>
-          }
-          id="delete-button-1"
-          onConfirm={[Function]}
-          placement="left"
-        >
-          <Component />
-        </ConfirmationPopover>
+            content={
+              <React.Fragment>
+                You are about to delete
+                 
+                <b>
+                  Waive Fee
+                </b>
+                 
+                macro.
+              </React.Fragment>
+            }
+            id="delete-button-1"
+            onConfirm={[Function]}
+            placement="left"
+          >
+            <Component />
+          </ConfirmationPopover>
+        </BodyCellContent>
       </td>
     </ForwardRef(TableBodyRow)>
     <ForwardRef(TableBodyRow)
@@ -105,73 +108,76 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       key="2"
     >
       <td
-        className="link-full-td macroTitle"
+        className="macroTitle wrapper"
       >
         <Link
           to="/app/settings/macros/2"
         >
-          <div>
+          <BodyCellContent>
             Do Not Waive Fee
-          </div>
+          </BodyCellContent>
         </Link>
       </td>
       <td
-        className="link-full-td"
+        className="wrapper"
       >
         <Link
           tabIndex={-1}
           to="/app/settings/macros/2"
         >
-          <div>
+          <BodyCellContent>
             3
-          </div>
+          </BodyCellContent>
         </Link>
       </td>
       <td
-        className="link-full-td dateCell"
+        className="wrapper dateCell"
       >
         <Link
           tabIndex={-1}
           to="/app/settings/macros/2"
         >
-          <div>
+          <BodyCellContent>
             2017-08-01
-          </div>
+          </BodyCellContent>
         </Link>
       </td>
       <td
-        className="smallest actions"
+        className="wrapper smallest actions"
       >
-        <ForwardRef
-          className="mr-1"
-          intent="text"
-          onClick={[Function]}
-          title="Duplicate macro"
-        >
-          file_copy
-        </ForwardRef>
-        <ConfirmationPopover
-          buttonProps={
-            Object {
-              "intent": "destructive",
+        <BodyCellContent>
+          <ForwardRef
+            className="mr-1"
+            intent="text"
+            onClick={[Function]}
+            title="Duplicate macro"
+          >
+            file_copy
+          </ForwardRef>
+          <ConfirmationPopover
+            buttonProps={
+              Object {
+                "intent": "destructive",
+              }
             }
-          }
-          content={
-            <React.Fragment>
-              You are about to delete
-               
-              <b>
-                Do Not Waive Fee
-              </b>
-               macro.
-            </React.Fragment>
-          }
-          id="delete-button-2"
-          onConfirm={[Function]}
-          placement="left"
-        >
-          <Component />
-        </ConfirmationPopover>
+            content={
+              <React.Fragment>
+                You are about to delete
+                 
+                <b>
+                  Do Not Waive Fee
+                </b>
+                 
+                macro.
+              </React.Fragment>
+            }
+            id="delete-button-2"
+            onConfirm={[Function]}
+            placement="left"
+          >
+            <Component />
+          </ConfirmationPopover>
+        </BodyCellContent>
       </td>
     </ForwardRef(TableBodyRow)>
   </ForwardRef(TableBody)>

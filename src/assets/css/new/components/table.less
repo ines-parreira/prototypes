@@ -11,4 +11,94 @@
         background-color: @classic-neutral-grey-1;
         color: @classic-neutral-grey-6;
     }
+
+    td {
+        &.smallest {
+            white-space: nowrap;
+            width: 1px;
+        }
+    }
+
+    thead {
+        td,
+        th {
+            padding: 16px 12px;
+            color: @classic-neutral-grey-4;
+            line-height: 20px;
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+
+            &:first-of-type {
+                padding-left: 24px;
+            }
+
+            &:last-of-type {
+                padding-right: 24px;
+            }
+
+            &.smallest {
+                white-space: nowrap;
+                width: 1px;
+            }
+        }
+    }
+
+    // shrink a table cell to its minimum width
+    tr {
+        td {
+            &:first-of-type {
+                padding-left: 24px;
+
+                &.link-full-td {
+                    padding-left: 24px;
+                }
+            }
+
+            &:last-of-type {
+                padding-right: 24px;
+            }
+
+            &.smallest {
+                white-space: nowrap;
+                width: 1px;
+            }
+
+            &.link-full-td {
+                padding: 0;
+
+                .cell-content {
+                    padding: 16px 12px;
+                }
+
+                > a {
+                    color: inherit !important;
+
+                    > div {
+                        padding: 16px 12px;
+                        height: 100%;
+                        width: 100%;
+                        line-height: 20px;
+                    }
+                }
+
+                &:first-of-type {
+                    > a {
+                        > div {
+                            padding-left: 0;
+                        }
+                    }
+
+                    .cell-content {
+                        padding-left: 0;
+                    }
+                }
+
+                .fit-cell {
+                    margin-top: -16px;
+                    margin-bottom: -16px;
+                }
+            }
+        }
+    }
 }

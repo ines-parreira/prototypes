@@ -1,18 +1,72 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<BodyCell/> should render 1`] = `
-<td
-  className="foo"
->
-  <div
-    className="cellContent"
-    style={
-      Object {
-        "width": undefined,
-      }
-    }
+<tr>
+  <td
+    class="wrapper foo normal"
   >
-    Foo
-  </div>
-</td>
+    <div
+      class="cellContent"
+    >
+      Foo
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`<BodyCell/> should render and pass innerClassName prop 1`] = `
+<tr>
+  <td
+    class="wrapper foo normal"
+  >
+    <div
+      class="cellContent bar"
+    >
+      Foo
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`<BodyCell/> should render in small size 1`] = `
+<tr>
+  <td
+    class="wrapper foo small"
+  >
+    <div
+      class="cellContent"
+    >
+      Foo
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`<BodyCell/> should render in smallest size 1`] = `
+<tr>
+  <td
+    class="wrapper foo smallest"
+  >
+    <div
+      class="cellContent"
+    >
+      Foo
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`<BodyCell/> should render with custom width 1`] = `
+<tr>
+  <td
+    class="wrapper foo normal"
+  >
+    <div
+      class="cellContent"
+      style="width: 200px;"
+    >
+      Foo
+    </div>
+  </td>
+</tr>
 `;

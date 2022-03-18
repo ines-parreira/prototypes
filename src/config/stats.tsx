@@ -546,7 +546,7 @@ export const stats = toImmutable<
         style: 'table',
         downloadable: true,
         callbacks: {
-            cell: ({value}) => {
+            cell: ({value, axis}) => {
                 if (
                     _isString(value) &&
                     value.toLowerCase() === 'without macro'
@@ -556,6 +556,10 @@ export const stats = toImmutable<
                             <b>{value}</b>
                         </i>
                     )
+                }
+
+                if (axis.name.toLowerCase() === 'macro') {
+                    return <div className="fit-cell">{value}</div>
                 }
 
                 return value
@@ -769,9 +773,13 @@ export const stats = toImmutable<
                     return value
                 }
                 return (
-                    <TagLabel decoration={tagColors.get(tagName.get('value'))}>
-                        {tagName.get('value')}
-                    </TagLabel>
+                    <div className="fit-cell">
+                        <TagLabel
+                            decoration={tagColors.get(tagName.get('value'))}
+                        >
+                            {tagName.get('value')}
+                        </TagLabel>
+                    </div>
                 )
             },
         } as StatConfigCallbacks,
@@ -1480,7 +1488,11 @@ export const stats = toImmutable<
                         ({value: dropDownValue}) => value === dropDownValue
                     )?.label
 
-                    return <>{translatedIssue || value}</>
+                    return (
+                        <span className="fit-cell">
+                            {translatedIssue || value}
+                        </span>
+                    )
                 }
 
                 return value
@@ -1519,8 +1531,14 @@ export const stats = toImmutable<
                     )?.label
 
                     return value === ReportIssueReasons.REASON_OTHER ? (
-                        <div style={{display: 'flex', alignItems: 'center'}}>
-                            <h5 style={{margin: 16}}>
+                        <div
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                lineHeight: '20px',
+                            }}
+                        >
+                            <h5 style={{margin: 0}} className="mr-2">
                                 {translatedIssue || value}
                             </h5>
                             <Link to="/app/settings/self-service">
@@ -1528,7 +1546,7 @@ export const stats = toImmutable<
                             </Link>
                         </div>
                     ) : (
-                        <h5 style={{margin: 16}}>{translatedIssue || value}</h5>
+                        <h5 style={{margin: 0}}>{translatedIssue || value}</h5>
                     )
                 }
 

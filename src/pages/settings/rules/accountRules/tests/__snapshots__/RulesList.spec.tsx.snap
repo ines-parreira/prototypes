@@ -8,7 +8,7 @@ exports[`<RulesList/> should render the rule views 1`] = `
     class="table table-hover"
   >
     <thead
-      class="text-faded border-0 tableHeader"
+      class="border-0"
     >
       <tr>
         <td />

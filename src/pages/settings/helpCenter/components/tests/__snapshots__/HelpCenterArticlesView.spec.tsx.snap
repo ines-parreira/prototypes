@@ -194,18 +194,18 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             class="headerRow"
           >
             <td
-              class="wrapper headerCell"
+              class="wrapper headerCell normal"
               style="width: 25px;"
             />
             <td
-              class="wrapper headerCell"
+              class="wrapper headerCell normal"
             />
             <td
-              class="wrapper headerCell"
+              class="wrapper headerCell normal"
               style="width: 124px;"
             />
             <td
-              class="wrapper headerCell"
+              class="wrapper headerCell normal"
               style="width: 160px;"
             />
           </tr>

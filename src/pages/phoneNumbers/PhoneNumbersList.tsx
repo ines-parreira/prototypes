@@ -101,13 +101,13 @@ export function PhoneNumbersList(): JSX.Element | null {
                                 history.push(detailsLink)
                             }}
                         >
-                            <BodyCell>
+                            <BodyCell size="small">
                                 <PhoneNumberTitle
                                     phoneNumber={phoneNumber}
                                     withRoundFlag
                                 />
                             </BodyCell>
-                            <BodyCell>
+                            <BodyCell size="small">
                                 <TagLabel>
                                     {startCase(phoneNumber.meta?.type)}
                                 </TagLabel>

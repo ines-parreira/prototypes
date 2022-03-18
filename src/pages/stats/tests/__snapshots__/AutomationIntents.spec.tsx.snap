@@ -505,37 +505,37 @@ exports[`AutomationIntents should render the filters and stats when stats filter
           <tbody>
             <tr>
               <td
-                class="lineCell string"
+                class="lineCell string link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   other/question
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   2
                 </span>
               </td>
               <td
-                class="lineCell percent"
+                class="lineCell percent link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   15%
                 </span>
               </td>
               <td
-                class="lineCell delta"
+                class="lineCell delta link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <span>
                     <span

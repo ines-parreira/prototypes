@@ -1,14 +1,31 @@
+@import (reference) '~css/new/colorTokens';
+
 :local {
-    .cellContent {
-        align-items: center;
-        box-sizing: border-box;
-        cursor: pointer;
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        min-height: 65px;
-        padding: 15px 18px;
-        position: relative;
-        width: 100%;
+    .wrapper {
+        &:first-of-type {
+            div:first-of-type {
+                padding-left: 24px;
+            }
+        }
+
+        &:last-of-type {
+            div:first-of-type {
+                padding-right: 24px;
+            }
+        }
+
+        &.small,
+        &.smallest {
+            white-space: nowrap;
+
+            div:first-of-type {
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+        }
+
+        &.smallest {
+            width: 1px;
+        }
     }
 }

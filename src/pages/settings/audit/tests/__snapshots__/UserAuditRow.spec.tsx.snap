@@ -3,29 +3,47 @@
 exports[`<UserAuditRow/> should not render user when no agents are in store 1`] = `
 <div>
   <tr>
-    <td>
+    <td
+      class="align-middle"
+    >
       <span
         class="emptyUser"
       >
         No user
       </span>
     </td>
-    <td>
-      Macro created
-    </td>
-    <td>
-      Macro #20
+    <td
+      class="link-full-td align-middle"
+    >
+      <div
+        class="cell-content"
+      >
+        Macro created
+      </div>
     </td>
     <td
-      class="smallest"
+      class="link-full-td align-middle"
     >
-      <span>
-        <span
-          id="datetime-tooltip-ssssssssst"
-        >
-          January 25, 2022 10:39 AM
+      <div
+        class="cell-content"
+      >
+        Macro #20
+      </div>
+    </td>
+    <td
+      class="smallest link-full-td"
+    >
+      <div
+        class="cell-content"
+      >
+        <span>
+          <span
+            id="datetime-tooltip-ssssssssst"
+          >
+            January 25, 2022 10:39 AM
+          </span>
         </span>
-      </span>
+      </div>
     </td>
   </tr>
 </div>
@@ -34,7 +52,9 @@ exports[`<UserAuditRow/> should not render user when no agents are in store 1`] 
 exports[`<UserAuditRow/> should render with a link to Customer object type 1`] = `
 <div>
   <tr>
-    <td>
+    <td
+      class="align-middle"
+    >
       <div>
         <a
           to="/app/settings/users/1"
@@ -59,24 +79,40 @@ exports[`<UserAuditRow/> should render with a link to Customer object type 1`] =
         </a>
       </div>
     </td>
-    <td />
-    <td>
-      <a
-        to="/app/customer/10/"
-      >
-        Customer #10
-      </a>
+    <td
+      class="link-full-td align-middle"
+    >
+      <div
+        class="cell-content"
+      />
     </td>
     <td
-      class="smallest"
+      class="link-full-td align-middle"
     >
-      <span>
-        <span
-          id="datetime-tooltip-ssssssssst"
+      <div
+        class="cell-content"
+      >
+        <a
+          to="/app/customer/10/"
         >
-          January 25, 2022 10:39 AM
+          Customer #10
+        </a>
+      </div>
+    </td>
+    <td
+      class="smallest link-full-td"
+    >
+      <div
+        class="cell-content"
+      >
+        <span>
+          <span
+            id="datetime-tooltip-ssssssssst"
+          >
+            January 25, 2022 10:39 AM
+          </span>
         </span>
-      </span>
+      </div>
     </td>
   </tr>
 </div>
@@ -85,7 +121,9 @@ exports[`<UserAuditRow/> should render with a link to Customer object type 1`] =
 exports[`<UserAuditRow/> should render with a link to Ticket object type 1`] = `
 <div>
   <tr>
-    <td>
+    <td
+      class="align-middle"
+    >
       <div>
         <a
           to="/app/settings/users/1"
@@ -110,24 +148,40 @@ exports[`<UserAuditRow/> should render with a link to Ticket object type 1`] = `
         </a>
       </div>
     </td>
-    <td />
-    <td>
-      <a
-        to="/app/ticket/10/"
-      >
-        Ticket #10
-      </a>
+    <td
+      class="link-full-td align-middle"
+    >
+      <div
+        class="cell-content"
+      />
     </td>
     <td
-      class="smallest"
+      class="link-full-td align-middle"
     >
-      <span>
-        <span
-          id="datetime-tooltip-ssssssssst"
+      <div
+        class="cell-content"
+      >
+        <a
+          to="/app/ticket/10/"
         >
-          January 25, 2022 10:39 AM
+          Ticket #10
+        </a>
+      </div>
+    </td>
+    <td
+      class="smallest link-full-td"
+    >
+      <div
+        class="cell-content"
+      >
+        <span>
+          <span
+            id="datetime-tooltip-ssssssssst"
+          >
+            January 25, 2022 10:39 AM
+          </span>
         </span>
-      </span>
+      </div>
     </td>
   </tr>
 </div>
@@ -136,7 +190,9 @@ exports[`<UserAuditRow/> should render with a link to Ticket object type 1`] = `
 exports[`<UserAuditRow/> should render with a link to User object type 1`] = `
 <div>
   <tr>
-    <td>
+    <td
+      class="align-middle"
+    >
       <div>
         <a
           to="/app/settings/users/1"
@@ -161,24 +217,40 @@ exports[`<UserAuditRow/> should render with a link to User object type 1`] = `
         </a>
       </div>
     </td>
-    <td />
-    <td>
-      <a
-        to="/app/customer/10/"
-      >
-        User #10
-      </a>
+    <td
+      class="link-full-td align-middle"
+    >
+      <div
+        class="cell-content"
+      />
     </td>
     <td
-      class="smallest"
+      class="link-full-td align-middle"
     >
-      <span>
-        <span
-          id="datetime-tooltip-ssssssssst"
+      <div
+        class="cell-content"
+      >
+        <a
+          to="/app/customer/10/"
         >
-          January 25, 2022 10:39 AM
+          User #10
+        </a>
+      </div>
+    </td>
+    <td
+      class="smallest link-full-td"
+    >
+      <div
+        class="cell-content"
+      >
+        <span>
+          <span
+            id="datetime-tooltip-ssssssssst"
+          >
+            January 25, 2022 10:39 AM
+          </span>
         </span>
-      </span>
+      </div>
     </td>
   </tr>
 </div>
@@ -187,7 +259,9 @@ exports[`<UserAuditRow/> should render with a link to User object type 1`] = `
 exports[`<UserAuditRow/> should render with a user, event type and object type 1`] = `
 <div>
   <tr>
-    <td>
+    <td
+      class="align-middle"
+    >
       <div>
         <a
           to="/app/settings/users/1"
@@ -212,22 +286,38 @@ exports[`<UserAuditRow/> should render with a user, event type and object type 1
         </a>
       </div>
     </td>
-    <td>
-      Macro created
-    </td>
-    <td>
-      Macro #20
+    <td
+      class="link-full-td align-middle"
+    >
+      <div
+        class="cell-content"
+      >
+        Macro created
+      </div>
     </td>
     <td
-      class="smallest"
+      class="link-full-td align-middle"
     >
-      <span>
-        <span
-          id="datetime-tooltip-ssssssssst"
-        >
-          January 25, 2022 10:39 AM
+      <div
+        class="cell-content"
+      >
+        Macro #20
+      </div>
+    </td>
+    <td
+      class="smallest link-full-td"
+    >
+      <div
+        class="cell-content"
+      >
+        <span>
+          <span
+            id="datetime-tooltip-ssssssssst"
+          >
+            January 25, 2022 10:39 AM
+          </span>
         </span>
-      </span>
+      </div>
     </td>
   </tr>
 </div>

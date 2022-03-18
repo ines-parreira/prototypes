@@ -821,46 +821,46 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
           <tbody>
             <tr>
               <td
-                class="lineCell string"
+                class="lineCell string link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   Unassigned
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   4
                 </span>
               </td>
               <td
-                class="lineCell string"
+                class="lineCell string link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   0
                 </span>
               </td>
               <td
-                class="lineCell percent"
+                class="lineCell percent link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   0%
                 </span>
               </td>
               <td
-                class="lineCell currency"
+                class="lineCell currency link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   $0
                 </span>
@@ -868,46 +868,46 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
             </tr>
             <tr>
               <td
-                class="lineCell string"
+                class="lineCell string link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   Acme Support
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   9
                 </span>
               </td>
               <td
-                class="lineCell string"
+                class="lineCell string link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   0
                 </span>
               </td>
               <td
-                class="lineCell percent"
+                class="lineCell percent link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   0%
                 </span>
               </td>
               <td
-                class="lineCell currency"
+                class="lineCell currency link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   $0
                 </span>
@@ -993,10 +993,10 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
           <tbody>
             <tr>
               <td
-                class="lineCell ticket-link"
+                class="lineCell ticket-link link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <a
                     to="/app/ticket/13198875"
@@ -1006,42 +1006,50 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                 </span>
               </td>
               <td
-                class="lineCell currency"
+                class="lineCell currency link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   $197.94
                 </span>
               </td>
               <td
-                class="lineCell date"
+                class="lineCell date link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
-                  <span>
-                    <span
-                      id="datetime-tooltip-"
-                    >
-                      12/16/2021
+                  <div
+                    class="fit-cell"
+                  >
+                    <span>
+                      <span
+                        id="datetime-tooltip-"
+                      >
+                        12/16/2021
+                      </span>
                     </span>
-                  </span>
+                  </div>
                 </span>
               </td>
               <td
-                class="lineCell date"
+                class="lineCell date link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
-                  <span>
-                    <span
-                      id="datetime-tooltip-"
-                    >
-                      12/16/2021
+                  <div
+                    class="fit-cell"
+                  >
+                    <span>
+                      <span
+                        id="datetime-tooltip-"
+                      >
+                        12/16/2021
+                      </span>
                     </span>
-                  </span>
+                  </div>
                 </span>
               </td>
             </tr>

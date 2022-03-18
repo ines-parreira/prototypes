@@ -51,12 +51,13 @@ exports[`BillingInvoices component should display invoices, without PDF download
       The account owner will receive an invoice by email at the start of each billing period.
     </p>
     <Table
+      className="table"
       responsiveTag="div"
       striped={true}
       tag="table"
     >
       <table
-        className="table table-striped"
+        className="table table table-striped"
       >
         <thead>
           <tr>
@@ -81,66 +82,118 @@ exports[`BillingInvoices component should display invoices, without PDF download
           <tr
             key="123"
           >
-            <td>
-              <Badge
-                type="error"
+            <td
+              className="link-full-td align-middle"
+            >
+              <div
+                className="cell-content"
               >
-                <div
-                  className="badge"
-                  style={
-                    Object {
-                      "backgroundColor": "var(--background-error)",
-                    }
-                  }
+                <Badge
+                  type="error"
                 >
-                  Unpaid
-                </div>
-              </Badge>
+                  <div
+                    className="badge"
+                    style={
+                      Object {
+                        "backgroundColor": "var(--background-error)",
+                      }
+                    }
+                  >
+                    Unpaid
+                  </div>
+                </Badge>
+              </div>
             </td>
-            <td>
-              June 5, 2017
+            <td
+              className="link-full-td align-middle"
+            >
+              <div
+                className="cell-content"
+              >
+                June 5, 2017
+              </div>
             </td>
-            <td>
-              $10
-               
+            <td
+              className="link-full-td align-middle"
+            >
+              <div
+                className="cell-content"
+              >
+                $10
+                 
+              </div>
             </td>
-            <td>
-              -
-               
+            <td
+              className="link-full-td align-middle"
+            >
+              <div
+                className="cell-content"
+              >
+                -
+                 
+              </div>
             </td>
-            <td />
+            <td
+              className="link-full-td align-middle"
+            />
           </tr>
           <tr
             key="125"
           >
-            <td>
-              <Badge
-                type="success"
+            <td
+              className="link-full-td align-middle"
+            >
+              <div
+                className="cell-content"
               >
-                <div
-                  className="badge"
-                  style={
-                    Object {
-                      "backgroundColor": "var(--background-success)",
-                    }
-                  }
+                <Badge
+                  type="success"
                 >
-                  Paid
-                </div>
-              </Badge>
+                  <div
+                    className="badge"
+                    style={
+                      Object {
+                        "backgroundColor": "var(--background-success)",
+                      }
+                    }
+                  >
+                    Paid
+                  </div>
+                </Badge>
+              </div>
             </td>
-            <td>
-              June 5, 2017
+            <td
+              className="link-full-td align-middle"
+            >
+              <div
+                className="cell-content"
+              >
+                June 5, 2017
+              </div>
             </td>
-            <td>
-              $100
-               
+            <td
+              className="link-full-td align-middle"
+            >
+              <div
+                className="cell-content"
+              >
+                $100
+                 
+              </div>
             </td>
-            <td>
-              -
-               
+            <td
+              className="link-full-td align-middle"
+            >
+              <div
+                className="cell-content"
+              >
+                -
+                 
+              </div>
             </td>
-            <td>
+            <td
+              className="link-full-td align-middle"
+            >
               <a
                 className="mr-2"
                 href="https://pay.stripe.com/invoice/example125/pdf"

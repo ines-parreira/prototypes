@@ -370,20 +370,30 @@ class AdsTable extends Component<AdsTableProps> {
                                     }
                                 />
                             </td>
-                            <td>
+                            <td className="link-full-td">
                                 <a
                                     href={ad.get('permalink')}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    {ad.get('name')}
+                                    <div>{ad.get('name')}</div>
                                 </a>
                             </td>
-                            <td>
+                            <td className="link-full-td">
                                 {ad.get('created_datetime') && (
-                                    <DatetimeLabel
-                                        dateTime={ad.get('created_datetime')}
-                                    />
+                                    <a
+                                        href={ad.get('permalink')}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <div>
+                                            <DatetimeLabel
+                                                dateTime={ad.get(
+                                                    'created_datetime'
+                                                )}
+                                            />
+                                        </div>
+                                    </a>
                                 )}
                             </td>
                         </tr>

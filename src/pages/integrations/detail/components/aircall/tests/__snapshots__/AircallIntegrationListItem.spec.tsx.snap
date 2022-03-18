@@ -30,9 +30,11 @@ exports[`<AircallIntegrationListItem/> render() should render the aircall integr
     </div>
   </td>
   <td
-    class="align-middle"
+    class="align-middle link-full-td"
   >
-    <div>
+    <div
+      class="cell-content"
+    >
       <b
         class="mr-2"
       >
@@ -100,9 +102,11 @@ exports[`<AircallIntegrationListItem/> render() should render the aircall integr
     </div>
   </td>
   <td
-    class="align-middle"
+    class="align-middle link-full-td"
   >
-    <div>
+    <div
+      class="cell-content"
+    >
       <b
         class="mr-2"
       >

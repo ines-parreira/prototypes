@@ -57,7 +57,7 @@ export const HelpCenterTable: React.FC<Props> = ({
     return (
         <TableWrapper>
             <TableHead className={css.tableHead}>
-                <HeaderCell className="smallest" />
+                <HeaderCell size="smallest" />
                 <HeaderCellProperty title="Help Center name" />
                 <HeaderCellProperty title="Languages" />
                 <HeaderCellProperty title="Last updated" />
@@ -81,10 +81,8 @@ export const HelpCenterTable: React.FC<Props> = ({
                                 onClick={() => onClick(id)}
                             >
                                 <BodyCell
-                                    className={classnames(
-                                        'smallest',
-                                        css.actions
-                                    )}
+                                    size="smallest"
+                                    className={css.actions}
                                 >
                                     <ToggleInput
                                         isToggled={activated}
@@ -94,7 +92,7 @@ export const HelpCenterTable: React.FC<Props> = ({
                                 <BodyCell className={css.helpCenterName}>
                                     {name}
                                 </BodyCell>
-                                <BodyCell>
+                                <BodyCell size="small">
                                     <LanguageList
                                         id={id}
                                         defaultLanguage={

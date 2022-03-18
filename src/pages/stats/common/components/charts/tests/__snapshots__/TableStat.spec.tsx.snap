@@ -167,11 +167,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
         key="0"
       >
         <td
-          className="lineCell user"
+          className="lineCell user link-full-td"
           key="0"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <div>
               <div
@@ -183,41 +183,41 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell string"
+          className="lineCell string link-full-td"
           key="1"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             refund
           </span>
         </td>
         <td
-          className="lineCell number"
+          className="lineCell number link-full-td"
           key="2"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             42
           </span>
         </td>
         <td
-          className="lineCell percent"
+          className="lineCell percent link-full-td"
           key="3"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             12%
           </span>
         </td>
         <td
-          className="lineCell satisfaction-score"
+          className="lineCell satisfaction-score link-full-td"
           key="4"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <DistributionVariantStat
               currentValue={93}
@@ -228,11 +228,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-score"
+          className="lineCell satisfaction-score link-full-td"
           key="5"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <DistributionVariantStat
               currentValue={3}
@@ -243,11 +243,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell delta"
+          className="lineCell delta link-full-td"
           key="6"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <span>
               <span
@@ -268,21 +268,21 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell currency"
+          className="lineCell currency link-full-td"
           key="7"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             3.5
           </span>
         </td>
         <td
-          className="lineCell online-time"
+          className="lineCell online-time link-full-td"
           key="8"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <div>
               <div
@@ -308,49 +308,54 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell ticket-details"
+          className="lineCell ticket-details link-full-td"
           key="9"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
-            <TicketDetailsStat
-              agentId={1}
-              agentName="Foo"
-              channelsBreakdown={
-                Object {
-                  "aircall": 10,
-                  "api": 10,
-                  "chat": 10,
-                  "email": 11,
-                  "facebook": 10,
-                  "facebook-mention": 5,
-                  "facebook-messenger": 5,
-                  "facebook-recommendations": 5,
-                  "instagram-ad-comment": 10,
-                  "instagram-comment": 5,
-                  "instagram-direct-message": 5,
-                  "instagram-mention": 10,
-                  "internal-note": 10,
-                  "phone": 10,
-                  "sms": 10,
-                  "twitter": 10,
-                  "twitter-direct-message": 5,
-                  "yotpo-review": 10,
+            <div
+              className="fit-cell"
+            >
+              <TicketDetailsStat
+                agentId={1}
+                agentName="Foo"
+                channelsBreakdown={
+                  Object {
+                    "aircall": 10,
+                    "api": 10,
+                    "chat": 10,
+                    "email": 11,
+                    "facebook": 10,
+                    "facebook-mention": 5,
+                    "facebook-messenger": 5,
+                    "facebook-recommendations": 5,
+                    "instagram-ad-comment": 10,
+                    "instagram-comment": 5,
+                    "instagram-direct-message": 5,
+                    "instagram-mention": 10,
+                    "internal-note": 10,
+                    "phone": 10,
+                    "sms": 10,
+                    "twitter": 10,
+                    "twitter-direct-message": 5,
+                    "yotpo-review": 10,
+                  }
                 }
-              }
-              openTickets={51}
-            />
+                openTickets={51}
+              />
+            </div>
           </span>
         </td>
         <td
-          className="lineCell customer-link"
+          className="lineCell customer-link link-full-td"
           key="10"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
+              className="fit-cell"
               to="/app/customer/1"
             >
               John Doe
@@ -358,13 +363,14 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell customer-link"
+          className="lineCell customer-link link-full-td"
           key="11"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
+              className="fit-cell"
               to="/app/customer/1"
             >
               Go to customer
@@ -372,11 +378,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="12"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"
@@ -386,11 +392,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="13"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"
@@ -400,11 +406,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="14"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"
@@ -418,11 +424,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
         key="1"
       >
         <td
-          className="lineCell user"
+          className="lineCell user link-full-td"
           key="0"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <div>
               <div
@@ -434,41 +440,41 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell string"
+          className="lineCell string link-full-td"
           key="1"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             refund
           </span>
         </td>
         <td
-          className="lineCell number"
+          className="lineCell number link-full-td"
           key="2"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             42
           </span>
         </td>
         <td
-          className="lineCell percent"
+          className="lineCell percent link-full-td"
           key="3"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             12%
           </span>
         </td>
         <td
-          className="lineCell satisfaction-score"
+          className="lineCell satisfaction-score link-full-td"
           key="4"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <DistributionVariantStat
               currentValue={93}
@@ -479,11 +485,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-score"
+          className="lineCell satisfaction-score link-full-td"
           key="5"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <DistributionVariantStat
               currentValue={3}
@@ -494,11 +500,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell delta"
+          className="lineCell delta link-full-td"
           key="6"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <span>
               <span
@@ -519,21 +525,21 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell currency"
+          className="lineCell currency link-full-td"
           key="7"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             3.5
           </span>
         </td>
         <td
-          className="lineCell online-time"
+          className="lineCell online-time link-full-td"
           key="8"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <div>
               <div
@@ -559,49 +565,54 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell ticket-details"
+          className="lineCell ticket-details link-full-td"
           key="9"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
-            <TicketDetailsStat
-              agentId={1}
-              agentName="Foo"
-              channelsBreakdown={
-                Object {
-                  "aircall": 10,
-                  "api": 10,
-                  "chat": 10,
-                  "email": 11,
-                  "facebook": 10,
-                  "facebook-mention": 5,
-                  "facebook-messenger": 5,
-                  "facebook-recommendations": 5,
-                  "instagram-ad-comment": 10,
-                  "instagram-comment": 5,
-                  "instagram-direct-message": 5,
-                  "instagram-mention": 10,
-                  "internal-note": 10,
-                  "phone": 10,
-                  "sms": 10,
-                  "twitter": 10,
-                  "twitter-direct-message": 5,
-                  "yotpo-review": 10,
+            <div
+              className="fit-cell"
+            >
+              <TicketDetailsStat
+                agentId={1}
+                agentName="Foo"
+                channelsBreakdown={
+                  Object {
+                    "aircall": 10,
+                    "api": 10,
+                    "chat": 10,
+                    "email": 11,
+                    "facebook": 10,
+                    "facebook-mention": 5,
+                    "facebook-messenger": 5,
+                    "facebook-recommendations": 5,
+                    "instagram-ad-comment": 10,
+                    "instagram-comment": 5,
+                    "instagram-direct-message": 5,
+                    "instagram-mention": 10,
+                    "internal-note": 10,
+                    "phone": 10,
+                    "sms": 10,
+                    "twitter": 10,
+                    "twitter-direct-message": 5,
+                    "yotpo-review": 10,
+                  }
                 }
-              }
-              openTickets={51}
-            />
+                openTickets={51}
+              />
+            </div>
           </span>
         </td>
         <td
-          className="lineCell customer-link"
+          className="lineCell customer-link link-full-td"
           key="10"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
+              className="fit-cell"
               to="/app/customer/1"
             >
               John Doe
@@ -609,13 +620,14 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell customer-link"
+          className="lineCell customer-link link-full-td"
           key="11"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
+              className="fit-cell"
               to="/app/customer/1"
             >
               Go to customer
@@ -623,11 +635,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="12"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"
@@ -637,11 +649,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="13"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"
@@ -651,11 +663,11 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="14"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"
@@ -850,11 +862,11 @@ exports[`TableStat should render a table chart 1`] = `
         key="0"
       >
         <td
-          className="lineCell user"
+          className="lineCell user link-full-td"
           key="0"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <div>
               <div
@@ -866,41 +878,41 @@ exports[`TableStat should render a table chart 1`] = `
           </span>
         </td>
         <td
-          className="lineCell string"
+          className="lineCell string link-full-td"
           key="1"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             refund
           </span>
         </td>
         <td
-          className="lineCell number"
+          className="lineCell number link-full-td"
           key="2"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             42
           </span>
         </td>
         <td
-          className="lineCell percent"
+          className="lineCell percent link-full-td"
           key="3"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             12%
           </span>
         </td>
         <td
-          className="lineCell satisfaction-score"
+          className="lineCell satisfaction-score link-full-td"
           key="4"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <DistributionVariantStat
               currentValue={93}
@@ -911,11 +923,11 @@ exports[`TableStat should render a table chart 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-score"
+          className="lineCell satisfaction-score link-full-td"
           key="5"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <DistributionVariantStat
               currentValue={3}
@@ -926,11 +938,11 @@ exports[`TableStat should render a table chart 1`] = `
           </span>
         </td>
         <td
-          className="lineCell delta"
+          className="lineCell delta link-full-td"
           key="6"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <span>
               <span
@@ -951,21 +963,21 @@ exports[`TableStat should render a table chart 1`] = `
           </span>
         </td>
         <td
-          className="lineCell currency"
+          className="lineCell currency link-full-td"
           key="7"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             3.5
           </span>
         </td>
         <td
-          className="lineCell online-time"
+          className="lineCell online-time link-full-td"
           key="8"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <div>
               <div
@@ -991,49 +1003,54 @@ exports[`TableStat should render a table chart 1`] = `
           </span>
         </td>
         <td
-          className="lineCell ticket-details"
+          className="lineCell ticket-details link-full-td"
           key="9"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
-            <TicketDetailsStat
-              agentId={1}
-              agentName="Foo"
-              channelsBreakdown={
-                Object {
-                  "aircall": 10,
-                  "api": 10,
-                  "chat": 10,
-                  "email": 11,
-                  "facebook": 10,
-                  "facebook-mention": 5,
-                  "facebook-messenger": 5,
-                  "facebook-recommendations": 5,
-                  "instagram-ad-comment": 10,
-                  "instagram-comment": 5,
-                  "instagram-direct-message": 5,
-                  "instagram-mention": 10,
-                  "internal-note": 10,
-                  "phone": 10,
-                  "sms": 10,
-                  "twitter": 10,
-                  "twitter-direct-message": 5,
-                  "yotpo-review": 10,
+            <div
+              className="fit-cell"
+            >
+              <TicketDetailsStat
+                agentId={1}
+                agentName="Foo"
+                channelsBreakdown={
+                  Object {
+                    "aircall": 10,
+                    "api": 10,
+                    "chat": 10,
+                    "email": 11,
+                    "facebook": 10,
+                    "facebook-mention": 5,
+                    "facebook-messenger": 5,
+                    "facebook-recommendations": 5,
+                    "instagram-ad-comment": 10,
+                    "instagram-comment": 5,
+                    "instagram-direct-message": 5,
+                    "instagram-mention": 10,
+                    "internal-note": 10,
+                    "phone": 10,
+                    "sms": 10,
+                    "twitter": 10,
+                    "twitter-direct-message": 5,
+                    "yotpo-review": 10,
+                  }
                 }
-              }
-              openTickets={51}
-            />
+                openTickets={51}
+              />
+            </div>
           </span>
         </td>
         <td
-          className="lineCell customer-link"
+          className="lineCell customer-link link-full-td"
           key="10"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
+              className="fit-cell"
               to="/app/customer/1"
             >
               John Doe
@@ -1041,13 +1058,14 @@ exports[`TableStat should render a table chart 1`] = `
           </span>
         </td>
         <td
-          className="lineCell customer-link"
+          className="lineCell customer-link link-full-td"
           key="11"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
+              className="fit-cell"
               to="/app/customer/1"
             >
               Go to customer
@@ -1055,11 +1073,11 @@ exports[`TableStat should render a table chart 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="12"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"
@@ -1069,11 +1087,11 @@ exports[`TableStat should render a table chart 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="13"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"
@@ -1083,11 +1101,11 @@ exports[`TableStat should render a table chart 1`] = `
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="14"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"
@@ -1277,11 +1295,11 @@ exports[`TableStat should render a table with the expand button and one line vis
         key="0"
       >
         <td
-          className="lineCell user"
+          className="lineCell user link-full-td"
           key="0"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <div>
               <div
@@ -1293,41 +1311,41 @@ exports[`TableStat should render a table with the expand button and one line vis
           </span>
         </td>
         <td
-          className="lineCell string"
+          className="lineCell string link-full-td"
           key="1"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             refund
           </span>
         </td>
         <td
-          className="lineCell number"
+          className="lineCell number link-full-td"
           key="2"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             42
           </span>
         </td>
         <td
-          className="lineCell percent"
+          className="lineCell percent link-full-td"
           key="3"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             12%
           </span>
         </td>
         <td
-          className="lineCell satisfaction-score"
+          className="lineCell satisfaction-score link-full-td"
           key="4"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <DistributionVariantStat
               currentValue={93}
@@ -1338,11 +1356,11 @@ exports[`TableStat should render a table with the expand button and one line vis
           </span>
         </td>
         <td
-          className="lineCell satisfaction-score"
+          className="lineCell satisfaction-score link-full-td"
           key="5"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <DistributionVariantStat
               currentValue={3}
@@ -1353,11 +1371,11 @@ exports[`TableStat should render a table with the expand button and one line vis
           </span>
         </td>
         <td
-          className="lineCell delta"
+          className="lineCell delta link-full-td"
           key="6"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <span>
               <span
@@ -1378,21 +1396,21 @@ exports[`TableStat should render a table with the expand button and one line vis
           </span>
         </td>
         <td
-          className="lineCell currency"
+          className="lineCell currency link-full-td"
           key="7"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             3.5
           </span>
         </td>
         <td
-          className="lineCell online-time"
+          className="lineCell online-time link-full-td"
           key="8"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <div>
               <div
@@ -1418,49 +1436,54 @@ exports[`TableStat should render a table with the expand button and one line vis
           </span>
         </td>
         <td
-          className="lineCell ticket-details"
+          className="lineCell ticket-details link-full-td"
           key="9"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
-            <TicketDetailsStat
-              agentId={1}
-              agentName="Foo"
-              channelsBreakdown={
-                Object {
-                  "aircall": 10,
-                  "api": 10,
-                  "chat": 10,
-                  "email": 11,
-                  "facebook": 10,
-                  "facebook-mention": 5,
-                  "facebook-messenger": 5,
-                  "facebook-recommendations": 5,
-                  "instagram-ad-comment": 10,
-                  "instagram-comment": 5,
-                  "instagram-direct-message": 5,
-                  "instagram-mention": 10,
-                  "internal-note": 10,
-                  "phone": 10,
-                  "sms": 10,
-                  "twitter": 10,
-                  "twitter-direct-message": 5,
-                  "yotpo-review": 10,
+            <div
+              className="fit-cell"
+            >
+              <TicketDetailsStat
+                agentId={1}
+                agentName="Foo"
+                channelsBreakdown={
+                  Object {
+                    "aircall": 10,
+                    "api": 10,
+                    "chat": 10,
+                    "email": 11,
+                    "facebook": 10,
+                    "facebook-mention": 5,
+                    "facebook-messenger": 5,
+                    "facebook-recommendations": 5,
+                    "instagram-ad-comment": 10,
+                    "instagram-comment": 5,
+                    "instagram-direct-message": 5,
+                    "instagram-mention": 10,
+                    "internal-note": 10,
+                    "phone": 10,
+                    "sms": 10,
+                    "twitter": 10,
+                    "twitter-direct-message": 5,
+                    "yotpo-review": 10,
+                  }
                 }
-              }
-              openTickets={51}
-            />
+                openTickets={51}
+              />
+            </div>
           </span>
         </td>
         <td
-          className="lineCell customer-link"
+          className="lineCell customer-link link-full-td"
           key="10"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
+              className="fit-cell"
               to="/app/customer/1"
             >
               John Doe
@@ -1468,13 +1491,14 @@ exports[`TableStat should render a table with the expand button and one line vis
           </span>
         </td>
         <td
-          className="lineCell customer-link"
+          className="lineCell customer-link link-full-td"
           key="11"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
+              className="fit-cell"
               to="/app/customer/1"
             >
               Go to customer
@@ -1482,11 +1506,11 @@ exports[`TableStat should render a table with the expand button and one line vis
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="12"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"
@@ -1496,11 +1520,11 @@ exports[`TableStat should render a table with the expand button and one line vis
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="13"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"
@@ -1510,11 +1534,11 @@ exports[`TableStat should render a table with the expand button and one line vis
           </span>
         </td>
         <td
-          className="lineCell satisfaction-survey-link"
+          className="lineCell satisfaction-survey-link link-full-td"
           key="14"
         >
           <span
-            className="cell-wrapper"
+            className="cell-wrapper cell-content"
           >
             <Link
               to="/app/ticket/1#satisfactionSurvey"

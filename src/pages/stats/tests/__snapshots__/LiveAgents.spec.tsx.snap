@@ -691,10 +691,10 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
           <tbody>
             <tr>
               <td
-                class="lineCell user"
+                class="lineCell user link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <div>
                     <div
@@ -706,10 +706,10 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 </span>
               </td>
               <td
-                class="lineCell online-time"
+                class="lineCell online-time link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <div>
                     <div
@@ -723,137 +723,141 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   0
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   0
                 </span>
               </td>
               <td
-                class="lineCell ticket-details"
+                class="lineCell ticket-details link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <div
-                    class="wrapper"
+                    class="fit-cell"
                   >
                     <div
-                      class="openTickets"
-                    >
-                      <a
-                        class="viewLink"
-                        to="[object Object]"
-                      >
-                        134
-                      </a>
-                    </div>
-                    <div
-                      class="separator"
-                    />
-                    <div
-                      class="channelsBreakdown"
+                      class="wrapper"
                     >
                       <div
-                        class="channel"
-                        title="Facebook"
+                        class="openTickets"
                       >
-                        <i
-                          class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
-                        />
                         <a
                           class="viewLink"
                           to="[object Object]"
                         >
-                          1
+                          134
                         </a>
                       </div>
                       <div
-                        class="channel"
-                        title="Facebook Messenger"
-                      >
-                        <i
-                          class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
-                        />
-                        <a
-                          class="viewLink"
-                          to="[object Object]"
-                        >
-                          2
-                        </a>
-                      </div>
+                        class="separator"
+                      />
                       <div
-                        class="channel"
-                        title="Phone"
+                        class="channelsBreakdown"
                       >
-                        <i
-                          class="icon d-inline-block material-icons channelIcon"
+                        <div
+                          class="channel"
+                          title="Facebook"
                         >
-                          phone
-                        </i>
-                        <a
-                          class="viewLink"
-                          to="[object Object]"
+                          <i
+                            class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                          />
+                          <a
+                            class="viewLink"
+                            to="[object Object]"
+                          >
+                            1
+                          </a>
+                        </div>
+                        <div
+                          class="channel"
+                          title="Facebook Messenger"
                         >
-                          2
-                        </a>
-                      </div>
-                      <div
-                        class="channel"
-                        title="Chat"
-                      >
-                        <i
-                          class="icon d-inline-block material-icons channelIcon"
+                          <i
+                            class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
+                          />
+                          <a
+                            class="viewLink"
+                            to="[object Object]"
+                          >
+                            2
+                          </a>
+                        </div>
+                        <div
+                          class="channel"
+                          title="Phone"
                         >
-                          forum
-                        </i>
-                        <a
-                          class="viewLink"
-                          to="[object Object]"
+                          <i
+                            class="icon d-inline-block material-icons channelIcon"
+                          >
+                            phone
+                          </i>
+                          <a
+                            class="viewLink"
+                            to="[object Object]"
+                          >
+                            2
+                          </a>
+                        </div>
+                        <div
+                          class="channel"
+                          title="Chat"
                         >
-                          102
-                        </a>
-                      </div>
-                      <div
-                        class="channel"
-                        title="Email"
-                      >
-                        <i
-                          class="icon d-inline-block material-icons channelIcon"
+                          <i
+                            class="icon d-inline-block material-icons channelIcon"
+                          >
+                            forum
+                          </i>
+                          <a
+                            class="viewLink"
+                            to="[object Object]"
+                          >
+                            102
+                          </a>
+                        </div>
+                        <div
+                          class="channel"
+                          title="Email"
                         >
-                          email
-                        </i>
-                        <a
-                          class="viewLink"
-                          to="[object Object]"
+                          <i
+                            class="icon d-inline-block material-icons channelIcon"
+                          >
+                            email
+                          </i>
+                          <a
+                            class="viewLink"
+                            to="[object Object]"
+                          >
+                            26
+                          </a>
+                        </div>
+                        <div
+                          class="channel"
+                          title="Instagram Direct Message"
                         >
-                          26
-                        </a>
-                      </div>
-                      <div
-                        class="channel"
-                        title="Instagram Direct Message"
-                      >
-                        <i
-                          class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"
-                        />
-                        <a
-                          class="viewLink"
-                          to="[object Object]"
-                        >
-                          1
-                        </a>
+                          <i
+                            class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"
+                          />
+                          <a
+                            class="viewLink"
+                            to="[object Object]"
+                          >
+                            1
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>

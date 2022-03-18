@@ -1,6 +1,5 @@
 import React, {useMemo, useState} from 'react'
 import {Table} from 'reactstrap'
-import classnames from 'classnames'
 
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 
@@ -21,8 +20,6 @@ import {
 
 import RuleRow from './components/RuleRow'
 import UpsellComponent from './components/RuleGettingStarted'
-
-import css from './RulesList.less'
 
 type Props = {
     rules: Rule[]
@@ -104,13 +101,7 @@ export function RulesList({rules, limitStatus, handleGoToLibrary}: Props) {
         <div className="rule-category">
             {!!rules.length && (
                 <Table hover>
-                    <thead
-                        className={classnames(
-                            'text-faded',
-                            'border-0',
-                            css.tableHeader
-                        )}
-                    >
+                    <thead className="border-0">
                         <tr>
                             <td></td>
                             <td>rule</td>

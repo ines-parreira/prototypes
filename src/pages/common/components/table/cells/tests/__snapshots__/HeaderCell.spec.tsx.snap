@@ -2,7 +2,23 @@
 
 exports[`<HeaderCell/> should render 1`] = `
 <td
-  className="wrapper foo"
+  className="wrapper foo normal"
+>
+  Foo
+</td>
+`;
+
+exports[`<HeaderCell/> should render in small size 1`] = `
+<td
+  className="wrapper foo small"
+>
+  Foo
+</td>
+`;
+
+exports[`<HeaderCell/> should render in smallest size 1`] = `
+<td
+  className="wrapper foo smallest"
 >
   Foo
 </td>

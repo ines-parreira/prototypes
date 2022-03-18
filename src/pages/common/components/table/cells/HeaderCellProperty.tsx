@@ -6,7 +6,7 @@ import {OrderDirection} from '../../../../../models/api/types'
 import HeaderCell from './HeaderCell'
 import css from './HeaderCellProperty.less'
 
-type Props = HTMLProps<HTMLTableCellElement> & {
+type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode
     className?: string
     direction?: Maybe<OrderDirection>

@@ -900,71 +900,55 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       </div>
                     </ToggleInput>
                   </td>
-                  <td>
+                  <td
+                    className="link-full-td"
+                  >
                     <a
                       href="http://fake.link.to/ad1"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      ad 1
+                      <div>
+                        ad 1
+                      </div>
                     </a>
                   </td>
-                  <td>
-                    <Connect(DatetimeLabelContainer)
-                      dateTime="2019-01-01 10:30:00"
+                  <td
+                    className="link-full-td"
+                  >
+                    <a
+                      href="http://fake.link.to/ad1"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
-                      <DatetimeLabelContainer
-                        dateTime="2019-01-01 10:30:00"
-                        dispatch={[Function]}
-                        hasTooltip={true}
-                        timezone="America/Los_Angeles"
-                      >
-                        <span>
-                          <span
-                            id="datetime-tooltip-pjpsszd2icb"
+                      <div>
+                        <Connect(DatetimeLabelContainer)
+                          dateTime="2019-01-01 10:30:00"
+                        >
+                          <DatetimeLabelContainer
+                            dateTime="2019-01-01 10:30:00"
+                            dispatch={[Function]}
+                            hasTooltip={true}
+                            timezone="America/Los_Angeles"
                           >
-                            01/01/2019
-                          </span>
-                          <Tooltip
-                            className="datetimeTooltip"
-                            delay={
-                              Object {
-                                "hide": 0,
-                                "show": 200,
-                              }
-                            }
-                            placement="top"
-                            target="datetime-tooltip-pjpsszd2icb"
-                          >
-                            <UncontrolledTooltip
-                              className="tooltip datetimeTooltip"
-                              delay={
-                                Object {
-                                  "hide": 0,
-                                  "show": 200,
-                                }
-                              }
-                              placement="top"
-                              target="datetime-tooltip-pjpsszd2icb"
-                            >
+                            <span>
+                              <span
+                                id="datetime-tooltip-pjpsszd2icb"
+                              >
+                                01/01/2019
+                              </span>
                               <Tooltip
-                                autohide={true}
-                                className="tooltip datetimeTooltip"
+                                className="datetimeTooltip"
                                 delay={
                                   Object {
                                     "hide": 0,
                                     "show": 200,
                                   }
                                 }
-                                isOpen={false}
                                 placement="top"
-                                placementPrefix="bs-tooltip"
                                 target="datetime-tooltip-pjpsszd2icb"
-                                toggle={[Function]}
-                                trigger="hover focus"
                               >
-                                <TooltipPopoverWrapper
-                                  autohide={true}
+                                <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
                                     Object {
@@ -972,23 +956,53 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                       "show": 200,
                                     }
                                   }
-                                  fade={true}
-                                  hideArrow={false}
-                                  innerClassName="tooltip-inner"
-                                  isOpen={false}
                                   placement="top"
-                                  placementPrefix="bs-tooltip"
-                                  popperClassName="tooltip show"
                                   target="datetime-tooltip-pjpsszd2icb"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
-                                />
+                                >
+                                  <Tooltip
+                                    autohide={true}
+                                    className="tooltip datetimeTooltip"
+                                    delay={
+                                      Object {
+                                        "hide": 0,
+                                        "show": 200,
+                                      }
+                                    }
+                                    isOpen={false}
+                                    placement="top"
+                                    placementPrefix="bs-tooltip"
+                                    target="datetime-tooltip-pjpsszd2icb"
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  >
+                                    <TooltipPopoverWrapper
+                                      autohide={true}
+                                      className="tooltip datetimeTooltip"
+                                      delay={
+                                        Object {
+                                          "hide": 0,
+                                          "show": 200,
+                                        }
+                                      }
+                                      fade={true}
+                                      hideArrow={false}
+                                      innerClassName="tooltip-inner"
+                                      isOpen={false}
+                                      placement="top"
+                                      placementPrefix="bs-tooltip"
+                                      popperClassName="tooltip show"
+                                      target="datetime-tooltip-pjpsszd2icb"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    />
+                                  </Tooltip>
+                                </UncontrolledTooltip>
                               </Tooltip>
-                            </UncontrolledTooltip>
-                          </Tooltip>
-                        </span>
-                      </DatetimeLabelContainer>
-                    </Connect(DatetimeLabelContainer)>
+                            </span>
+                          </DatetimeLabelContainer>
+                        </Connect(DatetimeLabelContainer)>
+                      </div>
+                    </a>
                   </td>
                 </tr>
                 <tr
@@ -1039,71 +1053,55 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       </div>
                     </ToggleInput>
                   </td>
-                  <td>
+                  <td
+                    className="link-full-td"
+                  >
                     <a
                       href="http://fake.link.to/ad2"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      ad 2
+                      <div>
+                        ad 2
+                      </div>
                     </a>
                   </td>
-                  <td>
-                    <Connect(DatetimeLabelContainer)
-                      dateTime="2019-01-01 10:30:00"
+                  <td
+                    className="link-full-td"
+                  >
+                    <a
+                      href="http://fake.link.to/ad2"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
-                      <DatetimeLabelContainer
-                        dateTime="2019-01-01 10:30:00"
-                        dispatch={[Function]}
-                        hasTooltip={true}
-                        timezone="America/Los_Angeles"
-                      >
-                        <span>
-                          <span
-                            id="datetime-tooltip-pjpsszd2icb"
+                      <div>
+                        <Connect(DatetimeLabelContainer)
+                          dateTime="2019-01-01 10:30:00"
+                        >
+                          <DatetimeLabelContainer
+                            dateTime="2019-01-01 10:30:00"
+                            dispatch={[Function]}
+                            hasTooltip={true}
+                            timezone="America/Los_Angeles"
                           >
-                            01/01/2019
-                          </span>
-                          <Tooltip
-                            className="datetimeTooltip"
-                            delay={
-                              Object {
-                                "hide": 0,
-                                "show": 200,
-                              }
-                            }
-                            placement="top"
-                            target="datetime-tooltip-pjpsszd2icb"
-                          >
-                            <UncontrolledTooltip
-                              className="tooltip datetimeTooltip"
-                              delay={
-                                Object {
-                                  "hide": 0,
-                                  "show": 200,
-                                }
-                              }
-                              placement="top"
-                              target="datetime-tooltip-pjpsszd2icb"
-                            >
+                            <span>
+                              <span
+                                id="datetime-tooltip-pjpsszd2icb"
+                              >
+                                01/01/2019
+                              </span>
                               <Tooltip
-                                autohide={true}
-                                className="tooltip datetimeTooltip"
+                                className="datetimeTooltip"
                                 delay={
                                   Object {
                                     "hide": 0,
                                     "show": 200,
                                   }
                                 }
-                                isOpen={false}
                                 placement="top"
-                                placementPrefix="bs-tooltip"
                                 target="datetime-tooltip-pjpsszd2icb"
-                                toggle={[Function]}
-                                trigger="hover focus"
                               >
-                                <TooltipPopoverWrapper
-                                  autohide={true}
+                                <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
                                     Object {
@@ -1111,23 +1109,53 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                       "show": 200,
                                     }
                                   }
-                                  fade={true}
-                                  hideArrow={false}
-                                  innerClassName="tooltip-inner"
-                                  isOpen={false}
                                   placement="top"
-                                  placementPrefix="bs-tooltip"
-                                  popperClassName="tooltip show"
                                   target="datetime-tooltip-pjpsszd2icb"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
-                                />
+                                >
+                                  <Tooltip
+                                    autohide={true}
+                                    className="tooltip datetimeTooltip"
+                                    delay={
+                                      Object {
+                                        "hide": 0,
+                                        "show": 200,
+                                      }
+                                    }
+                                    isOpen={false}
+                                    placement="top"
+                                    placementPrefix="bs-tooltip"
+                                    target="datetime-tooltip-pjpsszd2icb"
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  >
+                                    <TooltipPopoverWrapper
+                                      autohide={true}
+                                      className="tooltip datetimeTooltip"
+                                      delay={
+                                        Object {
+                                          "hide": 0,
+                                          "show": 200,
+                                        }
+                                      }
+                                      fade={true}
+                                      hideArrow={false}
+                                      innerClassName="tooltip-inner"
+                                      isOpen={false}
+                                      placement="top"
+                                      placementPrefix="bs-tooltip"
+                                      popperClassName="tooltip show"
+                                      target="datetime-tooltip-pjpsszd2icb"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    />
+                                  </Tooltip>
+                                </UncontrolledTooltip>
                               </Tooltip>
-                            </UncontrolledTooltip>
-                          </Tooltip>
-                        </span>
-                      </DatetimeLabelContainer>
-                    </Connect(DatetimeLabelContainer)>
+                            </span>
+                          </DatetimeLabelContainer>
+                        </Connect(DatetimeLabelContainer)>
+                      </div>
+                    </a>
                   </td>
                 </tr>
                 <tr
@@ -1178,71 +1206,55 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                       </div>
                     </ToggleInput>
                   </td>
-                  <td>
+                  <td
+                    className="link-full-td"
+                  >
                     <a
                       href="http://fake.link.to/ad3"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      ad 3
+                      <div>
+                        ad 3
+                      </div>
                     </a>
                   </td>
-                  <td>
-                    <Connect(DatetimeLabelContainer)
-                      dateTime="2019-01-01 10:30:00"
+                  <td
+                    className="link-full-td"
+                  >
+                    <a
+                      href="http://fake.link.to/ad3"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
-                      <DatetimeLabelContainer
-                        dateTime="2019-01-01 10:30:00"
-                        dispatch={[Function]}
-                        hasTooltip={true}
-                        timezone="America/Los_Angeles"
-                      >
-                        <span>
-                          <span
-                            id="datetime-tooltip-pjpsszd2icb"
+                      <div>
+                        <Connect(DatetimeLabelContainer)
+                          dateTime="2019-01-01 10:30:00"
+                        >
+                          <DatetimeLabelContainer
+                            dateTime="2019-01-01 10:30:00"
+                            dispatch={[Function]}
+                            hasTooltip={true}
+                            timezone="America/Los_Angeles"
                           >
-                            01/01/2019
-                          </span>
-                          <Tooltip
-                            className="datetimeTooltip"
-                            delay={
-                              Object {
-                                "hide": 0,
-                                "show": 200,
-                              }
-                            }
-                            placement="top"
-                            target="datetime-tooltip-pjpsszd2icb"
-                          >
-                            <UncontrolledTooltip
-                              className="tooltip datetimeTooltip"
-                              delay={
-                                Object {
-                                  "hide": 0,
-                                  "show": 200,
-                                }
-                              }
-                              placement="top"
-                              target="datetime-tooltip-pjpsszd2icb"
-                            >
+                            <span>
+                              <span
+                                id="datetime-tooltip-pjpsszd2icb"
+                              >
+                                01/01/2019
+                              </span>
                               <Tooltip
-                                autohide={true}
-                                className="tooltip datetimeTooltip"
+                                className="datetimeTooltip"
                                 delay={
                                   Object {
                                     "hide": 0,
                                     "show": 200,
                                   }
                                 }
-                                isOpen={false}
                                 placement="top"
-                                placementPrefix="bs-tooltip"
                                 target="datetime-tooltip-pjpsszd2icb"
-                                toggle={[Function]}
-                                trigger="hover focus"
                               >
-                                <TooltipPopoverWrapper
-                                  autohide={true}
+                                <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
                                     Object {
@@ -1250,23 +1262,53 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                       "show": 200,
                                     }
                                   }
-                                  fade={true}
-                                  hideArrow={false}
-                                  innerClassName="tooltip-inner"
-                                  isOpen={false}
                                   placement="top"
-                                  placementPrefix="bs-tooltip"
-                                  popperClassName="tooltip show"
                                   target="datetime-tooltip-pjpsszd2icb"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
-                                />
+                                >
+                                  <Tooltip
+                                    autohide={true}
+                                    className="tooltip datetimeTooltip"
+                                    delay={
+                                      Object {
+                                        "hide": 0,
+                                        "show": 200,
+                                      }
+                                    }
+                                    isOpen={false}
+                                    placement="top"
+                                    placementPrefix="bs-tooltip"
+                                    target="datetime-tooltip-pjpsszd2icb"
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  >
+                                    <TooltipPopoverWrapper
+                                      autohide={true}
+                                      className="tooltip datetimeTooltip"
+                                      delay={
+                                        Object {
+                                          "hide": 0,
+                                          "show": 200,
+                                        }
+                                      }
+                                      fade={true}
+                                      hideArrow={false}
+                                      innerClassName="tooltip-inner"
+                                      isOpen={false}
+                                      placement="top"
+                                      placementPrefix="bs-tooltip"
+                                      popperClassName="tooltip show"
+                                      target="datetime-tooltip-pjpsszd2icb"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    />
+                                  </Tooltip>
+                                </UncontrolledTooltip>
                               </Tooltip>
-                            </UncontrolledTooltip>
-                          </Tooltip>
-                        </span>
-                      </DatetimeLabelContainer>
-                    </Connect(DatetimeLabelContainer)>
+                            </span>
+                          </DatetimeLabelContainer>
+                        </Connect(DatetimeLabelContainer)>
+                      </div>
+                    </a>
                   </td>
                 </tr>
               </tbody>
@@ -1641,71 +1683,55 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                       </div>
                     </ToggleInput>
                   </td>
-                  <td>
+                  <td
+                    className="link-full-td"
+                  >
                     <a
                       href="http://fake.link.to/ad1"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      ad 1
+                      <div>
+                        ad 1
+                      </div>
                     </a>
                   </td>
-                  <td>
-                    <Connect(DatetimeLabelContainer)
-                      dateTime="2019-01-01 10:30:00"
+                  <td
+                    className="link-full-td"
+                  >
+                    <a
+                      href="http://fake.link.to/ad1"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
-                      <DatetimeLabelContainer
-                        dateTime="2019-01-01 10:30:00"
-                        dispatch={[Function]}
-                        hasTooltip={true}
-                        timezone="America/Los_Angeles"
-                      >
-                        <span>
-                          <span
-                            id="datetime-tooltip-pjpsszd2icb"
+                      <div>
+                        <Connect(DatetimeLabelContainer)
+                          dateTime="2019-01-01 10:30:00"
+                        >
+                          <DatetimeLabelContainer
+                            dateTime="2019-01-01 10:30:00"
+                            dispatch={[Function]}
+                            hasTooltip={true}
+                            timezone="America/Los_Angeles"
                           >
-                            01/01/2019
-                          </span>
-                          <Tooltip
-                            className="datetimeTooltip"
-                            delay={
-                              Object {
-                                "hide": 0,
-                                "show": 200,
-                              }
-                            }
-                            placement="top"
-                            target="datetime-tooltip-pjpsszd2icb"
-                          >
-                            <UncontrolledTooltip
-                              className="tooltip datetimeTooltip"
-                              delay={
-                                Object {
-                                  "hide": 0,
-                                  "show": 200,
-                                }
-                              }
-                              placement="top"
-                              target="datetime-tooltip-pjpsszd2icb"
-                            >
+                            <span>
+                              <span
+                                id="datetime-tooltip-pjpsszd2icb"
+                              >
+                                01/01/2019
+                              </span>
                               <Tooltip
-                                autohide={true}
-                                className="tooltip datetimeTooltip"
+                                className="datetimeTooltip"
                                 delay={
                                   Object {
                                     "hide": 0,
                                     "show": 200,
                                   }
                                 }
-                                isOpen={false}
                                 placement="top"
-                                placementPrefix="bs-tooltip"
                                 target="datetime-tooltip-pjpsszd2icb"
-                                toggle={[Function]}
-                                trigger="hover focus"
                               >
-                                <TooltipPopoverWrapper
-                                  autohide={true}
+                                <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
                                     Object {
@@ -1713,23 +1739,53 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                                       "show": 200,
                                     }
                                   }
-                                  fade={true}
-                                  hideArrow={false}
-                                  innerClassName="tooltip-inner"
-                                  isOpen={false}
                                   placement="top"
-                                  placementPrefix="bs-tooltip"
-                                  popperClassName="tooltip show"
                                   target="datetime-tooltip-pjpsszd2icb"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
-                                />
+                                >
+                                  <Tooltip
+                                    autohide={true}
+                                    className="tooltip datetimeTooltip"
+                                    delay={
+                                      Object {
+                                        "hide": 0,
+                                        "show": 200,
+                                      }
+                                    }
+                                    isOpen={false}
+                                    placement="top"
+                                    placementPrefix="bs-tooltip"
+                                    target="datetime-tooltip-pjpsszd2icb"
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  >
+                                    <TooltipPopoverWrapper
+                                      autohide={true}
+                                      className="tooltip datetimeTooltip"
+                                      delay={
+                                        Object {
+                                          "hide": 0,
+                                          "show": 200,
+                                        }
+                                      }
+                                      fade={true}
+                                      hideArrow={false}
+                                      innerClassName="tooltip-inner"
+                                      isOpen={false}
+                                      placement="top"
+                                      placementPrefix="bs-tooltip"
+                                      popperClassName="tooltip show"
+                                      target="datetime-tooltip-pjpsszd2icb"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    />
+                                  </Tooltip>
+                                </UncontrolledTooltip>
                               </Tooltip>
-                            </UncontrolledTooltip>
-                          </Tooltip>
-                        </span>
-                      </DatetimeLabelContainer>
-                    </Connect(DatetimeLabelContainer)>
+                            </span>
+                          </DatetimeLabelContainer>
+                        </Connect(DatetimeLabelContainer)>
+                      </div>
+                    </a>
                   </td>
                 </tr>
               </tbody>
@@ -2121,71 +2177,55 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                       </div>
                     </ToggleInput>
                   </td>
-                  <td>
+                  <td
+                    className="link-full-td"
+                  >
                     <a
                       href="http://fake.link.to/ad1"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      ad 1
+                      <div>
+                        ad 1
+                      </div>
                     </a>
                   </td>
-                  <td>
-                    <Connect(DatetimeLabelContainer)
-                      dateTime="2019-01-01 10:30:00"
+                  <td
+                    className="link-full-td"
+                  >
+                    <a
+                      href="http://fake.link.to/ad1"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
-                      <DatetimeLabelContainer
-                        dateTime="2019-01-01 10:30:00"
-                        dispatch={[Function]}
-                        hasTooltip={true}
-                        timezone="America/Los_Angeles"
-                      >
-                        <span>
-                          <span
-                            id="datetime-tooltip-pjpsszd2icb"
+                      <div>
+                        <Connect(DatetimeLabelContainer)
+                          dateTime="2019-01-01 10:30:00"
+                        >
+                          <DatetimeLabelContainer
+                            dateTime="2019-01-01 10:30:00"
+                            dispatch={[Function]}
+                            hasTooltip={true}
+                            timezone="America/Los_Angeles"
                           >
-                            01/01/2019
-                          </span>
-                          <Tooltip
-                            className="datetimeTooltip"
-                            delay={
-                              Object {
-                                "hide": 0,
-                                "show": 200,
-                              }
-                            }
-                            placement="top"
-                            target="datetime-tooltip-pjpsszd2icb"
-                          >
-                            <UncontrolledTooltip
-                              className="tooltip datetimeTooltip"
-                              delay={
-                                Object {
-                                  "hide": 0,
-                                  "show": 200,
-                                }
-                              }
-                              placement="top"
-                              target="datetime-tooltip-pjpsszd2icb"
-                            >
+                            <span>
+                              <span
+                                id="datetime-tooltip-pjpsszd2icb"
+                              >
+                                01/01/2019
+                              </span>
                               <Tooltip
-                                autohide={true}
-                                className="tooltip datetimeTooltip"
+                                className="datetimeTooltip"
                                 delay={
                                   Object {
                                     "hide": 0,
                                     "show": 200,
                                   }
                                 }
-                                isOpen={false}
                                 placement="top"
-                                placementPrefix="bs-tooltip"
                                 target="datetime-tooltip-pjpsszd2icb"
-                                toggle={[Function]}
-                                trigger="hover focus"
                               >
-                                <TooltipPopoverWrapper
-                                  autohide={true}
+                                <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
                                     Object {
@@ -2193,23 +2233,53 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                       "show": 200,
                                     }
                                   }
-                                  fade={true}
-                                  hideArrow={false}
-                                  innerClassName="tooltip-inner"
-                                  isOpen={false}
                                   placement="top"
-                                  placementPrefix="bs-tooltip"
-                                  popperClassName="tooltip show"
                                   target="datetime-tooltip-pjpsszd2icb"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
-                                />
+                                >
+                                  <Tooltip
+                                    autohide={true}
+                                    className="tooltip datetimeTooltip"
+                                    delay={
+                                      Object {
+                                        "hide": 0,
+                                        "show": 200,
+                                      }
+                                    }
+                                    isOpen={false}
+                                    placement="top"
+                                    placementPrefix="bs-tooltip"
+                                    target="datetime-tooltip-pjpsszd2icb"
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  >
+                                    <TooltipPopoverWrapper
+                                      autohide={true}
+                                      className="tooltip datetimeTooltip"
+                                      delay={
+                                        Object {
+                                          "hide": 0,
+                                          "show": 200,
+                                        }
+                                      }
+                                      fade={true}
+                                      hideArrow={false}
+                                      innerClassName="tooltip-inner"
+                                      isOpen={false}
+                                      placement="top"
+                                      placementPrefix="bs-tooltip"
+                                      popperClassName="tooltip show"
+                                      target="datetime-tooltip-pjpsszd2icb"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    />
+                                  </Tooltip>
+                                </UncontrolledTooltip>
                               </Tooltip>
-                            </UncontrolledTooltip>
-                          </Tooltip>
-                        </span>
-                      </DatetimeLabelContainer>
-                    </Connect(DatetimeLabelContainer)>
+                            </span>
+                          </DatetimeLabelContainer>
+                        </Connect(DatetimeLabelContainer)>
+                      </div>
+                    </a>
                   </td>
                 </tr>
                 <tr
@@ -2260,71 +2330,55 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                       </div>
                     </ToggleInput>
                   </td>
-                  <td>
+                  <td
+                    className="link-full-td"
+                  >
                     <a
                       href="http://fake.link.to/ad2"
                       rel="noopener noreferrer"
                       target="_blank"
                     >
-                      ad 2
+                      <div>
+                        ad 2
+                      </div>
                     </a>
                   </td>
-                  <td>
-                    <Connect(DatetimeLabelContainer)
-                      dateTime="2019-01-01 10:30:00"
+                  <td
+                    className="link-full-td"
+                  >
+                    <a
+                      href="http://fake.link.to/ad2"
+                      rel="noopener noreferrer"
+                      target="_blank"
                     >
-                      <DatetimeLabelContainer
-                        dateTime="2019-01-01 10:30:00"
-                        dispatch={[Function]}
-                        hasTooltip={true}
-                        timezone="America/Los_Angeles"
-                      >
-                        <span>
-                          <span
-                            id="datetime-tooltip-pjpsszd2icb"
+                      <div>
+                        <Connect(DatetimeLabelContainer)
+                          dateTime="2019-01-01 10:30:00"
+                        >
+                          <DatetimeLabelContainer
+                            dateTime="2019-01-01 10:30:00"
+                            dispatch={[Function]}
+                            hasTooltip={true}
+                            timezone="America/Los_Angeles"
                           >
-                            01/01/2019
-                          </span>
-                          <Tooltip
-                            className="datetimeTooltip"
-                            delay={
-                              Object {
-                                "hide": 0,
-                                "show": 200,
-                              }
-                            }
-                            placement="top"
-                            target="datetime-tooltip-pjpsszd2icb"
-                          >
-                            <UncontrolledTooltip
-                              className="tooltip datetimeTooltip"
-                              delay={
-                                Object {
-                                  "hide": 0,
-                                  "show": 200,
-                                }
-                              }
-                              placement="top"
-                              target="datetime-tooltip-pjpsszd2icb"
-                            >
+                            <span>
+                              <span
+                                id="datetime-tooltip-pjpsszd2icb"
+                              >
+                                01/01/2019
+                              </span>
                               <Tooltip
-                                autohide={true}
-                                className="tooltip datetimeTooltip"
+                                className="datetimeTooltip"
                                 delay={
                                   Object {
                                     "hide": 0,
                                     "show": 200,
                                   }
                                 }
-                                isOpen={false}
                                 placement="top"
-                                placementPrefix="bs-tooltip"
                                 target="datetime-tooltip-pjpsszd2icb"
-                                toggle={[Function]}
-                                trigger="hover focus"
                               >
-                                <TooltipPopoverWrapper
-                                  autohide={true}
+                                <UncontrolledTooltip
                                   className="tooltip datetimeTooltip"
                                   delay={
                                     Object {
@@ -2332,23 +2386,53 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                                       "show": 200,
                                     }
                                   }
-                                  fade={true}
-                                  hideArrow={false}
-                                  innerClassName="tooltip-inner"
-                                  isOpen={false}
                                   placement="top"
-                                  placementPrefix="bs-tooltip"
-                                  popperClassName="tooltip show"
                                   target="datetime-tooltip-pjpsszd2icb"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
-                                />
+                                >
+                                  <Tooltip
+                                    autohide={true}
+                                    className="tooltip datetimeTooltip"
+                                    delay={
+                                      Object {
+                                        "hide": 0,
+                                        "show": 200,
+                                      }
+                                    }
+                                    isOpen={false}
+                                    placement="top"
+                                    placementPrefix="bs-tooltip"
+                                    target="datetime-tooltip-pjpsszd2icb"
+                                    toggle={[Function]}
+                                    trigger="hover focus"
+                                  >
+                                    <TooltipPopoverWrapper
+                                      autohide={true}
+                                      className="tooltip datetimeTooltip"
+                                      delay={
+                                        Object {
+                                          "hide": 0,
+                                          "show": 200,
+                                        }
+                                      }
+                                      fade={true}
+                                      hideArrow={false}
+                                      innerClassName="tooltip-inner"
+                                      isOpen={false}
+                                      placement="top"
+                                      placementPrefix="bs-tooltip"
+                                      popperClassName="tooltip show"
+                                      target="datetime-tooltip-pjpsszd2icb"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    />
+                                  </Tooltip>
+                                </UncontrolledTooltip>
                               </Tooltip>
-                            </UncontrolledTooltip>
-                          </Tooltip>
-                        </span>
-                      </DatetimeLabelContainer>
-                    </Connect(DatetimeLabelContainer)>
+                            </span>
+                          </DatetimeLabelContainer>
+                        </Connect(DatetimeLabelContainer)>
+                      </div>
+                    </a>
                   </td>
                 </tr>
               </tbody>

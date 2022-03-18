@@ -96,7 +96,15 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
         }${isVerified || isGmail ? '' : '/verification'}`
 
         let imgComponent = (
-            <i className={classnames(css.icon, 'material-icons')}>email</i>
+            <i
+                className={classnames(
+                    css.icon,
+                    'material-icons',
+                    'align-bottom'
+                )}
+            >
+                email
+            </i>
         )
 
         if (isGmail) {
@@ -109,7 +117,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
 
         return (
             <tr key={integration.get('id')}>
-                <td className="smallest">{imgComponent}</td>
+                <td className="smallest align-middle">{imgComponent}</td>
                 <td className="link-full-td">
                     <Link to={editLink}>
                         <div>

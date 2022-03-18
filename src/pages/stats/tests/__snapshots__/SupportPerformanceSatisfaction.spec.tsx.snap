@@ -1059,12 +1059,13 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
           <tbody>
             <tr>
               <td
-                class="lineCell customer-link"
+                class="lineCell customer-link link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <a
+                    class="fit-cell"
                     to="/app/customer/12345"
                   >
                     Go to customer
@@ -1072,34 +1073,38 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                 </span>
               </td>
               <td
-                class="lineCell string"
+                class="lineCell string link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   John D.
                 </span>
               </td>
               <td
-                class="lineCell date"
+                class="lineCell date link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
-                  <span>
-                    <span
-                      id="datetime-tooltip-"
-                    >
-                      12/13/2021
+                  <div
+                    class="fit-cell"
+                  >
+                    <span>
+                      <span
+                        id="datetime-tooltip-"
+                      >
+                        12/13/2021
+                      </span>
                     </span>
-                  </span>
+                  </div>
                 </span>
               </td>
               <td
-                class="lineCell satisfaction-score"
+                class="lineCell satisfaction-score link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <span
                     class="distribution"
@@ -1133,10 +1138,10 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                 </span>
               </td>
               <td
-                class="lineCell satisfaction-survey-link"
+                class="lineCell satisfaction-survey-link link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <a
                     to="/app/ticket/5243423#satisfactionSurvey"

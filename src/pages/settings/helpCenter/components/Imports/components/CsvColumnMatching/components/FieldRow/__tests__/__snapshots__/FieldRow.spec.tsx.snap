@@ -4,7 +4,9 @@ exports[`<FieldRow /> renders field row 1`] = `
 <tr
   class="row"
 >
-  <td>
+  <td
+    class="wrapper normal"
+  >
     <div
       class="cellContent cell"
     >
@@ -15,7 +17,9 @@ exports[`<FieldRow /> renders field row 1`] = `
       </i>
     </div>
   </td>
-  <td>
+  <td
+    class="wrapper normal"
+  >
     <div
       class="cellContent cell"
     >
@@ -24,7 +28,9 @@ exports[`<FieldRow /> renders field row 1`] = `
       </div>
     </div>
   </td>
-  <td>
+  <td
+    class="wrapper normal"
+  >
     <div
       class="cellContent cell"
     >
@@ -92,7 +98,9 @@ exports[`<FieldRow /> renders field row 1`] = `
       </div>
     </div>
   </td>
-  <td>
+  <td
+    class="wrapper normal"
+  >
     <div
       class="cellContent cell"
     >

@@ -131,7 +131,7 @@ const DroppableCategoriesTableRow = ({
             onDropEntity={onDropEntity}
         >
             {headerCell}
-            <BodyCell innerClassName={bodyInnerClass}>
+            <BodyCell innerClassName={bodyInnerClass} size="small">
                 {category.translation && (
                     <LanguageList
                         id={category.id}

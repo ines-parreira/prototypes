@@ -127,7 +127,7 @@ export const IntegrationRow = ({
                 >
                     <div className={css.nameAndLogoWrapper}>
                         <img
-                            alt={`Shopify logo`}
+                            alt="Shopify logo"
                             role="presentation"
                             className={css.logo}
                             src={getIconFromType('shopify')}

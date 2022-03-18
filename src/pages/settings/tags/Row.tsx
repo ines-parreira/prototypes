@@ -190,7 +190,7 @@ export class Row extends Component<Props, State> {
                     />
                 </td>
 
-                <td>
+                <td className="smallest">
                     <div className="cell-wrapper">
                         <TagLabel decoration={row.get('decoration')}>
                             {row.get('name')}

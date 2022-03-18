@@ -679,10 +679,10 @@ exports[`AutomationMacros should render the filters and stats when stats filters
           <tbody>
             <tr>
               <td
-                class="lineCell string"
+                class="lineCell string link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <i>
                     <b>
@@ -692,28 +692,28 @@ exports[`AutomationMacros should render the filters and stats when stats filters
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   17
                 </span>
               </td>
               <td
-                class="lineCell percent"
+                class="lineCell percent link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   94%
                 </span>
               </td>
               <td
-                class="lineCell delta"
+                class="lineCell delta link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <span>
                     <span
@@ -735,37 +735,41 @@ exports[`AutomationMacros should render the filters and stats when stats filters
             </tr>
             <tr>
               <td
-                class="lineCell string"
+                class="lineCell string link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
-                  Hello
+                  <div
+                    class="fit-cell"
+                  >
+                    Hello
+                  </div>
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   1
                 </span>
               </td>
               <td
-                class="lineCell percent"
+                class="lineCell percent link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   6%
                 </span>
               </td>
               <td
-                class="lineCell delta"
+                class="lineCell delta link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <span>
                     <span

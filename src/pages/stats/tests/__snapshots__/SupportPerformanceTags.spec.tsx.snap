@@ -683,10 +683,10 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
           <tbody>
             <tr>
               <td
-                class="lineCell string"
+                class="lineCell string link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <i>
                     <b>
@@ -696,10 +696,10 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <span>
                     <a
@@ -712,19 +712,19 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                 </span>
               </td>
               <td
-                class="lineCell percent"
+                class="lineCell percent link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   98%
                 </span>
               </td>
               <td
-                class="lineCell delta"
+                class="lineCell delta link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <span>
                     <span
@@ -746,24 +746,28 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
             </tr>
             <tr>
               <td
-                class="lineCell string"
+                class="lineCell string link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
-                  <span
-                    class="badge-tag badge badge-secondary"
-                    style="color: rgb(128, 136, 214);"
+                  <div
+                    class="fit-cell"
                   >
-                    rejected
-                  </span>
+                    <span
+                      class="badge-tag badge badge-secondary"
+                      style="color: rgb(128, 136, 214);"
+                    >
+                      rejected
+                    </span>
+                  </div>
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <span>
                     <a
@@ -776,19 +780,19 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                 </span>
               </td>
               <td
-                class="lineCell percent"
+                class="lineCell percent link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   2%
                 </span>
               </td>
               <td
-                class="lineCell delta"
+                class="lineCell delta link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <span>
                     <span

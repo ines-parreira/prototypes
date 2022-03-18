@@ -65,14 +65,20 @@ const UserAuditRow = ({eventItem}: Props) => {
 
     return (
         <tr>
-            <td>{renderUser()}</td>
-            <td>{eventType}</td>
-            <td>{renderObject()}</td>
-            <td className="smallest">
-                <DatetimeLabel
-                    dateTime={eventItem.created_datetime}
-                    labelFormat={DATETIME_LABEL_FORMAT}
-                />
+            <td className="align-middle">{renderUser()}</td>
+            <td className="link-full-td align-middle">
+                <div className="cell-content">{eventType}</div>
+            </td>
+            <td className="link-full-td align-middle">
+                <div className="cell-content">{renderObject()}</div>
+            </td>
+            <td className="smallest link-full-td">
+                <div className="cell-content">
+                    <DatetimeLabel
+                        dateTime={eventItem.created_datetime}
+                        labelFormat={DATETIME_LABEL_FORMAT}
+                    />
+                </div>
             </td>
         </tr>
     )

@@ -123,7 +123,7 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
       <tbody>
         <tr>
           <td
-            class="smallest"
+            class="smallest align-middle"
           >
             <img
               alt="gmail logo"
@@ -245,10 +245,10 @@ exports[`<EmailIntegrationList/> render() should render the page with a warning 
       <tbody>
         <tr>
           <td
-            class="smallest"
+            class="smallest align-middle"
           >
             <i
-              class="icon material-icons"
+              class="icon material-icons align-bottom"
             >
               email
             </i>
@@ -367,7 +367,7 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
       <tbody>
         <tr>
           <td
-            class="smallest"
+            class="smallest align-middle"
           >
             <img
               alt="gmail logo"
@@ -479,10 +479,10 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
       <tbody>
         <tr>
           <td
-            class="smallest"
+            class="smallest align-middle"
           >
             <i
-              class="icon material-icons"
+              class="icon material-icons align-bottom"
             >
               email
             </i>

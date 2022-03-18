@@ -93,8 +93,8 @@ function GorgiasChatIntegrationList({
         const goToChat = () => history.push(editLink)
 
         return (
-            <TableBodyRow className={css.tableBodyRow} onClick={goToChat}>
-                <BodyCell className="smallest">
+            <TableBodyRow onClick={goToChat}>
+                <BodyCell>
                     <ToggleInput
                         isToggled={isEnabled}
                         onClick={toggleIntegration}
@@ -105,7 +105,7 @@ function GorgiasChatIntegrationList({
                 <BodyCell innerClassName={css.chatName}>
                     {chat.get('name')}
                 </BodyCell>
-                <BodyCell>
+                <BodyCell size="small">
                     {shopifyStoreName !== null ? (
                         <div className={css.shopifyStoreDiv}>
                             <span className={css.shopifyStoreName}>
@@ -133,10 +133,10 @@ function GorgiasChatIntegrationList({
                         <div className={css.noStore}>No store connected</div>
                     )}
                 </BodyCell>
-                <BodyCell>
+                <BodyCell size="small">
                     <LanguageBullet code={language} />
                 </BodyCell>
-                <BodyCell className="smallest">
+                <BodyCell size="smallest">
                     <ForwardIcon href={editLink} />
                 </BodyCell>
             </TableBodyRow>
@@ -200,7 +200,7 @@ function GorgiasChatIntegrationList({
             {!chats.isEmpty() && (
                 <TableWrapper>
                     <TableHead className={css.tableHead}>
-                        <HeaderCell className="smallest" />
+                        <HeaderCell size="smallest" />
                         <HeaderCellProperty
                             className={css.chatNameHeader}
                             title="Chat name"

@@ -824,10 +824,10 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           <tbody>
             <tr>
               <td
-                class="lineCell product"
+                class="lineCell product link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <div
                     class="container"
@@ -845,21 +845,25 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   2
                 </span>
               </td>
               <td
-                class="lineCell string"
+                class="lineCell string link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
-                  I'm past my expected delivery date
+                  <span
+                    class="fit-cell"
+                  >
+                    I'm past my expected delivery date
+                  </span>
                 </span>
               </td>
             </tr>
@@ -953,41 +957,41 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           <tbody>
             <tr>
               <td
-                class="lineCell issue-reason"
+                class="lineCell issue-reason link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <h5
-                    style="margin: 16px;"
+                    style="margin: 0px;"
                   >
                     I'm past my expected delivery date
                   </h5>
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   3
                 </span>
               </td>
               <td
-                class="lineCell percent"
+                class="lineCell percent link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   30%
                 </span>
               </td>
               <td
-                class="lineCell delta"
+                class="lineCell delta link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <span>
                     <span
@@ -1066,10 +1070,10 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           <tbody>
             <tr>
               <td
-                class="lineCell product"
+                class="lineCell product link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   <div
                     class="container"
@@ -1087,10 +1091,10 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                 </span>
               </td>
               <td
-                class="lineCell number"
+                class="lineCell number link-full-td"
               >
                 <span
-                  class="cell-wrapper"
+                  class="cell-wrapper cell-content"
                 >
                   6
                 </span>

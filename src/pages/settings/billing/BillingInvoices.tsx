@@ -119,7 +119,7 @@ export class BillingInvoicesContainer extends Component<Props, State> {
                     The account owner will receive an invoice by email at the
                     start of each billing period.
                 </p>
-                <Table striped>
+                <Table striped className="table">
                     <thead>
                         <tr>
                             <th>Status</th>
@@ -143,29 +143,39 @@ export class BillingInvoicesContainer extends Component<Props, State> {
                                 ]) === SHOPIFY_PAYMENT_SERVICE
                             return (
                                 <tr key={invoice.get('id')}>
-                                    <td>
-                                        {paid ? (
-                                            <Badge type={ColorType.Success}>
-                                                Paid
-                                            </Badge>
-                                        ) : (
-                                            <Badge type={ColorType.Error}>
-                                                Unpaid
-                                            </Badge>
-                                        )}
+                                    <td className="link-full-td align-middle">
+                                        <div className="cell-content">
+                                            {paid ? (
+                                                <Badge type={ColorType.Success}>
+                                                    Paid
+                                                </Badge>
+                                            ) : (
+                                                <Badge type={ColorType.Error}>
+                                                    Unpaid
+                                                </Badge>
+                                            )}
+                                        </div>
                                     </td>
-                                    <td>
-                                        {moment
-                                            .unix(invoice.get('date'))
-                                            .format('LL')}
+                                    <td className="link-full-td align-middle">
+                                        <div className="cell-content">
+                                            {moment
+                                                .unix(invoice.get('date'))
+                                                .format('LL')}
+                                        </div>
                                     </td>
-                                    <td>
-                                        {`$${invoice.get('amount_due') / 100}`}{' '}
+                                    <td className="link-full-td align-middle">
+                                        <div className="cell-content">
+                                            {`$${
+                                                invoice.get('amount_due') / 100
+                                            }`}{' '}
+                                        </div>
                                     </td>
-                                    <td>
-                                        {invoice.get('description') || '-'}{' '}
+                                    <td className="link-full-td align-middle">
+                                        <div className="cell-content">
+                                            {invoice.get('description') || '-'}{' '}
+                                        </div>
                                     </td>
-                                    <td>
+                                    <td className="link-full-td align-middle">
                                         {!shopifyPaid && (
                                             <a
                                                 className="mr-2"

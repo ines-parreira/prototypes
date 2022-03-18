@@ -107,7 +107,7 @@ export const ArticleRow = ({
             <BodyCell className={css['nested-cell']}>
                 {article.translation.title}
             </BodyCell>
-            <BodyCell>
+            <BodyCell size="small">
                 {article.translation && (
                     <LanguageList
                         id={article.id}

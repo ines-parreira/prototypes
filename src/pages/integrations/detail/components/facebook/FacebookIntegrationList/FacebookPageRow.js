@@ -26,7 +26,7 @@ export default class FacebookPageRow extends React.Component {
 
         return (
             <tr className="FacebookPageRow">
-                <td className="smallest">
+                <td className="smallest align-middle">
                     <img
                         style={{
                             height: '23px',

@@ -92,14 +92,19 @@ export class TableStat extends Component<
                     metric.get('details') as Map<any, any>
                 )?.toJS() as Partial<Record<string, number>>
                 return (
-                    <TicketDetailsStat
-                        agentId={line.getIn(['0', 'value', 'id'])}
-                        agentName={line.getIn(['0', 'value', 'name'])}
-                        openTickets={
-                            callback(callbackData, callbackContext) as number
-                        }
-                        channelsBreakdown={details}
-                    />
+                    <div className="fit-cell">
+                        <TicketDetailsStat
+                            agentId={line.getIn(['0', 'value', 'id'])}
+                            agentName={line.getIn(['0', 'value', 'name'])}
+                            openTickets={
+                                callback(
+                                    callbackData,
+                                    callbackContext
+                                ) as number
+                            }
+                            channelsBreakdown={details}
+                        />
+                    </div>
                 )
             }
             case StatValueType.OnlineTime: {
@@ -243,7 +248,11 @@ export class TableStat extends Component<
                 )
             }
             case StatValueType.Date: {
-                return <DatetimeLabel dateTime={metric.get('value')} />
+                return (
+                    <div className="fit-cell">
+                        <DatetimeLabel dateTime={metric.get('value')} />
+                    </div>
+                )
             }
             case StatValueType.Currency: {
                 return formatCurrency(
@@ -257,6 +266,7 @@ export class TableStat extends Component<
                         to={`/app/customer/${
                             metric.get('customer_id') as string
                         }`}
+                        className="fit-cell"
                     >
                         {metric.get('customer_name') || 'Go to customer'}
                     </Link>
@@ -325,10 +335,16 @@ export class TableStat extends Component<
                                 key={metricIdx}
                                 className={classnames(
                                     css.lineCell,
-                                    css[`${type}`]
+                                    css[`${type}`],
+                                    'link-full-td'
                                 )}
                             >
-                                <span className={css['cell-wrapper']}>
+                                <span
+                                    className={classnames(
+                                        css['cell-wrapper'],
+                                        'cell-content'
+                                    )}
+                                >
                                     {this._renderCell(
                                         line!,
                                         metric!,

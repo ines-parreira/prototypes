@@ -45,7 +45,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           class="wrapper smallest"
         />
         <td
-          class="wrapper"
+          class="wrapper normal"
         >
           <div
             class="content"
@@ -65,7 +65,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="wrapper"
+          class="wrapper normal"
         >
           <div
             class="content"
@@ -85,7 +85,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="wrapper"
+          class="wrapper normal"
         >
           <div
             class="content"
@@ -105,7 +105,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="wrapper"
+          class="wrapper normal"
         />
       </tr>
     </thead>
@@ -116,7 +116,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
         class="row tableBodyRow isClickable"
       >
         <td
-          class="smallest actions"
+          class="wrapper actions smallest"
         >
           <div
             class="cellContent"
@@ -147,7 +147,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="helpCenterName"
+          class="wrapper helpCenterName normal"
         >
           <div
             class="cellContent"
@@ -155,7 +155,9 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             ACME Help Center
           </div>
         </td>
-        <td>
+        <td
+          class="wrapper small"
+        >
           <div
             class="cellContent"
           >
@@ -176,7 +178,9 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             </div>
           </div>
         </td>
-        <td>
+        <td
+          class="wrapper normal"
+        >
           <div
             class="cellContent"
           >
@@ -184,7 +188,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="smallest actions"
+          class="wrapper smallest actions normal"
         >
           <div
             class="cellContent"
@@ -201,7 +205,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
         class="row tableBodyRow isClickable"
       >
         <td
-          class="smallest actions"
+          class="wrapper actions smallest"
         >
           <div
             class="cellContent"
@@ -232,7 +236,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="helpCenterName"
+          class="wrapper helpCenterName normal"
         >
           <div
             class="cellContent"
@@ -240,7 +244,9 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             ACME Help Center 2
           </div>
         </td>
-        <td>
+        <td
+          class="wrapper small"
+        >
           <div
             class="cellContent"
           >
@@ -272,7 +278,9 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             </div>
           </div>
         </td>
-        <td>
+        <td
+          class="wrapper normal"
+        >
           <div
             class="cellContent"
           >
@@ -280,7 +288,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="smallest actions"
+          class="wrapper smallest actions normal"
         >
           <div
             class="cellContent"
@@ -297,7 +305,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
         class="row tableBodyRow isClickable"
       >
         <td
-          class="smallest actions"
+          class="wrapper actions smallest"
         >
           <div
             class="cellContent"
@@ -328,7 +336,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="helpCenterName"
+          class="wrapper helpCenterName normal"
         >
           <div
             class="cellContent"
@@ -336,7 +344,9 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             ACME Help Center 3
           </div>
         </td>
-        <td>
+        <td
+          class="wrapper small"
+        >
           <div
             class="cellContent"
           >
@@ -368,7 +378,9 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             </div>
           </div>
         </td>
-        <td>
+        <td
+          class="wrapper normal"
+        >
           <div
             class="cellContent"
           >
@@ -376,7 +388,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
         <td
-          class="smallest actions"
+          class="wrapper smallest actions normal"
         >
           <div
             class="cellContent"

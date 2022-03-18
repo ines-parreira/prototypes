@@ -5,13 +5,15 @@ exports[`<CategoriesTableRow /> should render "Uncategorized articles" row when 
   <tr
     class="row row"
   >
-    <td>
+    <td
+      class="wrapper normal"
+    >
       <div
         class="cellContent"
       />
     </td>
     <td
-      class="cell"
+      class="wrapper cell normal"
     >
       <div
         class="cellContent"
@@ -34,12 +36,16 @@ exports[`<CategoriesTableRow /> should render "Uncategorized articles" row when 
         </span>
       </div>
     </td>
-    <td>
+    <td
+      class="wrapper normal"
+    >
       <div
         class="cellContent"
       />
     </td>
-    <td>
+    <td
+      class="wrapper normal"
+    >
       <div
         class="cellContent"
         style="width: 120px;"
@@ -56,7 +62,9 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
     data-handler-id="T0"
     style="opacity: 1;"
   >
-    <td>
+    <td
+      class="wrapper normal"
+    >
       <div
         class="cellContent"
       >
@@ -69,7 +77,7 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
       </div>
     </td>
     <td
-      class="cell"
+      class="wrapper cell normal"
     >
       <div
         class="cellContent no-click"
@@ -90,7 +98,9 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
         </span>
       </div>
     </td>
-    <td>
+    <td
+      class="wrapper small"
+    >
       <div
         class="cellContent no-click"
       >
@@ -111,7 +121,9 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
         </div>
       </div>
     </td>
-    <td>
+    <td
+      class="wrapper normal"
+    >
       <div
         class="cellContent actions no-click"
         style="width: 120px;"
@@ -140,7 +152,9 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
     data-handler-id="T0"
     style="opacity: 1;"
   >
-    <td>
+    <td
+      class="wrapper normal"
+    >
       <div
         class="cellContent"
       >
@@ -153,7 +167,7 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
       </div>
     </td>
     <td
-      class="cell"
+      class="wrapper cell normal"
     >
       <div
         class="cellContent no-click"
@@ -180,7 +194,9 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
         </div>
       </div>
     </td>
-    <td>
+    <td
+      class="wrapper small"
+    >
       <div
         class="cellContent no-click"
       >
@@ -201,7 +217,9 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
         </div>
       </div>
     </td>
-    <td>
+    <td
+      class="wrapper normal"
+    >
       <div
         class="cellContent actions no-click"
         style="width: 120px;"

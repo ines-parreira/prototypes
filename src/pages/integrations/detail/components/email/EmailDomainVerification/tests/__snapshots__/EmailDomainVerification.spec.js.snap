@@ -18,27 +18,27 @@ exports[`<EmailDomainVerificationContainer/> render() should render a delete but
           class="headerRow"
         >
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Status
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Record Type
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Host
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Value
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Current Values
           </td>
@@ -101,27 +101,27 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page whe
           class="headerRow"
         >
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Status
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Record Type
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Host
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Value
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Current Values
           </td>
@@ -153,27 +153,27 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page whe
           class="headerRow"
         >
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Status
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Record Type
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Host
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Value
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             Current Values
           </td>

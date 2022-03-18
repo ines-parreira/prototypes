@@ -7,7 +7,7 @@ exports[`FacebookPageRow component should render facebook integration 1`] = `
   class="FacebookPageRow"
 >
   <td
-    class="smallest"
+    class="smallest align-middle"
   >
     <img
       alt="My Page"

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BodyCellContent/> should render 1`] = `
+<div>
+  <div
+    class="cellContent foo"
+  >
+    Foo
+  </div>
+</div>
+`;
+
+exports[`<BodyCellContent/> should render with custom width 1`] = `
+<div>
+  <div
+    class="cellContent foo"
+    style="width: 200px;"
+  >
+    Foo
+  </div>
+</div>
+`;

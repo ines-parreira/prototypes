@@ -128,7 +128,7 @@ export const ImportZendeskDataList = (
                                     )
                                 }}
                             >
-                                <td className="smallest">
+                                <td className="smallest align-middle">
                                     <img
                                         alt={`Zendesk logo`}
                                         style={{
@@ -139,8 +139,8 @@ export const ImportZendeskDataList = (
                                         src={img}
                                     />
                                 </td>
-                                <td className="align-middle">
-                                    <div>
+                                <td className="align-middle link-full-td">
+                                    <div className="cell-content">
                                         <b className="mr-2">
                                             {integration.get('name')}
                                         </b>
@@ -152,7 +152,7 @@ export const ImportZendeskDataList = (
                                         </span>
                                     </div>
                                 </td>
-                                <td className="align-middle text-muted">
+                                <td className="link-full-td align-middle text-muted">
                                     {renderImportStatus(
                                         integration.get('meta')
                                     )}

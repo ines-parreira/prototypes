@@ -666,7 +666,9 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
         </thead>
         <tbody>
           <tr>
-            <td>
+            <td
+              class="align-middle"
+            >
               <div>
                 <a
                   to="/app/settings/users/1"
@@ -691,28 +693,46 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                 </a>
               </div>
             </td>
-            <td />
-            <td>
-              <a
-                to="/app/ticket/10/"
+            <td
+              class="link-full-td align-middle"
+            >
+              <div
+                class="cell-content"
+              />
+            </td>
+            <td
+              class="link-full-td align-middle"
+            >
+              <div
+                class="cell-content"
               >
-                Ticket #10
-              </a>
+                <a
+                  to="/app/ticket/10/"
+                >
+                  Ticket #10
+                </a>
+              </div>
             </td>
             <td
-              class="smallest"
+              class="smallest link-full-td"
             >
-              <span>
-                <span
-                  id="datetime-tooltip-ssssssssst"
-                >
-                  January 25, 2022 10:39 AM
+              <div
+                class="cell-content"
+              >
+                <span>
+                  <span
+                    id="datetime-tooltip-ssssssssst"
+                  >
+                    January 25, 2022 10:39 AM
+                  </span>
                 </span>
-              </span>
+              </div>
             </td>
           </tr>
           <tr>
-            <td>
+            <td
+              class="align-middle"
+            >
               <div>
                 <a
                   to="/app/settings/users/1"
@@ -737,24 +757,42 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                 </a>
               </div>
             </td>
-            <td />
-            <td>
-              Macro #20
+            <td
+              class="link-full-td align-middle"
+            >
+              <div
+                class="cell-content"
+              />
             </td>
             <td
-              class="smallest"
+              class="link-full-td align-middle"
             >
-              <span>
-                <span
-                  id="datetime-tooltip-ssssssssst"
-                >
-                  January 25, 2022 10:39 AM
+              <div
+                class="cell-content"
+              >
+                Macro #20
+              </div>
+            </td>
+            <td
+              class="smallest link-full-td"
+            >
+              <div
+                class="cell-content"
+              >
+                <span>
+                  <span
+                    id="datetime-tooltip-ssssssssst"
+                  >
+                    January 25, 2022 10:39 AM
+                  </span>
                 </span>
-              </span>
+              </div>
             </td>
           </tr>
           <tr>
-            <td>
+            <td
+              class="align-middle"
+            >
               <div>
                 <a
                   to="/app/settings/users/1"
@@ -779,20 +817,36 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                 </a>
               </div>
             </td>
-            <td />
-            <td>
-              View #30
+            <td
+              class="link-full-td align-middle"
+            >
+              <div
+                class="cell-content"
+              />
             </td>
             <td
-              class="smallest"
+              class="link-full-td align-middle"
             >
-              <span>
-                <span
-                  id="datetime-tooltip-ssssssssst"
-                >
-                  January 25, 2022 10:39 AM
+              <div
+                class="cell-content"
+              >
+                View #30
+              </div>
+            </td>
+            <td
+              class="smallest link-full-td"
+            >
+              <div
+                class="cell-content"
+              >
+                <span>
+                  <span
+                    id="datetime-tooltip-ssssssssst"
+                  >
+                    January 25, 2022 10:39 AM
+                  </span>
                 </span>
-              </span>
+              </div>
             </td>
           </tr>
         </tbody>

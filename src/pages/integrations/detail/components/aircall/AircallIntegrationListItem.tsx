@@ -43,8 +43,8 @@ export default function AircallIntegrationListItem({
             <td className="smallest align-middle">
                 <ToggleInput isToggled={!isDisabled} onClick={handleToggle} />
             </td>
-            <td className="align-middle">
-                <div>
+            <td className="align-middle link-full-td">
+                <div className="cell-content">
                     <b className="mr-2">{integration.name}</b>
                     <span className="text-faded">
                         {integration.meta?.address}

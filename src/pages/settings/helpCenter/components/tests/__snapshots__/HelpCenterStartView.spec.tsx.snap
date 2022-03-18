@@ -66,7 +66,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
             class="wrapper smallest"
           />
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             <div
               class="content"
@@ -86,7 +86,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
             </div>
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             <div
               class="content"
@@ -106,7 +106,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
             </div>
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           >
             <div
               class="content"
@@ -126,7 +126,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
             </div>
           </td>
           <td
-            class="wrapper"
+            class="wrapper normal"
           />
         </tr>
       </thead>
@@ -137,7 +137,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
           class="row tableBodyRow isClickable"
         >
           <td
-            class="smallest actions"
+            class="wrapper actions smallest"
           >
             <div
               class="cellContent"
@@ -168,7 +168,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
             </div>
           </td>
           <td
-            class="helpCenterName"
+            class="wrapper helpCenterName normal"
           >
             <div
               class="cellContent"
@@ -176,7 +176,9 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
               ACME Help Center
             </div>
           </td>
-          <td>
+          <td
+            class="wrapper small"
+          >
             <div
               class="cellContent"
             >
@@ -197,7 +199,9 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
               </div>
             </div>
           </td>
-          <td>
+          <td
+            class="wrapper normal"
+          >
             <div
               class="cellContent"
             >
@@ -205,7 +209,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
             </div>
           </td>
           <td
-            class="smallest actions"
+            class="wrapper smallest actions normal"
           >
             <div
               class="cellContent"
@@ -222,7 +226,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
           class="row tableBodyRow isClickable"
         >
           <td
-            class="smallest actions"
+            class="wrapper actions smallest"
           >
             <div
               class="cellContent"
@@ -253,7 +257,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
             </div>
           </td>
           <td
-            class="helpCenterName"
+            class="wrapper helpCenterName normal"
           >
             <div
               class="cellContent"
@@ -261,7 +265,9 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
               ACME Help Center 2
             </div>
           </td>
-          <td>
+          <td
+            class="wrapper small"
+          >
             <div
               class="cellContent"
             >
@@ -293,7 +299,9 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
               </div>
             </div>
           </td>
-          <td>
+          <td
+            class="wrapper normal"
+          >
             <div
               class="cellContent"
             >
@@ -301,7 +309,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
             </div>
           </td>
           <td
-            class="smallest actions"
+            class="wrapper smallest actions normal"
           >
             <div
               class="cellContent"
@@ -318,7 +326,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
           class="row tableBodyRow isClickable"
         >
           <td
-            class="smallest actions"
+            class="wrapper actions smallest"
           >
             <div
               class="cellContent"
@@ -349,7 +357,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
             </div>
           </td>
           <td
-            class="helpCenterName"
+            class="wrapper helpCenterName normal"
           >
             <div
               class="cellContent"
@@ -357,7 +365,9 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
               ACME Help Center 3
             </div>
           </td>
-          <td>
+          <td
+            class="wrapper small"
+          >
             <div
               class="cellContent"
             >
@@ -389,7 +399,9 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
               </div>
             </div>
           </td>
-          <td>
+          <td
+            class="wrapper normal"
+          >
             <div
               class="cellContent"
             >
@@ -397,7 +409,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
             </div>
           </td>
           <td
-            class="smallest actions"
+            class="wrapper smallest actions normal"
           >
             <div
               class="cellContent"

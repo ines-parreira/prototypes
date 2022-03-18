@@ -123,7 +123,9 @@ exports[`ManageTags Table component should display the same number of rows as th
           </label>
         </div>
       </td>
-      <td>
+      <td
+        class="smallest"
+      >
         <div
           class="cell-wrapper"
         >
@@ -198,7 +200,9 @@ exports[`ManageTags Table component should display the same number of rows as th
           </label>
         </div>
       </td>
-      <td>
+      <td
+        class="smallest"
+      >
         <div
           class="cell-wrapper"
         >
@@ -273,7 +277,9 @@ exports[`ManageTags Table component should display the same number of rows as th
           </label>
         </div>
       </td>
-      <td>
+      <td
+        class="smallest"
+      >
         <div
           class="cell-wrapper"
         >

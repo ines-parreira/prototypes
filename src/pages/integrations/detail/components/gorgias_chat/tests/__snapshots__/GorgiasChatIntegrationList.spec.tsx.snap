@@ -65,7 +65,7 @@ exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat 
       className="tableHead"
     >
       <HeaderCell
-        className="smallest"
+        size="smallest"
       />
       <HeaderCellProperty
         className="chatNameHeader"
@@ -81,12 +81,9 @@ exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat 
     </TableHead>
     <ForwardRef(TableBody)>
       <ForwardRef(TableBodyRow)
-        className="tableBodyRow"
         onClick={[Function]}
       >
-        <ForwardRef
-          className="smallest"
-        >
+        <ForwardRef>
           <ToggleInput
             isDisabled={false}
             isLoading={false}
@@ -99,7 +96,9 @@ exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat 
         >
           my chat enabled
         </ForwardRef>
-        <ForwardRef>
+        <ForwardRef
+          size="small"
+        >
           <div
             className="shopifyStoreDiv"
           >
@@ -128,11 +127,13 @@ exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat 
             </Tooltip>
           </div>
         </ForwardRef>
-        <ForwardRef>
+        <ForwardRef
+          size="small"
+        >
           <LanguageBullet />
         </ForwardRef>
         <ForwardRef
-          className="smallest"
+          size="smallest"
         >
           <ForwardIcon
             href="/app/settings/integrations/gorgias_chat/1/campaigns"
