@@ -400,7 +400,7 @@ export class Widget extends Component<Props, State> {
             // operators are using simple select widget, all we need is the options
             let operators = schemas.getIn(left) as Map<any, any>
 
-            // Explicit operators for `message.self_service_flow` attributes
+            // TODO(@VictorXunS): Remove this when self_service_flow variables are in schemas
             if (left.includes('self_service_flow')) {
                 operators = fromJS(BASIC_OPERATORS)
             }

@@ -487,16 +487,22 @@ export function updateCallExpression(
         stopPath,
         schemas
     )
-    const callee = resolveCallee(
-        callExpression,
-        firstArgSchema as Map<any, any>
-    )
-    const secondArg = resolveSecondArg(
-        callExpression,
-        callee,
-        hasPropertyChanged,
-        firstArgSchema as Map<any, any>
-    )
+    let callee = null
+    let secondArg = null
+    if (firstArg && firstArg.includes('self_service_flow')) {
+        // TODO(@VictorXunS): Remove this when self_service_flow variables are in schemas
+        callee = 'eq'
+        secondArg = "''"
+    } else {
+        callee = resolveCallee(callExpression, firstArgSchema as Map<any, any>)
+        secondArg = resolveSecondArg(
+            callExpression,
+            callee,
+            hasPropertyChanged,
+            firstArgSchema as Map<any, any>
+        )
+    }
+
     // generate the new CallExpression and replace the old one
     let rawCallExpression = `${callee}(${firstArg.join('.')}`
 
