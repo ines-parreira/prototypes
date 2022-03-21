@@ -92,7 +92,6 @@ export const ArticleRow = ({
                 className={classNames({
                     [css['nested-cell']]: isNested,
                 })}
-                width={25}
             >
                 <div
                     ref={dragRef as React.RefObject<HTMLDivElement>}

@@ -222,7 +222,6 @@ export const CategoriesTableRow = ({
                     <TableBodyRow>
                         <BodyCell
                             colSpan={4}
-                            className={css['parent-cell']}
                             innerClassName={classNames(
                                 css['no-click'],
                                 css['load-more']
