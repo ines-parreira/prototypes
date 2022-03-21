@@ -283,7 +283,7 @@ const SelectFilter = ({
             onChange(nextValue)
             updateGroupValue(nextValue)
         },
-        [isDisabled, isMultiple, isRequired, value]
+        [isDisabled, isMultiple, isRequired, value, onChange]
     )
 
     const handleGroupChange = useCallback(
