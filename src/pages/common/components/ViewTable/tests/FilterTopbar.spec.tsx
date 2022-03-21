@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import history from 'pages/history'
 import {view as viewFixture} from '../../../../../fixtures/views'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import * as utils from '../../../../../utils'
@@ -12,7 +13,7 @@ import {
     viewCreated,
     viewUpdated,
 } from '../../../../../state/entities/views/actions'
-import {activeViewIdSet} from '../../../../../state/ui/views/actions'
+import * as viewsActions from '../../../../../state/ui/views/actions'
 import {
     SUBMIT_NEW_VIEW_ERROR,
     SUBMIT_UPDATE_VIEW_ERROR,
@@ -31,8 +32,8 @@ import {JobType} from '../../../../../models/job/types'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
 
+jest.spyOn(viewsActions, 'activeViewIdSet')
 jest.mock('../../../../../state/entities/views/actions')
-jest.mock('../../../../../state/ui/views/actions')
 jest.mock('../../../../../state/views/actions')
 
 const createViewWithFilters = (filters: string) =>
@@ -51,7 +52,13 @@ const defaultState: Partial<RootState> = {
     teams: fromJS({}),
     views: fromJS({
         active: createViewWithFilters(ticketChannelEqualsEmailFilter),
-        items: [createViewWithFilters(ticketChannelEqualsEmailFilter)],
+        items: [
+            createViewWithFilters(ticketChannelEqualsEmailFilter),
+            createViewWithFilters(ticketChannelEqualsEmailFilter).set('id', 3),
+        ],
+        _internal: {
+            lastViewId: 3,
+        },
     }),
     tickets: fromJS({
         items: [{id: 1}],
@@ -333,10 +340,6 @@ describe('<FilterTopbar />', () => {
             typeof viewUpdated
         >
         viewUpdatedMock.mockImplementation(jest.fn())
-        const activeViewIdSetMock = activeViewIdSet as jest.MockedFunction<
-            typeof activeViewIdSet
-        >
-        activeViewIdSetMock.mockImplementation(jest.fn())
 
         submitViewMock.mockImplementation(
             () => () =>
@@ -361,7 +364,7 @@ describe('<FilterTopbar />', () => {
         await waitFor(() => {
             fireEvent.click(getByText('Confirm'))
             expect(viewUpdatedMock).not.toHaveBeenCalled()
-            expect(activeViewIdSetMock).not.toHaveBeenCalled()
+            expect(viewsActions.activeViewIdSet).not.toHaveBeenCalled()
         })
     })
 
@@ -372,10 +375,6 @@ describe('<FilterTopbar />', () => {
             typeof viewCreated
         >
         viewCreatedMock.mockImplementation(jest.fn())
-        const activeViewIdSetMock = activeViewIdSet as jest.MockedFunction<
-            typeof activeViewIdSet
-        >
-        activeViewIdSetMock.mockImplementation(jest.fn())
 
         submitViewMock.mockImplementation(
             () => () =>
@@ -412,7 +411,7 @@ describe('<FilterTopbar />', () => {
         })
 
         expect(viewCreatedMock).not.toHaveBeenCalled()
-        expect(activeViewIdSetMock).not.toHaveBeenCalled()
+        expect(viewsActions.activeViewIdSet).not.toHaveBeenCalled()
     })
 
     it('should toggle dropdown on update view button dropdown caret click', () => {
@@ -509,6 +508,27 @@ describe('<FilterTopbar />', () => {
         fireEvent.click(getByText('Cancel'))
         await waitFor(() => {
             expect(queryByText('Confirm')).toBeNull()
+        })
+    })
+
+    it('should properly redirect to the last view when canceling', async () => {
+        const {getByText} = render(
+            <Provider store={mockStore({...defaultState})}>
+                <FilterTopbar {...minProps} isUpdate={false} />
+            </Provider>
+        )
+
+        fireEvent.click(getByText('Cancel'))
+        await waitFor(() => {
+            expect(viewsActions.activeViewIdSet).toHaveBeenCalledWith(3)
+            expect(history.push).toHaveBeenCalledWith(
+                `/app/tickets/${
+                    defaultState.views!.getIn([
+                        '_internal',
+                        'lastViewId',
+                    ]) as number
+                }`
+            )
         })
     })
 

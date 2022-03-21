@@ -30,7 +30,7 @@ import GroupItem from 'pages/common/components/layout/GroupItem'
 import {getConfigByName} from 'config/views'
 import {SYSTEM_VIEW_CATEGORY} from 'constants/view'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {View, ViewVisibility} from 'models/view/types'
+import {View, ViewType, ViewVisibility} from 'models/view/types'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     viewCreated,
@@ -48,7 +48,9 @@ import {
 import {
     areFiltersValid as getAreFiltersValid,
     getActiveView,
+    getLastViewId,
     getPristineActiveView,
+    getViewIdToDisplay,
     isDirty as getIsViewDirty,
 } from 'state/views/selectors'
 import {getSchemas} from 'state/schemas/selectors'
@@ -96,6 +98,7 @@ export const FilterTopbar = ({
     const [isDropdownOpen, toggleDropdownOpen] = useState<boolean>(false)
     const timeoutChangeFeedbackRef = useRef<Maybe<number>>(null)
 
+    const lastViewId = useAppSelector(getLastViewId)
     const activeView = useAppSelector(getActiveView)
     const previousActiveView = usePrevious(activeView)
     const areFiltersValid = useAppSelector(getAreFiltersValid)
@@ -105,6 +108,9 @@ export const FilterTopbar = ({
     const pristineActiveView = useAppSelector(getPristineActiveView)
     const schemas = useAppSelector(getSchemas)
     const tickets = useAppSelector(getTickets)
+    const suggestedPreviousViewId = useAppSelector(
+        getViewIdToDisplay(ViewType.TicketList, lastViewId?.toString())
+    )
 
     useEffect(
         () => () => {
@@ -204,7 +210,12 @@ export const FilterTopbar = ({
             dispatch(resetView())
             void dispatch(fetchViewItems())
         } else {
-            history.push(`/app/${config.get('routeList') as string}/`)
+            dispatch(activeViewIdSet(suggestedPreviousViewId))
+            history.push(
+                `/app/${config.get('routeList') as string}/${
+                    suggestedPreviousViewId || ''
+                }`
+            )
         }
     }
 
