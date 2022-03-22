@@ -34,7 +34,7 @@ const getFontsFromLocalStorage = (): string[] => {
 
 export const FontSelectField = ({title, help, value, onChange}: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const [currentFont, setCurrentFont] = useState(value) as [
+    const [currentPrimaryFont, setCurrentPrimaryFont] = useState(value) as [
         string,
         (value: string) => void
     ]
@@ -45,7 +45,7 @@ export const FontSelectField = ({title, help, value, onChange}: Props) => {
     useEffect(() => {
         if (
             fontsFromLocalStorage.length === 0 &&
-            HELP_CENTER_AVAILABLE_FONTS.includes(currentFont)
+            HELP_CENTER_AVAILABLE_FONTS.includes(currentPrimaryFont)
         ) {
             return
         }
@@ -54,25 +54,27 @@ export const FontSelectField = ({title, help, value, onChange}: Props) => {
             link.rel = 'stylesheet'
             link.type = 'text/css'
             link.href = getMultipleFontLink(
-                HELP_CENTER_AVAILABLE_FONTS.includes(currentFont)
+                HELP_CENTER_AVAILABLE_FONTS.includes(currentPrimaryFont)
                     ? fontsFromLocalStorage
-                    : [...fontsFromLocalStorage, currentFont]
+                    : [...fontsFromLocalStorage, currentPrimaryFont]
             )
             document.body.appendChild(link)
         }
 
         void addLinkToDownloadFonts()
-    }, [fontsFromLocalStorage, currentFont])
+    }, [fontsFromLocalStorage, currentPrimaryFont])
 
-    const recentlyAddedFonts = HELP_CENTER_AVAILABLE_FONTS.includes(currentFont)
+    const recentlyAddedFonts = HELP_CENTER_AVAILABLE_FONTS.includes(
+        currentPrimaryFont
+    )
         ? fontsFromLocalStorage
-        : uniq([currentFont, ...fontsFromLocalStorage])
+        : uniq([currentPrimaryFont, ...fontsFromLocalStorage])
 
     const fontOptions: Option[] = useMemo(() => {
         const shouldDisplayHeaders =
             recentlyAddedFonts.length > 1 ||
             (recentlyAddedFonts.length === 1 &&
-                currentFont !== recentlyAddedFonts[0])
+                currentPrimaryFont !== recentlyAddedFonts[0])
 
         const displayedOptions: Option[] = [
             {
@@ -121,7 +123,7 @@ export const FontSelectField = ({title, help, value, onChange}: Props) => {
         )
 
         return displayedOptions
-    }, [recentlyAddedFonts, currentFont])
+    }, [recentlyAddedFonts, currentPrimaryFont])
 
     return (
         <>
@@ -132,7 +134,7 @@ export const FontSelectField = ({title, help, value, onChange}: Props) => {
                 value={value}
                 onChange={(value) => {
                     onChange(value as string)
-                    setCurrentFont(value as string)
+                    setCurrentPrimaryFont(value as string)
                 }}
                 options={fontOptions}
                 dropdownMenuClassName={css.longDropdown}
@@ -144,6 +146,7 @@ export const FontSelectField = ({title, help, value, onChange}: Props) => {
                 setFontsFromLocalStorage={setFontsFromLocalStorage}
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
+                currentPrimaryFont={currentPrimaryFont}
             />
         </>
     )

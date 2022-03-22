@@ -2,6 +2,8 @@ import React, {useEffect, useMemo, useState} from 'react'
 import uniq from 'lodash/uniq'
 import ReactList from 'react-list'
 import _isEqual from 'lodash/isEqual'
+import classNames from 'classnames'
+
 import Modal from 'pages/common/components/Modal'
 import Button from 'pages/common/components/button/Button'
 import SelectFilter from 'pages/stats/common/SelectFilter'
@@ -16,6 +18,7 @@ type Props = {
     setFontsFromLocalStorage: (fonts: string[]) => void
     isModalOpen: boolean
     setIsModalOpen: (val: boolean) => void
+    currentPrimaryFont: string
 }
 
 const saveFontsInLocalStorage = (fonts: string[]) => {
@@ -61,6 +64,7 @@ export const FontCatalogueModal = ({
     setFontsFromLocalStorage,
     isModalOpen,
     setIsModalOpen,
+    currentPrimaryFont,
 }: Props) => {
     const {googleFonts} = useGoogleFonts()
     const categories = uniq(googleFonts.map((font) => font.category))
@@ -193,7 +197,7 @@ export const FontCatalogueModal = ({
                             </SelectFilter>
                         </div>
                     </div>
-                    <div className={css.fontList}>
+                    <div className={css.fontList} data-testid="font-list">
                         {displayedFonts.length > 0 ? (
                             <ReactList
                                 itemRenderer={(index, key) => {
@@ -203,6 +207,12 @@ export const FontCatalogueModal = ({
                                         <div
                                             key={key}
                                             onClick={() => {
+                                                if (
+                                                    font.family ===
+                                                    currentPrimaryFont
+                                                ) {
+                                                    return
+                                                }
                                                 if (
                                                     selectedFonts.includes(
                                                         font.family
@@ -226,7 +236,14 @@ export const FontCatalogueModal = ({
                                                     )
                                                 }
                                             }}
-                                            className={css.availableFont}
+                                            className={classNames(
+                                                css.availableFont,
+                                                {
+                                                    [css.currentFont]:
+                                                        font.family ===
+                                                        currentPrimaryFont,
+                                                }
+                                            )}
                                         >
                                             <span
                                                 style={{
@@ -277,25 +294,37 @@ export const FontCatalogueModal = ({
                     <div className={css.fontListTitle}>Selected Fonts</div>
                     <div className={css.selectedFontList}>
                         {selectedFonts.map((font) => (
-                            <div key={font} className={css.selectedFont}>
+                            <div
+                                key={font}
+                                className={css.selectedFont}
+                                title={
+                                    font === currentPrimaryFont
+                                        ? 'Current primary font is not disposable'
+                                        : ''
+                                }
+                            >
                                 <span style={{fontFamily: font}}>{font}</span>
-                                <i
-                                    className="material-icons mr-2"
-                                    style={{
-                                        color: '#99A5B6',
-                                        cursor: 'pointer',
-                                    }}
-                                    onClick={() => {
-                                        setSelectedFonts(
-                                            selectedFonts.filter(
-                                                (selectedFont) =>
-                                                    selectedFont !== font
+                                {font === currentPrimaryFont ? (
+                                    <span>Primary font</span>
+                                ) : (
+                                    <i
+                                        className="material-icons mr-2"
+                                        style={{
+                                            color: '#99A5B6',
+                                            cursor: 'pointer',
+                                        }}
+                                        onClick={() => {
+                                            setSelectedFonts(
+                                                selectedFonts.filter(
+                                                    (selectedFont) =>
+                                                        selectedFont !== font
+                                                )
                                             )
-                                        )
-                                    }}
-                                >
-                                    close
-                                </i>
+                                        }}
+                                    >
+                                        close
+                                    </i>
+                                )}
                             </div>
                         ))}
                     </div>

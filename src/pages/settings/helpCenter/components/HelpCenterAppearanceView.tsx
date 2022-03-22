@@ -64,7 +64,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const [selectedTheme, setSelectedTheme] =
         useState<HelpCenterTheme>(helpCenterTheme)
     const [currentColor, setCurrentColor] = useState(helpCenterColor)
-    const [currentFont, setCurrentFont] = useState(helpCenterFont)
+    const [currentPrimaryFont, setCurrentPrimaryFont] = useState(helpCenterFont)
     const primaryLogo = useFileUpload()
     const lightLogo = useFileUpload()
     const favicon = useFileUpload()
@@ -191,7 +191,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 const payload: Partial<HelpCenter> = {
                     theme: selectedTheme,
                     primary_color: currentColor,
-                    primary_font_family: currentFont,
+                    primary_font_family: currentPrimaryFont,
                 }
 
                 payload.brand_logo_url = await getFileUploadURL(primaryLogo)
@@ -261,7 +261,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         helpCenter,
         selectedTheme,
         currentColor,
-        currentFont,
+        currentPrimaryFont,
         primaryLogo,
         favicon,
         lightLogo,
@@ -280,8 +280,8 @@ export const HelpCenterAppearanceView: React.FC = () => {
             return isHexColor(currentColor)
         }
 
-        if (currentFont !== helpCenter.primary_font_family) {
-            return Boolean(currentFont)
+        if (currentPrimaryFont !== helpCenter.primary_font_family) {
+            return Boolean(currentPrimaryFont)
         }
 
         if (
@@ -299,7 +299,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         helpCenter,
         selectedTheme,
         currentColor,
-        currentFont,
+        currentPrimaryFont,
         primaryLogo,
         lightLogo,
         favicon,
@@ -410,9 +410,9 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 <FontSelectField
                     title="Primary Font"
                     help="This font will be applied to the website and set by default to new articles. This will override the default font in existing articles."
-                    value={currentFont}
+                    value={currentPrimaryFont}
                     onChange={(value) => {
-                        setCurrentFont(value)
+                        setCurrentPrimaryFont(value)
                     }}
                 />
             </section>

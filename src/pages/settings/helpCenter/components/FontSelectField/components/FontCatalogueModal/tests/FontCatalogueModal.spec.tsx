@@ -130,6 +130,7 @@ const defaultProps: React.ComponentProps<typeof FontCatalogueModal> = {
     setFontsFromLocalStorage: _noop,
     isModalOpen: false,
     setIsModalOpen: _noop,
+    currentPrimaryFont: '',
 }
 
 describe('<FontCatalogueModal />', () => {
@@ -214,6 +215,28 @@ describe('<FontCatalogueModal />', () => {
         )
     })
 
+    it('should not remove current primary font on click from the list', () => {
+        const {getByText, getByTestId} = render(
+            <FontCatalogueModal
+                {...defaultProps}
+                isModalOpen
+                currentPrimaryFont="Roboto"
+                recentlyAddedFonts={['Roboto', 'Adriana']}
+            />
+        )
+
+        const selectedFontsContainer = (
+            getByText('Selected Fonts').closest('div') as HTMLElement
+        ).parentNode as HTMLElement
+
+        const fontList = getByTestId('font-list')
+
+        within(selectedFontsContainer).getByText('Roboto')
+
+        fireEvent.click(within(fontList).getByText('Roboto'))
+        within(selectedFontsContainer).getByText('Roboto')
+    })
+
     it('should select font on click from the list, and remove it with a click from selected font list', async () => {
         const {getByText} = render(
             <FontCatalogueModal {...defaultProps} isModalOpen />
@@ -237,6 +260,28 @@ describe('<FontCatalogueModal />', () => {
                 within(selectedFontsContainer).queryByText('Roboto')
             ).toBeNull()
         )
+    })
+
+    it('should should not show cross to remove current primary font in selected font list', () => {
+        const {getByText} = render(
+            <FontCatalogueModal
+                {...defaultProps}
+                isModalOpen
+                currentPrimaryFont="Roboto"
+                recentlyAddedFonts={['Roboto', 'Adriana']}
+            />
+        )
+
+        const selectedFontsContainer = (
+            getByText('Selected Fonts').closest('div') as HTMLElement
+        ).parentNode as HTMLElement
+
+        const fontInSelectedList = within(selectedFontsContainer)
+            .getByText('Roboto')
+            .closest('div') as HTMLDivElement
+
+        expect(within(fontInSelectedList).queryByText('close')).toBeNull()
+        within(fontInSelectedList).getByText('Primary font')
     })
 
     it('should save selected fonts in local storage, sorted in alphabetical order', () => {
