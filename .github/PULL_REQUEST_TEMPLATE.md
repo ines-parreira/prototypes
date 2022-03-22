@@ -6,6 +6,7 @@
 #### Testing step-by-step guide:
 - 
 - [ ] All new or updated SQL queries use an index
+- [ ] Data team has been warned if any column of an existing table is being added/dropped/modified
 
 #### Deployment guide:
 <!-- 
