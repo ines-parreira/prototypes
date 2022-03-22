@@ -31,10 +31,10 @@ exports[`<Access/> should render properly 1`] = `
             >
               vpn_key
             </i>
-            Single Sign-On
+            Single Sign-On (SSO)
           </h4>
           <p>
-            Social and business single sign-on allows agents to access Gorgias using their Google or Microsoft accounts. When you enable the SSO methods, a sign-in button is added to the log-in page.
+            SSO allows team members to access Gorgias using their Google or Microsoft 365 accounts. Once you enable SSO, a Google or Microsoft login button will be added to the login page.
           </p>
           <div
             class="mb-2 d-flex align-items-center"
@@ -68,9 +68,8 @@ exports[`<Access/> should render properly 1`] = `
               style="height: 1.4em;"
             />
             <b>
-              Enable 
               Google
-               Single Sign-On
+               SSO
             </b>
           </div>
           <div
@@ -105,9 +104,8 @@ exports[`<Access/> should render properly 1`] = `
               style="height: 1.4em;"
             />
             <b>
-              Enable 
               Microsoft 365
-               Single Sign-On
+               SSO
             </b>
           </div>
           <h4
@@ -211,10 +209,10 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             >
               vpn_key
             </i>
-            Single Sign-On
+            Single Sign-On (SSO)
           </h4>
           <p>
-            Social and business single sign-on allows agents to access Gorgias using their Google or Microsoft accounts. When you enable the SSO methods, a sign-in button is added to the log-in page.
+            SSO allows team members to access Gorgias using their Google or Microsoft 365 accounts. Once you enable SSO, a Google or Microsoft login button will be added to the login page.
           </p>
           <div
             class="mb-2 d-flex align-items-center"
@@ -248,9 +246,8 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
               style="height: 1.4em;"
             />
             <b>
-              Enable 
               Google
-               Single Sign-On
+               SSO
             </b>
           </div>
           <div
@@ -285,9 +282,8 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
               style="height: 1.4em;"
             />
             <b>
-              Enable 
               Microsoft 365
-               Single Sign-On
+               SSO
             </b>
           </div>
           <h4
@@ -413,10 +409,10 @@ exports[`<Access/> should show an error and block submit when using a generic do
             >
               vpn_key
             </i>
-            Single Sign-On
+            Single Sign-On (SSO)
           </h4>
           <p>
-            Social and business single sign-on allows agents to access Gorgias using their Google or Microsoft accounts. When you enable the SSO methods, a sign-in button is added to the log-in page.
+            SSO allows team members to access Gorgias using their Google or Microsoft 365 accounts. Once you enable SSO, a Google or Microsoft login button will be added to the login page.
           </p>
           <div
             class="mb-2 d-flex align-items-center"
@@ -450,9 +446,8 @@ exports[`<Access/> should show an error and block submit when using a generic do
               style="height: 1.4em;"
             />
             <b>
-              Enable 
               Google
-               Single Sign-On
+               SSO
             </b>
           </div>
           <div
@@ -487,9 +482,8 @@ exports[`<Access/> should show an error and block submit when using a generic do
               style="height: 1.4em;"
             />
             <b>
-              Enable 
               Microsoft 365
-               Single Sign-On
+               SSO
             </b>
           </div>
           <h4

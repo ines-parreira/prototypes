@@ -62,7 +62,7 @@ export const SsoToggleButton = (props: Props) => {
                     className="ml-3 mr-2"
                     style={{height: '1.4em'}}
                 />
-                <b>Enable {name} Single Sign-On</b>
+                <b>{name} SSO</b>
             </div>
 
             <ConfirmationModal

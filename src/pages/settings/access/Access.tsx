@@ -155,13 +155,13 @@ export const AccessContainer = (props: Props) => {
                     <Form onSubmit={handleSubmit}>
                         <h4 className="mb-2">
                             <i className="material-icons mr-1">vpn_key</i>
-                            Single Sign-On
+                            Single Sign-On (SSO)
                         </h4>
                         <p>
-                            Social and business single sign-on allows agents to
-                            access Gorgias using their Google or Microsoft
-                            accounts. When you enable the SSO methods, a sign-in
-                            button is added to the log-in page.
+                            SSO allows team members to access Gorgias using
+                            their Google or Microsoft 365 accounts. Once you
+                            enable SSO, a Google or Microsoft login button will
+                            be added to the login page.
                         </p>
                         <SsoToggleButton
                             id="google"
