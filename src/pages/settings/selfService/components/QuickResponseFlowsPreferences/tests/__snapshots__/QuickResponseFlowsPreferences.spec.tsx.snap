@@ -1,11 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<QuickResponseFlowsPreferences /> should add a new flow 1`] = `
+exports[`<QuickResponseFlowsPreferences /> should add a new flow - in production 1`] = `
 Array [
   Array [
     Object {
       "cancel_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "created_datetime": "2021-01-26T00:29:00Z",
       "deactivated_datetime": "2021-01-26T00:30:00Z",
@@ -37,7 +39,9 @@ Array [
         "enabled": true,
       },
       "return_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "shop_name": "mystore1",
       "track_order_policy": Object {
@@ -50,7 +54,9 @@ Array [
   Array [
     Object {
       "cancel_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "created_datetime": "2021-01-26T00:29:00Z",
       "deactivated_datetime": "2021-01-26T00:30:00Z",
@@ -86,7 +92,9 @@ Array [
         "enabled": true,
       },
       "return_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "shop_name": "mystore1",
       "track_order_policy": Object {
@@ -104,7 +112,9 @@ Array [
   Array [
     Object {
       "cancel_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "created_datetime": "2021-01-26T00:29:00Z",
       "deactivated_datetime": "2021-01-26T00:30:00Z",
@@ -136,7 +146,9 @@ Array [
         "enabled": true,
       },
       "return_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "shop_name": "mystore1",
       "track_order_policy": Object {
@@ -149,7 +161,9 @@ Array [
   Array [
     Object {
       "cancel_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "created_datetime": "2021-01-26T00:29:00Z",
       "deactivated_datetime": "2021-01-26T00:30:00Z",
@@ -185,7 +199,9 @@ Array [
         "enabled": true,
       },
       "return_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "shop_name": "mystore1",
       "track_order_policy": Object {
@@ -198,7 +214,9 @@ Array [
   Array [
     Object {
       "cancel_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "created_datetime": "2021-01-26T00:29:00Z",
       "deactivated_datetime": "2021-01-26T00:30:00Z",
@@ -226,7 +244,9 @@ Array [
         "enabled": true,
       },
       "return_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "shop_name": "mystore1",
       "track_order_policy": Object {
@@ -239,12 +259,14 @@ Array [
 ]
 `;
 
-exports[`<QuickResponseFlowsPreferences /> should update existing flow 1`] = `
+exports[`<QuickResponseFlowsPreferences /> should update existing flow - in production 1`] = `
 Array [
   Array [
     Object {
       "cancel_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "created_datetime": "2021-01-26T00:29:00Z",
       "deactivated_datetime": "2021-01-26T00:30:00Z",
@@ -276,7 +298,9 @@ Array [
         "enabled": true,
       },
       "return_order_policy": Object {
+        "eligibilities": Array [],
         "enabled": true,
+        "exceptions": Array [],
       },
       "shop_name": "mystore1",
       "track_order_policy": Object {

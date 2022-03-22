@@ -37,7 +37,9 @@ describe('selfServiceConfiguration resources', () => {
             expect(res).toMatchInlineSnapshot(`
                 Object {
                   "cancel_order_policy": Object {
+                    "eligibilities": Array [],
                     "enabled": true,
+                    "exceptions": Array [],
                   },
                   "created_datetime": "2021-02-07T06:07:46.097905+00:00",
                   "deactivated_datetime": null,
@@ -48,7 +50,9 @@ describe('selfServiceConfiguration resources', () => {
                     "enabled": true,
                   },
                   "return_order_policy": Object {
+                    "eligibilities": Array [],
                     "enabled": true,
+                    "exceptions": Array [],
                   },
                   "shop_name": "mystore",
                   "track_order_policy": Object {

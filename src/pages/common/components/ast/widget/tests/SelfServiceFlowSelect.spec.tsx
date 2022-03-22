@@ -16,7 +16,9 @@ import {initialState as helpCenterInitialState} from '../../../../../../state/en
 
 const mockStore = configureMockStore([thunk])
 
-const createSelfServiceConfigurationFixtures = (length: number) => {
+const createSelfServiceConfigurationFixtures = (
+    length: number
+): SelfServiceConfiguration[] => {
     return Array.from({length}, (_, i) => ({
         id: i + 1,
         type: 'shopify' as ShopType,
@@ -33,9 +35,13 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
         },
         cancel_order_policy: {
             enabled: false,
+            eligibilities: [],
+            exceptions: [],
         },
         return_order_policy: {
             enabled: false,
+            eligibilities: [],
+            exceptions: [],
         },
         quick_response_policies: [],
     }))

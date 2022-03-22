@@ -97,9 +97,13 @@ export const generateConfiguration = (
         },
         return_order_policy: {
             enabled: true,
+            eligibilities: [],
+            exceptions: [],
         },
         cancel_order_policy: {
             enabled: true,
+            eligibilities: [],
+            exceptions: [],
         },
         quick_response_policies: [],
     }

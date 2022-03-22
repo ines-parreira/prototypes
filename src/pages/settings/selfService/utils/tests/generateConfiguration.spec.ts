@@ -98,9 +98,13 @@ describe('generateConfiguration()', () => {
             },
             return_order_policy: {
                 enabled: true,
+                exceptions: [],
+                eligibilities: [],
             },
             cancel_order_policy: {
                 enabled: true,
+                exceptions: [],
+                eligibilities: [],
             },
         })
     })

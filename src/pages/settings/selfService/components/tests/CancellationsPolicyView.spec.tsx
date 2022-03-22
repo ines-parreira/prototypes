@@ -37,7 +37,9 @@ const createShopifyIntegrationFixtures = (length: number) => {
     }))
 }
 
-const createSelfServiceConfigurationFixtures = (length: number) => {
+const createSelfServiceConfigurationFixtures = (
+    length: number
+): SelfServiceConfiguration[] => {
     return Array.from({length}, (_, i) => ({
         id: i + 1,
         type: 'shopify' as ShopType,
@@ -63,9 +65,12 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
                     operator: 'oneOf',
                 },
             ],
+            exceptions: [],
         },
         return_order_policy: {
             enabled: i % 2 === 0,
+            eligibilities: [],
+            exceptions: [],
         },
         quick_response_policies: [],
     }))
@@ -201,6 +206,7 @@ describe('<CancellationsPolicyView/>', () => {
                         },
                       ],
                       "enabled": false,
+                      "exceptions": Array [],
                     },
                     "created_datetime": "2021-01-26T00:29:00Z",
                     "deactivated_datetime": null,
@@ -211,7 +217,9 @@ describe('<CancellationsPolicyView/>', () => {
                       "enabled": false,
                     },
                     "return_order_policy": Object {
+                      "eligibilities": Array [],
                       "enabled": true,
+                      "exceptions": Array [],
                     },
                     "shop_name": "myStore1",
                     "track_order_policy": Object {

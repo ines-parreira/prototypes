@@ -10,8 +10,8 @@ export type SelfServiceConfigurationPolicy = {
 
 export type SelfServiceConfigurationFilterPolicy = {
     enabled: boolean
-    eligibilities?: SelfServiceConfigurationFilter[]
-    exceptions?: SelfServiceConfigurationFilter[]
+    eligibilities: SelfServiceConfigurationFilter[]
+    exceptions: SelfServiceConfigurationFilter[]
 }
 
 export enum ReportIssueVariable {

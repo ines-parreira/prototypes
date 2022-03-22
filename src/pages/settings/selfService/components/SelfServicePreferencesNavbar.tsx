@@ -18,7 +18,13 @@ const SelfServicePreferencesNavbar = () => {
     return (
         <SecondaryNavbar>
             {hasAutomationAddOn && (
-                <NavLink to={`${baseURL}/quick-response`} exact>
+                <NavLink
+                    to={`${baseURL}/quick-response`}
+                    exact
+                    isActive={(_, {pathname}: {pathname: string}) =>
+                        pathname.includes(`${baseURL}/quick-response`)
+                    }
+                >
                     Quick Response Flows
                 </NavLink>
             )}

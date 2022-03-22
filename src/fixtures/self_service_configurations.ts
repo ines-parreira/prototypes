@@ -19,9 +19,13 @@ export const selfServiceConfiguration1: SelfServiceConfiguration = {
     },
     return_order_policy: {
         enabled: true,
+        eligibilities: [],
+        exceptions: [],
     },
     cancel_order_policy: {
         enabled: true,
+        eligibilities: [],
+        exceptions: [],
     },
     quick_response_policies: [],
 }
@@ -42,9 +46,13 @@ export const selfServiceConfiguration2: SelfServiceConfiguration = {
     },
     return_order_policy: {
         enabled: true,
+        eligibilities: [],
+        exceptions: [],
     },
     cancel_order_policy: {
         enabled: true,
+        eligibilities: [],
+        exceptions: [],
     },
     quick_response_policies: [],
 }

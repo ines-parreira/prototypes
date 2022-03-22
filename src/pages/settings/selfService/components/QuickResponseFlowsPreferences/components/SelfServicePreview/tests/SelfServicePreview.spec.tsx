@@ -65,9 +65,13 @@ describe('<SelfServicePreview />', () => {
                     },
                     cancel_order_policy: {
                         enabled: true,
+                        eligibilities: [],
+                        exceptions: [],
                     },
                     return_order_policy: {
                         enabled: true,
+                        eligibilities: [],
+                        exceptions: [],
                     },
                     quick_response_policies: [
                         {title: 'First', deactivated_datetime: null},

@@ -2,18 +2,16 @@ import React, {useState, useMemo} from 'react'
 import {useLatest} from 'react-use'
 import {Table, Form, FormGroup, FormText, Label, Input} from 'reactstrap'
 import {produce} from 'immer'
-import Button from 'pages/common/components/button/Button'
 
+import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/Modal'
 import ReactSortable from 'pages/common/components/dragging/ReactSortable'
+import history from 'pages/history'
+import {isProduction} from 'utils/environment'
 
 import {useConfigurationData} from '../../../hooks'
-import {updateSelfServiceConfiguration} from '../../../../../../../models/selfServiceConfiguration/resources'
 import {QuickReplyPolicy} from '../../../../../../../models/selfServiceConfiguration/types'
-import {selfServiceConfigurationUpdated} from '../../../../../../../state/entities/selfServiceConfigurations/actions'
-import {notify} from '../../../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../../../state/notifications/types'
-import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
+import useUpdateQuickReplyPolicies from '../../../QuickResponseFlowItem/hooks'
 
 import QuickResponseListItem from '../QuickResponseListItem'
 import css from './QuickResponseList.less'
@@ -25,8 +23,10 @@ const QuickResponseList = () => {
         null
     )
     const [error, setError] = useState('')
-    const dispatch = useAppDispatch()
     const configuration = useConfigurationData()
+    const baseURL = `/app/settings/self-service/shopify/${
+        configuration.integration.getIn(['meta', 'shop_name']) as string
+    }/preferences/quick-response/`
 
     const quickResponses = useMemo(() => {
         return configuration.configuration?.quick_response_policies || []
@@ -37,10 +37,14 @@ const QuickResponseList = () => {
     const latestQuickResponsesWithIds = useLatest(quickResponses)
 
     const handleAddFlow = () => {
-        setTitle('')
-        setQuickResponseIndex(null)
-        setShouldShowModal(true)
-        setError('')
+        if (!isProduction()) {
+            history.push(baseURL.concat('new'))
+        } else {
+            setTitle('')
+            setQuickResponseIndex(null)
+            setShouldShowModal(true)
+            setError('')
+        }
     }
 
     const handleClose = () => {
@@ -49,36 +53,7 @@ const QuickResponseList = () => {
         setError('')
     }
 
-    const updateQuickReplyPolicies = async (
-        newQuickRepliesPolicy: QuickReplyPolicy[]
-    ) => {
-        if (!configuration || !configuration.configuration?.id) {
-            throw new Error('id is not present in self service configuration')
-        }
-
-        const newConfiguration = {
-            ...configuration.configuration,
-            quick_response_policies: newQuickRepliesPolicy,
-        }
-
-        try {
-            const res = await updateSelfServiceConfiguration(newConfiguration)
-            void dispatch(selfServiceConfigurationUpdated(res))
-            void (await dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Flow successfully updated',
-                })
-            ))
-        } catch (error) {
-            void (await dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Could not update flow, please try again later',
-                })
-            ))
-        }
-    }
+    const {updateQuickReplyPolicies} = useUpdateQuickReplyPolicies()
 
     const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(event.target.value)
@@ -124,10 +99,14 @@ const QuickResponseList = () => {
     }
 
     const handleEditClick = (position: number) => () => {
-        const title = quickResponses[position].title
-        setTitle(title)
-        setQuickResponseIndex(position)
-        setShouldShowModal(true)
+        if (!isProduction()) {
+            history.push(baseURL.concat(position.toString()))
+        } else {
+            const title = quickResponses[position].title
+            setTitle(title)
+            setQuickResponseIndex(position)
+            setShouldShowModal(true)
+        }
     }
 
     const handleDeleteEntity = (position: number) => () => {

@@ -35,9 +35,13 @@ jest.mock('models/selfServiceConfiguration/resources', () => ({
         },
         cancel_order_policy: {
             enabled: true,
+            eligibilities: [],
+            exceptions: [],
         },
         return_order_policy: {
             enabled: true,
+            eligibilities: [],
+            exceptions: [],
         },
         quick_response_policies: [],
     }),

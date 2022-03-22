@@ -29,9 +29,13 @@ describe('hasShopifyIntegrationSSPEnabled', () => {
                 },
                 cancel_order_policy: {
                     enabled: true,
+                    eligibilities: [],
+                    exceptions: [],
                 },
                 return_order_policy: {
                     enabled: true,
+                    eligibilities: [],
+                    exceptions: [],
                 },
                 quick_response_policies: [],
             },
@@ -70,9 +74,13 @@ describe('hasShopifyIntegrationSSPEnabled', () => {
                 },
                 cancel_order_policy: {
                     enabled: true,
+                    eligibilities: [],
+                    exceptions: [],
                 },
                 return_order_policy: {
                     enabled: true,
+                    eligibilities: [],
+                    exceptions: [],
                 },
                 quick_response_policies: [],
             },

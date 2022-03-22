@@ -59,9 +59,13 @@ const createSelfServiceConfigurationFixtures = (length: number) => {
         },
         cancel_order_policy: {
             enabled: false,
+            eligibilities: [],
+            exceptions: [],
         },
         return_order_policy: {
             enabled: false,
+            eligibilities: [],
+            exceptions: [],
         },
         quick_response_policies: [],
     }))
@@ -212,7 +216,9 @@ describe('<SelfServiceView/>', () => {
                 Array [
                   Object {
                     "cancel_order_policy": Object {
+                      "eligibilities": Array [],
                       "enabled": false,
+                      "exceptions": Array [],
                     },
                     "created_datetime": "2021-01-26T00:29:00Z",
                     "deactivated_datetime": "2021-01-26T00:30:00Z",
@@ -223,7 +229,9 @@ describe('<SelfServiceView/>', () => {
                       "enabled": false,
                     },
                     "return_order_policy": Object {
+                      "eligibilities": Array [],
                       "enabled": false,
+                      "exceptions": Array [],
                     },
                     "shop_name": "mystore1",
                     "track_order_policy": Object {
@@ -276,31 +284,35 @@ describe('<SelfServiceView/>', () => {
             })
             expect(updateSelfServiceConfigurationMock.mock.calls[0])
                 .toMatchInlineSnapshot(`
-                    Array [
-                      Object {
-                        "cancel_order_policy": Object {
-                          "enabled": false,
-                        },
-                        "created_datetime": "2021-01-26T00:29:00Z",
-                        "deactivated_datetime": null,
-                        "id": 2,
-                        "quick_response_policies": Array [],
-                        "report_issue_policy": Object {
-                          "cases": Array [],
-                          "enabled": false,
-                        },
-                        "return_order_policy": Object {
-                          "enabled": false,
-                        },
-                        "shop_name": "mystore2",
-                        "track_order_policy": Object {
-                          "enabled": false,
-                        },
-                        "type": "shopify",
-                        "updated_datetime": "2021-01-26T00:29:30Z",
-                      },
-                    ]
-                `)
+                Array [
+                  Object {
+                    "cancel_order_policy": Object {
+                      "eligibilities": Array [],
+                      "enabled": false,
+                      "exceptions": Array [],
+                    },
+                    "created_datetime": "2021-01-26T00:29:00Z",
+                    "deactivated_datetime": null,
+                    "id": 2,
+                    "quick_response_policies": Array [],
+                    "report_issue_policy": Object {
+                      "cases": Array [],
+                      "enabled": false,
+                    },
+                    "return_order_policy": Object {
+                      "eligibilities": Array [],
+                      "enabled": false,
+                      "exceptions": Array [],
+                    },
+                    "shop_name": "mystore2",
+                    "track_order_policy": Object {
+                      "enabled": false,
+                    },
+                    "type": "shopify",
+                    "updated_datetime": "2021-01-26T00:29:30Z",
+                  },
+                ]
+            `)
         })
     })
 })

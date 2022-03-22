@@ -74,6 +74,8 @@ import withFeaturePaywall from './common/utils/withFeaturePaywall'
 import OnboardingContent from './onboarding/OnboardingContent'
 import ReferralContent from './referral/ReferralContent'
 import SelfServiceQuickResponseFlowsPreferencesContainer from './settings/selfService/components/QuickResponseFlowsPreferences'
+import SelfServiceQuickResponseFlowEditItemContainer from './settings/selfService/components/QuickResponseFlowEditItem'
+import SelfServiceQuickResponseFlowNewItemContainer from './settings/selfService/components/QuickResponseFlowNewItem'
 import SelfServiceOrderManagementFlowsPreferencesContainer from './settings/selfService/components/OrderManagementFlowsPreferences'
 import SelfServiceCancellationsPolicyContainer from './settings/selfService/components/CancellationsPolicyView'
 import SelfServiceReturnsPolicyContainer from './settings/selfService/components/ReturnsPolicyView'
@@ -801,6 +803,28 @@ export function SelfServiceSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceQuickResponseFlowsPreferencesContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:integrationType/:shopName/preferences/quick-response/new`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServiceQuickResponseFlowNewItemContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:integrationType/:shopName/preferences/quick-response/:quickResponseId`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        SelfServiceQuickResponseFlowEditItemContainer,
                         ADMIN_ROLE
                     ),
                     navbar: SettingsNavbarContainer,
