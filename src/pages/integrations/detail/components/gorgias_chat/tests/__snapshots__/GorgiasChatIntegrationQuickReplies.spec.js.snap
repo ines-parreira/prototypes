@@ -272,6 +272,11 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
               }
             }
           >
+            <MessageContent
+              agentMessages={Array []}
+              conversationColor=""
+              customerInitialMessages={Array []}
+            />
             <QuickReplies
               mainColor="#123456"
               quickReplies={
@@ -816,6 +821,11 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                               </div>
                             </div>
                           </div>
+                          <MessageContent
+                            agentMessages={Array []}
+                            conversationColor=""
+                            customerInitialMessages={Array []}
+                          />
                           <QuickReplies
                             mainColor="#123456"
                             quickReplies={
@@ -1265,6 +1275,11 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
               }
             }
           >
+            <MessageContent
+              agentMessages={Array []}
+              conversationColor=""
+              customerInitialMessages={Array []}
+            />
             <QuickReplies
               mainColor="#123456"
               quickReplies={
@@ -1809,6 +1824,11 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                               </div>
                             </div>
                           </div>
+                          <MessageContent
+                            agentMessages={Array []}
+                            conversationColor=""
+                            customerInitialMessages={Array []}
+                          />
                           <QuickReplies
                             mainColor="#123456"
                             quickReplies={

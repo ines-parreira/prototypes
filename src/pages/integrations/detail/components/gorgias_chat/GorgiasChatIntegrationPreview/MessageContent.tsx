@@ -10,11 +10,20 @@ import CustomerInitialMessages from './CustomerInitialMessages'
 type Props = {
     conversationColor: string
     currentUser?: Map<any, any>
+    customerInitialMessages: string[]
+    agentMessages: {content: string; isHtml: boolean}[]
+    hideMessageTimestamp?: boolean
 }
 
 export default class MessageContent extends Component<Props> {
     render() {
-        const {conversationColor, currentUser} = this.props
+        const {
+            conversationColor,
+            currentUser,
+            customerInitialMessages,
+            agentMessages,
+            hideMessageTimestamp,
+        } = this.props
 
         if (!currentUser) {
             return null
@@ -24,10 +33,8 @@ export default class MessageContent extends Component<Props> {
             <div className={css.content}>
                 <CustomerInitialMessages
                     conversationColor={conversationColor}
-                    messages={[
-                        'Hey there',
-                        "I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.",
-                    ]}
+                    messages={customerInitialMessages}
+                    hideMessageTimestamp={hideMessageTimestamp}
                 />
 
                 <div className={css.appMakerMessageWrapper}>
@@ -43,14 +50,32 @@ export default class MessageContent extends Component<Props> {
                             {currentUser.get('name')}
                         </div>
 
-                        <div
-                            className={classnames(
-                                css.bubble,
-                                css.firstMessageOfAppMaker
-                            )}
-                        >
-                            Sure, what's your email / order number?
-                        </div>
+                        {agentMessages.map(({content, isHtml}) => (
+                            <>
+                                {isHtml ? (
+                                    <div
+                                        className={classnames(
+                                            css.bubble,
+                                            css.firstMessageOfAppMaker
+                                        )}
+                                        key={content}
+                                        dangerouslySetInnerHTML={{
+                                            __html: content,
+                                        }}
+                                    />
+                                ) : (
+                                    <div
+                                        className={classnames(
+                                            css.bubble,
+                                            css.firstMessageOfAppMaker
+                                        )}
+                                        key={content}
+                                    >
+                                        {content}
+                                    </div>
+                                )}
+                            </>
+                        ))}
                     </div>
                 </div>
             </div>

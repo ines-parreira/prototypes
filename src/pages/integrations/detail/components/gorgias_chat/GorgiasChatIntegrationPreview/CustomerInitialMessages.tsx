@@ -8,6 +8,7 @@ import MessageTimestamp from './MessageTimestamp'
 type Props = {
     conversationColor: string
     messages: string[]
+    hideMessageTimestamp?: boolean
 }
 
 const CustomerInitialMessages = (props: Props) => (
@@ -29,7 +30,7 @@ const CustomerInitialMessages = (props: Props) => (
             </div>
         ))}
 
-        <MessageTimestamp />
+        {!props.hideMessageTimestamp && <MessageTimestamp />}
     </div>
 )
 

@@ -421,6 +421,16 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 <MessageContentPreview
                     conversationColor={conversationColor}
                     currentUser={currentUser}
+                    customerInitialMessages={[
+                        'Hey there',
+                        "I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.",
+                    ]}
+                    agentMessages={[
+                        {
+                            content: "Sure, what's your email / order number?",
+                            isHtml: false,
+                        },
+                    ]}
                 />
             </ChatIntegrationPreview>
         </>

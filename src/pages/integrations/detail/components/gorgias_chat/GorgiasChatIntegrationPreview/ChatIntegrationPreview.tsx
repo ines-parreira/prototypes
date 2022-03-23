@@ -43,6 +43,7 @@ type Props = {
     editedPositionAxis?: PositionAxis | null
     autoResponderEnabled?: boolean
     autoResponderReply?: string
+    hideButton?: boolean
 }
 
 const ChatIntegrationPreview = (props: Props) => {
@@ -66,6 +67,7 @@ const ChatIntegrationPreview = (props: Props) => {
         editedPositionAxis,
         autoResponderReply,
         autoResponderEnabled,
+        hideButton,
     } = props
 
     // Preserve the space which should be occupied by a string when the string is empty
@@ -138,7 +140,7 @@ const ChatIntegrationPreview = (props: Props) => {
     return (
         <div className={css.preview} style={{...getPreviewCustomStyle()}}>
             <div className={css.titlebar} />
-            {isButtonOnTop && (
+            {isButtonOnTop && !hideButton && (
                 <div
                     className={classnames(css.button, css[position.alignment])}
                     style={{backgroundColor: mainColor}}
@@ -236,7 +238,7 @@ const ChatIntegrationPreview = (props: Props) => {
                 )}
             </div>
 
-            {!isButtonOnTop && (
+            {!isButtonOnTop && !hideButton && (
                 <div
                     className={classnames(css.button, css[position.alignment])}
                     style={{backgroundColor: mainColor}}

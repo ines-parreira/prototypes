@@ -57,6 +57,10 @@ const QuickResponseFlowEditItem = () => {
         history.push(baseURL)
     }
 
+    if (quickResponses.length === 0) {
+        return null
+    }
+
     return (
         <QuickResponseFlowItem
             handleSubmit={handleSubmit}

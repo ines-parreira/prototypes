@@ -51,6 +51,28 @@ describe('<ChatIntegrationPreview/>', () => {
             expect(component).toMatchSnapshot()
         })
 
+        it('should not display button if hideButton provided', () => {
+            const component = shallow(
+                <ChatIntegrationPreview
+                    name="My little chat integration"
+                    currentUser={currentUser}
+                    introductionText="intro"
+                    mainColor={mainColor}
+                    isOnline={true}
+                    language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
+                    position={GORGIAS_CHAT_WIDGET_POSITION_DEFAULT}
+                    hideButton
+                >
+                    <MessageContent
+                        conversationColor={conversationColor}
+                        currentUser={currentUser}
+                    />
+                </ChatIntegrationPreview>
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
         it('should display the online status because chat is online', () => {
             const component = shallow(
                 <ChatIntegrationPreview

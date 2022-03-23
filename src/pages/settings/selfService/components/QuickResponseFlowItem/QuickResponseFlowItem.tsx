@@ -31,7 +31,7 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import {convertToHTML} from 'utils/editor'
 
-import SelfServicePreview from '../QuickResponseFlowsPreferences/components/SelfServicePreview'
+import QuickResponseSelfServicePreview from './components/QuickResponseSelfServicePreview'
 import css from './QuickResponseFlowItem.less'
 
 type Props = {
@@ -259,9 +259,13 @@ const QuickResponseFlowItem = ({
                         </Form>
                     </Col>
 
-                    {/* TODO: update preview design */}
                     <Col data-testid="previewColumn" className={css.preview}>
-                        <SelfServicePreview />
+                        <QuickResponseSelfServicePreview
+                            quickResponseTitle={buttonLabel}
+                            quickResponseResponse={responseText.message.get(
+                                'html'
+                            )}
+                        />
                     </Col>
                 </Row>
             </Container>

@@ -4,6 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Form} from 'reactstrap'
 import classnames from 'classnames'
+import {RootState} from 'state/types'
 
 import PageHeader from '../../../../../common/components/PageHeader'
 import ListField from '../../../../../common/forms/ListField'
@@ -19,6 +20,7 @@ import {
 import ChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
+import MessageContentPreview from '../GorgiasChatIntegrationPreview/MessageContent'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 
 import css from './GorgiasChatIntegrationQuickReplies.less'
@@ -108,7 +110,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
     }
 
     render() {
-        const {integration} = this.props
+        const {integration, currentUser} = this.props
         const {quickRepliesEnabled, isUpdating} = this.state
 
         const position = {
@@ -153,6 +155,12 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                 autoResponderEnabled={autoResponderEnabled}
                 autoResponderReply={autoResponderReply}
             >
+                <MessageContentPreview
+                    conversationColor=""
+                    currentUser={currentUser}
+                    customerInitialMessages={[]}
+                    agentMessages={[]}
+                />
                 <QuickRepliesPreview
                     quickReplies={this.state.quickReplies
                         .filter(
@@ -255,8 +263,13 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
     }
 }
 
-const connector = connect(null, {
-    updateOrCreateIntegration,
-})
+const connector = connect(
+    (state: RootState) => ({
+        currentUser: state.currentUser,
+    }),
+    {
+        updateOrCreateIntegration,
+    }
+)
 
 export default connector(GorgiasChatIntegrationQuickRepliesComponent)
