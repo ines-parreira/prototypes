@@ -226,7 +226,7 @@ const SelectFilter = ({
         const selectedItem = items.find((item) => item.props.value === value[0])
 
         return selectedItem ? selectedItem.props.label : _capitalize(singular)
-    }, [hasSelection, isMultiple, plural, singular, value])
+    }, [hasSelection, isMultiple, items, plural, singular, value])
 
     const groups = useMemo(
         () =>
