@@ -121,4 +121,15 @@ describe('InfiniteScroll component', () => {
         rerender(<InfiniteScroll {...props} />)
         await waitFor(() => expect(props.onLoad).toHaveBeenCalledTimes(2))
     })
+
+    it('should call onLoad when onLoad is updated and it is able to load more', async () => {
+        const first = jest.fn()
+        const second = jest.fn()
+        const props = {shouldLoadMore: true, threshold: 100}
+        const {rerender} = render(<InfiniteScroll {...props} onLoad={first} />)
+
+        await waitFor(() => expect(first).toHaveBeenCalledTimes(1))
+        rerender(<InfiniteScroll {...props} onLoad={second} />)
+        await waitFor(() => expect(second).toHaveBeenCalledTimes(1))
+    })
 })
