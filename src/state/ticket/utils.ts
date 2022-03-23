@@ -10,21 +10,21 @@ import _last from 'lodash/last'
 import _set from 'lodash/set'
 import _get from 'lodash/get'
 
-import {SOURCE_VALUE_PROP} from '../../config'
-import {INTEGRATION_TYPE_WITH_VARIABLES} from '../../config/integrations'
-import * as ticketConfig from '../../config/ticket'
-import {EMAIL_INTEGRATION_TYPES} from '../../constants/integration'
-import {getPersonLabelFromSource} from '../../pages/tickets/common/utils.js'
-import {getActionTemplate, isImmutable, toImmutable} from '../../utils'
-import {renderTemplate} from '../../pages/common/utils/template'
-import {tryLocalStorage} from '../../services/common/utils'
-import * as responseUtils from '../newMessage/responseUtils'
-import {TicketVia, TicketMessageSourceType} from '../../business/types/ticket'
-import {PHONE_EVENTS} from '../../constants/event'
-import {notify as notifyAction} from '../notifications/actions'
-import {NotificationStatus} from '../notifications/types'
-import {RootState} from '../types'
-import {TicketMessage} from '../../models/ticket/types'
+import {SOURCE_VALUE_PROP} from 'config'
+import {INTEGRATION_TYPE_WITH_VARIABLES} from 'config/integrations'
+import * as ticketConfig from 'config/ticket'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
+import {getActionTemplate, isImmutable, toImmutable} from 'utils'
+import {renderTemplate} from 'pages/common/utils/template'
+import {tryLocalStorage} from 'services/common/utils'
+import * as responseUtils from 'state/newMessage/responseUtils'
+import {TicketVia, TicketMessageSourceType} from 'business/types/ticket'
+import {PHONE_EVENTS} from 'constants/event'
+import {notify as notifyAction} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {RootState} from 'state/types'
+import {TicketMessage} from 'models/ticket/types'
 
 import {getProperty} from './selectors'
 
@@ -320,12 +320,12 @@ export function guessReceiversFromTicket(
  */
 export function receiversValueFromState(
     options: Receivers,
-    sourceType: string
+    sourceType: TicketMessageSourceType
 ) {
     return Object.entries(options).reduce((acc, [key, receivers]) => {
         acc[key as keyof ReceiversValue] = receivers!.map((receiver) => ({
             name: receiver.name || '',
-            label: getPersonLabelFromSource(receiver, sourceType) as string,
+            label: getPersonLabelFromSource(receiver, sourceType),
             value: receiver.address || '',
         }))
         return acc

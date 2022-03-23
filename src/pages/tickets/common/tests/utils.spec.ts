@@ -1,5 +1,5 @@
-import {TicketMessageSourceType} from '../../../../business/types/ticket'
-import {getPersonLabelFromSource} from '../utils.js'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 
 describe('getPersonLabelFromSource()', () => {
     it('should return email label', () => {

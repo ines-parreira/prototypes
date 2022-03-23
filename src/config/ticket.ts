@@ -411,6 +411,10 @@ export function responseSourceType(
         return TicketMessageSourceType.YotpoReviewPublicComment
     }
 
+    if (lastSourceType === TicketMessageSourceType.Sms) {
+        return TicketMessageSourceType.Sms
+    }
+
     if (!isAnswerableType(lastSourceType)) {
         return DEFAULT_SOURCE_TYPE
     }

@@ -1,7 +1,7 @@
 import React, {Component, ComponentProps} from 'react'
 import classnames from 'classnames'
 import {Badge} from 'reactstrap'
-import {Map} from 'immutable'
+import {Map, List} from 'immutable'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {isRichType} from 'config/ticket'
@@ -20,7 +20,7 @@ import {
 import {
     fileIconFromContentType,
     getSortedIntegrationActions,
-} from 'pages/tickets/common/utils.js'
+} from 'pages/tickets/common/utils'
 import {getActionTemplate} from 'utils'
 import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
 
@@ -28,13 +28,13 @@ import css from './Preview.less'
 
 type Props = {
     displayHTML?: boolean
-    actions: Map<any, any>
+    actions: List<any>
     ticketMessageSourceType?: TicketMessageSourceType
     className?: string
 }
 
 class Preview extends Component<Props> {
-    renderAddAttachments = (attachments: Map<any, any>) => {
+    renderAddAttachments = (attachments: List<any>) => {
         if (!attachments) {
             return null
         }
@@ -132,7 +132,7 @@ class Preview extends Component<Props> {
         }
     }
 
-    renderAddTags(addTagsActions: Map<string, any>) {
+    renderAddTags(addTagsActions: List<any>) {
         if (!addTagsActions || !addTagsActions.size) {
             return null
         }
@@ -214,10 +214,7 @@ class Preview extends Component<Props> {
         )
     }
 
-    renderBackActions(
-        integrationType: string,
-        integrationActions: Map<any, any>
-    ) {
+    renderBackActions(integrationType: string, integrationActions: List<any>) {
         if (!integrationActions || !integrationActions.size) {
             return null
         }
@@ -231,20 +228,25 @@ class Preview extends Component<Props> {
                     {actionTypeToName[integrationType]} actions:
                 </strong>
                 {integrationActions
-                    .map((action: Map<string, unknown>, index: number) => (
-                        <div
-                            className={css.integrationAction}
-                            key={`integration-action-${index}`}
-                        >
-                            <img
-                                alt={`${integrationType} logo`}
-                                src={getIconFromActionType(integrationType)}
-                                role="presentation"
-                                className={css.logo}
-                            />
-                            {action.get('title')}
-                        </div>
-                    ))
+                    .map(
+                        (
+                            action: Map<string, unknown>,
+                            index: number | undefined
+                        ) => (
+                            <div
+                                className={css.integrationAction}
+                                key={`integration-action-${index as number}`}
+                            >
+                                <img
+                                    alt={`${integrationType} logo`}
+                                    src={getIconFromActionType(integrationType)}
+                                    role="presentation"
+                                    className={css.logo}
+                                />
+                                {action.get('title')}
+                            </div>
+                        )
+                    )
                     .toJS()}
             </div>
         )
@@ -257,9 +259,10 @@ class Preview extends Component<Props> {
             return null
         }
 
-        const addTagsActions = actions.filter(
-            (action: Map<any, any>) => action.get('name') === 'addTags'
-        )
+        const addTagsActions = actions
+            .filter((action: Map<any, any>) => action.get('name') === 'addTags')
+            .toList()
+
         const responseTextAction = actions.find(
             (action: Map<string, any>) =>
                 action.get('name') === 'setResponseText'
@@ -283,10 +286,12 @@ class Preview extends Component<Props> {
         const addAttachmentsActions = actions.find(
             (action: Map<any, any>) => action.get('name') === 'addAttachments'
         )
-        const backActions = actions.filter(
-            (action: Map<string, any>) =>
-                getActionTemplate(action.get('name'))?.execution === 'back'
-        )
+        const backActions = actions
+            .filter(
+                (action: Map<string, any>) =>
+                    getActionTemplate(action.get('name'))?.execution === 'back'
+            )
+            .toList()
 
         const sortedBackActions: Map<string, any> =
             getSortedIntegrationActions(backActions)
@@ -295,7 +300,7 @@ class Preview extends Component<Props> {
             <div className={classnames(css.component, className)}>
                 {this.renderSetStatus(setStatusAction)}
                 {this.renderSnoozeTicket(snoozeTicketAction)}
-                {this.renderAddTags(addTagsActions as Map<string, any>)}
+                {this.renderAddTags(addTagsActions)}
                 {this.renderSetAssignee(setAssigneeAction)}
                 {this.renderSetTeamAssignee(setTeamAssigneeAction)}
                 {this.renderSetSubject(setSubjectAction)}

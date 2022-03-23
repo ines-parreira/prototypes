@@ -19,7 +19,7 @@ import {
     receiversValueFromState,
     replaceIntegrationVariables,
 } from '../utils'
-import {getPersonLabelFromSource} from '../../../pages/tickets/common/utils.js'
+import {getPersonLabelFromSource} from '../../../pages/tickets/common/utils'
 import {
     TicketMessageSourceType,
     TicketVia,
@@ -174,19 +174,28 @@ const receiversValueExample = {
     to: [
         {
             name: customers.email[1].name,
-            label: getPersonLabelFromSource(customers.email[1], 'email'),
+            label: getPersonLabelFromSource(
+                customers.email[1],
+                TicketMessageSourceType.Email
+            ),
             value: customers.email[1].address,
         },
         {
             name: customers.email[2].name,
-            label: getPersonLabelFromSource(customers.email[2], 'email'),
+            label: getPersonLabelFromSource(
+                customers.email[2],
+                TicketMessageSourceType.Email
+            ),
             value: customers.email[2].address,
         },
     ],
     cc: [
         {
             name: customers.email[3].name,
-            label: getPersonLabelFromSource(customers.email[3], 'email'),
+            label: getPersonLabelFromSource(
+                customers.email[3],
+                TicketMessageSourceType.Email
+            ),
             value: customers.email[3].address,
         },
     ],

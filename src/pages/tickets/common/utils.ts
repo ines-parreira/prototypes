@@ -1,9 +1,10 @@
-import {fromJS} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
-import {getValuePropFromSourceType} from '../../../state/ticket/utils.ts'
-import {getActionTemplate} from '../../../utils.ts'
-import {EMAIL_SOURCE, PHONE_SOURCE} from '../../../config/ticket.ts'
-import {ShopifyProductCardContentType} from '../../../constants/integrations/shopify.ts'
+import {getValuePropFromSourceType} from 'state/ticket/utils'
+import {getActionTemplate} from 'utils'
+import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {ActionTemplate} from 'types'
 
 /**
  * Return the label of the given person
@@ -11,14 +12,25 @@ import {ShopifyProductCardContentType} from '../../../constants/integrations/sho
  * @param {string} sourceType - The source type of a ticket message.
  * @returns {string|*} the label of the given person
  */
-export function getPersonLabelFromSource(person, sourceType) {
+type Person = {
+    name: string
+    address?: string
+}
+export function getPersonLabelFromSource(
+    person: Person,
+    sourceType: TicketMessageSourceType
+): string {
     const addressProp = getValuePropFromSourceType(sourceType)
-    let address = person[addressProp] || ''
+    let address: string = (addressProp && person[addressProp]) || ''
 
     let label = person.name || address
 
     // if is email channel and has a name, show the address next to the name
-    if (sourceType === EMAIL_SOURCE || sourceType === PHONE_SOURCE) {
+    if (
+        sourceType === TicketMessageSourceType.Email ||
+        sourceType === TicketMessageSourceType.Phone ||
+        sourceType === TicketMessageSourceType.Sms
+    ) {
         // shrink email address if too long
         if (address.length > 45) {
             address = `${address.slice(0, 20)}[...]${address.slice(
@@ -41,7 +53,7 @@ export function getPersonLabelFromSource(person, sourceType) {
  * @param {string} contentType E.G : 'image/png'
  * @returns {string}
  */
-export function fileIconFromContentType(contentType) {
+export function fileIconFromContentType(contentType: string): string {
     if (contentType === 'application/pdf') {
         return 'picture_as_pdf'
     } else if (contentType.startsWith('image/')) {
@@ -64,10 +76,12 @@ export function fileIconFromContentType(contentType) {
  * @param actionsList: the list of actions' names
  * @returns {any} the dictionary of sorted actions' names
  */
-export function getSortedIntegrationActionsNames(actionsList) {
-    let sortedActions = fromJS({})
+export function getSortedIntegrationActionsNames(
+    actionsList: ActionTemplate[]
+) {
+    let sortedActions: Map<any, any> = fromJS({})
 
-    actionsList.map((action) => {
+    actionsList.map((action: ActionTemplate) => {
         const type = action.integrationType
 
         if (!sortedActions.get(type)) {
@@ -76,7 +90,7 @@ export function getSortedIntegrationActionsNames(actionsList) {
 
         sortedActions = sortedActions.set(
             type,
-            sortedActions.get(type).push(action.name)
+            (sortedActions.get(type) as List<any>).push(action.name)
         )
     })
 
@@ -90,12 +104,14 @@ export function getSortedIntegrationActionsNames(actionsList) {
  * @param actionsList: the list of actions
  * @returns {any} the dictionary of sorted actions
  */
-export function getSortedIntegrationActions(actionsList) {
-    let sortedActions = fromJS({})
+export function getSortedIntegrationActions(
+    actionsList: List<any>
+): Map<any, any> {
+    let sortedActions: Map<any, any> = fromJS({})
 
-    actionsList.map((action) => {
+    actionsList.map((action: Map<any, any>) => {
         const type =
-            getActionTemplate(action.get('name')).integrationType ||
+            getActionTemplate(action.get('name'))?.integrationType ||
             action.get('name')
 
         if (!sortedActions.get(type)) {
@@ -104,7 +120,7 @@ export function getSortedIntegrationActions(actionsList) {
 
         sortedActions = sortedActions.set(
             type,
-            sortedActions.get(type).push(action)
+            (sortedActions.get(type) as List<any>).push(action)
         )
     })
 

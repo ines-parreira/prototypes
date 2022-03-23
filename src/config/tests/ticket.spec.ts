@@ -342,6 +342,18 @@ describe('Config: ticket', () => {
             )
         })
 
+        it('should return SMS source type for SMS ticket that has one SMS message', () => {
+            const message = {
+                source: {type: TicketMessageSourceType.Sms},
+            } as TicketMessage
+            const messages: TicketMessage[] = [message]
+            const via = TicketVia.Helpdesk
+
+            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                TicketMessageSourceType.Sms
+            )
+        })
+
         it.each([
             TicketMessageSourceType.FacebookMentionPost,
             TicketMessageSourceType.FacebookMentionComment,

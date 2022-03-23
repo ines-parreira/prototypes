@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import Lightbox from 'react-images'
 import type {List} from 'immutable'
 
-import {fileIconFromContentType} from '../../../common/utils.js'
+import {fileIconFromContentType} from '../../../common/utils'
 import shortcutManager from '../../../../../services/shortcutManager/index'
 import MoneyAmount from '../../../../common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {proxifyURL} from '../../../../../utils'

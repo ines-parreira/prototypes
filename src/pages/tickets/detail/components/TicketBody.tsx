@@ -197,7 +197,6 @@ export class TicketBody extends React.Component<Props, State> {
     _renderMessages(messages: TicketMessage[], index: number) {
         const {ticket, setStatus, lastReadMessage} = this.props
         const id = `message-${index}`
-
         return (
             <TicketMessages
                 id={id}

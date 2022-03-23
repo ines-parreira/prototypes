@@ -86,9 +86,15 @@ export const TIMEDELTA_OPERATOR_DEFAULT_VALUE = `${TIMEDELTA_OPERATOR_DEFAULT_QU
 /**
  * Ticket-related
  */
-export const SOURCE_VALUE_PROP = {
+export const SOURCE_VALUE_PROP: Partial<
+    Record<
+        TicketMessageSourceType | 'facebook-ad-post' | 'facebook-ad-comment',
+        'address' | null
+    >
+> = {
     [TicketMessageSourceType.Email]: 'address',
     [TicketMessageSourceType.Phone]: 'address',
+    [TicketMessageSourceType.Sms]: 'address',
     [TicketMessageSourceType.OttspottCall]: 'address',
     [TicketMessageSourceType.Chat]: 'address',
     [TicketMessageSourceType.Aircall]: 'address',

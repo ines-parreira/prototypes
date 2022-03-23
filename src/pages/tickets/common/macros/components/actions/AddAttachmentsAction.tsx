@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {fromJS, Map} from 'immutable'
 import {Badge} from 'reactstrap'
 
-import {fileIconFromContentType} from 'pages/tickets/common/utils.js'
+import {fileIconFromContentType} from 'pages/tickets/common/utils'
 import FileField from 'pages/common/forms/FileField'
 import {Attachment} from 'models/ticket/types'
 

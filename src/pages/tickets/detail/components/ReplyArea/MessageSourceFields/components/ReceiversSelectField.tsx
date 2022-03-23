@@ -42,7 +42,8 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
         const dispatch = useAppDispatch()
         const valueProp = getValuePropFromSourceType(sourceType) // the property to display from the object
         const searchType =
-            sourceType === TicketMessageSourceType.Phone
+            sourceType === TicketMessageSourceType.Phone ||
+            sourceType === TicketMessageSourceType.Sms
                 ? SearchCustomerType.UserChannelPhone
                 : SearchCustomerType.UserChannelEmail
 
@@ -96,9 +97,11 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
             : 'Sorry, no recipient for this type of message...'
         const allowCreate =
             sourceType === TicketMessageSourceType.Email ||
-            sourceType === TicketMessageSourceType.Phone
+            sourceType === TicketMessageSourceType.Phone ||
+            sourceType === TicketMessageSourceType.Sms
         const allowCreateConstraint =
-            sourceType === TicketMessageSourceType.Phone
+            sourceType === TicketMessageSourceType.Phone ||
+            sourceType === TicketMessageSourceType.Sms
                 ? isValidPhoneNumber
                 : isEmail
 

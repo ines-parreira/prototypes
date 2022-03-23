@@ -72,6 +72,7 @@ export function canAddAttachments(
         [TicketMessageSourceType.TwitterDirectMessage, 1],
         [TicketMessageSourceType.YotpoReviewPublicComment, 0],
         [TicketMessageSourceType.YotpoReviewPrivateComment, 0],
+        [TicketMessageSourceType.Sms, 0],
     ]).get(messageType)
 
     isInvalid =

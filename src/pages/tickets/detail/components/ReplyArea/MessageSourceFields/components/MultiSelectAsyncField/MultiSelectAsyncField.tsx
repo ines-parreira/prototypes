@@ -209,7 +209,6 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
         }[]
     ) => {
         const {value, onChange} = this.props
-
         const filteredItems = items.filter((item) => {
             return !_find(value, {value: item.value})
         })

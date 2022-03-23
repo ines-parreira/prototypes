@@ -17,11 +17,12 @@ import {IntegrationType} from 'models/integration/types'
 import {RootState} from 'state/types'
 import {getActionTemplate, humanizeString} from 'utils'
 import {ACTION_TEMPLATES} from 'config'
+import {ActionTemplate} from 'types'
 
-import * as ticketTypes from '../../../../../state/ticket/constants'
-import * as newMessageTypes from '../../../../../state/newMessage/constants'
-import * as integrationsSelectors from '../../../../../state/integrations/selectors'
-import {getSortedIntegrationActionsNames} from '../../utils.js'
+import * as ticketTypes from 'state/ticket/constants'
+import * as newMessageTypes from 'state/newMessage/constants'
+import * as integrationsSelectors from 'state/integrations/selectors'
+import {getSortedIntegrationActionsNames} from 'pages/tickets/common/utils'
 
 import SetStatusAction from './actions/SetStatusAction'
 import SetSubjectAction from './actions/SetSubjectAction'
@@ -168,7 +169,9 @@ export class MacroEdit extends Component<Props> {
         // external actions with externalType grouped by externalType
         const integrationMenus: Map<any, any> =
             getSortedIntegrationActionsNames(
-                externalActions.filter((v) => !!v.integrationType)
+                externalActions.filter(
+                    (v) => !!v.integrationType
+                ) as ActionTemplate[]
             )
 
         return (

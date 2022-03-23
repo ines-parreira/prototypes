@@ -8,15 +8,15 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import {RootState} from '../../../../../state/types'
-import {KeymapActions} from '../../../../../services/shortcutManager/shortcutManager'
-import {hasIntegrationOfTypes} from '../../../../../state/integrations/selectors'
-import {prepare} from '../../../../../state/newMessage/actions'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts'
-import SourceIcon from '../../../../common/components/SourceIcon'
-import {TicketMessageSourceType} from '../../../../../business/types/ticket'
-import {IntegrationType} from '../../../../../models/integration/types'
+import {RootState} from 'state/types'
+import {KeymapActions} from 'services/shortcutManager/shortcutManager'
+import {hasIntegrationOfTypes} from 'state/integrations/selectors'
+import {prepare} from 'state/newMessage/actions'
+import * as newMessageSelectors from 'state/newMessage/selectors'
+import KeyboardShortcuts from 'pages/common/components/KeyboardShortcuts'
+import SourceIcon from 'pages/common/components/SourceIcon'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {IntegrationType} from 'models/integration/types'
 
 import MultiSelectAsyncField from './MessageSourceFields/components/MultiSelectAsyncField/MultiSelectAsyncField'
 import MessageSourceFields from './MessageSourceFields/MessageSourceFields'
@@ -148,6 +148,7 @@ export class ReplyMessageChannelContainer extends Component<Props> {
             className,
             ticket,
             hasPhoneIntegration,
+            hasSmsIntegration,
         } = this.props
 
         const isTicketExisting = !!ticket.get('id')
@@ -186,6 +187,10 @@ export class ReplyMessageChannelContainer extends Component<Props> {
             hasPhoneIntegration &&
             (!isTicketExisting ||
                 !!replyOptions.get(TicketMessageSourceType.Phone))
+        const suggestSms =
+            hasSmsIntegration &&
+            (!isTicketExisting ||
+                !!replyOptions.get(TicketMessageSourceType.Sms))
         const suggestYotpoReview =
             isTicketExisting &&
             !!replyOptions.get(TicketMessageSourceType.YotpoReview)
@@ -496,6 +501,21 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                                     Make outbound call
                                 </DropdownItem>
                             )}
+                            {suggestSms && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        prepareNewMessage(
+                                            TicketMessageSourceType.Sms
+                                        )
+                                    }}
+                                >
+                                    <SourceIcon
+                                        type={TicketMessageSourceType.Sms}
+                                    />
+                                    Send SMS
+                                </DropdownItem>
+                            )}
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </div>
@@ -521,6 +541,9 @@ const connector = connect(
             sourceType,
             ticket: state.ticket,
             hasPhoneIntegration: hasIntegrationOfTypes(IntegrationType.Phone)(
+                state
+            ),
+            hasSmsIntegration: hasIntegrationOfTypes(IntegrationType.Sms)(
                 state
             ),
         }

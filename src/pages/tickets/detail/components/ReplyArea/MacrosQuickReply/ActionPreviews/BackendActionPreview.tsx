@@ -1,11 +1,11 @@
 import React from 'react'
-import {fromJS, List} from 'immutable'
+import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {Badge} from 'reactstrap'
 
 import {getIconFromActionType} from 'models/macroAction/helpers'
 import {actionTypeToName, MacroAction} from 'models/macroAction/types'
-import {getSortedIntegrationActions} from 'pages/tickets/common/utils.js'
+import {getSortedIntegrationActions} from 'pages/tickets/common/utils'
 
 import {BaseActionPreview} from './BaseActionPreview'
 import css from './BackendActionPreview.less'
@@ -15,9 +15,8 @@ type Props = {
 }
 
 export const BackendActionPreview = ({actions}: Props) => {
-    const sortedActions: Record<string, MacroAction[]> = (
-        getSortedIntegrationActions(fromJS(actions)) as List<any>
-    ).toJS()
+    const sortedActions: Record<string, MacroAction[]> =
+        getSortedIntegrationActions(fromJS(actions)).toJS()
 
     return (
         <>

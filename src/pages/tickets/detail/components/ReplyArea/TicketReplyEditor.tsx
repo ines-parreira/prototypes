@@ -339,6 +339,8 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         const isNewMessageRichType = isRichType(newMessageType)
         const isNewMessageFacebookMessengerType =
             newMessageType === TicketMessageSourceType.FacebookMessenger
+        const isNewMessageSmsType =
+            newMessageType === TicketMessageSourceType.Sms
         const canAddMention = canLeaveInternalNote(newMessageType)
         let attachmentsMask: string
 
@@ -358,6 +360,10 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                 displayedActions = []
             }
             displayedActions.push(ActionName.Image)
+        }
+
+        if (isNewMessageSmsType) {
+            displayedActions = [ActionName.Emoji]
         }
 
         const canInsertInlineImages =

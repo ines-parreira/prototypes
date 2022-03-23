@@ -5,6 +5,7 @@ import _uniq from 'lodash/uniq'
 import _difference from 'lodash/difference'
 import _xor from 'lodash/xor'
 
+import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -19,8 +20,11 @@ import {
     getOptionalContactProperties,
     areNewMessageContactPropertiesFulfilled as getAreNewMessageContactPropertiesFulfilled,
 } from 'state/newMessage/selectors'
-import {getEmailChannels, getPhoneChannels} from 'state/integrations/selectors'
-import {getPersonLabelFromSource} from 'pages/tickets/common/utils.js'
+import {
+    getEmailChannels,
+    getPhoneChannelsForPhoneSource,
+    getPhoneChannelsForSmsSource,
+} from 'state/integrations/selectors'
 
 import MultiSelectAsyncField from './components/MultiSelectAsyncField/MultiSelectAsyncField'
 import SenderSelectField from './components/SenderSelectField/SenderSelectField'
@@ -71,10 +75,17 @@ const MessageSourceFields = forwardRef<MultiSelectAsyncField, Props>(
             getOptionalContactProperties(sourceType)
         )
 
+        const getPhoneChannelsForSource =
+            sourceType === TicketMessageSourceType.Sms
+                ? getPhoneChannelsForSmsSource
+                : getPhoneChannelsForPhoneSource
+
         const emailChannels = useAppSelector(getEmailChannels)
-        const phoneChannels = useAppSelector(getPhoneChannels)
+        const phoneChannels = useAppSelector(getPhoneChannelsForSource)
+
         const accountChannels =
-            sourceType === TicketMessageSourceType.Phone
+            sourceType === TicketMessageSourceType.Phone ||
+            sourceType === TicketMessageSourceType.Sms
                 ? phoneChannels
                 : emailChannels
         const ticket = useAppSelector((state: RootState) => state.ticket)
@@ -137,8 +148,7 @@ const MessageSourceFields = forwardRef<MultiSelectAsyncField, Props>(
         const from = getNewMessageSourceProperty('from').toJS() as SourceAddress
 
         const allDisplayedNames = (allRecipients.toJS() as SourceAddress[]).map(
-            (recipient) =>
-                getPersonLabelFromSource(recipient, sourceType) as string
+            (recipient) => getPersonLabelFromSource(recipient, sourceType)
         )
 
         return (

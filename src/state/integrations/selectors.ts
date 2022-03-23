@@ -324,37 +324,46 @@ export const getEmailChannels = createSelector<
         }) as List<any>
     }
 )
-// return phone integrations formatted as channel
-export const getPhoneChannels = createSelector<
-    RootState,
-    List<any>,
-    Map<any, any>,
-    Map<any, any>,
-    List<any>,
-    Record<number, PhoneNumber>
->(
-    (state: RootState) => state.ticket || fromJS({}),
-    getCurrentUserState,
-    getPhoneIntegrations,
-    getPhoneNumbersState,
-    (currentTicket, currentUser, integrations, phoneNumbers) => {
-        return integrations.map((integration: Map<any, any>) => {
-            const phoneNumber =
-                phoneNumbers[
-                    integration.getIn([
-                        'meta',
-                        'twilio_phone_number_id',
-                    ]) as number
-                ]
 
-            return fromJS({
-                id: integration.get('id'),
-                type: integration.get('type'),
-                name: integration.get('name'),
-                address: phoneNumber?.phone_number,
-            }) as Map<any, any>
-        }) as List<any>
-    }
+// return phone integrations formatted as channel
+export const makeGetPhoneChannels = (
+    type: IntegrationType.Phone | IntegrationType.Sms
+) =>
+    createSelector<
+        RootState,
+        List<any>,
+        Map<any, any>,
+        List<any>,
+        Record<number, PhoneNumber>
+    >(
+        (state: RootState) => state.ticket || fromJS({}),
+        getIntegrationsByTypes([type]),
+        getPhoneNumbersState,
+        (currentTicket, integrations, phoneNumbers) => {
+            return integrations.map((integration: Map<any, any>) => {
+                const phoneNumber =
+                    phoneNumbers[
+                        integration.getIn([
+                            'meta',
+                            'twilio_phone_number_id',
+                        ]) as number
+                    ]
+
+                return fromJS({
+                    id: integration.get('id'),
+                    type: integration.get('type'),
+                    name: integration.get('name'),
+                    address: phoneNumber?.phone_number,
+                }) as Map<any, any>
+            }) as List<any>
+        }
+    )
+
+export const getPhoneChannelsForPhoneSource = makeGetPhoneChannels(
+    IntegrationType.Phone
+)
+export const getPhoneChannelsForSmsSource = makeGetPhoneChannels(
+    IntegrationType.Sms
 )
 
 export const getChannelsByType = (type: string) =>

@@ -9,7 +9,7 @@ import {
     Source as SourceType,
     SourceAddress,
 } from '../../../../../models/ticket/types'
-import {getPersonLabelFromSource} from '../../../common/utils.js'
+import {getPersonLabelFromSource} from '../../../common/utils'
 import Tooltip from '../../../../common/components/Tooltip'
 
 import css from './Source.less'
@@ -108,13 +108,9 @@ function SourceAddressElement({
             <span className="text-faded">{title}: </span>
             <strong>
                 {fieldSource
-                    .map((person) => {
-                        //$TsFixMe remove casting once utils are migrated
-                        return getPersonLabelFromSource(
-                            person,
-                            source.type
-                        ) as string
-                    })
+                    .map((person) =>
+                        getPersonLabelFromSource(person, source.type)
+                    )
                     .join(', ')}
             </strong>
         </li>
