@@ -7,7 +7,7 @@ import InputGroup from './InputGroup'
 import NumberInput from './NumberInput'
 
 const storyConfig: Meta = {
-    title: 'Data Entry/InputGroup',
+    title: 'Data Entry/Input/InputGroup',
     component: InputGroup,
 }
 

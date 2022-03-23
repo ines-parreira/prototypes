@@ -1,86 +1,90 @@
 import React from 'react'
-import {shallow} from 'enzyme'
-import {Input} from 'reactstrap'
+import {fireEvent, render} from '@testing-library/react'
 
 import TimedeltaPicker from '../TimedeltaPicker.tsx'
 
-describe('TimedeltaPicker component', () => {
-    it('should render correct passed data', () => {
-        const component = shallow(
-            <TimedeltaPicker value="2w" onChange={() => {}} />
-        )
+import {TIMEDELTA_OPERATOR_DEFAULT_QUANTITY} from 'config'
 
-        expect(component).toMatchSnapshot()
+describe('TimedeltaPicker component', () => {
+    const props = {
+        onChange: jest.fn(),
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should render correct passed data', () => {
+        const {container} = render(<TimedeltaPicker {...props} value="2w" />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should ignore incorrect passed data and use default values instead', () => {
-        const component = shallow(
-            <TimedeltaPicker value="d1" onChange={() => {}} />
-        )
+        const {container} = render(<TimedeltaPicker {...props} value="d1" />)
 
-        expect(component).toMatchSnapshot()
+        expect(container.getElementsByTagName('input')[0].value).toBe(
+            `${TIMEDELTA_OPERATOR_DEFAULT_QUANTITY}`
+        )
+        expect(container.getElementsByTagName('button')[0].textContent).toMatch(
+            /day/i
+        )
     })
 
     it('should handle unit change', () => {
-        const wrapper = shallow(
-            <TimedeltaPicker value="" onChange={() => {}} />
-        )
+        const {getByText} = render(<TimedeltaPicker {...props} />)
 
-        const component = wrapper.instance()
+        fireEvent.click(getByText('arrow_drop_down'))
 
-        component._onUnitChange('w')
-        expect(wrapper.state()).toMatchSnapshot()
+        fireEvent.click(getByText(/week/i))
+        expect(props.onChange).toHaveBeenLastCalledWith('1w')
 
-        component._onUnitChange('m')
-        expect(wrapper.state()).toMatchSnapshot()
+        fireEvent.click(getByText(/minute/i))
+        expect(props.onChange).toHaveBeenLastCalledWith('1m')
     })
 
     it('should handle quantity change', () => {
-        const wrapper = shallow(
-            <TimedeltaPicker value="" onChange={() => {}} />
-        )
+        const {container} = render(<TimedeltaPicker {...props} />)
 
-        const component = wrapper.instance()
+        const firstValue = '5'
+        fireEvent.change(container.getElementsByTagName('input')[0], {
+            target: {
+                value: firstValue,
+            },
+        })
+        expect(props.onChange).toHaveBeenLastCalledWith(`${firstValue}d`)
 
-        component._onQuantityChange('5')
-        expect(wrapper.state()).toMatchSnapshot()
-
-        component._onQuantityChange('10')
-        expect(wrapper.state()).toMatchSnapshot()
+        const secondValue = '5'
+        fireEvent.change(container.getElementsByTagName('input')[0], {
+            target: {
+                value: secondValue,
+            },
+        })
+        expect(props.onChange).toHaveBeenLastCalledWith(`${secondValue}d`)
     })
 
-    it('should call passed onChange with the correct value', () => {
-        const spy = jest.fn()
-        const wrapper = shallow(<TimedeltaPicker value="" onChange={spy} />)
-
-        const component = wrapper.instance()
-        component._onChange(2, 'm')
-
-        expect(spy).toHaveBeenCalledTimes(1)
-
-        expect(spy.mock.calls[0].length).toBe(1) // called with one argument
-        expect(spy.mock.calls[0][0]).toBe('2m')
-    })
-
-    it('should build state correctly', () => {
-        const wrapper = shallow(
-            <TimedeltaPicker value="" onChange={() => {}} />
+    it('should display received value and unit', () => {
+        const value = '5'
+        const {container} = render(
+            <TimedeltaPicker {...props} value={`${value}w`} />
         )
 
-        const component = wrapper.instance()
-
-        let res = component._buildValue('5w')
-        expect(res).toEqual({quantity: 5, unit: 'w'})
-
-        res = component._buildValue('')
-        expect(res).toEqual({quantity: 1, unit: 'd'})
+        expect(container.getElementsByTagName('input')[0].value).toBe(
+            `${value}`
+        )
+        expect(container.getElementsByTagName('button')[0].textContent).toMatch(
+            /week/i
+        )
     })
 
     it('should forward minimum and maximum quantity', () => {
-        const spy = jest.fn()
-        const component = shallow(
-            <TimedeltaPicker value="5d" min={5} max={10} onChange={spy} />
+        const min = 5
+        const max = 10
+        const {container} = render(
+            <TimedeltaPicker {...props} value="5d" min={min} max={max} />
         )
-        expect(component.find(Input)).toMatchSnapshot()
+
+        expect(container.getElementsByTagName('input')[0].min).toEqual(`${min}`)
+        expect(container.getElementsByTagName('input')[0].max).toEqual(`${max}`)
     })
 })

@@ -5,7 +5,7 @@ import IconInput from './IconInput'
 import TextInput from './TextInput'
 
 const storyConfig: Meta = {
-    title: 'Data Entry/TextInput',
+    title: 'Data Entry/Input/TextInput',
     component: TextInput,
     argTypes: {
         hasError: {

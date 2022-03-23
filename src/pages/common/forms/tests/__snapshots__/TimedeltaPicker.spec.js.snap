@@ -1,273 +1,84 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TimedeltaPicker component should forward minimum and maximum quantity 1`] = `
-<Input
-  max={10}
-  min={5}
-  onChange={[Function]}
-  required={true}
-  style={
-    Object {
-      "width": "62px",
-    }
-  }
-  type="number"
-  value={5}
-/>
-`;
-
-exports[`TimedeltaPicker component should handle quantity change 1`] = `
-Object {
-  "dropdownOpen": false,
-  "quantity": "5",
-  "unit": "d",
-  "units": Array [
-    Object {
-      "label": "minute(s) ago",
-      "value": "m",
-    },
-    Object {
-      "label": "hour(s) ago",
-      "value": "h",
-    },
-    Object {
-      "label": "day(s) ago",
-      "value": "d",
-    },
-    Object {
-      "label": "week(s) ago",
-      "value": "w",
-    },
-  ],
-}
-`;
-
-exports[`TimedeltaPicker component should handle quantity change 2`] = `
-Object {
-  "dropdownOpen": false,
-  "quantity": "10",
-  "unit": "d",
-  "units": Array [
-    Object {
-      "label": "minute(s) ago",
-      "value": "m",
-    },
-    Object {
-      "label": "hour(s) ago",
-      "value": "h",
-    },
-    Object {
-      "label": "day(s) ago",
-      "value": "d",
-    },
-    Object {
-      "label": "week(s) ago",
-      "value": "w",
-    },
-  ],
-}
-`;
-
-exports[`TimedeltaPicker component should handle unit change 1`] = `
-Object {
-  "dropdownOpen": false,
-  "quantity": 1,
-  "unit": "w",
-  "units": Array [
-    Object {
-      "label": "minute(s) ago",
-      "value": "m",
-    },
-    Object {
-      "label": "hour(s) ago",
-      "value": "h",
-    },
-    Object {
-      "label": "day(s) ago",
-      "value": "d",
-    },
-    Object {
-      "label": "week(s) ago",
-      "value": "w",
-    },
-  ],
-}
-`;
-
-exports[`TimedeltaPicker component should handle unit change 2`] = `
-Object {
-  "dropdownOpen": false,
-  "quantity": 1,
-  "unit": "m",
-  "units": Array [
-    Object {
-      "label": "minute(s) ago",
-      "value": "m",
-    },
-    Object {
-      "label": "hour(s) ago",
-      "value": "h",
-    },
-    Object {
-      "label": "day(s) ago",
-      "value": "d",
-    },
-    Object {
-      "label": "week(s) ago",
-      "value": "w",
-    },
-  ],
-}
-`;
-
-exports[`TimedeltaPicker component should ignore incorrect passed data and use default values instead 1`] = `
-<div
-  className="d-flex"
->
-  <InputGroup
-    tag="div"
-  >
-    <Input
-      max={9999}
-      min={0}
-      onChange={[Function]}
-      required={true}
-      style={
-        Object {
-          "width": "62px",
-        }
-      }
-      type="number"
-      value={1}
-    />
-    <InputGroupButtonDropdown
-      addonType="append"
-      isOpen={false}
-      toggle={[Function]}
-    >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
-      >
-        <span>
-          day(s) ago
-        </span>
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        tag="div"
-      >
-        <DropdownItem
-          key="m"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-        >
-          minute(s) ago
-        </DropdownItem>
-        <DropdownItem
-          key="h"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-        >
-          hour(s) ago
-        </DropdownItem>
-        <DropdownItem
-          key="d"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-        >
-          day(s) ago
-        </DropdownItem>
-        <DropdownItem
-          key="w"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-        >
-          week(s) ago
-        </DropdownItem>
-      </DropdownMenu>
-    </InputGroupButtonDropdown>
-  </InputGroup>
-</div>
-`;
-
 exports[`TimedeltaPicker component should render correct passed data 1`] = `
-<div
-  className="d-flex"
+<span
+  class="wrapper group horizontal"
 >
-  <InputGroup
-    tag="div"
+  <span
+    class="numberInput wrapper left isNested group horizontal"
   >
-    <Input
-      max={9999}
-      min={0}
-      onChange={[Function]}
-      required={true}
-      style={
-        Object {
-          "width": "62px",
-        }
-      }
+    <input
+      class="input"
+      max="Infinity"
+      min="0"
+      required=""
       type="number"
-      value={2}
+      value="2"
     />
-    <InputGroupButtonDropdown
-      addonType="append"
-      isOpen={false}
-      toggle={[Function]}
+  </span>
+  <div
+    class="dropdown"
+  >
+    <span
+      aria-expanded="false"
+      aria-haspopup="true"
+      class=""
     >
-      <DropdownToggle
-        aria-haspopup={true}
-        caret={true}
-        color="secondary"
+      <button
+        class="wrapper button secondary medium right isAuxiliaryButton"
+        type="button"
       >
-        <span>
-          week(s) ago
+        week(s) ago
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isRight medium"
+          >
+            arrow_drop_down
+          </i>
         </span>
-      </DropdownToggle>
-      <DropdownMenu
-        flip={true}
-        tag="div"
+      </button>
+    </span>
+    <div
+      aria-hidden="true"
+      class="dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
       >
-        <DropdownItem
-          key="m"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-        >
-          minute(s) ago
-        </DropdownItem>
-        <DropdownItem
-          key="h"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-        >
-          hour(s) ago
-        </DropdownItem>
-        <DropdownItem
-          key="d"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-        >
-          day(s) ago
-        </DropdownItem>
-        <DropdownItem
-          key="w"
-          onClick={[Function]}
-          tag="button"
-          toggle={true}
-        >
-          week(s) ago
-        </DropdownItem>
-      </DropdownMenu>
-    </InputGroupButtonDropdown>
-  </InputGroup>
-</div>
+        minute(s) ago
+      </button>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        hour(s) ago
+      </button>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        day(s) ago
+      </button>
+      <button
+        class="dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        week(s) ago
+      </button>
+    </div>
+  </div>
+</span>
 `;

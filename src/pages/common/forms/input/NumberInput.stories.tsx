@@ -4,7 +4,7 @@ import {Meta, Story} from '@storybook/react'
 import NumberInput from './NumberInput'
 
 const storyConfig: Meta = {
-    title: 'Data Entry/NumberInput',
+    title: 'Data Entry/Input/NumberInput',
     component: NumberInput,
     argTypes: {},
 }
