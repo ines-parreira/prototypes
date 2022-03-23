@@ -1113,7 +1113,7 @@ export const openTicketsAssignmentStatuses: Stat<OneDimensionalUnionChart> = {
             {
                 name: 'Assigned open tickets',
                 type: StatType.Number,
-                value: 235,
+                value: 6500,
             },
             {
                 name: 'Unassigned open tickets',

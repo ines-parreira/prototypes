@@ -664,7 +664,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                 <div
                   class="value"
                 >
-                  235
+                  5K+
                 </div>
                 <span
                   class="diff"
@@ -696,7 +696,7 @@ exports[`LiveOverview should render the filters and stats when stats filters are
                 <div
                   class="value"
                 >
-                  2700
+                  2,700
                 </div>
                 <span
                   class="diff"

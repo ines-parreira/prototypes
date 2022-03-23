@@ -11,11 +11,22 @@ import {TicketChannel} from 'business/types/ticket'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {StatsFilters} from 'models/stat/types'
 
-import {formatDuration, useStatsViewFilters} from '../utils'
+import {formatNumber, formatDuration, useStatsViewFilters} from '../utils'
 
 const mockStore = configureMockStore([thunk])
 
 describe('stats components utils', () => {
+    describe('formatNumber', () => {
+        it.each([
+            [123, '123'],
+            [123456, '123,456'],
+            [123456789, '123,456,789'],
+            [4.56, '4.56'],
+        ])('should format the number properly', (value, result) => {
+            expect(formatNumber(value)).toBe(result)
+        })
+    })
+
     describe('useStatsViewFilters', () => {
         const defaultState = {
             entities: {

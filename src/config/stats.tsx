@@ -4,11 +4,10 @@ import {Link} from 'react-router-dom'
 import moment from 'moment'
 import _merge from 'lodash/merge'
 import _isString from 'lodash/isString'
-
 import {ChartType, Scale, TooltipItem} from 'chart.js'
 import {defaults} from 'react-chartjs-2'
 
-import {formatDuration} from '../pages/stats/common/utils'
+import {formatDuration, formatNumber} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
 import {IntentName} from '../models/intent/types'
 import {humanizeString, lightenDarkenColor, toImmutable} from '../utils'
@@ -114,6 +113,7 @@ export const SATISFACTION_SURVEY_MIN_SCORE = 1
 export const SATISFACTION_SURVEY_MAX_SCORE = 5
 export const SATISFACTION_SURVEY_MAX_COMMENT_LENGTH = 80
 
+export const LIVE_STATS_MAX_TICKETS = 5000
 export const TICKET_MAX_SUBJECT_LENGTH = 100
 
 type IntentOption = {color: string; label: string}
@@ -322,12 +322,14 @@ export const stats = toImmutable<
                 api_resource_name: USERS_STATUSES,
                 label: 'Agents online',
                 formatData: (data: Map<any, any>) => {
-                    return (data.get('lines') as List<any>)
-                        .filter(
-                            (value: List<any>) =>
-                                value.getIn([1, 'value']) as boolean
-                        )
-                        .count()
+                    return formatNumber(
+                        (data.get('lines') as List<any>)
+                            .filter(
+                                (value: List<any>) =>
+                                    value.getIn([1, 'value']) as boolean
+                            )
+                            .count()
+                    )
                 },
                 tooltip: (data?: Map<any, any>) => {
                     if (!data || !data.get('lines')) {
@@ -359,9 +361,9 @@ export const stats = toImmutable<
                                 )
                             })}
                             {dataLength > 25 && (
-                                <div className={css.moreAgents}>
+                                <Link to="/app/stats/live-agents">
                                     +{dataLength - 25} more
-                                </div>
+                                </Link>
                             )}
                         </div>
                     )
@@ -371,11 +373,13 @@ export const stats = toImmutable<
                 api_resource_name: USERS_STATUSES,
                 label: 'Agents offline',
                 formatData: (data: Map<any, any>) => {
-                    return (data.get('lines') as List<any>)
-                        .filter(
-                            (value: List<any>) => !value.getIn([1, 'value'])
-                        )
-                        .count()
+                    return formatNumber(
+                        (data.get('lines') as List<any>)
+                            .filter(
+                                (value: List<any>) => !value.getIn([1, 'value'])
+                            )
+                            .count()
+                    )
                 },
                 tooltip: (data?: Map<any, any>) => {
                     if (!data || !data.get('lines')) {
@@ -406,9 +410,9 @@ export const stats = toImmutable<
                                 )
                             })}
                             {dataLength > 25 && (
-                                <div className={css.moreAgents}>
+                                <Link to="/app/stats/live-agents">
                                     +{dataLength - 25} more
-                                </div>
+                                </Link>
                             )}
                         </div>
                     )
@@ -419,7 +423,11 @@ export const stats = toImmutable<
                 label: 'Assigned open tickets',
                 tooltip: 'Total number of open tickets assigned to an agent',
                 formatData: (data: Map<any, any>) => {
-                    return data.getIn([0, 'value']) as number
+                    const ticketsTotal = data.getIn([0, 'value']) as number
+
+                    return ticketsTotal >= LIVE_STATS_MAX_TICKETS
+                        ? '5K+'
+                        : formatNumber(ticketsTotal)
                 },
             },
             {
@@ -428,7 +436,11 @@ export const stats = toImmutable<
                 tooltip:
                     'Total number of open tickets that are not assigned to an agent',
                 formatData: (data: Map<any, any>) => {
-                    return data.getIn([1, 'value']) as number
+                    const ticketsTotal = data.getIn([1, 'value']) as number
+
+                    return ticketsTotal >= LIVE_STATS_MAX_TICKETS
+                        ? '5K+'
+                        : formatNumber(ticketsTotal)
                 },
             },
         ],
@@ -1328,7 +1340,7 @@ export const stats = toImmutable<
                         display: false,
                     },
                     ticks: _merge({}, defaultTicks, {
-                        callback: formatNumber,
+                        callback: formatTickNumber,
                     }),
                 },
 
@@ -1590,6 +1602,6 @@ const formatDurationTooltipCb = (ctx: TooltipItem<ChartType>) => {
     } `
 }
 
-function formatNumber(this: Scale<any>, value: number) {
+function formatTickNumber(this: Scale<any>, value: number) {
     return humanizeString(this.getLabelForValue(value))
 }

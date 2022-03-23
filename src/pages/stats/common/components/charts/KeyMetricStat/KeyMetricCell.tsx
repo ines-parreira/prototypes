@@ -4,12 +4,14 @@ import {Map, List, fromJS} from 'immutable'
 import classnames from 'classnames'
 import _isObject from 'lodash/isObject'
 
+import {StatType} from 'models/stat/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import Loader from 'pages/common/components/Loader/Loader'
 import {StatConfigMetric} from 'config/stats'
 
 import {
     comparedPeriodString,
+    formatNumber,
     formatCurrency,
     formatDuration,
     formatPercent,
@@ -77,11 +79,13 @@ export const KeyMetricCell = ({
 
     const formatValue = (value: any, metric: Map<any, any>) => {
         switch (metric.get('type')) {
-            case 'duration':
+            case StatType.Number:
+                return formatNumber(value)
+            case StatType.Duration:
                 return formatDuration(value, 2)
-            case 'percent':
+            case StatType.Percent:
                 return formatPercent(value)
-            case 'currency':
+            case StatType.Currency:
                 return formatCurrency(value, metric.get('currency'))
             default:
                 return value as string

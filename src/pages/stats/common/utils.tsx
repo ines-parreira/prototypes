@@ -30,6 +30,12 @@ export const comparedPeriodString = (
     return `Compared to : ${previousPeriod}`
 }
 
+export const formatNumber = (value: number) => {
+    const numberFormatter = new Intl.NumberFormat('en')
+
+    return numberFormatter.format(value)
+}
+
 // format a value and display it as a percentage
 export const formatPercent = (value: unknown) => {
     return _isNumber(value) ? `${value}%` : ''

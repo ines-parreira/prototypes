@@ -24,7 +24,11 @@ const KeyMetricCellWrapper = ({children, label, tooltipId, tooltip}: Props) => {
                             id={tooltipId}
                             className={css['info-icon']}
                         />
-                        <Tooltip placement="top" target={tooltipId}>
+                        <Tooltip
+                            autohide={false}
+                            placement="top"
+                            target={tooltipId}
+                        >
                             {tooltip}
                         </Tooltip>
                     </span>
