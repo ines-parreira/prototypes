@@ -24,7 +24,7 @@ import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import history from 'pages/history'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import RichField from 'pages/common/forms/RichField/RichField'
 import Tooltip from 'pages/common/components/Tooltip'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -131,7 +131,7 @@ const QuickResponseFlowItem = ({
                             id="quickResponseForm"
                             onSubmit={handleSubmitWrapper}
                         >
-                            <InputField
+                            <DEPRECATED_InputField
                                 name="buttonLabel"
                                 label="Button label"
                                 placeholder="Ex. Product information"

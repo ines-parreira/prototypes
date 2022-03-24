@@ -1,3 +1,4 @@
+// Please use g/static/private/js/pages/common/forms/input/InputField.tsx instead
 import React, {ChangeEvent, ReactNode} from 'react'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
