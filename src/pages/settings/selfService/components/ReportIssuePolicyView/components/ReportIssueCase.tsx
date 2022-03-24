@@ -11,6 +11,8 @@ import {
 } from '../../../../../settings/helpCenter/hooks/useReorderDnD'
 import ForwardIcon from '../../../../../integrations/detail/components/ForwardIcon'
 
+import bodyCellCss from '../../../../../common/components/table/cells/BodyCell.less'
+import BodyCellContent from '../../../../../common/components/table/cells/BodyCellContent'
 import css from './ReportIssueCase.less'
 
 interface ReportIssueCaseProps {
@@ -82,25 +84,27 @@ const ReportIssueCase = ({
                 )}
             </BodyCell>
 
-            <td className={classNames('link-full-td', css.caseTitle)}>
+            <td
+                className={classNames(
+                    bodyCellCss.wrapper,
+                    bodyCellCss.smallest
+                )}
+            >
                 <Link to={linkToEditor}>
-                    <div>
+                    <BodyCellContent>
                         <b>{title}</b>
-                    </div>
+                    </BodyCellContent>
                 </Link>
             </td>
 
-            <td className={classNames(css.caseDescription, 'link-full-td')}>
+            <td className={bodyCellCss.wrapper}>
                 <Link to={linkToEditor}>
-                    <div>{description}</div>
+                    <BodyCellContent>{description}</BodyCellContent>
                 </Link>
             </td>
-
-            <td className="link-full-td">
-                <Link to={linkToEditor}>
-                    <ForwardIcon href={linkToEditor} />
-                </Link>
-            </td>
+            <BodyCell className={css.forwardCell}>
+                <ForwardIcon href={linkToEditor} />
+            </BodyCell>
         </TableBodyRow>
     )
 }

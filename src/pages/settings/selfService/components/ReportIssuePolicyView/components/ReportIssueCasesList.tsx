@@ -7,7 +7,6 @@ import {useHistory} from 'react-router-dom'
 
 import TableWrapper from '../../../../../common/components/table/TableWrapper'
 import TableBody from '../../../../../common/components/table/TableBody'
-import HeaderCell from '../../../../../common/components/table/cells/HeaderCell'
 import TableHead from '../../../../../common/components/table/TableHead'
 import {Callbacks} from '../../../../../settings/helpCenter/hooks/useReorderDnD'
 import {useConfigurationData} from '../../hooks'
@@ -107,10 +106,7 @@ const ReportIssueCasesList = (): ReactElement | null => {
     return (
         <TableWrapper>
             <TableHead>
-                <HeaderCell style={{width: 25}} />
-                <HeaderCell style={{width: 1}} />
-                <HeaderCell style={{width: 'auto'}} />
-                <HeaderCell style={{width: 25}} />
+                <></>
             </TableHead>
             <TableBody>
                 {cases.map((reportIssueCase, index) => {
