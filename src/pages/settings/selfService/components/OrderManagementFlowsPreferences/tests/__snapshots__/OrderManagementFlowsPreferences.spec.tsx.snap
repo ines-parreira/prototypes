@@ -129,7 +129,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                     <div>
                       <label
                         aria-checked="true"
-                        class="label container"
+                        class="label label"
                         for="toggle-button-42"
                         role="switch"
                       >
@@ -143,9 +143,6 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                         />
                         <div
                           class="slider"
-                        />
-                        <div
-                          class="label"
                         />
                       </label>
                     </div>
@@ -183,7 +180,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                     <div>
                       <label
                         aria-checked="false"
-                        class="label container"
+                        class="label label"
                         for="toggle-button-42"
                         role="switch"
                       >
@@ -196,9 +193,6 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                         />
                         <div
                           class="slider"
-                        />
-                        <div
-                          class="label"
                         />
                       </label>
                     </div>
@@ -257,7 +251,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                     <div>
                       <label
                         aria-checked="true"
-                        class="label container"
+                        class="label label"
                         for="toggle-button-42"
                         role="switch"
                       >
@@ -271,9 +265,6 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                         />
                         <div
                           class="slider"
-                        />
-                        <div
-                          class="label"
                         />
                       </label>
                     </div>
@@ -325,7 +316,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                     <div>
                       <label
                         aria-checked="false"
-                        class="label container"
+                        class="label label"
                         for="toggle-button-42"
                         role="switch"
                       >
@@ -338,9 +329,6 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                         />
                         <div
                           class="slider"
-                        />
-                        <div
-                          class="label"
                         />
                       </label>
                     </div>
@@ -524,7 +512,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                     <div>
                       <label
                         aria-checked="true"
-                        class="label container"
+                        class="label label"
                         for="toggle-button-42"
                         role="switch"
                       >
@@ -538,9 +526,6 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                         />
                         <div
                           class="slider"
-                        />
-                        <div
-                          class="label"
                         />
                       </label>
                     </div>
@@ -578,7 +563,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                     <div>
                       <label
                         aria-checked="false"
-                        class="label container"
+                        class="label label"
                         for="toggle-button-42"
                         role="switch"
                       >
@@ -591,9 +576,6 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                         />
                         <div
                           class="slider"
-                        />
-                        <div
-                          class="label"
                         />
                       </label>
                     </div>
@@ -652,7 +634,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                     <div>
                       <label
                         aria-checked="true"
-                        class="label container"
+                        class="label label"
                         for="toggle-button-42"
                         role="switch"
                       >
@@ -666,9 +648,6 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                         />
                         <div
                           class="slider"
-                        />
-                        <div
-                          class="label"
                         />
                       </label>
                     </div>
@@ -720,7 +699,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                     <div>
                       <label
                         aria-checked="false"
-                        class="label container"
+                        class="label label"
                         for="toggle-button-42"
                         role="switch"
                       >
@@ -733,9 +712,6 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                         />
                         <div
                           class="slider"
-                        />
-                        <div
-                          class="label"
                         />
                       </label>
                     </div>

@@ -27,7 +27,7 @@ exports[`<SelfServiceSection/> should render the component 1`] = `
       <div>
         <label
           aria-checked="false"
-          class="label isDisabled container disabledLabel"
+          class="label isDisabled label disabledLabel"
           for="toggle-button-1"
           role="switch"
         >
@@ -40,9 +40,6 @@ exports[`<SelfServiceSection/> should render the component 1`] = `
           />
           <div
             class="slider"
-          />
-          <div
-            class="label"
           />
         </label>
       </div>

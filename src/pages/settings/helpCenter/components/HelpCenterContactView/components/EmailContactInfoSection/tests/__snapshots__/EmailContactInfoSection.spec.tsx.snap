@@ -13,7 +13,7 @@ exports[`<EmailContactInfoSection /> should render the component 1`] = `
       <label
         aria-checked="false"
         aria-label="Enable email contact card"
-        class="label container"
+        class="label label"
         for="toggle-button-1"
         role="switch"
       >
@@ -28,11 +28,7 @@ exports[`<EmailContactInfoSection /> should render the component 1`] = `
         <div
           class="slider"
         />
-        <div
-          class="label"
-        >
-          Email card
-        </div>
+        Email card
       </label>
     </div>
     <div

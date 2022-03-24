@@ -209,7 +209,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             >
               <label
                 aria-checked="false"
-                class="label container"
+                class="label label"
                 for="toggle-button-1"
                 role="switch"
               >
@@ -224,21 +224,17 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                   class="slider"
                 />
                 <div
-                  class="label"
+                  class="toggleLabel"
                 >
-                  <div
-                    class="toggleLabel"
+                  <span>
+                    Use custom header
+                  </span>
+                  <i
+                    class="material-icons tooltipIcon"
+                    id="custom-header-toggle-info"
                   >
-                    <span>
-                      Use custom header
-                    </span>
-                    <i
-                      class="material-icons tooltipIcon"
-                      id="custom-header-toggle-info"
-                    >
-                      info_outline
-                    </i>
-                  </div>
+                    info_outline
+                  </i>
                 </div>
               </label>
             </div>
@@ -283,7 +279,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             >
               <label
                 aria-checked="false"
-                class="label container"
+                class="label label"
                 for="toggle-button-2"
                 role="switch"
               >
@@ -298,21 +294,17 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                   class="slider"
                 />
                 <div
-                  class="label"
+                  class="toggleLabel"
                 >
-                  <div
-                    class="toggleLabel"
+                  <span>
+                    Use custom footer
+                  </span>
+                  <i
+                    class="material-icons tooltipIcon"
+                    id="custom-footer-toggle-info"
                   >
-                    <span>
-                      Use custom footer
-                    </span>
-                    <i
-                      class="material-icons tooltipIcon"
-                      id="custom-footer-toggle-info"
-                    >
-                      info_outline
-                    </i>
-                  </div>
+                    info_outline
+                  </i>
                 </div>
               </label>
             </div>
@@ -467,7 +459,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             >
               <label
                 aria-checked="false"
-                class="label container"
+                class="label label"
                 for="toggle-button-3"
                 role="switch"
               >
@@ -481,11 +473,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                 <div
                   class="slider"
                 />
-                <div
-                  class="label"
-                >
-                  Add extra HTML
-                </div>
+                Add extra HTML
               </label>
             </div>
           </div>

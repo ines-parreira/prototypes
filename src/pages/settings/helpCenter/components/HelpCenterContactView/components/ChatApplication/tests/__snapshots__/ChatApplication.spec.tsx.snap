@@ -10,7 +10,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
     >
       <label
         aria-checked="false"
-        class="label container"
+        class="label label"
         for="toggle-button-1"
         role="switch"
       >
@@ -24,11 +24,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
         <div
           class="slider"
         />
-        <div
-          class="label"
-        >
-          Enable chat widget
-        </div>
+        Enable chat widget
       </label>
     </div>
     <p>
@@ -48,7 +44,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
     >
       <label
         aria-checked="false"
-        class="label isDisabled container disabledLabel"
+        class="label isDisabled label disabledLabel"
         for="toggle-button-2"
         role="switch"
       >
@@ -62,11 +58,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
         <div
           class="slider"
         />
-        <div
-          class="label"
-        >
-          Enable chat widget
-        </div>
+        Enable chat widget
       </label>
     </div>
     <p>

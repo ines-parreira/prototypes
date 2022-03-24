@@ -255,7 +255,7 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
           <div>
             <label
               aria-checked="true"
-              class="label container"
+              class="label label"
               for="toggle-button-9"
               role="switch"
             >
@@ -269,9 +269,6 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
               />
               <div
                 class="slider"
-              />
-              <div
-                class="label"
               />
             </label>
           </div>
@@ -623,7 +620,7 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
           <div>
             <label
               aria-checked="true"
-              class="label container"
+              class="label label"
               for="toggle-button-6"
               role="switch"
             >
@@ -637,9 +634,6 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
               />
               <div
                 class="slider"
-              />
-              <div
-                class="label"
               />
             </label>
           </div>
@@ -991,7 +985,7 @@ exports[`<RuleSettingsForm /> rendering should render an empty form when no rule
           <div>
             <label
               aria-checked="true"
-              class="label container"
+              class="label label"
               for="toggle-button-3"
               role="switch"
             >
@@ -1005,9 +999,6 @@ exports[`<RuleSettingsForm /> rendering should render an empty form when no rule
               />
               <div
                 class="slider"
-              />
-              <div
-                class="label"
               />
             </label>
           </div>

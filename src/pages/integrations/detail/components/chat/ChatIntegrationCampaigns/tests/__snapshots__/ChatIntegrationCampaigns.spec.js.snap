@@ -222,7 +222,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
             <div>
               <label
                 aria-checked="true"
-                class="label container"
+                class="label label"
                 for="toggle-button-1"
                 role="switch"
               >
@@ -236,9 +236,6 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 />
                 <div
                   class="slider"
-                />
-                <div
-                  class="label"
                 />
               </label>
             </div>
@@ -277,7 +274,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
             <div>
               <label
                 aria-checked="false"
-                class="label container"
+                class="label label"
                 for="toggle-button-2"
                 role="switch"
               >
@@ -290,9 +287,6 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 />
                 <div
                   class="slider"
-                />
-                <div
-                  class="label"
                 />
               </label>
             </div>

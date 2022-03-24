@@ -221,7 +221,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
       <div>
         <label
           aria-checked="true"
-          class="label container"
+          class="label label"
           for="toggle-button-3"
           role="switch"
         >
@@ -235,9 +235,6 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
           />
           <div
             class="slider"
-          />
-          <div
-            class="label"
           />
         </label>
       </div>

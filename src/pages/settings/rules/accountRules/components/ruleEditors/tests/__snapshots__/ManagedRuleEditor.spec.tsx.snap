@@ -131,7 +131,7 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
       <div>
         <label
           aria-checked="true"
-          class="label container"
+          class="label label"
           for="toggle-button-1"
           role="switch"
         >
@@ -145,9 +145,6 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
           />
           <div
             class="slider"
-          />
-          <div
-            class="label"
           />
         </label>
       </div>

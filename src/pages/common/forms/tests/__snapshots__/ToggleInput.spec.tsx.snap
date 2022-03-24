@@ -4,7 +4,7 @@ exports[`ToggleInput should render caption 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="label container"
+    class="label label"
     for="toggle-button-7"
     role="switch"
   >
@@ -19,11 +19,7 @@ exports[`ToggleInput should render caption 1`] = `
     <div
       class="slider"
     />
-    <div
-      class="label"
-    >
-      Label
-    </div>
+    Label
   </label>
   <div
     class="caption caption"
@@ -37,7 +33,7 @@ exports[`ToggleInput should render label 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="label container"
+    class="label label"
     for="toggle-button-6"
     role="switch"
   >
@@ -52,11 +48,7 @@ exports[`ToggleInput should render label 1`] = `
     <div
       class="slider"
     />
-    <div
-      class="label"
-    >
-      Label
-    </div>
+    Label
   </label>
 </div>
 `;
@@ -65,7 +57,7 @@ exports[`ToggleInput should render the button disabled 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="label isDisabled container disabledLabel"
+    class="label isDisabled label disabledLabel"
     for="toggle-button-4"
     role="switch"
   >
@@ -80,9 +72,6 @@ exports[`ToggleInput should render the button disabled 1`] = `
     <div
       class="slider"
     />
-    <div
-      class="label"
-    />
   </label>
 </div>
 `;
@@ -91,7 +80,7 @@ exports[`ToggleInput should render the button loading 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="label container loadingLabel"
+    class="label label loadingLabel"
     for="toggle-button-3"
     role="switch"
   >
@@ -127,9 +116,6 @@ exports[`ToggleInput should render the button loading 1`] = `
         stroke-width="2"
       />
     </svg>
-    <div
-      class="label"
-    />
   </label>
 </div>
 `;
@@ -138,7 +124,7 @@ exports[`ToggleInput should render the button loading and disabled 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="label isDisabled container loadingLabel disabledLabel"
+    class="label isDisabled label loadingLabel disabledLabel"
     for="toggle-button-5"
     role="switch"
   >
@@ -174,9 +160,6 @@ exports[`ToggleInput should render the button loading and disabled 1`] = `
         stroke-width="2"
       />
     </svg>
-    <div
-      class="label"
-    />
   </label>
 </div>
 `;
@@ -185,7 +168,7 @@ exports[`ToggleInput should render the checkbox checked 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="label container"
+    class="label label"
     for="toggle-button-1"
     role="switch"
   >
@@ -200,9 +183,6 @@ exports[`ToggleInput should render the checkbox checked 1`] = `
     <div
       class="slider"
     />
-    <div
-      class="label"
-    />
   </label>
 </div>
 `;
@@ -211,7 +191,7 @@ exports[`ToggleInput should render the checkbox unchecked 1`] = `
 <div>
   <label
     aria-checked="false"
-    class="label container"
+    class="label label"
     for="toggle-button-2"
     role="switch"
   >
@@ -224,9 +204,6 @@ exports[`ToggleInput should render the checkbox unchecked 1`] = `
     />
     <div
       class="slider"
-    />
-    <div
-      class="label"
     />
   </label>
 </div>

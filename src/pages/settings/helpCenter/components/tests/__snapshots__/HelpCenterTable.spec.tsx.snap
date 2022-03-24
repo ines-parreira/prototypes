@@ -124,7 +124,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             <div>
               <label
                 aria-checked="true"
-                class="label container"
+                class="label label"
                 for="toggle-button-1"
                 role="switch"
               >
@@ -138,9 +138,6 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
                 />
                 <div
                   class="slider"
-                />
-                <div
-                  class="label"
                 />
               </label>
             </div>
@@ -213,7 +210,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             <div>
               <label
                 aria-checked="true"
-                class="label container"
+                class="label label"
                 for="toggle-button-2"
                 role="switch"
               >
@@ -227,9 +224,6 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
                 />
                 <div
                   class="slider"
-                />
-                <div
-                  class="label"
                 />
               </label>
             </div>
@@ -313,7 +307,7 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
             <div>
               <label
                 aria-checked="true"
-                class="label container"
+                class="label label"
                 for="toggle-button-3"
                 role="switch"
               >
@@ -327,9 +321,6 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
                 />
                 <div
                   class="slider"
-                />
-                <div
-                  class="label"
                 />
               </label>
             </div>

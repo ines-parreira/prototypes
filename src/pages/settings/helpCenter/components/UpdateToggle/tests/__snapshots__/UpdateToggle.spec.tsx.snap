@@ -7,7 +7,7 @@ exports[`<UpdateToggle /> should display the update toggle 1`] = `
   >
     <label
       aria-checked="true"
-      class="label container"
+      class="label label"
       for="toggle-button-1"
       role="switch"
     >
@@ -22,11 +22,7 @@ exports[`<UpdateToggle /> should display the update toggle 1`] = `
       <div
         class="slider"
       />
-      <div
-        class="label"
-      >
-        label
-      </div>
+      label
     </label>
     <div
       class="caption caption"

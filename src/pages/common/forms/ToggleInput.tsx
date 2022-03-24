@@ -51,7 +51,7 @@ const ToggleInput = ({
     return (
         <div className={className}>
             <Label
-                className={classnames(css.container, {
+                className={classnames(css.label, {
                     [css.loadingLabel]: isLoading,
                     [css.disabledLabel]: isDisabled,
                 })}
@@ -97,7 +97,7 @@ const ToggleInput = ({
                         />
                     </svg>
                 )}
-                <div className={css.label}>{children}</div>
+                {children}
             </Label>
             {!!caption && <Caption className={css.caption}>{caption}</Caption>}
         </div>

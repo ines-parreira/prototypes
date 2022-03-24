@@ -13,7 +13,7 @@ exports[`<ChatContactInfoSection /> should render the component 1`] = `
       <label
         aria-checked="false"
         aria-label="Enable chat contact card"
-        class="label container"
+        class="label label"
         for="toggle-button-1"
         role="switch"
       >
@@ -28,11 +28,7 @@ exports[`<ChatContactInfoSection /> should render the component 1`] = `
         <div
           class="slider"
         />
-        <div
-          class="label"
-        >
-          Chat card
-        </div>
+        Chat card
       </label>
     </div>
     <p>

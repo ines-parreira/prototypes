@@ -145,7 +145,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
               <div>
                 <label
                   aria-checked="true"
-                  class="label container"
+                  class="label label"
                   for="toggle-button-1"
                   role="switch"
                 >
@@ -159,9 +159,6 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
                   />
                   <div
                     class="slider"
-                  />
-                  <div
-                    class="label"
                   />
                 </label>
               </div>
@@ -234,7 +231,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
               <div>
                 <label
                   aria-checked="true"
-                  class="label container"
+                  class="label label"
                   for="toggle-button-2"
                   role="switch"
                 >
@@ -248,9 +245,6 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
                   />
                   <div
                     class="slider"
-                  />
-                  <div
-                    class="label"
                   />
                 </label>
               </div>
@@ -334,7 +328,7 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
               <div>
                 <label
                   aria-checked="true"
-                  class="label container"
+                  class="label label"
                   for="toggle-button-3"
                   role="switch"
                 >
@@ -348,9 +342,6 @@ exports[`<HelpCenterStartView /> should render the component 1`] = `
                   />
                   <div
                     class="slider"
-                  />
-                  <div
-                    class="label"
                   />
                 </label>
               </div>

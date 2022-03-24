@@ -360,7 +360,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                 <Label
                                   aria-checked={false}
                                   aria-label="Enable quick replies"
-                                  className="container"
+                                  className="label"
                                   htmlFor="toggle-button-1"
                                   isDisabled={false}
                                   onClick={[Function]}
@@ -369,7 +369,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                   <label
                                     aria-checked={false}
                                     aria-label="Enable quick replies"
-                                    className="label container"
+                                    className="label label"
                                     htmlFor="toggle-button-1"
                                     onClick={[Function]}
                                     role="switch"
@@ -385,9 +385,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                     />
                                     <div
                                       className="slider"
-                                    />
-                                    <div
-                                      className="label"
                                     />
                                   </label>
                                 </Label>
@@ -1363,7 +1360,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                 <Label
                                   aria-checked={true}
                                   aria-label="Enable quick replies"
-                                  className="container"
+                                  className="label"
                                   htmlFor="toggle-button-2"
                                   isDisabled={false}
                                   onClick={[Function]}
@@ -1372,7 +1369,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                   <label
                                     aria-checked={true}
                                     aria-label="Enable quick replies"
-                                    className="label container"
+                                    className="label label"
                                     htmlFor="toggle-button-2"
                                     onClick={[Function]}
                                     role="switch"
@@ -1388,9 +1385,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                     />
                                     <div
                                       className="slider"
-                                    />
-                                    <div
-                                      className="label"
                                     />
                                   </label>
                                 </Label>

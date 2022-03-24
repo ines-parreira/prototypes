@@ -8,7 +8,7 @@ exports[`<SsoToggleButton/> should render properly 1`] = `
     <div>
       <label
         aria-checked="false"
-        class="label container"
+        class="label label"
         for="toggle-button-1"
         role="switch"
       >
@@ -21,9 +21,6 @@ exports[`<SsoToggleButton/> should render properly 1`] = `
         />
         <div
           class="slider"
-        />
-        <div
-          class="label"
         />
       </label>
     </div>

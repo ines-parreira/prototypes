@@ -844,7 +844,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           >
             <label
               aria-checked="false"
-              class="label container"
+              class="label label"
               for="toggle-button-3"
               role="switch"
             >
@@ -858,11 +858,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               <div
                 class="slider"
               />
-              <div
-                class="label"
-              >
-                Enable search bar
-              </div>
+              Enable search bar
             </label>
             <div
               class="caption caption"
@@ -875,7 +871,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           >
             <label
               aria-checked="true"
-              class="label container"
+              class="label label"
               for="toggle-button-4"
               role="switch"
             >
@@ -890,11 +886,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               <div
                 class="slider"
               />
-              <div
-                class="label"
-              >
-                Powered by Gorgias
-              </div>
+              Powered by Gorgias
             </label>
             <div
               class="caption caption"

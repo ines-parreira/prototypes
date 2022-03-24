@@ -42,7 +42,7 @@ exports[`<Access/> should render properly 1`] = `
             <div>
               <label
                 aria-checked="false"
-                class="label container"
+                class="label label"
                 for="toggle-button-42"
                 role="switch"
               >
@@ -55,9 +55,6 @@ exports[`<Access/> should render properly 1`] = `
                 />
                 <div
                   class="slider"
-                />
-                <div
-                  class="label"
                 />
               </label>
             </div>
@@ -78,7 +75,7 @@ exports[`<Access/> should render properly 1`] = `
             <div>
               <label
                 aria-checked="false"
-                class="label container"
+                class="label label"
                 for="toggle-button-42"
                 role="switch"
               >
@@ -91,9 +88,6 @@ exports[`<Access/> should render properly 1`] = `
                 />
                 <div
                   class="slider"
-                />
-                <div
-                  class="label"
                 />
               </label>
             </div>
@@ -220,7 +214,7 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             <div>
               <label
                 aria-checked="false"
-                class="label container"
+                class="label label"
                 for="toggle-button-42"
                 role="switch"
               >
@@ -233,9 +227,6 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
                 />
                 <div
                   class="slider"
-                />
-                <div
-                  class="label"
                 />
               </label>
             </div>
@@ -256,7 +247,7 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             <div>
               <label
                 aria-checked="false"
-                class="label container"
+                class="label label"
                 for="toggle-button-42"
                 role="switch"
               >
@@ -269,9 +260,6 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
                 />
                 <div
                   class="slider"
-                />
-                <div
-                  class="label"
                 />
               </label>
             </div>
@@ -420,7 +408,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
             <div>
               <label
                 aria-checked="false"
-                class="label container"
+                class="label label"
                 for="toggle-button-42"
                 role="switch"
               >
@@ -433,9 +421,6 @@ exports[`<Access/> should show an error and block submit when using a generic do
                 />
                 <div
                   class="slider"
-                />
-                <div
-                  class="label"
                 />
               </label>
             </div>
@@ -456,7 +441,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
             <div>
               <label
                 aria-checked="false"
-                class="label container"
+                class="label label"
                 for="toggle-button-42"
                 role="switch"
               >
@@ -469,9 +454,6 @@ exports[`<Access/> should show an error and block submit when using a generic do
                 />
                 <div
                   class="slider"
-                />
-                <div
-                  class="label"
                 />
               </label>
             </div>
