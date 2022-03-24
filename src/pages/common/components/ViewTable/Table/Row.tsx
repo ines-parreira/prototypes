@@ -90,7 +90,7 @@ export class RowContainer extends Component<Props> {
                                 </div>
                             )
                         }
-                        <CheckBox isChecked={isSelected} readOnly />
+                        <CheckBox isChecked={isSelected} />
                     </td>
                 ) : null}
                 {fields.map((field: Map<any, any>) => (

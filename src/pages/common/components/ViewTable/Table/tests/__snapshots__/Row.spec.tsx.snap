@@ -10,7 +10,6 @@ exports[`ViewTable::Table::Row default row displays 1`] = `
   >
     <ForwardRef(CheckBox)
       isChecked={false}
-      readOnly={true}
     />
   </td>
   <Connect(CellContainer)
@@ -1669,7 +1668,6 @@ exports[`ViewTable::Table::Row display agents viewing 1`] = `
     </div>
     <ForwardRef(CheckBox)
       isChecked={false}
-      readOnly={true}
     />
   </td>
   <Connect(CellContainer)

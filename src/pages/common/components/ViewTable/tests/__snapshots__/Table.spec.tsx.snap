@@ -19,7 +19,6 @@ exports[`<Table /> should display a default view 1`] = `
                 class="input"
                 id="checkbox-2"
                 name="checkbox-2"
-                readonly=""
                 type="checkbox"
               />
             </label>
@@ -128,7 +127,6 @@ exports[`<Table /> should display a view with no fields 1`] = `
                 class="input"
                 id="checkbox-1"
                 name="checkbox-1"
-                readonly=""
                 type="checkbox"
               />
             </label>

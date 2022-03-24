@@ -18,7 +18,6 @@ exports[`ManageTags Table component should display the same number of rows as th
               class="input"
               id="checkbox-1"
               name="checkbox-1"
-              readonly=""
               type="checkbox"
             />
           </label>
@@ -117,7 +116,6 @@ exports[`ManageTags Table component should display the same number of rows as th
               class="input"
               id="checkbox-2"
               name="checkbox-2"
-              readonly=""
               type="checkbox"
             />
           </label>
@@ -194,7 +192,6 @@ exports[`ManageTags Table component should display the same number of rows as th
               class="input"
               id="checkbox-3"
               name="checkbox-3"
-              readonly=""
               type="checkbox"
             />
           </label>
@@ -271,7 +268,6 @@ exports[`ManageTags Table component should display the same number of rows as th
               class="input"
               id="checkbox-4"
               name="checkbox-4"
-              readonly=""
               type="checkbox"
             />
           </label>

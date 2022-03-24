@@ -254,7 +254,6 @@ const TableContainer = ({
                                 <CheckBox
                                     isChecked={areAllSelected}
                                     isIndeterminate={indeterminateCheckbox}
-                                    readOnly
                                 />
                             </td>
                         ) : null}

@@ -126,10 +126,7 @@ export class Row extends Component<Props, State> {
                         className="cell-wrapper cell-short clickable"
                         onClick={this._onSelect}
                     >
-                        <CheckBox
-                            isChecked={meta.get('selected', false)}
-                            readOnly
-                        />
+                        <CheckBox isChecked={meta.get('selected', false)} />
                     </td>
 
                     <td colSpan={100}>
@@ -182,10 +179,7 @@ export class Row extends Component<Props, State> {
                     className="cell-wrapper cell-short clickable"
                     onClick={this._onSelect}
                 >
-                    <CheckBox
-                        isChecked={meta.get('selected', false)}
-                        readOnly
-                    />
+                    <CheckBox isChecked={meta.get('selected', false)} />
                 </td>
 
                 <td className="smallest">

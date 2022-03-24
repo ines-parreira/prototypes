@@ -113,7 +113,7 @@ export class TableContainer extends Component<Props> {
                             className="cell-wrapper cell-short clickable"
                             onClick={onSelectAll}
                         >
-                            <CheckBox isChecked={selectAll} readOnly />
+                            <CheckBox isChecked={selectAll} />
                         </td>
                         {columns.map((column, i) => (
                             <td key={i}>
