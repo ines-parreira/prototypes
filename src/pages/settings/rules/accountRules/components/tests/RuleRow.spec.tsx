@@ -20,6 +20,7 @@ import {
     ruleUpdated,
 } from 'state/entities/rules/actions'
 
+import {ManagedRulesSlugs} from 'state/rules/types'
 import {RuleRow} from '../RuleRow'
 
 jest.mock('models/rule/resources')
@@ -73,7 +74,13 @@ describe('<RuleRow />', () => {
     it('should render a row with a managed rule tab', () => {
         const {container} = render(
             <Provider store={store}>
-                <RuleRow {...minProps} rule={emptyManagedRule} />
+                <RuleRow
+                    {...minProps}
+                    rule={{
+                        ...emptyManagedRule,
+                        settings: {slug: ManagedRulesSlugs.AutoCloseSpam},
+                    }}
+                />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()

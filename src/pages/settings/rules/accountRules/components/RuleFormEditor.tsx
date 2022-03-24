@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
@@ -24,6 +24,10 @@ import {createRule, deleteRule, updateRule} from 'models/rule/resources'
 import history from 'pages/history'
 import {NotificationStatus} from 'state/notifications/types'
 
+import useAppSelector from 'hooks/useAppSelector'
+import {ruleRecipes as getRuleRecipes} from 'state/entities/ruleRecipes/selectors'
+import {fetchRuleRecipes} from 'models/ruleRecipe/resources'
+import {ruleRecipesFetched} from 'state/entities/ruleRecipes/actions'
 import {RuleTicketList} from './RuleTicketList'
 import ManagedRuleEditor from './ruleEditors/ManagedRuleEditor'
 import DefaultRuleEditor from './ruleEditors/DefaultRuleEditor'
@@ -50,8 +54,8 @@ export type ManagedRuleEditorProps<T = ManagedRuleEmptySettings> =
     }
 
 export const RuleFormEditor = ({rule}: Props) => {
-    const [title, setTitle] = useState('')
     const dispatch = useAppDispatch()
+    const ruleRecipes = useAppSelector(getRuleRecipes)
 
     const [{loading: isSubmitting}, handleSubmit] = useAsyncFn(
         async (ruleDraft: Partial<RuleDraft>) => {
@@ -130,11 +134,24 @@ export const RuleFormEditor = ({rule}: Props) => {
         }
     }, [rule])
 
-    useEffect(() => {
-        if (rule) {
-            setTitle(rule.name)
+    const fetchRecipes = async () => {
+        const recipes = await fetchRuleRecipes()
+        dispatch(ruleRecipesFetched(recipes.data))
+    }
+
+    const title = useMemo(() => {
+        if (!rule) {
+            return 'Add rule'
+        } else if (rule.type === RuleType.Managed) {
+            const slug = (rule as ManagedRule).settings.slug
+            if (!ruleRecipes[slug]) {
+                void fetchRecipes()
+            } else {
+                return `[${ruleRecipes[slug].recipe_tag}] ${ruleRecipes[slug].rule.name}`
+            }
         }
-    }, [rule])
+        return rule.name
+    }, [rule, ruleRecipes])
 
     useEffect(() => {
         const unblock = history.block((loc, action) => {
@@ -177,9 +194,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                         <BreadcrumbItem>
                             <Link to="/app/settings/rules">Rules</Link>
                         </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            {rule ? title : 'Add rule'}
-                        </BreadcrumbItem>
+                        <BreadcrumbItem active>{title}</BreadcrumbItem>
                     </Breadcrumb>
                 }
             />

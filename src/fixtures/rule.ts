@@ -1,5 +1,10 @@
 import esprima from 'esprima'
-import {ManagedRule, Rule, RuleType} from '../state/rules/types'
+import {
+    ManagedRule,
+    ManagedRulesSlugs,
+    Rule,
+    RuleType,
+} from '../state/rules/types'
 
 export const emptyRule = {
     id: 1,
@@ -29,6 +34,7 @@ export const emptyManagedRule = {
     priority: 100,
     type: RuleType.Managed,
     uri: '/api/rule/1',
+    settings: {slug: ManagedRulesSlugs.AutoCloseSpam},
 } as ManagedRule
 
 export const rule = {

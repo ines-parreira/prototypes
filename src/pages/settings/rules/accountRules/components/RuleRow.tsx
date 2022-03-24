@@ -25,12 +25,12 @@ import {
 import {getSortedRuleRecipes} from 'state/entities/ruleRecipes/selectors'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
-import {Rule, RuleType} from 'state/rules/types'
+import {ManagedRule, Rule, RuleType} from 'state/rules/types'
 
 import css from './RuleRow.less'
 
 type Props = {
-    rule: Rule
+    rule: Rule | ManagedRule
     canDuplicate: boolean
     handleUpgrade: (id: number) => void
     onActivate: (id: number) => Promise<void>
@@ -162,6 +162,21 @@ export function RuleRow({
         [handleActivate, rule]
     )
 
+    const [ruleName, ruleDescription] = useMemo(() => {
+        if (rule.type === RuleType.Managed) {
+            const recipe = ruleRecipes.find(
+                (recipe) => recipe.slug === (rule as ManagedRule).settings.slug
+            )
+            return recipe
+                ? [
+                      `[${recipe.recipe_tag}] ${recipe.rule.name}`,
+                      recipe.rule.description,
+                  ]
+                : [rule.name, rule.description]
+        }
+        return [rule.name, rule.description]
+    }, [rule, ruleRecipes])
+
     return (
         <tr
             id={rule.id.toString()}
@@ -220,7 +235,7 @@ export function RuleRow({
                 <Link to={link}>
                     <div>
                         <span className={classnames('mr-2', css.name)}>
-                            {rule.name}
+                            {ruleName}
                         </span>
                         {rule.type === 'system' && (
                             <Badge className="ml-2" type={ColorType.Error}>
@@ -319,7 +334,7 @@ export function RuleRow({
                     <PopoverBody>
                         <div className={css.descriptionWrapper}>
                             <div className={css.popoverBody}>
-                                {rule.description}
+                                {ruleDescription}
                             </div>
                         </div>
                     </PopoverBody>
