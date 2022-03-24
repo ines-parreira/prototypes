@@ -4,4 +4,5 @@ export const SMS_INTEGRATION_PREVIEW_ACCOUNTS = [
     'sfbicycles',
     'zachbanov',
     'test-martin',
+    'artemisathletix',
 ]
