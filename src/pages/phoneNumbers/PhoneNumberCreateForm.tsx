@@ -16,7 +16,7 @@ import {phoneNumberCreated} from 'state/entities/phoneNumbers/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import Alert from 'pages/common/components/Alert/Alert'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import Button from 'pages/common/components/button/Button'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -145,7 +145,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                             <Label htmlFor="type" className="control-label">
                                 Title
                             </Label>
-                            <InputField
+                            <DEPRECATED_InputField
                                 placeholder="Ex: Company Support Line"
                                 value={name}
                                 onChange={setName}

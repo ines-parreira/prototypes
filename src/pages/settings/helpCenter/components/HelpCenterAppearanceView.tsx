@@ -6,7 +6,7 @@ import isHexColor from 'validator/lib/isHexColor'
 
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {validLocaleCode} from 'models/helpCenter/utils'
 import {Value} from 'pages/common/forms/SelectField/types'
 
@@ -438,7 +438,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     </div>
                 </div>
                 <div>
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="name"
                         label="Banner title"

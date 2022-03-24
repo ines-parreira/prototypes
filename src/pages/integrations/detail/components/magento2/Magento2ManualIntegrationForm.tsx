@@ -5,7 +5,7 @@ import _some from 'lodash/some'
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../constants/integration'
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 
@@ -91,7 +91,7 @@ export const Magento2ManualIntegrationForm = ({
         >
             <div className="mb-4">
                 {isUpdate ? (
-                    <InputField
+                    <DEPRECATED_InputField
                         key="input"
                         type="text"
                         name="adminUrlSuffix"
@@ -105,7 +105,7 @@ export const Magento2ManualIntegrationForm = ({
                         required={false}
                     />
                 ) : (
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="name"
                         label="Store admin URL"
@@ -130,7 +130,7 @@ export const Magento2ManualIntegrationForm = ({
                 )}
             </div>
             <div className="mb-4">
-                <InputField
+                <DEPRECATED_InputField
                     key="input"
                     type="text"
                     name="consumerKey"
@@ -144,7 +144,7 @@ export const Magento2ManualIntegrationForm = ({
                 />
             </div>
             <div className="mb-4">
-                <InputField
+                <DEPRECATED_InputField
                     key="input"
                     type="text"
                     name="consumerSecret"
@@ -158,7 +158,7 @@ export const Magento2ManualIntegrationForm = ({
                 />
             </div>
             <div className="mb-4">
-                <InputField
+                <DEPRECATED_InputField
                     key="input"
                     type="text"
                     name="accessToken"
@@ -172,7 +172,7 @@ export const Magento2ManualIntegrationForm = ({
                 />
             </div>
             <div className="mb-4">
-                <InputField
+                <DEPRECATED_InputField
                     key="input"
                     type="text"
                     name="accessTokenSecret"

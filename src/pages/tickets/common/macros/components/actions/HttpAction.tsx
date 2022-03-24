@@ -11,7 +11,7 @@ import {
 import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import JsonField from 'pages/common/forms/JsonField'
 
 import ParametersEditor from '../ParametersEditor'
@@ -91,7 +91,7 @@ export default class HttpAction extends React.Component<Props> {
 
         return (
             <div className="http">
-                <InputField
+                <DEPRECATED_InputField
                     type="text"
                     name="title"
                     label="Title"
@@ -102,7 +102,7 @@ export default class HttpAction extends React.Component<Props> {
                 />
                 <Row className="form-row">
                     <Col xs="3">
-                        <InputField
+                        <DEPRECATED_InputField
                             type="select"
                             name="method"
                             label="Method"
@@ -118,10 +118,10 @@ export default class HttpAction extends React.Component<Props> {
                                     {method}
                                 </option>
                             ))}
-                        </InputField>
+                        </DEPRECATED_InputField>
                     </Col>
                     <Col xs="9">
-                        <InputField
+                        <DEPRECATED_InputField
                             type="url"
                             title="Example: https://company.com/api"
                             name="url"

@@ -11,11 +11,11 @@ import _clone from 'lodash/clone'
 import _isError from 'lodash/isError'
 import {Form} from 'reactstrap'
 
-import {submitCustomer} from '../../../../state/customers/actions.ts'
-import InputField from '../../../common/forms/InputField'
-import Button from '../../../common/components/button/Button.tsx'
-
 import CustomerChannelFieldArray from './CustomerChannelFieldArray'
+
+import {submitCustomer} from 'state/customers/actions.ts'
+import Button from 'pages/common/components/button/Button.tsx'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
 const defaultContent = {
     name: '',
@@ -194,7 +194,7 @@ class CustomerForm extends React.Component {
         return (
             <Form onSubmit={this._handleSubmit}>
                 <div className="mb-2">
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="name"
                         label="Name"
@@ -205,7 +205,7 @@ class CustomerForm extends React.Component {
                         onChange={(name) => this._updateField({name})}
                         error={this.state.errors.name}
                     />
-                    <InputField
+                    <DEPRECATED_InputField
                         type="textarea"
                         name="note"
                         label="Note"

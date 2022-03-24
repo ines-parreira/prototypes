@@ -3,7 +3,7 @@ import {Form} from 'reactstrap'
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {makeGetMagento2IntegrationByStoreUrl} from '../../../../../state/integrations/selectors'
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
 import {RootState} from '../../../../../state/types'
@@ -85,7 +85,7 @@ export const Magento2OneClickIntegrationForm = ({
         >
             <div className="mb-4">
                 {isUpdate ? (
-                    <InputField
+                    <DEPRECATED_InputField
                         key="input"
                         type="text"
                         name="admin_url_suffix"
@@ -103,7 +103,7 @@ export const Magento2OneClickIntegrationForm = ({
                         required
                     />
                 ) : (
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="name"
                         label="Store admin URL"

@@ -28,7 +28,7 @@ import {
 } from 'state/billing/selectors'
 import Loader from 'pages/common/components/Loader/Loader'
 import {loadScript} from 'utils'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import PageHeader from 'pages/common/components/PageHeader'
 import * as currentAccountSelectors from 'state/currentAccount/selectors'
@@ -412,7 +412,7 @@ export class CreditCardContainer extends Component<Props, State> {
                             )}
                             <h3>Payment information</h3>
                             <Form onSubmit={this._submit}>
-                                <InputField
+                                <DEPRECATED_InputField
                                     type="text"
                                     name="name"
                                     label="Name on the card"
@@ -426,7 +426,7 @@ export class CreditCardContainer extends Component<Props, State> {
                                 />
                                 <Row className={css.formRow}>
                                     <Col className={css.formColumn} sm={7}>
-                                        <InputField
+                                        <DEPRECATED_InputField
                                             type="text"
                                             name="number"
                                             label="Card number"
@@ -445,7 +445,7 @@ export class CreditCardContainer extends Component<Props, State> {
                                         />
                                     </Col>
                                     <Col className={css.formColumn}>
-                                        <InputField
+                                        <DEPRECATED_InputField
                                             type="text"
                                             name="expDate"
                                             label="Expiry date"
@@ -465,7 +465,7 @@ export class CreditCardContainer extends Component<Props, State> {
                                         />
                                     </Col>
                                     <Col className={css.formColumn}>
-                                        <InputField
+                                        <DEPRECATED_InputField
                                             type="text"
                                             name="cvc"
                                             label="CVC"

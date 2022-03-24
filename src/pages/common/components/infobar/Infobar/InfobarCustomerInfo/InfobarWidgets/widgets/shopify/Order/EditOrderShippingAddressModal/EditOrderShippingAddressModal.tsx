@@ -40,7 +40,7 @@ import {
 import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
 import {states} from '../../../../../../../../../../../fixtures/states'
 import SelectField from '../../../../../../../../../forms/SelectField/SelectField'
-import InputField from '../../../../../../../../../forms/InputField'
+import DEPRECATED_InputField from '../../../../../../../../../forms/DEPRECATED_InputField'
 import Loader from '../../../../../../../../Loader/Loader'
 import Modal from '../../../../../../../../Modal'
 import {IntegrationContext} from '../../../IntegrationContext'
@@ -352,7 +352,7 @@ export function EditOrderShippingAddressModal({
                     </div>
                     <div className="row">
                         <div className="col">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="firstName"
                                 label="First Name"
@@ -364,7 +364,7 @@ export function EditOrderShippingAddressModal({
                             />
                         </div>
                         <div className="col">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="lastName"
                                 label="Last Name"
@@ -379,7 +379,7 @@ export function EditOrderShippingAddressModal({
                     </div>
                     <div className="row">
                         <div className="col">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="company"
                                 label="Company"
@@ -391,7 +391,7 @@ export function EditOrderShippingAddressModal({
                             />
                         </div>
                         <div className="col">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="phone"
                                 label="Phone"
@@ -405,7 +405,7 @@ export function EditOrderShippingAddressModal({
                     </div>
                     <div className="row">
                         <div className="col">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="address1"
                                 label="Address 1"
@@ -418,7 +418,7 @@ export function EditOrderShippingAddressModal({
                             />
                         </div>
                         <div className="col">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="address2"
                                 label="Address 2"
@@ -516,7 +516,7 @@ export function EditOrderShippingAddressModal({
                     )}
                     <div className="row">
                         <div className="col">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="city"
                                 label="City"
@@ -529,7 +529,7 @@ export function EditOrderShippingAddressModal({
                             />
                         </div>
                         <div className="col">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="zip"
                                 label="ZIP/Postal code"

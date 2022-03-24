@@ -15,7 +15,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
-import InputField, {InputFieldProps} from './InputField'
+import DEPRECATED_InputField, {InputFieldProps} from './DEPRECATED_InputField'
 import css from './FileField.less'
 
 const DEFAULT_ERROR = 'Failed to upload files. Please try again later.'
@@ -43,7 +43,7 @@ type State = {
     isUploading: boolean
 }
 
-export class FileFieldContainer extends InputField<Props> {
+export class FileFieldContainer extends DEPRECATED_InputField<Props> {
     static defaultProps: Pick<
         Props,
         | 'noPreview'

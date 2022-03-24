@@ -10,18 +10,17 @@ import {Map} from 'immutable'
 
 import {CallForwardingCountries} from 'business/twilio'
 import {AVAILABLE_LANGUAGES} from 'config'
+import {EditableUserProfile, User, UserSetting} from 'config/types/user'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
-import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/InputField'
 import FileField, {UploadType} from 'pages/common/forms/FileField'
+import CheckBox from 'pages/common/forms/CheckBox'
+import InputField from 'pages/common/forms/input/InputField'
+import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import {EditableUserProfile, User, UserSetting} from 'config/types/user'
-
-import settingsCss from '../../settings.less'
+import settingsCss from 'pages/settings/settings.less'
 
 const defaultContent: Pick<
     State,
@@ -29,7 +28,7 @@ const defaultContent: Pick<
 > = {
     name: '',
     email: '',
-    password_confirmation: null,
+    password_confirmation: '',
     bio: '',
     timezone: '',
     language: '',
@@ -54,7 +53,7 @@ type State = {
     name: string
     preferences: Map<unknown, unknown>
     profilePictureUrl?: string
-    password_confirmation: null | string
+    password_confirmation?: string
     timezone: string
 }
 
@@ -133,7 +132,7 @@ export default class YourProfileView extends Component<Props, State> {
         if (user.email === normalizedValues.email) {
             this.setState({
                 hasChangedEmail: false,
-                password_confirmation: null,
+                password_confirmation: '',
             })
         }
     }
@@ -172,11 +171,10 @@ export default class YourProfileView extends Component<Props, State> {
                         <div className="flex flex-wrap">
                             <div className={settingsCss.leftSideWrapper}>
                                 <InputField
-                                    type="text"
                                     name="name"
                                     label="Your name"
                                     placeholder="John Doe"
-                                    required
+                                    isRequired
                                     value={this.state.name}
                                     onChange={(name) => this.setState({name})}
                                     className={settingsCss.inputField}
@@ -186,7 +184,7 @@ export default class YourProfileView extends Component<Props, State> {
                                     name="email"
                                     label="Your email"
                                     placeholder="john.doe@acme.com"
-                                    required
+                                    isRequired
                                     value={this.state.email}
                                     onChange={this._onEmailChange}
                                     className={settingsCss.inputField}
@@ -197,7 +195,7 @@ export default class YourProfileView extends Component<Props, State> {
                                         name="password_confirmation"
                                         label="Password confirmation"
                                         placeholder="Your password"
-                                        required
+                                        isRequired
                                         value={password_confirmation}
                                         onChange={(password_confirmation) =>
                                             this.setState({
@@ -211,7 +209,7 @@ export default class YourProfileView extends Component<Props, State> {
                                     type="text"
                                     name="bio"
                                     label="Your bio"
-                                    help={
+                                    caption={
                                         <span>
                                             Your bio can be used in signatures
                                             as a variable. Admins can set up

@@ -1,13 +1,13 @@
 import React from 'react'
-import {mount, ReactWrapper} from 'enzyme'
 import {fromJS} from 'immutable'
-
-import InputField from '../../../common/forms/InputField'
+import {fireEvent, Matcher, render, waitFor} from '@testing-library/react'
 
 import {ChangePasswordContainer} from '../ChangePassword'
 
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+
 type fillInFormTypes = {
-    component: ReactWrapper
+    getAllByLabelText: (text: Matcher) => HTMLElement[]
     currentPwd?: string
     newPwd?: string
     confirmNewPwd?: string
@@ -23,60 +23,26 @@ const defaultProps = {
     changePassword: mockChangePassword,
 }
 
-const INVALID_FEEDBACK_CLASS = '.invalid-feedback'
-const OLD_PASSWORD_INPUT_INDEX = 0
-const NEW_PASSWORD_INPUT_INDEX = 1
-const CONFIRM_NEW_PASSWORD_INPUT_INDEX = 2
 const DEFAULT_CURRENT_PWD = 'test1234'
 const DEFAULT_NEW_PWD = 'test12345'
 const DEFAULT_CONFIRM_PWD = 'test12345'
 
 const fillInForm = ({
-    component,
+    getAllByLabelText,
     currentPwd = DEFAULT_CURRENT_PWD,
     newPwd = DEFAULT_NEW_PWD,
     confirmNewPwd = DEFAULT_CONFIRM_PWD,
 }: fillInFormTypes) => {
-    const current = component
-        .find(InputField)
-        .at(OLD_PASSWORD_INPUT_INDEX)
-        .find('input')
-    const newpwd = component
-        .find(InputField)
-        .at(NEW_PASSWORD_INPUT_INDEX)
-        .find('input')
-    const confirm = component
-        .find(InputField)
-        .at(CONFIRM_NEW_PASSWORD_INPUT_INDEX)
-        .find('input')
-
-    current.simulate('change', {
-        target: {
-            value: currentPwd,
-        },
+    fireEvent.change(getAllByLabelText(/Current password/i)[0], {
+        target: {value: currentPwd},
     })
-
-    newpwd.simulate('change', {
-        target: {
-            value: newPwd,
-        },
+    fireEvent.change(getAllByLabelText(/New password/i)[0], {
+        target: {value: newPwd},
     })
-
-    confirm.simulate('change', {
-        target: {
-            value: confirmNewPwd,
-        },
+    fireEvent.change(getAllByLabelText(/Confirm new password/i)[0], {
+        target: {value: confirmNewPwd},
     })
 }
-
-const findConfirmNewPasswordInput = (component: ReactWrapper) =>
-    component.find(InputField).at(CONFIRM_NEW_PASSWORD_INPUT_INDEX)
-
-const findNewPasswordInput = (component: ReactWrapper) =>
-    component.find(InputField).at(NEW_PASSWORD_INPUT_INDEX)
-
-const findOldPasswordInput = (component: ReactWrapper) =>
-    component.find(InputField).at(OLD_PASSWORD_INPUT_INDEX)
 
 beforeEach(() => {
     jest.clearAllMocks()
@@ -85,48 +51,44 @@ beforeEach(() => {
 describe('<ChangePassword />', () => {
     describe('render', () => {
         it('should render the password form', () => {
-            const component = mount(
+            const {container} = render(
                 <ChangePasswordContainer {...defaultProps} />
             )
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 
     describe('Update fields', () => {
         it('should not display error message when having two identical password', () => {
-            const component = mount(
+            const {getAllByLabelText, queryByText} = render(
                 <ChangePasswordContainer {...defaultProps} />
             )
-            fillInForm({component})
-            const confirmPasswordValidate = findConfirmNewPasswordInput(
-                component
-            ).find(INVALID_FEEDBACK_CLASS)
 
-            expect(confirmPasswordValidate).toEqual({})
+            fillInForm({
+                getAllByLabelText,
+                newPwd: 'test12345',
+                confirmNewPwd: 'test12345',
+            })
+
+            expect(queryByText(/Passwords do not match/i)).toBeNull()
         })
 
         it('should display the error message when having two different passwords', () => {
-            const component = mount(
+            const {getByText, getAllByLabelText} = render(
                 <ChangePasswordContainer {...defaultProps} />
             )
             fillInForm({
-                component,
+                getAllByLabelText,
                 newPwd: 'test1234',
                 confirmNewPwd: 'test12345',
             })
-            const confirmPasswordValidate = findConfirmNewPasswordInput(
-                component
-            ).find(INVALID_FEEDBACK_CLASS)
-
-            expect(confirmPasswordValidate).toExist()
-            expect(confirmPasswordValidate.text()).toBe(
-                'Passwords do not match.'
-            )
+            expect(getByText(/Passwords do not match/i)).toBeTruthy()
         })
     })
 
     describe('handleSubmit', () => {
-        it('should display error below the current password field when submitting the wrong one', (done) => {
+        it('should display error below the current password field when submitting the wrong one', async () => {
+            const errorMessage = 'error_generic'
             const mockChangePassword = jest.fn().mockResolvedValue({
                 reason: 'error',
                 error: {
@@ -134,7 +96,7 @@ describe('<ChangePassword />', () => {
                         data: {
                             error: {
                                 data: {
-                                    old_password: 'error_generic',
+                                    old_password: errorMessage,
                                 },
                             },
                         },
@@ -142,30 +104,25 @@ describe('<ChangePassword />', () => {
                 },
             })
 
-            const component = mount(
+            const {getAllByText, getAllByLabelText} = render(
                 <ChangePasswordContainer
-                    currentUser={fromJS({})}
+                    {...defaultProps}
                     changePassword={mockChangePassword}
                 />
             )
 
-            fillInForm({component})
-            const form = component.find('form')
-            form.simulate('submit')
-            setImmediate(() => {
-                component.update()
+            fillInForm({getAllByLabelText})
+            fireEvent.click(getAllByText(/Update Password/i)[1])
+            await waitFor(() => {
                 expect(mockChangePassword).toHaveBeenLastCalledWith(
                     DEFAULT_CURRENT_PWD,
                     DEFAULT_NEW_PWD
                 )
-                expect(
-                    findOldPasswordInput(component).find(INVALID_FEEDBACK_CLASS)
-                ).toExist()
-                done()
+                getAllByText(errorMessage)[0]
             })
         })
 
-        it('should not disable button if network error', (done) => {
+        it('should not disable button if network error', async () => {
             const mockChangePassword = jest.fn().mockResolvedValue({
                 reason: 'error',
                 error: {
@@ -173,58 +130,57 @@ describe('<ChangePassword />', () => {
                 },
             })
 
-            const component = mount(
+            const {getAllByText, getAllByLabelText} = render(
                 <ChangePasswordContainer
-                    currentUser={fromJS({})}
+                    {...defaultProps}
                     changePassword={mockChangePassword}
                 />
             )
 
-            fillInForm({component})
-            const form = component.find('form')
-            form.simulate('submit')
-            setImmediate(() => {
-                component.update()
+            fillInForm({getAllByLabelText})
+            const button = getAllByText(/Update Password/i)[1]
+            fireEvent.click(button)
+            await waitFor(() => {
                 expect(mockChangePassword).toHaveBeenLastCalledWith(
                     DEFAULT_CURRENT_PWD,
                     DEFAULT_NEW_PWD
                 )
-                expect(component.find('button').find('.disabled')).not.toExist()
-                done()
+                expect(button).toMatchSnapshot()
             })
         })
 
-        it('should empty all the fields when submit successful', (done) => {
-            const component = mount(
+        it('should empty all the fields when submit successful', async () => {
+            const {getAllByText, getAllByLabelText} = render(
                 <ChangePasswordContainer {...defaultProps} />
             )
 
-            fillInForm({component})
-            const form = component.find('form')
-            form.simulate('submit')
+            fillInForm({getAllByLabelText})
+            const button = getAllByText(/Update Password/i)[1]
+            fireEvent.click(button)
 
-            setImmediate(() => {
-                component.update()
+            await waitFor(() => {
                 expect(mockChangePassword).toHaveBeenLastCalledWith(
                     DEFAULT_CURRENT_PWD,
                     DEFAULT_NEW_PWD
                 )
-
-                const afterUpdate = {
-                    current: findOldPasswordInput(component).find('input'),
-                    new: findNewPasswordInput(component).find('input'),
-                    confirm:
-                        findConfirmNewPasswordInput(component).find('input'),
-                }
-
-                expect(afterUpdate.current.props().value).toBe('')
-                expect(afterUpdate.new.props().value).toBe('')
-                expect(afterUpdate.confirm.props().value).toBe('')
-
                 expect(
-                    findOldPasswordInput(component).find(INVALID_FEEDBACK_CLASS)
-                ).toEqual({})
-                done()
+                    (
+                        getAllByLabelText(
+                            /Current password/i
+                        )[0] as HTMLInputElement
+                    ).value
+                ).toBe('')
+                expect(
+                    (getAllByLabelText(/New password/i)[0] as HTMLInputElement)
+                        .value
+                ).toBe('')
+                expect(
+                    (
+                        getAllByLabelText(
+                            /Confirm new password/i
+                        )[0] as HTMLInputElement
+                    ).value
+                ).toBe('')
             })
         })
     })

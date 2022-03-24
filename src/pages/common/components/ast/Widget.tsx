@@ -9,7 +9,7 @@ import {EditorState} from 'draft-js'
 import {Input} from 'reactstrap'
 import {InputType} from 'reactstrap/lib/Input'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import DatePicker from '../../../common/forms/DatePicker'
 
 import {humanizeString} from '../../../../utils'
@@ -147,7 +147,7 @@ export class Widget extends Component<Props, State> {
         const {config = {}, className, compact} = this.props
 
         return (
-            <InputField
+            <DEPRECATED_InputField
                 className={className}
                 type={type}
                 label={config.name as string}
@@ -165,7 +165,7 @@ export class Widget extends Component<Props, State> {
         const {config = {}, className} = this.props
 
         return (
-            <InputField
+            <DEPRECATED_InputField
                 className={className}
                 type="textarea"
                 rows="8"

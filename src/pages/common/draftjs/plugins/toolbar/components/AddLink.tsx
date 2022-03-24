@@ -3,7 +3,7 @@ import React, {Component, KeyboardEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
 import Button from 'pages/common/components/button/Button'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {linkifyWithTemplate, removeLink} from '../../utils'
 import {
     getEntitySelectionState,
@@ -196,7 +196,7 @@ export class AddLinkContainer extends Component<Props> {
                 onClose={this.props.onClose}
             >
                 <div className={css.wrapper} onKeyDown={this._onKeyDown}>
-                    <InputField
+                    <DEPRECATED_InputField
                         className={css.field}
                         label="Link text"
                         placeholder="Ex. Help Center Article"
@@ -204,7 +204,7 @@ export class AddLinkContainer extends Component<Props> {
                         value={this.props.text}
                         autoFocus={!this.props.text}
                     />
-                    <InputField
+                    <DEPRECATED_InputField
                         className={css.field}
                         label="URL"
                         placeholder="https://help.domain.com/article"

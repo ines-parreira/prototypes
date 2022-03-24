@@ -14,7 +14,7 @@ import {Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {AppendPosition} from 'pages/common/components/layout/Group'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
@@ -243,7 +243,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         }
 
         return currentOption.parameters.map((parameter: Parameter) => {
-            let InputTag: ComponentType<any> = InputField
+            let InputTag: ComponentType<any> = DEPRECATED_InputField
 
             if (parameter.type === 'checkbox') {
                 InputTag = DEPRECATED_BooleanField

@@ -9,20 +9,19 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
-import InputField from 'pages/common/forms/InputField'
-import {Attachment} from 'models/ticket/types'
-import {generateDefaultAction} from 'state/macro/utils'
-import {MacroActionName} from 'models/macroAction/types'
+import {ACTION_TEMPLATES} from 'config'
 import {IntegrationType} from 'models/integration/types'
+import {MacroActionName} from 'models/macroAction/types'
+import {Attachment} from 'models/ticket/types'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {generateDefaultAction} from 'state/macro/utils'
 import {RootState} from 'state/types'
 import {getActionTemplate, humanizeString} from 'utils'
-import {ACTION_TEMPLATES} from 'config'
 import {ActionTemplate} from 'types'
-
-import * as ticketTypes from 'state/ticket/constants'
-import * as newMessageTypes from 'state/newMessage/constants'
-import * as integrationsSelectors from 'state/integrations/selectors'
 import {getSortedIntegrationActionsNames} from 'pages/tickets/common/utils'
+import * as integrationsSelectors from 'state/integrations/selectors'
+import * as newMessageTypes from 'state/newMessage/constants'
+import * as ticketTypes from 'state/ticket/constants'
 
 import SetStatusAction from './actions/SetStatusAction'
 import SetSubjectAction from './actions/SetSubjectAction'
@@ -181,7 +180,7 @@ export class MacroEdit extends Component<Props> {
                         <div className={classnames('mb-2', css.title)}>
                             Macro name
                         </div>
-                        <InputField
+                        <DEPRECATED_InputField
                             type="text"
                             name="name"
                             onChange={this.props.setName}

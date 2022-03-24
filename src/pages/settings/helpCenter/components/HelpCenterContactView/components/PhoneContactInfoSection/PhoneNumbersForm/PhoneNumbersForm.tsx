@@ -5,9 +5,9 @@ import {produce} from 'immer'
 
 import Button from 'pages/common/components/button/Button'
 
-import {ContactPhoneNumber} from '../../../../../../../../models/helpCenter/types'
-import InputField from '../../../../../../../common/forms/InputField'
-import PhoneNumberInput from '../../../../../../../common/forms/PhoneNumberInput/PhoneNumberInput'
+import {ContactPhoneNumber} from 'models/helpCenter/types'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
 import css from './PhoneNumbersForm.less'
 
@@ -55,7 +55,7 @@ const PhoneNumbersForm: React.FC<Props> = ({
                     <FormGroup>
                         <Label className="control-label">Reference</Label>
                         {phoneNumbers.map((phoneNumber, index) => (
-                            <InputField
+                            <DEPRECATED_InputField
                                 key={`${phoneNumber.phone_number}-${index}`}
                                 value={phoneNumber.reference}
                                 onChange={changePhoneNumber('reference', index)}

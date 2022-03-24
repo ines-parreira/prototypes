@@ -19,7 +19,7 @@ import {notify} from 'state/notifications/actions'
 import Modal from 'pages/common/components/Modal'
 import Button from 'pages/common/components/button/Button'
 import Alert from 'pages/common/components/Alert/Alert'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {errorToChildren} from 'utils'
 
@@ -215,7 +215,7 @@ export default function PhoneNumberCreateModalForm({
                                     >
                                         Title
                                     </Label>
-                                    <InputField
+                                    <DEPRECATED_InputField
                                         placeholder="Ex: Company Support Line"
                                         value={name}
                                         onChange={setName}

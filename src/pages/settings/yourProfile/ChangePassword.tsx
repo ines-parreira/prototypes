@@ -6,11 +6,10 @@ import {Form} from 'reactstrap'
 import {AxiosError} from 'axios'
 
 import Button from 'pages/common/components/button/Button'
-import InputField from 'pages/common/forms/InputField'
-
-import {changePassword} from '../../../state/currentUser/actions'
-import {RootState} from '../../../state/types'
-import settingsCss from '../settings.less'
+import InputField from 'pages/common/forms/input/InputField'
+import settingsCss from 'pages/settings/settings.less'
+import {changePassword} from 'state/currentUser/actions'
+import {RootState} from 'state/types'
 
 import css from './ChangePassword.less'
 
@@ -76,11 +75,14 @@ export const ChangePasswordContainer = ({
     return (
         <>
             <div
-                className={classnames('heading-subsection-semibold', css.mb16)}
+                className={classnames(
+                    'heading-subsection-semibold',
+                    settingsCss.inputField
+                )}
             >
                 Update password
             </div>
-            <div className={classnames('body-regular', css.mb16)}>
+            <div className={classnames('body-regular', settingsCss.inputField)}>
                 Enter your current password to confirm your identity, then the
                 new password you would like to set instead.
             </div>
@@ -93,10 +95,11 @@ export const ChangePasswordContainer = ({
             >
                 <InputField
                     type="password"
+                    id="old_password"
                     name="old_password"
                     label="Current password"
                     placeholder="Current password"
-                    required
+                    isRequired
                     value={oldPassword}
                     onChange={(value) => {
                         const updatedErrors = {
@@ -112,12 +115,13 @@ export const ChangePasswordContainer = ({
                 />
                 <InputField
                     type="password"
+                    id="new_password"
                     name="new_password"
                     label="New password"
                     placeholder="New password"
                     pattern={USER_PASSWORD_VALIDATION_PATTERN}
                     title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long and contain at least 1 lower case letter, 1 upper case letter and 1 digit.`}
-                    required
+                    isRequired
                     value={newPassword}
                     onChange={(value) => {
                         setDirty(true)
@@ -128,12 +132,13 @@ export const ChangePasswordContainer = ({
                 />
                 <InputField
                     type="password"
+                    id="confirm_new_password"
                     name="confirm_new_password"
                     label="Confirm new password"
                     placeholder="Confirm new password"
                     pattern={USER_PASSWORD_VALIDATION_PATTERN}
                     title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long and contain at least 1 lower case letter, 1 upper case letter and 1 digit.`}
-                    required
+                    isRequired
                     value={confirmNewPassword}
                     onChange={(value) => {
                         setDirty(true)

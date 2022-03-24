@@ -39,21 +39,28 @@ exports[`<Form /> should render 1`] = `
       class=""
     >
       <div
-        class="InputField required form-group"
-        color=""
+        class="inputField"
       >
         <label
-          class="control-label"
-          for="id-name"
+          class="label label"
+          for="input-text-42"
         >
           Name
+          <abbr
+            aria-label="required"
+            class="abbr"
+            title="required"
+          >
+            *
+          </abbr>
         </label>
         <div
-          class=""
+          class="wrapper"
         >
           <input
-            class="form-control"
-            id="id-name"
+            class="input"
+            id="input-text-42"
+            name="name"
             placeholder="John Doe"
             required=""
             type="text"
@@ -62,21 +69,28 @@ exports[`<Form /> should render 1`] = `
         </div>
       </div>
       <div
-        class="InputField required form-group"
-        color=""
+        class="inputField"
       >
         <label
-          class="control-label"
-          for="id-email"
+          class="label label"
+          for="input-text-42"
         >
           Email
+          <abbr
+            aria-label="required"
+            class="abbr"
+            title="required"
+          >
+            *
+          </abbr>
         </label>
         <div
-          class=""
+          class="wrapper"
         >
           <input
-            class="form-control"
-            id="id-email"
+            class="input"
+            id="input-text-42"
+            name="email"
             placeholder="john@doe.com"
             required=""
             type="email"
@@ -293,21 +307,28 @@ exports[`<Form /> should render with 2FA information when enabled 1`] = `
       class=""
     >
       <div
-        class="InputField required form-group"
-        color=""
+        class="inputField"
       >
         <label
-          class="control-label"
-          for="id-name"
+          class="label label"
+          for="input-text-42"
         >
           Name
+          <abbr
+            aria-label="required"
+            class="abbr"
+            title="required"
+          >
+            *
+          </abbr>
         </label>
         <div
-          class=""
+          class="wrapper"
         >
           <input
-            class="form-control"
-            id="id-name"
+            class="input"
+            id="input-text-42"
+            name="name"
             placeholder="John Doe"
             required=""
             type="text"
@@ -316,21 +337,28 @@ exports[`<Form /> should render with 2FA information when enabled 1`] = `
         </div>
       </div>
       <div
-        class="InputField required form-group"
-        color=""
+        class="inputField"
       >
         <label
-          class="control-label"
-          for="id-email"
+          class="label label"
+          for="input-text-42"
         >
           Email
+          <abbr
+            aria-label="required"
+            class="abbr"
+            title="required"
+          >
+            *
+          </abbr>
         </label>
         <div
-          class=""
+          class="wrapper"
         >
           <input
-            class="form-control"
-            id="id-email"
+            class="input"
+            id="input-text-42"
+            name="email"
             placeholder="john@doe.com"
             required=""
             type="email"

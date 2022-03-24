@@ -5,6 +5,8 @@ import {createBrowserHistory, createLocation} from 'history'
 
 import {FormContainer} from '../Form'
 
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+
 const agent = {
     id: 2,
     name: 'Acme Support',

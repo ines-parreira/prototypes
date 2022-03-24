@@ -17,23 +17,23 @@ import {
 import {NavLink, RouteComponentProps, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
-import InputField from 'pages/common/forms/InputField'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
+import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import InputField from 'pages/common/forms/input/InputField'
+import history from 'pages/history'
+import settingsCss from 'pages/settings/settings.less'
 import {
     createTeam,
     deleteTeam,
     fetchTeam,
     updateTeam,
-} from '../../../state/teams/actions'
-import Loader from '../../common/components/Loader/Loader'
-import PageHeader from '../../common/components/PageHeader'
-import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'
-import EmojiPicker from '../../common/components/EmojiPicker/EmojiPicker'
-import history from '../../history'
-import settingsCss from '../settings.less'
+} from 'state/teams/actions'
 
 import css from './Form.less'
 
@@ -163,10 +163,12 @@ export class FormContainer extends Component<Props, State> {
                     <BootstrapForm onSubmit={this._onSubmit}>
                         <Row>
                             <Col lg={6}>
-                                <div className={'d-flex'}>
+                                <div className="d-flex">
                                     <InputField
-                                        className={'flex-grow'}
-                                        type="text"
+                                        className={classnames(
+                                            'flex-grow',
+                                            css.inputField
+                                        )}
                                         name="name"
                                         label="Name"
                                         placeholder="Awesome team"
@@ -176,10 +178,13 @@ export class FormContainer extends Component<Props, State> {
                                                 team: team.set('name', value),
                                             })
                                         }
-                                        required
+                                        isRequired
                                     />
                                     <FormGroup
-                                        className={'ml-2 align-self-end'}
+                                        className={classnames(
+                                            'ml-2 align-self-end',
+                                            css.inputField
+                                        )}
                                     >
                                         <ButtonGroup>
                                             <Button
@@ -239,7 +244,7 @@ export class FormContainer extends Component<Props, State> {
                                             )}
                                         </ButtonGroup>
                                         <Popover
-                                            placement={'right'}
+                                            placement="right"
                                             isOpen={
                                                 this.state.isEmojiPickerOpen
                                             }
@@ -249,7 +254,7 @@ export class FormContainer extends Component<Props, State> {
                                             className={css.popover}
                                             trigger="legacy"
                                         >
-                                            <PopoverBody className={'p-0'}>
+                                            <PopoverBody className="p-0">
                                                 <EmojiPicker
                                                     showPreview={false}
                                                     onClick={(
@@ -272,7 +277,7 @@ export class FormContainer extends Component<Props, State> {
                                     </FormGroup>
                                 </div>
                                 <InputField
-                                    type="text"
+                                    className={css.inputField}
                                     name="description"
                                     label="Description"
                                     placeholder="Works on making things awesome!"

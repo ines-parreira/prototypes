@@ -1,10 +1,10 @@
 import React, {useMemo} from 'react'
 import classNames from 'classnames'
 
-import InputField from 'pages/common/forms/InputField'
-import Tooltip from '../../../../../../common/components/Tooltip'
-import {HELP_CENTER_DOMAIN} from '../../../../constants'
-import {isValidSubdomain} from '../../../../utils/validations'
+import Tooltip from 'pages/common/components/Tooltip'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {HELP_CENTER_DOMAIN} from 'pages/settings/helpCenter/constants'
+import {isValidSubdomain} from 'pages/settings/helpCenter/utils/validations'
 
 import css from './SubdomainInput.less'
 
@@ -66,7 +66,7 @@ export const SubdomainInput: React.FC<SubdomainInputProps> = ({
     }, [value, error])
 
     return (
-        <InputField
+        <DEPRECATED_InputField
             className={classNames(css.input, {
                 [css.error]: !!error,
             })}

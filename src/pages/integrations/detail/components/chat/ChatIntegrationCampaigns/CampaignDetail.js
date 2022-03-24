@@ -22,7 +22,7 @@ import CampaignPreview from './CampaignPreview.tsx'
 import css from './CampaignDetail.less'
 
 import ChatIntegrationNavigation from 'pages/integrations/detail/components/chat/ChatIntegrationNavigation.tsx'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField.tsx'
 import RichField from 'pages/common/forms/RichField/RichField.tsx'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -73,7 +73,7 @@ class ValueInput extends React.Component {
         switch (keyConfig.getIn(['value', 'input'])) {
             case 'text':
                 return (
-                    <InputField
+                    <DEPRECATED_InputField
                         type="input"
                         name="value"
                         value={triggerValue || ''}
@@ -82,7 +82,7 @@ class ValueInput extends React.Component {
                 )
             case 'number': {
                 return (
-                    <InputField
+                    <DEPRECATED_InputField
                         className={css.secondsCounter}
                         type="number"
                         step="1"
@@ -423,7 +423,7 @@ export class CampaignForm extends React.Component {
                     <Col>
                         <Form onSubmit={this._handleSubmit}>
                             <div className="mb-4">
-                                <InputField
+                                <DEPRECATED_InputField
                                     type="input"
                                     name="name"
                                     label="Campaign name"

@@ -19,7 +19,7 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 import RichField from 'pages/common/forms/RichField/RichField'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import CampaignPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationCampaigns/CampaignPreview'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
@@ -287,7 +287,7 @@ export const GorgiasChatCampaignDetailForm = ({
                 <div className={css.formWrapper}>
                     <Form onSubmit={handleSubmit}>
                         <div className="mb-4">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="name"
                                 label="Campaign name"

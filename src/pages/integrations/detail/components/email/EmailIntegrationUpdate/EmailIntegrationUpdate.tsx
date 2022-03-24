@@ -25,7 +25,7 @@ import {IntegrationType} from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
 import css from 'pages/settings/settings.less'
 import {
@@ -461,7 +461,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
             <div className="mt-4">
                 <h3>Settings</h3>
                 <Form onSubmit={this._handleSubmit}>
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="name"
                         label="Address name"

@@ -18,7 +18,7 @@ import Button from 'pages/common/components/button/Button'
 import ColorField from 'pages/common/forms/ColorField'
 import {isSimpleTemplateWidget} from 'pages/common/components/infobar/utils'
 import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import FileField, {UploadType} from 'pages/common/forms/FileField'
 import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 
@@ -130,7 +130,7 @@ const WidgetEdit = ({
     return (
         <div ref={wrapperRef}>
             <Form onSubmit={handleSubmit}>
-                <InputField
+                <DEPRECATED_InputField
                     type="text"
                     name="card.title"
                     label="Title"
@@ -141,7 +141,7 @@ const WidgetEdit = ({
                     }
                 />
                 {!editionHiddenFields.includes('link') && (
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="card.meta.link"
                         label="Link"
@@ -203,7 +203,7 @@ const WidgetEdit = ({
                 )}
                 {isParentList && (
                     <>
-                        <InputField
+                        <DEPRECATED_InputField
                             key="limit"
                             type="number"
                             name="list.meta.limit"
@@ -217,7 +217,7 @@ const WidgetEdit = ({
                                 }))
                             }
                         />
-                        <InputField
+                        <DEPRECATED_InputField
                             key="order"
                             type="select"
                             name="list.meta.orderBy"
@@ -246,7 +246,7 @@ const WidgetEdit = ({
                                     })
                                 }
                             )}
-                        </InputField>
+                        </DEPRECATED_InputField>
                     </>
                 )}
 

@@ -18,7 +18,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {
     deleteIntegration,
     fetchIntegration,
@@ -155,7 +155,7 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                 <Container fluid className={css.pageContainer}>
                     <Row>
                         <Col md="8">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="name"
                                 label="Integration name"

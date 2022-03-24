@@ -9,8 +9,8 @@ import {
 import produce from 'immer'
 import {set as _set} from 'lodash'
 
-import {ContentType} from '../../../../../../../../../../../models/api/types'
-import InputField from '../../../../../../../../../forms/InputField'
+import {ContentType} from 'models/api/types'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
 import {Action, Parameter} from '../../types'
 
@@ -37,7 +37,7 @@ function ActionEditor({action, onSubmit, onClose}: Props) {
             params?.map(({editable, label, key, value, mandatory}, index) => {
                 if (!editable) return null
                 return (
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         key={index}
                         name={key}

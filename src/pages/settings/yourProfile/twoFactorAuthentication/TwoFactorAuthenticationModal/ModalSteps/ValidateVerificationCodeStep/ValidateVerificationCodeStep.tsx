@@ -1,9 +1,9 @@
 import React, {Dispatch, SetStateAction} from 'react'
 import classnames from 'classnames'
 
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import settingsCss from 'pages/settings/settings.less'
 import css from '../ModalSteps.less'
-import settingsCss from '../../../../../settings.less'
-import InputField from '../../../../../../common/forms/InputField'
 
 type OwnProps = {
     setVerificationCode: Dispatch<SetStateAction<string>>
@@ -21,7 +21,7 @@ export default function ValidateVerificationCodeStep({
                 Enter the 6-digit verification code generated from your
                 authenticator app.
             </div>
-            <InputField
+            <DEPRECATED_InputField
                 type="number"
                 name="verificationCode"
                 placeholder="Enter 6-digit verification code from app"

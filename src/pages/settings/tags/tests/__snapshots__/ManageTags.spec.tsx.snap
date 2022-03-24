@@ -56,13 +56,11 @@ exports[`ManageTags component mounts correctly 1`] = `
                 <div
                   className="mr-2"
                 >
-                  <InputField
+                  <ForwardRef(TextInput)
                     autoFocus={true}
-                    inline={true}
+                    isRequired={true}
                     onChange={[Function]}
                     placeholder="New tag name"
-                    required={true}
-                    type="text"
                     value=""
                   />
                 </div>

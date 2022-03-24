@@ -1,7 +1,7 @@
 import React from 'react'
 
-import InputField from '../../../../../../common/forms/InputField'
-import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {useHelpCenterPreferencesSettings} from 'pages/settings/helpCenter/providers/HelpCenterPreferencesSettings'
 
 export const DisplayName: React.FC = () => {
     const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
@@ -12,7 +12,7 @@ export const DisplayName: React.FC = () => {
     }
     return (
         <section>
-            <InputField
+            <DEPRECATED_InputField
                 type="text"
                 name="name"
                 label="Brand name"

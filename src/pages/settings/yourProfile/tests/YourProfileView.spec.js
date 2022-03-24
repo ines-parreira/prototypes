@@ -114,7 +114,7 @@ describe('YourProfileView', () => {
                             updateCurrentUserSpy.mock.calls
                         ).toMatchSnapshot()
                         expect(component.state.hasChangedEmail).toBe(false)
-                        expect(component.state.password_confirmation).toBe(null)
+                        expect(component.state.password_confirmation).toBe('')
                         done()
                     })
             }

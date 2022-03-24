@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 import {EmailContactInfoDto} from 'models/helpCenter/types'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import ContactCard from '../ContactCard'
@@ -43,7 +43,7 @@ const EmailContactInfoSection: React.FC = () => {
                 >
                     Email card
                 </ToggleInput>
-                <InputField
+                <DEPRECATED_InputField
                     type="textarea"
                     label="Description text"
                     value={description}
@@ -67,7 +67,7 @@ const EmailContactInfoSection: React.FC = () => {
                             : undefined
                     }
                 />
-                <InputField
+                <DEPRECATED_InputField
                     type="email"
                     label="Email"
                     value={email}

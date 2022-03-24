@@ -11,7 +11,7 @@ import Button from 'pages/common/components/button/Button'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {ensureHTTPS} from 'utils/url'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import {
@@ -118,14 +118,14 @@ export default function Editor(props: Props) {
         >
             <PopoverBody>
                 <Form onSubmit={handleSubmit}>
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="redirectionLink.title"
                         label="Title"
                         defaultValue={redirectionLinkTitle}
                         onChange={(value) => setRedirectionLinkTitle(value)}
                     />
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="redirectionLink.url"
                         value={redirectionLinkUrl}

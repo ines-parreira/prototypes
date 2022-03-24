@@ -3,7 +3,7 @@ import {List} from 'immutable'
 import {Row, Col, Button} from 'reactstrap'
 import classNames from 'classnames'
 
-import InputField from './InputField'
+import DEPRECATED_InputField from './DEPRECATED_InputField'
 import css from './ListField.less'
 
 type Props = {
@@ -49,7 +49,7 @@ export default class ListField extends Component<Props> {
                 {items.map((item: Map<any, any>, index) => (
                     <Row key={index} className={css.row}>
                         <Col className="flex-grow pr-0">
-                            <InputField
+                            <DEPRECATED_InputField
                                 className="my-0"
                                 name={`item-${index!}`}
                                 type="text"

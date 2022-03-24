@@ -13,7 +13,7 @@ import {
     Table,
 } from 'reactstrap'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {
     fetchIntegration,
     updateOrCreateIntegration,
@@ -121,7 +121,7 @@ export const ImportZendeskDetail = (
                 <div className="row mb-4">
                     <div className="col-sm-12 col-md-7 col-lg-4">
                         <div className="md-4">
-                            <InputField
+                            <DEPRECATED_InputField
                                 readOnly
                                 type="text"
                                 name="domain"

@@ -2,22 +2,22 @@ import React, {ComponentProps} from 'react'
 import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import InputField from '../InputField'
+import DEPRECATED_InputField from '../DEPRECATED_InputField'
 
 describe('InputField', () => {
-    const minProps: ComponentProps<typeof InputField> = {
+    const minProps: ComponentProps<typeof DEPRECATED_InputField> = {
         value: 'value',
         onChange: _noop,
     }
 
     it('should use default props', () => {
-        const component = mount(<InputField {...minProps} />)
+        const component = mount(<DEPRECATED_InputField {...minProps} />)
         expect(component.find('InputField').props()).toMatchSnapshot()
     })
 
     it('should render a basic text input', () => {
         const component = shallow(
-            <InputField
+            <DEPRECATED_InputField
                 {...minProps}
                 type="text"
                 label="label"
@@ -28,35 +28,47 @@ describe('InputField', () => {
     })
 
     it('should render a required text input', () => {
-        const component = shallow(<InputField {...minProps} required />)
+        const component = shallow(
+            <DEPRECATED_InputField {...minProps} required />
+        )
         expect(component).toMatchSnapshot()
     })
 
     it('should render an inline text input', () => {
-        const component = shallow(<InputField {...minProps} inline />)
+        const component = shallow(
+            <DEPRECATED_InputField {...minProps} inline />
+        )
         expect(component).toMatchSnapshot()
     })
 
     it('should render a help text', () => {
-        const component = shallow(<InputField {...minProps} help="help text" />)
+        const component = shallow(
+            <DEPRECATED_InputField {...minProps} help="help text" />
+        )
         expect(component).toMatchSnapshot()
     })
 
     it('should render a tooltip next to the label', () => {
         const component = shallow(
-            <InputField {...minProps} label="Label" tooltip="I am a tooltip" />
+            <DEPRECATED_InputField
+                {...minProps}
+                label="Label"
+                tooltip="I am a tooltip"
+            />
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should render an inline required text input', () => {
-        const component = shallow(<InputField {...minProps} required inline />)
+        const component = shallow(
+            <DEPRECATED_InputField {...minProps} required inline />
+        )
         expect(component).toMatchSnapshot()
     })
 
     it('should render a text input with a right addon', () => {
         const component = shallow(
-            <InputField {...minProps} rightAddon="@rightaddon.io" />
+            <DEPRECATED_InputField {...minProps} rightAddon="@rightaddon.io" />
         )
         expect(component).toMatchSnapshot()
     })
@@ -65,7 +77,7 @@ describe('InputField', () => {
         let valueStorage = 'value'
 
         const component = mount(
-            <InputField
+            <DEPRECATED_InputField
                 {...minProps}
                 value={valueStorage}
                 onChange={(value) => {
@@ -85,7 +97,7 @@ describe('InputField', () => {
         const onChangeSpy = jest.fn()
 
         const component = mount(
-            <InputField
+            <DEPRECATED_InputField
                 {...minProps}
                 type="number"
                 value="value"
@@ -101,18 +113,22 @@ describe('InputField', () => {
     })
 
     it('should render a hidden text input', () => {
-        const component = shallow(<InputField {...minProps} hidden />)
+        const component = shallow(
+            <DEPRECATED_InputField {...minProps} hidden />
+        )
         expect(component).toMatchSnapshot()
     })
 
     it('should render a text input with a suffix', () => {
-        const component = shallow(<InputField {...minProps} suffix="px" />)
+        const component = shallow(
+            <DEPRECATED_InputField {...minProps} suffix="px" />
+        )
         expect(component).toMatchSnapshot()
     })
 
     it('should render the input with an error', () => {
         const component = shallow(
-            <InputField {...minProps} error="the value is wrong" />
+            <DEPRECATED_InputField {...minProps} error="the value is wrong" />
         )
         expect(component).toMatchSnapshot()
     })
@@ -121,7 +137,7 @@ describe('InputField', () => {
         let valueStorage = 'value'
 
         const component = mount(
-            <InputField
+            <DEPRECATED_InputField
                 {...minProps}
                 value={valueStorage}
                 onChange={(value) => {

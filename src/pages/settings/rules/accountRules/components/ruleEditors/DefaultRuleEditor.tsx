@@ -24,7 +24,7 @@ import history from 'pages/history'
 
 import {updateCodeAst} from 'pages/common/components/ast/utils.js'
 import {getSchemas} from 'state/schemas/selectors'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -202,7 +202,7 @@ export function DefaultRuleEditor({
                 >
                     Rule name
                 </Label>
-                <InputField
+                <DEPRECATED_InputField
                     id="ruleName"
                     invalid={!ruleDraft.name}
                     onChange={(name: string) =>
@@ -213,7 +213,7 @@ export function DefaultRuleEditor({
                 <Label for="ruleDescription" className={css.label}>
                     Rule description
                 </Label>
-                <InputField
+                <DEPRECATED_InputField
                     id="ruleDescription"
                     onChange={(description: string) =>
                         setRuleDraft({...ruleDraft, description})

@@ -6,7 +6,7 @@ import _capitalize from 'lodash/capitalize'
 import classnames from 'classnames'
 import {Container, Form, Button, Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
 import {displayRestrictedSymbols} from '../../../../../../utils'
 import {notify} from '../../../../../../state/notifications/actions'
@@ -124,7 +124,7 @@ export class EmailIntegrationCreateCustom extends Component<Props, State> {
 
                     <div className={css.form}>
                         <Form onSubmit={this._handleSubmit}>
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="name"
                                 label="Address name"
@@ -135,7 +135,7 @@ export class EmailIntegrationCreateCustom extends Component<Props, State> {
                                 onChange={(name) => this._setName(name)}
                                 error={errors.name}
                             />
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="email"
                                 name="meta.address"
                                 label="Email address"

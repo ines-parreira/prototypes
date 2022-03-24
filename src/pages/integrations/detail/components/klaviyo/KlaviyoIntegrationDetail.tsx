@@ -24,7 +24,7 @@ import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -309,7 +309,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                 {isUpdate && <h3>Settings</h3>}
                                 <Form onSubmit={this._handleSubmit}>
                                     <FormGroup>
-                                        <InputField
+                                        <DEPRECATED_InputField
                                             type="text"
                                             name="name"
                                             label="Integration name"
@@ -330,7 +330,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                 </FormText>
                                             )}
                                             {isActive && (
-                                                <InputField
+                                                <DEPRECATED_InputField
                                                     type="text"
                                                     name="apiPublicKey"
                                                     label="API public key"
@@ -343,7 +343,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                     required
                                                 />
                                             )}
-                                            <InputField
+                                            <DEPRECATED_InputField
                                                 type="text"
                                                 name="apiPrivateKey"
                                                 label="API private key"
@@ -444,7 +444,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                 </FormText>
                                             </p>
 
-                                            <InputField
+                                            <DEPRECATED_InputField
                                                 type="select"
                                                 value={customerDefaultList}
                                                 onChange={(list: unknown[]) => {
@@ -476,7 +476,7 @@ export default class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                         </option>
                                                     )
                                                 )}
-                                            </InputField>
+                                            </DEPRECATED_InputField>
                                         </FormGroup>
                                     )}
                                     <br />

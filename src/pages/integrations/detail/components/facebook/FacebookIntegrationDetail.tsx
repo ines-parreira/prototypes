@@ -22,7 +22,7 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import css from 'pages/settings/settings.less'
 import * as billingSelectors from 'state/billing/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
@@ -589,7 +589,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                         </FormGroup>
                     </div>
 
-                    <InputField
+                    <DEPRECATED_InputField
                         type="select"
                         value={this.state.language}
                         options={FACEBOOK_LANGUAGE_OPTIONS.toJS()}
@@ -606,7 +606,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                 </option>
                             )
                         )}
-                    </InputField>
+                    </DEPRECATED_InputField>
 
                     <div>
                         <Button

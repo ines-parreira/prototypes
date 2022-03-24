@@ -6,7 +6,7 @@ Object {
   "email": "",
   "language": "",
   "name": "",
-  "password_confirmation": null,
+  "password_confirmation": "",
   "timezone": "",
 }
 `;
@@ -113,27 +113,25 @@ exports[`YourProfileView render should render current user profile form 1`] = `
         >
           <InputField
             className="inputField"
+            isRequired={true}
             label="Your name"
             name="name"
             onChange={[Function]}
             placeholder="John Doe"
-            required={true}
-            type="text"
             value="Alex Plugaru"
           />
           <InputField
             className="inputField"
+            isRequired={true}
             label="Your email"
             name="email"
             onChange={[Function]}
             placeholder="john.doe@acme.com"
-            required={true}
             type="email"
             value="alex@gorgias.io"
           />
           <InputField
-            className="inputField"
-            help={
+            caption={
               <span>
                 Your bio can be used in signatures as a variable. Admins can set up signatures
                  
@@ -144,6 +142,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                 </Link>
               </span>
             }
+            className="inputField"
             label="Your bio"
             name="bio"
             onChange={[Function]}

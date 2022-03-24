@@ -3,11 +3,9 @@ import PropTypes from 'prop-types'
 import {Form} from 'reactstrap'
 import _pick from 'lodash/pick'
 
-import {IntegrationType} from '../../../../../../../../../models/integration/types/index.ts'
-
-import InputField from '../../../../../../../forms/InputField'
-
+import {IntegrationType} from 'models/integration/types/index.ts'
 import Button from 'pages/common/components/button/Button'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
 class WidgetEditField extends React.Component {
     state = {
@@ -46,7 +44,7 @@ class WidgetEditField extends React.Component {
         const widgetType = this.props.widget.get('type')
         return (
             <Form onSubmit={this._handleSubmit}>
-                <InputField
+                <DEPRECATED_InputField
                     type="text"
                     name="title"
                     label="Title"
@@ -54,7 +52,7 @@ class WidgetEditField extends React.Component {
                     value={this.state.title}
                     onChange={(title) => this.setState({title})}
                 />
-                <InputField
+                <DEPRECATED_InputField
                     type="select"
                     name="type"
                     label="Type"
@@ -77,7 +75,7 @@ class WidgetEditField extends React.Component {
                     <option value="rating">Rating</option>
                     <option value="points">Points</option>
                     <option value="percent">Percent</option>
-                </InputField>
+                </DEPRECATED_InputField>
 
                 <div>
                     <Button type="submit" className="mr-2">

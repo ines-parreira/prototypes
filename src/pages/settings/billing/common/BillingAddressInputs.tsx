@@ -2,10 +2,10 @@ import React, {useMemo} from 'react'
 import {Row, Col} from 'reactstrap'
 import produce from 'immer'
 
-import InputField from '../../../common/forms/InputField'
-import untypedCountries from '../../../../config/countries.json'
-import {SelectableOption} from '../../../common/forms/SelectField/types'
-import {BillingContact} from '../../../../state/billing/types'
+import untypedCountries from 'config/countries.json'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import {BillingContact} from 'state/billing/types'
 
 import css from './BillingAddressInputs.less'
 
@@ -28,7 +28,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
 
     return (
         <>
-            <InputField
+            <DEPRECATED_InputField
                 help="Invoices are sent to this email address."
                 label="Email"
                 name="email"
@@ -45,7 +45,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
 
             <Row className={css.formRow}>
                 <Col className={css.formColumn} lg={6}>
-                    <InputField
+                    <DEPRECATED_InputField
                         name="name"
                         label="Company name"
                         onChange={(name) =>
@@ -59,7 +59,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
                     />
                 </Col>
                 <Col className={css.formColumn} lg={6}>
-                    <InputField
+                    <DEPRECATED_InputField
                         label="Phone number"
                         name="phone"
                         onChange={(phone) =>
@@ -73,7 +73,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
                     />
                 </Col>
             </Row>
-            <InputField
+            <DEPRECATED_InputField
                 label="Street address"
                 name="line1"
                 onChange={(address) =>
@@ -86,7 +86,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
                 required
                 value={value.shipping.address.line1}
             />
-            <InputField
+            <DEPRECATED_InputField
                 label="Suite/Unit"
                 name="line2"
                 onChange={(addressComplement) =>
@@ -100,7 +100,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
             />
             <Row className={css.formRow}>
                 <Col className={css.formColumn} lg={6}>
-                    <InputField
+                    <DEPRECATED_InputField
                         name="country"
                         label="Country"
                         onChange={(country) =>
@@ -121,10 +121,10 @@ export default function BillingAddressInputs({onChange, value}: Props) {
                                 {label}
                             </option>
                         ))}
-                    </InputField>
+                    </DEPRECATED_InputField>
                 </Col>
                 <Col className={css.formColumn} lg={6}>
-                    <InputField
+                    <DEPRECATED_InputField
                         label="Zip code"
                         name="postalCode"
                         onChange={(postalCode) =>
@@ -142,7 +142,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
             </Row>
             <Row className={css.formRow}>
                 <Col className={css.formColumn} lg={isCountryUnitedStates && 6}>
-                    <InputField
+                    <DEPRECATED_InputField
                         name="city"
                         label="City"
                         onChange={(city) =>
@@ -158,7 +158,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
                 </Col>
                 {isCountryUnitedStates && (
                     <Col className={css.formColumn} lg={6}>
-                        <InputField
+                        <DEPRECATED_InputField
                             label="State"
                             name="state"
                             onChange={(state) =>

@@ -8,7 +8,7 @@ import {
     PhoneType,
 } from 'models/phoneNumber/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import type {SelectableOption} from 'pages/common/forms/SelectField/types'
 
 import rawCountryOptions from './options/countries.json'
@@ -264,7 +264,7 @@ export default function PhoneDetailsFields({
                             >
                                 Area code
                             </Label>
-                            <InputField
+                            <DEPRECATED_InputField
                                 value={area_code}
                                 onChange={handleAreaCodeChange}
                                 disabled

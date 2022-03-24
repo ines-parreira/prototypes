@@ -9,14 +9,14 @@ import {
 import produce from 'immer'
 import {set as _set} from 'lodash'
 
-import InputField from '../../../../../../../../../../forms/InputField'
+import {ContentType, HttpMethod} from 'models/api/types'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {
-    ContentType,
-    HttpMethod,
-} from '../../../../../../../../../../../../models/api/types'
-
-import {Button as ButtonType, OnSubmitButton, Parameter} from '../../../types'
-import {httpMethodsWithBody} from '../../httpMethodsWithBody'
+    Button as ButtonType,
+    OnSubmitButton,
+    Parameter,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
 
 import Action from './Action'
 
@@ -78,7 +78,7 @@ function Form({button = initialState, onSubmit, index, onClose}: Props) {
             <ModalHeader toggle={onClose}>Configure HTTP action</ModalHeader>
             <ReactStrapForm onSubmit={handleSubmit}>
                 <ModalBody>
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="label"
                         label="Button title"

@@ -12,7 +12,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import css from 'pages/settings/settings.less'
 import {
     activateIntegration,
@@ -325,7 +325,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                         or contact us.
                     </p>
                     <Form onSubmit={this._handleSubmit}>
-                        <InputField
+                        <DEPRECATED_InputField
                             type="text"
                             name="name"
                             label="Integration name"
@@ -333,7 +333,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                             onChange={(value) => this.setState({name: value})}
                             required
                         />
-                        <InputField
+                        <DEPRECATED_InputField
                             type="text"
                             name="description"
                             label="Description"
@@ -381,7 +381,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                 Ticket message created
                             </CheckBox>
                         </FormGroup>
-                        <InputField
+                        <DEPRECATED_InputField
                             type="url"
                             error={validateWebhookURL(url)}
                             name="http.url"
@@ -409,7 +409,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                             value={url}
                             onChange={(value) => this.setState({url: value})}
                         />
-                        <InputField
+                        <DEPRECATED_InputField
                             type="select"
                             name="http.method"
                             label="HTTP Method"
@@ -422,9 +422,9 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                     {method}
                                 </option>
                             ))}
-                        </InputField>
+                        </DEPRECATED_InputField>
                         {method !== HttpMethod.Get && (
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="select"
                                 name="http.request_content_type"
                                 label="Request content type"
@@ -440,9 +440,9 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                 <option value={ContentType.Form}>
                                     {ContentType.Form}
                                 </option>
-                            </InputField>
+                            </DEPRECATED_InputField>
                         )}
-                        <InputField
+                        <DEPRECATED_InputField
                             type="select"
                             name="http.response_content_type"
                             label="Response content type"
@@ -455,7 +455,7 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                             <option value={ContentType.Json}>
                                 {ContentType.Json}
                             </option>
-                        </InputField>
+                        </DEPRECATED_InputField>
                         <FormGroup>
                             <ObjectListField
                                 title="Header"

@@ -3,7 +3,7 @@ import React from 'react'
 import {Form} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {SectionDraft} from '../../../models/section/types'
 import Modal from '../../common/components/Modal'
 import EmojiSelect from '../../common/components/ViewTable/EmojiSelect/EmojiSelect'
@@ -59,7 +59,7 @@ export default function SectionFormModal({
                         }
                         onEmojiClear={() => onChange('decoration', null)}
                     />
-                    <InputField
+                    <DEPRECATED_InputField
                         autoFocus
                         className={classnames('flex-grow', css.nameInput)}
                         type="text"

@@ -39,7 +39,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import ColorField from 'pages/common/forms/ColorField'
 import FileField, {UploadType} from 'pages/common/forms/FileField'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import settingsCss from 'pages/settings/settings.less'
 import {
@@ -301,7 +301,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                             <Form onSubmit={this._handleSubmit}>
                                 <div className={css.form}>
                                     <div className={css.fieldset}>
-                                        <InputField
+                                        <DEPRECATED_InputField
                                             type="text"
                                             label="Chat title"
                                             value={name}
@@ -312,7 +312,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                             required
                                         />
 
-                                        <InputField
+                                        <DEPRECATED_InputField
                                             type="text"
                                             value={introductionText}
                                             onFocus={() =>
@@ -329,7 +329,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                             }
                                         />
 
-                                        <InputField
+                                        <DEPRECATED_InputField
                                             type="text"
                                             value={offlineIntroductionText}
                                             onFocus={() => {
@@ -425,7 +425,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                             label="Conversation color"
                                         />
 
-                                        <InputField
+                                        <DEPRECATED_InputField
                                             type="select"
                                             value={language}
                                             options={SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS.toJS()}
@@ -446,7 +446,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                                     </option>
                                                 )
                                             )}
-                                        </InputField>
+                                        </DEPRECATED_InputField>
                                     </div>
                                 </div>
 

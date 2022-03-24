@@ -1,7 +1,7 @@
 import React, {ComponentProps, useEffect, useState} from 'react'
 
 import CheckBox from '../CheckBox'
-import InputField, {InputFieldProps} from '../InputField'
+import DEPRECATED_InputField, {InputFieldProps} from '../DEPRECATED_InputField'
 
 import css from './AutoPopulateInput.less'
 
@@ -12,7 +12,7 @@ type Props = Omit<InputProps, 'value' | 'onChange'> & {
     populateValue: string
 } & InputFieldProps<string | null>
 
-type InputProps = ComponentProps<typeof InputField>
+type InputProps = ComponentProps<typeof DEPRECATED_InputField>
 
 const AutoPopulateInput = ({
     value,
@@ -40,7 +40,7 @@ const AutoPopulateInput = ({
 
     return (
         <div className={css.container}>
-            <InputField
+            <DEPRECATED_InputField
                 {...inputProps}
                 value={inputValue}
                 onChange={onChange}

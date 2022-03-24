@@ -10,7 +10,7 @@ import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import {isProduction} from '../../../../../utils/environment'
 import Loader from '../../../../common/components/Loader/Loader'
-import InputField from '../../../../common/forms/InputField'
+import DEPRECATED_InputField from '../../../../common/forms/DEPRECATED_InputField'
 import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
@@ -239,7 +239,7 @@ export const CustomDomain = () => {
             <HelpText isHidden={currentDomain?.status === 'active'} />
             <div className={css.domainForm}>
                 <div className={css.domainInput}>
-                    <InputField
+                    <DEPRECATED_InputField
                         disabled={!!currentDomain?.status}
                         help="Add a custom domain"
                         label="Custom domain"

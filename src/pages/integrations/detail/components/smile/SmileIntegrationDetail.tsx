@@ -10,7 +10,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
 import Loader from '../../../../common/components/Loader/Loader'
-import InputField from '../../../../common/forms/InputField'
+import DEPRECATED_InputField from '../../../../common/forms/DEPRECATED_InputField'
 import PageHeader from '../../../../common/components/PageHeader'
 import LinkAlert from '../../../../common/components/Alert/LinkAlert'
 import {
@@ -163,7 +163,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                                     </LinkAlert>
                                 ))}
 
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="name"
                                 label="Integration name"

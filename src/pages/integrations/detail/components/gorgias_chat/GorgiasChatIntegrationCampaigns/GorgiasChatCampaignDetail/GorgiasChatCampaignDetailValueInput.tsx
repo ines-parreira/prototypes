@@ -2,8 +2,8 @@ import React, {FocusEvent} from 'react'
 import {Map} from 'immutable'
 import classNames from 'classnames'
 
-import InputField from '../../../../../../common/forms/InputField'
-import {Value} from '../../../../../../common/forms/SelectField/types'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {Value} from 'pages/common/forms/SelectField/types'
 
 type Props = {
     keyConfig: Map<any, any>
@@ -23,7 +23,7 @@ export const GorgiasChatCampaignDetailValueInput = ({
     switch (keyConfig.getIn(['value', 'input'])) {
         case 'text':
             return (
-                <InputField
+                <DEPRECATED_InputField
                     type="text"
                     className={classNames('flex-grow-1', 'mb-0', className)}
                     name="value"
@@ -33,7 +33,7 @@ export const GorgiasChatCampaignDetailValueInput = ({
             )
         case 'number': {
             return (
-                <InputField
+                <DEPRECATED_InputField
                     className={classNames('flex-grow-1', 'mb-0', className)}
                     type="number"
                     step="1"

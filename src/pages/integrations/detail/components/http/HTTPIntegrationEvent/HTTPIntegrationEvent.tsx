@@ -5,7 +5,7 @@ import {Col, Container, Row} from 'reactstrap'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
 import Loader from 'pages/common/components/Loader/Loader'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import settingsCss from 'pages/settings/settings.less'
 import {fetchHTTPIntegrationEvent} from 'state/HTTPIntegrationEvents/actions'
@@ -178,7 +178,7 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
                                                 with the GET HTTP Method.
                                             </Badge>
                                         ) : null}
-                                        <InputField
+                                        <DEPRECATED_InputField
                                             type="textarea"
                                             value={requestJSONParams}
                                             rows={countLines(requestJSONParams)}
@@ -196,7 +196,7 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
                                     <HTTPParams params={requestFormBody} />
                                 ) : null}
                                 {requestJSONBody ? (
-                                    <InputField
+                                    <DEPRECATED_InputField
                                         type="textarea"
                                         value={requestJSONBody}
                                         rows={countLines(requestJSONBody)}
@@ -219,7 +219,7 @@ export class HTTPIntegrationEventContainer extends Component<Props, State> {
                             </HTTPItem>
                             <HTTPItem name="Body" value={responseBody}>
                                 {responseBody ? (
-                                    <InputField
+                                    <DEPRECATED_InputField
                                         type="textarea"
                                         value={responseBody}
                                         rows={countLines(responseBody)}

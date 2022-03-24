@@ -5,7 +5,7 @@ import {Breadcrumb, BreadcrumbItem, Container, Form} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import PageHeader from 'pages/common/components/PageHeader'
 import {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} from 'config'
 import {createImportIntegration} from 'state/integrations/actions'
@@ -90,7 +90,7 @@ export const ImportZendeskCreate = (
                     onSubmit={onSubmit}
                     className="col-sm-12 col-md-7 col-lg-4 pl-0"
                 >
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="domain"
                         label="Zendesk subdomain"
@@ -104,7 +104,7 @@ export const ImportZendeskCreate = (
                                 : null
                         }
                     />
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="email"
                         label="Login email"
@@ -112,7 +112,7 @@ export const ImportZendeskCreate = (
                         onChange={(value: string) => setEmail(value)}
                         required
                     />
-                    <InputField
+                    <DEPRECATED_InputField
                         className="mb-4"
                         type="text"
                         name="apiKey"

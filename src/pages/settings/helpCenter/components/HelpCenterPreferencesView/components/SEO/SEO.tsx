@@ -4,7 +4,7 @@ import {
     HelpCenter,
     HelpCenterTranslationSeoMeta,
 } from '../../../../../../../models/helpCenter/types'
-import InputField from '../../../../../../common/forms/InputField'
+import DEPRECATED_InputField from '../../../../../../common/forms/DEPRECATED_InputField'
 import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
 import {
     getAbsoluteUrl,
@@ -48,7 +48,7 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
                 </div>
             </div>
 
-            <InputField
+            <DEPRECATED_InputField
                 type="text"
                 name="seoTitle"
                 label="Meta Title"
@@ -56,7 +56,7 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
                 onChange={onEditSeoMeta('title')}
                 help="Help center title is displayed in search engines to help people find it."
             />
-            <InputField
+            <DEPRECATED_InputField
                 type="textarea"
                 rows="2"
                 name="seoDescription"

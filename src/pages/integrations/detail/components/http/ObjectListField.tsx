@@ -6,7 +6,7 @@ import {Row, Col} from 'reactstrap'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
 export type Field = {key: any; value: any}
 
@@ -53,7 +53,7 @@ export default class ObjectListField extends Component<Props> {
                 {fields.map((header, index) => (
                     <Row key={index} className="mb-3 form-row">
                         <Col xs="5">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="key"
                                 placeholder="Key"
@@ -73,7 +73,7 @@ export default class ObjectListField extends Component<Props> {
                             />
                         </Col>
                         <Col className="flex-grow">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 name="value"
                                 placeholder="Value"

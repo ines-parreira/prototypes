@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import _clone from 'lodash/clone'
 import {FormGroup, Label, Row, Col} from 'reactstrap'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -42,7 +42,7 @@ class CustomerChannelFieldArray extends React.Component {
                 {fields.map((contact, index) => (
                     <Row key={index} className="mb-3 form-row">
                         <Col md="10" xs="9">
-                            <InputField
+                            <DEPRECATED_InputField
                                 type={type}
                                 name={`${contact}.address`}
                                 placeholder={placeholder}

@@ -4,7 +4,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
-import {RootState, StoreDispatch} from '../../../../state/types'
+
+import {RootState, StoreDispatch} from 'state/types'
 import PasswordAnd2FA from '../PasswordAnd2FA'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

@@ -1,16 +1,15 @@
 import React from 'react'
 import {FormGroup, Label} from 'reactstrap'
 
-import {AVAILABLE_HTTP_METHODS} from '../../../../../../../../../../../../config'
+import {AVAILABLE_HTTP_METHODS} from 'config'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
+
 import {
-    validateWebhookURL,
-    validateWebhookURLToPattern,
-} from '../../../../../../../../../../../../utils'
-
-import InputField from '../../../../../../../../../../forms/InputField'
-
-import {Action as ActionType, OnChangeAction} from '../../../types'
-import {httpMethodsWithBody} from '../../httpMethodsWithBody'
+    Action as ActionType,
+    OnChangeAction,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
 
 import css from '../../ActionButtons.less'
 
@@ -27,7 +26,7 @@ export default function Action({action, onChange}: Props) {
         <div className="http">
             <div className={css.formParamRow}>
                 <div>
-                    <InputField
+                    <DEPRECATED_InputField
                         type="select"
                         name="method"
                         label="Method"
@@ -40,10 +39,10 @@ export default function Action({action, onChange}: Props) {
                                 {method}
                             </option>
                         ))}
-                    </InputField>
+                    </DEPRECATED_InputField>
                 </div>
                 <div className={css.formParamLargeCol}>
-                    <InputField
+                    <DEPRECATED_InputField
                         type="text"
                         name="url"
                         label="URL"

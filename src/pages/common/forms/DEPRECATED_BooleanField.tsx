@@ -5,8 +5,8 @@ import {FormGroup, Label, Input as BootstrapInput, FormText} from 'reactstrap'
 
 import {defined} from 'utils'
 import Errors from './Errors'
-import InputField, {InputFieldProps} from './InputField'
-import css from './InputField.less'
+import InputField, {InputFieldProps} from './DEPRECATED_InputField'
+import css from './DEPRECATED_InputField.less'
 
 type Props = InputFieldProps<boolean>
 

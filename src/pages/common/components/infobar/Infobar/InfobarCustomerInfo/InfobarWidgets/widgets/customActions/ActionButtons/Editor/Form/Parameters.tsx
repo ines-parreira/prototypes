@@ -2,11 +2,11 @@ import React, {memo, useEffect, useState} from 'react'
 import {Button} from 'reactstrap'
 import debounce from 'lodash/debounce'
 
-import InputField from 'pages/common/forms/InputField'
-import Tooltip from '../../../../../../../../../Tooltip'
-import Errors from '../../../../../../../../../../forms/Errors'
-import {MAX_HEADER_LENGTH} from '../../../../../../../../../../../../config'
-import {hasUnicodeChars} from '../../../../../../../../../../../../utils'
+import {MAX_HEADER_LENGTH} from 'config'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import Tooltip from 'pages/common/components/Tooltip'
+import Errors from 'pages/common/forms/Errors'
+import {hasUnicodeChars} from 'utils'
 
 import {Parameter, OnChangeAction} from '../../../types'
 
@@ -59,7 +59,7 @@ function Parameters({value, path, onChange}: Props) {
                         className={`${css.formParamRow} ${css.squash}`}
                     >
                         <div>
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 placeholder="Key"
                                 defaultValue={field.key}
@@ -75,7 +75,7 @@ function Parameters({value, path, onChange}: Props) {
                             />
                         </div>
                         <div>
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 placeholder="Value"
                                 defaultValue={field.value}
@@ -89,7 +89,7 @@ function Parameters({value, path, onChange}: Props) {
                             />
                         </div>
                         <div>
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 placeholder="Edit Label"
                                 defaultValue={field.label}

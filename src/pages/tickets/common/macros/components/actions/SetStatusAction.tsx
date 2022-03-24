@@ -3,7 +3,7 @@ import {fromJS, Map} from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
 
 import {TICKET_STATUSES} from 'config'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
 type Props = {
     action: Map<string, any>
@@ -24,7 +24,7 @@ export default class SetStatusAction extends React.Component<Props> {
 
         return (
             <div className="field">
-                <InputField
+                <DEPRECATED_InputField
                     type="select"
                     value={action.getIn(['arguments', 'status'])}
                     onChange={(value) =>
@@ -37,7 +37,7 @@ export default class SetStatusAction extends React.Component<Props> {
                             {_upperFirst(status)}
                         </option>
                     ))}
-                </InputField>
+                </DEPRECATED_InputField>
             </div>
         )
     }

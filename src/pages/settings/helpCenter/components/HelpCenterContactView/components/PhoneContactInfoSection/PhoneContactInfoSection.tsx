@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import parsePhoneNumber from 'libphonenumber-js'
 
 import {PhoneContactInfoDto} from 'models/helpCenter/types'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import ContactCard from '../ContactCard'
@@ -43,7 +43,7 @@ const PhoneContactInfoSection: React.FC = () => {
                 >
                     Phone number card
                 </ToggleInput>
-                <InputField
+                <DEPRECATED_InputField
                     type="textarea"
                     label="Description text"
                     value={description}

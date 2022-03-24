@@ -16,7 +16,7 @@ import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {SubdomainInput} from '../components/SubdomainSection'
 import {
@@ -229,7 +229,7 @@ export const HelpCenterNewView = ({
             <Container fluid className={settingsCss.pageContainer}>
                 <div className={settingsCss.contentWrapper}>
                     <section className={css.form}>
-                        <InputField
+                        <DEPRECATED_InputField
                             type="text"
                             name="name"
                             label="Help Center name"

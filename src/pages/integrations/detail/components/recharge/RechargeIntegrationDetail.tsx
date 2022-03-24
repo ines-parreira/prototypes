@@ -18,7 +18,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import * as integrationHelpers from '../../../../../state/integrations/helpers'
 import {deleteIntegration} from '../../../../../state/integrations/actions'
 import Loader from '../../../../common/components/Loader/Loader'
-import InputField from '../../../../common/forms/InputField'
+import DEPRECATED_InputField from '../../../../common/forms/DEPRECATED_InputField'
 import PageHeader from '../../../../common/components/PageHeader'
 import LinkAlert from '../../../../common/components/Alert/LinkAlert'
 import settingsCss from '../../../../settings/settings.less'
@@ -150,7 +150,7 @@ export class RechargeIntegrationDetail extends React.Component<Props, State> {
                                 ))}
 
                             {isUpdate ? (
-                                <InputField
+                                <DEPRECATED_InputField
                                     type="text"
                                     name="name"
                                     label="Shopify store name"

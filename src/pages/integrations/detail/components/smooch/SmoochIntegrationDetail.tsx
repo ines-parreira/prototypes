@@ -25,7 +25,7 @@ import {
     triggerCreateSuccess,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
@@ -163,7 +163,7 @@ export class SmoochIntegrationDetail extends Component<Props, State> {
                     <Row>
                         <Col md="8">
                             <Form onSubmit={this._handleSubmit}>
-                                <InputField
+                                <DEPRECATED_InputField
                                     type="text"
                                     name="name"
                                     label="Smooch app name"
@@ -173,7 +173,7 @@ export class SmoochIntegrationDetail extends Component<Props, State> {
                                     required
                                 />
 
-                                <InputField
+                                <DEPRECATED_InputField
                                     type="select"
                                     value={this.state.language}
                                     options={SMOOCH_LANGUAGE_OPTIONS.toJS()}
@@ -188,7 +188,7 @@ export class SmoochIntegrationDetail extends Component<Props, State> {
                                             {option!.get('label')}
                                         </option>
                                     ))}
-                                </InputField>
+                                </DEPRECATED_InputField>
 
                                 <div>
                                     <Button

@@ -7,12 +7,16 @@ import {Map} from 'immutable'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import InputField from 'pages/common/forms/InputField'
-import Pagination from '../../common/components/Pagination'
-import Loader from '../../common/components/Loader/Loader'
-import PageHeader from '../../common/components/PageHeader'
-import Video from '../../common/components/Video/Video'
-import Search from '../../common/components/Search'
+import Pagination from 'pages/common/components/Pagination'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import Video from 'pages/common/components/Video/Video'
+import Search from 'pages/common/components/Search'
+import withCancellableRequest, {
+    CancellableRequestInjectedProps,
+} from 'pages/common/utils/withCancellableRequest'
+import TextInput from 'pages/common/forms/input/TextInput'
+import settingsCss from 'pages/settings/settings.less'
 import {
     fetchTags,
     create,
@@ -21,19 +25,15 @@ import {
     setPage,
     merge,
     bulkDelete,
-} from '../../../state/tags/actions'
+} from 'state/tags/actions'
 import {
     getMeta,
     getCurrentPage,
     getNumberPages,
     getIsCreating,
-} from '../../../state/tags/selectors'
-import {RootState} from '../../../state/types'
-import {TagSortableProperty} from '../../../state/tags/types'
-import withCancellableRequest, {
-    CancellableRequestInjectedProps,
-} from '../../common/utils/withCancellableRequest'
-import settingsCss from '../settings.less'
+} from 'state/tags/selectors'
+import {TagSortableProperty} from 'state/tags/types'
+import {RootState} from 'state/types'
 
 import Table from './Table'
 import css from './ManageTags.less'
@@ -232,8 +232,7 @@ export class ManageTagsContainer extends Component<Props, State> {
                                     <Form onSubmit={this._onCreate}>
                                         <div className="d-flex align-items-center">
                                             <div className="mr-2">
-                                                <InputField
-                                                    type="text"
+                                                <TextInput
                                                     placeholder="New tag name"
                                                     value={this.state.newTag}
                                                     autoFocus
@@ -242,8 +241,7 @@ export class ManageTagsContainer extends Component<Props, State> {
                                                             newTag: value,
                                                         })
                                                     }
-                                                    required
-                                                    inline
+                                                    isRequired
                                                 />
                                             </div>
                                             <IconButton

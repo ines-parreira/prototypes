@@ -20,7 +20,7 @@ import produce from 'immer'
 
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {
     ReportIssueRulesLogic,
     SelfServiceReportIssueCase,
@@ -286,7 +286,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                 <Row>
                     <Col>
                         <Form onSubmit={handleSubmit} className={css.form}>
-                            <InputField
+                            <DEPRECATED_InputField
                                 name="title"
                                 label="Title"
                                 placeholder="Condition title"
@@ -301,7 +301,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                                 disabled={isFallbackCase}
                             />
 
-                            <InputField
+                            <DEPRECATED_InputField
                                 name="description"
                                 label="Description"
                                 placeholder='Ex. Condition Condition applied when status is "delivered"'

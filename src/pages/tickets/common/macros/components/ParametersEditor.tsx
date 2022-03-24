@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Map, List} from 'immutable'
 import {Row, Col} from 'reactstrap'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import IconButton from 'pages/common/components/button/IconButton'
 import Tooltip from '../../../../common/components/Tooltip'
 import {MAX_HEADER_LENGTH} from '../../../../../config'
@@ -59,7 +59,7 @@ export default class ParametersEditor extends Component<Props> {
                     return (
                         <Row key={index} className="mb-3 form-row">
                             <Col xs="3">
-                                <InputField
+                                <DEPRECATED_InputField
                                     type="text"
                                     placeholder="Key"
                                     value={dict.get('key')}
@@ -75,7 +75,7 @@ export default class ParametersEditor extends Component<Props> {
                                 />
                             </Col>
                             <Col className="flex-grow">
-                                <InputField
+                                <DEPRECATED_InputField
                                     type="text"
                                     placeholder="Value"
                                     value={dict.get('value')}

@@ -4,17 +4,17 @@ import {fromJS, Map} from 'immutable'
 import {Form} from 'reactstrap'
 import classNames from 'classnames'
 
-import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/InputField'
+import {DEFAULT_TAG_COLOR} from 'config'
+import {TagDecoration} from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
+import ColorPicker from 'pages/common/components/ColorPicker/ColorPicker'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import ColorPicker from '../../common/components/ColorPicker/ColorPicker'
-import {TagLabel} from '../../common/utils/labels'
-import {toJS} from '../../../utils'
-import {DEFAULT_TAG_COLOR} from '../../../config'
-import {cancel, edit, remove, save, select} from '../../../state/tags/actions'
-import {TagDecoration} from '../../../models/tag/types'
+import {TagLabel} from 'pages/common/utils/labels'
+import CheckBox from 'pages/common/forms/CheckBox'
+import TextInput from 'pages/common/forms/input/TextInput'
+import {cancel, edit, remove, save, select} from 'state/tags/actions'
+import {toJS} from 'utils'
 
 import css from './Row.style.less'
 
@@ -139,19 +139,17 @@ export class Row extends Component<Props, State> {
                         >
                             <div className="d-flex mr-2 align-items-center">
                                 <div className="mr-2">
-                                    <InputField
+                                    <TextInput
                                         value={this.state.name}
                                         onChange={this._changeName}
-                                        required
-                                        inline
+                                        isRequired
                                     />
                                 </div>
                                 <div className="mr-2">
-                                    <InputField
+                                    <TextInput
                                         size={100}
                                         value={this.state.description}
                                         onChange={this._changeDescription}
-                                        inline
                                     />
                                 </div>
 

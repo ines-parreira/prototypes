@@ -1,7 +1,7 @@
 import React from 'react'
 import copy from 'copy-to-clipboard'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 import {
     ArticleTranslationSeoMeta,
@@ -85,7 +85,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
 
     return (
         <div className={css.wrapper}>
-            <InputField
+            <DEPRECATED_InputField
                 required
                 type="text"
                 name="title"
@@ -95,7 +95,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
             />
             <div className={css.inputWrapper}>
-                <InputField
+                <DEPRECATED_InputField
                     required
                     type="text"
                     name="slug"
@@ -117,7 +117,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                     </button>
                 )}
             </div>
-            <InputField
+            <DEPRECATED_InputField
                 type="textarea"
                 rows="2"
                 name="excerpt"

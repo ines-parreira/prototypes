@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {ChatContactInfoDto} from 'models/helpCenter/types'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
@@ -94,7 +94,7 @@ const ChatContactInfoSection: React.FC = () => {
                     </Link>
                     .
                 </p>
-                <InputField
+                <DEPRECATED_InputField
                     type="textarea"
                     label="Description text"
                     value={description}

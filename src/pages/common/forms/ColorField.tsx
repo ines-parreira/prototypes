@@ -5,11 +5,11 @@ import ColorPicker, {
     Props as ColorPickerProps,
 } from '../components/ColorPicker/ColorPicker'
 
-import InputField, {InputFieldProps} from './InputField'
+import DEPRECATED_InputField, {InputFieldProps} from './DEPRECATED_InputField'
 
 type Props = ColorPickerProps & InputFieldProps<string>
 
-export default class ColorField extends InputField<Props> {
+export default class ColorField extends DEPRECATED_InputField<Props> {
     _getField = () => {
         const {value, onChange, ...rest} = _omit(this.props, [
             'error',

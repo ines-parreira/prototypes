@@ -20,13 +20,16 @@ import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import InputField from 'pages/common/forms/InputField'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import PopoverModal from 'pages/common/components/PopoverModal'
 import RichDropdown from 'pages/common/components/RichDropdown/RichDropdown'
 import {Option} from 'pages/common/components/RichDropdown/types'
+import InputField from 'pages/common/forms/input/InputField'
 import history from 'pages/history'
+import settingsCss from 'pages/settings/settings.less'
+import {checkAccessTo2FA} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
+import TwoFactorAuthenticationDisableModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
 import {
     updateAgent,
     inviteAgent,
@@ -38,10 +41,7 @@ import * as helpers from 'state/agents/helpers'
 import {updateAccountOwner} from 'state/currentAccount/actions'
 import {RootState} from 'state/types'
 import {toJS} from 'utils'
-import settingsCss from '../settings.less'
 
-import {checkAccessTo2FA} from '../yourProfile/twoFactorAuthentication/utils'
-import TwoFactorAuthenticationDisableModal from '../yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
 import css from './Form.less'
 
 type OwnProps = {
@@ -204,22 +204,23 @@ export class FormContainer extends Component<Props, State> {
 
                     <BootstrapForm onSubmit={this._onSubmit}>
                         <InputField
-                            type="text"
+                            className={css.inputField}
                             name="name"
                             label="Name"
                             value={this.state.name}
                             onChange={(value) => this.setState({name: value})}
                             placeholder="John Doe"
-                            required
+                            isRequired
                         />
                         <InputField
+                            className={css.inputField}
                             type="email"
                             name="email"
                             label="Email"
                             value={this.state.email}
                             onChange={(value) => this.setState({email: value})}
                             placeholder="john@doe.com"
-                            required
+                            isRequired
                         />
                         <RichDropdown
                             className={css.roleDropdown}

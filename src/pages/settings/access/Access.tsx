@@ -5,7 +5,7 @@ import {Button, Container, Form} from 'reactstrap'
 
 import googleLogo from 'assets/img/integrations/google.svg'
 import microsoftLogo from 'assets/img/integrations/microsoft.svg'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import PageHeader from 'pages/common/components/PageHeader'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import {submitSetting} from 'state/currentAccount/actions'
@@ -216,7 +216,7 @@ export const AccessContainer = (props: Props) => {
                             ]}
                         />
                         {signupMode === SignupMode.AllowedDomains && (
-                            <InputField
+                            <DEPRECATED_InputField
                                 error={domainError}
                                 type="textarea"
                                 help="Ex: domain.com, *.domain.com. Wildcards allowed. Use separate lines for multiple entries."

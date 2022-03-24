@@ -48,7 +48,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Tooltip from 'pages/common/components/Tooltip'
 import ColorField from 'pages/common/forms/ColorField'
 import FileField from 'pages/common/forms/FileField'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -549,7 +549,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     />
                                 </>
                             ) : null}
-                            <InputField
+                            <DEPRECATED_InputField
                                 className={css.formGroup}
                                 type="text"
                                 label="Chat title"
@@ -563,7 +563,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 placeholder="Ex: Company Support"
                                 required
                             />
-                            <InputField
+                            <DEPRECATED_InputField
                                 className={css.formGroup}
                                 type="text"
                                 value={introductionText}
@@ -584,7 +584,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH
                                 }
                             />
-                            <InputField
+                            <DEPRECATED_InputField
                                 className={css.formGroup}
                                 type="text"
                                 value={offlineIntroductionText}
@@ -689,7 +689,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 />
                             </div>
                             <div className={css.positionWrapper}>
-                                <InputField
+                                <DEPRECATED_InputField
                                     className={css.formGroup}
                                     type="select"
                                     value={position.alignment}
@@ -721,9 +721,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             )
                                         }
                                     )}
-                                </InputField>
+                                </DEPRECATED_InputField>
                                 <div className={css.positionInputsWrapper}>
-                                    <InputField
+                                    <DEPRECATED_InputField
                                         className={css.formGroup}
                                         type="number"
                                         value={position.offsetX}
@@ -766,7 +766,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             }))
                                         }}
                                     />
-                                    <InputField
+                                    <DEPRECATED_InputField
                                         className={css.formGroup}
                                         type="number"
                                         value={position.offsetY}
@@ -811,7 +811,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     />
                                 </div>
                             </div>
-                            <InputField
+                            <DEPRECATED_InputField
                                 className={css.formGroup}
                                 type="select"
                                 value={language}
@@ -830,7 +830,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                         )
                                     }
                                 )}
-                            </InputField>
+                            </DEPRECATED_InputField>
                         </div>
                         <div>
                             <Button

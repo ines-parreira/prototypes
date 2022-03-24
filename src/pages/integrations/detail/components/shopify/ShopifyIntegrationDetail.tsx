@@ -22,7 +22,7 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import history from 'pages/history'
 import css from 'pages/settings/settings.less'
 import {
@@ -295,7 +295,7 @@ export class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                 }
                             >
                                 <div className="mb-4">
-                                    <InputField
+                                    <DEPRECATED_InputField
                                         type="text"
                                         name="name"
                                         label="Store name"

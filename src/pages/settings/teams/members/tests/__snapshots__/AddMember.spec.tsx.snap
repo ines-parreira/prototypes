@@ -87,12 +87,23 @@ exports[`<AddMember /> should render the dropdown on click 1`] = `
       >
         search
       </i>
-      <input
-        class="form-control"
-        placeholder="Search user..."
-        type="text"
-        value=""
-      />
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input hasRightIcon"
+          id="input-text-1"
+          name="input-text-1"
+          placeholder="Search user..."
+          type="text"
+          value=""
+        />
+        <i
+          class="material-icons icon iconRight"
+        >
+          search
+        </i>
+      </div>
     </div>
   </h6>
   <div
@@ -158,12 +169,23 @@ exports[`<AddMember /> should render user with empty name 1`] = `
       >
         search
       </i>
-      <input
-        class="form-control"
-        placeholder="Search user..."
-        type="text"
-        value=""
-      />
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input hasRightIcon"
+          id="input-text-2"
+          name="input-text-2"
+          placeholder="Search user..."
+          type="text"
+          value=""
+        />
+        <i
+          class="material-icons icon iconRight"
+        >
+          search
+        </i>
+      </div>
     </div>
   </h6>
   <div

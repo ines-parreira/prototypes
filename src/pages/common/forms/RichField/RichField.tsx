@@ -8,7 +8,10 @@ import {
     convertToHTML,
 } from '../../../../utils/editor'
 import {attachEntitiesToVariables} from '../../draftjs/plugins/variables/utils.js'
-import InputField, {InputFieldProps, InputFieldState} from '../InputField'
+import DEPRECATED_InputField, {
+    InputFieldProps,
+    InputFieldState,
+} from '../DEPRECATED_InputField'
 
 import RichFieldEditor, {Props as RichFieldEditorProps} from './RichFieldEditor'
 
@@ -30,7 +33,7 @@ type State = {
 } & InputFieldState
 
 // Deprecated component, use RichFieldEditor instead
-export default class RichField extends InputField<Props, State> {
+export default class RichField extends DEPRECATED_InputField<Props, State> {
     constructor(props: Props) {
         super(props)
         const {defaultContentState} = props

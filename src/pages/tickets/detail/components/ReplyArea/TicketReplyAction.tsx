@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
 
 import {FORM_CONTENT_TYPE} from '../../../../../config'
@@ -71,7 +71,7 @@ export default class TicketReplyAction extends Component<Props> {
                     .map((arg: Map<any, any>, key) => (
                         <div key={key} className={css.argInput}>
                             <div className="mr-3">{arg.get('key')}</div>
-                            <InputField
+                            <DEPRECATED_InputField
                                 type="text"
                                 value={arg.get('value')}
                                 onChange={(value) =>
@@ -101,9 +101,9 @@ export default class TicketReplyAction extends Component<Props> {
                         const inputConfig = template!.arguments![key].input
 
                         let Tag:
-                            | typeof InputField
+                            | typeof DEPRECATED_InputField
                             | DEPRECATED_BooleanField
-                            | typeof SelectField = InputField
+                            | typeof SelectField = DEPRECATED_InputField
 
                         if (inputConfig && inputConfig.type === 'checkbox') {
                             Tag = DEPRECATED_BooleanField

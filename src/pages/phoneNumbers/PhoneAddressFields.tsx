@@ -5,7 +5,7 @@ import {isEmpty} from 'lodash'
 import {PhoneCountry} from 'business/twilio'
 import {AddressType, AddressInformation} from 'models/integration/types'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 
 import rawCountries from './options/countries.json'
@@ -75,7 +75,7 @@ export default function PhoneAddressFields({
                     />
                 </Col>
             </Row>
-            <InputField
+            <DEPRECATED_InputField
                 label={
                     value.type === AddressType.Personal
                         ? 'Name'
@@ -88,7 +88,7 @@ export default function PhoneAddressFields({
                     handleChange('business_name', value)
                 }
             />
-            <InputField
+            <DEPRECATED_InputField
                 label="Address 1"
                 required
                 value={address1}
@@ -97,7 +97,7 @@ export default function PhoneAddressFields({
             />
             <Row>
                 <Col className="pr-0">
-                    <InputField
+                    <DEPRECATED_InputField
                         label="Address 2"
                         value={address2}
                         onChange={setAddress2}
@@ -105,7 +105,7 @@ export default function PhoneAddressFields({
                     />
                 </Col>
                 <Col>
-                    <InputField
+                    <DEPRECATED_InputField
                         label="City"
                         required
                         value={value.city}
@@ -118,7 +118,7 @@ export default function PhoneAddressFields({
             </Row>
             <Row>
                 <Col className="pr-0">
-                    <InputField
+                    <DEPRECATED_InputField
                         label="State/Province/Region"
                         required
                         value={value.region}
@@ -129,7 +129,7 @@ export default function PhoneAddressFields({
                     />
                 </Col>
                 <Col className="pr-0">
-                    <InputField
+                    <DEPRECATED_InputField
                         label="Postal Code"
                         required
                         value={value.postal_code}
@@ -140,7 +140,7 @@ export default function PhoneAddressFields({
                     />
                 </Col>
                 <Col>
-                    <InputField
+                    <DEPRECATED_InputField
                         label="Country"
                         required
                         value={countryName}

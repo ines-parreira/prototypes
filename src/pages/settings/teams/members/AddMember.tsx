@@ -1,18 +1,14 @@
-import React, {Component, ChangeEvent} from 'react'
+import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Input,
-} from 'reactstrap'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 
-import {AgentLabel} from '../../../common/utils/labels'
-import {getAgents} from '../../../../state/agents/selectors'
-import {RootState} from '../../../../state/types'
+import IconInput from 'pages/common/forms/input/IconInput'
+import TextInput from 'pages/common/forms/input/TextInput'
+import {AgentLabel} from 'pages/common/utils/labels'
+import {getAgents} from 'state/agents/selectors'
+import {RootState} from 'state/types'
 
 import css from './AddMember.less'
 
@@ -36,8 +32,7 @@ export class AddMemberContainer extends Component<Props, State> {
 
     _toggle = () => this.setState({isOpen: !this.state.isOpen})
 
-    _onSearch = (event: ChangeEvent<HTMLInputElement>) =>
-        this.setState({search: event.target.value})
+    _onSearch = (value: string) => this.setState({search: value})
 
     _addTeamMember = (userId: number) => {
         this.setState({isLoading: true})
@@ -86,11 +81,12 @@ export class AddMemberContainer extends Component<Props, State> {
                                         search
                                     </i>
 
-                                    <Input
+                                    <TextInput
                                         placeholder="Search user..."
                                         autoFocus
                                         value={this.state.search}
                                         onChange={this._onSearch}
+                                        rightIcon={<IconInput icon="search" />}
                                     />
                                 </div>
                             )

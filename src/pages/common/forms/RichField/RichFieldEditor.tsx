@@ -36,7 +36,10 @@ import {
     removeMentions,
 } from '../../../../utils/editor'
 
-import InputField, {InputFieldProps, InputFieldState} from '../InputField'
+import DEPRECATED_InputField, {
+    InputFieldProps,
+    InputFieldState,
+} from '../DEPRECATED_InputField'
 import EmailExtraButton from './EmailExtraButton'
 import provideToolbarPlugin, {
     InjectedProps as ToolbarPluginProps,
@@ -87,7 +90,7 @@ type State = {
     wasEverFocused: boolean
 } & InputFieldState
 
-export class RichFieldEditor extends InputField<Props, State> {
+export class RichFieldEditor extends DEPRECATED_InputField<Props, State> {
     static defaultProps: Pick<
         Props,
         | 'emailExtraEnabled'

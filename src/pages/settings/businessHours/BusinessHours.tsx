@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom'
 import {Col, Container, Form, Label, Row} from 'reactstrap'
 import classnames from 'classnames'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import PageHeader from 'pages/common/components/PageHeader'
 import {getMomentTimezoneNames} from 'utils/date'
 import {submitSetting} from 'state/currentAccount/actions'
@@ -171,7 +171,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                         </Button>
                                     </div>
 
-                                    <InputField
+                                    <DEPRECATED_InputField
                                         type="select"
                                         name="timezone"
                                         label="Time zone"
@@ -191,7 +191,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                                 </option>
                                             )
                                         )}
-                                    </InputField>
+                                    </DEPRECATED_InputField>
                                 </Col>
                             </Row>
 

@@ -5,7 +5,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import classNames from 'classnames'
 import {Map} from 'immutable'
 
-import InputField from 'pages/common/forms/InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import socketManager from 'services/socketManager/socketManager'
 import {resendVerificationEmail} from 'state/currentAccount/actions'
 import {
@@ -141,7 +141,7 @@ export class EmailIntegrationCreateVerification extends Component<
                         <br />
                         <br />
                         <Form onSubmit={this._verifyEmailIntegrationManually}>
-                            <InputField
+                            <DEPRECATED_InputField
                                 name="code"
                                 type="text"
                                 label="Input verification code manually"
