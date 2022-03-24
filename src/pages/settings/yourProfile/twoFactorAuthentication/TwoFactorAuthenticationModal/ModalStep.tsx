@@ -1,11 +1,15 @@
 import React, {Dispatch, SetStateAction} from 'react'
-import {RecoveryCode} from '../../../../../models/twoFactorAuthentication/types'
+import {
+    AuthenticatorData,
+    RecoveryCode,
+} from '../../../../../models/twoFactorAuthentication/types'
 import QRCodeStep from './ModalSteps/QRCodeStep/QRCodeStep'
 import ValidateVerificationCodeStep from './ModalSteps/ValidateVerificationCodeStep/ValidateVerificationCodeStep'
 import RecoveryCodesStep from './ModalSteps/RecoveryCodesStep/RecoveryCodesStep'
 
 type OwnProps = {
     currentStep: number
+    authenticatorData: AuthenticatorData
     errorText?: string
     setErrorText: Dispatch<SetStateAction<string>>
     setVerificationCode: Dispatch<SetStateAction<string>>
@@ -17,6 +21,7 @@ type OwnProps = {
 
 export default function ModalStep({
     currentStep,
+    authenticatorData,
     errorText,
     setErrorText,
     setVerificationCode,
@@ -29,6 +34,7 @@ export default function ModalStep({
         case 1:
             return (
                 <QRCodeStep
+                    authenticatorData={authenticatorData}
                     errorText={errorText}
                     setErrorText={setErrorText}
                     setIsLoading={setIsLoading}

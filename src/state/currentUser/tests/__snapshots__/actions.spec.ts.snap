@@ -102,6 +102,15 @@ Array [
 ]
 `;
 
+exports[`current user actions update2FAEnabled should dispatch when the status is the same 1`] = `
+Array [
+  Object {
+    "status": true,
+    "type": "UPDATE_2FA_STATUS",
+  },
+]
+`;
+
 exports[`current user actions update2FAEnabled should dispatch with status 1`] = `
 Array [
   Object {

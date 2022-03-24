@@ -346,18 +346,17 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               >
                 Enter the 6-digit verification code generated from your authenticator app.
               </div>
-              <div
-                class="InputField form-group"
-                color=""
-              >
+              <div>
                 <div
-                  class=""
+                  class="wrapper"
                 >
                   <input
-                    class="form-control"
-                    id="id-verificationCode"
+                    class="input"
+                    id="input-text-3"
+                    name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
-                    type="number"
+                    type="text"
+                    value=""
                   />
                 </div>
               </div>
@@ -450,18 +449,17 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               >
                 Enter the 6-digit verification code generated from your authenticator app.
               </div>
-              <div
-                class="InputField form-group"
-                color=""
-              >
+              <div>
                 <div
-                  class=""
+                  class="wrapper"
                 >
                   <input
-                    class="form-control"
-                    id="id-verificationCode"
+                    class="input"
+                    id="input-text-3"
+                    name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
-                    type="number"
+                    type="text"
+                    value=""
                   />
                 </div>
               </div>
@@ -568,18 +566,17 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               >
                 Enter the 6-digit verification code generated from your authenticator app.
               </div>
-              <div
-                class="InputField form-group"
-                color=""
-              >
+              <div>
                 <div
-                  class=""
+                  class="wrapper"
                 >
                   <input
-                    class="form-control"
-                    id="id-verificationCode"
+                    class="input"
+                    id="input-text-2"
+                    name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
-                    type="number"
+                    type="text"
+                    value=""
                   />
                 </div>
               </div>
@@ -672,18 +669,17 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               >
                 Enter the 6-digit verification code generated from your authenticator app.
               </div>
-              <div
-                class="InputField form-group"
-                color=""
-              >
+              <div>
                 <div
-                  class=""
+                  class="wrapper"
                 >
                   <input
-                    class="form-control"
-                    id="id-verificationCode"
+                    class="input"
+                    id="input-text-2"
+                    name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
-                    type="number"
+                    type="text"
+                    value=""
                   />
                 </div>
               </div>
@@ -906,7 +902,7 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
                   class="bannerText"
                 >
                   <span>
-                    Failed to load the QR code. Please try again.
+                    Failed to fetch the QR code. Please try again.
                   </span>
                 </div>
               </div>
@@ -952,6 +948,130 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               <button
                 class="wrapper primary medium isDisabled"
                 disabled=""
+                type="button"
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR Code step having renewed secret 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal show"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog"
+          role="document"
+          style="max-width: 600px;"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Setup 2FA
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              
+              <div
+                class="headingBold"
+              >
+                Step 1: Download an authenticator app
+              </div>
+              <div
+                class="textSection"
+              >
+                Download and install any authenticator app (
+                <a
+                  href="https://support.google.com/accounts/answer/1066447"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Eg. Google Authenticator
+                </a>
+                ) on your phone.
+              </div>
+              <div
+                class="headingBold mt24"
+              >
+                Step 2: Scan the QR code
+              </div>
+              <div
+                class="textSection"
+              >
+                Open the authenticator app and scan the image below using your phone’s camera.
+              </div>
+              <div
+                class="qrCodeContainer"
+              >
+                <img
+                  alt="The QR Code to scan"
+                  id="qrCodeImage"
+                  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATZSURBVO3BQY4cSRIEQdNA/f/Lun30UwCJ9GoOuSaCP1K15KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVr0yUtAfpOaGyCTmk1AbtRMQJ5QMwH5TWreOKladFK16KRq0SfL1GwC8oSaCcgTam7UPKFmk5pNQDadVC06qVp0UrXoky8D8oSaJ4A8oeYJIJOaCcik5jcBeULNN51ULTqpWnRSteiTf4yaCcgEZFJzo+YJIJOaCcik5l9yUrXopGrRSdWiT/5xam6AvKFmAjIBuQEyqfmbnVQtOqladFK16JMvU/ObgExqJiCbgNyo+SY1/yUnVYtOqhadVC36ZBmQP0nNBGRSMwGZ1ExAJjUTkEnNBGRSMwGZ1NwA+S87qVp0UrXopGrRJy+p+ZsAmdRMQCY1E5BJzTep+ZucVC06qVp0UrXok5eATGomIJvUTGpu1NwAmdRMQJ4AMql5A8gmNd90UrXopGrRSdUi/JEXgNyomYDcqNkE5Ak1N0Bu1NwA+SY1N0Bu1LxxUrXopGrRSdUi/JE/CMikZgLyhpoJyKTmTwIyqZmA3KiZgExqftNJ1aKTqkUnVYs+eQnIjZobNTdqboBMajYBmdRMQCY1E5BJzZ8EZFKz6aRq0UnVopOqRZ+8pGYCcgNkUjMBuVEzqbkBMql5Qs0TQCY1TwCZ1LwB5DedVC06qVp0UrUIf+QFIJOaCcikZhOQJ9RMQN5QMwH5L1FzA2RS88ZJ1aKTqkUnVYs+WQbkBsikZgJyo+ZGzQ2QSc0E5Akgk5oJyKRmAjKpmYBMam6APKFm00nVopOqRSdViz75MjU3QG7UPAFkk5oJyKTmRs2Nmhs1E5A3gExqNp1ULTqpWnRStQh/ZBGQGzU3QG7UPAFkUjMBmdRMQG7UTEAmNb8JyI2abzqpWnRSteikatEnLwG5UTMBmdTcqJmATGomIDdAnlAzAZmATGomIE+omYC8oeYGyKTmjZOqRSdVi06qFn2yTM0TQCY1E5BJzQTkRs0NkCfU3AC5UTMBuVEzAZnUvKFm00nVopOqRSdViz75MiBvqLlR84aaGyCTmgnIpOZPAjKpuQEyqXnjpGrRSdWik6pFn/wyNROQCcgTaiYgk5obIJOaSc2NmgnIpGYCcgPkCSCTmgnIpOabTqoWnVQtOqlahD/yFwMyqXkDyBNqboBMaiYgk5ongExqJiBPqHnjpGrRSdWik6pFn7wE5DepmdRMQCY1N0B+E5AngExqnlDzm06qFp1ULTqpWvTJMjWbgNwAmdTcAHlCzRtqboDcqPkmIJOaN06qFp1ULTqpWvTJlwF5Qs2fpGYC8oaaJ4C8AeRGzTedVC06qVp0UrXok38ckCeATGpugExqboBMar4JyI2aTSdVi06qFp1ULfrk/5yaCcgEZJOaCcikZgIyqZmATGpugExqNp1ULTqpWnRSteiTL1PzTWomIJOaCcgbaiYgN0AmNTdAJjUTkEnNjZoJyDedVC06qVp0UrXok2VAfhOQGyCTmhs1E5AbNROQSc0EZFIzAZmAvAFkUvNNJ1WLTqoWnVQtwh+pWnJSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQt+h8x8UUwJOxn0QAAAABJRU5ErkJggg=="
+                />
+              </div>
+              <div
+                class="cantScanQrCodeContainer"
+              >
+                <span
+                  class="link"
+                >
+                  Can't scan the QR code?
+                </span>
+              </div>
+            </div>
+            <div
+              class="modal-footer"
+            >
+              <button
+                class="wrapper secondary medium"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="wrapper primary medium"
                 type="button"
               >
                 Continue
@@ -1152,18 +1272,17 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
               >
                 Enter the 6-digit verification code generated from your authenticator app.
               </div>
-              <div
-                class="InputField form-group"
-                color=""
-              >
+              <div>
                 <div
-                  class=""
+                  class="wrapper"
                 >
                   <input
-                    class="form-control"
-                    id="id-verificationCode"
+                    class="input"
+                    id="input-text-1"
+                    name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
-                    type="number"
+                    type="text"
+                    value=""
                   />
                 </div>
               </div>

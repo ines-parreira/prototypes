@@ -6,16 +6,24 @@ import React, {
     useEffect,
 } from 'react'
 import {AxiosError} from 'axios'
-import Modal from '../../../../common/components/Modal'
+import Modal from 'pages/common/components/Modal'
 import {
     saveTwoFASecret as saveTwoFASecretResource,
     validateVerificationCode as validateVerificationCodeResource,
     createRecoveryCodes as createRecoveryCodesResource,
-} from '../../../../../models/twoFactorAuthentication/resources'
-import Button from '../../../../common/components/button/Button'
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {update2FAEnabled} from '../../../../../state/currentUser/actions'
-import {RecoveryCode} from '../../../../../models/twoFactorAuthentication/types'
+    renewRecoveryCodes as renewRecoveryCodesResource,
+    fetchAuthenticatorData as fetchAuthenticatorDataResource,
+    fetchAuthenticatorDataRenewed as fetchAuthenticatorDataRenewedResource,
+} from 'models/twoFactorAuthentication/resources'
+import Button from 'pages/common/components/button/Button'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {update2FAEnabled} from 'state/currentUser/actions'
+import {
+    AuthenticatorData,
+    RecoveryCode,
+} from 'models/twoFactorAuthentication/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {has2FaEnabled as has2FaEnabledSelector} from 'state/currentUser/selectors'
 import css from './TwoFactorAuthenticationModal.less'
 import ModalContinueButton from './ModalContinueButton'
 import ModalStep from './ModalStep'
@@ -35,7 +43,12 @@ export default function TwoFactorAuthenticationModal({
     onFinish,
 }: OwnProps) {
     const dispatch = useAppDispatch()
+    const has2FaEnabled = useAppSelector(has2FaEnabledSelector)
+
     const [step, setStep] = useState(1)
+    const [authenticatorData, setAuthenticatorData] = useState(
+        {} as AuthenticatorData
+    )
     const [isEnforced, setIsEnforced] = useState(false)
     const [errorText, setErrorText] = useState('')
     const [verificationCode, setVerificationCode] = useState('')
@@ -45,8 +58,7 @@ export default function TwoFactorAuthenticationModal({
 
     const resetModalState = useCallback(() => {
         setStep(1)
-        // TODO(@ionut): fetch this from api when adding enforcing mechanism
-        setIsEnforced(false)
+        setIsEnforced(false) // TODO(@ionut): fetch this from api when adding enforcing mechanism
         setErrorText('')
         setVerificationCode('')
         setIsLoading(false)
@@ -98,7 +110,12 @@ export default function TwoFactorAuthenticationModal({
     const createRecoveryCodes = useCallback(async () => {
         try {
             setErrorText('')
-            setRecoveryCodes(await createRecoveryCodesResource())
+
+            if (has2FaEnabled) {
+                setRecoveryCodes(await renewRecoveryCodesResource())
+            } else {
+                setRecoveryCodes(await createRecoveryCodesResource())
+            }
 
             return true
         } catch (error) {
@@ -110,7 +127,7 @@ export default function TwoFactorAuthenticationModal({
             console.error(error)
             return
         }
-    }, [])
+    }, [has2FaEnabled])
 
     const saveTwoFASecret = useCallback(async () => {
         try {
@@ -160,11 +177,37 @@ export default function TwoFactorAuthenticationModal({
         }
 
         setStep(step + 1)
-    }, [step, validateVerificationCode, saveTwoFASecret, createRecoveryCodes])
+    }, [
+        dispatch,
+        step,
+        validateVerificationCode,
+        saveTwoFASecret,
+        createRecoveryCodes,
+    ])
 
     useEffect(() => {
-        resetModalState()
-    }, [resetModalState])
+        async function init() {
+            setIsLoading(true)
+            setErrorText('')
+
+            if (has2FaEnabled) {
+                setAuthenticatorData(
+                    await fetchAuthenticatorDataRenewedResource()
+                )
+            } else {
+                setAuthenticatorData(await fetchAuthenticatorDataResource())
+            }
+        }
+
+        init()
+            .catch((error: Error) => {
+                setErrorText('Failed to fetch the QR code. Please try again.')
+                console.error(error)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }, [has2FaEnabled, resetModalState])
 
     return (
         <Modal
@@ -215,6 +258,7 @@ export default function TwoFactorAuthenticationModal({
                 isEnforced={isEnforced}
             />
             <ModalStep
+                authenticatorData={authenticatorData}
                 currentStep={step}
                 errorText={errorText}
                 setErrorText={setErrorText}

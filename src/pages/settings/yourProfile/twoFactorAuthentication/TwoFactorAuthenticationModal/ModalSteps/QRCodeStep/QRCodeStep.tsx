@@ -8,7 +8,6 @@ import React, {
 import QRCode from 'qrcode'
 
 import classnames from 'classnames'
-import {fetchAuthenticatorData} from '../../../../../../../models/twoFactorAuthentication/resources'
 import {AuthenticatorData} from '../../../../../../../models/twoFactorAuthentication/types'
 import Loader from '../../../../../../common/components/Loader/Loader'
 import modalStepsCss from '../ModalSteps.less'
@@ -16,51 +15,54 @@ import css from './QRCodeStep.less'
 import CantScanQRCode from './CantScanQRCode'
 
 type OwnProps = {
+    authenticatorData: AuthenticatorData
     errorText?: string
     setErrorText: Dispatch<SetStateAction<string>>
     setIsLoading: Dispatch<SetStateAction<boolean>>
 }
 
 export default function QRCodeStep({
+    authenticatorData,
     errorText,
     setErrorText,
     setIsLoading,
 }: OwnProps) {
     const [qrCodeImageUrl, setQrCodeImageUrl] = useState('')
-    const [authenticatorData, setAuthenticatorData] = useState(
-        {} as AuthenticatorData
-    )
 
     const generateQRCode = useCallback(async (text: string) => {
-        try {
-            const url = await QRCode.toDataURL(text)
-            setQrCodeImageUrl(url)
-        } catch (err) {
-            console.error(err)
-        }
+        const url = await QRCode.toDataURL(text)
+        setQrCodeImageUrl(url)
     }, [])
 
     useEffect(() => {
         async function init() {
+            if (!authenticatorData.uri) {
+                return
+            }
+
             setIsLoading(true)
-            setErrorText('')
-
-            const fetchedAuthenticatorData: AuthenticatorData =
-                await fetchAuthenticatorData()
-            setAuthenticatorData(fetchedAuthenticatorData)
-
-            await generateQRCode(fetchedAuthenticatorData.uri)
+            await generateQRCode(authenticatorData.uri)
         }
 
         init()
             .catch((error: Error) => {
-                setErrorText('Failed to load the QR code. Please try again.')
+                if (!errorText) {
+                    setErrorText(
+                        'Failed to load the QR code. Please try again.'
+                    )
+                }
                 console.error(error)
             })
             .finally(() => {
                 setIsLoading(false)
             })
-    }, [generateQRCode, setErrorText, setIsLoading])
+    }, [
+        generateQRCode,
+        errorText,
+        setErrorText,
+        setIsLoading,
+        authenticatorData,
+    ])
 
     return (
         <>

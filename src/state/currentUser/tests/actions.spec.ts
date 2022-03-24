@@ -145,14 +145,14 @@ describe('current user actions', () => {
             expect(store.getActions()).toMatchSnapshot()
         })
 
-        it('should not dispatch when the status is the same', () => {
+        it('should dispatch when the status is the same', () => {
             store = mockStore({
                 currentUser: initialState.set('has_2fa_enabled', true),
             })
 
             store.dispatch(actions.update2FAEnabled(true))
 
-            expect(store.getActions()).toEqual([])
+            expect(store.getActions()).toMatchSnapshot()
         })
     })
 

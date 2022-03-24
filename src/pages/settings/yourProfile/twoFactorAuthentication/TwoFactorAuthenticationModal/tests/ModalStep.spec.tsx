@@ -1,6 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import ModalStep from '../ModalStep'
+import {authenticatorData} from '../../../../../../fixtures/authenticatorData'
 import {recoveryCodes as recoveryCodesFixture} from '../../../../../../fixtures/recoveryCodes'
 
 jest.mock('../ModalSteps/QRCodeStep/QRCodeStep', () => () => (
@@ -23,6 +24,7 @@ describe('<ModalStep />', () => {
             (currentStep) => {
                 const {container} = render(
                     <ModalStep
+                        authenticatorData={authenticatorData}
                         currentStep={currentStep}
                         errorText={''}
                         setErrorText={jest.fn()}

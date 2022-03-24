@@ -189,18 +189,17 @@ export const update2FAEnabled =
             getState()
         )
 
-        // Don't do anything if status didn't change
+        let action = status ? 'activated' : 'disabled'
+
         if (status === currentStatus) {
-            return
+            action = 'updated'
         }
 
         // Show a success notification
         void dispatch(
             notify({
                 status: NotificationStatus.Success,
-                message: `Two-Factor Authentication has successfully been ${
-                    status ? 'activated' : 'disabled'
-                }`,
+                message: `Two-Factor Authentication has successfully been ${action}`,
             })
         )
 

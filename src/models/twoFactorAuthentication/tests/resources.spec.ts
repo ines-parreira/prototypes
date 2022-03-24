@@ -20,25 +20,31 @@ describe('twoFactorAuthentication resources', () => {
     })
 
     describe('fetchAuthenticatorData', () => {
-        it('should resolve with AuthenticatorData on success', async () => {
-            mockedServer
-                .onGet('/api/2fa/authenticator')
-                .reply(200, authenticatorDataFixture)
+        it.each([true, false])(
+            'should resolve with AuthenticatorData on success',
+            async (renewed) => {
+                mockedServer
+                    .onGet('/api/2fa/authenticator')
+                    .reply(200, authenticatorDataFixture)
 
-            const res = await fetchAuthenticatorData()
+                const res = await fetchAuthenticatorData(renewed)
 
-            expect(res).toStrictEqual(authenticatorDataFixture)
-        })
+                expect(res).toStrictEqual(authenticatorDataFixture)
+            }
+        )
 
-        it('should reject an error on fail', async () => {
-            mockedServer
-                .onGet('/api/2fa/authenticator')
-                .reply(503, {message: 'error'})
+        it.each([true, false])(
+            'should reject an error on fail',
+            async (renewed) => {
+                mockedServer
+                    .onGet('/api/2fa/authenticator')
+                    .reply(503, {message: 'error'})
 
-            await expect(fetchAuthenticatorData()).rejects.toThrow(
-                new Error('Request failed with status code 503')
-            )
-        })
+                await expect(fetchAuthenticatorData(renewed)).rejects.toThrow(
+                    new Error('Request failed with status code 503')
+                )
+            }
+        )
     })
 
     describe('validateVerificationCode', () => {
@@ -102,28 +108,6 @@ describe('twoFactorAuthentication resources', () => {
         })
     })
 
-    describe('createRecoveryCodes', () => {
-        it('should resolve with a list of RecoveryCode on success', async () => {
-            mockedServer
-                .onPost('/api/2fa/recovery-codes')
-                .reply(200, recoveryCodesFixture)
-
-            const res = await createRecoveryCodes()
-
-            expect(res).toStrictEqual(recoveryCodesFixture)
-        })
-
-        it('should reject an error on fail', async () => {
-            mockedServer
-                .onPost('/api/2fa/recovery-codes')
-                .reply(503, {message: 'error'})
-
-            await expect(createRecoveryCodes()).rejects.toThrow(
-                new Error('Request failed with status code 503')
-            )
-        })
-    })
-
     describe('deleteTwoFASecret', () => {
         it.each([undefined, 1])(
             'should resolve with 204 code and empty body on success',
@@ -143,6 +127,34 @@ describe('twoFactorAuthentication resources', () => {
 
                 await expect(deleteTwoFASecret(userId)).rejects.toThrow(
                     'Request failed with status code 503'
+                )
+            }
+        )
+    })
+
+    describe('createRecoveryCodes', () => {
+        it.each([true, false])(
+            'should resolve with a list of RecoveryCode on success',
+            async (renewed) => {
+                mockedServer
+                    .onPost('/api/2fa/recovery-codes')
+                    .reply(200, recoveryCodesFixture)
+
+                const res = await createRecoveryCodes(renewed)
+
+                expect(res).toStrictEqual(recoveryCodesFixture)
+            }
+        )
+
+        it.each([true, false])(
+            'should reject an error on fail',
+            async (renewed) => {
+                mockedServer
+                    .onPost('/api/2fa/recovery-codes')
+                    .reply(503, {message: 'error'})
+
+                await expect(createRecoveryCodes(renewed)).rejects.toThrow(
+                    new Error('Request failed with status code 503')
                 )
             }
         )

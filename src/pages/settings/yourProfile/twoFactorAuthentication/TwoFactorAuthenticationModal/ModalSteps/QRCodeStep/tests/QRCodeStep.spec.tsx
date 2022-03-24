@@ -1,14 +1,10 @@
 import React from 'react'
 import {render, screen, waitFor} from '@testing-library/react'
 import {authenticatorData} from '../../../../../../../../fixtures/authenticatorData'
-import {fetchAuthenticatorData} from '../../../../../../../../models/twoFactorAuthentication/resources'
 import QRCodeStep from '../QRCodeStep'
+import {AuthenticatorData} from '../../../../../../../../models/twoFactorAuthentication/types'
 
 jest.mock('../CantScanQRCode', () => () => <div>Can't scan QR code mocked</div>)
-
-jest.mock('models/twoFactorAuthentication/resources')
-const fetchAuthenticatorDataMock =
-    fetchAuthenticatorData as jest.MockedFunction<typeof fetchAuthenticatorData>
 
 describe('<QRCodeStep />', () => {
     describe('render()', () => {
@@ -27,10 +23,9 @@ describe('<QRCodeStep />', () => {
         }
 
         it('should render the component with the loading component', async () => {
-            fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
-
             const {container} = render(
                 <QRCodeStep
+                    authenticatorData={authenticatorData}
                     errorText={''}
                     setErrorText={jest.fn()}
                     setIsLoading={jest.fn()}
@@ -43,10 +38,9 @@ describe('<QRCodeStep />', () => {
         })
 
         it('should render the component with the qr code', async () => {
-            fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
-
             const {container} = render(
                 <QRCodeStep
+                    authenticatorData={authenticatorData}
                     errorText={''}
                     setErrorText={jest.fn()}
                     setIsLoading={jest.fn()}
@@ -62,10 +56,9 @@ describe('<QRCodeStep />', () => {
         })
 
         it('should render the component without the qrcode container', async () => {
-            fetchAuthenticatorDataMock.mockRejectedValue({foo: 'api error'})
-
             const {container} = render(
                 <QRCodeStep
+                    authenticatorData={{} as AuthenticatorData}
                     errorText={'foo error banner'}
                     setErrorText={jest.fn()}
                     setIsLoading={jest.fn()}
