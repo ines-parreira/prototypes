@@ -1,5 +1,4 @@
 import React, {useMemo} from 'react'
-import {produce} from 'immer'
 import {useParams} from 'react-router-dom'
 import {fromJS} from 'immutable'
 
@@ -7,7 +6,7 @@ import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import history from 'pages/history'
 
 import QuickResponseFlowItem from '../QuickResponseFlowItem/QuickResponseFlowItem'
-import useUpdateQuickReplyPolicies from '../QuickResponseFlowItem/hooks'
+import {useUpdateQuickReplyPolicies} from '../QuickResponseFlowItem/hooks'
 
 const QuickResponseFlowEditItem = () => {
     const configuration = useConfigurationData()
@@ -16,11 +15,9 @@ const QuickResponseFlowEditItem = () => {
         configuration.integration.getIn(['meta', 'shop_name']) as string
     }/preferences/quick-response`
 
-    const {quickResponseId: quickResponseIdString} = useParams<{
+    const {quickResponseId} = useParams<{
         quickResponseId: string
     }>()
-
-    const quickResponseId = parseInt(quickResponseIdString, 10)
 
     const quickResponses = useMemo(() => {
         return configuration.configuration?.quick_response_policies || []
@@ -28,37 +25,45 @@ const QuickResponseFlowEditItem = () => {
 
     const {updateQuickReplyPolicies} = useUpdateQuickReplyPolicies()
 
+    const quickResponseBeingEdited = quickResponses.find(
+        (quickResponse) => quickResponse.id === quickResponseId
+    )
+
+    if (!quickResponseBeingEdited) {
+        return null
+    }
+
     const handleSubmit = ({
         buttonLabel,
-    }: // responseText,
-    {
+        responseText,
+    }: {
         buttonLabel: string
         responseText: {message: Map<any, any>}
     }) => {
-        const newQuickResponses = produce(
-            quickResponses,
-            (quickResponsesDraft) => {
-                quickResponsesDraft[quickResponseId].title = buttonLabel
-            }
+        const newQuickResponses = quickResponses.map((quickResponse) =>
+            quickResponseId === quickResponse.id
+                ? {
+                      ...quickResponse,
+                      title: buttonLabel,
+                      response_message_content: {
+                          html: responseText.message.get('html'),
+                          text: responseText.message.get('text'),
+                      },
+                  }
+                : quickResponse
         )
+
         void updateQuickReplyPolicies(newQuickResponses)
         history.push(baseURL)
     }
 
     const handleDelete = () => {
-        const newQuickResponses = produce(
-            quickResponses,
-            (quickResponsesDraft) => {
-                quickResponsesDraft.splice(quickResponseId, 1)
-            }
+        const newQuickResponses = quickResponses.filter(
+            (quickResponse) => quickResponseId !== quickResponse.id
         )
 
         void updateQuickReplyPolicies(newQuickResponses)
         history.push(baseURL)
-    }
-
-    if (quickResponses.length === 0) {
-        return null
     }
 
     return (
@@ -66,8 +71,12 @@ const QuickResponseFlowEditItem = () => {
             handleSubmit={handleSubmit}
             handleDelete={handleDelete}
             initialValue={{
-                buttonLabel: quickResponses[quickResponseId].title,
-                responseText: {message: fromJS({})},
+                buttonLabel: quickResponseBeingEdited.title,
+                responseText: {
+                    message: fromJS(
+                        quickResponseBeingEdited.response_message_content
+                    ),
+                },
             }}
         />
     )

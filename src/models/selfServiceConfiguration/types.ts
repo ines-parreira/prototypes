@@ -57,6 +57,11 @@ export type SelfServiceConfigurationReportIssuePolicy = {
 export type QuickReplyPolicy = {
     title: string
     deactivated_datetime: string | null
+    response_message_content: {
+        html: string
+        text: string
+    }
+    id?: string
 }
 
 export type SelfServiceConfiguration = {

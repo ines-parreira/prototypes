@@ -11,7 +11,7 @@ import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from '../../../../../../../../state/types'
 import {billingState} from '../../../../../../../../fixtures/billing'
 import {account} from '../../../../../../../../fixtures/account'
-import {ShopType} from '../../../../../../../../models/selfServiceConfiguration/types'
+import {defaultState} from '../../../tests/constants'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
@@ -23,7 +23,7 @@ jest.mock('react-router')
 import SelfServicePreview from '../SelfServicePreview'
 
 describe('<SelfServicePreview />', () => {
-    const defaultState = {
+    const sspDefaultState = {
         currentAccount: fromJS(account),
         billing: fromJS(billingState),
         entities: {
@@ -48,43 +48,8 @@ describe('<SelfServicePreview />', () => {
                     helpCentersById: {},
                 },
             },
-            selfServiceConfigurations: {
-                1: {
-                    id: 1,
-                    type: 'shopify' as ShopType,
-                    shop_name: `mystore1`,
-                    created_datetime: '2021-01-26T00:29:00Z',
-                    updated_datetime: '2021-01-26T00:29:30Z',
-                    deactivated_datetime: '2021-01-26T00:30:00Z',
-                    report_issue_policy: {
-                        enabled: true,
-                        cases: [],
-                    },
-                    track_order_policy: {
-                        enabled: true,
-                    },
-                    cancel_order_policy: {
-                        enabled: true,
-                        eligibilities: [],
-                        exceptions: [],
-                    },
-                    return_order_policy: {
-                        enabled: true,
-                        eligibilities: [],
-                        exceptions: [],
-                    },
-                    quick_response_policies: [
-                        {title: 'First', deactivated_datetime: null},
-                        {title: 'Second', deactivated_datetime: null},
-                        {title: 'Third', deactivated_datetime: null},
-                        {title: 'Fourth', deactivated_datetime: null},
-                        {
-                            title: 'Fifth',
-                            deactivated_datetime: '2020-01-01T00:00:00Z',
-                        },
-                    ],
-                },
-            },
+            selfServiceConfigurations:
+                defaultState.entities.selfServiceConfigurations,
             phoneNumbers: {},
         },
         integrations: fromJS({
@@ -148,7 +113,7 @@ describe('<SelfServicePreview />', () => {
 
     it('should render preview according to corresponding chat integration', () => {
         const state = {
-            ...defaultState,
+            ...sspDefaultState,
             currentAccount: fromJS({
                 ...account,
                 current_subscription: {
@@ -169,7 +134,7 @@ describe('<SelfServicePreview />', () => {
 
     it('should fallback to default if no corresponding chat found', () => {
         const state = {
-            ...defaultState,
+            ...sspDefaultState,
             currentAccount: fromJS({
                 ...account,
                 current_subscription: {

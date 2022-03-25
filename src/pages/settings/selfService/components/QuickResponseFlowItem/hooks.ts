@@ -6,7 +6,7 @@ import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
 
-const useUpdateQuickReplyPolicies = () => {
+export const useUpdateQuickReplyPolicies = () => {
     const configuration = useConfigurationData()
     const dispatch = useAppDispatch()
 
@@ -43,5 +43,3 @@ const useUpdateQuickReplyPolicies = () => {
 
     return {updateQuickReplyPolicies}
 }
-
-export default useUpdateQuickReplyPolicies

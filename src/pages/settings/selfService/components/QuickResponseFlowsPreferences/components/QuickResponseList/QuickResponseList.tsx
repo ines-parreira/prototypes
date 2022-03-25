@@ -11,7 +11,7 @@ import {isProduction} from 'utils/environment'
 
 import {useConfigurationData} from '../../../hooks'
 import {QuickReplyPolicy} from '../../../../../../../models/selfServiceConfiguration/types'
-import useUpdateQuickReplyPolicies from '../../../QuickResponseFlowItem/hooks'
+import {useUpdateQuickReplyPolicies} from '../../../QuickResponseFlowItem/hooks'
 
 import QuickResponseListItem from '../QuickResponseListItem'
 import css from './QuickResponseList.less'
@@ -82,6 +82,10 @@ const QuickResponseList = () => {
                     quickResponsesDraft.push({
                         title,
                         deactivated_datetime: deactivatedDatetime,
+                        response_message_content: {
+                            html: '<div><br></div>',
+                            text: '',
+                        },
                     })
                 }
             )
@@ -100,7 +104,8 @@ const QuickResponseList = () => {
 
     const handleEditClick = (position: number) => () => {
         if (!isProduction()) {
-            history.push(baseURL.concat(position.toString()))
+            const id = quickResponses[position].id
+            history.push(baseURL.concat(id ?? ''))
         } else {
             const title = quickResponses[position].title
             setTitle(title)

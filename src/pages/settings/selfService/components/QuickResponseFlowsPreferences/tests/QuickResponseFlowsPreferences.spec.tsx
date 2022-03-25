@@ -161,7 +161,7 @@ describe('<QuickResponseFlowsPreferences />', () => {
         userEvent.click(editButton)
 
         expect(history.push).toHaveBeenLastCalledWith(
-            '/app/settings/self-service/shopify/mystore1/preferences/quick-response/1'
+            '/app/settings/self-service/shopify/mystore1/preferences/quick-response/2'
         )
     })
 

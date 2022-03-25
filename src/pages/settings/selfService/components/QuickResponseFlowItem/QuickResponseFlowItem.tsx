@@ -9,7 +9,7 @@ import {
     Label,
     FormGroup,
 } from 'reactstrap'
-import {Link} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import {EditorState} from 'draft-js'
 import classNames from 'classnames'
 import {fromJS} from 'immutable'
@@ -64,6 +64,10 @@ const QuickResponseFlowItem = ({
         configuration.integration.getIn(['meta', 'shop_name']) as string
     }/preferences/quick-response`
 
+    const {quickResponseId} = useParams<{
+        quickResponseId?: string
+    }>()
+
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const quickResponses = useMemo(() => {
@@ -82,9 +86,9 @@ const QuickResponseFlowItem = ({
     const handleSubmitWrapper = (event: React.FormEvent) => {
         event.preventDefault()
 
-        const flowWithTheSameTitle = quickResponses.find(
-            (response) => response.title === buttonLabel
-        )
+        const flowWithTheSameTitle = quickResponses
+            .filter((quickResponse) => quickResponse.id !== quickResponseId)
+            .find((response) => response.title === buttonLabel)
 
         if (flowWithTheSameTitle) {
             setError('Flow with the same title already exists')
@@ -239,8 +243,10 @@ const QuickResponseFlowItem = ({
                                     </Button>
                                 ) : (
                                     <ConfirmButton
+                                        // TODO: use same design as in list
                                         id="delete-flow"
                                         intent="destructive"
+                                        confirmationButtonIntent="destructive"
                                         confirmationContent={
                                             <span>
                                                 Are you sure you want to delete

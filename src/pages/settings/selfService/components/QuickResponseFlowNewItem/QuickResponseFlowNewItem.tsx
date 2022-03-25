@@ -4,7 +4,7 @@ import {produce} from 'immer'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import history from 'pages/history'
 import QuickResponseFlowItem from '../QuickResponseFlowItem/QuickResponseFlowItem'
-import useUpdateQuickReplyPolicies from '../QuickResponseFlowItem/hooks'
+import {useUpdateQuickReplyPolicies} from '../QuickResponseFlowItem/hooks'
 
 const QuickResponseFlowNewItem = () => {
     const configuration = useConfigurationData()
@@ -28,8 +28,8 @@ const QuickResponseFlowNewItem = () => {
 
     const handleSubmit = ({
         buttonLabel,
-    }: // responseText,
-    {
+        responseText,
+    }: {
         buttonLabel: string
         responseText: {message: Map<any, any>}
     }) => {
@@ -42,6 +42,10 @@ const QuickResponseFlowNewItem = () => {
                 quickResponsesDraft.push({
                     title: buttonLabel,
                     deactivated_datetime: deactivatedDatetime,
+                    response_message_content: {
+                        html: responseText.message.get('html'),
+                        text: responseText.message.get('text'),
+                    },
                 })
             }
         )

@@ -68,13 +68,50 @@ export const defaultState = {
                     exceptions: [],
                 },
                 quick_response_policies: [
-                    {title: 'First', deactivated_datetime: null},
-                    {title: 'Second', deactivated_datetime: null},
-                    {title: 'Third', deactivated_datetime: null},
-                    {title: 'Fourth', deactivated_datetime: null},
                     {
+                        response_message_content: {
+                            html: 'content',
+                            text: 'content',
+                        },
+                        title: 'First',
+                        deactivated_datetime: null,
+                        id: '1',
+                    },
+                    {
+                        response_message_content: {
+                            html: 'content',
+                            text: 'content',
+                        },
+                        title: 'Second',
+                        deactivated_datetime: null,
+                        id: '2',
+                    },
+                    {
+                        response_message_content: {
+                            html: 'content',
+                            text: 'content',
+                        },
+                        title: 'Third',
+                        deactivated_datetime: null,
+                        id: '3',
+                    },
+                    {
+                        response_message_content: {
+                            html: 'content',
+                            text: 'content',
+                        },
+                        title: 'Fourth',
+                        deactivated_datetime: null,
+                        id: '4',
+                    },
+                    {
+                        response_message_content: {
+                            html: 'content',
+                            text: 'content',
+                        },
                         title: 'Fifth',
                         deactivated_datetime: '2020-01-01T00:00:00Z',
+                        id: '5',
                     },
                 ],
             },

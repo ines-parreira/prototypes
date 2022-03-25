@@ -15,22 +15,47 @@ Array [
       "quick_response_policies": Array [
         Object {
           "deactivated_datetime": null,
+          "id": "1",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "First",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "2",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Second edited",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "3",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Third",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "4",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fourth",
         },
         Object {
           "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "id": "5",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fifth",
         },
       ],
@@ -64,26 +89,55 @@ Array [
       "quick_response_policies": Array [
         Object {
           "deactivated_datetime": null,
+          "id": "1",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "First",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "2",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Second",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "3",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Third",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "4",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fourth",
         },
         Object {
           "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "id": "5",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fifth",
         },
         Object {
           "deactivated_datetime": "2021-01-24T17:30:00.000Z",
+          "response_message_content": Object {
+            "html": "<div><br></div>",
+            "text": "",
+          },
           "title": "New flow",
         },
       ],
@@ -122,22 +176,47 @@ Array [
       "quick_response_policies": Array [
         Object {
           "deactivated_datetime": null,
+          "id": "1",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "First",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "2",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Second edited",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "3",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Third",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "4",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fourth",
         },
         Object {
           "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "id": "5",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fifth",
         },
       ],
@@ -171,26 +250,55 @@ Array [
       "quick_response_policies": Array [
         Object {
           "deactivated_datetime": null,
+          "id": "1",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "First",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "2",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Second",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "3",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Third",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "4",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fourth",
         },
         Object {
           "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "id": "5",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fifth",
         },
         Object {
           "deactivated_datetime": "2021-01-24T17:30:00.000Z",
+          "response_message_content": Object {
+            "html": "<div><br></div>",
+            "text": "",
+          },
           "title": "New flow",
         },
       ],
@@ -224,18 +332,38 @@ Array [
       "quick_response_policies": Array [
         Object {
           "deactivated_datetime": null,
+          "id": "1",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "First",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "3",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Third",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "4",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fourth",
         },
         Object {
           "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "id": "5",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fifth",
         },
       ],
@@ -274,22 +402,47 @@ Array [
       "quick_response_policies": Array [
         Object {
           "deactivated_datetime": null,
+          "id": "1",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "First",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "2",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Second edited",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "3",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Third",
         },
         Object {
           "deactivated_datetime": null,
+          "id": "4",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fourth",
         },
         Object {
           "deactivated_datetime": "2020-01-01T00:00:00Z",
+          "id": "5",
+          "response_message_content": Object {
+            "html": "content",
+            "text": "content",
+          },
           "title": "Fifth",
         },
       ],

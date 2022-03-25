@@ -1,0 +1,246 @@
+import React from 'react'
+import {Provider} from 'react-redux'
+import {useParams, useRouteMatch} from 'react-router-dom'
+import {render, screen, fireEvent} from '@testing-library/react'
+import thunk from 'redux-thunk'
+import MockDate from 'mockdate'
+import {fromJS} from 'immutable'
+
+import configureMockStore from 'redux-mock-store'
+
+import {RootState, StoreDispatch} from 'state/types'
+
+import {account} from 'fixtures/account'
+import {basicPlan} from 'fixtures/subscriptionPlan'
+
+import history from '../../../../../history'
+import QuickResponseFlowEditItem from '../QuickResponseFlowEditItem'
+import {defaultState} from '../../QuickResponseFlowsPreferences/tests/constants'
+import * as hooks from '../../QuickResponseFlowItem/hooks'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
+const useRouteMatchMock = useRouteMatch as jest.MockedFunction<
+    typeof useRouteMatch
+>
+jest.mock('react-router')
+
+jest.mock('models/selfServiceConfiguration/resources')
+
+const defaultEntities = {
+    ...defaultState.entities,
+    selfServiceConfigurations: {
+        1: {
+            ...defaultState.entities.selfServiceConfigurations[1],
+            quick_response_policies: [
+                {
+                    id: 'some-id',
+                    title: 'title',
+                    deactivated_datetime: null,
+                    response_message_content: {
+                        html: '<div><br></div>',
+                        text: '',
+                    },
+                },
+                {
+                    id: 'another-id',
+                    title: 'another title',
+                    deactivated_datetime: null,
+                    response_message_content: {
+                        html: '<div><br></div>',
+                        text: '',
+                    },
+                },
+            ],
+        },
+    },
+}
+
+describe('<QuickResponseFlowEditItem />', () => {
+    const date = '2021-01-24T17:30:00.000Z'
+
+    beforeEach(() => {
+        useParamsMock.mockReturnValue({
+            shopName: 'mystore1',
+            integrationType: 'shopify',
+            quickResponseId: 'some-id',
+        })
+        useRouteMatchMock.mockReturnValue({
+            params: {
+                shopName: 'mystore1',
+                integrationType: 'shopify',
+                quickResponseId: 'some-id',
+            },
+            isExact: true,
+            path: '',
+            url: '',
+        })
+        MockDate.set(date)
+        jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        MockDate.reset()
+    })
+
+    it('should show paywall if plan does not support automation addon', () => {
+        const state = {
+            ...defaultState,
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    ...account.current_subscription,
+                    plan: basicPlan.id,
+                    status: 'active',
+                },
+            }),
+            entities: defaultEntities,
+        }
+
+        render(
+            <Provider store={mockStore(state)}>
+                <QuickResponseFlowEditItem />
+            </Provider>
+        )
+
+        screen.getByText('Leverage the power of Self-service')
+    })
+
+    it('should edit existing flow', () => {
+        const updateQuickReplyPoliciesSpy = jest.fn()
+        jest.spyOn(hooks, 'useUpdateQuickReplyPolicies').mockImplementation(
+            () => ({updateQuickReplyPolicies: updateQuickReplyPoliciesSpy})
+        )
+
+        const {getByText, getByLabelText} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    entities: defaultEntities,
+                })}
+            >
+                <QuickResponseFlowEditItem />
+            </Provider>
+        )
+
+        getByText('Edit Flow')
+        const saveChangesButton = getByText('Save Changes') as HTMLInputElement
+
+        fireEvent.change(getByLabelText('Button label'), {
+            target: {value: 'label'},
+        })
+
+        fireEvent.click(saveChangesButton)
+
+        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith([
+            {
+                deactivated_datetime: null,
+                response_message_content: {html: '<div><br></div>', text: ''},
+                title: 'label',
+                id: 'some-id',
+            },
+            {
+                deactivated_datetime: null,
+                id: 'another-id',
+                title: 'another title',
+                response_message_content: {html: '<div><br></div>', text: ''},
+            },
+        ])
+    })
+
+    it('should prevent edition if another flow has same title', () => {
+        const updateQuickReplyPoliciesSpy = jest.fn()
+        jest.spyOn(hooks, 'useUpdateQuickReplyPolicies').mockImplementation(
+            () => ({updateQuickReplyPolicies: updateQuickReplyPoliciesSpy})
+        )
+        const {getByText, getByLabelText} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    entities: defaultEntities,
+                })}
+            >
+                <QuickResponseFlowEditItem />
+            </Provider>
+        )
+
+        const saveChangesButton = getByText('Save Changes') as HTMLInputElement
+
+        fireEvent.change(getByLabelText('Button label'), {
+            target: {value: 'another title'},
+        })
+
+        fireEvent.click(saveChangesButton)
+        expect(updateQuickReplyPoliciesSpy).not.toHaveBeenCalled()
+    })
+
+    it('should allow edition if flow title was not changed', () => {
+        const updateQuickReplyPoliciesSpy = jest.fn()
+        jest.spyOn(hooks, 'useUpdateQuickReplyPolicies').mockImplementation(
+            () => ({updateQuickReplyPolicies: updateQuickReplyPoliciesSpy})
+        )
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    entities: defaultEntities,
+                })}
+            >
+                <QuickResponseFlowEditItem />
+            </Provider>
+        )
+
+        const saveChangesButton = getByText('Save Changes') as HTMLInputElement
+
+        fireEvent.click(saveChangesButton)
+
+        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith([
+            {
+                deactivated_datetime: null,
+                title: 'title',
+                id: 'some-id',
+                response_message_content: {html: '<div><br></div>', text: ''},
+            },
+            {
+                deactivated_datetime: null,
+                response_message_content: {html: '<div><br></div>', text: ''},
+                title: 'another title',
+                id: 'another-id',
+            },
+        ])
+    })
+
+    it('should delete existing flow', () => {
+        const updateQuickReplyPoliciesSpy = jest.fn()
+        jest.spyOn(hooks, 'useUpdateQuickReplyPolicies').mockImplementation(
+            () => ({updateQuickReplyPolicies: updateQuickReplyPoliciesSpy})
+        )
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    entities: defaultEntities,
+                })}
+            >
+                <QuickResponseFlowEditItem />
+            </Provider>
+        )
+
+        fireEvent.click(getByText('Delete Flow'))
+        getByText('Are you sure you want to delete this quick response flow?')
+        fireEvent.click(getByText('Confirm'))
+
+        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith([
+            {
+                deactivated_datetime: null,
+                response_message_content: {html: '<div><br></div>', text: ''},
+                title: 'another title',
+                id: 'another-id',
+            },
+        ])
+
+        expect(history.push).toHaveBeenLastCalledWith(
+            '/app/settings/self-service/shopify/mystore1/preferences/quick-response'
+        )
+    })
+})
