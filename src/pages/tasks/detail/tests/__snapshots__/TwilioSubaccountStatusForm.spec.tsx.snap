@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TwilioSubaccountStatusForm /> render() should render with the Twillio subaccount details 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Twilio Subaccount Status
+      </h1>
+    </div>
+    <div
+      class="page-container mt-4 container-fluid"
+    >
+      <form
+        class="mb-4 col-sm-4"
+      >
+        <div
+          class="form-group"
+        >
+          <div>
+            <label
+              class="control-label"
+              for="sub_account_sid"
+            >
+              Twilio Subaccount SID
+            </label>
+          </div>
+          <input
+            class="form-control"
+            disabled=""
+            id="sub_account_sid"
+            type="text"
+            value="SID_123"
+          />
+        </div>
+        <div
+          class="form-group"
+        >
+          <div>
+            <label
+              class="control-label"
+              for="status"
+            >
+              Status
+            </label>
+          </div>
+          <div>
+            <div
+              class="dropdown"
+            >
+              <div
+                aria-expanded="false"
+                aria-haspopup="true"
+                class=""
+                data-toggle="dropdown"
+              >
+                <div
+                  class="select dropdown-toggle selectFullWidth"
+                >
+                  <span
+                    class="label"
+                    style="min-width: 10px; opacity: 1;"
+                  >
+                    Suspended
+                  </span>
+                  <input
+                    autocomplete="chrome-off"
+                    class="input"
+                    id="status"
+                    style="min-width: 10px;"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                aria-hidden="true"
+                class="options optionsFullWidth dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                
+                <button
+                  class="option option--focused dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Active
+                  </span>
+                </button>
+                <button
+                  class="option dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span>
+                    Closed
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="mt-4 form-group"
+        >
+          <button
+            class="wrapper primary medium isDisabled"
+            disabled=""
+            type="submit"
+          >
+            Save changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;

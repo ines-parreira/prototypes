@@ -101,6 +101,7 @@ import AutomationOverview from './stats/AutomationOverview'
 import AutomationMacros from './stats/AutomationMacros'
 import AutomationIntents from './stats/AutomationIntents'
 import SelfServiceStatsPage from './stats/self-service/SelfServiceStatsPage'
+import TwilioSubaccountStatusForm from './tasks/detail/TwilioSubaccountStatusForm'
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
@@ -1138,6 +1139,17 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         ImportPhoneNumber,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/twilio-subaccount-status`}
+                exact
+                render={appRender({
+                    content: withUserRoleRequired(
+                        TwilioSubaccountStatusForm,
                         ADMIN_ROLE
                     ),
                     navbar: SettingsNavbarContainer,
