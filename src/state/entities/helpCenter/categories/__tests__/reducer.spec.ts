@@ -1,17 +1,19 @@
 import _keyBy from 'lodash/keyBy'
 import produce from 'immer'
 
-import {createCategoryFromDto} from 'models/helpCenter/utils'
-import {
-    getCategoriesResponseEnglish,
-    getSingleCategoryEnglish as categoryResponse,
-} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
+import {getSingleCategoryEnglish as categoryResponse} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
 
 import {Category} from 'models/helpCenter/types'
+import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import {
+    getRootCategory,
+    getSingleCategory,
+} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 
 import reducer, {initialState} from '../reducer'
 import {
     saveCategories,
+    savePositions,
     updateCategory,
     deleteCategory,
     resetCategories,
@@ -20,9 +22,7 @@ import {
 
 import {CategoriesAction} from '../types'
 
-const categoriesResponse: Category[] = getCategoriesResponseEnglish.data.map(
-    (category) => createCategoryFromDto(category, 1)
-)
+const categoriesResponse: Category[] = getCategoriesFlatSorted
 
 describe('Help Center/Categories reducer', () => {
     it('has the correct initial state', () => {
@@ -69,7 +69,6 @@ describe('Help Center/Categories reducer', () => {
                     categoriesById: {
                         [categoryResponse.id]: categoryResponse,
                     },
-                    positions: [1],
                 },
                 updateCategory(updatedCategory)
             )
@@ -78,26 +77,53 @@ describe('Help Center/Categories reducer', () => {
                 categoriesById: {
                     [categoryResponse.id]: updatedCategory,
                 },
-                positions: [1],
             })
         })
     })
 
     describe('dispatch deleteCategory', () => {
-        it('removes the current article', () => {
+        it('removes the current category', () => {
+            const singleCategory = getSingleCategory
+            const rootCategory = getRootCategory
             const nextState = reducer(
                 {
                     categoriesById: {
-                        [categoryResponse.id]: categoryResponse,
+                        [singleCategory.id]: singleCategory,
+                        '0': rootCategory,
                     },
-                    positions: [1],
                 },
-                deleteCategory(categoryResponse.id)
+                deleteCategory(singleCategory.id)
             )
 
             expect(nextState).toEqual({
-                categoriesById: {},
-                positions: [1],
+                categoriesById: {
+                    '0': {
+                        ...rootCategory,
+                        children: rootCategory.children.filter(
+                            (categoryId) => categoryId !== singleCategory.id
+                        ),
+                    },
+                },
+            })
+        })
+    })
+
+    describe('dispatch savePositions', () => {
+        it('saves positions for the children', () => {
+            const rootCategory = getRootCategory
+            const nextState = reducer(
+                {
+                    categoriesById: {
+                        '0': rootCategory,
+                    },
+                },
+                savePositions({categoryId: 0, children: [7, 6, 5]})
+            )
+
+            expect(nextState).toEqual({
+                categoriesById: {
+                    '0': {...rootCategory, children: [7, 6, 5]},
+                },
             })
         })
     })
@@ -108,7 +134,6 @@ describe('Help Center/Categories reducer', () => {
                 categoriesById: {
                     [categoryResponse.id]: categoryResponse,
                 },
-                positions: [1],
             },
             pushCategorySupportedLocales({
                 categoryId: 1,
@@ -128,7 +153,6 @@ describe('Help Center/Categories reducer', () => {
                     },
                 },
             },
-            positions: [1],
         })
     })
 
@@ -137,7 +161,6 @@ describe('Help Center/Categories reducer', () => {
             const nextState = reducer(
                 {
                     categoriesById: _keyBy(categoriesResponse, 'id'),
-                    positions: [1],
                 },
                 resetCategories()
             )

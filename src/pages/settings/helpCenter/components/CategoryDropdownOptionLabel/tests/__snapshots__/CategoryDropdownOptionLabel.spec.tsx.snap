@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CategoryDropdownOptionLabel /> matches snapshot 1`] = `
+<div>
+  <div
+    id="categoryOption-5"
+  >
+    <div
+      class="category"
+    >
+      Category 1
+    </div>
+    <div
+      class="parents trimTextFromTheLeft"
+    >
+      &lt; Top Level Category &gt;
+    </div>
+  </div>
+</div>
+`;

@@ -1,37 +1,85 @@
 import {createSelector} from 'reselect'
-import {Category} from 'models/helpCenter/types'
+
+import {Category, NonRootCategory} from 'models/helpCenter/types'
 
 import {getArticles} from '../articles/selectors'
 import {getHelpCenterStore} from '../selectors'
+import {isNonRootCategory} from '.'
 
 export const helpCenterCategoriesStore = createSelector(
     getHelpCenterStore,
     (store) => store.categories
 )
 
-const getCategoriesById = createSelector(helpCenterCategoriesStore, (store) => {
-    const {positions = [], categoriesById} = store
-    const categoriesWithPosition: Record<string, Category> = {}
+export const getCategoriesById = createSelector(
+    helpCenterCategoriesStore,
+    (store) => {
+        const {categoriesById} = store
 
-    positions.forEach((categoryId, currentIndex) => {
-        if (categoriesById[categoryId]) {
-            categoriesWithPosition[categoryId] = {
-                ...categoriesById[categoryId],
-                articles: [],
-                position: currentIndex + 1,
+        return categoriesById
+    }
+)
+
+export const getCategories = createSelector(
+    getCategoriesById,
+    (categoriesById) => {
+        const rootCategory = categoriesById['0']
+        const categoriesArray: Category[] = []
+        const traverseCategories = (category: Category) => {
+            if (!category) {
+                return
             }
+            categoriesArray.push(category)
+            category.children.forEach((categoryId) =>
+                traverseCategories(categoriesById[categoryId])
+            )
         }
-    })
-    return categoriesWithPosition
-})
 
-export const getCategories = createSelector(getCategoriesById, (categories) =>
-    Object.values(categories).sort((a, b) => a.position - b.position)
+        traverseCategories(rootCategory)
+
+        return categoriesArray
+    }
+)
+
+export const getNonRootCategoriesById = createSelector(
+    getCategories,
+    (categories) => {
+        const categoriesById: Record<string, NonRootCategory> = {}
+        categories.forEach((category) => {
+            if (isNonRootCategory(category)) {
+                categoriesById[category.id] = category
+            }
+        })
+        return categoriesById
+    }
+)
+
+export const getParentCategories = createSelector(
+    getCategoriesById,
+    (categories) => {
+        const rootCategory = categories['0']
+        const categoriesArray: Category[] = []
+        const traverseCategories = (category: Category, level: number) => {
+            if (!category) {
+                return
+            }
+            categoriesArray.push(category)
+            category.children.forEach((categoryId) => {
+                if (level < 3) {
+                    traverseCategories(categories[categoryId], level + 1)
+                }
+            })
+        }
+
+        traverseCategories(rootCategory, 0)
+
+        return categoriesArray
+    }
 )
 
 export const getCategoryById = (id: number | undefined) =>
     createSelector(getCategoriesById, (categories) =>
-        id ? categories[id.toString()] : undefined
+        id !== undefined ? categories[id.toString()] : undefined
     )
 
 export const getCategoriesWithArticles = createSelector(

@@ -737,10 +737,11 @@ export const HelpCenterArticlesView: React.FC = () => {
                 helpCenter={helpCenter}
                 onCreateArticle={onArticleCreate}
                 onCreateCategory={onCategoryCreate}
-                renderArticleList={(categoryId, articles) => (
+                renderArticleList={(categoryId, articles, level) => (
                     <ArticlesTable
                         isNested
                         categoryId={categoryId}
+                        level={level}
                         articles={articles}
                         onClick={onArticleSelect}
                         onReorderFinish={onArticlesReorder}

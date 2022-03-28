@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react'
 import {Container} from 'reactstrap'
 import Button from 'pages/common/components/button/Button'
 
-import {Category, HelpCenter} from 'models/helpCenter/types'
+import {HelpCenter} from 'models/helpCenter/types'
 import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
-import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import {getViewLanguage} from 'state/ui/helpCenter'
 import Loader from 'pages/common/components/Loader/Loader'
 import {
     CategoriesTable,
@@ -17,6 +17,8 @@ import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategorie
 import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
 import settingsCss from 'pages/settings/settings.less'
 import useAppSelector from 'hooks/useAppSelector'
+
+import {CategoriesPositionsType} from '../CategoriesTable/CategoriesTable'
 
 import css from './CategoriesView.less'
 
@@ -35,22 +37,32 @@ export const CategoriesViews = ({
     const actions = useCategoriesActions()
     const {getArticleCount} = useArticlesActions()
     const uncategorizedArticles = useAppSelector(getUncategorizedArticles)
-    const {categories, hasMore, isLoading, fetchMore} = useHelpCenterCategories(
-        helpCenter.id,
-        {
-            per_page: CATEGORIES_PER_PAGE,
-        }
-    )
+    const viewLanguage =
+        useAppSelector(getViewLanguage) || helpCenter.default_locale
+    const {categories, isLoading} = useHelpCenterCategories(helpCenter.id, {
+        per_page: CATEGORIES_PER_PAGE,
+        locale: viewLanguage,
+    })
     const [uncategorizedArticleCount, setUncategorizedArticleCount] =
         useState(0)
 
-    const handleOnReorder = (categories: Category[]) => {
-        void actions.updateCategoriesPositions(categories)
+    const handleOnReorder = ({
+        categories,
+        categoryId,
+        defaultSiblingsPositions,
+    }: CategoriesPositionsType) => {
+        if (categories.length) {
+            void actions.updateCategoriesPositions({
+                categories,
+                categoryId,
+                defaultSiblingsPositions,
+            })
+        }
     }
 
     const showCreateFirst =
         !isLoading &&
-        categories.length === 0 &&
+        categories.length === 1 &&
         uncategorizedArticles.length === 0 &&
         uncategorizedArticleCount === 0
 
@@ -64,7 +76,7 @@ export const CategoriesViews = ({
         void init()
     }, [])
 
-    if (isLoading && categories.length === 0) {
+    if (isLoading && categories.length === 1) {
         return (
             <Container fluid className={settingsCss.pageContainer}>
                 <Loader />
@@ -99,18 +111,12 @@ export const CategoriesViews = ({
                     <ImportSection className={css.importSection} />
                 </Container>
             )}
-            <InfiniteScroll
-                onLoad={fetchMore}
-                shouldLoadMore={hasMore && !isLoading}
-                loaderSize={20}
-            >
-                <CategoriesTable
-                    categories={categories}
-                    renderArticleList={renderArticleList}
-                    onReorderFinish={handleOnReorder}
-                    shouldRenderEmptyUncategorizedRow={!showCreateFirst}
-                />
-            </InfiniteScroll>
+            <CategoriesTable
+                categories={categories}
+                renderArticleList={renderArticleList}
+                onReorderFinish={handleOnReorder}
+                shouldRenderEmptyUncategorizedRow={!showCreateFirst}
+            />
         </>
     )
 }

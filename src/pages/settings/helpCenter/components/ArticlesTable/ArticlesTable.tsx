@@ -3,11 +3,11 @@ import classNames from 'classnames'
 import {chain as _chain} from 'lodash'
 import _sortBy from 'lodash/sortBy'
 
-import {Article} from '../../../../../models/helpCenter/types'
-import HeaderCell from '../../../../common/components/table/cells/HeaderCell'
-import TableBody from '../../../../common/components/table/TableBody'
-import TableHead from '../../../../common/components/table/TableHead'
-import TableWrapper from '../../../../common/components/table/TableWrapper'
+import {Article} from 'models/helpCenter/types'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableHead from 'pages/common/components/table/TableHead'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
 
 import {ArticleRow} from './components/ArticleRow'
 
@@ -16,6 +16,7 @@ import css from './ArticlesTable.less'
 type Props = {
     isNested?: boolean
     categoryId: number | null
+    level: number
     articles: Article[]
     onClick: (article: Article) => void
     onClickSettings: (name: string, article: Article) => void
@@ -25,6 +26,7 @@ type Props = {
 export const ArticlesTable = ({
     isNested = false,
     categoryId,
+    level,
     articles,
     onClick,
     onClickSettings,
@@ -92,6 +94,7 @@ export const ArticlesTable = ({
                     <ArticleRow
                         key={article.id}
                         isNested={isNested}
+                        level={level}
                         categoryId={categoryId}
                         article={article}
                         position={index}

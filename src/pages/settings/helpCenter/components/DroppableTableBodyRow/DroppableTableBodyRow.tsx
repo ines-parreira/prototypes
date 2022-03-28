@@ -1,14 +1,15 @@
 import classNames from 'classnames'
 import React, {Ref, RefObject, useEffect} from 'react'
+import {Category} from 'models/helpCenter/types'
 
-import BodyCell from '../../../../common/components/table/cells/BodyCell'
-import TableBodyRow from '../../../../common/components/table/TableBodyRow'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import {
     Callbacks,
     DragItemRequired,
     useReorderDnD,
 } from '../../hooks/useReorderDnD'
-import {DND_ENTITIES} from '../CategoriesTable'
+import {getCategoryDndType} from '../../utils/getCategoryDndType'
 
 import css from './DroppableTableBodyRow.less'
 
@@ -16,6 +17,7 @@ export type RowEventListeners = {
     onRowClick?: () => void
     onMoveEntity: Callbacks['onHover']
     onDropEntity?: Callbacks['onDrop']
+    onCancelDnD?: Callbacks['onCancel']
 }
 
 type DroppableTableBodyRowProps = RowEventListeners & {
@@ -23,6 +25,7 @@ type DroppableTableBodyRowProps = RowEventListeners & {
     children: React.ReactNode
     onDragStart: () => void
     className?: string
+    category: Category
 }
 
 type DragItem = DragItemRequired & {
@@ -36,12 +39,14 @@ export const DroppableTableBodyRow = ({
     onRowClick,
     onMoveEntity,
     onDropEntity,
+    onCancelDnD,
     className,
+    category,
 }: DroppableTableBodyRowProps): JSX.Element => {
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         dragItem,
-        [DND_ENTITIES.CATEGORY],
-        {onHover: onMoveEntity, onDrop: onDropEntity}
+        [getCategoryDndType(category.parent_category_id)],
+        {onHover: onMoveEntity, onDrop: onDropEntity, onCancel: onCancelDnD}
     )
 
     useEffect(() => {
@@ -60,7 +65,7 @@ export const DroppableTableBodyRow = ({
             onClick={onRowClick}
             className={className}
         >
-            <BodyCell>
+            <BodyCell style={{width: 25}}>
                 <div
                     ref={dragRef as RefObject<HTMLDivElement>}
                     className={classNames(

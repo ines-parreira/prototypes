@@ -64,6 +64,7 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
   >
     <td
       class="wrapper normal"
+      style="width: 25px;"
     >
       <div
         class="cellContent"
@@ -83,23 +84,26 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
         class="cellContent no-click"
       >
         <span
-          class="caret-placeholder"
-        />
+          class="caret material-icons"
+        >
+          arrow_right
+        </span>
         <span
           class=""
-          id="category-title-1"
+          id="category-title-5"
         >
-          Orders
+          Category 1
         </span>
         <span
           class="count badge badge-light badge-pill"
         >
-          No Published Articles
+          1
         </span>
       </div>
     </td>
     <td
-      class="wrapper small"
+      class="wrapper normal"
+      style="min-width: 104px; width: 104px;"
     >
       <div
         class="cellContent no-click"
@@ -123,10 +127,10 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
     </td>
     <td
       class="wrapper normal"
+      style="min-width: 120px; width: 104px;"
     >
       <div
         class="cellContent actions no-click"
-        style="width: 120px;"
       >
         <div
           class="action-list"
@@ -134,9 +138,23 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
           <button
             class="action material-icons"
             data-testid="categorySettings"
-            id="categorySettings-1"
+            id="categorySettings-5"
           >
             settings
+          </button>
+          <button
+            class="action material-icons"
+            data-testid="createNestedCategory"
+            id="createNestedCategory-5"
+          >
+            playlist_add
+          </button>
+          <button
+            class="action material-icons"
+            data-testid="createNestedArticle"
+            id="createNestedArticle-5"
+          >
+            note_add
           </button>
         </div>
       </div>
@@ -154,6 +172,7 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
   >
     <td
       class="wrapper normal"
+      style="width: 25px;"
     >
       <div
         class="cellContent"
@@ -173,29 +192,26 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
         class="cellContent no-click"
       >
         <span
-          class="caret-placeholder"
-        />
+          class="caret material-icons"
+        >
+          arrow_right
+        </span>
         <span
           class=""
-          id="category-title-1"
+          id="category-title-5"
         >
-          Orders
+          Category 1
         </span>
-        <div
-          class="spinner-border-sm spinner-border text-secondary"
-          role="status"
-          style="margin-left: 8px;"
+        <span
+          class="count badge badge-light badge-pill"
         >
-          <span
-            class="sr-only"
-          >
-            Loading...
-          </span>
-        </div>
+          1
+        </span>
       </div>
     </td>
     <td
-      class="wrapper small"
+      class="wrapper normal"
+      style="min-width: 104px; width: 104px;"
     >
       <div
         class="cellContent no-click"
@@ -219,10 +235,10 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
     </td>
     <td
       class="wrapper normal"
+      style="min-width: 120px; width: 104px;"
     >
       <div
         class="cellContent actions no-click"
-        style="width: 120px;"
       >
         <div
           class="action-list"
@@ -230,9 +246,131 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
           <button
             class="action material-icons"
             data-testid="categorySettings"
-            id="categorySettings-1"
+            id="categorySettings-5"
           >
             settings
+          </button>
+          <button
+            class="action material-icons"
+            data-testid="createNestedCategory"
+            id="createNestedCategory-5"
+          >
+            playlist_add
+          </button>
+          <button
+            class="action material-icons"
+            data-testid="createNestedArticle"
+            id="createNestedArticle-5"
+          >
+            note_add
+          </button>
+        </div>
+      </div>
+    </td>
+  </tr>
+</div>
+`;
+
+exports[`<CategoriesTableRow /> should render category that has children 1`] = `
+<div>
+  <tr
+    class="row droppable-row"
+    data-handler-id="T2"
+    style="opacity: 1;"
+  >
+    <td
+      class="wrapper normal"
+      style="width: 25px;"
+    >
+      <div
+        class="cellContent"
+      >
+        <div
+          class="drag-handler material-icons"
+          draggable="true"
+        >
+          drag_indicator
+        </div>
+      </div>
+    </td>
+    <td
+      class="wrapper cell normal"
+    >
+      <div
+        class="cellContent no-click"
+      >
+        <span
+          class="caret material-icons"
+        >
+          arrow_right
+        </span>
+        <span
+          class=""
+          id="category-title-5"
+        >
+          Category 1
+        </span>
+        <span
+          class="count badge badge-light badge-pill"
+        >
+          1
+        </span>
+      </div>
+    </td>
+    <td
+      class="wrapper normal"
+      style="min-width: 104px; width: 104px;"
+    >
+      <div
+        class="cellContent no-click"
+      >
+        <div
+          class="language-bullet-list"
+        >
+          <div
+            class="language-bullet-item"
+            data-testid="locale-bullet-en-US"
+          >
+            <img
+              alt="en-US"
+              class="flag-emoji"
+              data-testid="flag-en-US"
+              src="test-file-stub"
+            />
+          </div>
+        </div>
+      </div>
+    </td>
+    <td
+      class="wrapper normal"
+      style="min-width: 120px; width: 104px;"
+    >
+      <div
+        class="cellContent actions no-click"
+      >
+        <div
+          class="action-list"
+        >
+          <button
+            class="action material-icons"
+            data-testid="categorySettings"
+            id="categorySettings-5"
+          >
+            settings
+          </button>
+          <button
+            class="action material-icons"
+            data-testid="createNestedCategory"
+            id="createNestedCategory-5"
+          >
+            playlist_add
+          </button>
+          <button
+            class="action material-icons"
+            data-testid="createNestedArticle"
+            id="createNestedArticle-5"
+          >
+            note_add
           </button>
         </div>
       </div>

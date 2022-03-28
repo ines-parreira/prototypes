@@ -46,17 +46,20 @@ export type UpdateCategoryTranslationDto =
     Components.Schemas.UpdateCategoryTranslationDto
 
 export type CategoriesListPage = Components.Schemas.CategoriesListPageDto
-export type CategoryWithLocalTranslation =
-    Components.Schemas.CategoryWithLocalTranslationDto
+export type CategoryWithLocalTranslation = Components.Schemas.CategoryTreeDto
 export type CategoryTranslation = Components.Schemas.CategoryTranslationDto
 export type CategoryTranslationSeoMeta =
     Components.Schemas.CategoryTranslationSeoMeta
 export type LocalCategoryTranslation =
     Components.Schemas.LocalCategoryTranslation
 
-export type Category = CategoryWithLocalTranslation & {
-    position: number
+export type Category = Omit<CategoryWithLocalTranslation, 'children'> & {
     articles: Article[]
+    children: number[]
+}
+
+export type NonRootCategory = Omit<Category, 'translation'> & {
+    translation: NonNullable<Category['translation']>
 }
 
 // ARTICLES

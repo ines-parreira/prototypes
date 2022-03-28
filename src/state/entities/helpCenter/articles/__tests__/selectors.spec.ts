@@ -49,7 +49,7 @@ describe('getArticles()', () => {
 
 describe('getArticleById()', () => {
     it('returns the article if it is found', () => {
-        expect(getArticleById(1)(store as StoreState)).toEqual(
+        expect(getArticleById(10)(store as StoreState)).toEqual(
             articlesResponse[0]
         )
     })
@@ -61,14 +61,14 @@ describe('getArticleById()', () => {
 
 describe('getArticlesInCategory()', () => {
     it('returns the list of categories', () => {
-        expect(getArticlesInCategory(4)(store as StoreState)).toHaveLength(3)
+        expect(getArticlesInCategory(6)(store as StoreState)).toHaveLength(1)
     })
 })
 
 describe('getUncategorizedArticles', () => {
     it('returns the articles without category', () => {
         expect(getUncategorizedArticles(store as StoreState)).toEqual([
-            articlesResponse[0],
+            articlesResponse[articlesResponse.length - 1],
         ])
     })
 })

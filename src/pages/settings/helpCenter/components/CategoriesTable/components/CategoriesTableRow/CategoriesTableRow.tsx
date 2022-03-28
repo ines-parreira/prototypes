@@ -12,7 +12,7 @@ import {usePrevious} from 'react-use'
 import {Badge, Spinner} from 'reactstrap'
 
 import {useModalManager} from 'hooks/useModalManager'
-import {Article, Category} from 'models/helpCenter/types'
+import {Article, NonRootCategory} from 'models/helpCenter/types'
 import {
     getArticlesInCategory,
     getUncategorizedArticles,
@@ -33,26 +33,34 @@ import {
     RowEventListeners,
 } from 'pages/settings/helpCenter/components/DroppableTableBodyRow'
 import {TableActions} from 'pages/settings/helpCenter/components/TableActions'
-import {DND_ENTITIES} from 'pages/settings/helpCenter/components/CategoriesTable/constants'
 import useAppSelector from 'hooks/useAppSelector'
+
+import {
+    getCategoriesById,
+    getNonRootCategoriesById,
+} from 'state/entities/helpCenter/categories'
+import TableWrapper from 'pages/common/components/table/TableWrapper'
+import TableBody from 'pages/common/components/table/TableBody'
+import {getCategoryDndType} from 'pages/settings/helpCenter/utils/getCategoryDndType'
 
 import css from './CategoriesTableRow.less'
 
-export type CategoriesTableRowProps =
-    | BaseCategoriesTableRowProps
-    | ({category: Category; position: number} & BaseCategoriesTableRowProps &
-          RowEventListeners)
-
-type BaseCategoriesTableRowProps = {
+export type CategoriesTableRowProps = {
+    category: NonRootCategory
+    position: number
     categoryId: number | null
+    childCategories: number[]
+    level: number
     title: string
     renderArticleList: (
         categoryId: number | null,
-        articles: Article[]
+        articles: Article[],
+        level: number
     ) => ReactElement
     tooltip?: string
     shouldRenderRowWithoutArticles?: boolean
-}
+    onDragStart: (children: number[]) => void
+} & RowEventListeners
 
 type FixedCategoriesTableRowProps = {
     headerCell: ReactElement
@@ -74,11 +82,12 @@ const FixedCategoriesTableRow = ({
 )
 
 type DroppableCategoriesTableRowProps = {
-    category: Category
+    category: NonRootCategory
     headerCell: ReactElement
     bodyInnerClass: string
     onDragStart: () => void
     position: number
+    level: number
 } & RowEventListeners
 
 const DroppableCategoriesTableRow = ({
@@ -88,10 +97,13 @@ const DroppableCategoriesTableRow = ({
     onDragStart,
     onMoveEntity,
     onDropEntity,
+    onCancelDnD,
     position,
+    level,
 }: DroppableCategoriesTableRowProps) => {
     const locales = useSupportedLocales()
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
+    const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
 
     const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
 
@@ -106,17 +118,32 @@ const DroppableCategoriesTableRow = ({
         return [localesByCode[category.translation.locale]]
     }, [category, localesByCode])
 
-    const handleOnActionClick = (ev: MouseEvent, name: string) => {
-        if (!category) return
+    const handleOnActionClick = useCallback(
+        (ev: MouseEvent, name: string) => {
+            if (!category) return
 
-        if (name === 'categorySettings') {
-            categoryModal.openModal(MODALS.CATEGORY, false, category)
-            return
-        }
+            if (name === 'categorySettings') {
+                categoryModal.openModal(MODALS.CATEGORY, false, category)
+                return
+            }
+            if (name === 'createNestedCategory') {
+                categoryModal.openModal(MODALS.CATEGORY, false, {
+                    isCreate: true,
+                    parentCategoryId: category.id,
+                })
+                return
+            }
+            if (name === 'createNestedArticle') {
+                articleModal.openModal(MODALS.ARTICLE, false, {
+                    categoryId: category.id,
+                })
+            }
 
-        // FIXME: the form language selector is broken for this case
-        // cf. https://linear.app/gorgias/issue/SS-1019/cms-the-language-selector-is-broken-when-creating-an-article-inside-a
-    }
+            // FIXME: the form language selector is broken for this case
+            // cf. https://linear.app/gorgias/issue/SS-1019/cms-the-language-selector-is-broken-when-creating-an-article-inside-a
+        },
+        [articleModal, category, categoryModal]
+    )
 
     return (
         <DroppableTableBodyRow
@@ -124,26 +151,27 @@ const DroppableCategoriesTableRow = ({
             dragItem={{
                 id: category.id,
                 position,
-                type: DND_ENTITIES.CATEGORY,
+                type: getCategoryDndType(category.parent_category_id),
             }}
             onDragStart={onDragStart}
             onMoveEntity={onMoveEntity}
             onDropEntity={onDropEntity}
+            onCancelDnD={onCancelDnD}
+            category={category}
         >
             {headerCell}
-            <BodyCell innerClassName={bodyInnerClass} size="small">
-                {category.translation && (
-                    <LanguageList
-                        id={category.id}
-                        defaultLanguage={
-                            localesByCode[category.translation.locale]
-                        }
-                        languageList={languageList}
-                    />
-                )}
+            <BodyCell
+                style={{minWidth: 104, width: 104}}
+                innerClassName={bodyInnerClass}
+            >
+                <LanguageList
+                    id={category.id}
+                    defaultLanguage={localesByCode[category.translation.locale]}
+                    languageList={languageList}
+                />
             </BodyCell>
             <BodyCell
-                width={120}
+                style={{minWidth: 120, width: 104}}
                 innerClassName={classNames(css.actions, bodyInnerClass)}
             >
                 <TableActions
@@ -151,6 +179,8 @@ const DroppableCategoriesTableRow = ({
                         ({name, icon, tooltip}) => ({
                             name,
                             icon,
+                            disabled:
+                                level >= 3 && name === 'createNestedCategory',
                             tooltip: {
                                 content: tooltip,
                                 target: `${name}-${category.id}`,
@@ -166,12 +196,17 @@ const DroppableCategoriesTableRow = ({
 
 export const CategoriesTableRow = ({
     categoryId,
+    childCategories,
+    level,
     renderArticleList,
-    title,
+    title = '',
     tooltip,
     shouldRenderRowWithoutArticles = true,
+    onDragStart,
     ...props
 }: CategoriesTableRowProps): JSX.Element | null => {
+    const categories = useAppSelector(getCategoriesById)
+    const nonNullCategories = useAppSelector(getNonRootCategoriesById)
     const [isOpen, setOpen] = useState(false)
     const [itemCount, setItemCount] = useState(0)
     const {isLoading, fetchArticles, getArticleCount} = useArticlesActions()
@@ -181,6 +216,9 @@ export const CategoriesTableRow = ({
             : getUncategorizedArticles
     )
     const hasArticles = useMemo(() => itemCount > 0, [itemCount])
+    const subcategoriesCount = props.category.children.length
+    const hasSubcategories = subcategoriesCount > 0
+
     const hasMore = useMemo(
         () => articles.length < itemCount,
         [articles, itemCount]
@@ -198,11 +236,22 @@ export const CategoriesTableRow = ({
         }
     }, [articles, categoryId, hasMore, isLoading, fetchArticles])
 
-    const onLoadMore = (e: React.MouseEvent) => {
-        e.preventDefault()
+    const onLoadMore = useCallback(
+        (e: React.MouseEvent) => {
+            e.preventDefault()
 
-        void fetchMore()
-    }
+            void fetchMore()
+        },
+        [fetchMore]
+    )
+
+    const handleOnDragStart = useCallback(() => {
+        const parentCategoryId = props.category.parent_category_id || 0
+        const defaultChildrenPositions =
+            categories[parentCategoryId.toString()].children
+        onDragStart(defaultChildrenPositions)
+        setOpen(false)
+    }, [categories, onDragStart, props.category.parent_category_id])
 
     const renderContent = () => {
         if (!isOpen) {
@@ -211,10 +260,63 @@ export const CategoriesTableRow = ({
 
         return (
             <>
+                {childCategories.length > 0 && (
+                    <TableBodyRow>
+                        <BodyCell
+                            colSpan={4}
+                            className={css['subCategory-cell']}
+                        >
+                            <TableWrapper
+                                className={
+                                    css[`subCategory-table-level${level}`]
+                                }
+                            >
+                                <TableBody>
+                                    {childCategories.map(
+                                        (categoryId, index) => (
+                                            <CategoriesTableRow
+                                                key={categoryId}
+                                                categoryId={categoryId}
+                                                childCategories={
+                                                    nonNullCategories[
+                                                        categoryId
+                                                    ].children
+                                                }
+                                                level={level + 1}
+                                                category={
+                                                    nonNullCategories[
+                                                        categoryId.toString()
+                                                    ]
+                                                }
+                                                position={index}
+                                                title={
+                                                    nonNullCategories[
+                                                        categoryId.toString()
+                                                    ].translation.title
+                                                }
+                                                renderArticleList={
+                                                    renderArticleList
+                                                }
+                                                onMoveEntity={
+                                                    props.onMoveEntity
+                                                }
+                                                onDropEntity={
+                                                    props.onDropEntity
+                                                }
+                                                onCancelDnD={props.onCancelDnD}
+                                                onDragStart={onDragStart}
+                                            />
+                                        )
+                                    )}
+                                </TableBody>
+                            </TableWrapper>
+                        </BodyCell>
+                    </TableBodyRow>
+                )}
                 {articles.length > 0 && (
                     <TableBodyRow>
                         <BodyCell colSpan={4} className={css['parent-cell']}>
-                            {renderArticleList(categoryId, articles)}
+                            {renderArticleList(categoryId, articles, level)}
                         </BodyCell>
                     </TableBodyRow>
                 )}
@@ -286,19 +388,22 @@ export const CategoriesTableRow = ({
     }, [isOpen, hasArticles, articles])
 
     const id = `category-title-${categoryId ?? 'uncategorized'}`
-    const caret = hasArticles ? (
-        <span className={classNames(css.caret, 'material-icons')}>
-            {isOpen ? 'arrow_drop_down' : 'arrow_right'}
-        </span>
-    ) : (
-        <span className={css['caret-placeholder']} />
-    )
+    const caret =
+        hasArticles || hasSubcategories ? (
+            <span className={classNames(css.caret, 'material-icons')}>
+                {isOpen ? 'arrow_drop_down' : 'arrow_right'}
+            </span>
+        ) : (
+            <span className={css['caret-placeholder']} />
+        )
     const countBadge =
-        isLoading && !hasArticles ? (
+        isLoading && !hasArticles && !hasSubcategories ? (
             <Spinner size="sm" color="secondary" style={{marginLeft: 8}} />
         ) : (
             <Badge pill color="light" className={css.count}>
-                {hasArticles ? itemCount : 'No Published Articles'}
+                {hasArticles || hasSubcategories
+                    ? itemCount + subcategoriesCount
+                    : 'No Published Articles'}
             </Badge>
         )
     const bodyInnerClass = classNames({[css['no-click']]: !hasArticles})
@@ -306,7 +411,9 @@ export const CategoriesTableRow = ({
         <BodyCell
             className={css['cell']}
             innerClassName={bodyInnerClass}
-            onClick={() => hasArticles && setOpen(!isOpen)}
+            onClick={() =>
+                (hasArticles || hasSubcategories) && setOpen(!isOpen)
+            }
         >
             {caret}
             <span
@@ -343,7 +450,8 @@ export const CategoriesTableRow = ({
                 <DroppableCategoriesTableRow
                     headerCell={headerCell}
                     bodyInnerClass={bodyInnerClass}
-                    onDragStart={() => setOpen(false)}
+                    onDragStart={handleOnDragStart}
+                    level={level}
                     {...props}
                 />
             ) : (

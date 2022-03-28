@@ -1,6 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit'
 import _uniq from 'lodash/uniq'
 
+import {getInitialRootCategory} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 import {HelpCenterCategoriesState} from './types'
 
 import {
@@ -10,14 +11,14 @@ import {
     resetCategories,
     savePositions,
     updateCategoryTranslation,
-    updateCategoriesOrder,
     pushCategorySupportedLocales,
     removeLocaleFromCategory,
 } from './actions'
 
 export const initialState: HelpCenterCategoriesState = {
-    categoriesById: {},
-    positions: [],
+    categoriesById: {
+        '0': getInitialRootCategory,
+    },
 }
 
 export default createReducer<HelpCenterCategoriesState>(
@@ -37,7 +38,13 @@ export default createReducer<HelpCenterCategoriesState>(
             })
             // Set the categories positions in current state
             .addCase(savePositions, (state, {payload}) => {
-                state.positions = payload
+                const {categoryId, children} = payload
+                if (categoryId) {
+                    state.categoriesById[categoryId.toString()].children =
+                        children
+                } else {
+                    state.categoriesById['0'].children = children
+                }
             })
 
             // Merge payload with the current category
@@ -53,11 +60,17 @@ export default createReducer<HelpCenterCategoriesState>(
 
             //   Delete category by id
             .addCase(deleteCategory, (state, {payload}) => {
-                delete state.categoriesById[payload.toString()]
-            })
+                const parentId =
+                    state.categoriesById[payload.toString()]
+                        .parent_category_id ?? 0
+                const {children} = state.categoriesById[parentId.toString()]
 
-            .addCase(updateCategoriesOrder, (state, {payload}) => {
-                state.positions = payload
+                //Remove the child from the parent's list
+                state.categoriesById[parentId.toString()].children =
+                    children.filter((childId) => childId !== payload)
+
+                //Remove the category
+                delete state.categoriesById[payload.toString()]
             })
 
             .addCase(pushCategorySupportedLocales, (state, {payload}) => {
@@ -75,15 +88,12 @@ export default createReducer<HelpCenterCategoriesState>(
             .addCase(removeLocaleFromCategory, (state, {payload}) => {
                 const {categoryId, locale} = payload
                 if (state.categoriesById[categoryId.toString()]) {
-                    const indexOf = state.categoriesById[
-                        categoryId.toString()
-                    ].available_locales.findIndex((lang) => lang === locale)
+                    const category = state.categoriesById[categoryId.toString()]
 
-                    if (indexOf >= 0) {
-                        state.categoriesById[
-                            categoryId.toString()
-                        ].available_locales.splice(indexOf, 1)
-                    }
+                    category.available_locales =
+                        category.available_locales.filter(
+                            (availableLocale) => availableLocale !== locale
+                        )
                 }
             })
 

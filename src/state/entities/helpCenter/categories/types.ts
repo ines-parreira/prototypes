@@ -3,8 +3,8 @@ import {PayloadActionCreator} from '@reduxjs/toolkit'
 import {
     Category,
     CategoryTranslation,
-    CategoryWithLocalTranslation,
     LocaleCode,
+    NonRootCategory,
 } from 'models/helpCenter/types'
 
 export enum CategoryActions {
@@ -79,6 +79,11 @@ export type CategoriesAction =
     | RemoveCategorySupportedLocales
 
 export type HelpCenterCategoriesState = {
-    categoriesById: Record<string, CategoryWithLocalTranslation>
-    positions: number[]
+    categoriesById: Record<string, Category>
+}
+
+export function isNonRootCategory(
+    category: Category
+): category is NonRootCategory {
+    return Boolean(category.translation)
 }

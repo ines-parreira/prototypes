@@ -1,10 +1,24 @@
 import React from 'react'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import {render, screen} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
 
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import ArticleCategorySelect from '../ArticleCategorySelect'
 import useCategoriesOptions from '../hooks/useCategoriesOptions'
 
 jest.mock('../hooks/useCategoriesOptions')
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const defaultState: Partial<RootState> = {
+    entities: {
+        helpCenter: helpCenterState,
+    } as any,
+    ui: {helpCenter: uiState} as any,
+}
 
 describe('<ArticleCategorySelect />', () => {
     beforeEach(() => {
@@ -18,11 +32,13 @@ describe('<ArticleCategorySelect />', () => {
 
     it('should display the category options on the screen', async () => {
         render(
-            <ArticleCategorySelect
-                locale="en-US"
-                helpCenterId={1}
-                categoryId={1}
-            />
+            <Provider store={mockStore(defaultState)}>
+                <ArticleCategorySelect
+                    locale="en-US"
+                    helpCenterId={1}
+                    categoryId={1}
+                />
+            </Provider>
         )
         await screen.findByText('- No category -')
         await screen.findByText('Orders')
@@ -31,11 +47,13 @@ describe('<ArticleCategorySelect />', () => {
 
     it('should show new options if locale changed', async () => {
         const {rerender} = render(
-            <ArticleCategorySelect
-                locale="en-US"
-                helpCenterId={1}
-                categoryId={1}
-            />
+            <Provider store={mockStore(defaultState)}>
+                <ArticleCategorySelect
+                    locale="en-US"
+                    helpCenterId={1}
+                    categoryId={1}
+                />
+            </Provider>
         )
         await screen.findByText('Orders')
         ;(useCategoriesOptions as jest.Mock).mockImplementation(() => [
@@ -44,11 +62,13 @@ describe('<ArticleCategorySelect />', () => {
             {label: 'Prix', value: 2},
         ])
         rerender(
-            <ArticleCategorySelect
-                locale="fr-FR"
-                helpCenterId={1}
-                categoryId={1}
-            />
+            <Provider store={mockStore(defaultState)}>
+                <ArticleCategorySelect
+                    locale="fr-FR"
+                    helpCenterId={1}
+                    categoryId={1}
+                />
+            </Provider>
         )
         await screen.findByText('Commandes')
     })

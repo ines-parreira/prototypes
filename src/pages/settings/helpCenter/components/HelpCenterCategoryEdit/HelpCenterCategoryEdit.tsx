@@ -17,7 +17,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 import {
     Category,
-    CreateCategoryTranslationDto,
+    CreateCategoryDto,
     HelpCenter,
     LocalCategoryTranslation,
     LocaleCode,
@@ -41,6 +41,14 @@ import {
     slugify,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {
+    getParentCategories,
+    getCategoriesById,
+} from 'state/entities/helpCenter/categories'
+import {Option, Value} from 'pages/common/forms/SelectField/types'
+import Tooltip from 'pages/common/components/Tooltip'
+
 import {ConfirmationModal} from '../ConfirmationModal'
 import {SearchEnginePreview} from '../SearchEnginePreview'
 import {
@@ -48,19 +56,22 @@ import {
     ArticleLanguageSelect,
     OptionItem,
 } from '../articles/ArticleLanguageSelect'
+import {getCategoryDropdownOption} from '../articles/ArticleCategorySelect/hooks/useCategoriesOptions'
+import {eligibleParentCategories} from './utils'
 
 import css from './HelpCenterCategoryEdit.less'
 
 type Props = {
     isOpen: boolean
     isCreate?: boolean
+    parentCategoryId?: number
     isLoading: boolean
     canSave: boolean
     helpCenter: HelpCenter
     category?: Category
     translation?: LocalCategoryTranslation
     onLocaleChange: (locale: LocaleCode) => void
-    onCreate?: (translation: CreateCategoryTranslationDto) => void
+    onCreate?: (payload: CreateCategoryDto) => void
     onSave?: (
         translation: UpdateCategoryTranslationDto,
         locale: LocaleCode
@@ -73,6 +84,7 @@ type Props = {
 export const HelpCenterCategoryEdit = ({
     isOpen,
     isCreate,
+    parentCategoryId,
     isLoading,
     canSave,
     translation,
@@ -90,6 +102,7 @@ export const HelpCenterCategoryEdit = ({
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const locales = useSupportedLocales()
     const [title, setTitle] = useState('')
+    const [parentCategory, setParentCategory] = useState<number | undefined>()
     const [slug, setSlug] = useState('')
     const [isPristineSlug, setPristineSlug] = useState(true)
     const [description, setDescription] = useState('')
@@ -100,6 +113,14 @@ export const HelpCenterCategoryEdit = ({
     const [pendingDeleteCategory, setPendingDeleteCategory] = useState(false)
     const categoryTitleRef = useRef<HTMLInputElement>(null)
     const screenSize = useScreenSize()
+    const categories = useAppSelector(getParentCategories)
+    const categoriesById = useAppSelector(getCategoriesById)
+    const [selectFieldClassName, setSelectFieldClassName] = useState<string>('')
+    const [parentOptions, setParentOptions] = useState<Option[]>([])
+    const categoryOptionCandidates = useMemo(
+        () => eligibleParentCategories(categories, locale, category),
+        [categories, locale, category]
+    )
 
     const domain = useMemo(() => getHelpCenterDomain(helpCenter), [helpCenter])
 
@@ -138,6 +159,7 @@ export const HelpCenterCategoryEdit = ({
             setDescription(translation?.description || '')
             setMetaTitle(translation?.seo_meta.title || null)
             setMetaDescription(translation?.seo_meta.description || null)
+            setParentCategory(category.parent_category_id ?? undefined)
 
             if (translation?.locale) {
                 setLocale(translation?.locale)
@@ -149,6 +171,7 @@ export const HelpCenterCategoryEdit = ({
             setMetaTitle(null)
             setMetaDescription(null)
             setLocale(viewLanguage)
+            setParentCategory(parentCategoryId)
         }
     }, [isOpen, category, translation, viewLanguage])
 
@@ -162,6 +185,18 @@ export const HelpCenterCategoryEdit = ({
             )
         }
     }, [isOpen])
+
+    useEffect(() => {
+        setParentOptions([
+            ...categoryOptionCandidates.map((category) =>
+                getCategoryDropdownOption(category)
+            ),
+            {
+                value: 0,
+                label: 'Clear selection',
+            },
+        ])
+    }, [categoryOptionCandidates])
 
     const handleOnClickAction = (
         action: ActionType,
@@ -215,13 +250,17 @@ export const HelpCenterCategoryEdit = ({
     const handleOnSave = () => {
         if (isCreate) {
             onCreate?.({
-                locale,
-                title,
-                slug,
-                description,
-                seo_meta: {
-                    title: metaTitle,
-                    description: metaDescription,
+                parent_category_id: parentCategory,
+                translation: {
+                    locale,
+                    title,
+                    parent_category_id: parentCategory,
+                    slug,
+                    description,
+                    seo_meta: {
+                        title: metaTitle,
+                        description: metaDescription,
+                    },
                 },
             })
 
@@ -233,6 +272,7 @@ export const HelpCenterCategoryEdit = ({
                 title,
                 slug,
                 description,
+                parent_category_id: parentCategory,
                 seo_meta: {
                     title: metaTitle,
                     description: metaDescription,
@@ -240,6 +280,30 @@ export const HelpCenterCategoryEdit = ({
             },
             locale
         )
+    }
+
+    const handleOnParentChange = (categoryId: Value) =>
+        setParentCategory(Number(categoryId))
+
+    const handleOnSearchChange = (text: string) => {
+        if (text) {
+            setParentOptions([
+                ...categoryOptionCandidates.map((category) =>
+                    getCategoryDropdownOption(category)
+                ),
+            ])
+        } else {
+            setParentOptions([
+                ...categoryOptionCandidates.map((category) =>
+                    getCategoryDropdownOption(category)
+                ),
+                {
+                    value: 0,
+                    label: 'Clear selection',
+                },
+            ])
+        }
+        setSelectFieldClassName(text ? css['filteredParents'] : '')
     }
 
     const copyURL = () => {
@@ -286,29 +350,78 @@ export const HelpCenterCategoryEdit = ({
                 </Drawer.HeaderActions>
             </Drawer.Header>
             <Drawer.Content>
-                <FormGroup className={classNames(css.textfield, css.required)}>
-                    <Label for="title">Title</Label>
-                    <Input
-                        innerRef={categoryTitleRef}
-                        data-testid="title-input"
-                        name="title"
-                        id="title"
-                        value={title}
-                        placeholder="Category title"
-                        onChange={handleChangeTitle}
-                        maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
-                    />
-                </FormGroup>
+                <div className={css.groupedFormGroups}>
+                    <FormGroup
+                        className={classNames(css.textfield, css.required)}
+                    >
+                        <Label for="title">Title</Label>
+                        <Input
+                            innerRef={categoryTitleRef}
+                            data-testid="title-input"
+                            name="title"
+                            id="title"
+                            value={title}
+                            placeholder="Category title"
+                            onChange={handleChangeTitle}
+                            maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
+                        />
+                    </FormGroup>
+                    <FormGroup className={classNames(css.textfield)}>
+                        <Label for="parentCategory">
+                            <>Parent</>
+                            <i
+                                id="category-parent-toggle-info"
+                                className={classNames(
+                                    'material-icons',
+                                    css.tooltipIcon
+                                )}
+                            >
+                                info_outline
+                            </i>
+                            <Tooltip
+                                placement="top-start"
+                                target="category-parent-toggle-info"
+                                popperClassName={css.tooltip}
+                                innerClassName={css['tooltip-inner']}
+                                arrowClassName={css['tooltip-arrow']}
+                                boundariesElement="body"
+                            >
+                                Make this category a sub-category by adding a
+                                parent
+                            </Tooltip>
+                        </Label>
+                        <SelectField
+                            allowCustomValue
+                            id="parentCategory"
+                            dropdownMenuClassName={classNames(
+                                css['parentDropdown'],
+                                selectFieldClassName
+                            )}
+                            value={
+                                parentCategory && categoriesById[parentCategory]
+                                    ? categoriesById[parentCategory].translation
+                                          ?.title
+                                    : null
+                            }
+                            fullWidth
+                            options={parentOptions}
+                            placeholder="Category parent"
+                            onChange={handleOnParentChange}
+                            onSearchChange={handleOnSearchChange}
+                        />
+                    </FormGroup>
+                </div>
                 <FormGroup className={classNames(css.textfield, css.required)}>
                     <Label for="slug">Slug</Label>
-                    <Button
-                        intent="text"
-                        onClick={copyURL}
+                    <button
                         className={css.copyButton}
+                        type="button"
+                        onClick={copyURL}
                     >
                         Copy URL
                         <i className="material-icons">content_copy</i>
-                    </Button>
+                    </button>
+
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">
                             <span

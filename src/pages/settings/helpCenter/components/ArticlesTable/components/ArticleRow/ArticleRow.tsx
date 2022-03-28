@@ -35,11 +35,13 @@ type Props = RowEventListeners & {
     isNested?: boolean
     article: Article
     categoryId: number | null
+    level: number
     position: number
 }
 
 export const ArticleRow = ({
     isNested = false,
+    level,
     article,
     position,
     categoryId,
@@ -89,7 +91,7 @@ export const ArticleRow = ({
             onClick={() => onClickRow(article)}
         >
             <BodyCell
-                className={classNames({
+                className={classNames(css[`sub-category-articles-${level}`], {
                     [css['nested-cell']]: isNested,
                 })}
             >
@@ -106,18 +108,10 @@ export const ArticleRow = ({
             <BodyCell className={css['nested-cell']}>
                 {article.translation.title}
             </BodyCell>
-            <BodyCell size="small">
-                {article.translation && (
-                    <LanguageList
-                        id={article.id}
-                        defaultLanguage={
-                            localesByCode[article.translation.locale]
-                        }
-                        languageList={languageList}
-                    />
-                )}
-            </BodyCell>
-            <BodyCell width={130} className={css['nested-cell']}>
+            <BodyCell
+                style={{width: 77, minWidth: 77}}
+                className={css['nested-cell']}
+            >
                 <div className={css.rating} id={`rating-${article.id}`}>
                     <img alt="star" src={star} />
                     <div className={css['rating-text']}>{ratingScore}%</div>
@@ -153,7 +147,18 @@ export const ArticleRow = ({
                     </Tooltip>
                 )}
             </BodyCell>
-            <BodyCell width={120} innerClassName={css.actions}>
+            <BodyCell style={{width: 105, minWidth: 105}}>
+                {article.translation && (
+                    <LanguageList
+                        id={article.id}
+                        defaultLanguage={
+                            localesByCode[article.translation.locale]
+                        }
+                        languageList={languageList}
+                    />
+                )}
+            </BodyCell>
+            <BodyCell style={{width: 120}} innerClassName={css.actions}>
                 <TableActions
                     actions={ARTICLE_ROW_ACTIONS.map(
                         ({icon, name, tooltip}) => ({

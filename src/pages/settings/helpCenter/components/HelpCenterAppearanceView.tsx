@@ -11,10 +11,10 @@ import {validLocaleCode} from 'models/helpCenter/utils'
 import {Value} from 'pages/common/forms/SelectField/types'
 
 import {getViewLanguage} from 'state/ui/helpCenter'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {HelpCenter} from 'models/helpCenter/types'
+import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'

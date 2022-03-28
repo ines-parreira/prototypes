@@ -1,4 +1,4 @@
-import {CategoriesListPage, Category} from '../../../../models/helpCenter/types'
+import {CategoriesListPage, Category} from 'models/helpCenter/types'
 
 export const getCategoriesResponseEnglish: CategoriesListPage = {
     data: [
@@ -9,7 +9,9 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             id: 1,
             help_center_id: 1,
             available_locales: ['en-US'],
+            parent_category_id: 0,
             translation: {
+                parent_category_id: 0,
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
@@ -23,9 +25,7 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                     title: null,
                     description: null,
                 },
-                parent_category_id: null,
             },
-            parent_category_id: null,
         },
         {
             created_datetime: '2021-06-01T09:46:30.044Z',
@@ -34,7 +34,9 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             id: 2,
             help_center_id: 1,
             available_locales: ['en-US'],
+            parent_category_id: 0,
             translation: {
+                parent_category_id: 0,
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
@@ -48,9 +50,7 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                     title: null,
                     description: null,
                 },
-                parent_category_id: null,
             },
-            parent_category_id: null,
         },
         {
             created_datetime: '2021-06-01T09:46:30.044Z',
@@ -59,7 +59,9 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             id: 3,
             help_center_id: 1,
             available_locales: ['en-US'],
+            parent_category_id: 0,
             translation: {
+                parent_category_id: 0,
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
@@ -73,9 +75,7 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                     title: null,
                     description: null,
                 },
-                parent_category_id: null,
             },
-            parent_category_id: null,
         },
         {
             created_datetime: '2021-06-01T09:46:30.044Z',
@@ -84,7 +84,9 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             id: 4,
             help_center_id: 1,
             available_locales: ['en-US'],
+            parent_category_id: 0,
             translation: {
+                parent_category_id: 0,
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
@@ -97,9 +99,7 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                     title: null,
                     description: null,
                 },
-                parent_category_id: null,
             },
-            parent_category_id: null,
         },
     ],
     object: 'list',
@@ -117,11 +117,13 @@ export const getSingleCategoryEnglish: Category = {
     help_center_id: 1,
     available_locales: ['en-US'],
     articles: [],
-    position: 0,
+    children: [],
     created_datetime: '2021-06-01T09:46:30.044Z',
     updated_datetime: '2021-06-01T09:46:30.044Z',
     deleted_datetime: null,
+    parent_category_id: 0,
     translation: {
+        parent_category_id: 0,
         category_id: 1,
         locale: 'en-US',
         title: 'Orders',
@@ -135,7 +137,5 @@ export const getSingleCategoryEnglish: Category = {
         created_datetime: '2021-06-01T09:46:30.044Z',
         updated_datetime: '2021-06-01T09:46:30.044Z',
         deleted_datetime: null,
-        parent_category_id: null,
     },
-    parent_category_id: null,
 }

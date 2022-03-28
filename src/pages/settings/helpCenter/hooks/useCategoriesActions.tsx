@@ -1,10 +1,8 @@
-import {chain as _chain} from 'lodash'
 import {useState} from 'react'
 
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {
-    Category,
     CreateCategoryDto,
     CreateCategoryTranslationDto,
     LocaleCode,
@@ -13,16 +11,18 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     deleteCategory,
+    getCategoriesById,
     pushCategorySupportedLocales,
     removeLocaleFromCategory,
     saveCategories,
     savePositions,
-    updateCategoriesOrder,
     updateCategoryTranslation,
 } from 'state/entities/helpCenter/categories'
 import {getViewLanguage} from 'state/ui/helpCenter'
 import useAppSelector from 'hooks/useAppSelector'
 
+import {CategoriesPositionsType} from '../components/CategoriesTable'
+import {getCategoriesToUpdate} from '../utils/getCategoriesToUpdate'
 import {useHelpCenterApi} from './useHelpCenterApi'
 import {useHelpCenterIdParam} from './useHelpCenterIdParam'
 
@@ -32,6 +32,7 @@ export const useCategoriesActions = () => {
     const {client} = useHelpCenterApi()
     const viewLanguage = useAppSelector(getViewLanguage)
     const [isLoading, setIsLoading] = useState(false)
+    const categoriesById = useAppSelector(getCategoriesById)
 
     return {
         isLoading,
@@ -72,20 +73,27 @@ export const useCategoriesActions = () => {
                         payload
                     )
                     .then((response) => response.data)
-
-                const positions = await client
-                    .getCategoriesPositions({
-                        help_center_id: helpCenterId,
-                    })
-                    .then((response) => response.data)
+                const parentCategoryId = newCategory.parent_category_id
+                const parentCategory =
+                    categoriesById[
+                        parentCategoryId ? parentCategoryId.toString() : '0'
+                    ]
 
                 dispatch(
                     saveCategories({
-                        categories: [newCategory],
+                        categories: [
+                            {...newCategory, children: [], articles: []},
+                            {
+                                ...parentCategory,
+                                children: [
+                                    ...parentCategory.children,
+                                    newCategory.id,
+                                ],
+                            },
+                        ],
                         shouldReset: false,
                     })
                 )
-                dispatch(savePositions(positions))
 
                 setIsLoading(false)
             } catch (error) {
@@ -118,8 +126,29 @@ export const useCategoriesActions = () => {
 
                 const output = translation
 
-                if (locale === viewLanguage) {
+                const currentLocale =
+                    categoriesById[categoryId].translation?.locale
+                if (locale === currentLocale) {
                     dispatch(updateCategoryTranslation(output))
+                }
+
+                const previousParentId =
+                    categoriesById[categoryId.toString()].parent_category_id
+                const currentParentId = payload.parent_category_id || null
+                if (previousParentId !== currentParentId) {
+                    const categoriesToUpdate = getCategoriesToUpdate({
+                        categories: categoriesById,
+                        categoryId,
+                        previousParentId,
+                        currentParentId,
+                    })
+
+                    dispatch(
+                        saveCategories({
+                            categories: categoriesToUpdate,
+                            shouldReset: false,
+                        })
+                    )
                 }
 
                 setIsLoading(false)
@@ -149,13 +178,14 @@ export const useCategoriesActions = () => {
                     payload
                 )
 
-                if (payload.locale !== viewLanguage) {
-                    dispatch(
-                        pushCategorySupportedLocales({
-                            categoryId,
-                            supportedLocales: [payload.locale],
-                        })
-                    )
+                dispatch(
+                    pushCategorySupportedLocales({
+                        categoryId,
+                        supportedLocales: [payload.locale],
+                    })
+                )
+                if (payload.locale === viewLanguage) {
+                    dispatch(updateCategoryTranslation(translation.data))
                 }
 
                 setIsLoading(false)
@@ -168,42 +198,28 @@ export const useCategoriesActions = () => {
             }
         },
 
-        async updateCategoriesPositions(categories: Category[]) {
+        async updateCategoriesPositions({
+            categories,
+            categoryId,
+            defaultSiblingsPositions,
+        }: CategoriesPositionsType) {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
                 setIsLoading(true)
 
-                const {data: previousPositions} =
-                    await client.getCategoriesPositions({
+                const positions = await client.setSubCategoriesPositions(
+                    {
                         help_center_id: helpCenterId,
-                    })
-
-                const sortedCategories = _chain(categories)
-                    .sortBy(['position'])
-                    .map((category) => category.id)
-                    .value()
-
-                // This allows to sort only a subset of categories (when using pagination for example)
-                const categoriesPositions = Array.from(
-                    new Set([...sortedCategories, ...previousPositions])
+                        parent_category_id: categoryId,
+                    },
+                    categories
                 )
-
-                const positions = await client
-                    .setCategoriesPositions(
-                        {
-                            help_center_id: helpCenterId,
-                        },
-                        categoriesPositions
-                    )
-                    .then((response) => response.data)
-
                 dispatch(
-                    updateCategoriesOrder(
-                        positions.filter((categoryId) =>
-                            sortedCategories.includes(categoryId)
-                        )
-                    )
+                    savePositions({
+                        children: categories,
+                        categoryId,
+                    })
                 )
 
                 setIsLoading(false)
@@ -216,6 +232,12 @@ export const useCategoriesActions = () => {
 
                 return positions
             } catch (error) {
+                dispatch(
+                    savePositions({
+                        children: defaultSiblingsPositions,
+                        categoryId,
+                    })
+                )
                 setIsLoading(false)
                 void dispatch(
                     notify({
@@ -246,7 +268,22 @@ export const useCategoriesActions = () => {
                 dispatch(removeLocaleFromCategory({categoryId, locale}))
 
                 if (locale === viewLanguage) {
-                    dispatch(deleteCategory(categoryId))
+                    const category = categoriesById[categoryId]
+                    const availableLocales = category.available_locales.filter(
+                        (availableLocale) => availableLocale !== locale
+                    )
+                    if (!availableLocales.length) {
+                        dispatch(deleteCategory(categoryId))
+                    } else {
+                        const newLocale = availableLocales[0]
+                        const {data} = await client.getCategory({
+                            help_center_id: helpCenterId,
+                            id: categoryId,
+                            locale: newLocale,
+                        })
+
+                        dispatch(updateCategoryTranslation(data.translation))
+                    }
                 }
 
                 setIsLoading(false)

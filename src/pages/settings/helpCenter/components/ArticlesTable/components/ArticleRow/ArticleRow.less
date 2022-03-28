@@ -1,15 +1,20 @@
 @import (reference) '~css/new/colorTokens';
 
+.mixin-level-loop (@i) when (@i < 4) {
+    :global(#app-root) .sub-category-articles-@{i}.nested-cell:first-child {
+        padding-left: (30px + @i*28px);
+    }
+    .mixin-level-loop(@i + 1);
+}
+
 :local {
     .drag-handler {
         color: @classic-neutral-grey-3;
         font-size: 22px;
     }
 
-    .nested-cell {
-        &:first-child {
-            padding-left: 64px;
-        }
+    .nested-cell:first-child {
+        width: 25px;
     }
 
     .actions {
@@ -27,6 +32,9 @@
             .actions {
                 opacity: 1;
             }
+        }
+        &:last-child {
+            border: 0px;
         }
     }
 
@@ -53,4 +61,6 @@
             padding-right: 5px;
         }
     }
+
+    .mixin-level-loop(0);
 }

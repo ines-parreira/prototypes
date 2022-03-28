@@ -14,8 +14,9 @@ type useReorderDnDInterface = {
 }
 
 export type Callbacks = {
-    onHover?: (dragIndex: number, hoverIndex: number) => void
+    onHover?: (dragIndex: number, hoverIndex: number, type: string) => void
     onDrop?: (item: unknown, monitor: DropTargetMonitor) => void
+    onCancel?: (type: string) => void
 }
 
 export const useReorderDnD = <ItemType extends DragItemRequired>(
@@ -45,6 +46,7 @@ export const useReorderDnD = <ItemType extends DragItemRequired>(
             }
             const dragIndex = item.position
             const hoverIndex = dragItem.position
+            const type = dragItem.type
             // Don't replace items with themselves
             if (dragIndex === hoverIndex) {
                 return
@@ -73,7 +75,8 @@ export const useReorderDnD = <ItemType extends DragItemRequired>(
                     return
                 }
 
-                callbacks?.onHover && callbacks.onHover(dragIndex, hoverIndex)
+                callbacks?.onHover &&
+                    callbacks.onHover(dragIndex, hoverIndex, type)
                 item.position = hoverIndex
             }
         },
@@ -84,6 +87,11 @@ export const useReorderDnD = <ItemType extends DragItemRequired>(
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
+        end: (item, monitor) => {
+            if (!monitor.didDrop() && callbacks.onCancel) {
+                callbacks.onCancel(dragItem.type)
+            }
+        },
     })
 
     preview(drop($dropRef))

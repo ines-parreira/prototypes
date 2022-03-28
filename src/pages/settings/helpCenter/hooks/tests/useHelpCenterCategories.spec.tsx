@@ -14,20 +14,27 @@ import {
 } from 'state/entities/helpCenter/categories'
 
 import {useHelpCenterCategories} from '../useHelpCenterCategories'
+import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
+import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 
 jest.mock('../useHelpCenterApi', () => {
     return {
         useHelpCenterApi: jest.fn().mockReturnValue({
             isReady: true,
             client: {
-                listCategories: () =>
+                getCategoryTree: () =>
                     Promise.resolve({
                         data: {
-                            data: [],
-                            meta: {
-                                page: 1,
-                                nbPages: 1,
-                            },
+                            created_datetime: '2022-03-07T14:46:47.212Z',
+                            updated_datetime: '2022-03-07T14:46:47.212Z',
+                            deleted_datetime: null,
+                            id: 0,
+                            help_center_id: 3,
+                            parent_category_id: null,
+                            available_locales: [],
+                            children: [],
+                            articles: [],
+                            translation: null,
                         },
                     }),
                 getCategoriesPositions: () => Promise.resolve({data: []}),
@@ -35,6 +42,11 @@ jest.mock('../useHelpCenterApi', () => {
         }),
     }
 })
+
+jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
+    getSingleHelpCenterResponseFixture
+)
 
 jest.mock('state/entities/helpCenter/categories', () => ({
     getCategories: jest.fn(),
@@ -76,10 +88,8 @@ describe('useHelpCenterCategories', () => {
             }
         )
         expect(result.current.isLoading).toBeTruthy()
-        expect(result.current.hasMore).toEqual(true)
         await waitForNextUpdate()
         expect(result.current.isLoading).toBeFalsy()
-        expect(result.current.hasMore).toEqual(false)
     })
 
     it('saves the categories once they are fetched', async () => {

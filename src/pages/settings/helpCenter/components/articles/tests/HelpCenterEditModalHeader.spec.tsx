@@ -1,6 +1,12 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {LocaleCode} from '../../../../../../models/helpCenter/types'
 import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
 import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
@@ -22,6 +28,14 @@ const mockedUseEditionManager = {
     setSelectedCategoryId: jest.fn(),
     selectedArticle: null,
     selectedArticleLanguage: 'fr-FR' as LocaleCode,
+}
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const defaultState: Partial<RootState> = {
+    entities: {
+        helpCenter: helpCenterState,
+    } as any,
+    ui: {helpCenter: uiState} as any,
 }
 
 jest.mock('../../../providers/EditionManagerContext', () => {
@@ -72,7 +86,12 @@ describe('<HelpCenterEditModalHeader />', () => {
 
     it('should display the component correctly - with the category selector', () => {
         const {container} = render(
-            <HelpCenterEditModalHeader {...props} showCategorySelect={true} />
+            <Provider store={mockStore(defaultState)}>
+                <HelpCenterEditModalHeader
+                    {...props}
+                    showCategorySelect={true}
+                />
+            </Provider>
         )
         expect(container).toMatchSnapshot('with the category selector')
     })

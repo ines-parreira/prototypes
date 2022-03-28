@@ -101,14 +101,14 @@ describe('Help Center/Articles reducer', () => {
                 },
             },
             pushArticleSupportedLocales({
-                articleId: 1,
+                articleId: singleArticle.id,
                 supportedLocales: ['fr-FR'],
             })
         )
 
         expect(nextState).toEqual({
             articlesById: {
-                1: {
+                [singleArticle.id]: {
                     ...singleArticle,
                     available_locales: ['en-US', 'fr-FR'],
                 },
@@ -127,12 +127,15 @@ describe('Help Center/Articles reducer', () => {
                         },
                     },
                 },
-                removeLocaleFromArticle({articleId: 1, locale: 'de-DE'})
+                removeLocaleFromArticle({
+                    articleId: singleArticle.id,
+                    locale: 'de-DE',
+                })
             )
 
             expect(nextState).toEqual({
                 articlesById: {
-                    1: {
+                    [singleArticle.id]: {
                         ...singleArticle,
                         available_locales: ['en-US', 'fr-FR'],
                     },

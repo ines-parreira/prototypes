@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DroppableTableBodyRow /> should match snapshot 1`] = `
+<tr
+  class="row"
+  style="opacity: 1;"
+>
+  <td
+    class="wrapper normal"
+    style="width: 25px;"
+  >
+    <div
+      class="cellContent"
+    >
+      <div
+        class="drag-handler material-icons"
+      >
+        drag_indicator
+      </div>
+    </div>
+  </td>
+  <td>
+    test
+  </td>
+</tr>
+`;

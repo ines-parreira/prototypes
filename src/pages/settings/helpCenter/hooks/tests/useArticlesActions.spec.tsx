@@ -24,6 +24,8 @@ import {
 } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import {useArticlesActions} from '../useArticlesActions'
 
+const articles = getArticlesResponseFixture.data
+const uncategoriedArticle = articles[articles.length - 1]
 jest.mock('react-router')
 ;(useParams as jest.MockedFunction<typeof useParams>).mockReturnValue({
     helpCenterId: '1',
@@ -124,7 +126,7 @@ const mockUpdateArticleTranslation = jest
     })
 const mockedListArticles = jest.fn().mockResolvedValue({
     data: {
-        data: [getArticlesResponseFixture.data[0]],
+        data: [uncategoriedArticle],
         object: 'list',
         meta: {
             page: 1,
@@ -142,7 +144,7 @@ const mockGetCategoryArticlesPositions = jest
     .mockResolvedValue({data: [1]})
 const mockGetUncategorizedArticlesPositions = jest
     .fn()
-    .mockResolvedValue({data: [1]})
+    .mockResolvedValue({data: [uncategoriedArticle.id]})
 const mockListArticleTranslations = jest.fn().mockResolvedValue({
     data: {
         data: [

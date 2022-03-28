@@ -6,18 +6,6 @@ import {
     LocaleCode,
 } from './types'
 
-export function createCategoryFromDto(
-    payload: CategoryWithLocalTranslation,
-    position: number,
-    articles: Article[] = []
-): Category {
-    return {
-        ...payload,
-        position,
-        articles,
-    }
-}
-
 export function createArticleFromDto(
     payload: ArticleWithLocalTranslation,
     position: number
@@ -31,6 +19,28 @@ export function createArticleFromDto(
             ...payload.translation,
         },
     }
+}
+
+export function flattenCategories(
+    category: CategoryWithLocalTranslation
+): Category[] {
+    const flatTree: Category[] = []
+
+    const parseNode = (node: CategoryWithLocalTranslation) => {
+        const {children, ...category} = node
+        flatTree.push({
+            ...category,
+            children: children.map((child) => child.id),
+            articles: [],
+        })
+
+        node.children?.forEach((child) => {
+            parseNode(child)
+        })
+    }
+
+    parseNode(category)
+    return flatTree
 }
 
 function assertIsLocaleCode(code: unknown): asserts code is LocaleCode {

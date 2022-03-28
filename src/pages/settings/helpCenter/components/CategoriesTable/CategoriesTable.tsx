@@ -1,24 +1,39 @@
-import {chain as _chain} from 'lodash'
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {Category} from 'models/helpCenter/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import {
+    getCategoriesById,
+    isNonRootCategory,
+    savePositions,
+} from 'state/entities/helpCenter/categories'
+import useAppDispatch from 'hooks/useAppDispatch'
 
 import {
     CategoriesTableRow,
     CategoriesTableRowProps,
 } from './components/CategoriesTableRow'
+import {CategoriesTableBasicRow} from './components/CategoriesTableBasicRow/CategoriesTableBasicRow'
+import {DND_ENTITIES} from './constants'
+
 import css from './CategoriesTable.less'
+
+export type CategoriesPositionsType = {
+    categories: number[]
+    categoryId: number
+    defaultSiblingsPositions: number[]
+}
 
 export type CategoriesTableProps = Pick<
     CategoriesTableRowProps,
     'renderArticleList'
 > & {
     categories: Category[]
-    onReorderFinish: (categories: Category[]) => void
+    onReorderFinish: (params: CategoriesPositionsType) => void
     shouldRenderEmptyUncategorizedRow: boolean
 }
 
@@ -28,35 +43,65 @@ export const CategoriesTable = ({
     renderArticleList,
     shouldRenderEmptyUncategorizedRow,
 }: CategoriesTableProps): JSX.Element => {
-    const [records, setRecords] = useState(categories)
-
-    useEffect(() => {
-        setRecords(categories)
+    const categoriesById = useAppSelector(getCategoriesById)
+    const dispatch = useAppDispatch()
+    const topCategories = useMemo(() => {
+        const rootCategory = categoriesById['0']
+        return rootCategory.children
+            .map((categoryId) => categoriesById[categoryId])
+            .filter(isNonRootCategory)
     }, [categories])
 
-    const handleOnDropCategory = (dragIndex: number, hoverIndex: number) => {
-        const dragRecord = records[dragIndex]
-        let nextRecords = [...records]
+    const [defaultSiblingsPositions, setDefaultSiblingsPositions] = useState<
+        number[]
+    >([])
+    const [categoriesToReorder, setCategoriesToReorder] =
+        useState<CategoriesPositionsType>({
+            categories: [],
+            categoryId: 0,
+            defaultSiblingsPositions: [],
+        })
 
-        if (dragRecord) {
-            nextRecords.splice(dragIndex, 1)
-            nextRecords.splice(hoverIndex, 0, dragRecord)
+    const handleOnDropCategory = useCallback(
+        (dragIndex: number, hoverIndex: number, type: string) => {
+            const parentId = Number(type.replace(DND_ENTITIES.CATEGORY, ''))
+            const siblings = [...categoriesById[parentId].children]
+            const dragValue = siblings[dragIndex]
 
-            nextRecords = _chain(nextRecords)
-                .map((category: Category, index: number) => ({
-                    ...category,
-                    position: index,
-                }))
-                .sortBy('position')
-                .value()
+            siblings.splice(dragIndex, 1)
+            siblings.splice(hoverIndex, 0, dragValue)
 
-            setRecords(nextRecords)
-        }
-    }
+            setCategoriesToReorder({
+                categories: siblings,
+                categoryId: parentId,
+                defaultSiblingsPositions,
+            })
 
-    const handleOnReorderFinish = () => {
-        onReorderFinish(records)
-    }
+            dispatch(savePositions({children: siblings, categoryId: parentId}))
+        },
+        [categoriesById, dispatch]
+    )
+
+    const handleOnReorderFinish = useCallback(() => {
+        onReorderFinish(categoriesToReorder)
+    }, [categoriesToReorder, onReorderFinish, defaultSiblingsPositions])
+
+    const handleOnCancelDnD = useCallback(
+        (type: string) => {
+            const parentId = Number(type.replace(DND_ENTITIES.CATEGORY, ''))
+            dispatch(
+                savePositions({
+                    children: defaultSiblingsPositions,
+                    categoryId: parentId,
+                })
+            )
+        },
+        [defaultSiblingsPositions, dispatch]
+    )
+
+    const handleOnDragStart = useCallback((children) => {
+        setDefaultSiblingsPositions(children)
+    }, [])
 
     return (
         <TableWrapper>
@@ -67,8 +112,7 @@ export const CategoriesTable = ({
                 <HeaderCell style={{width: 160}} className={css.headerCell} />
             </TableHead>
             <TableBody className={css['main-table']}>
-                <CategoriesTableRow
-                    categoryId={null}
+                <CategoriesTableBasicRow
                     shouldRenderRowWithoutArticles={
                         shouldRenderEmptyUncategorizedRow
                     }
@@ -76,16 +120,20 @@ export const CategoriesTable = ({
                     renderArticleList={renderArticleList}
                     tooltip="Uncategorized articles will always be the last ones on the list in the live Help Center."
                 />
-                {records.map((category, index) => (
+                {topCategories.map((category, index) => (
                     <CategoriesTableRow
                         key={category.id}
                         categoryId={category.id}
+                        childCategories={category.children}
+                        level={0}
                         category={category}
                         position={index}
                         title={category.translation.title}
                         renderArticleList={renderArticleList}
                         onMoveEntity={handleOnDropCategory}
                         onDropEntity={handleOnReorderFinish}
+                        onDragStart={handleOnDragStart}
+                        onCancelDnD={handleOnCancelDnD}
                     />
                 ))}
             </TableBody>

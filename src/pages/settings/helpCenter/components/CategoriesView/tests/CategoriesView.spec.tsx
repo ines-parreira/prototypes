@@ -15,6 +15,7 @@ import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getL
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {getInitialRootCategory} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
 
 import {CategoriesViews} from '../CategoriesView'
 
@@ -41,9 +42,9 @@ const mockedListCategoryArticles = jest.fn().mockResolvedValue({
 useHelpCenterApiMock.mockImplementation(() => ({
     isReady: true,
     client: {
-        listCategories: jest.fn().mockResolvedValue({
-            data: {data: [], meta: {item_count: 0}},
-        }),
+        getCategoryTree: jest
+            .fn()
+            .mockResolvedValue({data: getInitialRootCategory}),
         listArticles: mockedListArticles,
         listCategoryArticles: mockedListCategoryArticles,
         getUncategorizedArticlesPositions: jest.fn().mockResolvedValue({
@@ -80,7 +81,9 @@ describe('<CategoriesViews />', () => {
                         articlesById: {},
                     },
                     categories: {
-                        categoriesById: {},
+                        categoriesById: {
+                            '0': getInitialRootCategory,
+                        },
                     },
                 },
             } as any,
@@ -122,6 +125,7 @@ describe('<CategoriesViews />', () => {
                     },
                     categories: {
                         categoriesById: {
+                            '0': getInitialRootCategory,
                             1: getSingleCategoryEnglish,
                         },
                     },
@@ -180,9 +184,12 @@ describe('<CategoriesViews />', () => {
                     },
                     categories: {
                         categoriesById: {
+                            '0': {
+                                ...getInitialRootCategory,
+                                children: [1],
+                            },
                             1: getSingleCategoryEnglish,
                         },
-                        positions: [1],
                     },
                 },
             } as any,

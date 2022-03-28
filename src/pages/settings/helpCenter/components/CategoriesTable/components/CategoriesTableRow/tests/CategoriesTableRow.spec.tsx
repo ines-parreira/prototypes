@@ -7,13 +7,16 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {RootState, StoreDispatch} from 'state/types'
+import {isNonRootCategory} from 'state/entities/helpCenter/categories'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
-import {getSingleCategoryEnglish} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
 
+import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import {Category} from 'models/helpCenter/types'
 import {CategoriesTableRow} from '../CategoriesTableRow'
+import {CategoriesTableBasicRow} from '../../CategoriesTableBasicRow/CategoriesTableBasicRow'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -82,8 +85,7 @@ describe('<CategoriesTableRow />', () => {
 
         const {container} = render(
             <ReduxProvider store={mockStore(initialState)}>
-                <CategoriesTableRow
-                    categoryId={null}
+                <CategoriesTableBasicRow
                     renderArticleList={() => <div />}
                     title="Uncategorized articles"
                     shouldRenderRowWithoutArticles={false}
@@ -136,8 +138,7 @@ describe('<CategoriesTableRow />', () => {
 
         const {container, findByText} = render(
             <ReduxProvider store={mockStore(initialState)}>
-                <CategoriesTableRow
-                    categoryId={null}
+                <CategoriesTableBasicRow
                     renderArticleList={() => <div />}
                     title="Uncategorized articles"
                     shouldRenderRowWithoutArticles={false}
@@ -151,6 +152,9 @@ describe('<CategoriesTableRow />', () => {
     })
 
     it('should render category row loading then idle', async () => {
+        const nonRootCategories =
+            getCategoriesFlatSorted.filter(isNonRootCategory)
+        const category = nonRootCategories[0]
         const initialState: Partial<RootState> = {
             entities: {
                 helpCenter: {
@@ -164,7 +168,7 @@ describe('<CategoriesTableRow />', () => {
                     },
                     categories: {
                         categoriesById: {
-                            '1': getSingleCategoryEnglish,
+                            '2': category,
                         },
                     },
                 },
@@ -181,11 +185,19 @@ describe('<CategoriesTableRow />', () => {
             <ReduxProvider store={mockStore(initialState)}>
                 <DndProvider backend={HTML5Backend}>
                     <CategoriesTableRow
-                        categoryId={getSingleCategoryEnglish.id}
-                        category={getSingleCategoryEnglish}
+                        categoryId={category.id}
+                        category={category}
                         position={0}
+                        level={0}
+                        childCategories={[]}
                         renderArticleList={() => <div />}
-                        title={getSingleCategoryEnglish.translation.title}
+                        onMoveEntity={() => {
+                            return null
+                        }}
+                        onDragStart={() => {
+                            return null
+                        }}
+                        title={category.translation.title}
                     />
                 </DndProvider>
             </ReduxProvider>
@@ -193,8 +205,193 @@ describe('<CategoriesTableRow />', () => {
 
         expect(container).toMatchSnapshot('Loading state')
 
-        await findByText(getSingleCategoryEnglish.translation.title)
+        await findByText(category.translation.title)
 
         expect(container).toMatchSnapshot('Idle state')
+    })
+
+    it('should render category that has children', async () => {
+        const rootCategory = getCategoriesFlatSorted[0]
+        const categories = getCategoriesFlatSorted.filter(isNonRootCategory)
+        const categoriesById: Record<string, Category> = {}
+        categories.forEach((category) => {
+            categoriesById[category.id.toString()] = category
+        })
+        const initialState: Partial<RootState> = {
+            entities: {
+                helpCenter: {
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': getSingleHelpCenterResponseFixture,
+                        },
+                    },
+                    articles: {
+                        articlesById: {},
+                    },
+                    categories: {
+                        '0': rootCategory,
+                        categoriesById,
+                    },
+                },
+            } as any,
+            ui: {
+                helpCenter: {
+                    currentId: 1,
+                    currentLanguage: 'en-US',
+                },
+            } as any,
+        }
+
+        const {container, findByText} = render(
+            <ReduxProvider store={mockStore(initialState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <CategoriesTableRow
+                        categoryId={categories[0].id}
+                        category={categories[0]}
+                        position={0}
+                        level={0}
+                        childCategories={categories[0].children}
+                        renderArticleList={() => <div />}
+                        onMoveEntity={() => {
+                            return null
+                        }}
+                        onDragStart={() => {
+                            return null
+                        }}
+                        title={categories[0].translation.title}
+                    />
+                </DndProvider>
+            </ReduxProvider>
+        )
+
+        await findByText(categories[0].translation.title)
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should display Create Category button', () => {
+        const rootCategory = getCategoriesFlatSorted[0]
+        const categories = getCategoriesFlatSorted.filter(isNonRootCategory)
+        const categoriesById: Record<string, Category> = {}
+        categories.forEach((category) => {
+            categoriesById[category.id.toString()] = category
+        })
+        const initialState: Partial<RootState> = {
+            entities: {
+                helpCenter: {
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': getSingleHelpCenterResponseFixture,
+                        },
+                    },
+                    articles: {
+                        articlesById: {},
+                    },
+                    categories: {
+                        '0': rootCategory,
+                        categoriesById,
+                    },
+                },
+            } as any,
+            ui: {
+                helpCenter: {
+                    currentId: 1,
+                    currentLanguage: 'en-US',
+                },
+            } as any,
+        }
+
+        const {getByTestId} = render(
+            <ReduxProvider store={mockStore(initialState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <CategoriesTableRow
+                        categoryId={categories[0].id}
+                        category={categories[0]}
+                        position={0}
+                        level={0}
+                        childCategories={categories[0].children}
+                        renderArticleList={() => <div />}
+                        onMoveEntity={() => {
+                            return null
+                        }}
+                        onDragStart={() => {
+                            return null
+                        }}
+                        title={categories[0].translation.title}
+                    />
+                </DndProvider>
+            </ReduxProvider>
+        )
+
+        expect(getByTestId('createNestedCategory')).toBeTruthy()
+    })
+
+    it('should not display Create Category because the parent is a category at the deepest possible level', () => {
+        const rootCategory = getCategoriesFlatSorted[0]
+        const categories = getCategoriesFlatSorted.filter(isNonRootCategory)
+        const categoriesById: Record<string, Category> = {}
+        categories.forEach((category) => {
+            categoriesById[category.id.toString()] = category
+        })
+        const initialState: Partial<RootState> = {
+            entities: {
+                helpCenter: {
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': getSingleHelpCenterResponseFixture,
+                        },
+                    },
+                    articles: {
+                        articlesById: {},
+                    },
+                    categories: {
+                        '0': rootCategory,
+                        categoriesById,
+                    },
+                },
+            } as any,
+            ui: {
+                helpCenter: {
+                    currentId: 1,
+                    currentLanguage: 'en-US',
+                },
+            } as any,
+        }
+
+        const {getByTestId} = render(
+            <ReduxProvider store={mockStore(initialState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <CategoriesTableRow
+                        categoryId={categories[0].id}
+                        category={categories[0]}
+                        position={0}
+                        level={3}
+                        childCategories={categories[0].children}
+                        renderArticleList={() => <div />}
+                        onMoveEntity={() => {
+                            return null
+                        }}
+                        onDragStart={() => {
+                            return null
+                        }}
+                        title={categories[0].translation.title}
+                    />
+                </DndProvider>
+            </ReduxProvider>
+        )
+        expect(
+            getByTestId('categorySettings')
+                .closest('button')
+                ?.getAttribute('disabled')
+        ).toBe(null)
+        expect(
+            getByTestId('createNestedCategory')
+                .closest('button')
+                ?.getAttribute('disabled')
+        ).not.toBe(null)
+        expect(
+            getByTestId('createNestedArticle')
+                .closest('button')
+                ?.getAttribute('disabled')
+        ).toBe(null)
     })
 })

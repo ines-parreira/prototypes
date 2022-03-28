@@ -1,27 +1,14 @@
-import {getSingleCategoryEnglish} from '../../../pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
-import {getSingleArticleEnglish} from '../../../pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import {getCategoriesResponseEnglish} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
+import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 
 import {
     createArticleFromDto,
-    createCategoryFromDto,
+    flattenCategories,
     validLocaleCode,
 } from '../utils'
 
 describe('Help Center model utils', () => {
-    describe('createCategoryFromDto()', () => {
-        it('returns the expected properties', () => {
-            const expected = {
-                ...getSingleCategoryEnglish,
-                position: 0,
-                articles: [],
-            }
-
-            expect(createCategoryFromDto(getSingleCategoryEnglish, 0)).toEqual(
-                expected
-            )
-        })
-    })
-
     describe('createArticleFromDto()', () => {
         it('returns the expected properties', () => {
             const expected = {
@@ -46,5 +33,14 @@ describe('Help Center model utils', () => {
                 expect(() => validLocaleCode(value)).toThrow()
             }
         )
+    })
+
+    describe('flattenCategories(category)', () => {
+        it('returns an array with flat categories', () => {
+            const rootCategory = getCategoriesResponseEnglish
+            const expectedResult = getCategoriesFlatSorted
+
+            expect(flattenCategories(rootCategory)).toEqual(expectedResult)
+        })
     })
 })

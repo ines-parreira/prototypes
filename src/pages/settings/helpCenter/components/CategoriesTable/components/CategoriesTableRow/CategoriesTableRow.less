@@ -1,5 +1,21 @@
 @import (reference) '~css/new/colorTokens';
 
+.mixin-level-loop (@i) when (@i < 4) {
+    .subCategory-table-level@{i} {
+        margin-bottom: 0px;
+        padding-left: 20px;
+
+        tbody tr td:first-child:not([colspan]) {
+            padding-left: (30px + @i*28px);
+        }
+
+        tbody tr:last-child {
+            border-bottom: 0px;
+        }
+    }
+    .mixin-level-loop(@i + 1);
+}
+
 :local {
     .drag-handler {
         color: @classic-neutral-grey-3;
@@ -49,6 +65,36 @@
             background: @classic-neutral-grey-2;
             padding: 0;
             margin: -1px 0;
+
+            &:first-of-type {
+                padding-left: 0;
+            }
+            &:last-of-type {
+                padding-right: 0;
+            }
+        }
+    }
+
+    .subCategory-cell {
+        > div {
+            background: @classic-neutral-grey-2;
+            padding: 0;
+            margin: -1px 0;
+
+            &:first-of-type {
+                padding-left: 0;
+            }
+            &:last-of-type {
+                padding-right: 0;
+            }
+        }
+
+        thead {
+            display: none;
+        }
+
+        .TableWrapper {
+            margin-bottom: 0px;
         }
     }
 
@@ -99,4 +145,6 @@
             text-transform: capitalize;
         }
     }
+
+    .mixin-level-loop(0);
 }

@@ -11,7 +11,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
       <span
         class="titleInput"
       >
-        Free article (EN)
+        Uncategorized article
       </span>
       <div
         class="headerControls"
@@ -80,7 +80,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
                 class="label"
                 style="min-width: 10px; opacity: 1;"
               >
-                - No category -
+                - No Category -
               </span>
               <input
                 autocomplete="chrome-off"
@@ -93,13 +93,23 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
           </div>
           <div
             aria-hidden="true"
-            class="options optionsFullWidth dropdown-menu"
+            class="options categoryDropdown optionsFullWidth dropdown-menu"
             role="menu"
             tabindex="-1"
           >
             
             <button
-              class="option option--focused dropdown-item"
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                - No category -
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
               role="menuitem"
               tabindex="0"
               type="button"
@@ -137,7 +147,7 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
       <span
         class="titleInput"
       >
-        Free article (EN)
+        Uncategorized article
       </span>
       <div
         class="headerControls"
@@ -201,7 +211,7 @@ exports[`<HelpCenterEditModalHeader /> should render a preview article button 1`
       <span
         class="titleInput"
       >
-        Free article (EN)
+        Uncategorized article
       </span>
       <div
         class="headerControls"
@@ -278,7 +288,7 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
         maxlength="250"
         placeholder="Title"
         type="text"
-        value="Free article (EN)"
+        value="Uncategorized article"
       />
       <div
         class="headerControls"

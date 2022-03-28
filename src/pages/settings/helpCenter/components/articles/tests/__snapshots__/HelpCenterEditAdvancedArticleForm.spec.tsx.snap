@@ -24,7 +24,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
           maxlength="250"
           required=""
           type="text"
-          value="Free article (EN)"
+          value="Uncategorized article"
         />
       </div>
     </div>
@@ -58,7 +58,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
             id="id-slug"
             required=""
             type="text"
-            value="free-article"
+            value="uncategorized-article"
           />
           <span
             class="input-group-append"
@@ -106,9 +106,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
           id="id-excerpt"
           maxlength="250"
           rows="2"
-        >
-          Paragraph lorem ipsum, Yiddish xylophone wonder.
-        </textarea>
+        />
       </div>
       <small
         class="form-text text-muted"
@@ -138,7 +136,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
             id="id-seoTitle"
             required=""
             type="text"
-            value="Free article (EN)"
+            value="Uncategorized article"
           />
         </div>
         <small
@@ -185,9 +183,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
             id="id-seoDescription"
             required=""
             rows="2"
-          >
-            Paragraph lorem ipsum, Yiddish xylophone wonder.
-          </textarea>
+          />
         </div>
         <small
           class="form-text text-muted"
@@ -230,19 +226,17 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
             class="url-item"
           >
              › 
-            free-article-1
+            uncategorized-article-1
           </span>
         </div>
         <div
           class="title"
         >
-          Free article (EN)
+          Uncategorized article
         </div>
         <div
           class="description"
-        >
-          Paragraph lorem ipsum, Yiddish xylophone wonder.
-        </div>
+        />
       </div>
       <small
         class="form-text text-muted"

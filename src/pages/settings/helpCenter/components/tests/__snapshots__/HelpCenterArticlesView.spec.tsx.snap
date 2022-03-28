@@ -181,53 +181,36 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         </button>
       </section>
     </div>
-    <div
-      class="component"
+    <table
+      class="table"
     >
-      <table
-        class="table"
+      <thead
+        class=""
       >
-        <thead
-          class=""
+        <tr
+          class="headerRow"
         >
-          <tr
-            class="headerRow"
-          >
-            <td
-              class="wrapper headerCell normal"
-              style="width: 25px;"
-            />
-            <td
-              class="wrapper headerCell normal"
-            />
-            <td
-              class="wrapper headerCell normal"
-              style="width: 124px;"
-            />
-            <td
-              class="wrapper headerCell normal"
-              style="width: 160px;"
-            />
-          </tr>
-        </thead>
-        <tbody
-          class="tableBody main-table"
-        />
-      </table>
-      <div
-        class="container loader"
-      >
-        <div
-          class="inner"
-          style="min-height: 0;"
-        >
-          <i
-            class="icon-custom icon-circle-o-notch md-spin"
-            style="font-size: 20px;"
+          <td
+            class="wrapper headerCell normal"
+            style="width: 25px;"
           />
-        </div>
-      </div>
-    </div>
+          <td
+            class="wrapper headerCell normal"
+          />
+          <td
+            class="wrapper headerCell normal"
+            style="width: 124px;"
+          />
+          <td
+            class="wrapper headerCell normal"
+            style="width: 160px;"
+          />
+        </tr>
+      </thead>
+      <tbody
+        class="tableBody main-table"
+      />
+    </table>
     <div
       class="drawer-container"
       style="z-index: -1; transition-delay: 300ms;"
@@ -296,24 +279,93 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           class="content"
         >
           <div
-            class="textfield required form-group"
+            class="groupedFormGroups"
           >
-            <label
-              class=""
-              for="title"
+            <div
+              class="textfield required form-group"
             >
-              Title
-            </label>
-            <input
-              class="form-control"
-              data-testid="title-input"
-              id="title"
-              maxlength="250"
-              name="title"
-              placeholder="Category title"
-              type="text"
-              value=""
-            />
+              <label
+                class=""
+                for="title"
+              >
+                Title
+              </label>
+              <input
+                class="form-control"
+                data-testid="title-input"
+                id="title"
+                maxlength="250"
+                name="title"
+                placeholder="Category title"
+                type="text"
+                value=""
+              />
+            </div>
+            <div
+              class="textfield form-group"
+            >
+              <label
+                class=""
+                for="parentCategory"
+              >
+                Parent
+                <i
+                  class="material-icons tooltipIcon"
+                  id="category-parent-toggle-info"
+                >
+                  info_outline
+                </i>
+              </label>
+              <div>
+                <div
+                  class="dropdown"
+                >
+                  <div
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                    class=""
+                    data-toggle="dropdown"
+                  >
+                    <div
+                      class="select dropdown-toggle selectFullWidth"
+                    >
+                      <span
+                        class="label placeholder"
+                        style="min-width: 10px; opacity: 1;"
+                      >
+                        Category parent
+                      </span>
+                      <input
+                        autocomplete="chrome-off"
+                        class="input"
+                        id="parentCategory"
+                        style="min-width: 10px;"
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                  <div
+                    aria-hidden="true"
+                    class="options parentDropdown optionsFullWidth dropdown-menu"
+                    role="menu"
+                    tabindex="-1"
+                  >
+                    
+                    <button
+                      class="option dropdown-item"
+                      role="menuitem"
+                      tabindex="0"
+                      type="button"
+                    >
+                      <span>
+                        Clear selection
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div
             class="textfield required form-group"
@@ -325,7 +377,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
               Slug
             </label>
             <button
-              class="wrapper copyButton text medium"
+              class="copyButton"
               type="button"
             >
               Copy URL

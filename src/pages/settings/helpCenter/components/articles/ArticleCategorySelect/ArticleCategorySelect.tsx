@@ -1,8 +1,10 @@
-import React from 'react'
+import React, {useState} from 'react'
 import classNames from 'classnames'
 
-import {LocaleCode} from '../../../../../../models/helpCenter/types'
-import SelectField from '../../../../../common/forms/SelectField/SelectField'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCategoriesById} from 'state/entities/helpCenter/categories'
+import {LocaleCode} from 'models/helpCenter/types'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import useCategoriesOptions, {
     NO_CATEGORY_OPTION,
@@ -24,13 +26,24 @@ const ArticleCategorySelect = ({
     onChange,
 }: ArticleCategorySelectProps): JSX.Element => {
     const options = useCategoriesOptions({locale, helpCenterId})
+    const categoriesById = useAppSelector(getCategoriesById)
+    const [selectFieldClassName, setSelectFieldClassName] = useState<string>('')
 
     const selectOption = categoryId === null ? NO_CATEGORY_OPTION : categoryId
 
+    const handleOnSearchChange = (text: string) => {
+        setSelectFieldClassName(text ? css.filteredCategories : '')
+    }
+
     return (
         <SelectField
+            allowCustomValue
             fullWidth
-            value={selectOption}
+            value={
+                selectOption && categoriesById[selectOption]
+                    ? categoriesById[selectOption].translation?.title
+                    : '- No Category -'
+            }
             onChange={(value) => {
                 if (!onChange) {
                     return
@@ -41,7 +54,12 @@ const ArticleCategorySelect = ({
                     onChange(value)
                 }
             }}
+            onSearchChange={handleOnSearchChange}
             options={options}
+            dropdownMenuClassName={classNames(
+                css.categoryDropdown,
+                selectFieldClassName
+            )}
             className={classNames(css.select, {
                 [css.noCategory]: categoryId === null,
             })}

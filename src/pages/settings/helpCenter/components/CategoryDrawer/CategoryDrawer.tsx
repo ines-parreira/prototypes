@@ -6,7 +6,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {useModalManager} from 'hooks/useModalManager'
 import {
     Category,
-    CreateCategoryTranslationDto,
+    CreateCategoryDto,
     HelpCenter,
     LocaleCode,
     UpdateCategoryTranslationDto,
@@ -26,7 +26,10 @@ type Props = {
 export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
     const dispatch = useAppDispatch()
     const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY)
-    const params = getParams() as Category & {isCreate?: boolean}
+    const params = getParams() as Category & {
+        isCreate?: boolean
+        parentCategoryId?: number
+    }
     const category = useAppSelector(getCategoryById(params?.id))
     const categoriesActions = useCategoriesActions()
 
@@ -45,12 +48,10 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
     )
 
     useEffect(() => {
-        if (category?.id) {
-            void getCategoryTranslation(
-                category.id,
-                category.translation.locale
-            )
+        if (!category?.id || !category.translation) {
+            return
         }
+        void getCategoryTranslation(category.id, category.translation.locale)
     }, [category])
 
     const handleOnSave = async (
@@ -71,6 +72,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                     locale,
                     title: payload.title || '',
                     description: payload.description || '',
+                    parent_category_id: payload.parent_category_id || null,
                     slug: payload.slug || '',
                     seo_meta: {
                         title: payload.seo_meta?.title || null,
@@ -104,11 +106,9 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
         }
     }
 
-    const handleOnCreate = async (
-        translation: CreateCategoryTranslationDto
-    ) => {
+    const handleOnCreate = async (payload: CreateCategoryDto) => {
         try {
-            await categoriesActions.createCategory({translation})
+            await categoriesActions.createCategory(payload)
 
             void dispatch(
                 notify({
@@ -190,6 +190,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
         <HelpCenterCategoryEdit
             isLoading={loading}
             isCreate={params?.isCreate}
+            parentCategoryId={params?.parentCategoryId}
             category={category}
             helpCenter={helpCenter}
             isOpen={isOpen()}

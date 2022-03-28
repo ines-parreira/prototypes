@@ -1,0 +1,266 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`eligibleParentCategories() should return an empty array if the category is undefined: return non-root categories in the targeted locale 1`] = `
+Array [
+  Object {
+    "articles": Array [],
+    "available_locales": Array [
+      "en-US",
+      "fr-FR",
+    ],
+    "children": Array [
+      48,
+      53,
+    ],
+    "created_datetime": "2022-03-17T12:52:14.243Z",
+    "deleted_datetime": null,
+    "help_center_id": 1,
+    "id": 47,
+    "parent_category_id": null,
+    "translation": Object {
+      "category_id": 47,
+      "created_datetime": "2022-03-17T12:52:14.243Z",
+      "deleted_datetime": null,
+      "description": "",
+      "locale": "en-US",
+      "parent_category_id": null,
+      "seo_meta": Object {
+        "description": null,
+        "title": null,
+      },
+      "slug": "top-level",
+      "title": "Top level",
+      "updated_datetime": "2022-03-17T12:52:14.243Z",
+    },
+    "updated_datetime": "2022-03-17T12:52:14.243Z",
+  },
+  Object {
+    "articles": Array [],
+    "available_locales": Array [
+      "fr-FR",
+      "en-US",
+    ],
+    "children": Array [
+      49,
+    ],
+    "created_datetime": "2022-03-17T12:52:41.853Z",
+    "deleted_datetime": null,
+    "help_center_id": 1,
+    "id": 48,
+    "parent_category_id": 47,
+    "translation": Object {
+      "category_id": 48,
+      "created_datetime": "2022-03-17T12:53:10.489Z",
+      "deleted_datetime": null,
+      "description": "",
+      "locale": "en-US",
+      "parent_category_id": 47,
+      "seo_meta": Object {
+        "description": null,
+        "title": null,
+      },
+      "slug": "level-1",
+      "title": "Level 1",
+      "updated_datetime": "2022-03-17T12:53:10.489Z",
+    },
+    "updated_datetime": "2022-03-17T12:52:41.853Z",
+  },
+  Object {
+    "articles": Array [],
+    "available_locales": Array [
+      "fr-FR",
+      "en-US",
+    ],
+    "children": Array [
+      50,
+    ],
+    "created_datetime": "2022-03-17T12:53:43.235Z",
+    "deleted_datetime": null,
+    "help_center_id": 1,
+    "id": 49,
+    "parent_category_id": 48,
+    "translation": Object {
+      "category_id": 49,
+      "created_datetime": "2022-03-17T12:53:43.235Z",
+      "deleted_datetime": null,
+      "description": "",
+      "locale": "en-US",
+      "parent_category_id": 48,
+      "seo_meta": Object {
+        "description": null,
+        "title": null,
+      },
+      "slug": "level-2",
+      "title": "Level 2",
+      "updated_datetime": "2022-03-17T12:54:26.411Z",
+    },
+    "updated_datetime": "2022-03-17T12:54:26.401Z",
+  },
+]
+`;
+
+exports[`eligibleParentCategories() should return the categories including the level 2 node because it is not a children of the provided category: top level and level 1 & level 2 nodes returned 1`] = `
+Array [
+  Object {
+    "articles": Array [],
+    "available_locales": Array [
+      "en-US",
+      "fr-FR",
+    ],
+    "children": Array [
+      48,
+      53,
+    ],
+    "created_datetime": "2022-03-17T12:52:14.243Z",
+    "deleted_datetime": null,
+    "help_center_id": 1,
+    "id": 47,
+    "parent_category_id": null,
+    "translation": Object {
+      "category_id": 47,
+      "created_datetime": "2022-03-17T12:52:14.243Z",
+      "deleted_datetime": null,
+      "description": "",
+      "locale": "en-US",
+      "parent_category_id": null,
+      "seo_meta": Object {
+        "description": null,
+        "title": null,
+      },
+      "slug": "top-level",
+      "title": "Top level",
+      "updated_datetime": "2022-03-17T12:52:14.243Z",
+    },
+    "updated_datetime": "2022-03-17T12:52:14.243Z",
+  },
+  Object {
+    "articles": Array [],
+    "available_locales": Array [
+      "fr-FR",
+      "en-US",
+    ],
+    "children": Array [
+      49,
+    ],
+    "created_datetime": "2022-03-17T12:52:41.853Z",
+    "deleted_datetime": null,
+    "help_center_id": 1,
+    "id": 48,
+    "parent_category_id": 47,
+    "translation": Object {
+      "category_id": 48,
+      "created_datetime": "2022-03-17T12:53:10.489Z",
+      "deleted_datetime": null,
+      "description": "",
+      "locale": "en-US",
+      "parent_category_id": 47,
+      "seo_meta": Object {
+        "description": null,
+        "title": null,
+      },
+      "slug": "level-1",
+      "title": "Level 1",
+      "updated_datetime": "2022-03-17T12:53:10.489Z",
+    },
+    "updated_datetime": "2022-03-17T12:52:41.853Z",
+  },
+  Object {
+    "articles": Array [],
+    "available_locales": Array [
+      "fr-FR",
+      "en-US",
+    ],
+    "children": Array [
+      50,
+    ],
+    "created_datetime": "2022-03-17T12:53:43.235Z",
+    "deleted_datetime": null,
+    "help_center_id": 1,
+    "id": 49,
+    "parent_category_id": 48,
+    "translation": Object {
+      "category_id": 49,
+      "created_datetime": "2022-03-17T12:53:43.235Z",
+      "deleted_datetime": null,
+      "description": "",
+      "locale": "en-US",
+      "parent_category_id": 48,
+      "seo_meta": Object {
+        "description": null,
+        "title": null,
+      },
+      "slug": "level-2",
+      "title": "Level 2",
+      "updated_datetime": "2022-03-17T12:54:26.411Z",
+    },
+    "updated_datetime": "2022-03-17T12:54:26.401Z",
+  },
+]
+`;
+
+exports[`eligibleParentCategories() should return the categories without the children of the provided category: only top level category returned 1`] = `Array []`;
+
+exports[`eligibleParentCategories() should return the categories without the children of the provided level 1 category: top level and level 1 nodes returned 1`] = `
+Array [
+  Object {
+    "articles": Array [],
+    "available_locales": Array [
+      "en-US",
+      "fr-FR",
+    ],
+    "children": Array [
+      48,
+      53,
+    ],
+    "created_datetime": "2022-03-17T12:52:14.243Z",
+    "deleted_datetime": null,
+    "help_center_id": 1,
+    "id": 47,
+    "parent_category_id": null,
+    "translation": Object {
+      "category_id": 47,
+      "created_datetime": "2022-03-17T12:52:14.243Z",
+      "deleted_datetime": null,
+      "description": "",
+      "locale": "en-US",
+      "parent_category_id": null,
+      "seo_meta": Object {
+        "description": null,
+        "title": null,
+      },
+      "slug": "top-level",
+      "title": "Top level",
+      "updated_datetime": "2022-03-17T12:52:14.243Z",
+    },
+    "updated_datetime": "2022-03-17T12:52:14.243Z",
+  },
+  Object {
+    "articles": Array [],
+    "available_locales": Array [
+      "en-US",
+    ],
+    "children": Array [],
+    "created_datetime": "2022-03-23T10:34:42.017Z",
+    "deleted_datetime": null,
+    "help_center_id": 1,
+    "id": 53,
+    "parent_category_id": 47,
+    "translation": Object {
+      "category_id": 53,
+      "created_datetime": "2022-03-23T10:34:42.017Z",
+      "deleted_datetime": null,
+      "description": "",
+      "locale": "en-US",
+      "parent_category_id": 47,
+      "seo_meta": Object {
+        "description": null,
+        "title": null,
+      },
+      "slug": "level-1---b",
+      "title": "level 1 - B",
+      "updated_datetime": "2022-03-23T10:34:42.017Z",
+    },
+    "updated_datetime": "2022-03-23T10:34:42.017Z",
+  },
+]
+`;
