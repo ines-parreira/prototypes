@@ -26,6 +26,7 @@ import css from './ReplyMessageChannel.less'
 const changeReceiversAllowedSourceTypes = [
     TicketMessageSourceType.Email,
     TicketMessageSourceType.Phone,
+    TicketMessageSourceType.Sms,
 ]
 
 type OwnProps = {

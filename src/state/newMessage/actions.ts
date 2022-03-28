@@ -363,10 +363,7 @@ export const setSender =
                 address: _sender.get('address', ''),
             })
 
-            if (
-                sourceType === TicketMessageSourceType.Phone ||
-                sourceType === TicketMessageSourceType.Sms
-            ) {
+            if (sourceType === TicketMessageSourceType.Phone) {
                 _sender = _sender.set('id', id)
             }
 
