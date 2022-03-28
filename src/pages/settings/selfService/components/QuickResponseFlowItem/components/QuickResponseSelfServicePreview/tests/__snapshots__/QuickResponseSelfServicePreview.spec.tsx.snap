@@ -87,74 +87,29 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
       <div
         class="content"
       >
-        <ul
-          class="buttons list-group"
+        <div
+          class="listGroup"
         >
-          <li
-            class="button header list-group-item"
+          <ul
+            class="buttons list-group"
           >
-            Quick answers
-          </li>
-          <li
-            class="button list-group-item"
-          >
-            question
-            <span
-              class="material-icons-outlined chevronIcon"
+            <li
+              class="button header list-group-item"
             >
-              chevron_right
-            </span>
-          </li>
-        </ul>
-        <ul
-          class="buttons list-group"
-        >
-          <li
-            class="button header list-group-item"
-          >
-            Manage your orders
-          </li>
-          <li
-            class="button list-group-item"
-          >
-            Track an order
-            <span
-              class="material-icons-outlined chevronIcon"
+              Quick answers
+            </li>
+            <li
+              class="button list-group-item"
             >
-              chevron_right
-            </span>
-          </li>
-          <li
-            class="button list-group-item"
-          >
-            Return an order
-            <span
-              class="material-icons-outlined chevronIcon"
-            >
-              chevron_right
-            </span>
-          </li>
-          <li
-            class="button list-group-item"
-          >
-            Cancel an order
-            <span
-              class="material-icons-outlined chevronIcon"
-            >
-              chevron_right
-            </span>
-          </li>
-          <li
-            class="button list-group-item"
-          >
-            Report issue
-            <span
-              class="material-icons-outlined chevronIcon"
-            >
-              chevron_right
-            </span>
-          </li>
-        </ul>
+              question
+              <span
+                class="material-icons-outlined chevronIcon"
+              >
+                chevron_right
+              </span>
+            </li>
+          </ul>
+        </div>
         <div
           class="footer"
         >

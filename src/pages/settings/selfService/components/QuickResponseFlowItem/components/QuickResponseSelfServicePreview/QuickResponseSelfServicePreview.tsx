@@ -4,19 +4,17 @@ import {ListGroup, Button, ButtonGroup} from 'reactstrap'
 import {ConnectedProps, connect} from 'react-redux'
 
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
-import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import {getIntegrations} from 'state/integrations/selectors'
 import GorgiasChatIntegrationPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import MessageContentPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
-import QuickRepliesPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/QuickReplies'
 import useAppSelector from 'hooks/useAppSelector'
 import {RootState} from 'state/types'
 
 import HomePageListGroupItem from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/components/HomePageListGroupItem'
 import css from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/SelfServicePreview.less'
 import {useChatIntegration} from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/hooks'
-import {OrderManagementFlow} from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/components/OrderManagementFlow'
 import {SelfServicePreviewFooter} from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/components/SelfServicePreviewFooter'
+import QuickResponseReplies from '../QuickResponseReplies/QuickResponseReplies'
 
 type Props = {
     quickResponseTitle: string
@@ -28,7 +26,6 @@ const QuickResponseSelfServicePreview = ({
     quickResponseResponse,
     currentUser,
 }: Props & ConnectedProps<typeof connector>) => {
-    const {configuration: selfServiceConfiguration} = useConfigurationData()
     const [isLandingPage, setIsLandingPage] = useState(true)
 
     const integrations = useAppSelector(getIntegrations)
@@ -40,18 +37,8 @@ const QuickResponseSelfServicePreview = ({
 
     const {chatIntegration} = useChatIntegration({integrations, shopName})
 
-    if (!selfServiceConfiguration) {
-        return null
-    }
-
     const sspTexts =
         GORGIAS_CHAT_SSP_TEXTS[chatIntegration.meta.language || 'en-US']
-
-    const hasOrderManagementFlow =
-        selfServiceConfiguration.track_order_policy.enabled ||
-        selfServiceConfiguration.cancel_order_policy.enabled ||
-        selfServiceConfiguration.report_issue_policy.enabled ||
-        selfServiceConfiguration.return_order_policy.enabled
 
     return (
         <>
@@ -89,23 +76,16 @@ const QuickResponseSelfServicePreview = ({
             >
                 {isLandingPage ? (
                     <div className={css.content}>
-                        <ListGroup className={css.buttons}>
-                            <HomePageListGroupItem header>
-                                {sspTexts.quickAnswers}
-                            </HomePageListGroupItem>
-                            <HomePageListGroupItem>
-                                {quickResponseTitle}
-                            </HomePageListGroupItem>
-                        </ListGroup>
-
-                        {hasOrderManagementFlow && (
-                            <OrderManagementFlow
-                                selfServiceConfiguration={
-                                    selfServiceConfiguration
-                                }
-                                sspTexts={sspTexts}
-                            />
-                        )}
+                        <div className={css.listGroup}>
+                            <ListGroup className={css.buttons}>
+                                <HomePageListGroupItem header>
+                                    {sspTexts.quickAnswers}
+                                </HomePageListGroupItem>
+                                <HomePageListGroupItem>
+                                    {quickResponseTitle}
+                                </HomePageListGroupItem>
+                            </ListGroup>
+                        </div>
 
                         <SelfServicePreviewFooter
                             backgroundColor={
@@ -129,7 +109,7 @@ const QuickResponseSelfServicePreview = ({
                             hideMessageTimestamp
                         />
 
-                        <QuickRepliesPreview
+                        <QuickResponseReplies
                             quickReplies={[
                                 'Yes, thank you',
                                 'No, I need more help',

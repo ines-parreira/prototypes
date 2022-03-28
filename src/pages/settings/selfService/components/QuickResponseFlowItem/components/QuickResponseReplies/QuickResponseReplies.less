@@ -1,0 +1,35 @@
+@import '~css/new/colorTokens';
+
+:local {
+    @primary: #479af5;
+    @lighterGrey: #f8f9fa;
+    @lightGrey: #ededed;
+    @grey: #c3c8d0;
+    @medium-grey: rgba(44, 66, 103, 0.46);
+    @active-bluegreen: #06d79c;
+    @offlineColor: #a1a9b6;
+    @textColor: #545454;
+
+    .content {
+        overflow: auto;
+        padding: 15px 20px;
+        flex: 1;
+
+        &.quick-replies-content {
+            padding: 0 20px;
+            flex: 0;
+            min-height: 38px;
+
+            .quick-replies-wrapper {
+                display: flex;
+                justify-content: end;
+
+                .reply {
+                    background: white;
+                    margin: 0 5px 5px 0;
+                    border-radius: 14px;
+                }
+            }
+        }
+    }
+}
