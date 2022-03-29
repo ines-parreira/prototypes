@@ -3,12 +3,13 @@ import Draggable from 'react-draggable'
 import Modal from 'pages/common/components/Modal'
 import Button from 'pages/common/components/button/Button'
 
+import CheckBox from 'pages/common/forms/CheckBox'
 import css from './ImageRepositioningModal.less'
 
 type Props = {
     localImage?: File
-    closeModal: () => void
-    onSubmit: (offset: number) => void
+    onCloseModal: () => void
+    onSubmit: (offset: number, batchApply: boolean) => void
     bannerInputRef: React.RefObject<HTMLInputElement>
 }
 
@@ -19,16 +20,22 @@ export const PIXEL_TO_OFFSET_RATIO = 3
 export const ImageRepositioningModal = ({
     onSubmit,
     localImage,
-    closeModal,
+    onCloseModal: closeModal,
     bannerInputRef,
 }: Props) => {
     const [top, setTop] = useState(0)
     const [offset, setOffset] = useState(0)
+    const [batchApply, setBatchApply] = useState(false)
 
     const onCloseModal = () => {
         closeModal()
         setTop(0)
         setOffset(0)
+        setBatchApply(false)
+    }
+
+    const onBatchApplyChange = (newValue: boolean) => {
+        setBatchApply(newValue)
     }
 
     return (
@@ -60,7 +67,7 @@ export const ImageRepositioningModal = ({
                             intent="primary"
                             type="button"
                             onClick={() => {
-                                onSubmit(offset)
+                                onSubmit(offset, batchApply)
                                 onCloseModal()
                             }}
                         >
@@ -107,6 +114,15 @@ export const ImageRepositioningModal = ({
                         </div>
                     </div>
                 </Draggable>
+            </div>
+            <div className={css.checkbox}>
+                <CheckBox
+                    className="mb-3"
+                    isChecked={batchApply}
+                    onChange={onBatchApplyChange}
+                >
+                    Apply image to all languages
+                </CheckBox>
             </div>
         </Modal>
     )

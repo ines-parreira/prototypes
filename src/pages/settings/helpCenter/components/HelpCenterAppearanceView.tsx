@@ -13,7 +13,7 @@ import {Value} from 'pages/common/forms/SelectField/types'
 import {getViewLanguage} from 'state/ui/helpCenter'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {HelpCenter} from 'models/helpCenter/types'
+import {HelpCenter, LocaleCode} from 'models/helpCenter/types'
 import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -136,11 +136,15 @@ export const HelpCenterAppearanceView: React.FC = () => {
         return undefined
     }
 
-    const bannerImageSubmitWrapper = async (
+    const bannerImageSubmitWrapper = async ({
+        callback,
+        batchApply,
+    }: {
         callback: () => Promise<{
             updatedTranslation: Components.Schemas.HelpCenterTranslationEntity
         }>
-    ) => {
+        batchApply: boolean
+    }) => {
         if (client && helpCenter) {
             try {
                 const {updatedTranslation} = await callback()
@@ -149,6 +153,14 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     (translation) =>
                         translation.locale === updatedTranslation.locale
                             ? updatedTranslation
+                            : batchApply
+                            ? {
+                                  ...translation,
+                                  banner_image_url:
+                                      updatedTranslation.banner_image_url,
+                                  banner_image_vertical_offset:
+                                      updatedTranslation.banner_image_vertical_offset,
+                              }
                             : translation
                 )
 
@@ -331,6 +343,26 @@ export const HelpCenterAppearanceView: React.FC = () => {
             : 'Upload image'
     }
 
+    const saveBannerImage = async (
+        locale: LocaleCode,
+        bannerImageUrl: string | null | undefined,
+        offset: number
+    ) => {
+        const {data: updatedTranslation} = await (
+            client as Client
+        ).updateHelpCenterTranslation(
+            {
+                help_center_id: helpCenter.id,
+                locale: locale,
+            },
+            {
+                banner_image_url: bannerImageUrl,
+                banner_image_vertical_offset: offset,
+            }
+        )
+        return updatedTranslation
+    }
+
     return (
         <HelpCenterPageWrapper helpCenter={helpCenter}>
             <div className={css.heading}>
@@ -483,44 +515,63 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
                             return {updatedTranslation}
                         }
-                        await bannerImageSubmitWrapper(callback)
+                        await bannerImageSubmitWrapper({
+                            callback: callback,
+                            batchApply: false,
+                        })
                     }}
                     isSavingBannerImage={isSavingBannerImage}
                 />
 
                 <ImageRepositioningModal
                     localImage={localImage}
-                    closeModal={() => {
+                    onCloseModal={() => {
                         setLocalImage(undefined)
                         bannerImage.discardFile()
                     }}
                     bannerInputRef={bannerInputRef}
-                    onSubmit={async (offset: number) => {
+                    onSubmit={async (offset: number, batchApply: boolean) => {
                         const callback = async () => {
                             setIsSavingBannerImage(true)
                             try {
                                 const bannerImageUrl = await getFileUploadURL(
                                     bannerImage
                                 )
-                                const {data: updatedTranslation} = await (
-                                    client as Client
-                                ).updateHelpCenterTranslation(
-                                    {
-                                        help_center_id: helpCenter.id,
-                                        locale: selectedLanguage,
-                                    },
-                                    {
-                                        banner_image_url: bannerImageUrl,
-                                        banner_image_vertical_offset: offset,
+                                if (batchApply) {
+                                    const otherTranslations =
+                                        helpCenter.translations
+                                            ? helpCenter.translations.filter(
+                                                  (x) =>
+                                                      x.locale !==
+                                                      selectedLanguage
+                                              )
+                                            : []
+
+                                    for (const translation of otherTranslations) {
+                                        await saveBannerImage(
+                                            translation.locale,
+                                            bannerImageUrl,
+                                            offset
+                                        )
                                     }
-                                )
+                                }
+
+                                const updatedTranslation =
+                                    await saveBannerImage(
+                                        selectedLanguage,
+                                        bannerImageUrl,
+                                        offset
+                                    )
 
                                 return {updatedTranslation}
                             } finally {
                                 setIsSavingBannerImage(false)
                             }
                         }
-                        await bannerImageSubmitWrapper(callback)
+                        await bannerImageSubmitWrapper({
+                            callback: callback,
+                            batchApply: batchApply,
+                        })
                     }}
                 />
             </section>
