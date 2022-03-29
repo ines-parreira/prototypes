@@ -3,7 +3,7 @@ import {CancelToken} from 'axios'
 import client from 'models/api/resources'
 import {ApiListResponsePagination} from 'models/api/types'
 
-import {PhoneNumber} from './types'
+import {PhoneNumber, PhoneCapabilitiesLimitationsMap} from './types'
 
 export const fetchPhoneNumbers = async (
     cancelToken?: CancelToken
@@ -44,4 +44,11 @@ export const updatePhoneNumber = async (
 
 export const deletePhoneNumber = async (id: number): Promise<void> => {
     await client.delete(`/api/integrations/phone/phone-numbers/${id}/`)
+}
+
+export const fetchPhoneCapabilities = async () => {
+    const res = await client.get<PhoneCapabilitiesLimitationsMap>(
+        '/api/phone-numbers/capabilities-limitations/'
+    )
+    return res.data
 }

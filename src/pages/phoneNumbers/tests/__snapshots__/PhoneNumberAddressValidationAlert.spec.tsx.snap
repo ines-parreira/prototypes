@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneNumberAddressValidationAlert /> render() should not a warning for GB and AU 1`] = `
+<div
+  class="alert info mt-3 mb-4"
+>
+  <div
+    class="iconContainer"
+  >
+    <img
+      alt="icon"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      Creating phone numbers from 
+      United Kingdom
+       requires address verification
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<PhoneNumberAddressValidationAlert /> render() should not a warning for GB and AU 2`] = `
+<div
+  class="alert info mt-3 mb-4"
+>
+  <div
+    class="iconContainer"
+  >
+    <img
+      alt="icon"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      Creating phone numbers from 
+      Australia
+       requires address verification
+    </span>
+  </div>
+</div>
+`;
+
+exports[`<PhoneNumberAddressValidationAlert /> render() should not render for US and CA 1`] = `null`;
+
+exports[`<PhoneNumberAddressValidationAlert /> render() should not render for US and CA 2`] = `null`;
+
+exports[`<PhoneNumberAddressValidationAlert /> render() should render a link to request form for FR 1`] = `
+<div
+  class="alert info mt-3 mb-4"
+>
+  <div
+    class="iconContainer"
+  >
+    <img
+      alt="icon"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      French numbers are only available through the
+       
+      <a
+        href="https://gorgias.typeform.com/to/YhvfA3qK"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        French number request form.
+      </a>
+    </span>
+  </div>
+</div>
+`;

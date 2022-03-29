@@ -2,13 +2,17 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
-import {phoneNumbers as phoneNumbersFixtures} from 'fixtures/phoneNumber'
+import {
+    phoneNumbers as phoneNumbersFixtures,
+    capabilities as capabilitiesFixtures,
+} from 'fixtures/phoneNumber'
 import client from 'models/api/resources'
 import {
     fetchPhoneNumbers,
     createPhoneNumber,
     updatePhoneNumber,
     deletePhoneNumber,
+    fetchPhoneCapabilities,
 } from '../resources'
 
 const mockedServer = new MockAdapter(client)
@@ -118,6 +122,18 @@ describe('phone numbers resources', () => {
             return expect(deletePhoneNumber(1)).rejects.toEqual(
                 new Error('Request failed with status code 503')
             )
+        })
+    })
+})
+
+describe('capabilities limitations', () => {
+    describe('fetchPhoneCapabilities', () => {
+        it('should resolve with a map of phone number capabilities by country', async () => {
+            mockedServer
+                .onGet('/api/phone-numbers/capabilities-limitations/')
+                .reply(200, capabilitiesFixtures)
+            const res = await fetchPhoneCapabilities()
+            expect(res).toMatchSnapshot()
         })
     })
 })

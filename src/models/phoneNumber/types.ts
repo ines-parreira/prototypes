@@ -10,6 +10,7 @@ export type PhoneNumber = {
     updated_datetime: string
     deleted_datetime: Maybe<string>
     integrations: IntegrationPreview[]
+    capabilities: PhoneCapabilities
     meta: PhoneNumberMeta
 }
 
@@ -20,6 +21,12 @@ export type PhoneNumberMeta = {
     type: PhoneType
     state?: Maybe<string>
     area_code: number
+}
+
+export type PhoneCapabilities = {
+    mms: boolean
+    sms: boolean
+    voice: boolean
 }
 
 export type AddressInformation = {
@@ -38,5 +45,10 @@ export enum AddressType {
 }
 
 export type IntegrationPreview = Pick<Integration, 'id' | 'type' | 'name'>
+
+type CountryPhoneCapabilities = {[key in PhoneType]?: PhoneCapabilities}
+export type PhoneCapabilitiesLimitationsMap = {
+    [key in PhoneCountry]?: CountryPhoneCapabilities
+}
 
 export {PhoneType, PhoneCountry, PhoneFunction}

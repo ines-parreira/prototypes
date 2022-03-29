@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PhoneNumberCapabilitiesAlert/> render() should not be displayed if there are no limits 1`] = `null`;
+
+exports[`<PhoneNumberCapabilitiesAlert/> render() should not display a banner with missing capabilities 1`] = `
+<div
+  class="alert warning mt-3 mb-4"
+>
+  <div
+    class="iconContainer"
+  >
+    <img
+      alt="icon"
+      src="test-file-stub"
+    />
+  </div>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      SMS and MMS
+       
+      are
+       not currently compatible with 
+      local
+       numbers from
+       
+      United States
+      .
+    </span>
+  </div>
+</div>
+`;

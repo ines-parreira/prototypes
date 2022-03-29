@@ -3,7 +3,9 @@ import {
     PhoneType,
     PhoneCountry,
     AddressType,
+    PhoneCapabilitiesLimitationsMap,
 } from 'models/phoneNumber/types'
+
 export const phoneNumbers: PhoneNumber[] = [
     {
         id: 1,
@@ -21,6 +23,11 @@ export const phoneNumbers: PhoneNumber[] = [
             area_code: 415,
         },
         integrations: [],
+        capabilities: {
+            sms: true,
+            voice: true,
+            mms: true,
+        },
     },
     {
         id: 2,
@@ -37,6 +44,11 @@ export const phoneNumbers: PhoneNumber[] = [
             area_code: 813,
         },
         integrations: [],
+        capabilities: {
+            sms: true,
+            voice: true,
+            mms: true,
+        },
     },
     {
         id: 3,
@@ -62,5 +74,61 @@ export const phoneNumbers: PhoneNumber[] = [
             area_code: 7,
         },
         integrations: [],
+        capabilities: {
+            sms: false,
+            voice: true,
+            mms: false,
+        },
     },
 ]
+
+export const capabilities: PhoneCapabilitiesLimitationsMap = {
+    AU: {
+        Local: {
+            mms: false,
+            sms: false,
+            voice: true,
+        },
+    },
+    CA: {
+        Local: {
+            mms: true,
+            sms: true,
+            voice: true,
+        },
+        TollFree: {
+            mms: true,
+            sms: true,
+            voice: true,
+        },
+    },
+    GB: {
+        Local: {
+            mms: false,
+            sms: true,
+            voice: true,
+        },
+        Mobile: {
+            mms: false,
+            sms: true,
+            voice: true,
+        },
+        National: {
+            mms: false,
+            sms: true,
+            voice: true,
+        },
+    },
+    US: {
+        Local: {
+            mms: true,
+            sms: true,
+            voice: true,
+        },
+        TollFree: {
+            mms: true,
+            sms: true,
+            voice: true,
+        },
+    },
+}

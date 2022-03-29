@@ -15,7 +15,6 @@ import {createPhoneNumber} from 'models/phoneNumber/resources'
 import {phoneNumberCreated} from 'state/entities/phoneNumbers/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
-import Alert from 'pages/common/components/Alert/Alert'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import Button from 'pages/common/components/button/Button'
 
@@ -23,7 +22,9 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import history from 'pages/history'
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'
-
+import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
+import PhoneNumberAddressValidationAlert from './PhoneNumberAddressValidationAlert'
+import {shouldValidateAddress} from './utils'
 import css from './PhoneNumberCreateForm.less'
 
 export default function PhoneNumberCreateForm(): JSX.Element {
@@ -34,18 +35,11 @@ export default function PhoneNumberCreateForm(): JSX.Element {
         type: PhoneType.Local,
         emoji: null,
     })
-    const {country} = meta
+    const {country, type} = meta
     const [address, setAddress] = useState<Partial<AddressInformation> | null>({
         country,
         type: AddressType.Company,
     })
-    const shouldValidateAddress = useCallback(
-        (country) =>
-            country === PhoneCountry.GB ||
-            country === PhoneCountry.AU ||
-            country === PhoneCountry.FR,
-        []
-    )
 
     const [{loading: isLoading}, handlePhoneNumberCreate] =
         useAsyncFn(async () => {
@@ -117,29 +111,16 @@ export default function PhoneNumberCreateForm(): JSX.Element {
             </Row>
             <Row>
                 <Col lg={6} xl={7}>
-                    {shouldValidateAddress(country) &&
-                        country === PhoneCountry.FR && (
-                            <Alert icon className="mt-3 mb-4">
-                                French numbers are only available through the{' '}
-                                <a
-                                    href="https://gorgias.typeform.com/to/YhvfA3qK"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    French number request form.
-                                </a>
-                            </Alert>
-                        )}
-                    {shouldValidateAddress(country) &&
-                        country !== PhoneCountry.FR && (
-                            <Alert icon className="mt-3 mb-4">
-                                Creating phone numbers from Australia and UK
-                                requires address verification
-                            </Alert>
-                        )}
+                    {country && type && (
+                        <PhoneNumberCapabilitiesAlert
+                            country={country}
+                            type={type}
+                        />
+                    )}
+                    <PhoneNumberAddressValidationAlert country={country} />
                     <Form onSubmit={onSubmit}>
                         <FormGroup>
-                            {shouldValidateAddress(country) && (
+                            {country && shouldValidateAddress(country) && (
                                 <h4 className="mb-3">Phone number settings</h4>
                             )}
                             <Label htmlFor="type" className="control-label">
@@ -153,7 +134,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                             />
                         </FormGroup>
                         <PhoneMetaFields value={meta} onChange={setMeta} />
-                        {address && shouldValidateAddress(country) && (
+                        {address && country && shouldValidateAddress(country) && (
                             <div className={css.addressWrapper}>
                                 <h4 className="mb-3">Address verification</h4>
                                 <PhoneAddressFields

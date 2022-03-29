@@ -18,13 +18,15 @@ import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import Modal from 'pages/common/components/Modal'
 import Button from 'pages/common/components/button/Button'
-import Alert from 'pages/common/components/Alert/Alert'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {errorToChildren} from 'utils'
 
+import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
+import PhoneNumberAddressValidationAlert from './PhoneNumberAddressValidationAlert'
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'
+import {shouldValidateAddress} from './utils'
 
 import css from './PhoneNumberCreateModalForm.less'
 
@@ -51,19 +53,12 @@ export default function PhoneNumberCreateModalForm({
         type: PhoneType.Local,
         emoji: null,
     })
-    const {country} = meta
+    const {country, type} = meta
 
     const [address, setAddress] = useState<Partial<AddressInformation> | null>({
         country,
         type: AddressType.Company,
     })
-    const shouldValidateAddress = useCallback(
-        (country) =>
-            country === PhoneCountry.GB ||
-            country === PhoneCountry.AU ||
-            country === PhoneCountry.FR,
-        []
-    )
 
     const [{loading: isLoading}, handlePhoneNumberCreate] =
         useAsyncFn(async () => {
@@ -125,12 +120,13 @@ export default function PhoneNumberCreateModalForm({
                 onClose={onClose}
                 bodyClassName={css.body}
                 footerClassName={classnames(css.footer, {
-                    [css.steppedFooter]: shouldValidateAddress(country),
+                    [css.steppedFooter]:
+                        country && shouldValidateAddress(country),
                 })}
                 className={css.modal}
                 footer={
                     <>
-                        {shouldValidateAddress(country) && (
+                        {country && shouldValidateAddress(country) && (
                             <>
                                 {step === Step.PhoneInformation && (
                                     <>
@@ -177,7 +173,7 @@ export default function PhoneNumberCreateModalForm({
                                 )}
                             </>
                         )}
-                        {!shouldValidateAddress(country) && (
+                        {(!country || !shouldValidateAddress(country)) && (
                             <Button
                                 isDisabled={country === PhoneCountry.FR}
                                 isLoading={isLoading}
@@ -191,21 +187,13 @@ export default function PhoneNumberCreateModalForm({
             >
                 <Row>
                     <Col>
-                        {shouldValidateAddress(country) &&
-                            country === PhoneCountry.FR && (
-                                <Alert icon className="mt-3 mb-4">
-                                    French numbers are only available through
-                                    the{' '}
-                                    <a
-                                        href="https://gorgias.typeform.com/to/YhvfA3qK"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        French number request form.
-                                    </a>
-                                </Alert>
-                            )}
-
+                        {country && type && (
+                            <PhoneNumberCapabilitiesAlert
+                                country={country}
+                                type={type}
+                            />
+                        )}
+                        <PhoneNumberAddressValidationAlert country={country} />
                         {step === Step.PhoneInformation && (
                             <>
                                 <FormGroup>
@@ -230,6 +218,7 @@ export default function PhoneNumberCreateModalForm({
                         )}
                         {step === Step.AddressVerfication &&
                             address &&
+                            country &&
                             shouldValidateAddress(country) && (
                                 <PhoneAddressFields
                                     value={address}
