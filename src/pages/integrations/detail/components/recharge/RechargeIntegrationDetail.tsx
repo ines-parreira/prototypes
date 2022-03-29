@@ -1,5 +1,5 @@
+import React, {Component} from 'react'
 import classnames from 'classnames'
-import React from 'react'
 import {List, Map} from 'immutable'
 import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {
@@ -15,13 +15,15 @@ import {connect, ConnectedProps} from 'react-redux'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import * as integrationHelpers from '../../../../../state/integrations/helpers'
-import {deleteIntegration} from '../../../../../state/integrations/actions'
-import Loader from '../../../../common/components/Loader/Loader'
+import * as integrationHelpers from 'state/integrations/helpers'
+import {deleteIntegration} from 'state/integrations/actions'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import settingsCss from 'pages/settings/settings.less'
+
 import DEPRECATED_InputField from '../../../../common/forms/DEPRECATED_InputField'
-import PageHeader from '../../../../common/components/PageHeader'
-import LinkAlert from '../../../../common/components/Alert/LinkAlert'
-import settingsCss from '../../../../settings/settings.less'
+
 import css from './RechargeIntegrationList.less'
 
 type Props = {
@@ -37,7 +39,7 @@ type State = {
     integrationLoading?: boolean
 }
 
-export class RechargeIntegrationDetail extends React.Component<Props, State> {
+export class RechargeIntegrationDetail extends Component<Props, State> {
     isInitialized = false
 
     state: State = {

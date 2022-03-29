@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {BillingDetailsContainer} from '../BillingDetails.tsx'
+import {BillingDetailsContainer} from '../BillingDetails'
 
 describe('BillingDetails component', () => {
     it('should display loader while fetching a contact', () => {

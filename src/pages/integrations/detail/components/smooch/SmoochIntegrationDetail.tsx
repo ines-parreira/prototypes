@@ -48,7 +48,7 @@ type State = {
 export class SmoochIntegrationDetail extends Component<Props, State> {
     isInitialized = false
 
-    state = {
+    state: State = {
         name: '',
         language: SMOOCH_LANGUAGE_DEFAULT,
     }

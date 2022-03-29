@@ -5,14 +5,15 @@ import {connect, ConnectedProps} from 'react-redux'
 import Lightbox from 'react-images'
 
 import Button from 'pages/common/components/button/Button'
-import {getRedirectUri} from '../../../../../state/integrations/selectors'
-import {IntegrationType} from '../../../../../models/integration/types'
-import {RootState} from '../../../../../state/types'
+import {getRedirectUri} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/types'
+import {RootState} from 'state/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Carousel from 'pages/integrations/common/Carousel'
+
 import css from '../../../../settings/settings.less'
 
 import history from '../../../../history'
-import Carousel from '../../../common/Carousel'
-import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 

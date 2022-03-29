@@ -2,12 +2,13 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import YotpoIntegrationList from '../YotpoIntegrationList.tsx'
 import {
-    YOTPO_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,
-} from '../../../../../../constants/integration.ts'
+    YOTPO_INTEGRATION_TYPE,
+} from 'constants/integration'
+
+import YotpoIntegrationList from '../YotpoIntegrationList'
 
 describe('<YotpoIntegrationList/>', () => {
     beforeEach(() => {

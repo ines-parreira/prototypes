@@ -4,13 +4,13 @@ import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {parse} from 'qs'
 import {List, Map} from 'immutable'
 
-import * as integrationsActions from '../../../../../state/integrations/actions'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {IntegrationType} from '../../../../../models/integration/types'
+import * as integrationsActions from 'state/integrations/actions'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {IntegrationType} from 'models/integration/types'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import history from '../../../../history'
-import ToggleInput from '../../../../common/forms/ToggleInput'
 
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'

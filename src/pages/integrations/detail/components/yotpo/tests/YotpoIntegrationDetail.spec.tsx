@@ -1,28 +1,40 @@
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps, MouseEvent} from 'react'
+import {fromJS, Map} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {YotpoIntegrationDetailComponent} from '../YotpoIntegrationDetail.tsx'
 import {
     PENDING_AUTHENTICATION_STATUS,
-    YOTPO_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,
-} from '../../../../../../constants/integration.ts'
+    YOTPO_INTEGRATION_TYPE,
+} from 'constants/integration'
 
-const defaultProps = {
-    actions: {
-        fetchIntegration: jest.fn(),
-        triggerCreateSuccess: jest.fn(),
-        updateOrCreateIntegration: jest.fn(),
-        activateIntegration: jest.fn(),
-        deactivateIntegration: jest.fn(),
-        deleteIntegration: jest.fn(),
-    },
+import {YotpoIntegrationDetailComponent} from '../YotpoIntegrationDetail'
+
+type Integration = ComponentProps<
+    typeof YotpoIntegrationDetailComponent
+>['integration']
+
+const minProps: ComponentProps<typeof YotpoIntegrationDetailComponent> = {
+    integration: fromJS({}),
     loading: fromJS({
         integration: null,
         updateIntegration: null,
     }),
-    location: {search: ''},
+    actions: {
+        deleteIntegration: jest.fn(),
+        fetchIntegration: jest.fn(),
+        triggerCreateSuccess: jest.fn(),
+        updateOrCreateIntegration: jest.fn(),
+    },
+    redirectUri: '',
+    location: {
+        search: '',
+        hash: fromJS({}),
+        pathname: fromJS({}),
+        state: fromJS({}),
+    },
+    history: fromJS({}),
+    match: fromJS({}),
 }
 
 describe('<YotpoIntegrationDetailComponent/>', () => {
@@ -32,7 +44,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
 
     describe('componentDidMount()', () => {
         it("should set the integration's name in the state", () => {
-            const integration = fromJS({
+            const integration: Integration = fromJS({
                 id: 1,
                 meta: {
                     oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
@@ -44,7 +56,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
 
             const component = shallow(
                 <YotpoIntegrationDetailComponent
-                    {...defaultProps}
+                    {...minProps}
                     integration={integration}
                 />
             )
@@ -56,24 +68,19 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
     describe('componentWillReceiveProps()', () => {
         it('should not do anything because there is no integration', () => {
             const component = shallow(
-                <YotpoIntegrationDetailComponent
-                    {...defaultProps}
-                    integration={fromJS({})}
-                />
+                <YotpoIntegrationDetailComponent {...minProps} />
             )
 
             expect(component.state()).toMatchSnapshot()
-            expect(defaultProps.actions.fetchIntegration).not.toHaveBeenCalled()
-            expect(
-                defaultProps.actions.triggerCreateSuccess
-            ).not.toHaveBeenCalled()
+            expect(minProps.actions.fetchIntegration).not.toHaveBeenCalled()
+            expect(minProps.actions.triggerCreateSuccess).not.toHaveBeenCalled()
         })
 
         it(
             'should set the name of the integration in the state because there was no integration before and there is ' +
                 'one now',
             () => {
-                const integration = fromJS({
+                const integration: Integration = fromJS({
                     name: 'test',
                     id: 1,
                     meta: {
@@ -83,29 +90,27 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     },
                 })
 
-                const component = shallow(
+                const component = shallow<YotpoIntegrationDetailComponent>(
                     <YotpoIntegrationDetailComponent
-                        {...defaultProps}
+                        {...minProps}
                         integration={integration}
                     />
                 )
 
                 component.instance().componentWillReceiveProps({
-                    ...defaultProps,
+                    ...minProps,
                     integration,
                 })
 
                 expect(component.state()).toMatchSnapshot()
+                expect(minProps.actions.fetchIntegration).not.toHaveBeenCalled()
                 expect(
-                    defaultProps.actions.fetchIntegration
-                ).not.toHaveBeenCalled()
-                expect(
-                    defaultProps.actions.triggerCreateSuccess
+                    minProps.actions.triggerCreateSuccess
                 ).not.toHaveBeenCalled()
             }
         )
         it('should not do anything because the previous integration was not empty', () => {
-            const integration = fromJS({
+            const integration: Integration = fromJS({
                 id: 1,
                 meta: {
                     oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
@@ -115,23 +120,21 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                 name: 'foo',
             })
 
-            const component = shallow(
+            const component = shallow<YotpoIntegrationDetailComponent>(
                 <YotpoIntegrationDetailComponent
-                    {...defaultProps}
+                    {...minProps}
                     integration={integration}
                 />
             )
 
             component.instance().componentWillReceiveProps({
-                ...defaultProps,
+                ...minProps,
                 integration: integration.set('name', 'bar'),
             })
 
             expect(component.state()).toMatchSnapshot()
-            expect(defaultProps.actions.fetchIntegration).not.toHaveBeenCalled()
-            expect(
-                defaultProps.actions.triggerCreateSuccess
-            ).not.toHaveBeenCalled()
+            expect(minProps.actions.fetchIntegration).not.toHaveBeenCalled()
+            expect(minProps.actions.triggerCreateSuccess).not.toHaveBeenCalled()
         })
         it(
             'should set the name of the integration the state and set a timeout to fetch the integration because ' +
@@ -139,7 +142,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
             () => {
                 jest.useFakeTimers()
 
-                const integration = fromJS({
+                const integration: Integration = fromJS({
                     id: 1,
                     type: YOTPO_INTEGRATION_TYPE,
                     meta: {
@@ -150,32 +153,30 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     name: 'foo',
                 })
 
-                const component = shallow(
-                    <YotpoIntegrationDetailComponent
-                        {...defaultProps}
-                        integration={fromJS({})}
-                    />
+                const component = shallow<YotpoIntegrationDetailComponent>(
+                    <YotpoIntegrationDetailComponent {...minProps} />
                 )
 
                 component.instance().componentWillReceiveProps({
-                    ...defaultProps,
+                    ...minProps,
                     integration,
-                    location: {search: '?action=authentication'},
+                    location: {
+                        ...minProps.location,
+                        search: '?action=authentication',
+                    },
                 })
 
                 expect(component.state()).toMatchSnapshot()
 
                 jest.runAllTimers()
-                expect(
-                    defaultProps.actions.fetchIntegration
-                ).toHaveBeenCalledWith(
+                expect(minProps.actions.fetchIntegration).toHaveBeenCalledWith(
                     integration.get('id'),
                     integration.get('type'),
                     true
                 )
 
                 expect(
-                    defaultProps.actions.triggerCreateSuccess
+                    minProps.actions.triggerCreateSuccess
                 ).not.toHaveBeenCalled()
             }
         )
@@ -184,7 +185,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
             'should set the name of the integration the state and trigger a success notification because the action ' +
                 'in the URL is set to `authentication` and the integration is already authenticated',
             () => {
-                const integration = fromJS({
+                const integration: Integration = fromJS({
                     id: 1,
                     type: YOTPO_INTEGRATION_TYPE,
                     meta: {
@@ -195,25 +196,23 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     name: 'foo',
                 })
 
-                const component = shallow(
-                    <YotpoIntegrationDetailComponent
-                        {...defaultProps}
-                        integration={fromJS({})}
-                    />
+                const component = shallow<YotpoIntegrationDetailComponent>(
+                    <YotpoIntegrationDetailComponent {...minProps} />
                 )
 
                 component.instance().componentWillReceiveProps({
-                    ...defaultProps,
+                    ...minProps,
                     integration,
-                    location: {search: '?action=authentication'},
+                    location: {
+                        ...minProps.location,
+                        search: '?action=authentication',
+                    },
                 })
 
                 expect(component.state()).toMatchSnapshot()
+                expect(minProps.actions.fetchIntegration).not.toHaveBeenCalled()
                 expect(
-                    defaultProps.actions.fetchIntegration
-                ).not.toHaveBeenCalled()
-                expect(
-                    defaultProps.actions.triggerCreateSuccess
+                    minProps.actions.triggerCreateSuccess
                 ).toHaveBeenCalledWith(integration.toJS())
             }
         )
@@ -224,7 +223,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
             'should call `updateOrCreateIntegration` with the integration passed in the props updated with the name' +
                 'from the state',
             () => {
-                const integration = fromJS({
+                const integration: Integration = fromJS({
                     id: 1,
                     meta: {
                         oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
@@ -234,9 +233,9 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     name: 'foo',
                 })
 
-                const component = shallow(
+                const component = shallow<YotpoIntegrationDetailComponent>(
                     <YotpoIntegrationDetailComponent
-                        {...defaultProps}
+                        {...minProps}
                         integration={integration}
                     />
                 )
@@ -248,18 +247,21 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                     integrationName: newName,
                     enable_yotpo_tickets: false,
                 })
-                component.instance()._handleUpdate({preventDefault})
+                component.instance()._handleUpdate({
+                    preventDefault,
+                } as unknown as MouseEvent)
 
                 expect(preventDefault).toHaveBeenCalled()
                 expect(
-                    defaultProps.actions.updateOrCreateIntegration
+                    minProps.actions.updateOrCreateIntegration
                 ).toHaveBeenCalledWith(
                     fromJS({
                         id: integration.get('id'),
                         name: newName,
-                        meta: integration
-                            .get('meta')
-                            .set('enable_yotpo_tickets', false),
+                        meta: (integration.get('meta') as Map<any, any>).set(
+                            'enable_yotpo_tickets',
+                            false
+                        ),
                     })
                 )
             }
@@ -269,7 +271,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         it('should render a loader because the integration is loading', () => {
             const component = shallow(
                 <YotpoIntegrationDetailComponent
-                    {...defaultProps}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
@@ -288,7 +290,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         it('should render an alert because the import is in progress', () => {
             const component = shallow(
                 <YotpoIntegrationDetailComponent
-                    {...defaultProps}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
@@ -306,7 +308,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         it('should render a small paragraph because the import is over', () => {
             const component = shallow(
                 <YotpoIntegrationDetailComponent
-                    {...defaultProps}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
@@ -324,7 +326,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         it('should render buttons loading and disabled because a submit is in progress', () => {
             const component = shallow(
                 <YotpoIntegrationDetailComponent
-                    {...defaultProps}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
@@ -343,7 +345,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
         it('should render not render deactivate / reactivate buttons because authentication is required', () => {
             const component = shallow(
                 <YotpoIntegrationDetailComponent
-                    {...defaultProps}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
@@ -364,7 +366,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
             () => {
                 const component = shallow(
                     <YotpoIntegrationDetailComponent
-                        {...defaultProps}
+                        {...minProps}
                         integration={fromJS({
                             id: 1,
                             meta: {

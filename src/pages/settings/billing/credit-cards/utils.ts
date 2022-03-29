@@ -1,8 +1,8 @@
-function isNumeric(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n)
+function isNumeric(n: number | string) {
+    return !isNaN(parseFloat(n as string)) && isFinite(n as number)
 }
 
-export function creditCardNormalizer(value, previousValue) {
+export function creditCardNormalizer(value: string, previousValue: string) {
     const newValue = value.replace(/ /g, '')
     if ((isNumeric(newValue) && newValue.length <= 19) || !newValue) {
         return newValue.replace(/(\d){4}/g, (match) => `${match} `).trim()
@@ -10,14 +10,17 @@ export function creditCardNormalizer(value, previousValue) {
     return previousValue
 }
 
-export function creditCardCVCNormalizer(value, previousValue) {
+export function creditCardCVCNormalizer(value: string, previousValue: string) {
     if (/^\d{0,4}$/.test(value)) {
         return value
     }
     return previousValue
 }
 
-export function creditCardExpDateNormalizer(value, previousValue) {
+export function creditCardExpDateNormalizer(
+    value: string,
+    previousValue: string
+) {
     const newValue = value.replace(/[ /]/g, '')
     if ((isNumeric(newValue) && newValue.length <= 4) || !newValue) {
         // user type backyard and cursor is at `MM / ` <--

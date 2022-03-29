@@ -1,25 +1,29 @@
+import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
-import React from 'react'
 import {render} from '@testing-library/react'
 
 import {
     PENDING_AUTHENTICATION_STATUS,
     SUCCESS_AUTHENTICATION_STATUS,
-} from '../../../../../../constants/integration.ts'
+} from 'constants/integration'
 
-import {RechargeIntegrationDetail} from '../RechargeIntegrationDetail.tsx'
+import {RechargeIntegrationDetail} from '../RechargeIntegrationDetail'
 
 describe('<RechargeIntegrationDetail/>', () => {
-    const actions = {
-        fetchIntegration: jest.fn(),
-        triggerCreateSuccess: jest.fn(),
-        updateOrCreateIntegration: jest.fn(),
-    }
-
-    const defaultProps = {
-        actions,
-        location: {query: {}},
+    const minProps: ComponentProps<typeof RechargeIntegrationDetail> = {
+        integration: fromJS({}),
+        shopifyIntegrations: fromJS({}),
         loading: fromJS({}),
+        redirectUri: fromJS({}),
+        history: fromJS({}),
+        location: fromJS({}),
+        match: {
+            isExact: fromJS({}),
+            params: {integrationId: '1'},
+            path: fromJS({}),
+            url: fromJS({}),
+        },
+        deleteIntegration: jest.fn(),
     }
 
     beforeEach(() => {
@@ -30,8 +34,7 @@ describe('<RechargeIntegrationDetail/>', () => {
         it('should render a loader (because the integration is loading', () => {
             const {container} = render(
                 <RechargeIntegrationDetail
-                    {...defaultProps}
-                    match={{params: {integrationId: 1}}}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
@@ -49,8 +52,7 @@ describe('<RechargeIntegrationDetail/>', () => {
         it('should render an alert because the import is in progress', () => {
             const {container} = render(
                 <RechargeIntegrationDetail
-                    {...defaultProps}
-                    match={{params: {integrationId: 1}}}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
@@ -67,8 +69,7 @@ describe('<RechargeIntegrationDetail/>', () => {
         it('should render a small paragraph because the import is over', () => {
             const {container} = render(
                 <RechargeIntegrationDetail
-                    {...defaultProps}
-                    match={{params: {integrationId: 1}}}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
@@ -85,8 +86,7 @@ describe('<RechargeIntegrationDetail/>', () => {
         it('should render buttons loading and disabled because a submit is in progress', () => {
             const {container} = render(
                 <RechargeIntegrationDetail
-                    {...defaultProps}
-                    match={{params: {integrationId: 1}}}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
@@ -104,8 +104,7 @@ describe('<RechargeIntegrationDetail/>', () => {
         it('should render not render deactivate / reactivate buttons because authentication is required', () => {
             const {container} = render(
                 <RechargeIntegrationDetail
-                    {...defaultProps}
-                    match={{params: {integrationId: 1}}}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
@@ -124,20 +123,7 @@ describe('<RechargeIntegrationDetail/>', () => {
             () => {
                 const {container} = render(
                     <RechargeIntegrationDetail
-                        {...defaultProps}
-                        match={{params: {integrationId: 1}}}
-                        shopifyIntegrations={[
-                            fromJS({
-                                id: 1,
-                                meta: {
-                                    oauth: {
-                                        status: SUCCESS_AUTHENTICATION_STATUS,
-                                    },
-                                    sync_state: {is_initialized: false},
-                                },
-                                deactivated_datetime: '2018-01-01 10:12',
-                            }),
-                        ]}
+                        {...minProps}
                         integration={fromJS({
                             id: 1,
                             meta: {

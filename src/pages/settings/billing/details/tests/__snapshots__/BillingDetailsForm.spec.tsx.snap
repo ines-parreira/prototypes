@@ -16,7 +16,7 @@ exports[`BillingDetailsForm component should display loader 1`] = `
   <BillingDetailsFormContainer
     contact={null}
     fetchContact={[Function]}
-    updateContact={null}
+    updateContact={[MockFunction]}
   >
     <div
       className="full-width"
@@ -190,7 +190,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
   <BillingDetailsFormContainer
     contact={null}
     fetchContact={[Function]}
-    updateContact={null}
+    updateContact={[MockFunction]}
   >
     <div
       className="full-width"
@@ -1084,7 +1084,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
       }
     }
     fetchContact={[Function]}
-    updateContact={null}
+    updateContact={[MockFunction]}
   >
     <div
       className="full-width"

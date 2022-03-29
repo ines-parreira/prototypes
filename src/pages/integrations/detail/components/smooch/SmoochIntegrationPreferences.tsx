@@ -35,7 +35,7 @@ export class SmoochIntegrationPreferences extends React.Component<
     Props,
     State
 > {
-    state = {
+    state: State = {
         autoResponderEnabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
         autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
         isUpdating: false,

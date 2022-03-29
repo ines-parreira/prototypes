@@ -1,4 +1,4 @@
-import React, {MouseEvent} from 'react'
+import React, {MouseEvent, Component} from 'react'
 import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
 import classNames from 'classnames'
 import {
@@ -41,8 +41,13 @@ type Props = {
     redirectUri: string
 } & RouteComponentProps
 
-export class YotpoIntegrationDetailComponent extends React.Component<Props> {
-    state = {
+type State = {
+    integrationName: string
+    enable_yotpo_tickets: boolean
+}
+
+export class YotpoIntegrationDetailComponent extends Component<Props, State> {
+    state: State = {
         integrationName: '',
         enable_yotpo_tickets: false,
     }

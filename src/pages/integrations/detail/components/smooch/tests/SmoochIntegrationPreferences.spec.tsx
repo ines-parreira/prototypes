@@ -1,25 +1,28 @@
-import React from 'react'
+import React, {ComponentProps, SyntheticEvent} from 'react'
 import {mount, shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-} from '../../../../../../config/integrations/index.ts'
-import {SMOOCH_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch.ts'
-import {SMOOCH_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
-import {SmoochIntegrationPreferences} from '../SmoochIntegrationPreferences.tsx'
+} from 'config/integrations'
+import {SMOOCH_INTEGRATION_TYPE} from 'constants/integration'
+import {SMOOCH_LANGUAGE_DEFAULT} from 'config/integrations/smooch'
+
+import {SmoochIntegrationPreferences} from '../SmoochIntegrationPreferences'
 
 describe('<SmoochIntegrationPreferences/>', () => {
+    const minProps: ComponentProps<typeof SmoochIntegrationPreferences> = {
+        integration: fromJS({}),
+        updateOrCreateIntegration: jest.fn(),
+    }
+
     describe('componentWillMount()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const component = shallow(
-                <SmoochIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />,
+            const component = shallow<SmoochIntegrationPreferences>(
+                <SmoochIntegrationPreferences {...minProps} />,
                 {disableLifecycleMethods: true}
             )
 
@@ -45,7 +48,7 @@ describe('<SmoochIntegrationPreferences/>', () => {
 
             const component = shallow(
                 <SmoochIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
+                    {...minProps}
                     integration={integration}
                 />
             )
@@ -57,10 +60,7 @@ describe('<SmoochIntegrationPreferences/>', () => {
     describe('componentDidUpdate()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
             const component = shallow(
-                <SmoochIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+                <SmoochIntegrationPreferences {...minProps} />
             )
 
             const prevState = component.state()
@@ -86,10 +86,7 @@ describe('<SmoochIntegrationPreferences/>', () => {
             })
 
             const component = shallow(
-                <SmoochIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+                <SmoochIntegrationPreferences {...minProps} />
             )
 
             component.setState({isInitialized: true})
@@ -116,10 +113,7 @@ describe('<SmoochIntegrationPreferences/>', () => {
             })
 
             const component = shallow(
-                <SmoochIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+                <SmoochIntegrationPreferences {...minProps} />
             )
 
             component.setProps({integration})
@@ -130,9 +124,9 @@ describe('<SmoochIntegrationPreferences/>', () => {
 
     describe('_setAutoResponderEnabled()', () => {
         it('should set passed value in the state', () => {
-            const component = shallow(
+            const component = shallow<SmoochIntegrationPreferences>(
                 <SmoochIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
+                    {...minProps}
                     integration={fromJS({})}
                 />
             )
@@ -153,11 +147,8 @@ describe('<SmoochIntegrationPreferences/>', () => {
 
     describe('_setAutoResponderReply()', () => {
         it('should set passed value in the state', () => {
-            const component = shallow(
-                <SmoochIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+            const component = shallow<SmoochIntegrationPreferences>(
+                <SmoochIntegrationPreferences {...minProps} />
             )
 
             expect(component.state('autoResponderReply')).toEqual(
@@ -176,11 +167,8 @@ describe('<SmoochIntegrationPreferences/>', () => {
 
     describe('_submitPreferences()', () => {
         it('should be called when the form is submitted', () => {
-            const component = mount(
-                <SmoochIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+            const component = mount<SmoochIntegrationPreferences>(
+                <SmoochIntegrationPreferences {...minProps} />
             )
 
             const submitPreferencesSpy = jest.spyOn(
@@ -196,16 +184,16 @@ describe('<SmoochIntegrationPreferences/>', () => {
         it('should submit the form with defaults', async () => {
             const updateOrCreateIntegration = jest.fn()
 
-            const component = shallow(
+            const component = shallow<SmoochIntegrationPreferences>(
                 <SmoochIntegrationPreferences
                     updateOrCreateIntegration={updateOrCreateIntegration}
                     integration={fromJS({})}
                 />
             )
-
-            await component
-                .instance()
-                ._submitPreferences({preventDefault: () => {}})
+            const preventDefault = jest.fn()
+            await component.instance()._submitPreferences({
+                preventDefault,
+            } as unknown as SyntheticEvent<HTMLButtonElement>)
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(
                 fromJS({
@@ -225,7 +213,7 @@ describe('<SmoochIntegrationPreferences/>', () => {
         it('should submit the form with loaded values', async () => {
             const updateOrCreateIntegration = jest.fn()
 
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: SMOOCH_INTEGRATION_TYPE,
                 meta: {
@@ -239,7 +227,7 @@ describe('<SmoochIntegrationPreferences/>', () => {
                 },
             })
 
-            const component = shallow(
+            const component = shallow<SmoochIntegrationPreferences>(
                 <SmoochIntegrationPreferences
                     updateOrCreateIntegration={updateOrCreateIntegration}
                     integration={integration}
@@ -249,20 +237,18 @@ describe('<SmoochIntegrationPreferences/>', () => {
             component.setState({
                 autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
             })
-
-            await component
-                .instance()
-                ._submitPreferences({preventDefault: () => {}})
+            const preventDefault = jest.fn()
+            await component.instance()._submitPreferences({
+                preventDefault,
+            } as unknown as SyntheticEvent<HTMLButtonElement>)
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(
                 fromJS({
                     id: integration.get('id'),
-                    meta: integration
-                        .get('meta')
-                        .setIn(
-                            ['preferences', 'auto_responder', 'reply'],
-                            CHAT_AUTO_RESPONDER_REPLY_IN_DAY
-                        ),
+                    meta: (integration.get('meta') as Map<any, any>).setIn(
+                        ['preferences', 'auto_responder', 'reply'],
+                        CHAT_AUTO_RESPONDER_REPLY_IN_DAY
+                    ),
                 })
             )
         })
@@ -272,7 +258,7 @@ describe('<SmoochIntegrationPreferences/>', () => {
         it('should render the Smooch preferences', () => {
             const component = shallow(
                 <SmoochIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
+                    {...minProps}
                     integration={fromJS({
                         id: 2,
                         type: SMOOCH_INTEGRATION_TYPE,
@@ -287,7 +273,7 @@ describe('<SmoochIntegrationPreferences/>', () => {
         it('should render loading buttons because the integration is being updated', () => {
             const component = shallow(
                 <SmoochIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
+                    {...minProps}
                     integration={fromJS({
                         id: 2,
                         type: SMOOCH_INTEGRATION_TYPE,

@@ -52,7 +52,7 @@ type State = {
 }
 
 export class ShopifyIntegrationDetail extends React.Component<Props, State> {
-    state = {
+    state: State = {
         name: '',
         syncCustomerNotes: true,
         isInitialized: false,

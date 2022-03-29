@@ -1,36 +1,40 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {Component, ReactNode} from 'react'
 import {Link} from 'react-router-dom'
 import Lightbox from 'react-images'
-
-import IntegrationList from '../IntegrationList.tsx'
-import ForwardIcon from '../ForwardIcon.tsx'
-
-import Carousel from './../../../common/Carousel.tsx'
+import {Map, List} from 'immutable'
 
 import Button from 'pages/common/components/button/Button'
+import Carousel from 'pages/integrations/common/Carousel'
+import {IntegrationType} from 'models/integration/constants'
 
-export default class ShopifyIntegrationList extends React.Component {
-    static propTypes = {
-        integrations: PropTypes.object.isRequired,
-        loading: PropTypes.object.isRequired,
-        redirectUri: PropTypes.string.isRequired,
-        activate: PropTypes.func.isRequired,
-    }
+import IntegrationList from '../IntegrationList'
+import ForwardIcon from '../ForwardIcon'
 
-    state = {
+type Props = {
+    integrations: List<Map<any, any>>
+    loading: Map<any, any>
+    redirectUri: string
+}
+
+type State = {
+    isLightboxOpen: boolean
+    currentImage: number
+}
+
+export default class ShopifyIntegrationList extends Component<Props, State> {
+    state: State = {
         isLightboxOpen: false,
         currentImage: 0,
     }
 
-    _toggleLightbox = (selectedImageId) => {
+    _toggleLightbox = (selectedImageId?: number) => {
         this.setState({
             isLightboxOpen: !this.state.isLightboxOpen,
             currentImage: selectedImageId || 0,
         })
     }
 
-    _gotoImage = (index) => {
+    _gotoImage = (index: number) => {
         this.setState({currentImage: index})
     }
 
@@ -100,14 +104,16 @@ export default class ShopifyIntegrationList extends React.Component {
                 <h4>Your Shopify stores</h4>
             </div>
         )
-        const isSubmitting = loading.get('updateIntegration')
+        const isSubmitting: boolean = loading.get('updateIntegration')
 
-        const integrationToItemDisplay = (integration) => {
+        const integrationToItemDisplay: (
+            integration: Map<any, any>
+        ) => ReactNode = (integration) => {
             const active = !integration.get('deactivated_datetime')
             const isRowSubmitting = isSubmitting === integration.get('id')
-            const editLink = `/app/settings/integrations/shopify/${integration.get(
-                'id'
-            )}`
+            const editLink = `/app/settings/integrations/shopify/${
+                integration.get('id') as string
+            }`
             const activateIntegration = () => {
                 const IntegrationName = integration.get('name')
                 window.location.href = this.props.redirectUri.replace(
@@ -146,10 +152,12 @@ export default class ShopifyIntegrationList extends React.Component {
         return (
             <IntegrationList
                 longTypeDescription={longTypeDescription}
-                integrationType="shopify"
-                integrations={integrations.filter(
-                    (v) => v.get('type') === 'shopify'
-                )}
+                integrationType={IntegrationType.Shopify}
+                integrations={
+                    integrations.filter(
+                        (v) => v!.get('type') === 'shopify'
+                    ) as List<Map<any, any>>
+                }
                 createIntegration={() =>
                     window.open('https://apps.shopify.com/helpdesk')
                 }

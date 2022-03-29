@@ -26,7 +26,7 @@ import PageHeader from '../../../../common/components/PageHeader'
 import settingsCss from '../../../../settings/settings.less'
 import ForwardIcon from '../ForwardIcon'
 
-import NoIntegration from '../NoIntegration.js'
+import NoIntegration from '../NoIntegration'
 
 import css from './GorgiasChatIntegrationList.less'
 
@@ -190,7 +190,6 @@ function GorgiasChatIntegrationList({
                 {integrations.isEmpty() && (
                     <div className="mt-3">
                         <NoIntegration
-                            type={IntegrationType.GorgiasChat}
                             loading={loading.get('integrations', false)}
                         />
                     </div>

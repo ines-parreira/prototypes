@@ -183,7 +183,7 @@ jest.mock('../components/smooch/SmoochIntegrationPreferences', () => () => (
     <div>SmoochIntegrationPreferences</div>
 ))
 
-jest.mock('../components/shopify/ShopifyIntegrationList.js', () => () => (
+jest.mock('../components/shopify/ShopifyIntegrationList', () => () => (
     <div>ShopifyIntegrationList</div>
 ))
 jest.mock('../components/shopify/ShopifyIntegrationDetail', () => () => (

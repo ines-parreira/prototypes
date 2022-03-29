@@ -35,7 +35,7 @@ type State = {
 }
 
 export class APIViewContainer extends Component<Props, State> {
-    state = {
+    state: State = {
         isCopiedApiKey: false,
         isCopiedEmail: false,
         isCopiedUrl: false,

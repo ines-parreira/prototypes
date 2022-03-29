@@ -4,14 +4,15 @@ import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container, Form, Row, Col} from 'reactstrap'
 import {fromJS} from 'immutable'
 
-import {fetchContact, updateContact} from '../../../../state/billing/actions'
-import {getContact} from '../../../../state/billing/selectors'
-import Loader from '../../../common/components/Loader/Loader'
-import PageHeader from '../../../common/components/PageHeader'
-import {RootState} from '../../../../state/types'
+import {fetchContact, updateContact} from 'state/billing/actions'
+import {getContact} from 'state/billing/selectors'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import {RootState} from 'state/types'
+import {BillingContact} from 'state/billing/types'
+import Button from 'pages/common/components/button/Button'
+
 import BillingAddressInput from '../common/BillingAddressInputs'
-import {BillingContact} from '../../../../state/billing/types'
-import Button from '../../../common/components/button/Button'
 
 import css from './BillingDetailsForm.less'
 
@@ -24,9 +25,7 @@ type State = {
 }
 
 export class BillingDetailsFormContainer extends Component<Props, State> {
-    state = {
-        isLoading: false,
-        isSubmitting: false,
+    state: State = {
         contactForm: {
             email: '',
             shipping: {
@@ -42,6 +41,8 @@ export class BillingDetailsFormContainer extends Component<Props, State> {
                 },
             },
         },
+        isLoading: false,
+        isSubmitting: false,
     }
 
     constructor(props: Props) {

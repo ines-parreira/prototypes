@@ -1,11 +1,10 @@
-import React from 'react'
-
+import React, {Component} from 'react'
 import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
-
 import {Button} from 'reactstrap'
 
-import {IntegrationType} from '../../../../../models/integration/types'
+import {IntegrationType} from 'models/integration/types'
+
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 
@@ -15,7 +14,7 @@ type IReceivedProps = {
     redirectUri: string
 }
 
-export default class YotpoIntegrationList extends React.Component<IReceivedProps> {
+export default class YotpoIntegrationList extends Component<IReceivedProps> {
     render(): JSX.Element {
         const {integrations, loading} = this.props
         const isSubmitting = loading.get('updateIntegration')

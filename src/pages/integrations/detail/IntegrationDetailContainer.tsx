@@ -52,7 +52,7 @@ import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail
 import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
 import SmoochIntegrationPreferences from './components/smooch/SmoochIntegrationPreferences'
 
-import ShopifyIntegrationList from './components/shopify/ShopifyIntegrationList.js'
+import ShopifyIntegrationList from './components/shopify/ShopifyIntegrationList'
 import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDetail'
 
 import KlaviyoIntegrationList from './components/klaviyo/KlaviyoIntegrationList'
@@ -629,7 +629,6 @@ export const IntegrationDetailContainer = ({
 
             return (
                 <ShopifyIntegrationList
-                    actions={actions}
                     integrations={integrationsProp}
                     loading={loading}
                     redirectUri={redirectUri}

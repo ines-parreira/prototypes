@@ -1,16 +1,20 @@
+import React, {ComponentProps, SyntheticEvent} from 'react'
 import {fromJS} from 'immutable'
-import React from 'react'
 import {shallow} from 'enzyme'
 
 import {
     PENDING_AUTHENTICATION_STATUS,
     SMILE_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,
-} from '../../../../../../constants/integration.ts'
+} from 'constants/integration'
 
-import {SmileIntegrationDetailComponent} from '../SmileIntegrationDetail.tsx'
+import {SmileIntegrationDetailComponent} from '../SmileIntegrationDetail'
 
 jest.useFakeTimers()
+
+type Integration = ComponentProps<
+    typeof SmileIntegrationDetailComponent
+>['integration']
 
 describe('<SmileIntegrationDetail/>', () => {
     const actions = {
@@ -18,11 +22,17 @@ describe('<SmileIntegrationDetail/>', () => {
         updateOrCreateIntegration: jest.fn(),
     }
 
-    const defaultProps = {
-        ...actions,
-        location: {query: {}},
-        loading: fromJS({}),
-    }
+    const defaultProps: ComponentProps<typeof SmileIntegrationDetailComponent> =
+        {
+            ...actions,
+            integration: fromJS({}),
+            redirectUri: fromJS({}),
+            loading: fromJS({}),
+            location: fromJS({}),
+            history: fromJS({}),
+            match: fromJS({}),
+            deleteIntegration: jest.fn(),
+        }
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -30,7 +40,7 @@ describe('<SmileIntegrationDetail/>', () => {
 
     describe('componentDidMount()', () => {
         it("should set the integration's name in the state", () => {
-            const integration = fromJS({
+            const integration: Integration = fromJS({
                 id: 1,
                 meta: {
                     oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
@@ -65,7 +75,7 @@ describe('<SmileIntegrationDetail/>', () => {
         })
 
         it('should not do anything because the previous integration was not empty', () => {
-            const integration = fromJS({
+            const integration: Integration = fromJS({
                 id: 1,
                 meta: {
                     oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
@@ -81,10 +91,13 @@ describe('<SmileIntegrationDetail/>', () => {
                 />
             )
 
-            component.instance().componentWillReceiveProps({
-                ...defaultProps,
-                integration: integration.set('name', 'bar'),
-            })
+            component.instance().componentWillReceiveProps!(
+                {
+                    ...defaultProps,
+                    integration: integration.set('name', 'bar'),
+                },
+                {}
+            )
 
             expect(component.state()).toMatchSnapshot()
             jest.runAllTimers()
@@ -95,7 +108,7 @@ describe('<SmileIntegrationDetail/>', () => {
             'should set the name of the integration in the state because there was no integration before and there is ' +
                 'one now',
             () => {
-                const integration = fromJS({
+                const integration: Integration = fromJS({
                     id: 1,
                     meta: {
                         oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
@@ -111,10 +124,13 @@ describe('<SmileIntegrationDetail/>', () => {
                     />
                 )
 
-                component.instance().componentWillReceiveProps({
-                    ...defaultProps,
-                    integration,
-                })
+                component.instance().componentWillReceiveProps!(
+                    {
+                        ...defaultProps,
+                        integration,
+                    },
+                    {}
+                )
 
                 expect(component.state()).toMatchSnapshot()
                 jest.runAllTimers()
@@ -126,7 +142,7 @@ describe('<SmileIntegrationDetail/>', () => {
             'should set the name of the integration the state and set a timeout to fetch the integration because ' +
                 'the action in the URL is set to `authentication` and the integration is not yet authenticated',
             () => {
-                const integration = fromJS({
+                const integration: Integration = fromJS({
                     id: 1,
                     type: SMILE_INTEGRATION_TYPE,
                     meta: {
@@ -143,11 +159,14 @@ describe('<SmileIntegrationDetail/>', () => {
                     />
                 )
 
-                component.instance().componentWillReceiveProps({
-                    ...defaultProps,
-                    integration,
-                    location: {search: '?action=authentication'},
-                })
+                component.instance().componentWillReceiveProps!(
+                    {
+                        ...defaultProps,
+                        integration,
+                        location: {search: '?action=authentication'},
+                    },
+                    {}
+                )
 
                 expect(component.state()).toMatchSnapshot()
                 jest.runAllTimers()
@@ -163,7 +182,7 @@ describe('<SmileIntegrationDetail/>', () => {
             'should set the name of the integration the state and trigger a success notification because the action ' +
                 'in the URL is set to `authentication` and the integration is already authenticated',
             () => {
-                const integration = fromJS({
+                const integration: Integration = fromJS({
                     id: 1,
                     type: SMILE_INTEGRATION_TYPE,
                     meta: {
@@ -180,11 +199,14 @@ describe('<SmileIntegrationDetail/>', () => {
                     />
                 )
 
-                component.instance().componentWillReceiveProps({
-                    ...defaultProps,
-                    integration,
-                    location: {search: '?action=authentication'},
-                })
+                component.instance().componentWillReceiveProps!(
+                    {
+                        ...defaultProps,
+                        integration,
+                        location: {search: '?action=authentication'},
+                    },
+                    {}
+                )
 
                 expect(component.state()).toMatchSnapshot()
                 jest.runAllTimers()
@@ -198,7 +220,7 @@ describe('<SmileIntegrationDetail/>', () => {
             'should call `updateOrCreateIntegration` with the integration passed in the props updated with the name' +
                 'from the state',
             () => {
-                const integration = fromJS({
+                const integration: Integration = fromJS({
                     id: 1,
                     meta: {
                         oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
@@ -207,7 +229,7 @@ describe('<SmileIntegrationDetail/>', () => {
                     name: 'foo',
                 })
 
-                const component = shallow(
+                const component = shallow<SmileIntegrationDetailComponent>(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={integration}
@@ -218,7 +240,9 @@ describe('<SmileIntegrationDetail/>', () => {
                 const preventDefault = jest.fn()
 
                 component.setState({name: newName})
-                component.instance()._handleUpdate({preventDefault})
+                component.instance()._handleUpdate({
+                    preventDefault,
+                } as unknown as SyntheticEvent<HTMLButtonElement>)
 
                 expect(preventDefault).toHaveBeenCalled()
                 expect(actions.updateOrCreateIntegration).toHaveBeenCalledWith(

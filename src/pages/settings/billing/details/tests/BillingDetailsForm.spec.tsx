@@ -1,11 +1,12 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {RootState} from 'state/types'
 
-import {BillingDetailsFormContainer} from '../BillingDetailsForm.tsx'
+import {BillingDetailsFormContainer} from '../BillingDetailsForm'
 
 jest.mock('../../../../../config/countries.json', () => [
     {label: 'France', value: 'FR'},
@@ -14,7 +15,7 @@ jest.mock('../../../../../config/countries.json', () => [
 
 describe('BillingDetailsForm component', () => {
     const mockStore = configureMockStore([thunk])
-    const defaultState = {
+    const defaultState: Partial<RootState> = {
         billing: fromJS({
             contact: {
                 shipping: {
@@ -23,7 +24,14 @@ describe('BillingDetailsForm component', () => {
             },
         }),
     }
-    let store
+
+    const minProps: ComponentProps<typeof BillingDetailsFormContainer> = {
+        fetchContact: () => Promise.resolve(),
+        contact: null,
+        updateContact: jest.fn(),
+    }
+
+    let store: MockStoreEnhanced<unknown>
 
     beforeEach(() => {
         store = mockStore(defaultState)
@@ -32,11 +40,7 @@ describe('BillingDetailsForm component', () => {
     it('should display loader', () => {
         const component = mount(
             <Provider store={store}>
-                <BillingDetailsFormContainer
-                    fetchContact={() => Promise.resolve()}
-                    contact={null}
-                    updateContact={null}
-                />
+                <BillingDetailsFormContainer {...minProps} />
             </Provider>
         )
         expect(component).toMatchSnapshot()
@@ -45,11 +49,7 @@ describe('BillingDetailsForm component', () => {
     it('should display not display the form', () => {
         const component = mount(
             <Provider store={store}>
-                <BillingDetailsFormContainer
-                    fetchContact={() => Promise.resolve()}
-                    contact={null}
-                    updateContact={null}
-                />
+                <BillingDetailsFormContainer {...minProps} />
             </Provider>
         )
         component.find(BillingDetailsFormContainer).setState({isLoading: false})
@@ -60,8 +60,7 @@ describe('BillingDetailsForm component', () => {
         const component = mount(
             <Provider store={store}>
                 <BillingDetailsFormContainer
-                    updateContact={null}
-                    fetchContact={() => Promise.resolve()}
+                    {...minProps}
                     contact={fromJS({
                         email: 'hello@acme.gorgias.io',
                         shipping: {

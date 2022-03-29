@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import Lightbox from 'react-images'
@@ -20,10 +20,7 @@ type State = {
     currentImage: number
 }
 
-export default class SmileIntegrationList extends React.Component<
-    Props,
-    State
-> {
+export default class SmileIntegrationList extends Component<Props, State> {
     state: State = {
         isLightboxOpen: false,
         currentImage: 0,

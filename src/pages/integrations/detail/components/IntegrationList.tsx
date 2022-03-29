@@ -8,17 +8,16 @@ import {List, Map} from 'immutable'
 import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
-import {getIntegrationConfig} from '../../../../state/integrations/helpers'
-import {notify} from '../../../../state/notifications/actions'
-import PageHeader from '../../../common/components/PageHeader'
-import Alert, {AlertType} from '../../../common/components/Alert/Alert'
+import {getIntegrationConfig} from 'state/integrations/helpers'
+import {notify} from 'state/notifications/actions'
+import PageHeader from 'pages/common/components/PageHeader'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {IntegrationType} from 'models/integration/types'
+import {NotificationStatus} from 'state/notifications/types'
 
-import {IntegrationType} from '../../../../models/integration/types'
-
-import {NotificationStatus} from '../../../../state/notifications/types'
 import css from '../../../settings/settings.less'
 
-import NoIntegration from './NoIntegration.js'
+import NoIntegration from './NoIntegration'
 
 type Props = {
     integrationType: IntegrationType
@@ -156,7 +155,6 @@ class IntegrationList extends React.Component<Props> {
                     {integrations.isEmpty() && (
                         <div className="mt-3">
                             <NoIntegration
-                                type={integrationType}
                                 loading={loading.get('integrations', false)}
                             />
                         </div>

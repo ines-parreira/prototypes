@@ -1,30 +1,36 @@
-import React from 'react'
+import React, {ComponentProps, SyntheticEvent} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {SMOOCH_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch.ts'
+import {SMOOCH_LANGUAGE_DEFAULT} from 'config/integrations/smooch'
 import {
     SMOOCH_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,
-} from '../../../../../../constants/integration.ts'
-import {
-    DANISH_LANGUAGE,
-    SPANISH_LANGUAGE,
-} from '../../../../../../constants/languages.ts'
+} from 'constants/integration'
+import {DANISH_LANGUAGE, SPANISH_LANGUAGE} from 'constants/languages'
+import {SmoochIntegrationDetail} from '../SmoochIntegrationDetail'
 
-import {SmoochIntegrationDetail} from '../SmoochIntegrationDetail.tsx'
+type Integration = ComponentProps<typeof SmoochIntegrationDetail>['integration']
 
-const defaultProps = {
+const minProps: ComponentProps<typeof SmoochIntegrationDetail> = {
+    integration: fromJS({}),
+    loading: fromJS({
+        integration: null,
+        updateIntegration: null,
+    }),
+    location: {
+        search: '',
+        hash: fromJS({}),
+        pathname: fromJS({}),
+        state: fromJS({}),
+    },
+    history: fromJS({}),
+    match: fromJS({}),
     activateIntegration: jest.fn(),
     deactivateIntegration: jest.fn(),
     deleteIntegration: jest.fn(),
     triggerCreateSuccess: jest.fn(),
     updateOrCreateIntegration: jest.fn(),
-    loading: fromJS({
-        integration: null,
-        updateIntegration: null,
-    }),
-    location: {search: ''},
 }
 
 describe('<SmoochIntegrationDetail/>', () => {
@@ -34,11 +40,8 @@ describe('<SmoochIntegrationDetail/>', () => {
 
     describe('componentDidMount()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const component = shallow(
-                <SmoochIntegrationDetail
-                    {...defaultProps}
-                    integration={fromJS({})}
-                />
+            const component = shallow<SmoochIntegrationDetail>(
+                <SmoochIntegrationDetail {...minProps} />
             )
 
             expect(component.instance().isInitialized).toEqual(false)
@@ -47,7 +50,7 @@ describe('<SmoochIntegrationDetail/>', () => {
         })
 
         it('should initialize the state because the passed integration is not empty', () => {
-            const integration = fromJS({
+            const integration: Integration = fromJS({
                 id: 1,
                 name: 'My smooch app',
                 type: SMOOCH_INTEGRATION_TYPE,
@@ -58,9 +61,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                 deactivated_datetime: null,
             })
 
-            const component = shallow(
+            const component = shallow<SmoochIntegrationDetail>(
                 <SmoochIntegrationDetail
-                    {...defaultProps}
+                    {...minProps}
                     integration={integration}
                 />
             )
@@ -75,14 +78,13 @@ describe('<SmoochIntegrationDetail/>', () => {
 
     describe('componentWillUpdate()', () => {
         it('should not initialize the state because the integration is empty', () => {
-            const component = shallow(
-                <SmoochIntegrationDetail
-                    {...defaultProps}
-                    integration={fromJS({})}
-                />
+            const component = shallow<SmoochIntegrationDetail>(
+                <SmoochIntegrationDetail {...minProps} />
             )
 
-            component.instance().componentWillUpdate({integration: fromJS({})})
+            component.instance().componentWillUpdate({
+                ...minProps,
+            })
 
             expect(component.instance().isInitialized).toEqual(false)
             expect(component.state('name')).toEqual('')
@@ -90,7 +92,7 @@ describe('<SmoochIntegrationDetail/>', () => {
         })
 
         it('should initialize the state because the passed integration is not empty', () => {
-            const integration = fromJS({
+            const integration: Integration = fromJS({
                 id: 1,
                 name: 'My smooch app',
                 type: SMOOCH_INTEGRATION_TYPE,
@@ -101,14 +103,11 @@ describe('<SmoochIntegrationDetail/>', () => {
                 deactivated_datetime: null,
             })
 
-            const component = shallow(
-                <SmoochIntegrationDetail
-                    {...defaultProps}
-                    integration={fromJS({})}
-                />
+            const component = shallow<SmoochIntegrationDetail>(
+                <SmoochIntegrationDetail {...minProps} />
             )
 
-            component.instance().componentWillUpdate({integration})
+            component.instance().componentWillUpdate({...minProps, integration})
 
             expect(component.instance().isInitialized).toEqual(true)
             expect(component.state('name')).toEqual(integration.get('name'))
@@ -120,23 +119,19 @@ describe('<SmoochIntegrationDetail/>', () => {
 
     describe('componentWillReceiveProps()', () => {
         it('should not do anything because the current and previous integrations are both empty', () => {
-            const component = shallow(
-                <SmoochIntegrationDetail
-                    {...defaultProps}
-                    integration={fromJS({})}
-                />
+            const component = shallow<SmoochIntegrationDetail>(
+                <SmoochIntegrationDetail {...minProps} />
             )
 
             component.instance().componentWillReceiveProps({
-                ...defaultProps,
-                integration: fromJS({}),
+                ...minProps,
             })
 
-            expect(defaultProps.triggerCreateSuccess).not.toHaveBeenCalled()
+            expect(minProps.triggerCreateSuccess).not.toHaveBeenCalled()
         })
 
         it('should not do anything because the current and previous integrations are both not empty', () => {
-            const integration = fromJS({
+            const integration: Integration = fromJS({
                 id: 1,
                 name: 'My smooch app',
                 type: SMOOCH_INTEGRATION_TYPE,
@@ -147,22 +142,22 @@ describe('<SmoochIntegrationDetail/>', () => {
                 deactivated_datetime: null,
             })
 
-            const component = shallow(
+            const component = shallow<SmoochIntegrationDetail>(
                 <SmoochIntegrationDetail
-                    {...defaultProps}
+                    {...minProps}
                     integration={integration}
                 />
             )
 
             component
                 .instance()
-                .componentWillReceiveProps({...defaultProps, integration})
+                .componentWillReceiveProps({...minProps, integration})
 
-            expect(defaultProps.triggerCreateSuccess).not.toHaveBeenCalled()
+            expect(minProps.triggerCreateSuccess).not.toHaveBeenCalled()
         })
 
         it('should not do anything because the current action is not "authentication"', () => {
-            const integration = fromJS({
+            const integration: Integration = fromJS({
                 id: 1,
                 name: 'My smooch app',
                 type: SMOOCH_INTEGRATION_TYPE,
@@ -173,22 +168,22 @@ describe('<SmoochIntegrationDetail/>', () => {
                 deactivated_datetime: null,
             })
 
-            const component = shallow(
+            const component = shallow<SmoochIntegrationDetail>(
                 <SmoochIntegrationDetail
-                    {...defaultProps}
+                    {...minProps}
                     integration={fromJS({})}
                 />
             )
 
             component
                 .instance()
-                .componentWillReceiveProps({...defaultProps, integration})
+                .componentWillReceiveProps({...minProps, integration})
 
-            expect(defaultProps.triggerCreateSuccess).not.toHaveBeenCalled()
+            expect(minProps.triggerCreateSuccess).not.toHaveBeenCalled()
         })
 
         it('should call `triggerCreateSuccess`', () => {
-            const integration = fromJS({
+            const integration: Integration = fromJS({
                 id: 1,
                 name: 'My smooch app',
                 type: SMOOCH_INTEGRATION_TYPE,
@@ -199,23 +194,24 @@ describe('<SmoochIntegrationDetail/>', () => {
                 deactivated_datetime: null,
             })
 
-            const location = {search: '?action=authentication'}
+            const location: ComponentProps<
+                typeof SmoochIntegrationDetail
+            >['location'] = {
+                ...minProps.location,
+                search: '?action=authentication',
+            }
 
-            const component = shallow(
-                <SmoochIntegrationDetail
-                    {...defaultProps}
-                    integration={fromJS({})}
-                    location={location}
-                />
+            const component = shallow<SmoochIntegrationDetail>(
+                <SmoochIntegrationDetail {...minProps} location={location} />
             )
 
             component.instance().componentWillReceiveProps({
-                ...defaultProps,
+                ...minProps,
                 integration,
                 location,
             })
 
-            expect(defaultProps.triggerCreateSuccess).toHaveBeenCalledWith(
+            expect(minProps.triggerCreateSuccess).toHaveBeenCalledWith(
                 integration.toJS()
             )
         })
@@ -223,9 +219,9 @@ describe('<SmoochIntegrationDetail/>', () => {
 
     describe('_setName()', () => {
         it('should update the state with the name passed', () => {
-            const component = shallow(
+            const component = shallow<SmoochIntegrationDetail>(
                 <SmoochIntegrationDetail
-                    {...defaultProps}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         name: 'My smooch app',
@@ -249,9 +245,9 @@ describe('<SmoochIntegrationDetail/>', () => {
 
     describe('_setLanguage()', () => {
         it('should update the state with the language passed', () => {
-            const component = shallow(
+            const component = shallow<SmoochIntegrationDetail>(
                 <SmoochIntegrationDetail
-                    {...defaultProps}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         name: 'My smooch app',
@@ -273,7 +269,7 @@ describe('<SmoochIntegrationDetail/>', () => {
 
     describe('_handleSubmit()', () => {
         it('should call the action to update the integration when submitting the form', () => {
-            const integration = fromJS({
+            const integration: Integration = fromJS({
                 id: 1,
                 name: 'My smooch app',
                 type: SMOOCH_INTEGRATION_TYPE,
@@ -284,9 +280,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                 deactivated_datetime: null,
             })
 
-            const component = shallow(
+            const component = shallow<SmoochIntegrationDetail>(
                 <SmoochIntegrationDetail
-                    {...defaultProps}
+                    {...minProps}
                     integration={integration}
                 />
             )
@@ -297,9 +293,11 @@ describe('<SmoochIntegrationDetail/>', () => {
                 .instance()
                 .setState({name: newName, language: SPANISH_LANGUAGE})
 
-            component.instance()._handleSubmit({preventDefault: jest.fn()})
+            void component.instance()._handleSubmit({
+                preventDefault: jest.fn(),
+            } as unknown as SyntheticEvent<HTMLButtonElement>)
 
-            expect(defaultProps.updateOrCreateIntegration).toHaveBeenCalledWith(
+            expect(minProps.updateOrCreateIntegration).toHaveBeenCalledWith(
                 fromJS({
                     id: integration.get('id'),
                     name: newName,
@@ -316,7 +314,7 @@ describe('<SmoochIntegrationDetail/>', () => {
         it('should render an active integration', () => {
             const component = shallow(
                 <SmoochIntegrationDetail
-                    {...defaultProps}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         name: 'My smooch app',
@@ -336,7 +334,7 @@ describe('<SmoochIntegrationDetail/>', () => {
         it('should render an inactive integration', () => {
             const component = shallow(
                 <SmoochIntegrationDetail
-                    {...defaultProps}
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         name: 'My smooch app',
@@ -356,7 +354,7 @@ describe('<SmoochIntegrationDetail/>', () => {
         it('should render an integration which is currently being submitted', () => {
             const component = shallow(
                 <SmoochIntegrationDetail
-                    {...defaultProps}
+                    {...minProps}
                     loading={fromJS({
                         updateIntegration: 1,
                     })}

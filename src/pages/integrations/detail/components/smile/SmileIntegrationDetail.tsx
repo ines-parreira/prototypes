@@ -8,16 +8,18 @@ import {connect, ConnectedProps} from 'react-redux'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
-import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
-import Loader from '../../../../common/components/Loader/Loader'
-import DEPRECATED_InputField from '../../../../common/forms/DEPRECATED_InputField'
-import PageHeader from '../../../../common/components/PageHeader'
-import LinkAlert from '../../../../common/components/Alert/LinkAlert'
+import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
+import Loader from 'pages/common/components/Loader/Loader'
+import PageHeader from 'pages/common/components/PageHeader'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import {
     fetchIntegration,
     deleteIntegration,
     updateOrCreateIntegration,
-} from '../../../../../state/integrations/actions'
+} from 'state/integrations/actions'
+
+import DEPRECATED_InputField from '../../../../common/forms/DEPRECATED_InputField'
+
 import css from '../../../../settings/settings.less'
 
 type Props = {
@@ -34,7 +36,7 @@ type State = {
 export class SmileIntegrationDetailComponent extends Component<Props, State> {
     isInitialized = false
 
-    state = {
+    state: State = {
         name: '',
     }
 

@@ -1,23 +1,29 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {ShopifyIntegrationDetail} from '../ShopifyIntegrationDetail.tsx'
+import {ShopifyIntegrationDetail} from '../ShopifyIntegrationDetail'
 
 describe('ShopifyIntegrationDetail', () => {
-    const commonProps = {
+    const minProps: ComponentProps<typeof ShopifyIntegrationDetail> = {
+        integration: fromJS({}),
+        isUpdate: false,
+        loading: fromJS({}),
         redirectUri: 'gorgias.io',
         location: {
             search: '?message=&message_type=info',
+            hash: fromJS({}),
+            pathname: fromJS({}),
+            state: fromJS({}),
         },
+        history: fromJS({}),
+        match: fromJS({}),
+        getExistingShopifyIntegration: jest.fn().mockReturnValue(fromJS({})),
         notify: jest.fn(),
-        actions: {
-            activateIntegration: jest.fn(),
-            deactivateIntegration: jest.fn(),
-            deleteIntegration: jest.fn(),
-        },
-        getExistingShopifyIntegration: jest.fn(),
-        loading: fromJS({}),
+        deleteIntegration: jest.fn(),
+        fetchIntegration: jest.fn(),
+        triggerCreateSuccess: jest.fn(),
+        updateOrCreateIntegration: jest.fn(),
     }
 
     beforeEach(() => {
@@ -25,31 +31,24 @@ describe('ShopifyIntegrationDetail', () => {
     })
 
     it('should render the page to create a new integration', () => {
-        commonProps.getExistingShopifyIntegration.mockReturnValue(fromJS({}))
-        const component = shallow(
-            <ShopifyIntegrationDetail
-                integration={fromJS({})}
-                isUpdate={false}
-                {...commonProps}
-            />
-        )
+        const component = shallow(<ShopifyIntegrationDetail {...minProps} />)
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render the page for an integration being created with the name of another existing integration', () => {
         const name = 'foo'
-        commonProps.getExistingShopifyIntegration.mockReturnValue(
-            fromJS({type: 'shopify', meta: {shop_name: name}})
-        )
         const component = shallow(
             <ShopifyIntegrationDetail
-                integration={fromJS({})}
-                integrations={fromJS({
+                {...minProps}
+                getExistingShopifyIntegration={jest
+                    .fn()
+                    .mockReturnValue(
+                        fromJS({type: 'shopify', meta: {shop_name: name}})
+                    )}
+                integration={fromJS({
                     integrations: [{type: 'shopify', meta: {shop_name: name}}],
                 })}
-                isUpdate={false}
-                {...commonProps}
             />
         ).setState({name})
 
@@ -60,6 +59,7 @@ describe('ShopifyIntegrationDetail', () => {
         const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
+                {...minProps}
                 integration={fromJS({
                     id: 1,
                     name: 'foo',
@@ -72,7 +72,6 @@ describe('ShopifyIntegrationDetail', () => {
                     },
                 })}
                 isUpdate={true}
-                {...commonProps}
             />
         ).setState({name})
 
@@ -83,6 +82,7 @@ describe('ShopifyIntegrationDetail', () => {
         const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
+                {...minProps}
                 integration={fromJS({
                     id: 1,
                     name: 'foo',
@@ -96,7 +96,6 @@ describe('ShopifyIntegrationDetail', () => {
                     deactivated_datetime: '2018-01-01T18:52:17',
                 })}
                 isUpdate={true}
-                {...commonProps}
             />
         ).setState({name})
 
@@ -107,6 +106,7 @@ describe('ShopifyIntegrationDetail', () => {
         const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
+                {...minProps}
                 integration={fromJS({
                     id: 1,
                     name: 'foo',
@@ -120,7 +120,6 @@ describe('ShopifyIntegrationDetail', () => {
                     },
                 })}
                 isUpdate={true}
-                {...commonProps}
             />
         ).setState({name})
 
@@ -131,6 +130,7 @@ describe('ShopifyIntegrationDetail', () => {
         const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
+                {...minProps}
                 integration={fromJS({
                     id: 1,
                     name: 'foo',
@@ -143,7 +143,6 @@ describe('ShopifyIntegrationDetail', () => {
                     },
                 })}
                 isUpdate={true}
-                {...commonProps}
             />
         ).setState({name})
 
@@ -154,6 +153,7 @@ describe('ShopifyIntegrationDetail', () => {
         const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
+                {...minProps}
                 integration={fromJS({
                     id: 1,
                     name: 'foo',
@@ -166,7 +166,6 @@ describe('ShopifyIntegrationDetail', () => {
                     },
                 })}
                 isUpdate={true}
-                {...commonProps}
                 loading={fromJS({
                     updateIntegration: true,
                 })}
@@ -180,6 +179,7 @@ describe('ShopifyIntegrationDetail', () => {
         const name = 'foo'
         const component = shallow(
             <ShopifyIntegrationDetail
+                {...minProps}
                 integration={fromJS({
                     id: 1,
                     name: 'foo',
@@ -195,7 +195,6 @@ describe('ShopifyIntegrationDetail', () => {
                     },
                 })}
                 isUpdate={true}
-                {...commonProps}
             />
         ).setState({name})
 

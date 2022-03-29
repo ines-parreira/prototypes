@@ -54,7 +54,7 @@ import {
     creditCardCVCNormalizer,
     creditCardExpDateNormalizer,
     creditCardNormalizer,
-} from './utils.js'
+} from './utils'
 
 import css from './CreditCard.less'
 

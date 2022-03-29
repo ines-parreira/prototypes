@@ -4,12 +4,13 @@ import {Link} from 'react-router-dom'
 import {Button, Card, CardBody, Row, Col} from 'reactstrap'
 import {Map} from 'immutable'
 
-import {fetchContact} from '../../../../state/billing/actions'
-import {getContact} from '../../../../state/billing/selectors'
-import Loader from '../../../common/components/Loader/Loader'
-import countries from '../../../../config/countries.json'
-import {RootState} from '../../../../state/types'
+import {fetchContact} from 'state/billing/actions'
+import {getContact} from 'state/billing/selectors'
+import Loader from 'pages/common/components/Loader/Loader'
+import {RootState} from 'state/types'
+
 import BillingHeader from '../common/BillingHeader'
+import countries from '../../../../config/countries.json'
 
 import css from './BillingDetails.less'
 
@@ -20,7 +21,7 @@ type State = {
 }
 
 export class BillingDetailsContainer extends Component<Props, State> {
-    state = {
+    state: State = {
         isLoading: true,
     }
 

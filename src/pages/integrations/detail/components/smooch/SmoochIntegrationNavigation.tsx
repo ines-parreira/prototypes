@@ -2,7 +2,7 @@ import React from 'react'
 import {Map} from 'immutable'
 import {NavLink} from 'react-router-dom'
 
-import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
+import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {
     integration: Map<any, any>
