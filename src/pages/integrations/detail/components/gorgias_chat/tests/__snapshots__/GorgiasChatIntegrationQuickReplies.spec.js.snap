@@ -449,59 +449,35 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                   <div
                                     className="flex-grow pr-0 col"
                                   >
-                                    <InputField
+                                    <ForwardRef(TextInput)
                                       className="my-0"
-                                      disabled={true}
+                                      isDisabled={true}
+                                      isRequired={true}
                                       maxLength={20}
                                       name="item-0"
                                       onChange={[Function]}
                                       placeholder="Type something (limited to 20 characters)"
-                                      required={true}
                                       size={300}
-                                      type="text"
                                       value="Get order status"
                                     >
-                                      <FormGroup
-                                        className="InputField my-0 required"
-                                        color=""
-                                        tag="div"
+                                      <div
+                                        className="wrapper isDisabled my-0"
                                       >
-                                        <div
-                                          className="InputField my-0 required form-group"
-                                          color=""
-                                        >
-                                          <div
-                                            className=""
-                                          >
-                                            <Input
-                                              className=""
-                                              disabled={true}
-                                              id="id-item-0"
-                                              maxLength={20}
-                                              onChange={[Function]}
-                                              placeholder="Type something (limited to 20 characters)"
-                                              required={true}
-                                              size={300}
-                                              type="text"
-                                              value="Get order status"
-                                            >
-                                              <input
-                                                className="form-control"
-                                                disabled={true}
-                                                id="id-item-0"
-                                                maxLength={20}
-                                                onChange={[Function]}
-                                                placeholder="Type something (limited to 20 characters)"
-                                                required={true}
-                                                size={300}
-                                                type="text"
-                                                value="Get order status"
-                                              />
-                                            </Input>
-                                          </div>
-                                        </div>
-                                      </FormGroup>
-                                    </InputField>
+                                        <input
+                                          className="input"
+                                          disabled={true}
+                                          id="input-text-2"
+                                          maxLength={20}
+                                          name="item-0"
+                                          onChange={[Function]}
+                                          placeholder="Type something (limited to 20 characters)"
+                                          required={true}
+                                          size={300}
+                                          type="text"
+                                          value="Get order status"
+                                        />
+                                      </div>
+                                    </ForwardRef(TextInput)>
                                   </div>
                                 </Col>
                                 <Col
@@ -564,59 +540,35 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                                   <div
                                     className="flex-grow pr-0 col"
                                   >
-                                    <InputField
+                                    <ForwardRef(TextInput)
                                       className="my-0"
-                                      disabled={true}
+                                      isDisabled={true}
+                                      isRequired={true}
                                       maxLength={20}
                                       name="item-1"
                                       onChange={[Function]}
                                       placeholder="Type something (limited to 20 characters)"
-                                      required={true}
                                       size={300}
-                                      type="text"
                                       value="Apply promo code"
                                     >
-                                      <FormGroup
-                                        className="InputField my-0 required"
-                                        color=""
-                                        tag="div"
+                                      <div
+                                        className="wrapper isDisabled my-0"
                                       >
-                                        <div
-                                          className="InputField my-0 required form-group"
-                                          color=""
-                                        >
-                                          <div
-                                            className=""
-                                          >
-                                            <Input
-                                              className=""
-                                              disabled={true}
-                                              id="id-item-1"
-                                              maxLength={20}
-                                              onChange={[Function]}
-                                              placeholder="Type something (limited to 20 characters)"
-                                              required={true}
-                                              size={300}
-                                              type="text"
-                                              value="Apply promo code"
-                                            >
-                                              <input
-                                                className="form-control"
-                                                disabled={true}
-                                                id="id-item-1"
-                                                maxLength={20}
-                                                onChange={[Function]}
-                                                placeholder="Type something (limited to 20 characters)"
-                                                required={true}
-                                                size={300}
-                                                type="text"
-                                                value="Apply promo code"
-                                              />
-                                            </Input>
-                                          </div>
-                                        </div>
-                                      </FormGroup>
-                                    </InputField>
+                                        <input
+                                          className="input"
+                                          disabled={true}
+                                          id="input-text-3"
+                                          maxLength={20}
+                                          name="item-1"
+                                          onChange={[Function]}
+                                          placeholder="Type something (limited to 20 characters)"
+                                          required={true}
+                                          size={300}
+                                          type="text"
+                                          value="Apply promo code"
+                                        />
+                                      </div>
+                                    </ForwardRef(TextInput)>
                                   </div>
                                 </Col>
                                 <Col
@@ -1361,7 +1313,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                   aria-checked={true}
                                   aria-label="Enable quick replies"
                                   className="label"
-                                  htmlFor="toggle-button-2"
+                                  htmlFor="toggle-button-4"
                                   isDisabled={false}
                                   onClick={[Function]}
                                   role="switch"
@@ -1370,7 +1322,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                     aria-checked={true}
                                     aria-label="Enable quick replies"
                                     className="label label"
-                                    htmlFor="toggle-button-2"
+                                    htmlFor="toggle-button-4"
                                     onClick={[Function]}
                                     role="switch"
                                   >
@@ -1379,8 +1331,8 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                       checked={true}
                                       className="input"
                                       disabled={true}
-                                      id="toggle-button-2"
-                                      name="toggle-button-2"
+                                      id="toggle-button-4"
+                                      name="toggle-button-4"
                                       type="checkbox"
                                     />
                                     <div
@@ -1449,59 +1401,35 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                   <div
                                     className="flex-grow pr-0 col"
                                   >
-                                    <InputField
+                                    <ForwardRef(TextInput)
                                       className="my-0"
-                                      disabled={false}
+                                      isDisabled={false}
+                                      isRequired={true}
                                       maxLength={20}
                                       name="item-0"
                                       onChange={[Function]}
                                       placeholder="Type something (limited to 20 characters)"
-                                      required={true}
                                       size={300}
-                                      type="text"
                                       value="foo"
                                     >
-                                      <FormGroup
-                                        className="InputField my-0 required"
-                                        color=""
-                                        tag="div"
+                                      <div
+                                        className="wrapper my-0"
                                       >
-                                        <div
-                                          className="InputField my-0 required form-group"
-                                          color=""
-                                        >
-                                          <div
-                                            className=""
-                                          >
-                                            <Input
-                                              className=""
-                                              disabled={false}
-                                              id="id-item-0"
-                                              maxLength={20}
-                                              onChange={[Function]}
-                                              placeholder="Type something (limited to 20 characters)"
-                                              required={true}
-                                              size={300}
-                                              type="text"
-                                              value="foo"
-                                            >
-                                              <input
-                                                className="form-control"
-                                                disabled={false}
-                                                id="id-item-0"
-                                                maxLength={20}
-                                                onChange={[Function]}
-                                                placeholder="Type something (limited to 20 characters)"
-                                                required={true}
-                                                size={300}
-                                                type="text"
-                                                value="foo"
-                                              />
-                                            </Input>
-                                          </div>
-                                        </div>
-                                      </FormGroup>
-                                    </InputField>
+                                        <input
+                                          className="input"
+                                          disabled={false}
+                                          id="input-text-5"
+                                          maxLength={20}
+                                          name="item-0"
+                                          onChange={[Function]}
+                                          placeholder="Type something (limited to 20 characters)"
+                                          required={true}
+                                          size={300}
+                                          type="text"
+                                          value="foo"
+                                        />
+                                      </div>
+                                    </ForwardRef(TextInput)>
                                   </div>
                                 </Col>
                                 <Col
@@ -1564,59 +1492,35 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                                   <div
                                     className="flex-grow pr-0 col"
                                   >
-                                    <InputField
+                                    <ForwardRef(TextInput)
                                       className="my-0"
-                                      disabled={false}
+                                      isDisabled={false}
+                                      isRequired={true}
                                       maxLength={20}
                                       name="item-1"
                                       onChange={[Function]}
                                       placeholder="Type something (limited to 20 characters)"
-                                      required={true}
                                       size={300}
-                                      type="text"
                                       value="bar"
                                     >
-                                      <FormGroup
-                                        className="InputField my-0 required"
-                                        color=""
-                                        tag="div"
+                                      <div
+                                        className="wrapper my-0"
                                       >
-                                        <div
-                                          className="InputField my-0 required form-group"
-                                          color=""
-                                        >
-                                          <div
-                                            className=""
-                                          >
-                                            <Input
-                                              className=""
-                                              disabled={false}
-                                              id="id-item-1"
-                                              maxLength={20}
-                                              onChange={[Function]}
-                                              placeholder="Type something (limited to 20 characters)"
-                                              required={true}
-                                              size={300}
-                                              type="text"
-                                              value="bar"
-                                            >
-                                              <input
-                                                className="form-control"
-                                                disabled={false}
-                                                id="id-item-1"
-                                                maxLength={20}
-                                                onChange={[Function]}
-                                                placeholder="Type something (limited to 20 characters)"
-                                                required={true}
-                                                size={300}
-                                                type="text"
-                                                value="bar"
-                                              />
-                                            </Input>
-                                          </div>
-                                        </div>
-                                      </FormGroup>
-                                    </InputField>
+                                        <input
+                                          className="input"
+                                          disabled={false}
+                                          id="input-text-6"
+                                          maxLength={20}
+                                          name="item-1"
+                                          onChange={[Function]}
+                                          placeholder="Type something (limited to 20 characters)"
+                                          required={true}
+                                          size={300}
+                                          type="text"
+                                          value="bar"
+                                        />
+                                      </div>
+                                    </ForwardRef(TextInput)>
                                   </div>
                                 </Col>
                                 <Col

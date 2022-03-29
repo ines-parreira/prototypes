@@ -22,7 +22,7 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="mr-2 dropdown-toggle btn btn-secondary"
+            class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
             type="button"
           >
             <span>
@@ -94,7 +94,7 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="mr-2 dropdown-toggle btn btn-secondary"
+            class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
             type="button"
           >
             <span>
@@ -239,7 +239,7 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="mr-2 dropdown-toggle btn btn-secondary"
+            class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
             type="button"
           >
             <span>
@@ -311,7 +311,7 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="mr-2 dropdown-toggle btn btn-secondary"
+            class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
             type="button"
           >
             <span>
@@ -456,7 +456,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="mr-2 dropdown-toggle btn btn-secondary"
+            class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
             type="button"
           >
             <span>
@@ -528,7 +528,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="mr-2 dropdown-toggle btn btn-secondary"
+            class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
             type="button"
           >
             <span>

@@ -1,11 +1,13 @@
 import React, {FunctionComponent} from 'react'
 import {shallow} from 'enzyme'
 import MockAdapter from 'axios-mock-adapter'
-import {DropdownItem, Input} from 'reactstrap'
+import {DropdownItem} from 'reactstrap'
+
+import client from 'models/api/resources'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import SearchInput from '../SearchInput'
 import {SearchInputResultProps, SearchInputSubResultProps} from '../types'
-import client from '../../../../../models/api/resources'
 
 type SubResultType = {
     id: number
@@ -55,7 +57,7 @@ describe('<SearchInput/>', () => {
                 <SearchInput endpoint={endpoint} renderResult={Result} />
             )
 
-            const input = component.find(Input).dive().find('input')
+            const input = component.find(TextInput).dive().find('input')
             input.simulate('focus', {target: {value: ''}})
 
             expect(component).toMatchSnapshot()
@@ -73,7 +75,7 @@ describe('<SearchInput/>', () => {
             ]
             mockServer.onGet(endpoint).reply(200, {data: results})
 
-            const input = component.find(Input).dive().find('input')
+            const input = component.find(TextInput).dive().find('input')
             input.simulate('focus', {target: {value: ''}})
             input.simulate('change', {target: {value: 'foo'}})
 
@@ -101,7 +103,7 @@ describe('<SearchInput/>', () => {
             ]
             mockServer.onGet(endpoint).reply(200, {data: results})
 
-            const input = component.find(Input).dive().find('input')
+            const input = component.find(TextInput).dive().find('input')
             input.simulate('focus', {target: {value: ''}})
             input.simulate('change', {target: {value: 'foo'}})
 

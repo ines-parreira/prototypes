@@ -12,10 +12,12 @@ import _isError from 'lodash/isError'
 import {Form} from 'reactstrap'
 
 import CustomerChannelFieldArray from './CustomerChannelFieldArray'
+import css from './CustomerForm.less'
 
-import {submitCustomer} from 'state/customers/actions.ts'
 import Button from 'pages/common/components/button/Button.tsx'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
+import TextArea from 'pages/common/forms/TextArea'
+import {submitCustomer} from 'state/customers/actions.ts'
 
 const defaultContent = {
     name: '',
@@ -194,20 +196,20 @@ class CustomerForm extends React.Component {
         return (
             <Form onSubmit={this._handleSubmit}>
                 <div className="mb-2">
-                    <DEPRECATED_InputField
-                        type="text"
-                        name="name"
+                    <InputField
+                        className={css.field}
+                        id="name"
                         label="Name"
                         placeholder="John Doe"
-                        help="Give a name to the customer to make it easier to identify"
-                        required
+                        caption="Give a name to the customer to make it easier to identify"
+                        isRequired
                         value={this.state.name}
                         onChange={(name) => this._updateField({name})}
                         error={this.state.errors.name}
                     />
-                    <DEPRECATED_InputField
-                        type="textarea"
-                        name="note"
+                    <TextArea
+                        className={css.field}
+                        id="note"
                         label="Note"
                         placeholder="This customer is nice."
                         rows="3"

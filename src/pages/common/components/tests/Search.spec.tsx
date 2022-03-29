@@ -1,14 +1,12 @@
 import React from 'react'
 import {mount, shallow} from 'enzyme'
 import _noop from 'lodash/noop'
-import ReactDOM from 'react-dom'
-import {Input} from 'reactstrap'
+
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import Search from '../Search'
-const spy = jest.spyOn(
-    ReactDOM,
-    'findDOMNode'
-) as jest.SpyInstance<HTMLInputElement>
+
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
 describe('Search component', () => {
     beforeEach(() => {
@@ -35,13 +33,12 @@ describe('Search component', () => {
     it('should blur when pressing escape', () => {
         const component = shallow<Search>(<Search onChange={_noop} />)
         const mockBlur = jest.fn()
-        spy.mockReturnValue({
+        component.instance().searchInputRef = {
             blur: mockBlur,
-        } as unknown as HTMLInputElement)
+        } as unknown as HTMLInputElement
+        component.find(TextInput).simulate('keydown', {key: 'a'})
+        component.find(TextInput).simulate('keydown', {key: 'Escape'})
 
-        component.instance().searchInputRef = {} as Input
-        component.find(Input).simulate('keydown', {key: 'a'})
-        component.find(Input).simulate('keydown', {key: 'Escape'})
         expect(mockBlur).toHaveBeenCalledTimes(1)
     })
 })

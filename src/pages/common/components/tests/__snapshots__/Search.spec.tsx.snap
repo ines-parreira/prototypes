@@ -9,43 +9,49 @@ exports[`Search component handle change function 1`] = `
   style={Object {}}
 >
   <div
-    className="component input-icon"
+    className="component"
     style={Object {}}
   >
-    <i
-      className="icon icon material-icons md-2"
-    >
-      search
-    </i>
-    <Input
+    <ForwardRef(TextInput)
       className="input"
       disabled={false}
+      leftIcon={
+        <IconInput
+          icon="search"
+        />
+      }
       onChange={[Function]}
       onKeyDown={[Function]}
       placeholder="Search..."
-      style={
-        Object {
-          "zIndex": 1,
-        }
-      }
-      type="text"
       value=""
     >
-      <input
-        className="input form-control"
-        disabled={false}
-        onChange={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Search..."
-        style={
-          Object {
-            "zIndex": 1,
-          }
-        }
-        type="text"
-        value=""
-      />
-    </Input>
+      <div
+        className="wrapper input"
+      >
+        <IconInput
+          icon="search"
+          position="left"
+        >
+          <i
+            className="material-icons icon iconLeft"
+          >
+            search
+          </i>
+        </IconInput>
+        <input
+          className="input hasLeftIcon"
+          disabled={false}
+          id="input-text-42"
+          name="input-text-42"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          placeholder="Search..."
+          required={false}
+          type="text"
+          value=""
+        />
+      </div>
+    </ForwardRef(TextInput)>
   </div>
 </Search>
 `;
@@ -59,43 +65,49 @@ exports[`Search component reset function 1`] = `
   style={Object {}}
 >
   <div
-    className="component input-icon"
+    className="component"
     style={Object {}}
   >
-    <i
-      className="icon icon material-icons md-2"
-    >
-      search
-    </i>
-    <Input
+    <ForwardRef(TextInput)
       className="input"
       disabled={false}
+      leftIcon={
+        <IconInput
+          icon="search"
+        />
+      }
       onChange={[Function]}
       onKeyDown={[Function]}
       placeholder="Search..."
-      style={
-        Object {
-          "zIndex": 1,
-        }
-      }
-      type="text"
       value=""
     >
-      <input
-        className="input form-control"
-        disabled={false}
-        onChange={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Search..."
-        style={
-          Object {
-            "zIndex": 1,
-          }
-        }
-        type="text"
-        value=""
-      />
-    </Input>
+      <div
+        className="wrapper input"
+      >
+        <IconInput
+          icon="search"
+          position="left"
+        >
+          <i
+            className="material-icons icon iconLeft"
+          >
+            search
+          </i>
+        </IconInput>
+        <input
+          className="input hasLeftIcon"
+          disabled={false}
+          id="input-text-42"
+          name="input-text-42"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          placeholder="Search..."
+          required={false}
+          type="text"
+          value=""
+        />
+      </div>
+    </ForwardRef(TextInput)>
   </div>
 </Search>
 `;
@@ -109,43 +121,49 @@ exports[`Search component reset function 2`] = `
   style={Object {}}
 >
   <div
-    className="component input-icon"
+    className="component"
     style={Object {}}
   >
-    <i
-      className="icon icon material-icons md-2"
-    >
-      search
-    </i>
-    <Input
+    <ForwardRef(TextInput)
       className="input"
       disabled={false}
+      leftIcon={
+        <IconInput
+          icon="search"
+        />
+      }
       onChange={[Function]}
       onKeyDown={[Function]}
       placeholder="Search..."
-      style={
-        Object {
-          "zIndex": 1,
-        }
-      }
-      type="text"
       value=""
     >
-      <input
-        className="input form-control"
-        disabled={false}
-        onChange={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Search..."
-        style={
-          Object {
-            "zIndex": 1,
-          }
-        }
-        type="text"
-        value=""
-      />
-    </Input>
+      <div
+        className="wrapper input"
+      >
+        <IconInput
+          icon="search"
+          position="left"
+        >
+          <i
+            className="material-icons icon iconLeft"
+          >
+            search
+          </i>
+        </IconInput>
+        <input
+          className="input hasLeftIcon"
+          disabled={false}
+          id="input-text-42"
+          name="input-text-42"
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          placeholder="Search..."
+          required={false}
+          type="text"
+          value=""
+        />
+      </div>
+    </ForwardRef(TextInput)>
   </div>
 </Search>
 `;

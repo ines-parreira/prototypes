@@ -20,18 +20,16 @@ exports[`<SearchInput/> render() should render a closed dropdown because input i
     data-toggle="dropdown"
     tag="div"
   >
-    <i
-      className="icon material-icons md-2"
-    >
-      search
-    </i>
-    <Input
-      innerRef={[Function]}
+    <ForwardRef(TextInput)
       onChange={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
       placeholder="Search..."
-      type="text"
+      rightIcon={
+        <IconInput
+          icon="search"
+        />
+      }
       value=""
     />
   </DropdownToggle>
@@ -72,18 +70,16 @@ exports[`<SearchInput/> render() should render a closed dropdown because input i
     data-toggle="dropdown"
     tag="div"
   >
-    <i
-      className="icon material-icons md-2"
-    >
-      search
-    </i>
-    <Input
-      innerRef={[Function]}
+    <ForwardRef(TextInput)
       onChange={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
       placeholder="Search..."
-      type="text"
+      rightIcon={
+        <IconInput
+          icon="search"
+        />
+      }
       value=""
     />
   </DropdownToggle>
@@ -124,18 +120,16 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
     data-toggle="dropdown"
     tag="div"
   >
-    <i
-      className="icon material-icons md-2"
-    >
-      search
-    </i>
-    <Input
-      innerRef={[Function]}
+    <ForwardRef(TextInput)
       onChange={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
       placeholder="Search..."
-      type="text"
+      rightIcon={
+        <IconInput
+          icon="search"
+        />
+      }
       value="foo"
     />
   </DropdownToggle>
@@ -227,18 +221,16 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
     data-toggle="dropdown"
     tag="div"
   >
-    <i
-      className="icon material-icons md-2"
-    >
-      search
-    </i>
-    <Input
-      innerRef={[Function]}
+    <ForwardRef(TextInput)
       onChange={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
       placeholder="Search..."
-      type="text"
+      rightIcon={
+        <IconInput
+          icon="search"
+        />
+      }
       value="foo"
     />
   </DropdownToggle>

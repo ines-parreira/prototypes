@@ -22,7 +22,7 @@ exports[`<RulesView/> should render the rule library view 1`] = `
           <button
             aria-expanded="false"
             aria-haspopup="true"
-            class="mr-2 dropdown-toggle btn btn-secondary"
+            class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
             type="button"
           >
             <span>
@@ -116,20 +116,25 @@ exports[`<RulesView/> should render the rule library view 1`] = `
           </div>
         </div>
         <div
-          class="component input-icon mr-2"
+          class="component mr-2"
         >
-          <i
-            class="icon icon material-icons md-2"
+          <div
+            class="wrapper input"
           >
-            search
-          </i>
-          <input
-            class="input form-control"
-            placeholder="Search rule library..."
-            style="z-index: 1;"
-            type="text"
-            value=""
-          />
+            <i
+              class="material-icons icon iconLeft"
+            >
+              search
+            </i>
+            <input
+              class="input hasLeftIcon"
+              id="input-text-4"
+              name="input-text-4"
+              placeholder="Search rule library..."
+              type="text"
+              value=""
+            />
+          </div>
         </div>
         <a
           to="/app/settings/rules/new"

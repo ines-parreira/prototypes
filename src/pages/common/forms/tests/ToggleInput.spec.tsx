@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import ToggleInput from '../../forms/ToggleInput'
+import ToggleInput from '../ToggleInput'
 
 describe('ToggleInput', () => {
     const minProps = {

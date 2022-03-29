@@ -1,14 +1,15 @@
-import React, {KeyboardEvent, Component} from 'react'
+import React, {Component, createRef, KeyboardEvent, RefObject} from 'react'
 import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
-import FileField from '../../../../forms/FileField'
-import {ActionInjectedProps} from '../types'
-import {getMaxAttachmentSize} from '../../../../../../utils/file'
-import {addImage} from '../../utils'
+import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
+import {ActionInjectedProps} from 'pages/common/draftjs/plugins/toolbar/types'
+import {addImage} from 'pages/common/draftjs/plugins/utils'
+import FileField from 'pages/common/forms/FileField'
+import TextInput from 'pages/common/forms/input/TextInput'
+import {getMaxAttachmentSize} from 'utils/file'
 
 import css from './AddImage.less'
-import Popover from './ButtonPopover'
 
 type Props = {
     attachments?: File[]
@@ -29,7 +30,12 @@ export default class AddImage extends Component<Props, State> {
         isOpen: false,
     }
 
-    inputRef: Maybe<HTMLInputElement>
+    inputRef: RefObject<HTMLInputElement>
+
+    constructor(props: Props) {
+        super(props)
+        this.inputRef = createRef<HTMLInputElement>()
+    }
 
     _updateMaxSize = () => {
         const editorState = this.props.getEditorState()
@@ -131,15 +137,10 @@ export default class AddImage extends Component<Props, State> {
                     />
                 ) : (
                     <div className="flex">
-                        <input
-                            className="form-control"
-                            key="url"
-                            ref={(ref) => (this.inputRef = ref)}
-                            type="text"
+                        <TextInput
+                            ref={this.inputRef}
                             placeholder="External image url..."
-                            onChange={(e) =>
-                                this.setState({url: e.target.value})
-                            }
+                            onChange={(value) => this.setState({url: value})}
                             value={this.state.url}
                             onKeyDown={this._onKeyDown}
                             autoFocus

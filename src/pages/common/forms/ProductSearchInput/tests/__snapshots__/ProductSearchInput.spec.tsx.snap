@@ -11,17 +11,23 @@ exports[`<ProductSearchInput/> render() should render 1`] = `
       class="input-icon input-icon-right"
       data-toggle="dropdown"
     >
-      <i
-        class="icon material-icons md-2"
+      <div
+        class="wrapper"
       >
-        search
-      </i>
-      <input
-        class="form-control"
-        placeholder="Search products..."
-        type="text"
-        value=""
-      />
+        <input
+          class="input hasRightIcon"
+          id="input-text-1"
+          name="input-text-1"
+          placeholder="Search products..."
+          type="text"
+          value=""
+        />
+        <i
+          class="material-icons icon iconRight"
+        >
+          search
+        </i>
+      </div>
     </div>
     <div
       aria-hidden="true"

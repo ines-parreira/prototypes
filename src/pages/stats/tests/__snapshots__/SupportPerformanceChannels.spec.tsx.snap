@@ -43,7 +43,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
             <button
               aria-expanded="false"
               aria-haspopup="true"
-              class="mr-2 dropdown-toggle btn btn-secondary"
+              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
               type="button"
             >
               <span>
@@ -109,7 +109,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
             <button
               aria-expanded="false"
               aria-haspopup="true"
-              class="mr-2 dropdown-toggle btn btn-secondary"
+              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
               type="button"
             >
               <span>

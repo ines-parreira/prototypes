@@ -74,15 +74,20 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                   insert_emoticon
                 </span>
               </div>
-              <input
-                class="input form-control"
-                id="title"
-                placeholder="Ex: Company Support Line"
-                required=""
-                tabindex="0"
-                type="text"
-                value=""
-              />
+              <div
+                class="wrapper input"
+              >
+                <input
+                  class="input"
+                  id="title"
+                  name="title"
+                  placeholder="Ex: Company Support Line"
+                  required=""
+                  tabindex="0"
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
           </div>
           <div
@@ -301,15 +306,20 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
                   insert_emoticon
                 </span>
               </div>
-              <input
-                class="input form-control"
-                id="title"
-                placeholder="Ex: Company Support Line"
-                required=""
-                tabindex="0"
-                type="text"
-                value="My SMS integration"
-              />
+              <div
+                class="wrapper input"
+              >
+                <input
+                  class="input"
+                  id="title"
+                  name="title"
+                  placeholder="Ex: Company Support Line"
+                  required=""
+                  tabindex="0"
+                  type="text"
+                  value="My SMS integration"
+                />
+              </div>
             </div>
           </div>
           <div

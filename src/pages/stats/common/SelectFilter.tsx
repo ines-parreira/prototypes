@@ -361,7 +361,10 @@ const SelectFilter = ({
                 >
                     <DropdownToggle
                         caret
-                        className={toggleClassName}
+                        className={classnames(
+                            toggleClassName,
+                            css.dropdownToggle
+                        )}
                         color="secondary"
                         type="button"
                         disabled={isDisabled}

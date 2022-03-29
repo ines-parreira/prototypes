@@ -1,12 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import _clone from 'lodash/clone'
-import {FormGroup, Label, Row, Col} from 'reactstrap'
+import {FormGroup, Row, Col} from 'reactstrap'
 
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import css from './CustomerChannelFieldArray.less'
+
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import InputField from 'pages/common/forms/input/InputField'
+import Label from 'pages/common/forms/Label/Label'
 
 class CustomerChannelFieldArray extends React.Component {
     _add = () => {
@@ -37,12 +40,12 @@ class CustomerChannelFieldArray extends React.Component {
 
         return (
             <FormGroup>
-                {label && <Label>{label}</Label>}
+                {label && <Label className={css.label}>{label}</Label>}
                 {!fields.length && <p>No {label.toLowerCase()}</p>}
                 {fields.map((contact, index) => (
                     <Row key={index} className="mb-3 form-row">
                         <Col md="10" xs="9">
-                            <DEPRECATED_InputField
+                            <InputField
                                 type={type}
                                 name={`${contact}.address`}
                                 placeholder={placeholder}

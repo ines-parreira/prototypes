@@ -74,15 +74,20 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                   insert_emoticon
                 </span>
               </div>
-              <input
-                class="input form-control"
-                id="title"
-                placeholder="Ex: Company Support Line"
-                required=""
-                tabindex="0"
-                type="text"
-                value=""
-              />
+              <div
+                class="wrapper input"
+              >
+                <input
+                  class="input"
+                  id="title"
+                  name="title"
+                  placeholder="Ex: Company Support Line"
+                  required=""
+                  tabindex="0"
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
           </div>
           <div
@@ -360,15 +365,20 @@ exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with t
                   insert_emoticon
                 </span>
               </div>
-              <input
-                class="input form-control"
-                id="title"
-                placeholder="Ex: Company Support Line"
-                required=""
-                tabindex="0"
-                type="text"
-                value=""
-              />
+              <div
+                class="wrapper input"
+              >
+                <input
+                  class="input"
+                  id="title"
+                  name="title"
+                  placeholder="Ex: Company Support Line"
+                  required=""
+                  tabindex="0"
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
           </div>
           <div

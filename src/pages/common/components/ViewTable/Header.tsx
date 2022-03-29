@@ -148,25 +148,6 @@ export class HeaderContainer extends React.Component<Props, State> {
                                     const showEmojiPicker = !isSearch
                                     return (
                                         <div className={css.titleWrapper}>
-                                            {showEmojiPicker && (
-                                                <EmojiSelect
-                                                    className={classnames(
-                                                        css.emojiPicker
-                                                    )}
-                                                    emoji={
-                                                        typeof emoji ===
-                                                        'string'
-                                                            ? emoji
-                                                            : null
-                                                    }
-                                                    onEmojiSelect={
-                                                        this._selectEmoji
-                                                    }
-                                                    onEmojiClear={
-                                                        this._clearEmoji
-                                                    }
-                                                />
-                                            )}
                                             <EditableTitle
                                                 className={classnames(
                                                     css.title,
@@ -194,6 +175,25 @@ export class HeaderContainer extends React.Component<Props, State> {
                                                 }}
                                                 forceEditMode
                                             />
+                                            {showEmojiPicker && (
+                                                <EmojiSelect
+                                                    className={classnames(
+                                                        css.emojiPicker
+                                                    )}
+                                                    emoji={
+                                                        typeof emoji ===
+                                                        'string'
+                                                            ? emoji
+                                                            : null
+                                                    }
+                                                    onEmojiSelect={
+                                                        this._selectEmoji
+                                                    }
+                                                    onEmojiClear={
+                                                        this._clearEmoji
+                                                    }
+                                                />
+                                            )}
                                             <img
                                                 src={closeIcon}
                                                 alt="close-icon"

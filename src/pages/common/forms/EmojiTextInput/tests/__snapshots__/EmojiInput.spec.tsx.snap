@@ -10,14 +10,13 @@ exports[`<EmojiTextInput/> render() should render 1`] = `
     onEmojiClear={[Function]}
     onEmojiSelect={[Function]}
   />
-  <Input
+  <ForwardRef(TextInput)
     className="input"
     id="foo"
+    isRequired={true}
     onChange={[Function]}
     placeholder="Placeholder..."
-    required={true}
     tabIndex={0}
-    type="text"
     value="Foo"
   />
 </div>

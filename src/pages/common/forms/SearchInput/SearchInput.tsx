@@ -1,23 +1,19 @@
 import React, {
-    ChangeEvent,
-    Component,
     ComponentType,
-    KeyboardEvent,
+    Component,
     ReactNode,
+    ChangeEvent,
+    KeyboardEvent,
 } from 'react'
-import {
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Input,
-} from 'reactstrap'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import IconInput from 'pages/common/forms/input/IconInput'
+import TextInput from 'pages/common/forms/input/TextInput'
 import GorgiasApi, {SearchResultType} from 'services/gorgiasApi'
 
 import {SearchInputResultProps, SearchInputSubResultProps} from './types'
@@ -106,15 +102,14 @@ export default class SearchInput<
         this.setState({isOpen: !isOpen})
     }
 
-    _onChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const filter = event.target.value
+    _onChange = (value: string) => {
         this.setState({
-            filter,
+            filter: value,
             isOpen: false,
             isLoading: true,
             hoveredIndex: -1,
         })
-        void this._fetchResults(filter)
+        void this._fetchResults(value)
     }
 
     _onKeyDown = (event: KeyboardEvent) => {
@@ -364,17 +359,18 @@ export default class SearchInput<
                     aria-expanded={isOpen}
                     className="input-icon input-icon-right"
                 >
-                    <i className="icon material-icons md-2">
-                        {isLoading ? 'more_horiz' : 'search'}
-                    </i>
-                    <Input
-                        type="text"
+                    <TextInput
                         value={filter}
                         onChange={this._onChange}
                         onKeyDown={this._onKeyDown}
                         onFocus={this._onFocus}
                         placeholder={placeholder}
-                        innerRef={this._saveInputRef}
+                        ref={this._saveInputRef}
+                        rightIcon={
+                            <IconInput
+                                icon={isLoading ? 'more_horiz' : 'search'}
+                            />
+                        }
                     />
                 </DropdownToggle>
                 <DropdownMenu className={css.dropdown}>

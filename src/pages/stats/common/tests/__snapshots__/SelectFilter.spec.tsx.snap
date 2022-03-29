@@ -7,7 +7,7 @@ exports[`SelectFilter should not render the component with quick selection optio
   <button
     aria-expanded="false"
     aria-haspopup="true"
-    class="mr-2 dropdown-toggle btn btn-secondary"
+    class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
     type="button"
   >
     <span>
@@ -98,7 +98,7 @@ exports[`SelectFilter should render the component with items having icons 1`] = 
   <button
     aria-expanded="false"
     aria-haspopup="true"
-    class="mr-2 dropdown-toggle btn btn-secondary"
+    class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
     type="button"
   >
     <span>
@@ -231,7 +231,7 @@ exports[`SelectFilter should render the component with selectable items 1`] = `
   <button
     aria-expanded="false"
     aria-haspopup="true"
-    class="mr-2 dropdown-toggle btn btn-secondary"
+    class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
     type="button"
   >
     <span>
@@ -349,7 +349,7 @@ exports[`SelectFilter should render the component with selected items 1`] = `
   <button
     aria-expanded="false"
     aria-haspopup="true"
-    class="mr-2 dropdown-toggle btn btn-secondary"
+    class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
     type="button"
   >
     <span>
@@ -470,7 +470,7 @@ exports[`SelectFilter should render the component without any item 1`] = `
   <button
     aria-expanded="false"
     aria-haspopup="true"
-    class="mr-2 dropdown-toggle btn btn-secondary"
+    class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
     type="button"
   >
     <span>
@@ -539,7 +539,7 @@ exports[`SelectFilter with groups should render the component with groups 1`] = 
   <button
     aria-expanded="false"
     aria-haspopup="true"
-    class="mr-2 dropdown-toggle btn btn-secondary"
+    class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
     type="button"
   >
     <span>

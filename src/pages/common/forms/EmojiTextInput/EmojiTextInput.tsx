@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react'
-import {Input} from 'reactstrap'
 
-import EmojiSelect from '../../components/ViewTable/EmojiSelect/EmojiSelect'
+import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from './EmojiTextInput.less'
 
@@ -39,8 +39,8 @@ export default function EmojiTextInput({
     }, [onEmojiChange])
 
     const onInputChange = useCallback(
-        (event: React.ChangeEvent<HTMLInputElement>) => {
-            onChange(event.target.value)
+        (value) => {
+            onChange(value)
         },
         [onChange]
     )
@@ -53,13 +53,12 @@ export default function EmojiTextInput({
                 onEmojiSelect={onEmojiSelect}
                 onEmojiClear={onEmojiClear}
             />
-            <Input
-                type="text"
+            <TextInput
                 id={id}
                 tabIndex={0}
                 className={css.input}
                 placeholder={placeholder}
-                required={required}
+                isRequired={required}
                 value={value}
                 onChange={onInputChange}
             />

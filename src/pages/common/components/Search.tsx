@@ -4,13 +4,13 @@ import React, {
     KeyboardEvent,
     InputHTMLAttributes,
 } from 'react'
-import ReactDOM from 'react-dom'
 import classnames from 'classnames'
-import {Input, InputProps} from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
-import shortcutManager from '../../../services/shortcutManager/shortcutManager'
+import IconInput from 'pages/common/forms/input/IconInput'
+import TextInput from 'pages/common/forms/input/TextInput'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
 
 import css from './Search.less'
 
@@ -34,7 +34,7 @@ type Props = {
 export default class Search extends Component<Props> {
     private isInitialized: boolean
 
-    searchInputRef: Maybe<Input>
+    searchInputRef: Maybe<HTMLInputElement>
 
     static defaultProps: Pick<
         Props,
@@ -65,10 +65,8 @@ export default class Search extends Component<Props> {
             shortcutManager.bind('Search', {
                 FOCUS_SEARCH: {
                     action: (e) => {
-                        e.preventDefault(),
-                            (ReactDOM.findDOMNode(
-                                this.searchInputRef
-                            ) as HTMLInputElement)!.focus()
+                        e.preventDefault()
+                        this.searchInputRef?.focus()
                     },
                 },
             })
@@ -127,9 +125,7 @@ export default class Search extends Component<Props> {
             onKeyDown(e)
         }
         if (e.key === 'Escape' && this.searchInputRef) {
-            ;(
-                ReactDOM.findDOMNode(this.searchInputRef) as HTMLInputElement
-            ).blur()
+            this.searchInputRef.blur()
         }
     }
 
@@ -148,20 +144,14 @@ export default class Search extends Component<Props> {
         } = this.props
 
         return (
-            <div
-                className={classnames(css.component, 'input-icon', className)}
-                style={style}
-            >
-                <i className={classnames(css.icon, 'icon material-icons md-2')}>
-                    search
-                </i>
-                <Input
+            <div className={classnames(css.component, className)} style={style}>
+                <TextInput
                     ref={(ref) => (this.searchInputRef = ref)}
-                    type={(type || 'text') as InputProps['type']}
+                    type={type}
                     className={css.input}
                     value={this.state.search}
-                    onChange={(e) => this._handleChange(e.target.value)}
-                    style={{zIndex: 1}} // override the zIndex 2 of Bootstrap .form-control class
+                    onChange={(value) => this._handleChange(value)}
+                    leftIcon={<IconInput icon="search" />}
                     {...rest}
                     onKeyDown={this.handleKeyDown}
                 />

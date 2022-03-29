@@ -1,24 +1,29 @@
 @import '~css/new/mixins';
+@import '~css/new/colorTokens';
 
 :local .component {
-    transition: all 0.2s linear;
+    width: 100%;
 
-    .not-editable {
-        border-color: transparent;
-        padding-left: 0;
-    }
+    .input {
+        color: @classic-neutral-grey-6;
+        font-size: 20px;
+        font-weight: 500;
+        height: 34px;
+        transition: all 0.2s linear;
 
-    &:global(.form-control-xl) {
-        padding: 0 8px;
-    }
+        .not-editable {
+            border-color: transparent;
+            padding-left: 0;
+        }
 
-    &:not(:hover):not(:focus):not(.edit-mode) {
-        .not-editable;
-    }
+        &:not(:hover):not(:focus):not(.edit-mode) {
+            .not-editable;
+        }
 
-    &:disabled {
-        .not-editable;
-        cursor: default !important;
-        background-color: initial !important;
+        &:disabled {
+            .not-editable;
+            cursor: default !important;
+            background-color: initial !important;
+        }
     }
 }

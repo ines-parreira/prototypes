@@ -80,15 +80,20 @@ exports[`<SmsAppPreferences/> render() should render 1`] = `
                   insert_emoticon
                 </span>
               </div>
-              <input
-                class="input form-control"
-                id="title"
-                placeholder="Ex: Company Support Line"
-                required=""
-                tabindex="0"
-                type="text"
-                value="My new SMS Integration"
-              />
+              <div
+                class="wrapper input"
+              >
+                <input
+                  class="input"
+                  id="title"
+                  name="title"
+                  placeholder="Ex: Company Support Line"
+                  required=""
+                  tabindex="0"
+                  type="text"
+                  value="My new SMS Integration"
+                />
+              </div>
             </div>
           </div>
           <div
@@ -254,15 +259,20 @@ exports[`<SmsAppPreferences/> render() should submit a valid payload with the se
                   insert_emoticon
                 </span>
               </div>
-              <input
-                class="input form-control"
-                id="title"
-                placeholder="Ex: Company Support Line"
-                required=""
-                tabindex="0"
-                type="text"
-                value="My updated SMS integration"
-              />
+              <div
+                class="wrapper input"
+              >
+                <input
+                  class="input"
+                  id="title"
+                  name="title"
+                  placeholder="Ex: Company Support Line"
+                  required=""
+                  tabindex="0"
+                  type="text"
+                  value="My updated SMS integration"
+                />
+              </div>
             </div>
           </div>
           <div

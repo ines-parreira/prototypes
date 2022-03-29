@@ -8,13 +8,19 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
   <div
     class="d-flex justify-content-between mb-2"
   >
-    <input
-      class="mr-2 editableTitle component form-control-xl form-control"
-      placeholder="Subject"
-      tabindex="1"
-      type="text"
-      value="Great ticket"
-    />
+    <div
+      class="wrapper component"
+    >
+      <input
+        class="input mr-2 input"
+        id="input-text-2"
+        name="input-text-2"
+        placeholder="Subject"
+        tabindex="1"
+        type="text"
+        value="Great ticket"
+      />
+    </div>
     <div
       class="dropdown"
     >
@@ -336,13 +342,19 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
   <div
     class="d-flex justify-content-between mb-2"
   >
-    <input
-      class="mr-2 editableTitle component edit-mode form-control-xl form-control"
-      placeholder="Subject"
-      tabindex="1"
-      type="text"
-      value="Great ticket"
-    />
+    <div
+      class="wrapper component"
+    >
+      <input
+        class="input mr-2 input edit-mode"
+        id="input-text-1"
+        name="input-text-1"
+        placeholder="Subject"
+        tabindex="1"
+        type="text"
+        value="Great ticket"
+      />
+    </div>
   </div>
   <div
     class="d-flex justify-content-between"
@@ -530,13 +542,19 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
   <div
     class="d-flex justify-content-between mb-2"
   >
-    <input
-      class="mr-2 editableTitle component form-control-xl form-control"
-      placeholder="Subject"
-      tabindex="1"
-      type="text"
-      value="Great ticket"
-    />
+    <div
+      class="wrapper component"
+    >
+      <input
+        class="input mr-2 input"
+        id="input-text-3"
+        name="input-text-3"
+        placeholder="Subject"
+        tabindex="1"
+        type="text"
+        value="Great ticket"
+      />
+    </div>
     <div
       class="headerIcon"
     >
@@ -868,13 +886,19 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
   <div
     class="d-flex justify-content-between mb-2"
   >
-    <input
-      class="mr-2 editableTitle component form-control-xl form-control"
-      placeholder="Subject"
-      tabindex="1"
-      type="text"
-      value="Great ticket"
-    />
+    <div
+      class="wrapper component"
+    >
+      <input
+        class="input mr-2 input"
+        id="input-text-4"
+        name="input-text-4"
+        placeholder="Subject"
+        tabindex="1"
+        type="text"
+        value="Great ticket"
+      />
+    </div>
     <div
       class="headerIcon"
     >

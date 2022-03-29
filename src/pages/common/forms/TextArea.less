@@ -1,0 +1,50 @@
+@import '~css/new/colors';
+@import (reference) '~css/typography';
+
+:local {
+    .textarea {
+        .body-regular();
+        background-color: @classic-neutral-grey-0;
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 4px;
+        box-sizing: border-box;
+        color: @classic-neutral-grey-6;
+        padding: 5px 8px;
+        transition: background-color 0.2s linear, border-color 0.2s ease-in-out,
+            box-shadow 0.2s ease-in-out, color 0.2s linear;
+        vertical-align: top;
+        width: 100%;
+
+        &:disabled {
+            background-color: @classic-neutral-grey-1;
+            color: @classic-neutral-grey-4;
+            cursor: not-allowed;
+        }
+
+        &:focus {
+            border-color: @classic-main-primary;
+            box-shadow: 0 0 0 2px fade(@classic-main-primary, 20%);
+        }
+
+        &:focus-visible {
+            outline: none;
+        }
+
+        ::placeholder {
+            color: @classic-neutral-grey-4;
+        }
+    }
+
+    .error {
+        border-color: @classic-feedback-error;
+
+        &:focus {
+            border-color: @classic-feedback-error;
+            box-shadow: 0 0 0 2px fade(@classic-feedback-error, 20%);
+        }
+    }
+
+    .label {
+        margin-bottom: 4px;
+    }
+}

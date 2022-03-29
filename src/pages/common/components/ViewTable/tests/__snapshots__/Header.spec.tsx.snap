@@ -387,22 +387,20 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
       <div
         className="titleWrapper"
       >
-        <EmojiSelect
-          className="emojiPicker"
-          emoji={null}
-          onEmojiClear={[Function]}
-          onEmojiSelect={[Function]}
-        />
         <EditableTitle
           className="title withEmojiPicker"
           disabled={false}
           forceEditMode={true}
           placeholder="View name"
           select={false}
-          size="xl"
-          style={Object {}}
           title="New & Open Tickets"
           update={[Function]}
+        />
+        <EmojiSelect
+          className="emojiPicker"
+          emoji={null}
+          onEmojiClear={[Function]}
+          onEmojiSelect={[Function]}
         />
         <img
           alt="close-icon"
@@ -429,22 +427,20 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
       <div
         className="titleWrapper"
       >
-        <EmojiSelect
-          className="emojiPicker"
-          emoji={null}
-          onEmojiClear={[Function]}
-          onEmojiSelect={[Function]}
-        />
         <EditableTitle
           className="title withEmojiPicker"
           disabled={false}
           forceEditMode={true}
           placeholder="View name"
           select={false}
-          size="xl"
-          style={Object {}}
           title="New & Open Tickets"
           update={[Function]}
+        />
+        <EmojiSelect
+          className="emojiPicker"
+          emoji={null}
+          onEmojiClear={[Function]}
+          onEmojiSelect={[Function]}
         />
         <img
           alt="close-icon"
@@ -471,22 +467,20 @@ exports[`ViewTable::Header emoji picker .render() should render emoji if decorat
       <div
         className="titleWrapper"
       >
-        <EmojiSelect
-          className="emojiPicker"
-          emoji="foo"
-          onEmojiClear={[Function]}
-          onEmojiSelect={[Function]}
-        />
         <EditableTitle
           className="title withEmojiPicker"
           disabled={false}
           forceEditMode={true}
           placeholder="View name"
           select={false}
-          size="xl"
-          style={Object {}}
           title="New & Open Tickets"
           update={[Function]}
+        />
+        <EmojiSelect
+          className="emojiPicker"
+          emoji="foo"
+          onEmojiClear={[Function]}
+          onEmojiSelect={[Function]}
         />
         <img
           alt="close-icon"
@@ -605,22 +599,20 @@ exports[`ViewTable::Header should render when view is in edit mode 1`] = `
       <div
         className="titleWrapper"
       >
-        <EmojiSelect
-          className="emojiPicker"
-          emoji={null}
-          onEmojiClear={[Function]}
-          onEmojiSelect={[Function]}
-        />
         <EditableTitle
           className="title withEmojiPicker"
           disabled={false}
           forceEditMode={true}
           placeholder="View name"
           select={false}
-          size="xl"
-          style={Object {}}
           title="New & Open Tickets"
           update={[Function]}
+        />
+        <EmojiSelect
+          className="emojiPicker"
+          emoji={null}
+          onEmojiClear={[Function]}
+          onEmojiSelect={[Function]}
         />
         <img
           alt="close-icon"

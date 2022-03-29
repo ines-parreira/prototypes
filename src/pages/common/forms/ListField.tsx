@@ -3,12 +3,12 @@ import {List} from 'immutable'
 import {Row, Col, Button} from 'reactstrap'
 import classNames from 'classnames'
 
-import DEPRECATED_InputField from './DEPRECATED_InputField'
+import TextInput from './input/TextInput'
 import css from './ListField.less'
 
 type Props = {
     className?: string
-    items: List<any>
+    items: List<string>
     onChange: (value: List<any>) => void
     maxLength: number
     maxItems: number
@@ -46,13 +46,12 @@ export default class ListField extends Component<Props> {
 
         return (
             <div className={className}>
-                {items.map((item: Map<any, any>, index) => (
+                {items.map((item, index) => (
                     <Row key={index} className={css.row}>
                         <Col className="flex-grow pr-0">
-                            <DEPRECATED_InputField
+                            <TextInput
                                 className="my-0"
                                 name={`item-${index!}`}
-                                type="text"
                                 placeholder={`Type something (limited to ${maxLength} characters)`}
                                 value={item}
                                 maxLength={maxLength}
@@ -60,8 +59,8 @@ export default class ListField extends Component<Props> {
                                     this.updateRow(value, index!)
                                 }
                                 size={300}
-                                disabled={disabled}
-                                required
+                                isDisabled={disabled}
+                                isRequired
                             />
                         </Col>
                         <Col

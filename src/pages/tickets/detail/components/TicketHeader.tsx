@@ -228,7 +228,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
             >
                 <div className="d-flex justify-content-between mb-2">
                     <EditableTitle
-                        className={classnames('mr-2', css.editableTitle)}
+                        className="mr-2"
                         title={ticket.get('subject')}
                         placeholder="Subject"
                         update={setSubject}
