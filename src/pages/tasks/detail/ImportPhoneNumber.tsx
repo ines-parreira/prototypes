@@ -5,18 +5,17 @@ import classnames from 'classnames'
 import {AxiosError} from 'axios'
 import {fromJS, Map} from 'immutable'
 
-import SelectField from '../../common/forms/SelectField/SelectField'
-import PhoneNumberInput from '../../common/forms/PhoneNumberInput/PhoneNumberInput'
-import PageHeader from '../../common/components/PageHeader'
-import {Option} from '../../common/forms/SelectField/types'
-import rawTypeOptions from '../../integrations/detail/components/phone/options/types.json'
-import client from '../../../models/api/resources'
-import {
-    Notification,
-    NotificationStatus,
-} from '../../../state/notifications/types'
-import {notify as notifyAction} from '../../../state/notifications/actions'
-import {getCountryFromPhoneNumber} from '../../common/forms/PhoneNumberInput/utils'
+import client from 'models/api/resources'
+import PageHeader from 'pages/common/components/PageHeader'
+import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Option} from 'pages/common/forms/SelectField/types'
+import {getCountryFromPhoneNumber} from 'pages/common/forms/PhoneNumberInput/utils'
+import rawTypeOptions from 'pages/integrations/detail/components/phone/options/types.json'
+import {notify as notifyAction} from 'state/notifications/actions'
+import {Notification, NotificationStatus} from 'state/notifications/types'
+
+import settingsCss from 'pages/settings/settings.less'
 
 const typeOptions: Option[] = rawTypeOptions
 
@@ -75,7 +74,7 @@ const ImportPhoneNumber = ({notify}: Props) => {
     return (
         <div className="full-width">
             <PageHeader title="Import phone number" />
-            <Container fluid className="page-container">
+            <Container fluid className={settingsCss.pageContainer}>
                 <Form className="mb-4 col-sm-4" onSubmit={onSubmit}>
                     <FormGroup>
                         <PhoneNumberInput

@@ -449,7 +449,7 @@ export default class YourProfileView extends Component<Props, State> {
                                 {this.state.preferences.get(
                                     'forward_calls'
                                 ) && (
-                                    <div style={{marginLeft: '47px'}}>
+                                    <div style={{marginLeft: '50px'}}>
                                         <PhoneNumberInput
                                             value={
                                                 (this.state.preferences.get(
@@ -470,6 +470,7 @@ export default class YourProfileView extends Component<Props, State> {
                                             allowedCountries={Object.values(
                                                 CallForwardingCountries
                                             )}
+                                            autoFocus
                                         />
                                     </div>
                                 )}

@@ -1,14 +1,25 @@
-:local {
-    .countryFlagButton {
-        cursor: pointer;
+@import '~css/new/colorTokens';
 
-        &.disabled {
-            cursor: default;
-        }
+:local {
+    .button {
+        border-bottom: none;
+        border-left: none;
+        border-top: none;
+        height: 30px;
+        margin-left: inherit !important;
+    }
+
+    .group {
+        overflow: inherit !important;
+        width: 100%;
     }
 
     .selectContainer {
         display: flex;
         flex-grow: 1;
+    }
+
+    .label {
+        margin-bottom: 8px;
     }
 }

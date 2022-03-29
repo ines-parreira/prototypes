@@ -15,13 +15,24 @@
 
         width: 100%;
 
+        &.nested {
+            /* reset */
+            border: none;
+            background-image: none;
+            background-color: transparent;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+            outline: none;
+        }
+
         &:disabled {
             background-color: @classic-neutral-grey-1;
             color: @classic-neutral-grey-4;
             cursor: not-allowed;
         }
 
-        &:focus {
+        &:focus:not(.nested) {
             border-color: @classic-main-primary;
             box-shadow: 0 0 0 2px fade(@classic-main-primary, 20%);
         }
@@ -58,5 +69,6 @@
 
     .wrapper {
         position: relative;
+        width: 100%;
     }
 }

@@ -22,6 +22,8 @@ import _min from 'lodash/min'
 import _noop from 'lodash/noop'
 import _isEqual from 'lodash/isEqual'
 
+import {AppendPosition} from 'pages/common/components/layout/Group'
+
 import css from './SelectField.less'
 import {SelectableOption, Option, Value} from './types'
 
@@ -30,6 +32,7 @@ const ARROW_ICON_WIDTH = 10
 const MAXIMUM_MIN_WIDTH = 305
 
 type Props = {
+    appendPosition?: AppendPosition
     id: string | null
     allowCustomValue: boolean
     options: Option[]
@@ -48,6 +51,7 @@ type Props = {
     focusedPlaceholder?: string
     fullWidth?: boolean
     shouldFocus?: boolean
+    positionFixed?: boolean
 }
 
 type State = {
@@ -351,6 +355,8 @@ export default class SelectField extends Component<Props, State> {
             focusedPlaceholder,
             fullWidth,
             dropdownMenuClassName,
+            appendPosition,
+            positionFixed,
         } = this.props
         const {
             filteredOptions,
@@ -416,6 +422,7 @@ export default class SelectField extends Component<Props, State> {
                             className={classnames(
                                 css.select,
                                 'dropdown-toggle',
+                                css[appendPosition || ''],
                                 {
                                     [css.selectFullWidth]: fullWidth,
                                 }
@@ -466,6 +473,7 @@ export default class SelectField extends Component<Props, State> {
                                 [css.optionsFullWidth]: fullWidth,
                             }
                         )}
+                        positionFixed={positionFixed}
                     >
                         {hasNoFilteredOptions && !allowCustomValue ? (
                             <DropdownItem header>No result</DropdownItem>

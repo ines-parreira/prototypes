@@ -54,8 +54,32 @@
         position: relative;
         top: 0;
         left: 0;
-        line-height: 2.25;
+        line-height: 30px;
         height: 100%;
+    }
+
+    &.right,
+    &.center {
+        border-bottom-left-radius: 0;
+        border-top-left-radius: 0;
+    }
+
+    &.left,
+    &.center {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    &.top,
+    &.middle {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    &.bottom,
+    &.middle {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
     }
 }
 

@@ -1,8 +1,9 @@
 import React, {ComponentProps, createContext, ReactNode, useMemo} from 'react'
 import _uniqueId from 'lodash/uniqueId'
 
-import Caption from '../Caption/Caption'
-import Label from '../Label/Label'
+import Caption from 'pages/common/forms/Caption/Caption'
+import Label from 'pages/common/forms/Label/Label'
+
 import TextInput from './TextInput'
 
 import css from './InputField.less'

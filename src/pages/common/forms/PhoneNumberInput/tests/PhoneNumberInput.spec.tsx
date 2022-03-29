@@ -1,10 +1,12 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 
-import {reportError} from '../../../../../utils/errors'
+import {reportError} from 'utils/errors'
 import PhoneNumberInput from '../PhoneNumberInput'
 
-jest.mock('../../../../../utils/errors')
+jest.mock('utils/errors')
+
+jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
 describe('<PhoneNumberInput/>', () => {
     const onChange: jest.MockedFunction<(value: string) => void> = jest.fn()
@@ -53,7 +55,7 @@ describe('<PhoneNumberInput/>', () => {
             <PhoneNumberInput value="+1234567890" onChange={onChange} />
         )
 
-        fireEvent.click(container.getElementsByTagName('img')[0])
+        fireEvent.click(getByText('🇺🇸'))
         fireEvent.change(container.getElementsByTagName('input')[0], {
             target: {value: 'france'},
         })
@@ -63,7 +65,7 @@ describe('<PhoneNumberInput/>', () => {
     })
 
     it('should restrict selectable countries based on props', () => {
-        const {container, queryByText} = render(
+        const {getByText, queryByText} = render(
             <PhoneNumberInput
                 value="+1234567890"
                 onChange={onChange}
@@ -71,7 +73,7 @@ describe('<PhoneNumberInput/>', () => {
             />
         )
 
-        fireEvent.click(container.getElementsByTagName('img')[0])
+        fireEvent.click(getByText('🇺🇸'))
         expect(queryByText('France')).toBeNull()
     })
 
@@ -154,9 +156,11 @@ describe('<PhoneNumberInput/>', () => {
 
         getByText("A phone number can't have more than 15 digits")
 
-        expect(container.getElementsByTagName('input')[0].className).toBe(
-            'form-control-danger is-invalid form-control'
-        )
+        expect(
+            container
+                .getElementsByTagName('span')[0]
+                .classList.contains('hasError')
+        ).toBe(true)
     })
 
     it('should not display error message if phone number is not too long', () => {
@@ -177,8 +181,30 @@ describe('<PhoneNumberInput/>', () => {
             queryByText("A phone number can't have more than 15 digits")
         ).toBeNull()
 
-        expect(container.getElementsByTagName('input')[0].className).toBe(
-            'form-control'
+        expect(
+            container
+                .getElementsByTagName('span')[0]
+                .classList.contains('hasError')
+        ).toBe(false)
+    })
+
+    it('should not autofocus on the text input', () => {
+        render(<PhoneNumberInput value="+1234567890" onChange={onChange} />)
+        expect(document.activeElement).not.toEqual(
+            document.getElementsByTagName('input')[0]
+        )
+    })
+
+    it('should autofocus on the text input', () => {
+        render(
+            <PhoneNumberInput
+                value="+1234567890"
+                onChange={onChange}
+                autoFocus
+            />
+        )
+        expect(document.activeElement).toEqual(
+            document.getElementsByTagName('input')[0]
         )
     })
 })

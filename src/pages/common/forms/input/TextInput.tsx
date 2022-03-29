@@ -6,13 +6,16 @@ import React, {
     isValidElement,
     ReactElement,
     Ref,
+    useContext,
     useMemo,
 } from 'react'
 import _uniqueId from 'lodash/uniqueId'
 import classnames from 'classnames'
 
-import IconInput from './IconInput'
+import {GroupContext} from 'pages/common/components/layout/Group'
+import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
 
+import IconInput from './IconInput'
 import css from './TextInput.less'
 
 type Props = {
@@ -46,12 +49,14 @@ function TextInput(
     ref: Ref<HTMLInputElement> | null | undefined
 ) {
     const inputId = useMemo(() => id || _uniqueId('input-text-'), [id])
+    const context = useContext(GroupContext)
+    const isInsideInputGroup = !!useContext(InputGroupContext)
 
     return (
         <div
             className={classnames(
                 css.wrapper,
-                {[css.isDisabled]: isDisabled},
+                {[css.isDisabled]: context?.isDisabled || isDisabled},
                 className
             )}
         >
@@ -66,6 +71,7 @@ function TextInput(
                         [css.inputError]: hasError,
                         [css.hasLeftIcon]: !!leftIcon,
                         [css.hasRightIcon]: !!rightIcon,
+                        [css.nested]: isInsideInputGroup,
                     },
                     inputClassName
                 )}
@@ -74,7 +80,7 @@ function TextInput(
                 name={inputId}
                 onChange={(event) => onChange(event.target.value)}
                 required={isRequired}
-                disabled={isDisabled}
+                disabled={context?.isDisabled || isDisabled}
                 ref={ref}
                 {...props}
             />

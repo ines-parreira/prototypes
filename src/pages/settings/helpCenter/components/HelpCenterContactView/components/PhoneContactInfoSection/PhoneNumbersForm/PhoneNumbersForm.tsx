@@ -3,9 +3,8 @@ import classNames from 'classnames'
 import {FormGroup, Label} from 'reactstrap'
 import {produce} from 'immer'
 
-import Button from 'pages/common/components/button/Button'
-
 import {ContactPhoneNumber} from 'models/helpCenter/types'
+import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 

@@ -1,23 +1,28 @@
-import React, {useState, useEffect, useMemo, useRef, useCallback} from 'react'
-import {
-    FormGroup,
-    Label,
-    Input,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupText,
-} from 'reactstrap'
+import React, {
+    useState,
+    useEffect,
+    useMemo,
+    useRef,
+    useCallback,
+    ComponentProps,
+} from 'react'
 import CountryFlag from 'react-country-flag'
-import classnames from 'classnames'
 import {getCountryCallingCode, CountryCode} from 'libphonenumber-js'
-import {useUpdateEffect} from 'react-use'
+import {usePrevious, useUpdateEffect} from 'react-use'
 
+import countries from 'config/countries.json'
+import Button from 'pages/common/components/button/Button'
+import InputGroup, {
+    InputGroupContext,
+} from 'pages/common/forms/input/InputGroup'
+import GroupItem from 'pages/common/components/layout/GroupItem'
+import Caption from 'pages/common/forms/Caption/Caption'
+import TextInput from 'pages/common/forms/input/TextInput'
+import Label from 'pages/common/forms/Label/Label'
+import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {getCountryCountryCallingCodeSelectOptions} from 'pages/settings/helpCenter/utils/phoneCodeSelectOptions'
-import countries from '../../../../config/countries.json'
-import {useOnClickOutside} from '../../../common/hooks/useOnClickOutside'
-import SelectField from '../../../common/forms/SelectField/SelectField'
-import {reportError} from '../../../../utils/errors'
-import Errors from '../Errors'
+import {reportError} from 'utils/errors'
 
 import {
     getCountryFromPhoneNumber,
@@ -31,12 +36,10 @@ const typedCountries = countries as {value: CountryCode; label: string}[]
 type Props = {
     label?: string
     value: string
-    onChange: (value: string) => void
     allowedCountries?: CountryCode[]
     defaultCountry?: CountryCode
     disabled?: boolean
-    className?: string
-}
+} & ComponentProps<typeof TextInput>
 
 const PhoneNumberInput = ({
     label,
@@ -46,11 +49,19 @@ const PhoneNumberInput = ({
     defaultCountry = 'US',
     disabled = false,
     className,
-}: Props): JSX.Element => {
+    autoFocus = false,
+    ...other
+}: Props) => {
+    const containerRef = useRef<HTMLDivElement>(null)
+
     const [isPhoneNumberTooLong, setIsPhoneNumberTooLong] = useState(false)
     const [currentCountry, setCurrentCountry] = useState<CountryCode>(
         getCountryFromPhoneNumber(value) ?? defaultCountry
     )
+    const [isCountrySelectVisible, setCountrySelectVisible] =
+        useState<boolean>(false)
+
+    const previousIsCountrySelectVisible = usePrevious(isCountrySelectVisible)
 
     useEffect(() => {
         const isDefaultCountryNotAllowed =
@@ -76,11 +87,6 @@ const PhoneNumberInput = ({
         }
     }, [value])
 
-    const [isCountrySelectVisible, setCountrySelectVisible] =
-        useState<boolean>(false)
-
-    const containerRef = useRef<HTMLDivElement>(null)
-
     const options = useMemo(
         () =>
             getCountryCountryCallingCodeSelectOptions(
@@ -98,92 +104,135 @@ const PhoneNumberInput = ({
                 ? onChange('')
                 : onChange(buildInternationalNumber(number, country))
         },
-        [setCurrentCountry, onChange]
+        [onChange, setCurrentCountry]
     )
 
     useOnClickOutside<HTMLDivElement>(containerRef, () => {
         setCountrySelectVisible(false)
     })
 
+    const callbackRef = useCallback(
+        (inputElement: HTMLInputElement | null) => {
+            if (
+                inputElement &&
+                previousIsCountrySelectVisible &&
+                !isCountrySelectVisible
+            ) {
+                inputElement.focus()
+            }
+        },
+        [isCountrySelectVisible, previousIsCountrySelectVisible]
+    )
+
     return (
         <div ref={containerRef} className={className}>
-            <FormGroup>
-                {label && <Label className="control-label">{label}</Label>}
-                <InputGroup>
-                    <InputGroupAddon
-                        addonType="prepend"
-                        className={classnames(
-                            'dropdown',
-                            css.countryFlagButton,
-                            {[css.disabled]: disabled}
-                        )}
-                    >
-                        <InputGroupText
-                            onClick={() => {
-                                !disabled &&
-                                    setCountrySelectVisible(
-                                        !isCountrySelectVisible
+            {label && <Label className={css.label}>{label}</Label>}
+            <InputGroup
+                className={css.group}
+                hasError={isPhoneNumberTooLong}
+                isDisabled={disabled}
+            >
+                <GroupItem>
+                    {(appendPosition) => (
+                        <InputGroupContext.Consumer>
+                            {(inputGroupContext) => (
+                                <Button
+                                    className={css.button}
+                                    appendPosition={appendPosition}
+                                    intent="secondary"
+                                    onClick={() => {
+                                        inputGroupContext?.setIsFocused(true)
+                                        setCountrySelectVisible(
+                                            !isCountrySelectVisible
+                                        )
+                                    }}
+                                >
+                                    <CountryFlag
+                                        countryCode={currentCountry}
+                                        style={{
+                                            fontSize: '20px',
+                                        }}
+                                    />
+                                    <span className="ml-2 dropdown-toggle">
+                                        +{getCountryCallingCode(currentCountry)}
+                                    </span>
+                                </Button>
+                            )}
+                        </InputGroupContext.Consumer>
+                    )}
+                </GroupItem>
+                <GroupItem>
+                    {(appendPosition) =>
+                        isCountrySelectVisible ? (
+                            <div className={css.selectContainer}>
+                                <SelectField
+                                    appendPosition={appendPosition}
+                                    value={currentCountry}
+                                    options={options}
+                                    onChange={(nextCountry) =>
+                                        handleChange(
+                                            formatAsNationalNumber(value),
+                                            nextCountry as CountryCode
+                                        )
+                                    }
+                                    style={{width: '100%'}}
+                                    fullWidth
+                                    shouldFocus
+                                />
+                            </div>
+                        ) : (
+                            <InputGroupContext.Consumer>
+                                {(inputGroupContext) => {
+                                    return (
+                                        <TextInput
+                                            {...other}
+                                            ref={callbackRef}
+                                            value={formatAsNationalNumber(
+                                                value
+                                            )}
+                                            onFocus={() => {
+                                                inputGroupContext?.setIsFocused(
+                                                    true
+                                                )
+                                            }}
+                                            onBlur={() => {
+                                                inputGroupContext?.setIsFocused(
+                                                    false
+                                                )
+                                            }}
+                                            onChange={(value) => {
+                                                const numberOfDigits =
+                                                    value.replace(
+                                                        /\s+/g,
+                                                        ''
+                                                    ).length
+                                                if (numberOfDigits > 15) {
+                                                    setIsPhoneNumberTooLong(
+                                                        true
+                                                    )
+                                                    return
+                                                }
+                                                setIsPhoneNumberTooLong(false)
+                                                handleChange(
+                                                    value,
+                                                    currentCountry
+                                                )
+                                            }}
+                                            autoFocus={autoFocus}
+                                        />
                                     )
-                            }}
-                        >
-                            <CountryFlag
-                                countryCode={currentCountry}
-                                svg
-                                style={{
-                                    width: '1.5em',
                                 }}
-                            />
-                            <span className="ml-2 dropdown-toggle">
-                                +{getCountryCallingCode(currentCountry)}
-                            </span>
-                        </InputGroupText>
-                    </InputGroupAddon>
-                    {isCountrySelectVisible ? (
-                        <div className={css.selectContainer}>
-                            <SelectField
-                                value={currentCountry}
-                                options={options}
-                                onChange={(nextCountry) =>
-                                    handleChange(
-                                        formatAsNationalNumber(value),
-                                        nextCountry as CountryCode
-                                    )
-                                }
-                                style={{width: '100%'}}
-                                fullWidth
-                                shouldFocus
-                            />
-                        </div>
-                    ) : (
-                        <Input
-                            className={classnames({
-                                'form-control-danger': isPhoneNumberTooLong,
-                                'is-invalid': isPhoneNumberTooLong,
-                            })}
-                            value={formatAsNationalNumber(value)}
-                            onChange={(event) => {
-                                const newValue = event.target.value
-                                const numberOfDigits = newValue.replace(
-                                    /\s+/g,
-                                    ''
-                                ).length
-                                if (numberOfDigits > 15) {
-                                    setIsPhoneNumberTooLong(true)
-                                    return
-                                }
-                                setIsPhoneNumberTooLong(false)
-                                handleChange(event.target.value, currentCountry)
-                            }}
-                            disabled={disabled}
-                        />
-                    )}
-                    {isPhoneNumberTooLong && (
-                        <Errors>
-                            A phone number can't have more than 15 digits
-                        </Errors>
-                    )}
-                </InputGroup>
-            </FormGroup>
+                            </InputGroupContext.Consumer>
+                        )
+                    }
+                </GroupItem>
+            </InputGroup>
+            {isPhoneNumberTooLong && (
+                <Caption
+                    error="A phone number can't have more than 15
+                                digits"
+                />
+            )}
         </div>
     )
 }

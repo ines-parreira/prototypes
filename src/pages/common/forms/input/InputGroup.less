@@ -9,14 +9,18 @@
         height: 32px;
         transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
-        &.hasError {
-            border-color: @classic-feedback-error;
-        }
-
         &.isFocused {
             overflow: hidden;
             border-color: @classic-main-primary;
             box-shadow: 0 0 0 2px fadeout(@classic-main-primary, 80%);
+        }
+
+        &.hasError {
+            border-color: @classic-feedback-error;
+
+            &.isFocused {
+                box-shadow: 0 0 0 2px fadeout(@classic-feedback-error, 80%);
+            }
         }
 
         &.right,
