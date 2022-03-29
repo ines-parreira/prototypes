@@ -168,6 +168,9 @@ export enum SegmentEvent {
     MenuMainLinkClicked = 'menu-main-link-clicked',
     TicketFailedReview = 'ticket-failed-review',
     TicketMessageFailed = 'ticket-message-failed',
+    TwoFaModalOpened = 'access/2fa/setup-modal-opened',
+    TwoFaModalCancelled = 'access/2fa/setup-modal-cancelled',
+    TwoFaModalBackToQrCode = 'access/2fa/setup-modal-back-to-qrcode-button-clicked',
 }
 
 export enum StatViewLinkClickedStat {

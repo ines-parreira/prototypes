@@ -18,6 +18,7 @@ import {
 import Button from 'pages/common/components/button/Button'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {update2FAEnabled} from 'state/currentUser/actions'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {
     AuthenticatorData,
     RecoveryCode,
@@ -69,6 +70,7 @@ export default function TwoFactorAuthenticationModal({
     const handleCancel = useCallback(() => {
         setIsOpen(false)
 
+        logEvent(SegmentEvent.TwoFaModalCancelled)
         if (onCancel) {
             onCancel()
         }
@@ -86,6 +88,8 @@ export default function TwoFactorAuthenticationModal({
         if (step !== 2) {
             return
         }
+
+        logEvent(SegmentEvent.TwoFaModalBackToQrCode)
         resetModalState()
     }, [step, resetModalState])
 
@@ -184,6 +188,11 @@ export default function TwoFactorAuthenticationModal({
         saveTwoFASecret,
         createRecoveryCodes,
     ])
+
+    // We don't put it in the useEffect() below to make sure it's run only once (no dependencies)
+    useEffect(() => {
+        logEvent(SegmentEvent.TwoFaModalOpened)
+    }, [])
 
     useEffect(() => {
         async function init() {

@@ -21,6 +21,10 @@ import {
 } from '../../../../../../models/twoFactorAuthentication/resources'
 import {recoveryCodes as recoveryCodesFixture} from '../../../../../../fixtures/recoveryCodes'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../../store/middlewares/segmentTracker'
 
 jest.mock('models/twoFactorAuthentication/resources')
 const fetchAuthenticatorDataMock =
@@ -43,6 +47,9 @@ const saveTwoFASecretMock = saveTwoFASecret as jest.MockedFunction<
 const createRecoveryCodesMock = createRecoveryCodes as jest.MockedFunction<
     typeof createRecoveryCodes
 >
+
+jest.mock('store/middlewares/segmentTracker')
+const logEventMock = logEvent as jest.Mock
 
 describe('<TwoFactorAuthenticationModal />', () => {
     const minProps: ComponentProps<typeof TwoFactorAuthenticationModal> = {
@@ -119,6 +126,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
             await screen.findByAltText('The QR Code to scan')
 
             expect(baseElement).toMatchSnapshot()
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.TwoFaModalOpened
+            )
         })
 
         it('should render modal with QR Code step having error banner', async () => {
@@ -339,6 +349,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
             await screen.findByAltText('The QR Code to scan')
 
             expect(baseElement).toMatchSnapshot()
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.TwoFaModalBackToQrCode
+            )
         })
 
         it('should call setIsOpen with false value which closes the modal on cancel', async () => {
@@ -361,6 +374,9 @@ describe('<TwoFactorAuthenticationModal />', () => {
             fireEvent.click(cancelButton)
 
             expect(setIsOpenMock).toHaveBeenCalledWith(false)
+            expect(logEventMock).toHaveBeenCalledWith(
+                SegmentEvent.TwoFaModalCancelled
+            )
         })
     })
 })
