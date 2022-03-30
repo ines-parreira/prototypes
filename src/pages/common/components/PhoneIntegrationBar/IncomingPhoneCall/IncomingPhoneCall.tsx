@@ -71,6 +71,7 @@ function useDecline(call: Call) {
         (event: SyntheticEvent<HTMLButtonElement>) => {
             event.stopPropagation()
             call.ignore()
+            call.emit('cancel')
             onIgnore(call).catch(console.error)
         },
         [call]

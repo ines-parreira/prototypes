@@ -79,6 +79,7 @@ describe('<IncomingPhoneCall/>', () => {
         const call = mockIncomingCall(integrationId, ticketId) as Call
 
         mockedServer.onPost('/integrations/phone/call/declined').reply(201)
+        mockedServer.onPost('/integrations/phone/call/cancelled').reply(201)
 
         const {getByTestId} = render(<IncomingPhoneCall call={call} />, {
             wrapper,
@@ -86,6 +87,7 @@ describe('<IncomingPhoneCall/>', () => {
 
         fireEvent.click(getByTestId('decline-call-button'))
         expect(call.ignore).toHaveBeenCalled()
+        expect(call.emit).toHaveBeenCalledWith('cancel')
         expect(history.push).not.toHaveBeenCalled()
 
         process.nextTick(() => {
