@@ -78,6 +78,15 @@ export const CategoriesTableBasicRow = ({
         }
     }, [articles, hasMore, isLoading, fetchArticles])
 
+    const onLoadMore = useCallback(
+        (e: React.MouseEvent) => {
+            e.preventDefault()
+
+            void fetchMore()
+        },
+        [fetchMore]
+    )
+
     const renderContent = () => {
         if (!isOpen) {
             return null
@@ -89,6 +98,25 @@ export const CategoriesTableBasicRow = ({
                     <TableBodyRow>
                         <BodyCell colSpan={4} className={css['parent-cell']}>
                             {renderArticleList(null, articles, -1)}
+                        </BodyCell>
+                    </TableBodyRow>
+                )}
+                {hasMore && (
+                    <TableBodyRow>
+                        <BodyCell
+                            colSpan={4}
+                            innerClassName={classNames(
+                                css['no-click'],
+                                css['load-more']
+                            )}
+                        >
+                            {isLoading ? (
+                                <Spinner size="sm" color="secondary" />
+                            ) : (
+                                <a href="" onClick={onLoadMore}>
+                                    Load more
+                                </a>
+                            )}
                         </BodyCell>
                     </TableBodyRow>
                 )}
