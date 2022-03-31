@@ -1,21 +1,22 @@
-import React, {ComponentProps, useEffect, useMemo} from 'react'
+import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
 import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
+import {useUpdateEffect} from 'react-use'
 
 import {
     TIMEDELTA_OPERATOR_DEFAULT_UNIT,
     TIMEDELTA_OPERATOR_DEFAULT_VALUE,
+    TIMEDELTA_OPERATOR_DEFAULT_QUANTITY,
 } from 'config'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import GroupItem from 'pages/common/components/layout/GroupItem'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import {isTimedelta} from 'utils/ast'
 import {reportError} from 'utils/errors'
 
 import css from './TimedeltaPicker.less'
@@ -45,31 +46,33 @@ const TimedeltaPicker = ({
     value = TIMEDELTA_OPERATOR_DEFAULT_VALUE,
     ...otherProps
 }: Props) => {
-    const quantity = useMemo(
-        () => parseInt(value.replace(/[^\d]/g, '')),
-        [value]
-    )
+    const [quantity, setQuantity] = useState<number | undefined>()
 
-    const unit = useMemo(
-        () =>
-            isTimedelta(value)
-                ? value.substring(value.length - 1)
-                : TIMEDELTA_OPERATOR_DEFAULT_UNIT,
-        [value]
-    )
+    useEffect(() => {
+        const deducedQuantity = parseInt(value.slice(0, -1))
+        setQuantity(
+            isNaN(deducedQuantity)
+                ? TIMEDELTA_OPERATOR_DEFAULT_QUANTITY
+                : deducedQuantity
+        )
+    }, [])
+
+    useUpdateEffect(() => {
+        const deducedQuantity = parseInt(value.slice(0, -1))
+        setQuantity(isNaN(deducedQuantity) ? undefined : deducedQuantity)
+    }, [value])
+
+    const unit = useMemo(() => {
+        const deducedUnit = value.substring(value.length - 1)
+        return deducedUnit.match(/[a-z]/i)
+            ? deducedUnit
+            : TIMEDELTA_OPERATOR_DEFAULT_UNIT
+    }, [value])
 
     const unitLabel = useMemo(
         () => units.find((u) => u.value === unit)?.label,
         [unit, units]
     )
-
-    useEffect(() => {
-        if (!isTimedelta(value)) {
-            reportError(
-                new Error(`Invalid value provided to TimedeltaPicker: ${value}`)
-            )
-        }
-    }, [value])
 
     useEffect(() => {
         if (min < 0) {
@@ -87,7 +90,7 @@ const TimedeltaPicker = ({
                 value={quantity}
                 onChange={(value) => onChange(`${value!}${unit}`)}
                 className={css.numberInput}
-                hasControls={false}
+                hasControls={true}
                 min={min}
                 isRequired
                 {...otherProps}
@@ -113,7 +116,9 @@ const TimedeltaPicker = ({
                                 <DropdownItem
                                     key={unit.value}
                                     onClick={() =>
-                                        onChange(`${quantity}${unit.value}`)
+                                        onChange(
+                                            `${quantity ?? ''}${unit.value}`
+                                        )
                                     }
                                 >
                                     {unit.label}

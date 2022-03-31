@@ -8,6 +8,7 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
     class="numberInput wrapper left isNested group horizontal"
   >
     <input
+      appendposition="left"
       class="input"
       max="Infinity"
       min="0"
@@ -15,6 +16,30 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
       type="number"
       value="2"
     />
+    <span
+      class="controls group vertical"
+    >
+      <button
+        class="wrapper button wrapper small secondary small top isAuxiliaryButton"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          arrow_drop_up
+        </i>
+      </button>
+      <button
+        class="wrapper button wrapper small secondary small bottom isAuxiliaryButton"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          arrow_drop_down
+        </i>
+      </button>
+    </span>
   </span>
   <div
     class="dropdown"

@@ -47,7 +47,7 @@ type Props = {
     | 'value'
 >
 
-const NumberInput = forwardRef(function (
+function NumberInput(
     {
         appendPosition,
         autoFocus,
@@ -193,6 +193,6 @@ const NumberInput = forwardRef(function (
             )}
         </Group>
     )
-})
+}
 
-export default NumberInput
+export default forwardRef(NumberInput)

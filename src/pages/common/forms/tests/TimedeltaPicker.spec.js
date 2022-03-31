@@ -26,15 +26,15 @@ describe('TimedeltaPicker component', () => {
         expect(container.getElementsByTagName('input')[0].value).toBe(
             `${TIMEDELTA_OPERATOR_DEFAULT_QUANTITY}`
         )
-        expect(container.getElementsByTagName('button')[0].textContent).toMatch(
+        expect(container.getElementsByTagName('button')[2].textContent).toMatch(
             /day/i
         )
     })
 
     it('should handle unit change', () => {
-        const {getByText} = render(<TimedeltaPicker {...props} />)
+        const {getAllByText, getByText} = render(<TimedeltaPicker {...props} />)
 
-        fireEvent.click(getByText('arrow_drop_down'))
+        fireEvent.click(getAllByText('arrow_drop_down')[1])
 
         fireEvent.click(getByText(/week/i))
         expect(props.onChange).toHaveBeenLastCalledWith('1w')
@@ -72,7 +72,7 @@ describe('TimedeltaPicker component', () => {
         expect(container.getElementsByTagName('input')[0].value).toBe(
             `${value}`
         )
-        expect(container.getElementsByTagName('button')[0].textContent).toMatch(
+        expect(container.getElementsByTagName('button')[2].textContent).toMatch(
             /week/i
         )
     })
