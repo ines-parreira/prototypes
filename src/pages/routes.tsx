@@ -21,7 +21,7 @@ import {
 } from '../config/paywalls'
 import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
-import IntegrationListContainer from './integrations/list/IntegrationListContainer'
+import IntegrationList from './integrations/list/IntegrationList'
 import PhoneNumbersListContainer from './phoneNumbers/PhoneNumbersListContainer'
 import PhoneNumberCreateContainer from './phoneNumbers/PhoneNumberCreateContainer'
 import PhoneNumberDetailContainer from './phoneNumbers/PhoneNumberDetailContainer'
@@ -651,10 +651,7 @@ export function IntegrationsSettingsRoutes({
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
-                        IntegrationListContainer,
-                        ADMIN_ROLE
-                    ),
+                    content: withUserRoleRequired(IntegrationList, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 })}
             />

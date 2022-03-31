@@ -150,8 +150,17 @@ export const DEFAULT_SOURCE_PATHS = {
  * Integration-related
  */
 
+export type IntegrationConfig = {
+    title: string
+    description: string
+    type: IntegrationType
+    subTypes?: IntegrationType[]
+    requiredFeature?: AccountFeature
+    image?: string
+}
+
 // A list of integration types along with descriptions that will be displayed in the integrations summary
-export const INTEGRATION_TYPE_DESCRIPTIONS = [
+export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
     {
         type: IntegrationType.Email,
         subTypes: [
@@ -181,33 +190,33 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description: 'Add a chat on your website.',
     },
     {
-        type: 'smooch_inside',
+        type: IntegrationType.SmoochInside,
         title: 'Chat - 🗄 DEPRECATED',
         description:
             'Please migrate to the new chat integration as this one will soon be removed.',
     },
     {
-        type: 'facebook',
+        type: IntegrationType.Facebook,
         title: 'Facebook, Messenger & Instagram',
         description:
             'Create tickets from Facebook posts, comments and recommendations, Instagram comments and mentions and Messenger conversations',
         image: 'integrations/facebook.png',
     },
     {
-        type: 'aircall',
+        type: IntegrationType.Aircall,
         title: 'Aircall',
         description:
             'Provide phone support & create tickets when customers call you.',
         image: 'integrations/aircall.png',
     },
     {
-        type: 'http',
+        type: IntegrationType.Http,
         title: 'HTTP',
         description: 'Connect any application to Gorgias',
         image: 'integrations/http.png',
     },
     {
-        type: 'shopify',
+        type: IntegrationType.Shopify,
         title: 'Shopify',
         description:
             'Display customer profiles & orders next to tickets. Edit orders with macros',
@@ -230,31 +239,24 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         requiredFeature: AccountFeature.MagentoIntegration,
     },
     {
-        type: 'recharge',
+        type: IntegrationType.Recharge,
         title: 'Recharge',
         description:
             'Display subscription info. Refund charges & skip monthly payments.',
         image: 'integrations/recharge.svg',
     },
     {
-        type: 'smile',
+        type: IntegrationType.Smile,
         title: 'Smile',
         description:
             'Display customer points and activity. Insert point balance or referral url in macros.',
         image: 'integrations/smile.svg',
     },
     {
-        title: 'Klaviyo - 🗄 DEPRECATED',
         type: IntegrationType.Klaviyo,
+        title: 'Klaviyo - 🗄 DEPRECATED',
         description:
             'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
-        image: 'integrations/klaviyo.png',
-    },
-    {
-        title: 'Klaviyo',
-        url: 'https://www.klaviyo.com/integration/gorgias',
-        description:
-            'Send and receive Klaviyo SMS messages in Gorgias. Send Gorgias events into Klaviyo for customer segmentation and analytics.',
         image: 'integrations/klaviyo.png',
     },
     {
@@ -266,371 +268,10 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         requiredFeature: AccountFeature.YotpoIntegration,
     },
     {
-        title: 'BigCommerce',
-        description:
-            'Display customer profiles & orders next to tickets. Edit orders with macros.',
-        url: 'https://docs.gorgias.com/ecommerce-integrations/bigcommerce',
-        image: 'integrations/bigcommerce.png',
-    },
-    {
-        title: 'Helpdocs',
-        description: 'Create a knowledge base & connect it to Gorgias',
-        url: 'https://docs.gorgias.com/other-integrations/helpdocs',
-        image: 'integrations/helpdocs.png',
-    },
-    {
-        title: 'Swell',
-        description:
-            'Display loyalty points next to tickets. Award points with macros.',
-        url: 'https://docs.gorgias.com/reward-and-loyalty/swell-rewards',
-        image: 'integrations/swell.png',
-    },
-    {
-        title: 'ChannelReply',
-        description:
-            'Respond to Amazon, eBay, Back Market and Walmart inquiries. View order data and use it in macros.',
-        url: 'https://docs.gorgias.com/ecommerce-integrations/channel-reply',
-        image: 'integrations/channelreply.png',
-    },
-    {
-        title: 'Slack',
-        description:
-            'Post notifications on Slack when tickets are created or updated',
-        url: 'https://docs.gorgias.com/other-integrations/slack',
-        image: 'integrations/slack.png',
-    },
-    {
-        title: 'Segment',
-        description: 'Use Gorgias activity data in other apps.',
-        url: 'https://docs.gorgias.com/data-and-http-integrations/segment',
-        image: 'integrations/segment.png',
-    },
-    {
-        title: 'Zapier',
-        description: 'Trigger zaps with macros',
-        url: 'https://docs.gorgias.com/data-and-http-integrations/zapier',
-        image: 'integrations/zapier.png',
-    },
-    {
-        title: 'Ottspott',
-        description: 'Create tickets from phone conversations',
-        url: 'https://docs.gorgias.com/voice-and-phone/ottspott',
-        image: 'integrations/ottspott.jpeg',
-    },
-    {
-        type: 'smooch',
+        type: IntegrationType.Smooch,
         title: 'Smooch',
         description: 'Connect your own Smooch to Gorgias',
         image: 'integrations/smooch.png',
-    },
-    {
-        title: 'Omnisend',
-        description:
-            'Create customer segments based on customer support data from Gorgias',
-        url: 'https://docs.gorgias.com/ecommerce-integrations/omnisend',
-        image: 'integrations/omnisend.png',
-    },
-    {
-        title: 'Postscript',
-        description: 'Respond to Postscript SMS conversations from Gorgias',
-        url: 'https://docs.gorgias.com/sms-integration/postscript',
-        image: 'integrations/postscript.png',
-    },
-    {
-        title: 'SMSBump',
-        description:
-            'Create SMS tickets inside Gorgias from your SMSBump admin',
-        url: 'https://docs.gorgias.com/sms-integration/smsbump',
-        image: 'integrations/smsbump.png',
-    },
-    {
-        title: 'Emotive',
-        description:
-            'Create SMS tickets inside Gorgias from your Emotive admin',
-        url: 'https://docs.gorgias.com/sms-integration/emotive',
-        image: 'integrations/emotive.png',
-    },
-    {
-        title: 'Attentive',
-        description: 'Seamless two-way support via SMS',
-        url: 'https://docs.gorgias.com/sms-integration/attentive-mobile',
-        image: 'integrations/attentive.jpeg',
-    },
-    {
-        title: 'Reviews.io',
-        description: 'Trigger and respond to review within Gorgias admin',
-        url: 'https://docs.gorgias.com/reward-and-loyalty/reviews-io',
-        image: 'integrations/reviews.png',
-    },
-    {
-        title: 'Glew.io',
-        description: 'Get actionable insights on your customer support',
-        url: 'https://docs.gorgias.com/business-intelligence/glew-io',
-        image: 'integrations/glewio.png',
-    },
-    {
-        title: 'Circleloop',
-        description: 'Synchronize customer contacts from Gorgias to CircleLoop',
-        url: 'https://docs.gorgias.com/voice-and-phone/circle-loop',
-        image: 'integrations/circleloop.png',
-    },
-    {
-        title: 'Growave',
-        description:
-            'Brings customer reviews and questions into Gorgias helpdesk',
-        url: 'https://docs.gorgias.com/reward-and-loyalty/growave',
-        image: 'integrations/growave.png',
-    },
-    {
-        title: 'StellaConnect',
-        description:
-            'Unlock full potential of frontline team with real-time customer feedback',
-        url: 'https://docs.gorgias.com/quality-assurance/stella-connect',
-        image: 'integrations/stellaconnect.png',
-    },
-    {
-        title: 'Rep (formerly Voicefront)',
-        description:
-            'Allows Rep to create tickets from customers talking to your Alexa skill inside Gorgias',
-        url: 'https://docs.gorgias.com/voice-and-phone/voicefront-ai',
-        image: 'integrations/rep.svg',
-    },
-    {
-        title: 'Klausapp',
-        description:
-            'Track, review, rate, and improve the quality of your customer support',
-        url: 'https://docs.gorgias.com/quality-assurance/klausapp',
-        image: 'integrations/klaus.png',
-    },
-    {
-        title: 'ElectricSMS',
-        description:
-            'Create SMS tickets inside Gorgias from your ElectricSMS admin',
-        url: 'https://docs.gorgias.com/sms-integration/electric-sms',
-        image: 'integrations/electricsms.png',
-    },
-    {
-        title: 'Chatdesk',
-        description: 'Manage your repetitive tickets and free up your time',
-        url: 'https://docs.gorgias.com/other-integrations/chatdesk-teams',
-        image: 'integrations/chatdesk.jpeg',
-    },
-    {
-        title: 'Retention Rocket',
-        description:
-            'Enabling the integration allows you to receive and reply to customer SMS directly',
-        url: 'https://docs.gorgias.com/sms-integration/retention-rocket',
-        image: 'integrations/retentionrocket.jpg',
-    },
-    {
-        title: 'Alloy',
-        description:
-            'Taking your customer support automation to the next level',
-        url: 'https://docs.gorgias.com/business-intelligence/alloy',
-        image: 'integrations/alloy.png',
-    },
-    {
-        title: 'Churn Buster',
-        description: 'For a seamless flow to your failed payments recovery',
-        url: 'https://docs.gorgias.com/business-intelligence/churn-buster',
-        image: 'integrations/churnbuster.png',
-    },
-    {
-        title: 'CloudTalk',
-        description: 'Streamline communication with your customers',
-        url: 'https://docs.gorgias.com/voice-and-phone/cloud-talk',
-        image: 'integrations/cloudtalk.png',
-    },
-    {
-        title: 'Returnly',
-        description: 'Create a seamless return process for your customers',
-        url: 'https://docs.gorgias.com/returns-exchanges/returnly',
-        image: 'integrations/returnly.png',
-    },
-    {
-        title: 'Loop Returns',
-        description: 'Automate your entire returns process, even exchanges',
-        url: 'https://docs.gorgias.com/returns-exchanges/loop-returns',
-        image: 'integrations/loopreturns.png',
-    },
-    {
-        title: 'LateShipment',
-        description:
-            'Real-time visibility on shipping status so you can be proactive with your customers',
-        url: 'https://docs.gorgias.com/shipping/late-shipment',
-        image: 'integrations/lateshipment.jpeg',
-    },
-    {
-        title: 'JustCall',
-        description: 'Make and receive calls directly on Gorgias',
-        url: 'https://docs.gorgias.com/voice-and-phone/just-call',
-        image: 'integrations/justcall.png',
-    },
-    {
-        title: 'Textline',
-        description:
-            'Create tickets in Gorgias that match your Textline conversations',
-        url: 'https://docs.gorgias.com/sms-integration/textline',
-        image: 'integrations/textline.png',
-    },
-    {
-        title: 'ShippingChimp',
-        description:
-            'Track your orders in real-time and communicate delivery issues and delays',
-        url: 'https://help.shippingchimp.com/kb/en/article/gorgias-integration',
-        image: 'integrations/shippingchimp.png',
-    },
-    {
-        title: 'TXTFi',
-        description:
-            'Create SMS tickets inside Gorgias to accept orders via SMS',
-        url: 'https://docs.gorgias.com/sms-integration/txtfi',
-        image: 'integrations/txtfi.png',
-    },
-    {
-        title: 'Daasity',
-        description: 'DTC eCommerce Analytics Made Easy',
-        url: 'https://docs.gorgias.com/business-intelligence/daasity',
-        image: 'integrations/daasity.jpeg',
-    },
-    {
-        title: 'Stonly',
-        description: 'Interactive step-by-step guides & troubleshooting',
-        url: 'https://stonly.com/kb/guide/en/how-to-launch-gorgias-chat-from-the-stonly-widget-aV3pDkR0KE/Steps/335165,335168',
-        image: 'integrations/stonly.jpeg',
-    },
-    {
-        title: 'Wonderment',
-        description: 'Order tracking your customers will love',
-        url: 'https://www.wonderment.com/docs/gorgias-integration-setup',
-        image: 'integrations/wonderment.png',
-    },
-    {
-        title: 'AfterShip',
-        description: 'The #1 Shipment Tracking Platform',
-        url: 'https://support.aftership.com/en/article/integrate-gorgias-with-aftership-1rfy7rq/?bust=1623045781127',
-        image: 'integrations/aftership.png',
-    },
-    {
-        title: 'Opinew',
-        description: 'Import product reviews to your Shopify Store',
-        url: 'https://www.opinew.com/help-center/knowledge-base/how-to-integrate-with-gorgias/',
-        image: 'integrations/opinew.png',
-    },
-    {
-        title: 'EasyCall',
-        description: 'A web call center for modern businesses',
-        url: 'https://easycall.crisp.help/en/article/gorgias-easycall-integration-connect-your-call-center-to-your-ecommerce-crm-cjwrqb/',
-        image: 'integrations/easycall.png',
-    },
-    {
-        title: 'AnswerBase',
-        description: "Answers for your customers' biggest questions",
-        url: 'https://help.answerbase.com/Article/3590718/How-to-Integrate-Gorgias-with-Answerbase-on-Your-Ecommerce-Site',
-        image: 'integrations/answerbase.png',
-    },
-    {
-        title: 'Shopney',
-        description: 'Easily turn your Shopify store into an App',
-        url: 'https://support.shopney.co/en/articles/5096693-how-to-integrate-gorgias-with-your-shopney-mobile-app',
-        image: 'integrations/shopney.png',
-    },
-    {
-        title: 'ReturnLogic',
-        description: 'Return management software for scaling Shopify Brands',
-        url: 'https://docs.gorgias.com/returns-exchanges/return-logic',
-        image: 'integrations/returnlogic.png',
-    },
-    {
-        title: 'Ada',
-        description: 'AI Chatbot automation + ticketing support',
-        url: 'https://www.gorgias.com/apps/ada',
-        image: 'integrations/ada.png',
-    },
-    {
-        title: 'Gatsby',
-        description: 'Turn customers into influencers',
-        url: 'http://help.gatsby.ai/en/articles/5389708-connecting-gatsby-with-gorgias',
-        image: 'integrations/gatsby.png',
-    },
-    {
-        title: 'Okendo',
-        description: 'Marketing app for product reviews & UGC',
-        url: 'https://docs.gorgias.com/reward-and-loyalty/okendo',
-        image: 'integrations/okendo.png',
-    },
-    {
-        title: 'ReCart',
-        description: 'Facebook marketing bot platform',
-        url: 'https://docs.gorgias.com/messenger-bot-integrations/octane-ai',
-        image: 'integrations/recart.png',
-    },
-    {
-        title: 'Tone',
-        description: 'Grow revenue with the fastest 2-way SMS experience',
-        url: 'http://help.tonemessaging.com/knowledge/tone-x-gorgias-integration-setup',
-        image: 'integrations/tone.jpeg',
-    },
-    {
-        title: 'CallHippo',
-        description: 'Virtual phone system for all businesses',
-        url: 'https://support.callhippo.com/support/solutions/articles/10000062437',
-        image: 'integrations/callhippo.png',
-    },
-    {
-        title: 'Checkout Champ',
-        description:
-            'E-commerce checkout and upsell billing management platform',
-        url: 'https://docs.gorgias.com/ecommerce-integrations/checkout-champ',
-        image: 'integrations/checkoutchamp.png',
-    },
-    {
-        title: 'Konnektive',
-        description:
-            'Display customers and their order information next to tickets and update information tied to a customer and their orders using macros',
-        url: 'https://konnektive.atlassian.net/wiki/spaces/KCKB/pages/1971847173/Gorgias',
-        image: 'integrations/konnektive.jpeg',
-    },
-    {
-        title: 'Stateset',
-        description: 'Unify and automate your eCommerce operations',
-        url: 'https://docs.gorgias.com/other-integrations/stateset-ai-responder',
-        image: 'integrations/stateset.jpeg',
-    },
-    {
-        title: 'ShipUp',
-        description:
-            'Enables e-merchants to offer their clients the delivery that suits them best',
-        url: 'https://shipup.elevio.help/en/articles/38',
-        image: 'integrations/shipup.png',
-    },
-    {
-        title: 'Tolstoy',
-        description:
-            'A new ticket is created in Gorgias after user intraction in the Tolstoy interactive video player',
-        url: 'https://docs.gorgias.com/other-integrations/tolstoy',
-        image: 'integrations/tolstoy.jpeg',
-    },
-    {
-        title: 'Cartloop',
-        description:
-            'Cartloop is a conversational SMS marketing platform for Shopify brands',
-        url: 'https://intercom.help/cartloop/en/articles/5106599-how-to-integrate-gorgias',
-        image: 'integrations/cartloop.png',
-    },
-    {
-        title: 'Sentisum',
-        description:
-            'Automated ticket tagging engine, powered by natural language processing technology',
-        url: 'https://docs.gorgias.com/statistics/senti-sum',
-        image: 'integrations/sentisum.jpeg',
-    },
-    {
-        title: 'Autopilot',
-        description:
-            'Create dashboards and set goals for your team that extend beyond typical support metrics',
-        url: 'https://docs.gorgias.com/messenger-bot-integrations/autopilot',
-        image: 'integrations/autopilot.png',
     },
 ]
 

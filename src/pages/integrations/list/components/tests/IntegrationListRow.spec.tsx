@@ -1,73 +1,50 @@
 import {render} from '@testing-library/react'
 import React from 'react'
-import {fromJS} from 'immutable'
 
 import IntegrationListRow from '../IntegrationListRow'
 import {IntegrationType} from '../../../../../models/integration/constants'
 
 describe('IntegrationListRow', () => {
     it('should display the integration row as a link', () => {
-        const integrationConfig = fromJS({
+        const integration = {
+            type: IntegrationType.Http,
             title: 'an integration',
             description: 'this is a cool integration',
-        })
+            count: 1,
+        }
 
         const {container} = render(
-            <IntegrationListRow integrationConfig={integrationConfig} />
+            <IntegrationListRow integration={integration} />
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display an external integration', () => {
-        const integrationConfig = fromJS({
+        const integration = {
+            type: IntegrationType.App,
             title: 'an integration',
             description: 'this is a cool integration',
             url: 'http://www.foo.bar',
-        })
+            count: 0,
+        }
 
         const {container} = render(
-            <IntegrationListRow integrationConfig={integrationConfig} />
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should display an external integration even if it has a type', () => {
-        const integrationConfig = fromJS({
-            title: 'an integration',
-            description: 'this is a cool integration',
-            url: 'http://www.foo.bar',
-            type: IntegrationType.Klaviyo,
-        })
-
-        const {container} = render(
-            <IntegrationListRow integrationConfig={integrationConfig} />
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should display an early access integration link', () => {
-        const integrationConfig = fromJS({
-            title: 'an integration',
-            description: 'this is a cool integration',
-            url: 'http://www.foo.bar',
-            isEarlyAccess: true,
-        })
-
-        const {container} = render(
-            <IntegrationListRow integrationConfig={integrationConfig} />
+            <IntegrationListRow integration={integration} />
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display an integration with upgrade requirement', () => {
-        const integrationConfig = fromJS({
+        const integration = {
+            type: IntegrationType.Twitter,
             title: 'an integration',
             description: 'this is a cool integration',
             requiredPlanName: 'Basic',
-        })
+            count: 0,
+        }
 
         const {container} = render(
-            <IntegrationListRow integrationConfig={integrationConfig} />
+            <IntegrationListRow integration={integration} />
         )
         expect(container.firstChild).toMatchSnapshot()
     })

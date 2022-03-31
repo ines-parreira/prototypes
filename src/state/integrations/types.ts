@@ -1,5 +1,6 @@
 import {Map} from 'immutable'
 
+import {IntegrationConfig} from 'config'
 import {
     Integration,
     IntegrationAuthentication,
@@ -23,4 +24,9 @@ export type IntegrationsState = {
             delete?: boolean
         }
     }
+}
+
+export type IntegrationListItem = IntegrationConfig & {
+    count: number
+    requiredPlanName?: string
 }

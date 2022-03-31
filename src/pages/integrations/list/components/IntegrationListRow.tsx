@@ -1,8 +1,9 @@
 import React, {ComponentProps, FC} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
-import {Map} from 'immutable'
 
+import {AppListItem, isApp} from 'models/integration/types/app'
+import {IntegrationListItem} from 'state/integrations/types'
 import {
     logEvent,
     SegmentEvent,
@@ -14,21 +15,17 @@ import {getIconFromUrl} from '../../../../utils'
 import css from './IntegrationListRow.less'
 
 type Props = {
-    integrationConfig: Map<any, any>
+    integration: IntegrationListItem | AppListItem
 }
 
-const IntegrationListRow = ({integrationConfig}: Props) => {
-    const hasAnIntegration = integrationConfig.get('count', 0) > 0
+const IntegrationListRow = ({integration}: Props) => {
+    const hasAnIntegration = integration.count > 0
 
-    const nextUrl = `/app/settings/integrations/${
-        integrationConfig.get('type') as string
-    }`
+    const linkHref = isApp(integration)
+        ? integration.url
+        : `/app/settings/integrations/${integration.type}`
 
-    const isExternalLink = !!integrationConfig.get('url')
-    const isEarlyAccess = integrationConfig.get('isEarlyAccess')
-
-    const linkHref = isExternalLink ? integrationConfig.get('url') : nextUrl
-    const LinkComponent: FC<ComponentProps<typeof Link>> = isExternalLink
+    const LinkComponent: FC<ComponentProps<typeof Link>> = isApp(integration)
         ? ({children, to, ...other}: ComponentProps<typeof Link>) => (
               <a
                   {...other}
@@ -49,52 +46,49 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
                     'd-flex align-items-center justify-content-center'
                 )}
             >
-                {integrationConfig.get('image') ? (
+                {integration.image ? (
                     <img
-                        alt={`${integrationConfig.get('title') as string} logo`}
+                        alt={`${integration.title} logo`}
                         role="presentation"
                         className="logo"
-                        src={getIconFromUrl(integrationConfig.get('image'))}
+                        src={
+                            isApp(integration)
+                                ? integration.image
+                                : getIconFromUrl(integration.image)
+                        }
                     />
                 ) : (
-                    <SourceIcon type={integrationConfig.get('type')} />
+                    <SourceIcon type={integration.type} />
                 )}
             </div>
             <div className="flex-grow mr-1">
                 <div className="d-flex align-items-start">
-                    <h5 className={css.title}>
-                        {integrationConfig.get('title')}
-                    </h5>
-                    {integrationConfig.get('requiredPlanName') && (
+                    <h5 className={css.title}>{integration.title}</h5>
+                    {integration.requiredPlanName && (
                         <UpgradeButton
                             className="ml-3 py-0 px-1"
                             size="small"
                             state={{
-                                openedPlanModal:
-                                    integrationConfig.get('requiredPlanName'),
+                                openedPlanModal: integration.requiredPlanName,
                             }}
                         />
                     )}
                 </div>
-                {integrationConfig.get('description')}
+                {integration.description}
             </div>
-            {!integrationConfig.get('requiredPlanName') && (
+            {!integration.requiredPlanName && (
                 <div>
                     <div className={css.action}>
                         {hasAnIntegration && (
                             <span className={css.count}>
-                                {integrationConfig.get('count')} active
-                            </span>
-                        )}
-
-                        {isEarlyAccess && (
-                            <span className={css.earlyAccess}>
-                                Register for early access
+                                {integration.count} active
                             </span>
                         )}
 
                         <i className="material-icons md-1">
-                            {isExternalLink ? 'open_in_new' : 'navigate_next'}
+                            {isApp(integration)
+                                ? 'open_in_new'
+                                : 'navigate_next'}
                         </i>
                     </div>
                 </div>
@@ -102,7 +96,7 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
         </>
     )
 
-    return integrationConfig.get('requiredPlanName') ? (
+    return integration.requiredPlanName ? (
         <div
             className={classnames(
                 css.component,
@@ -120,7 +114,7 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
             )}
             onClick={() => {
                 logEvent(SegmentEvent.IntegrationClicked, {
-                    integration: integrationConfig.get('title'),
+                    integration: integration.title,
                 })
             }}
             to={linkHref}

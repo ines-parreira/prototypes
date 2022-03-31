@@ -2,7 +2,7 @@ import {fromJS, List, Map} from 'immutable'
 import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
-import {INTEGRATION_TYPE_DESCRIPTIONS} from 'config'
+import {INTEGRATION_TYPE_CONFIG} from 'config'
 import {Integration, IntegrationType} from 'models/integration/types'
 import {MESSAGING_INTEGRATION_TYPES} from 'models/integration/constants'
 import {PhoneNumber} from 'models/phoneNumber/types'
@@ -12,7 +12,11 @@ import {getCurrentUserState} from 'state/currentUser/selectors'
 import {getPhoneNumbers as getPhoneNumbersState} from 'state/entities/phoneNumbers/selectors'
 import {nestedReplace} from 'state/ticket/utils'
 
-import {IntegrationsState, IntegrationsImmutableState} from './types'
+import {
+    IntegrationsState,
+    IntegrationsImmutableState,
+    IntegrationListItem,
+} from './types'
 
 type IntegrationsCountMap = {
     [key in IntegrationType]?: number
@@ -55,47 +59,33 @@ export const getIntegrationsCountPerType = createSelector<
     )
 })
 
-export const getIntegrationsConfig = createSelector<
+export const getIntegrationsList = createSelector<
     RootState,
-    List<any>,
+    IntegrationListItem[],
     IntegrationsCountMap
 >(getIntegrationsCountPerType, (counts) => {
-    return fromJS(
-        INTEGRATION_TYPE_DESCRIPTIONS.reduce(
-            (
-                list,
-                typeDescription: typeof INTEGRATION_TYPE_DESCRIPTIONS[keyof typeof INTEGRATION_TYPE_DESCRIPTIONS]
-            ) => {
-                let count = 0
+    return INTEGRATION_TYPE_CONFIG.reduce(
+        (accumulator: IntegrationListItem[], description) => {
+            let count = 0
 
-                //$TsFixMe remove the typeof condition when config is migrated
-                if (typeof typeDescription === 'object') {
-                    if (typeDescription.subTypes) {
-                        typeDescription.subTypes.forEach((type) => {
-                            count += counts[type] || 0
-                        })
-                    } else {
-                        count +=
-                            counts[
-                                typeDescription.type as keyof IntegrationsCountMap
-                            ] || 0
-                    }
-                }
+            if (description.subTypes) {
+                description.subTypes.forEach((type) => {
+                    count += counts[type] || 0
+                })
+            } else {
+                count += counts[description.type] || 0
+            }
 
-                return [
-                    ...list,
-                    {
-                        //$TsFixMe remove the typeof condition when config is migrated
-                        ...(typeof typeDescription === 'object'
-                            ? typeDescription
-                            : {}),
-                        count,
-                    },
-                ]
-            },
-            [] as Record<string, unknown>[]
-        )
-    ) as List<any>
+            return [
+                ...accumulator,
+                {
+                    ...description,
+                    count,
+                },
+            ]
+        },
+        []
+    )
 })
 
 export const getCurrentIntegration = createSelector<

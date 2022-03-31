@@ -19,6 +19,7 @@ export enum IntegrationType {
     Sms = 'sms',
     Twitter = 'twitter',
     SelfService = 'self_service',
+    App = 'app',
 }
 
 export enum VoiceMessageType {
