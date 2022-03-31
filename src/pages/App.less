@@ -17,6 +17,9 @@
 
     .container {
         max-height: 100%;
+        // keep the line below otherwise long words / links will break layout
+        // https://css-tricks.com/flexbox-truncated-text/
+        min-width: 0;
     }
 
     .content {
@@ -25,14 +28,6 @@
         flex: 1;
         overflow: auto;
         padding: 0;
-
-        @media @mobiles {
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-        }
     }
 
     .main-content {
