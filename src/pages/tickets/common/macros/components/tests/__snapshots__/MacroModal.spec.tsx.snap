@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MacroModal /> should render MacroModal 1`] = `
+<div>
+  <div
+    class="container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="list content col-3"
+      >
+        <div>
+          MacroModalList
+        </div>
+      </div>
+      <div
+        class="content col-9"
+      >
+        <div>
+          MacroEdit
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

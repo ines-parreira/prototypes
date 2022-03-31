@@ -20,7 +20,6 @@ import {
     fetchMacrosParamsTypes,
 } from '../../../../../state/macro/actions'
 import Preview from '../../../common/macros/Preview'
-import Tooltip from '../../../../common/components/Tooltip'
 import Loader from '../../../../common/components/Loader/Loader'
 import MacroList from '../../../common/macros/components/MacroList'
 import MacroNoResults from '../../../common/macros/components/MacroNoResults'
@@ -39,10 +38,9 @@ type OwnProps = {
     fetchMacros: (params: fetchMacrosParamsTypes) => Promise<void>
     isInitialMacrosLoading: boolean
     macros: List<any>
-    onClearMacro: () => void
     page: number
     selectMacro: (macro: Map<any, any>) => void
-    searchQuery: string
+    searchParams: fetchMacrosParamsTypes
     totalPages: number
 }
 
@@ -59,11 +57,11 @@ type State = {
 export class TicketMacrosContainer extends Component<Props, State> {
     static defaultProps: Pick<
         Props,
-        'currentTicket' | 'macros' | 'searchQuery'
+        'currentTicket' | 'macros' | 'searchParams'
     > = {
         currentTicket: fromJS({}),
         macros: fromJS([]),
-        searchQuery: '',
+        searchParams: {search: ''},
     }
     previewContainerRef: Maybe<HTMLDivElement>
 
@@ -117,7 +115,7 @@ export class TicketMacrosContainer extends Component<Props, State> {
     closeMacroModal = () => {
         this.setState({isModalOpen: false})
         // reload macros, in case they changed in the modal
-        void this.props.fetchMacros({search: this.props.searchQuery})
+        void this.props.fetchMacros(this.props.searchParams)
     }
 
     toggleCreateMacro = (isCreatingMacro = false): Promise<void> => {
@@ -130,7 +128,7 @@ export class TicketMacrosContainer extends Component<Props, State> {
         this.toggleMacroDeleteConfirmOpen()
         const macroId = this.props.currentMacro.get('id', '')
         return this.props.deleteMacro(macroId).then(() => {
-            void this.props.fetchMacros({search: this.props.searchQuery})
+            void this.props.fetchMacros(this.props.searchParams)
         })
     }
 
@@ -140,7 +138,6 @@ export class TicketMacrosContainer extends Component<Props, State> {
             macros,
             newMessageType,
             className,
-            onClearMacro,
             page,
             totalPages,
             currentMacro,
@@ -155,7 +152,7 @@ export class TicketMacrosContainer extends Component<Props, State> {
         } else if (macros.isEmpty()) {
             content = (
                 <MacroNoResults
-                    searchQuery={this.props.searchQuery}
+                    searchParams={this.props.searchParams}
                     newAction={() => this.openMacroModal(undefined, true)}
                 />
             )
@@ -165,13 +162,15 @@ export class TicketMacrosContainer extends Component<Props, State> {
                     <MacroList
                         className={css.macroList}
                         currentMacro={currentMacro}
-                        macros={macros}
-                        page={page}
-                        totalPages={totalPages}
-                        search={this.props.searchQuery}
+                        searchResults={{macros, page, totalPages}}
                         onClickItem={this.props.applyMacro}
                         onHoverItem={selectMacro}
-                        fetchMacros={fetchMacros}
+                        loadMore={() =>
+                            fetchMacros({
+                                ...this.props.searchParams,
+                                page: page + 1,
+                            })
+                        }
                     />
                     <div
                         className={css.previewContainer}
@@ -289,25 +288,6 @@ export class TicketMacrosContainer extends Component<Props, State> {
 
         return (
             <div className={classnames(css.component, className)}>
-                <a
-                    id="clear-macro-button"
-                    className={css.clearMacros}
-                    onClick={onClearMacro}
-                >
-                    <i className="material-icons d-none d-md-inline-block">
-                        close
-                    </i>
-                    <Button
-                        className="d-md-none"
-                        intent="secondary"
-                        size="small"
-                    >
-                        Close
-                    </Button>
-                    <Tooltip placement="top" target="clear-macro-button">
-                        <strong>Esc</strong> to close the macro list.
-                    </Tooltip>
-                </a>
                 {content}
                 {this.state.isModalOpen && (
                     <MacroContainer

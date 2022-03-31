@@ -41,6 +41,7 @@ describe('<MacrosSettingsForm/>', () => {
         updated_datetime: '',
         uri: '',
         usage: 0,
+        language: null,
     }
     const duplicatedMacroFixture = {
         ...macrosFixtures[0],
@@ -144,10 +145,10 @@ describe('<MacrosSettingsForm/>', () => {
         const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
         component.find(Button).at(0).simulate('submit')
-        expect(mockCreateMacro).toHaveBeenNthCalledWith(
-            1,
-            getDefaultMacro().toJS()
-        )
+        expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
+            ...getDefaultMacro().toJS(),
+            language: null,
+        })
         setImmediate(() => {
             expect(mockMacroCreated).toHaveBeenNthCalledWith(1, newMacroFixture)
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
@@ -351,6 +352,7 @@ describe('<MacrosSettingsForm/>', () => {
             expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
                 actions,
                 name: `${name} (copy)`,
+                language: null,
             })
             setImmediate(() => {
                 expect(mockMacroCreated).toHaveBeenNthCalledWith(

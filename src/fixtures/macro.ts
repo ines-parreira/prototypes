@@ -10,6 +10,7 @@ export const macros = [
     {
         id: 1,
         name: 'Waive Fee',
+        language: null,
         actions: [
             {
                 type: MacroActionType.User,
@@ -244,4 +245,5 @@ export const macroFixture = {
     id: 1,
     actions: [],
     updated_datetime: '2021-05-07T12:23:40.369422+00:00',
+    language: null,
 }

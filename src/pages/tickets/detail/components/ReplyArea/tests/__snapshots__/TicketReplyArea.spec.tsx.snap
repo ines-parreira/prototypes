@@ -1,75 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and focus editor when called 1`] = `
-<TicketReplyArea
-  applyMacro={[MockFunction]}
-  cacheAdded={false}
-  currentMacro={Object {}}
-  currentTicket={Immutable.Map {}}
-  currentUser={Immutable.Map {}}
-  customers={Object {}}
-  fetchMacrosCancellable={[Function]}
-  newMessage={Object {}}
-  newMessageType="email"
-  notify={[Function]}
-  page={1}
-  preferences={Immutable.Map {}}
-  selectMacro={[MockFunction]}
-  ticket={Immutable.Map {}}
-  totalPages={1}
->
-  <div
-    className="component"
-  >
-    <div
-      className="search"
-    >
-      <i
-        className="searchIcon material-icons md-2 text-info"
-      >
-        bolt
-      </i>
-      <Input
-        disabled={false}
-        innerRef={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Search macros by name, tags or body..."
-        tabIndex={3}
-        type="text"
-      >
-        <input
-          className="form-control"
-          disabled={false}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          placeholder="Search macros by name, tags or body..."
-          tabIndex={3}
-          type="text"
-        />
-      </Input>
-    </div>
-    <div
-      className="content"
-    >
-      <TicketReplyMock
-        applyMacro={[Function]}
-        macros={Immutable.List []}
-        richAreaRef={[Function]}
-        shouldDisplayQuickReply={false}
-        ticket={Immutable.Map {}}
-      >
-        <div>
-          hello
-        </div>
-      </TicketReplyMock>
-    </div>
-  </div>
-</TicketReplyArea>
-`;
-
 exports[`<TicketReplyArea/> should block the reply area because the customer is required on ticket creation with an internal-note 1`] = `
 <TicketReplyArea
   applyMacro={[MockFunction]}
@@ -96,36 +26,60 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
   <div
     className="component"
   >
-    <div
-      className="search"
+    <TicketMacrosSearch
+      handleSearchKeyDown={[Function]}
+      macrosVisible={false}
+      onClearMacro={[Function]}
+      requireCustomerSelection={true}
+      searchMacros={[Function]}
+      searchParams={
+        Object {
+          "languages": Array [],
+          "page": 1,
+          "search": "",
+        }
+      }
+      setFocus={[Function]}
+      showMacros={[Function]}
     >
-      <i
-        className="searchIcon material-icons md-2 text-info"
+      <div
+        className="component d-flex align-items-center"
       >
-        bolt
-      </i>
-      <Input
-        disabled={true}
-        innerRef={[Function]}
-        onChange={[Function]}
-        onFocus={[Function]}
-        onKeyDown={[Function]}
-        placeholder="Search macros by name, tags or body..."
-        tabIndex={3}
-        type="text"
-      >
-        <input
-          className="form-control"
+        <i
+          className="material-icons md-2 ml-2 text-info"
+        >
+          bolt
+        </i>
+        <Input
+          className="border-0 ml-2"
           disabled={true}
+          innerRef={[Function]}
           onChange={[Function]}
           onFocus={[Function]}
           onKeyDown={[Function]}
           placeholder="Search macros by name, tags or body..."
           tabIndex={3}
           type="text"
-        />
-      </Input>
-    </div>
+        >
+          <input
+            className="border-0 ml-2 form-control"
+            disabled={true}
+            onChange={[Function]}
+            onFocus={[Function]}
+            onKeyDown={[Function]}
+            placeholder="Search macros by name, tags or body..."
+            tabIndex={3}
+            type="text"
+          />
+        </Input>
+        <i
+          className="material-icons md-2 mr-3 clickable closeButton"
+          onClick={[Function]}
+        >
+          keyboard_arrow_down
+        </i>
+      </div>
+    </TicketMacrosSearch>
     <div
       className="content"
     >
@@ -155,25 +109,22 @@ exports[`<TicketReplyArea/> should render 1`] = `
 <div
   className="component"
 >
-  <div
-    className="search"
-  >
-    <i
-      className="searchIcon material-icons md-2 text-info"
-    >
-      bolt
-    </i>
-    <Input
-      disabled={false}
-      innerRef={[Function]}
-      onChange={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      placeholder="Search macros by name, tags or body..."
-      tabIndex={3}
-      type="text"
-    />
-  </div>
+  <TicketMacrosSearch
+    handleSearchKeyDown={[Function]}
+    macrosVisible={false}
+    onClearMacro={[Function]}
+    requireCustomerSelection={false}
+    searchMacros={[Function]}
+    searchParams={
+      Object {
+        "languages": Array [],
+        "page": 1,
+        "search": "",
+      }
+    }
+    setFocus={[Function]}
+    showMacros={[Function]}
+  />
   <div
     className="content"
   >

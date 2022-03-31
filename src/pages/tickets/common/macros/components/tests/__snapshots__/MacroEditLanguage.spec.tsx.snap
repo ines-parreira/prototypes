@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MacroEditLanguage /> should render MacroEditLanguage 1`] = `
+<div>
+  <div
+    class="dropdown"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="true"
+      class=""
+      data-toggle="dropdown"
+    >
+      <div
+        class="select dropdown-toggle selectFullWidth"
+      >
+        <span
+          class="label"
+          style="min-width: 82px; opacity: 1;"
+        >
+          Afar
+        </span>
+        <input
+          autocomplete="chrome-off"
+          class="input"
+          style="min-width: 82px;"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="options optionsFullWidth dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      
+      <button
+        class="option option--focused dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          <span
+            class="text-muted"
+          >
+            - No language -
+          </span>
+        </span>
+      </button>
+      <button
+        class="option dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          <span
+            class="material-icons mr-1"
+          >
+            auto_awesome
+          </span>
+          Auto detect
+        </span>
+      </button>
+      <button
+        class="option dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          Abkhazian
+        </span>
+      </button>
+      <button
+        class="option dropdown-item"
+        role="menuitem"
+        tabindex="0"
+        type="button"
+      >
+        <span>
+          Afrikaans
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

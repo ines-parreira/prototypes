@@ -12,6 +12,15 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
       title="Macro"
     />
     <HeaderCellProperty
+      title="Tags"
+    />
+    <HeaderCellProperty
+      direction="asc"
+      isOrderedBy={false}
+      onClick={[Function]}
+      title="Language"
+    />
+    <HeaderCellProperty
       direction="asc"
       isOrderedBy={false}
       onClick={[Function]}
@@ -38,6 +47,52 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         >
           <BodyCellContent>
             Waive Fee
+          </BodyCellContent>
+        </Link>
+      </td>
+      <td
+        className="wrapper"
+      >
+        <Link
+          tabIndex={-1}
+          to="/app/settings/macros/1"
+        >
+          <BodyCellContent>
+            <div
+              className="flex"
+              id="tags-1"
+            >
+              <TagLabel
+                className={null}
+                style={Object {}}
+              >
+                refund
+              </TagLabel>
+              <Component
+                target="tags-1"
+              >
+                refund, refund accepted
+              </Component>
+              <TagLabel
+                className="text-info"
+                style={Object {}}
+              >
+                +
+                1
+              </TagLabel>
+            </div>
+          </BodyCellContent>
+        </Link>
+      </td>
+      <td
+        className="wrapper"
+      >
+        <Link
+          tabIndex={-1}
+          to="/app/settings/macros/1"
+        >
+          <BodyCellContent>
+            -
           </BodyCellContent>
         </Link>
       </td>
@@ -115,6 +170,40 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         >
           <BodyCellContent>
             Do Not Waive Fee
+          </BodyCellContent>
+        </Link>
+      </td>
+      <td
+        className="wrapper"
+      >
+        <Link
+          tabIndex={-1}
+          to="/app/settings/macros/2"
+        >
+          <BodyCellContent>
+            <div
+              className="flex"
+              id="tags-2"
+            >
+              <TagLabel
+                className={null}
+                style={Object {}}
+              >
+                rejectedTag
+              </TagLabel>
+            </div>
+          </BodyCellContent>
+        </Link>
+      </td>
+      <td
+        className="wrapper"
+      >
+        <Link
+          tabIndex={-1}
+          to="/app/settings/macros/2"
+        >
+          <BodyCellContent>
+            -
           </BodyCellContent>
         </Link>
       </td>

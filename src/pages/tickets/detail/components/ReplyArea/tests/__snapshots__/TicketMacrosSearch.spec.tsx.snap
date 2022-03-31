@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketMacrosSearch /> should render TicketMacrosSearch focused 1`] = `
+<div
+  class="component d-flex align-items-center"
+>
+  <i
+    class="material-icons md-2 ml-2 text-info"
+  >
+    bolt
+  </i>
+  <input
+    class="border-0 ml-2 form-control"
+    placeholder="Search macros by name, tags or body..."
+    tabindex="3"
+    type="text"
+  />
+  <div>
+    MacroFilters
+  </div>
+  <i
+    class="material-icons md-2 mr-3 clickable closeButton"
+  >
+    keyboard_arrow_up
+  </i>
+</div>
+`;
+
+exports[`<TicketMacrosSearch /> should render TicketMacrosSearch unfocused 1`] = `
+<div
+  class="component d-flex align-items-center"
+>
+  <i
+    class="material-icons md-2 ml-2 text-info"
+  >
+    bolt
+  </i>
+  <input
+    class="border-0 ml-2 form-control"
+    placeholder="Search macros by name, tags or body..."
+    tabindex="3"
+    type="text"
+  />
+  <i
+    class="material-icons md-2 mr-3 clickable closeButton"
+  >
+    keyboard_arrow_down
+  </i>
+</div>
+`;

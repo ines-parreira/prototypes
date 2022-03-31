@@ -1,5 +1,4 @@
 import {CancelToken} from 'axios'
-import _pick from 'lodash/pick'
 import React, {useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Container} from 'reactstrap'
@@ -9,6 +8,7 @@ import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import {OrderDirection} from 'models/api/types'
 import {fetchMacros} from 'models/macro/resources'
+import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import {
     FetchMacrosOptions,
     MacroSortableProperties,
@@ -106,6 +106,15 @@ export function MacrosSettingsContentContainer({
                         placeholder="Search macros..."
                         searchDebounceTime={300}
                     />
+                    <MacroFilters
+                        selectedProperties={{
+                            languages: options.languages,
+                            tags: options.tags,
+                        }}
+                        onChange={(values) =>
+                            setOptions({...options, ...values})
+                        }
+                    />
                     <MacrosCreateDropdown />
                 </div>
             </PageHeader>
@@ -148,7 +157,7 @@ export function MacrosSettingsContentContainer({
                         orderDir,
                     })
                 }
-                sortOptions={_pick(options, 'orderBy', 'orderDir')}
+                options={options}
             />
 
             <Pagination
