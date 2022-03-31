@@ -80,17 +80,21 @@ export function RuleRow({
                     })
                 )
             } catch (error) {
-                void notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to duplicate rule',
-                })
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message: 'Failed to duplicate rule',
+                    })
+                )
             }
         } else {
-            void notify({
-                message:
-                    'Your account has reached the rule limit. To add more rules, please delete any inactive rules.',
-                status: NotificationStatus.Error,
-            })
+            void dispatch(
+                notify({
+                    message:
+                        'Your account has reached the rule limit. To add more rules, please delete any inactive rules.',
+                    status: NotificationStatus.Error,
+                })
+            )
         }
     }
 
@@ -98,10 +102,12 @@ export function RuleRow({
         try {
             await deleteRule(rule.id)
             void dispatch(ruleDeleted(rule.id))
-            void notify({
-                status: NotificationStatus.Success,
-                message: `Successfully deleted rule ${rule.name}`,
-            })
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: `Successfully deleted rule ${rule.name}`,
+                })
+            )
         } catch (error) {
             void dispatch(
                 notify({

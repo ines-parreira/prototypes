@@ -67,31 +67,39 @@ export const RuleFormEditor = ({rule}: Props) => {
                         ...ruleDraft,
                     })
                     dispatch(ruleUpdated(newRule))
-                    void notify({
-                        status: NotificationStatus.Success,
-                        message: 'Successfully updated rule',
-                    })
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            message: 'Successfully updated rule',
+                        })
+                    )
                     history.push('/app/settings/rules')
                 } catch (error) {
-                    void notify({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to update rule',
-                    })
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message: 'Failed to update rule',
+                        })
+                    )
                 }
             } else {
                 try {
                     newRule = await createRule(ruleDraft as RuleDraft)
                     dispatch(ruleCreated(newRule))
-                    void notify({
-                        status: NotificationStatus.Success,
-                        message: 'Successfully created rule',
-                    })
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Success,
+                            message: 'Successfully created rule',
+                        })
+                    )
                     history.push('/app/settings/rules')
                 } catch (error) {
-                    void notify({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to create rule',
-                    })
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message: 'Failed to create rule',
+                        })
+                    )
                 }
             }
         },
