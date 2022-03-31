@@ -9,11 +9,11 @@ import classnames from 'classnames'
 import Clipboard from 'clipboard'
 
 import Button from 'pages/common/components/button/Button'
+import settingsCss from 'pages/settings/settings.less'
+import CheckBox from 'pages/common/forms/CheckBox'
+import {RecoveryCode} from 'models/twoFactorAuthentication/types'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import modalStepsCss from '../ModalSteps.less'
-import settingsCss from '../../../../../settings.less'
-import CheckBox from '../../../../../../common/forms/CheckBox'
-import {RecoveryCode} from '../../../../../../../models/twoFactorAuthentication/types'
-import ButtonIconLabel from '../../../../../../common/components/button/ButtonIconLabel'
 import css from './RecoveryCodesStep.less'
 
 type OwnProps = {
@@ -73,8 +73,8 @@ export default function RecoveryCodesStep({
                     settingsCss.mb16
                 )}
             >
-                Before you leave, keep your recovery codes in a safe place.
-                They're the only alternative way to access your account.
+                Before you leave, keep your recovery codes in a safe place. They
+                are the only alternative ways to access your account.
             </div>
             <ul
                 className={classnames(

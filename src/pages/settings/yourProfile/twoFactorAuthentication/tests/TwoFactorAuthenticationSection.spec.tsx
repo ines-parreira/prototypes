@@ -4,9 +4,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import {RootState, StoreDispatch} from 'state/types'
 import TwoFactorAuthenticationSection from '../TwoFactorAuthenticationSection'
 import {OwnProps} from '../TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
-import {RootState, StoreDispatch} from '../../../../../state/types'
 
 jest.mock(
     '../TwoFactorAuthenticationModal/TwoFactorAuthenticationModal',
@@ -59,9 +59,7 @@ describe('<TwoFactorAuthenticationSection />', () => {
                 )
 
                 const button = await findByText(
-                    has2FAEnabled
-                        ? /Update Method/
-                        : /Enable Two-Factor Authentication/
+                    has2FAEnabled ? /Update 2FA/ : /Enable 2FA/
                 )
                 fireEvent.click(button)
 

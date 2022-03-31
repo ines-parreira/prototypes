@@ -70,8 +70,8 @@ export default function CantScanQRCode({authenticatorData}: OwnProps) {
             </div>
             {displayAuthenticatorData && (
                 <div style={{marginTop: '8px'}}>
-                    Enter the required information by your app from the
-                    following:
+                    Manually enter the information below into your authenticator
+                    app:
                     {Object.entries(authenticatorDataKeyLabelMapper).map(
                         ([key, label], index) => (
                             <FormGroup key={index}>

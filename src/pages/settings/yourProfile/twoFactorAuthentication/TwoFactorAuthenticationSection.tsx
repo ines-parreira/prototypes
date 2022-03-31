@@ -21,18 +21,17 @@ export default function TwoFactorAuthenticationSection() {
             <div
                 className={classnames('heading-subsection-semibold', css.mb16)}
             >
-                Two-Factor Authentication
+                Two-Factor Authentication (2FA)
                 <Badge
                     className="ml-3 "
                     type={has2FaEnabled ? ColorType.Success : ColorType.Error}
                 >
-                    {has2FaEnabled ? 'Activated' : 'Disabled'}
+                    {has2FaEnabled ? 'Enabled' : 'Disabled'}
                 </Badge>
             </div>
             <div className={classnames('body-regular', css.mb16)}>
                 For an added layer of security, your admin requires you to use
                 two-factor authentication (2FA) when you sign in to Gorgias.
-                <a href={''}> Learn more</a>
             </div>
 
             <Button
@@ -41,9 +40,7 @@ export default function TwoFactorAuthenticationSection() {
                 intent={has2FaEnabled ? 'secondary' : 'primary'}
                 onClick={() => setIsEnableModalOpen(true)}
             >
-                {has2FaEnabled
-                    ? 'Update Method'
-                    : 'Enable Two-Factor Authentication'}
+                {has2FaEnabled ? 'Update 2FA' : 'Enable 2FA'}
             </Button>
 
             {has2FaEnabled && !is2FaEnforced && (
@@ -51,7 +48,7 @@ export default function TwoFactorAuthenticationSection() {
                     onClick={() => setIsDisableModalOpen(true)}
                     intent="destructive"
                 >
-                    Disable Two-Factor Authentication
+                    Disable 2FA
                 </Button>
             )}
 
@@ -63,8 +60,8 @@ export default function TwoFactorAuthenticationSection() {
             )}
             {isDisableModalOpen && (
                 <TwoFactorAuthenticationDisableModal
-                    title="Deactivate Two-Factor Authentication?"
-                    actionButtonText="Deactivate Authentication"
+                    title="Disable Two-Factor Authentication (2FA)?"
+                    actionButtonText="Disable 2FA"
                     isOpen={isDisableModalOpen}
                     onClose={() => setIsDisableModalOpen(false)}
                     onSuccess={() => setIsDisableModalOpen(false)}

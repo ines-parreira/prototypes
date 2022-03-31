@@ -28,7 +28,7 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
   <div
     style="margin-top: 8px;"
   >
-    Enter the required information by your app from the following:
+    Manually enter the information below into your authenticator app:
     <div
       class="form-group"
     >

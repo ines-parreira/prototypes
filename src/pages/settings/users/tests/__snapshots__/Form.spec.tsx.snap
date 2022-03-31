@@ -489,7 +489,7 @@ exports[`<Form /> should render with 2FA information when enabled 1`] = `
         <label
           class="control-label"
         >
-          Two-Factor Authentication
+          Two-Factor Authentication (2FA)
         </label>
         <div
           class="twoFaStatusContainer"
@@ -497,7 +497,7 @@ exports[`<Form /> should render with 2FA information when enabled 1`] = `
           <div
             class="badge badge"
           >
-            Active
+            Enabled
           </div>
           <button
             class="wrapper ml-2 text medium"

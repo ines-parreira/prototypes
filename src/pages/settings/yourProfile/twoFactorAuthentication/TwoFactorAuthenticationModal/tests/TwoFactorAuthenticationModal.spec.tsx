@@ -10,21 +10,18 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
-import TwoFactorAuthenticationModal from '../TwoFactorAuthenticationModal'
-import {authenticatorData} from '../../../../../../fixtures/authenticatorData'
+import {authenticatorData} from 'fixtures/authenticatorData'
 import {
     createRecoveryCodes,
     fetchAuthenticatorData,
     fetchAuthenticatorDataRenewed,
     saveTwoFASecret,
     validateVerificationCode,
-} from '../../../../../../models/twoFactorAuthentication/resources'
-import {recoveryCodes as recoveryCodesFixture} from '../../../../../../fixtures/recoveryCodes'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../store/middlewares/segmentTracker'
+} from 'models/twoFactorAuthentication/resources'
+import {recoveryCodes as recoveryCodesFixture} from 'fixtures/recoveryCodes'
+import {RootState, StoreDispatch} from 'state/types'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import TwoFactorAuthenticationModal from '../TwoFactorAuthenticationModal'
 
 jest.mock('models/twoFactorAuthentication/resources')
 const fetchAuthenticatorDataMock =

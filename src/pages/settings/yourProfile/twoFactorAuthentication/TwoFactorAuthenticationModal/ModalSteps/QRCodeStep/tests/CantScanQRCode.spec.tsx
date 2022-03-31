@@ -1,7 +1,7 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
+import {authenticatorData} from 'fixtures/authenticatorData'
 import CantScanQRCode from '../CantScanQRCode'
-import {authenticatorData} from '../../../../../../../../fixtures/authenticatorData'
 
 describe('<CantScanQRCode />', () => {
     describe('render()', () => {

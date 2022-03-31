@@ -89,7 +89,7 @@ export class UserListContainer extends Component<Props, State> {
                             <span className={cssRow.role}>Role</span>
                             {hasAccessTo2FA && (
                                 <span className={cssRow.twoFa}>
-                                    2FA activated
+                                    2FA enabled
                                 </span>
                             )}
                             <span className={cssRow.delete} />

@@ -273,7 +273,7 @@ export class FormContainer extends Component<Props, State> {
                                 <>
                                     <FormGroup>
                                         <Label className="control-label">
-                                            Two-Factor Authentication
+                                            Two-Factor Authentication (2FA)
                                         </Label>
                                         <div
                                             className={css.twoFaStatusContainer}
@@ -287,8 +287,8 @@ export class FormContainer extends Component<Props, State> {
                                                 }
                                             >
                                                 {has2FaEnabled
-                                                    ? 'Active'
-                                                    : 'Not Active'}
+                                                    ? 'Enabled'
+                                                    : 'Disabled'}
                                             </Badge>
                                             {has2FaEnabled && (
                                                 <Button

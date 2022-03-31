@@ -69,7 +69,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Before you leave, keep your recovery codes in a safe place. They're the only alternative way to access your account.
+                Before you leave, keep your recovery codes in a safe place. They are the only alternative ways to access your account.
               </div>
               <ul
                 class="recoveryCodesContainer mb16"
