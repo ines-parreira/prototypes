@@ -26,7 +26,10 @@ export type IntegrationsState = {
     }
 }
 
-export type IntegrationListItem = IntegrationConfig & {
+export type IntegrationListItem = Omit<
+    IntegrationConfig,
+    'longDescription' | 'isExternalConnectUrl'
+> & {
     count: number
     requiredPlanName?: string
 }

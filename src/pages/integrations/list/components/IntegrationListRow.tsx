@@ -1,8 +1,8 @@
-import React, {ComponentProps, FC} from 'react'
+import React from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
-import {AppListItem, isApp} from 'models/integration/types/app'
+import {AppListItem, isAppListItem} from 'models/integration/types/app'
 import {IntegrationListItem} from 'state/integrations/types'
 import {
     logEvent,
@@ -19,25 +19,6 @@ type Props = {
 }
 
 const IntegrationListRow = ({integration}: Props) => {
-    const hasAnIntegration = integration.count > 0
-
-    const linkHref = isApp(integration)
-        ? integration.url
-        : `/app/settings/integrations/${integration.type}`
-
-    const LinkComponent: FC<ComponentProps<typeof Link>> = isApp(integration)
-        ? ({children, to, ...other}: ComponentProps<typeof Link>) => (
-              <a
-                  {...other}
-                  href={to as string}
-                  rel="noopener noreferrer"
-                  target="_blank"
-              >
-                  {children}
-              </a>
-          )
-        : Link
-
     const content = (
         <>
             <div
@@ -52,7 +33,7 @@ const IntegrationListRow = ({integration}: Props) => {
                         role="presentation"
                         className="logo"
                         src={
-                            isApp(integration)
+                            isAppListItem(integration)
                                 ? integration.image
                                 : getIconFromUrl(integration.image)
                         }
@@ -79,17 +60,13 @@ const IntegrationListRow = ({integration}: Props) => {
             {!integration.requiredPlanName && (
                 <div>
                     <div className={css.action}>
-                        {hasAnIntegration && (
+                        {integration.count > 0 && (
                             <span className={css.count}>
                                 {integration.count} active
                             </span>
                         )}
 
-                        <i className="material-icons md-1">
-                            {isApp(integration)
-                                ? 'open_in_new'
-                                : 'navigate_next'}
-                        </i>
+                        <i className="material-icons md-1">navigate_next</i>
                     </div>
                 </div>
             )}
@@ -106,7 +83,7 @@ const IntegrationListRow = ({integration}: Props) => {
             {content}
         </div>
     ) : (
-        <LinkComponent
+        <Link
             className={classnames(
                 css.component,
                 css.link,
@@ -117,10 +94,14 @@ const IntegrationListRow = ({integration}: Props) => {
                     integration: integration.title,
                 })
             }}
-            to={linkHref}
+            to={
+                isAppListItem(integration)
+                    ? `/app/settings/integrations/app/${integration.appId}`
+                    : `/app/settings/integrations/${integration.type}`
+            }
         >
             {content}
-        </LinkComponent>
+        </Link>
     )
 }
 

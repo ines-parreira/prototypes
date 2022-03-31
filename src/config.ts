@@ -7,6 +7,11 @@ import {
 } from './config/integrations/recharge'
 import {Order} from './constants/integrations/types/shopify'
 
+import {
+    Category,
+    PricingPlan,
+    TrialPeriod,
+} from './models/integration/types/app'
 import {IntegrationType} from './models/integration/types'
 import {MacroActionName} from './models/macroAction/types'
 import {Customer} from './state/customers/types'
@@ -157,6 +162,21 @@ export type IntegrationConfig = {
     subTypes?: IntegrationType[]
     requiredFeature?: AccountFeature
     image?: string
+    longDescription: string
+    company?: string
+    companyUrl?: string
+    categories?: Category[]
+    screenshots?: string[]
+    privacyPolicy?: string
+    setupGuide?: string
+    pricingPlan?: PricingPlan | null
+    pricingLink?: string
+    pricingDetails?: string
+    hasFreeTrial?: boolean
+    freeTrialPeriod?: TrialPeriod
+    // Whether the "Connect App" button is a path to a more detailed install page (internal)
+    // or linking to an external url (e.g OAuth link)
+    isExternalConnectUrl: boolean
 }
 
 // A list of integration types along with descriptions that will be displayed in the integrations summary
@@ -171,29 +191,39 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         title: 'Email',
         description:
             'Connect your support email addresses and respond to your customers from Gorgias',
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Phone,
         title: 'Voice',
         description: 'Chat with your customers over the phone from Gorgias.',
         requiredFeature: AccountFeature.PhoneNumber,
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Sms,
         title: 'SMS',
         description: 'Chat with your customers via SMS from Gorgias.',
         requiredFeature: AccountFeature.PhoneNumber,
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.GorgiasChat,
         title: 'Chat',
         description: 'Add a chat on your website.',
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.SmoochInside,
         title: 'Chat - 🗄 DEPRECATED',
         description:
             'Please migrate to the new chat integration as this one will soon be removed.',
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Facebook,
@@ -201,6 +231,8 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Create tickets from Facebook posts, comments and recommendations, Instagram comments and mentions and Messenger conversations',
         image: 'integrations/facebook.png',
+        longDescription: '',
+        isExternalConnectUrl: true,
     },
     {
         type: IntegrationType.Aircall,
@@ -208,12 +240,16 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Provide phone support & create tickets when customers call you.',
         image: 'integrations/aircall.png',
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Http,
         title: 'HTTP',
         description: 'Connect any application to Gorgias',
         image: 'integrations/http.png',
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Shopify,
@@ -221,6 +257,8 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Display customer profiles & orders next to tickets. Edit orders with macros',
         image: 'integrations/shopify.png',
+        longDescription: '',
+        isExternalConnectUrl: true,
     },
     {
         type: IntegrationType.Twitter,
@@ -229,6 +267,8 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             'Create tickets when customers interact with you via replies or mentions on Twitter',
         image: 'integrations/twitter.png',
         requiredFeature: AccountFeature.TwitterIntegration,
+        longDescription: '',
+        isExternalConnectUrl: true,
     },
     {
         type: IntegrationType.Magento2,
@@ -237,6 +277,8 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             'Display customer profiles & orders next to tickets. Edit orders with macros',
         image: 'integrations/magento.png',
         requiredFeature: AccountFeature.MagentoIntegration,
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Recharge,
@@ -244,6 +286,8 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Display subscription info. Refund charges & skip monthly payments.',
         image: 'integrations/recharge.svg',
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Smile,
@@ -251,6 +295,8 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Display customer points and activity. Insert point balance or referral url in macros.',
         image: 'integrations/smile.svg',
+        longDescription: '',
+        isExternalConnectUrl: true,
     },
     {
         type: IntegrationType.Klaviyo,
@@ -258,6 +304,8 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
         image: 'integrations/klaviyo.png',
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Yotpo,
@@ -266,12 +314,16 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             'Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.',
         image: 'integrations/yotpo.png',
         requiredFeature: AccountFeature.YotpoIntegration,
+        longDescription: '',
+        isExternalConnectUrl: true,
     },
     {
         type: IntegrationType.Smooch,
         title: 'Smooch',
         description: 'Connect your own Smooch to Gorgias',
         image: 'integrations/smooch.png',
+        longDescription: '',
+        isExternalConnectUrl: true,
     },
 ]
 

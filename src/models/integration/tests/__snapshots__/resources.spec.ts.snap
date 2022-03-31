@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`integration resource fetchApp should return a formatted app 1`] = `
+Object {
+  "categories": Array [
+    "Ecomm Platforms",
+    "Reviews & UGC",
+  ],
+  "company": "myCompany",
+  "companyUrl": "https://www.gomycompany.com/",
+  "connectUrl": "https://ok.com",
+  "description": "Some tagline here",
+  "freeTrialPeriod": "14 days",
+  "hasFreeTrial": true,
+  "image": "https://ok.com/1.png",
+  "longDescription": "<p>My company is an interactive video platform, helping users create meaningful and personal conversations at scale.</p>
+<p>With the my company app, users can sync their videos and monitor every viewer interaction, while managing leads and audience choices through easy-to-view columns.</p>
+<p>With all of your audience interactions in one place, collecting your insights is a breeze.</p>
+<p>It also has a list:</p>
+<ul>
+<li>In which noting that really matters is said but at least you see it!</li>
+<li>Isn&rsquo;t it nice?</li>
+</ul>",
+  "pricingDetails": "<p>They are several options:&nbsp;</p>
+<ul>
+<li>Pay once</li>
+<li>Pay on ticket</li>
+</ul>",
+  "pricingLink": "https://google.com",
+  "pricingPlan": "Recurring Subscription",
+  "privacyPolicy": "https://www.mycompany.com/privacy-policy",
+  "screenshots": Array [
+    "https://screen.com/my1.png",
+    "https://screen.com/my2.png",
+    "https://screen.com/my3.png",
+    "https://screen.com/my4.png",
+  ],
+  "setupGuide": "",
+  "supportEmail": "support@gotolstoy.com",
+  "supportPhone": "+33620033659",
+  "title": "My test app",
+  "type": "app",
+}
+`;
+
+exports[`integration resource fetchApps should return formatted apps 1`] = `
+Array [
+  Object {
+    "appId": "someid",
+    "count": 0,
+    "description": "Some tagline here",
+    "image": "https://ok.com/1.png",
+    "title": "My test app",
+    "type": "app",
+  },
+]
+`;

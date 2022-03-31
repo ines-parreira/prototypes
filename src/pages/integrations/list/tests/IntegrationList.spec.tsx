@@ -21,7 +21,7 @@ const mockedApp = {
     app_icon: '//ok.com/1.png',
     app_url: 'https://ok.com',
     headline: 'Some tagline here',
-    id: 'someif',
+    id: 'someid',
     name: 'My test app',
 }
 

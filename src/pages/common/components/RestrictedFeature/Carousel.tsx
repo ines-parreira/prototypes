@@ -8,7 +8,7 @@ type Props = {
     slidesToShow: number
     arrows: boolean
     autoplay: boolean
-    onImageClick: (img: {url: string; index: number; e: MouseEvent}) => void
+    onImageClick?: (img: {url: string; index: number; e: MouseEvent}) => void
 }
 
 export default class Carousel extends Component<Props> {
@@ -42,13 +42,10 @@ export default class Carousel extends Component<Props> {
                                     alt="carousel content"
                                     src={url}
                                     onClick={(e) => {
-                                        if (!onImageClick) {
-                                            return
-                                        }
-
                                         e.preventDefault()
-
-                                        onImageClick({url, index, e})
+                                        if (onImageClick) {
+                                            onImageClick({url, index, e})
+                                        }
                                     }}
                                 />
                             </a>

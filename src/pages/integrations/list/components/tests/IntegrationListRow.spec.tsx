@@ -24,7 +24,7 @@ describe('IntegrationListRow', () => {
             type: IntegrationType.App,
             title: 'an integration',
             description: 'this is a cool integration',
-            url: 'http://www.foo.bar',
+            appId: '420',
             count: 0,
         }
 

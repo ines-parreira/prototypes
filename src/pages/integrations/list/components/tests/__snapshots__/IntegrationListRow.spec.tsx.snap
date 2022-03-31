@@ -3,9 +3,7 @@
 exports[`IntegrationListRow should display an external integration 1`] = `
 <a
   class="component link card d-flex flex-row align-items-center"
-  href="http://www.foo.bar"
-  rel="noopener noreferrer"
-  target="_blank"
+  to="/app/settings/integrations/app/420"
 >
   <div
     class="icon d-flex align-items-center justify-content-center"
@@ -37,7 +35,7 @@ exports[`IntegrationListRow should display an external integration 1`] = `
       <i
         class="material-icons md-1"
       >
-        open_in_new
+        navigate_next
       </i>
     </div>
   </div>

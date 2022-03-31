@@ -1,10 +1,8 @@
 import React, {Component, ReactNode} from 'react'
 import {Link} from 'react-router-dom'
-import Lightbox from 'react-images'
 import {Map, List} from 'immutable'
 
 import Button from 'pages/common/components/button/Button'
-import Carousel from 'pages/integrations/common/Carousel'
 import {IntegrationType} from 'models/integration/constants'
 
 import IntegrationList from '../IntegrationList'
@@ -16,42 +14,9 @@ type Props = {
     redirectUri: string
 }
 
-type State = {
-    isLightboxOpen: boolean
-    currentImage: number
-}
-
-export default class ShopifyIntegrationList extends Component<Props, State> {
-    state: State = {
-        isLightboxOpen: false,
-        currentImage: 0,
-    }
-
-    _toggleLightbox = (selectedImageId?: number) => {
-        this.setState({
-            isLightboxOpen: !this.state.isLightboxOpen,
-            currentImage: selectedImageId || 0,
-        })
-    }
-
-    _gotoImage = (index: number) => {
-        this.setState({currentImage: index})
-    }
-
+export default class ShopifyIntegrationList extends Component<Props> {
     render() {
         const {integrations, loading} = this.props
-
-        const imagesUrl = [
-            `${
-                window.GORGIAS_ASSETS_URL || ''
-            }/static/private/img/presentationals/shopify-carousel_1@0,25x.jpg`,
-            `${
-                window.GORGIAS_ASSETS_URL || ''
-            }/static/private/img/presentationals/shopify-carousel_2@0,25x.jpg`,
-            `${
-                window.GORGIAS_ASSETS_URL || ''
-            }/static/private/img/presentationals/shopify-carousel_3@0,25x.jpg`,
-        ]
 
         const longTypeDescription = (
             <div>
@@ -76,32 +41,7 @@ export default class ShopifyIntegrationList extends Component<Props, State> {
                     </li>
                 </ul>
 
-                <Carousel
-                    imagesUrl={imagesUrl}
-                    onImageClick={({index}) => this._toggleLightbox(index)}
-                />
-
-                <Lightbox
-                    images={imagesUrl.map((imageUrl) => {
-                        return {
-                            src: imageUrl,
-                        }
-                    })}
-                    isOpen={this.state.isLightboxOpen}
-                    onClose={() => this._toggleLightbox()}
-                    currentImage={this.state.currentImage}
-                    onClickPrev={() =>
-                        this._gotoImage(this.state.currentImage - 1)
-                    }
-                    onClickNext={() =>
-                        this._gotoImage(this.state.currentImage + 1)
-                    }
-                    onClickThumbnail={this._gotoImage}
-                    showThumbnails
-                    backdropClosesModal
-                />
-
-                <h4>Your Shopify stores</h4>
+                <h4 className="mt-5">Your Shopify stores</h4>
             </div>
         )
         const isSubmitting: boolean = loading.get('updateIntegration')
