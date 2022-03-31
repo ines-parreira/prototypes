@@ -43,7 +43,6 @@ import {errorToChildren} from 'utils'
 import settingsCss from 'pages/settings/settings.less'
 import {MacroApiError} from 'state/macro/types'
 
-import {MacroActionName} from 'models/macroAction/types'
 import css from './MacrosSettingsForm.less'
 
 type OwnProps = RouteComponentProps<{macroId?: string}>
@@ -97,26 +96,16 @@ export function MacrosSettingsFormContainer({
     }
     const [{loading: isSubmitPending}, handleFormSubmit] =
         useAsyncFn(async () => {
-            macroForm.actions = macroForm.actions.filter(
-                (action) =>
-                    action.name !== MacroActionName.AddTags ||
-                    action.arguments.tags
-            )
-
             let res
             try {
                 if (macroId) {
                     res = await updateMacro({
                         ...macros[macroId],
                         ...macroForm,
-                        language: macroForm.language || null,
                     })
                     macroUpdated(res)
                 } else {
-                    res = await createMacro({
-                        ...macroForm,
-                        language: macroForm.language || null,
-                    })
+                    res = await createMacro(macroForm)
                     macroCreated(res)
                 }
                 void notify({
@@ -141,12 +130,11 @@ export function MacrosSettingsFormContainer({
             if (!macroId) {
                 return
             }
-            const {actions, name, language} = macros[macroId]
+            const {actions, name} = macros[macroId]
             try {
                 const res = await createMacro({
                     actions,
                     name: `${name} (copy)`,
-                    language,
                 })
                 macroCreated(res)
                 void notify({
@@ -191,11 +179,10 @@ export function MacrosSettingsFormContainer({
     }, [macroId])
     useEffect(() => {
         if (macroId && macros[macroId]) {
-            const {actions, name, language} = macros[macroId]
+            const {actions, name} = macros[macroId]
             setMacroForm({
                 actions,
                 name,
-                language,
             })
         }
     }, [macros, macroId])
@@ -240,7 +227,6 @@ export function MacrosSettingsFormContainer({
                             agents={agents}
                             currentMacro={fromJS(macroForm)}
                             name={macroForm.name}
-                            language={macroForm.language}
                             setActions={(actions) =>
                                 !isActionDisabled &&
                                 handleActionsChange(actions)
@@ -248,10 +234,6 @@ export function MacrosSettingsFormContainer({
                             setName={(name: string) =>
                                 !isActionDisabled &&
                                 setMacroForm({...macroForm, name})
-                            }
-                            setLanguage={(language: string | null) =>
-                                !isActionDisabled &&
-                                setMacroForm({...macroForm, language})
                             }
                         />
                         <FormGroup className="mt-5">

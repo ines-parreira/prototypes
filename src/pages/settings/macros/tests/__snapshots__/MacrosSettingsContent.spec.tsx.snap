@@ -18,15 +18,6 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
         placeholder="Search macros..."
         searchDebounceTime={300}
       />
-      <MacroFilters
-        onChange={[Function]}
-        selectedProperties={
-          Object {
-            "languages": undefined,
-            "tags": undefined,
-          }
-        }
-      />
       <MacrosCreateDropdown />
     </div>
   </PageHeader>
@@ -55,7 +46,7 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
     isLoading={false}
     macroIds={Array []}
     onSortOptionsChange={[Function]}
-    options={
+    sortOptions={
       Object {
         "orderBy": "createdDatetime",
         "orderDir": "asc",

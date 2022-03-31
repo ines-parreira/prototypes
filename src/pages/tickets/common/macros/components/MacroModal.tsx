@@ -8,14 +8,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {
-    createMacro,
-    updateMacro,
-    deleteMacro,
-    fetchMacrosParamsTypes,
-    MacrosSearchResult,
-} from 'state/macro/actions'
-import {MacroActionName} from 'models/macroAction/types'
 import Loader from '../../../../common/components/Loader/Loader'
 import Modal from '../../../../common/components/Modal'
 import {DEFAULT_ACTIONS} from '../../../../../config'
@@ -24,6 +16,11 @@ import {
     SegmentEvent,
 } from '../../../../../store/middlewares/segmentTracker'
 import shortcutManager from '../../../../../services/shortcutManager/index'
+import {
+    createMacro,
+    updateMacro,
+    deleteMacro,
+} from '../../../../../state/macro/actions'
 import {createJob as createTicketJob} from '../../../../../state/tickets/actions'
 import {
     createJob as createViewJob,
@@ -40,22 +37,21 @@ import MacroEdit from './MacroEdit'
 import MacroModalList from './MacroModalList'
 
 type Props = {
-    searchParams: fetchMacrosParamsTypes
-    searchResults: MacrosSearchResult
+    macros: List<any>
     agents: List<any>
     handleClickItem: (id: number) => void
     disableExternalActions: boolean
     selectionMode: boolean
+    page: number
+    totalPages: number
     isCreatingMacro?: boolean
     closeModal: () => void
     updateMacros: (macros: List<any>) => void
     activeView: Map<any, any>
     currentMacro: Map<any, any>
     toggleCreateMacro?: (toggle?: boolean) => Promise<void>
-    onSearch: (
-        searchParams: fetchMacrosParamsTypes,
-        forceSearch?: boolean
-    ) => void
+    onSearch: (search: string, forceSearch?: boolean) => void
+    search: string
     firstLoad: boolean
     selectedItemsIds: List<any>
     allViewItemsSelected: boolean
@@ -65,7 +61,6 @@ type Props = {
 type State = {
     actions: List<any>
     name: string
-    language: string | null
 }
 
 export class MacroModalContainer extends Component<Props, State> {
@@ -81,7 +76,6 @@ export class MacroModalContainer extends Component<Props, State> {
         this.state = {
             actions: props.currentMacro.get('actions') || fromJS([]),
             name: props.currentMacro.get('name') || '',
-            language: props.currentMacro.get('language') || null,
         }
     }
 
@@ -106,7 +100,6 @@ export class MacroModalContainer extends Component<Props, State> {
         ) {
             this._setName(nextProps.currentMacro.get('name'))
             this._setActions(nextProps.currentMacro.get('actions'))
-            this._setLanguage(nextProps.currentMacro.get('language'))
         }
 
         // if selected macro changes, initialize actions again
@@ -120,7 +113,6 @@ export class MacroModalContainer extends Component<Props, State> {
             ) {
                 this._setName(nextProps.currentMacro.get('name'))
                 this._setActions(nextProps.currentMacro.get('actions'))
-                this._setLanguage(nextProps.currentMacro.get('language'))
             }
         }
     }
@@ -179,31 +171,19 @@ export class MacroModalContainer extends Component<Props, State> {
             toggleCreateMacro(true).then(() => {
                 this._setName(this.props.currentMacro.get('name'))
                 this._setActions(this.props.currentMacro.get('actions'))
-                this._setLanguage(this.props.currentMacro.get('language'))
             })
     }
-
-    filterActions = (actions: List<any>) =>
-        actions.filter(
-            (action: Map<any, any>) =>
-                (action.get('name') as string) !== MacroActionName.AddTags ||
-                !!(action.getIn(['arguments', 'tags']) as string | null)
-        )
 
     _createMacro = (e: FormEvent) => {
         const {createMacro} = this.props
         e.preventDefault()
         e.stopPropagation()
         const newMacro = this.props.currentMacro
-            .set('actions', this.filterActions(this.state.actions))
+            .set('actions', this.state.actions)
             .set('name', this.state.name)
-            .set(
-                'language',
-                this.state.language === '' ? null : this.state.language
-            )
         return createMacro(newMacro).then((resp) => {
             if ((resp as Record<string, unknown>).status !== 'error') {
-                this.props.onSearch({search: newMacro.get('name')}, true)
+                this.props.onSearch(newMacro.get('name'), true)
                 this.props.handleClickItem(resp.id)
             }
         })
@@ -214,22 +194,16 @@ export class MacroModalContainer extends Component<Props, State> {
         e.preventDefault()
         e.stopPropagation()
         const updatedMacro = this.props.currentMacro
-            .set('actions', this.filterActions(this.state.actions))
+            .set('actions', this.state.actions)
             .set('name', this.state.name)
-            .set(
-                'language',
-                this.state.language === '' ? null : this.state.language
-            )
         return updateMacro(updatedMacro).then((res) => {
-            const macros = this.props.searchResults.macros
+            const macros = this.props.macros
             macros.some(((macro: Map<any, any>, index: number) => {
                 if (macro.get('id') === res.id) {
                     const newMacro = fromJS(res) as Map<any, any>
                     if (macro.get('name') !== newMacro.get('name')) {
                         // if the name changed, reload macro list
-                        void fetchMacros({
-                            search: this.props.searchParams.search,
-                        })
+                        void fetchMacros({search: this.props.search})
                     } else {
                         this.props.updateMacros(macros.set(index, newMacro))
                     }
@@ -240,17 +214,18 @@ export class MacroModalContainer extends Component<Props, State> {
     }
 
     _duplicateMacro = (e: FormEvent) => {
+        const {createMacro} = this.props
         e.preventDefault()
         e.stopPropagation()
 
-        const {createMacro, currentMacro} = this.props
+        const {currentMacro} = this.props
         const duplicateMacro = currentMacro
             .delete('id')
-            .set('name', `${currentMacro.get('name', '') as string} (copy)`)
+            .set('name', `Copy of ${currentMacro.get('name', '') as string}`)
 
         return createMacro(duplicateMacro).then((res) => {
             // once the macro is created - search it in the list
-            this.props.onSearch({search: res.name || ''}, true)
+            this.props.onSearch(res.name || '', true)
         })
     }
 
@@ -264,7 +239,7 @@ export class MacroModalContainer extends Component<Props, State> {
         const {fetchMacros, deleteMacro} = this.props
         const macroId = this.props.currentMacro.get('id', '')
         return deleteMacro(macroId).then(() => {
-            void fetchMacros({search: this.props.searchParams.search})
+            void fetchMacros({search: this.props.search})
         })
     }
 
@@ -293,15 +268,17 @@ export class MacroModalContainer extends Component<Props, State> {
         this.setState({actions: uniqActions})
     }
 
-    _setName = (name: string) => this.setState({name})
-    _setLanguage = (language: string | null) => this.setState({language})
+    _setName = (name: string) => {
+        this.setState({name})
+    }
 
     render() {
         const {
-            searchParams,
-            searchResults,
+            macros,
             selectionMode,
             selectedItemsIds,
+            page,
+            totalPages,
             disableExternalActions,
             closeModal,
             onSearch,
@@ -314,7 +291,7 @@ export class MacroModalContainer extends Component<Props, State> {
             allViewItemsSelected,
         } = this.props
 
-        const noResults = searchResults.macros.isEmpty() && !isCreatingMacro
+        const noResults = macros.isEmpty() && !isCreatingMacro
 
         const selectedCount = allViewItemsSelected
             ? getViewCount(activeView.get('id'))
@@ -466,12 +443,18 @@ export class MacroModalContainer extends Component<Props, State> {
                         >
                             <MacroModalList
                                 currentMacro={currentMacro}
-                                searchResults={searchResults}
-                                searchParams={searchParams}
+                                macros={macros}
+                                page={page}
+                                totalPages={totalPages}
                                 fetchMacros={this.props.fetchMacros}
                                 disableExternalActions={disableExternalActions}
                                 handleClickItem={handleClickItem}
-                                onSearch={onSearch}
+                                onSearch={(e: {
+                                    target: {
+                                        value: string
+                                    }
+                                }) => onSearch(e.target.value)}
+                                search={this.props.search}
                             />
                         </Col>
                         <Col xs="9" className={css.content}>
@@ -479,7 +462,7 @@ export class MacroModalContainer extends Component<Props, State> {
                                 <Loader minHeight="0" />
                             ) : noResults ? (
                                 <MacroNoResults
-                                    searchParams={this.props.searchParams}
+                                    searchQuery={this.props.search}
                                     newAction={this._addNewMacro}
                                 />
                             ) : selectionMode ? (
@@ -490,11 +473,9 @@ export class MacroModalContainer extends Component<Props, State> {
                                     currentMacro={currentMacro}
                                     agents={this.props.agents}
                                     name={this.state.name}
-                                    language={this.state.language}
                                     actions={this.state.actions}
                                     setActions={this._setActions}
                                     setName={this._setName}
-                                    setLanguage={this._setLanguage}
                                 />
                             )}
                         </Col>

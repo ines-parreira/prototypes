@@ -41,7 +41,6 @@ describe('macro utils', () => {
                             },
                         },
                     ],
-                    language: '',
                 })
             )
         })

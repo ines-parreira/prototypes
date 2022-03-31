@@ -13,6 +13,7 @@ import {ACTION_TEMPLATES} from 'config'
 import {IntegrationType} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {Attachment} from 'models/ticket/types'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {generateDefaultAction} from 'state/macro/utils'
 import {RootState} from 'state/types'
 import {getActionTemplate, humanizeString} from 'utils'
@@ -22,7 +23,6 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 import * as newMessageTypes from 'state/newMessage/constants'
 import * as ticketTypes from 'state/ticket/constants'
 
-import InputField from 'pages/common/forms/input/InputField'
 import SetStatusAction from './actions/SetStatusAction'
 import SetSubjectAction from './actions/SetSubjectAction'
 import SetResponseTextAction from './actions/SetResponseTextAction'
@@ -33,7 +33,6 @@ import AddAttachmentsAction from './actions/AddAttachmentsAction'
 import IntegrationAction from './actions/IntegrationAction'
 import AddInternalNoteAction from './actions/AddInternalNoteAction'
 import SnoozeTicketAction from './actions/SnoozeTicketAction'
-import MacroEditLanguage from './MacroEditLanguage'
 
 import css from './MacroEdit.less'
 
@@ -43,31 +42,11 @@ type Props = {
     className?: string
     currentMacro: Map<any, any>
     name: string
-    language: string | null
     setActions: (actions: List<any>) => void
     setName: (name: string) => void
-    setLanguage: (language: string | null) => void
 } & ConnectedProps<typeof connector>
 
 export class MacroEdit extends Component<Props> {
-    _isTagAction = (action: Map<any, any>) =>
-        action.get('name') === ticketTypes.ADD_TICKET_TAGS
-
-    componentWillReceiveProps() {
-        if (!this.props.actions.find(this._isTagAction))
-            this._addAction(MacroActionName.AddTags)
-    }
-
-    _extractText = () => {
-        const action: Map<any, any> = this.props.actions.find(
-            (action: Map<any, any>) =>
-                action.get('name') === newMessageTypes.SET_RESPONSE_TEXT
-        )
-        return action
-            ? (action.getIn(['arguments', 'body_text']) as string)
-            : ''
-    }
-
     _updateActionArguments = (index: number, args = fromJS({})) => {
         const actions = this.props.actions.setIn([index, 'arguments'], args)
         this.props.setActions(actions)
@@ -171,180 +150,16 @@ export class MacroEdit extends Component<Props> {
         )
     }
 
-    renderAction = (action: Maybe<Map<any, any>>, index: Maybe<number>) => {
-        if (index == null || action == null) return
-        let config
-
-        switch (action.get('name')) {
-            case ticketTypes.SET_STATUS:
-                config = {
-                    title: 'Set status',
-                    content: (
-                        <SetStatusAction
-                            index={index}
-                            action={action}
-                            updateActionArgs={this._updateActionArguments}
-                        />
-                    ),
-                }
-                break
-            case ticketTypes.ADD_TICKET_TAGS:
-                config = {
-                    title: 'Add tags to ticket',
-                    description:
-                        'These tags will both be added to the ticket and help you better search for your macros.',
-                    content: (
-                        <AddTagsAction
-                            index={index}
-                            args={action.get('arguments')}
-                            updateActionArgs={this._updateActionArguments}
-                        />
-                    ),
-                }
-                break
-            case newMessageTypes.SET_RESPONSE_TEXT:
-                config = {
-                    title: 'Set response text',
-                    content: (
-                        <SetResponseTextAction
-                            index={index}
-                            action={action}
-                            updateActionArgs={this._updateActionArguments}
-                        />
-                    ),
-                }
-                break
-            case ticketTypes.ADD_INTERNAL_NOTE:
-                config = {
-                    title: 'Add internal note',
-                    content: (
-                        <AddInternalNoteAction
-                            index={index}
-                            action={action}
-                            updateActionArgs={this._updateActionArguments}
-                        />
-                    ),
-                }
-                break
-            case ticketTypes.SET_AGENT:
-                config = {
-                    title: 'Set user assignee',
-                    content: (
-                        <SetAssigneeAction
-                            index={index}
-                            action={action}
-                            updateActionArgs={this._updateActionArguments}
-                            handleUsers={true}
-                        />
-                    ),
-                }
-                break
-            case ticketTypes.SET_TEAM:
-                config = {
-                    title: 'Set team assignee',
-                    content: (
-                        <SetAssigneeAction
-                            index={index}
-                            action={action}
-                            updateActionArgs={this._updateActionArguments}
-                            handleTeams={true}
-                        />
-                    ),
-                }
-                break
-            case ticketTypes.SET_SUBJECT:
-                config = {
-                    title: 'Set ticket subject',
-                    content: (
-                        <SetSubjectAction
-                            index={index}
-                            action={action}
-                            updateActionArgs={this._updateActionArguments}
-                        />
-                    ),
-                }
-                break
-            case ticketTypes.SNOOZE_TICKET:
-                config = {
-                    title: 'Snooze for',
-                    content: (
-                        <SnoozeTicketAction
-                            index={index}
-                            action={action}
-                            updateActionArgs={this._updateActionArguments}
-                        />
-                    ),
-                }
-                break
-            case 'http':
-                config = {
-                    title: 'HTTP WebHook',
-                    content: (
-                        <HttpAction
-                            index={index}
-                            action={action}
-                            updateActionArgs={this._updateActionArguments}
-                            updateActionTitle={this._updateActionTitle}
-                        />
-                    ),
-                }
-                break
-            case newMessageTypes.ADD_ATTACHMENTS:
-                config = {
-                    title: 'Add attachments',
-                    content: (
-                        <AddAttachmentsAction
-                            index={index}
-                            action={action}
-                            addAttachments={this._addAttachment}
-                            removeAttachment={this._deleteAttachment}
-                        />
-                    ),
-                }
-                break
-            default: {
-                const integrationType =
-                    getActionTemplate(action.get('name'))?.integrationType || ''
-                config = {
-                    title: `Action ${integrationType.toUpperCase()}`,
-                    content: (
-                        <IntegrationAction index={index} action={action} />
-                    ),
-                }
-            }
-        }
-        // the unique key is based on index of action + ID of macro
-        // so when we switch from a macro to the other, all previous macro fields are unmounted
-        // it's simpler to manage lifecycle of actions components then
-        const key = `${index}${this.props.currentMacro.get('id') as string}`
-
-        return (
-            <div key={key} className="mt-3">
-                <div className="mb-2">
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div className={css.title}>{config.title}</div>
-                        <i
-                            className="material-icons md-2 clickable"
-                            onClick={() => this._deleteAction(index)}
-                        >
-                            close
-                        </i>
-                    </div>
-                    {config.description && (
-                        <span className="text-muted form-text mb-2">
-                            {config.description}
-                        </span>
-                    )}
-                </div>
-                {config.content}
-            </div>
-        )
-    }
-
     render() {
         const {className, currentMacro, hasIntegrationOfTypes} = this.props
 
-        if (!currentMacro || currentMacro.isEmpty()) return null
+        if (!currentMacro) {
+            return null
+        }
+
+        if (currentMacro.isEmpty()) {
+            return null
+        }
 
         // external actions executed on server
         const externalActions = ACTION_TEMPLATES.filter(
@@ -361,46 +176,218 @@ export class MacroEdit extends Component<Props> {
         return (
             <form>
                 <div className={className}>
-                    <div className="d-flex">
-                        <div className="flex-grow-1 mr-4">
-                            <InputField
-                                type="text"
-                                name="name"
-                                onChange={this.props.setName}
-                                value={this.props.name}
-                                label="Macro name"
-                                isRequired
-                                className="mb-0"
-                            />
-                            <span className="text-muted form-text">
-                                Name that all agents will see while searching
-                                for it.
-                            </span>
+                    <div>
+                        <div className={classnames('mb-2', css.title)}>
+                            Macro name
                         </div>
-                        <div className="flex-grow-1">
-                            <div className={classnames('mb-2', css.title)}>
-                                Language
-                            </div>
-                            <MacroEditLanguage
-                                key={currentMacro.get('id')} //Force remount on macro change
-                                language={this.props.language}
-                                setLanguage={this.props.setLanguage}
-                                text={this._extractText()}
-                            />
-                            <span className="text-muted form-text">
-                                Language in which this macro is written.
-                            </span>
-                        </div>
+                        <DEPRECATED_InputField
+                            type="text"
+                            name="name"
+                            onChange={this.props.setName}
+                            value={this.props.name}
+                            required
+                        />
                     </div>
-                    {this.props.actions
-                        .map(
-                            (action: Map<any, any>, index) =>
-                                action.set('idx', index) // Store the initial index for action updates
-                        )
-                        .sort((a) => (this._isTagAction(a) ? -1 : 0)) // Put the tag action at the top
-                        .map((action?: Map<any, any>) => {
-                            return this.renderAction(action, action?.get('idx'))
-                        })}
+                    {this.props.actions.map(
+                        (action: Map<any, any>, index: Maybe<number>) => {
+                            if (index == null) {
+                                return
+                            }
+                            let config
+
+                            switch (action.get('name')) {
+                                case ticketTypes.SET_STATUS:
+                                    config = {
+                                        title: 'Set status',
+                                        content: (
+                                            <SetStatusAction
+                                                index={index}
+                                                action={action}
+                                                updateActionArgs={
+                                                    this._updateActionArguments
+                                                }
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case ticketTypes.ADD_TICKET_TAGS:
+                                    config = {
+                                        title: 'Add tags',
+                                        content: (
+                                            <AddTagsAction
+                                                index={index}
+                                                args={action.get('arguments')}
+                                                updateActionArgs={
+                                                    this._updateActionArguments
+                                                }
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case newMessageTypes.SET_RESPONSE_TEXT:
+                                    config = {
+                                        title: 'Set response text',
+                                        content: (
+                                            <SetResponseTextAction
+                                                index={index}
+                                                action={action}
+                                                updateActionArgs={
+                                                    this._updateActionArguments
+                                                }
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case ticketTypes.ADD_INTERNAL_NOTE:
+                                    config = {
+                                        title: 'Add internal note',
+                                        content: (
+                                            <AddInternalNoteAction
+                                                index={index}
+                                                action={action}
+                                                updateActionArgs={
+                                                    this._updateActionArguments
+                                                }
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case ticketTypes.SET_AGENT:
+                                    config = {
+                                        title: 'Set user assignee',
+                                        content: (
+                                            <SetAssigneeAction
+                                                index={index}
+                                                action={action}
+                                                updateActionArgs={
+                                                    this._updateActionArguments
+                                                }
+                                                handleUsers={true}
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case ticketTypes.SET_TEAM:
+                                    config = {
+                                        title: 'Set team assignee',
+                                        content: (
+                                            <SetAssigneeAction
+                                                index={index}
+                                                action={action}
+                                                updateActionArgs={
+                                                    this._updateActionArguments
+                                                }
+                                                handleTeams={true}
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case ticketTypes.SET_SUBJECT:
+                                    config = {
+                                        title: 'Set ticket subject',
+                                        content: (
+                                            <SetSubjectAction
+                                                index={index}
+                                                action={action}
+                                                updateActionArgs={
+                                                    this._updateActionArguments
+                                                }
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case ticketTypes.SNOOZE_TICKET:
+                                    config = {
+                                        title: 'Snooze for',
+                                        content: (
+                                            <SnoozeTicketAction
+                                                index={index}
+                                                action={action}
+                                                updateActionArgs={
+                                                    this._updateActionArguments
+                                                }
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case 'http':
+                                    config = {
+                                        title: 'HTTP WebHook',
+                                        content: (
+                                            <HttpAction
+                                                index={index}
+                                                action={action}
+                                                updateActionArgs={
+                                                    this._updateActionArguments
+                                                }
+                                                updateActionTitle={
+                                                    this._updateActionTitle
+                                                }
+                                            />
+                                        ),
+                                    }
+                                    break
+                                case newMessageTypes.ADD_ATTACHMENTS:
+                                    config = {
+                                        title: 'Add attachments',
+                                        content: (
+                                            <AddAttachmentsAction
+                                                index={index}
+                                                action={action}
+                                                addAttachments={
+                                                    this._addAttachment
+                                                }
+                                                removeAttachment={
+                                                    this._deleteAttachment
+                                                }
+                                            />
+                                        ),
+                                    }
+                                    break
+                                default: {
+                                    const integrationType =
+                                        getActionTemplate(action.get('name'))
+                                            ?.integrationType || ''
+                                    config = {
+                                        title: `Action ${integrationType.toUpperCase()}`,
+                                        content: (
+                                            <IntegrationAction
+                                                index={index}
+                                                action={action}
+                                            />
+                                        ),
+                                    }
+                                }
+                            }
+
+                            // the unique key is based on index of action + ID of macro
+                            // so when we switch from a macro to the other, all previous macro fields are unmounted
+                            // it's simpler to manage lifecycle of actions components then
+                            const key = `${index}${
+                                currentMacro.get('id') as string
+                            }`
+
+                            return (
+                                <div key={key} className="mt-3">
+                                    <div className="d-flex justify-content-between align-items-center mb-2">
+                                        <div className={css.title}>
+                                            {config.title}
+                                        </div>
+                                        <i
+                                            className="material-icons md-2 clickable"
+                                            onClick={() =>
+                                                this._deleteAction(index)
+                                            }
+                                        >
+                                            close
+                                        </i>
+                                    </div>
+                                    {config.content}
+                                </div>
+                            )
+                        }
+                    )}
+
                     <div className="mt-3">
                         <UncontrolledButtonDropdown className="mr-2">
                             <DropdownToggle color="primary" caret type="button">

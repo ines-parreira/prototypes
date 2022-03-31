@@ -14,7 +14,6 @@ import history from '../../../history'
 
 jest.mock('../../../history')
 jest.mock('../../../../models/macro/resources')
-jest.mock('pages/common/components/Tooltip', () => () => <div>Tooltip</div>) //Tooltip is mocked to avoid errors with target
 
 jest.mock('reactstrap', () => {
     const reactstrap: Record<string, unknown> = jest.requireActual('reactstrap')
@@ -51,7 +50,7 @@ describe('<MacrosSettingsTable/>', () => {
         macroDeleted: mockMacroDeleted,
         notify: mockNotify,
         onSortOptionsChange: mockOnSortOptionsChange,
-        options: {
+        sortOptions: {
             orderBy: 'createdDatetime',
             orderDir: 'asc',
         },
@@ -107,7 +106,6 @@ describe('<MacrosSettingsTable/>', () => {
         expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
             actions,
             name: `${name} (copy)`,
-            language: null,
         })
         setImmediate(() => {
             expect(mockMacroCreated).toHaveBeenNthCalledWith(1, {

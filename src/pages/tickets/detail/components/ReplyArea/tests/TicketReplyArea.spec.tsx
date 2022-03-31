@@ -11,10 +11,6 @@ type Props = {
     richAreaRef: (value: any) => void
 }
 
-jest.mock('pages/common/components/MacroFilters/MacroFilters', () => () => (
-    <div>MacroFilters</div>
-))
-
 jest.mock('../TicketReply', () => {
     const {Component} = jest.requireActual('react')
     const focusEditor = jest.fn()
@@ -119,10 +115,29 @@ describe('<TicketReplyArea/>', () => {
         expect(component).toMatchSnapshot()
     })
 
+    describe('_hideMacrosAndFocusEditor()', () => {
+        it('should hide macros and focus editor when called', () => {
+            const component = mount(<TicketReplyArea {...minProps} />)
+
+            focusMacroInput(component)
+            component.find('.clear-macro').simulate('click')
+            expect(
+                (
+                    TicketReply as unknown as {
+                        mocks: {focusEditor: jest.MockedFunction<any>}
+                    }
+                ).mocks.focusEditor
+            ).toHaveBeenNthCalledWith(1)
+            expect(component).toMatchSnapshot()
+        })
+    })
+
     it('should not apply macro on enter key down when macro search results are empty', () => {
         const component = mount(<TicketReplyArea {...minProps} />)
+
         focusMacroInput(component)
         component.find('input').simulate('keyDown', {key: 'Enter'})
+
         expect(minProps.applyMacro).not.toHaveBeenCalled()
     })
 })

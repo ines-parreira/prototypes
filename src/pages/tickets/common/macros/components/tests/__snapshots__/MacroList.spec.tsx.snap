@@ -8,11 +8,6 @@ exports[`MacroList component should render active and disabled macros 1`] = `
     class="item"
   >
     Pizza Pepperoni
-    <span
-      class="material-icons md-2 float-right text-secondary"
-    >
-      auto_awesome
-    </span>
   </div>
   <div
     class="item active"
@@ -48,11 +43,6 @@ exports[`MacroList component should render the macro list 1`] = `
     class="item active"
   >
     Pizza Pepperoni
-    <span
-      class="material-icons md-2 float-right text-secondary"
-    >
-      auto_awesome
-    </span>
   </div>
   <div
     class="item"
@@ -85,7 +75,6 @@ Array [
   Array [
     "macro-applied-searchbar",
     Object {
-      "rank": undefined,
       "user_id": 2,
     },
   ],

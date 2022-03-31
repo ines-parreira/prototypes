@@ -83,7 +83,6 @@ Sincerely,
   ],
   "created_datetime": "2017-08-01T17:56:51.190187+00:00",
   "id": 1,
-  "language": null,
   "name": "Waive Fee",
   "updated_datetime": "2017-08-01T17:56:51.190199+00:00",
   "usage": 1,
@@ -100,7 +99,7 @@ Object {
   "patch": Array [],
   "post": Array [
     Object {
-      "data": "{\\"actions\\":[{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Tag\\",\\"arguments\\":{\\"tags\\":\\"refund\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Accepted Tag\\",\\"arguments\\":{\\"tags\\":\\"refund accepted\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"title\\":\\"Set Response Text\\",\\"arguments\\":{\\"body_text\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"body_html\\":\\"<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>\\"},\\"name\\":\\"setResponseText\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Refund the user's last month \\",\\"title\\":\\"Refund Last Month\\",\\"arguments\\":{\\"method\\":\\"GET\\",\\"headers\\":[{\\"editable\\":false,\\"key\\":\\"X_API_KEY\\",\\"value\\":\\"9298jjdhdjkh393jhajkhdjashuurh\\"},{\\"editable\\":false,\\"key\\":\\"content-type\\",\\"value\\":\\"application/json\\"}],\\"url\\":\\"https://httpbin.org/post\\",\\"params\\":[{\\"editable\\":false,\\"key\\":\\"user_id\\",\\"value\\":\\"{ticket.customer.id}\\"}]},\\"name\\":\\"http\\"}],\\"name\\":\\"Waive Fee\\",\\"language\\":null}",
+      "data": "{\\"actions\\":[{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Tag\\",\\"arguments\\":{\\"tags\\":\\"refund\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Accepted Tag\\",\\"arguments\\":{\\"tags\\":\\"refund accepted\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"title\\":\\"Set Response Text\\",\\"arguments\\":{\\"body_text\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"body_html\\":\\"<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>\\"},\\"name\\":\\"setResponseText\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Refund the user's last month \\",\\"title\\":\\"Refund Last Month\\",\\"arguments\\":{\\"method\\":\\"GET\\",\\"headers\\":[{\\"editable\\":false,\\"key\\":\\"X_API_KEY\\",\\"value\\":\\"9298jjdhdjkh393jhajkhdjashuurh\\"},{\\"editable\\":false,\\"key\\":\\"content-type\\",\\"value\\":\\"application/json\\"}],\\"url\\":\\"https://httpbin.org/post\\",\\"params\\":[{\\"editable\\":false,\\"key\\":\\"user_id\\",\\"value\\":\\"{ticket.customer.id}\\"}]},\\"name\\":\\"http\\"}],\\"name\\":\\"Waive Fee\\"}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
@@ -212,7 +211,6 @@ Sincerely,
   ],
   "created_datetime": "2017-08-01T17:56:51.190187+00:00",
   "id": 1,
-  "language": null,
   "name": "Waive Fee",
   "updated_datetime": "2017-08-01T17:56:51.190199+00:00",
   "usage": 1,
@@ -236,7 +234,6 @@ Object {
       "params": Object {
         "_fallback_order_by": "created_datetime",
       },
-      "paramsSerializer": [Function],
       "timeout": 0,
       "transformRequest": Array [
         [Function],
@@ -276,7 +273,6 @@ Object {
       "params": Object {
         "order_by": "created_datetime",
       },
-      "paramsSerializer": [Function],
       "timeout": 0,
       "transformRequest": Array [
         [Function],
@@ -384,7 +380,6 @@ Sincerely,
       ],
       "created_datetime": "2017-08-01T17:56:51.190187+00:00",
       "id": 1,
-      "language": null,
       "name": "Waive Fee",
       "updated_datetime": "2017-08-01T17:56:51.190199+00:00",
       "usage": 1,
@@ -553,7 +548,6 @@ Sincerely,
   ],
   "created_datetime": "2017-08-01T17:56:51.190187+00:00",
   "id": 1,
-  "language": null,
   "name": "Waive Fee",
   "updated_datetime": "2017-08-01T17:56:51.190199+00:00",
   "usage": 1,
@@ -571,7 +565,7 @@ Object {
   "post": Array [],
   "put": Array [
     Object {
-      "data": "{\\"id\\":1,\\"name\\":\\"Waive Fee\\",\\"language\\":null,\\"actions\\":[{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Tag\\",\\"arguments\\":{\\"tags\\":\\"refund\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Accepted Tag\\",\\"arguments\\":{\\"tags\\":\\"refund accepted\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"title\\":\\"Set Response Text\\",\\"arguments\\":{\\"body_text\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"body_html\\":\\"<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>\\"},\\"name\\":\\"setResponseText\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Refund the user's last month \\",\\"title\\":\\"Refund Last Month\\",\\"arguments\\":{\\"method\\":\\"GET\\",\\"headers\\":[{\\"editable\\":false,\\"key\\":\\"X_API_KEY\\",\\"value\\":\\"9298jjdhdjkh393jhajkhdjashuurh\\"},{\\"editable\\":false,\\"key\\":\\"content-type\\",\\"value\\":\\"application/json\\"}],\\"url\\":\\"https://httpbin.org/post\\",\\"params\\":[{\\"editable\\":false,\\"key\\":\\"user_id\\",\\"value\\":\\"{ticket.customer.id}\\"}]},\\"name\\":\\"http\\"}],\\"created_datetime\\":\\"2017-08-01T17:56:51.190187+00:00\\",\\"updated_datetime\\":\\"2017-08-01T17:56:51.190199+00:00\\",\\"usage\\":1}",
+      "data": "{\\"id\\":1,\\"name\\":\\"Waive Fee\\",\\"actions\\":[{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Tag\\",\\"arguments\\":{\\"tags\\":\\"refund\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"title\\":\\"Add Refund Accepted Tag\\",\\"arguments\\":{\\"tags\\":\\"refund accepted\\"},\\"name\\":\\"addTags\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"title\\":\\"Set Response Text\\",\\"arguments\\":{\\"body_text\\":\\"Hello {{ticket.customer.name}},\\\\n\\\\nThanks for placing an order with our company.\\\\n\\\\nDue to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.\\\\n\\\\nIf you have any questions, concerns or comments, please don’t hesitate to reach out.\\\\n\\\\nHave a great day and thanks for using our service!\\\\n\\\\nSincerely,\\\\n{{current_user.name}}\\",\\"body_html\\":\\"<div>Hello {{ticket.customer.name}},</div><br/><div>Thanks for placing an order with our company.</div><br/><div>Due to ||reason for the refund||, we will be happy to adjust your order to reflect the correct amount. Please allow 1-5 business days for any charges to reconcile with your account. We apologize for the inconvenience.</div><br/><div>If you have any questions, concerns or comments, please don’t hesitate to reach out.</div><br/><div>Have a great day and thanks for using our service!</div><br/><div>Sincerely,</div><div>{{current_user.name}}</div>\\"},\\"name\\":\\"setResponseText\\"},{\\"type\\":\\"user\\",\\"description\\":\\"Refund the user's last month \\",\\"title\\":\\"Refund Last Month\\",\\"arguments\\":{\\"method\\":\\"GET\\",\\"headers\\":[{\\"editable\\":false,\\"key\\":\\"X_API_KEY\\",\\"value\\":\\"9298jjdhdjkh393jhajkhdjashuurh\\"},{\\"editable\\":false,\\"key\\":\\"content-type\\",\\"value\\":\\"application/json\\"}],\\"url\\":\\"https://httpbin.org/post\\",\\"params\\":[{\\"editable\\":false,\\"key\\":\\"user_id\\",\\"value\\":\\"{ticket.customer.id}\\"}]},\\"name\\":\\"http\\"}],\\"created_datetime\\":\\"2017-08-01T17:56:51.190187+00:00\\",\\"updated_datetime\\":\\"2017-08-01T17:56:51.190199+00:00\\",\\"usage\\":1}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

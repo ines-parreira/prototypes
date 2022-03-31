@@ -3,15 +3,11 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 
-import {
-    fetchMacros,
-    fetchMacrosParamsTypes,
-    MacrosSearchResult,
-} from 'state/macro/actions'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../../common/utils/withCancellableRequest'
 import * as viewsSelectors from '../../../../state/views/selectors'
+import * as MacroActions from '../../../../state/macro/actions'
 import {getAgents} from '../../../../state/agents/selectors'
 import {RootState} from '../../../../state/types'
 
@@ -32,12 +28,14 @@ type Props = {
     CancellableRequestInjectedProps<
         'fetchMacrosCancellable',
         'cancelFetchMacrosCancellable',
-        typeof fetchMacros
+        typeof MacroActions.fetchMacros
     >
 
 type State = {
-    searchParams: fetchMacrosParamsTypes
-    searchResults: MacrosSearchResult
+    search: string
+    page: number
+    totalPages: number
+    macros: List<any>
     selectedMacroId: Maybe<number>
     firstLoad: boolean
 }
@@ -53,12 +51,10 @@ export class MacroContainer extends Component<Props, State> {
     }
 
     state: State = {
-        searchParams: {},
-        searchResults: {
-            page: 1,
-            totalPages: 1,
-            macros: fromJS([]),
-        },
+        search: '',
+        page: 1,
+        totalPages: 1,
+        macros: fromJS([]),
         selectedMacroId: null,
         firstLoad: true,
     }
@@ -67,7 +63,7 @@ export class MacroContainer extends Component<Props, State> {
         void this._loadMacros().then(() => {
             if (!this.props.selectedMacro.isEmpty()) {
                 const currentMacro = getCurrentMacro(
-                    this.state.searchResults.macros,
+                    this.state.macros,
                     this.props.selectedMacro.get('id'),
                     this.props.isCreatingMacro
                 )
@@ -78,31 +74,28 @@ export class MacroContainer extends Component<Props, State> {
                 // selectedMacro is not in page=1 macro list
                 if (currentMacro.isEmpty()) {
                     // search for it
-                    this._onSearch(
-                        {search: this.props.selectedMacro.get('name')},
-                        true
-                    )
+                    this._onSearch(this.props.selectedMacro.get('name'), true)
                 }
             }
         })
     }
 
-    _loadMacros = (
-        searchParams: fetchMacrosParamsTypes = {search: '', page: 1}
-    ): Promise<void> => {
+    _loadMacros = ({search = '', page = 1} = {}): Promise<void> => {
         return this.props
             .fetchMacrosCancellable(
                 {
-                    ...searchParams,
-                    currentMacros: this.state.searchResults.macros,
-                    currentPage: this.state.searchResults.page,
+                    currentMacros: this.state.macros,
+                    currentPage: this.state.page,
+                    search,
+                    page,
                 },
                 'name',
                 'asc'
             )
             .then((res) => {
-                if (!res) return
-
+                if (!res) {
+                    return
+                }
                 const selectedMacroId = getDefaultSelectedMacroId(
                     res.macros,
                     this.state.selectedMacroId,
@@ -112,11 +105,9 @@ export class MacroContainer extends Component<Props, State> {
                     this.setState(
                         {
                             selectedMacroId,
-                            searchResults: {
-                                macros: res.macros,
-                                page: res.page,
-                                totalPages: res.totalPages,
-                            },
+                            macros: res.macros,
+                            page: res.page,
+                            totalPages: res.totalPages,
                             firstLoad: false,
                         },
                         resolve
@@ -131,29 +122,15 @@ export class MacroContainer extends Component<Props, State> {
     }
 
     _updateMacros = (macros: List<any>) => {
-        this.setState({
-            searchResults: {
-                ...this.state.searchResults,
-                macros: macros,
-            },
-        })
+        this.setState({macros})
     }
 
     _debounceLoadMacros = _debounce(this._loadMacros, 350)
 
-    _onSearch = (
-        searchParams: fetchMacrosParamsTypes = {},
-        forceSearch = false
-    ) => {
-        this.setState({
-            searchParams: {...this.state.searchParams, ...searchParams},
-        })
-        if (
-            forceSearch ||
-            !searchParams.search?.trim().length ||
-            searchParams.search.trim().length > 1
-        ) {
-            void this._debounceLoadMacros({...searchParams, page: 1})
+    _onSearch = (search = '', forceSearch = false) => {
+        this.setState({search})
+        if (forceSearch || !search.trim().length || search.trim().length > 1) {
+            void this._debounceLoadMacros({search, page: 1})
         }
     }
 
@@ -171,7 +148,7 @@ export class MacroContainer extends Component<Props, State> {
         } = this.props
 
         const currentMacro = getCurrentMacro(
-            this.state.searchResults.macros,
+            this.state.macros,
             this.state.selectedMacroId,
             isCreatingMacro
         )
@@ -180,10 +157,11 @@ export class MacroContainer extends Component<Props, State> {
             <MacroModal
                 closeModal={closeModal}
                 activeView={activeView}
-                searchParams={this.state.searchParams}
-                searchResults={this.state.searchResults}
+                macros={this.state.macros}
                 fetchMacros={this._loadMacros}
                 firstLoad={this.state.firstLoad}
+                page={this.state.page}
+                totalPages={this.state.totalPages}
                 currentMacro={currentMacro}
                 agents={agents}
                 disableExternalActions={disableExternalActions || false}
@@ -192,6 +170,7 @@ export class MacroContainer extends Component<Props, State> {
                 handleClickItem={this._handleClickItem}
                 updateMacros={this._updateMacros}
                 onSearch={this._onSearch}
+                search={this.state.search}
                 isCreatingMacro={isCreatingMacro}
                 toggleCreateMacro={toggleCreateMacro}
                 allViewItemsSelected={allViewItemsSelected}
@@ -208,8 +187,8 @@ const connector = connect((state: RootState) => ({
 export default withCancellableRequest<
     'fetchMacrosCancellable',
     'cancelFetchMacrosCancellable',
-    typeof fetchMacros
+    typeof MacroActions.fetchMacros
 >(
     'fetchMacrosCancellable',
-    fetchMacros
+    MacroActions.fetchMacros
 )(connector(MacroContainer))

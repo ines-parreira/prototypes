@@ -16,7 +16,6 @@ export type Macro = MacroDraft & {
 export type MacroDraft = {
     actions: MacroAction[]
     name: string
-    language: string | null
 }
 
 export enum MacroSortableProperties {
@@ -24,7 +23,6 @@ export enum MacroSortableProperties {
     Name = 'name',
     UpdatedDatetime = 'updatedDatetime',
     Usage = 'usage',
-    Language = 'language',
 }
 
 export type FetchMacrosOptions = {
@@ -35,8 +33,6 @@ export type FetchMacrosOptions = {
     page?: number
     search?: string
     ticketId?: number
-    languages?: string[]
-    tags?: string[]
 }
 
 export type MacrosProperties = {

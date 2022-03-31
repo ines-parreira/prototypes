@@ -5,17 +5,14 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {Link} from 'react-router-dom'
 import IconButton from 'pages/common/components/button/IconButton'
-import {ISO639English} from 'constants/languages'
-import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
-import {TagLabel} from 'pages/common/utils/labels'
-import Tooltip from 'pages/common/components/Tooltip'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {OrderDirection, GorgiasApiError} from '../../../models/api/types'
-import {createMacro, deleteMacro} from '../../../models/macro/resources'
 import {
-    FetchMacrosOptions,
-    MacroSortableProperties,
-} from '../../../models/macro/types'
+    OrderDirection,
+    MetaSortOptions,
+    GorgiasApiError,
+} from '../../../models/api/types'
+import {createMacro, deleteMacro} from '../../../models/macro/resources'
+import {MacroSortableProperties} from '../../../models/macro/types'
 import {
     macroCreated,
     macroDeleted,
@@ -45,7 +42,10 @@ type OwnProps = {
         orderBy: MacroSortableProperties,
         orderDir: OrderDirection
     ) => void
-    options: FetchMacrosOptions
+    sortOptions: {
+        orderBy?: Maybe<MacroSortableProperties | MetaSortOptions>
+        orderDir?: Maybe<OrderDirection>
+    }
 }
 
 export function MacrosSettingsTableContainer({
@@ -56,7 +56,7 @@ export function MacrosSettingsTableContainer({
     macroDeleted,
     notify,
     onSortOptionsChange,
-    options,
+    sortOptions,
 }: OwnProps & ConnectedProps<typeof connector>) {
     const handleMacroDelete = async (macroId: number) => {
         try {
@@ -81,12 +81,11 @@ export function MacrosSettingsTableContainer({
         if (!macro) {
             return
         }
-        const {actions, name, language} = macro
+        const {actions, name} = macro
         try {
             const res = await createMacro({
                 actions,
                 name: `${name} (copy)`,
-                language,
             })
             macroCreated(res)
             history.push(`/app/settings/macros/${res.id}`)
@@ -106,8 +105,8 @@ export function MacrosSettingsTableContainer({
     const handleSortChange = (orderBy: MacroSortableProperties) => {
         onSortOptionsChange(
             orderBy,
-            orderBy === options.orderBy
-                ? options.orderDir === OrderDirection.Asc
+            orderBy === sortOptions.orderBy
+                ? sortOptions.orderDir === OrderDirection.Asc
                     ? OrderDirection.Desc
                     : OrderDirection.Asc
                 : defaultDescendingSort.includes(orderBy)
@@ -120,30 +119,19 @@ export function MacrosSettingsTableContainer({
         <TableWrapper>
             <TableHead className={css.tableHead}>
                 <HeaderCellProperty
-                    direction={options.orderDir}
+                    direction={sortOptions.orderDir}
                     isOrderedBy={
-                        options.orderBy === MacroSortableProperties.Name
+                        sortOptions.orderBy === MacroSortableProperties.Name
                     }
                     onClick={() =>
                         handleSortChange(MacroSortableProperties.Name)
                     }
                     title="Macro"
                 />
-                <HeaderCellProperty title="Tags" />
                 <HeaderCellProperty
-                    direction={options.orderDir}
+                    direction={sortOptions.orderDir}
                     isOrderedBy={
-                        options.orderBy === MacroSortableProperties.Language
-                    }
-                    onClick={() =>
-                        handleSortChange(MacroSortableProperties.Language)
-                    }
-                    title="Language"
-                />
-                <HeaderCellProperty
-                    direction={options.orderDir}
-                    isOrderedBy={
-                        options.orderBy === MacroSortableProperties.Usage
+                        sortOptions.orderBy === MacroSortableProperties.Usage
                     }
                     onClick={() =>
                         handleSortChange(MacroSortableProperties.Usage)
@@ -151,9 +139,9 @@ export function MacrosSettingsTableContainer({
                     title="Usage count"
                 />
                 <HeaderCellProperty
-                    direction={options.orderDir}
+                    direction={sortOptions.orderDir}
                     isOrderedBy={
-                        options.orderBy ===
+                        sortOptions.orderBy ===
                         MacroSortableProperties.UpdatedDatetime
                     }
                     onClick={() =>
@@ -179,51 +167,9 @@ export function MacrosSettingsTableContainer({
                         if (!macro) {
                             return null
                         }
+                        const {name, updated_datetime, usage} = macro
 
-                        const {name, language, updated_datetime, usage} = macro
                         const to = `/app/settings/macros/${macroId}`
-
-                        const tags = macro.actions
-                            .filter(
-                                (action) =>
-                                    action.name === MACRO_ACTION_NAME.ADD_TAGS
-                            )
-                            .reduce((allTags: string[], action) => {
-                                const tags = action.arguments.tags?.split(',')
-                                if (tags) allTags.push(...tags)
-                                return allTags
-                            }, [])
-                            .map((tag) => tag.trim())
-
-                        if (options.tags?.length) {
-                            const idx = tags.findIndex(
-                                (tag) => tag === options.tags![0]
-                            )
-                            if (idx !== -1) {
-                                const temp = tags[0]
-                                tags[0] = tags[idx]
-                                tags[idx] = temp
-                            }
-                        }
-
-                        const tagId = `tags-${macroId}`
-                        const tag = tags.length ? (
-                            <div className="flex" id={tagId}>
-                                <TagLabel>{tags[0]}</TagLabel>
-                                {tags.length > 1 && (
-                                    <>
-                                        <Tooltip target={tagId}>
-                                            {tags.join(', ')}
-                                        </Tooltip>
-                                        <TagLabel className="text-info">
-                                            +{tags.length - 1}
-                                        </TagLabel>
-                                    </>
-                                )}
-                            </div>
-                        ) : (
-                            '-'
-                        )
 
                         return (
                             <TableBodyRow
@@ -239,20 +185,6 @@ export function MacrosSettingsTableContainer({
                                     <Link to={to}>
                                         <BodyCellContent>
                                             {name}
-                                        </BodyCellContent>
-                                    </Link>
-                                </td>
-                                <td className={bodyCellCss.wrapper}>
-                                    <Link to={to} tabIndex={-1}>
-                                        <BodyCellContent>{tag}</BodyCellContent>
-                                    </Link>
-                                </td>
-                                <td className={bodyCellCss.wrapper}>
-                                    <Link to={to} tabIndex={-1}>
-                                        <BodyCellContent>
-                                            {language
-                                                ? ISO639English[language]
-                                                : '-'}
                                         </BodyCellContent>
                                     </Link>
                                 </td>

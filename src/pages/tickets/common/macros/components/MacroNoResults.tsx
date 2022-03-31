@@ -6,23 +6,19 @@ import {RootState} from 'state/types'
 import {hasRole} from 'utils'
 import {UserRole} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import {fetchMacrosParamsTypes} from 'state/macro/actions'
 
 type Props = {
-    searchParams: fetchMacrosParamsTypes
+    searchQuery: string
     newAction: () => void
 }
 
-const MacroNoResults = ({searchParams, newAction}: Props) => {
+const MacroNoResults = ({searchQuery, newAction}: Props) => {
     const currentUser = useAppSelector((state: RootState) => state.currentUser)
-    const {search, languages, tags} = searchParams
-
-    const hasSearch = !!search || languages?.length || tags?.length
 
     return (
         <div className="no-result-container">
             <p>
-                {hasSearch ? (
+                {!!searchQuery ? (
                     <span>No macros found</span>
                 ) : (
                     <span>You don't have any macros yet</span>

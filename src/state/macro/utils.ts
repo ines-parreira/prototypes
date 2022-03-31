@@ -60,7 +60,6 @@ export function getDefaultMacro() {
     return fromJS({
         name: 'New macro',
         actions: [generateDefaultAction(MacroActionName.SetResponseText)],
-        language: '',
     }) as Map<any, any>
 }
 
