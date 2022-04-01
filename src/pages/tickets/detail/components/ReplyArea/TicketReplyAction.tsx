@@ -2,16 +2,18 @@ import React, {Component} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
-
-import {FORM_CONTENT_TYPE} from '../../../../../config'
-import {updateActionArgsOnApplied} from '../../../../../state/ticket/actions'
-import {getActionTemplate} from '../../../../../utils'
-import SelectField from '../../../../common/forms/SelectField/SelectField'
-import {MacroActionName} from '../../../../../models/macroAction/types'
-import {getIconFromActionType} from '../../../../../models/macroAction/helpers'
-import AddInternalNoteAction from '../../../common/macros/components/actions/AddInternalNoteAction'
+import {FORM_CONTENT_TYPE} from 'config'
+import {getIconFromActionType} from 'models/macroAction/helpers'
+import {MacroActionName} from 'models/macroAction/types'
+import CheckBox from 'pages/common/forms/CheckBox'
+import InputField from 'pages/common/forms/input/InputField'
+import Caption from 'pages/common/forms/Caption/Caption'
+import Label from 'pages/common/forms/Label/Label'
+import NumberInput from 'pages/common/forms/input/NumberInput'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import AddInternalNoteAction from 'pages/tickets/common/macros/components/actions/AddInternalNoteAction'
+import {updateActionArgsOnApplied} from 'state/ticket/actions'
+import {getActionTemplate} from 'utils'
 
 import css from './TicketReplyAction.less'
 
@@ -70,15 +72,13 @@ export default class TicketReplyAction extends Component<Props> {
                 {args
                     .map((arg: Map<any, any>, key) => (
                         <div key={key} className={css.argInput}>
-                            <div className="mr-3">{arg.get('key')}</div>
-                            <DEPRECATED_InputField
-                                type="text"
+                            <InputField
+                                label={arg.get('key')}
                                 value={arg.get('value')}
                                 onChange={(value) =>
                                     this.setListDictValue(arg, value, category)
                                 }
-                                required={arg.get('required')}
-                                inline
+                                isRequired={arg.get('required')}
                             />
                         </div>
                     ))
@@ -94,46 +94,87 @@ export default class TicketReplyAction extends Component<Props> {
         )
 
         return (
-            <div>
+            <>
                 {sortedArgs
                     .map((value: number | string | boolean, key: string) => {
                         const label = template!.arguments![key].label
                         const inputConfig = template!.arguments![key].input
 
-                        let Tag:
-                            | typeof DEPRECATED_InputField
-                            | DEPRECATED_BooleanField
-                            | typeof SelectField = DEPRECATED_InputField
-
-                        if (inputConfig && inputConfig.type === 'checkbox') {
-                            Tag = DEPRECATED_BooleanField
-                        } else if (
-                            inputConfig &&
-                            inputConfig.type === 'select'
-                        ) {
-                            Tag = SelectField
-                        }
-
-                        return (
-                            <div key={key} className={css.argInput}>
-                                <Tag
-                                    {...inputConfig}
-                                    value={value}
-                                    onChange={(
-                                        value: number | string | boolean
-                                    ) => this.setValue(key, value)}
+                        if (inputConfig?.type === 'checkbox') {
+                            return (
+                                <CheckBox
+                                    className={css.input}
+                                    key={key}
+                                    isChecked={!!value}
+                                    onChange={(value) =>
+                                        this.setValue(key, value)
+                                    }
                                     required={
                                         template!.arguments![key].required ||
                                         false
                                     }
-                                    label={label || key}
-                                    inline
+                                >
+                                    {label || key}
+                                </CheckBox>
+                            )
+                        } else if (inputConfig?.type === 'number') {
+                            return (
+                                <NumberInput
+                                    className={css.input}
+                                    key={key}
+                                    {...inputConfig}
+                                    value={value as number}
+                                    onChange={(value) =>
+                                        this.setValue(key, value!)
+                                    }
+                                    isRequired={
+                                        template!.arguments![key].required ||
+                                        false
+                                    }
+                                    hasControls
                                 />
-                            </div>
+                            )
+                        } else if (inputConfig?.type === 'select') {
+                            return (
+                                <div
+                                    key={key}
+                                    className={css.selectFieldWrapper}
+                                >
+                                    <Label className={css.label}>{label}</Label>
+                                    <SelectField
+                                        className={css.input}
+                                        {...inputConfig}
+                                        value={value as string | number}
+                                        onChange={(value) =>
+                                            this.setValue(key, value)
+                                        }
+                                        required={
+                                            template!.arguments![key]
+                                                .required || false
+                                        }
+                                    />
+                                </div>
+                            )
+                        }
+
+                        return (
+                            <InputField
+                                key={key}
+                                {...inputConfig}
+                                className={css.inputField}
+                                value={value as string}
+                                onChange={(value: number | string | boolean) =>
+                                    this.setValue(key, value)
+                                }
+                                isRequired={
+                                    template!.arguments![key].required || false
+                                }
+                                label={label || key}
+                            />
                         )
                     })
                     .toList()}
-            </div>
+            </>
         )
     }
 
@@ -247,10 +288,10 @@ export default class TicketReplyAction extends Component<Props> {
                 {argsComponent}
                 {!!notes &&
                     notes.map((note, idx) => (
-                        <div key={idx} className={css.note}>
+                        <Caption key={idx} className={css.note}>
                             <i className="material-icons mr-1">info</i>
                             {note}
-                        </div>
+                        </Caption>
                     ))}
             </div>
         )

@@ -15,7 +15,6 @@ import {
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
-    Input,
     Popover,
     PopoverBody,
     PopoverHeader,
@@ -47,6 +46,7 @@ import history from 'pages/history'
 import {JobType} from 'models/job/types'
 import {getTickets} from 'state/tickets/selectors'
 import {UserRole} from 'config/types/user'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from './TicketListActions.less'
 
@@ -511,16 +511,12 @@ export const TicketListActionsContainer = ({
                             className="dropdown-item-input"
                             toggle={false}
                         >
-                            {openDropdown === ActionDropdown.Agents && ( // rebuild input on each opening so "autoFocus" works
-                                <Input
-                                    placeholder="Search agents..."
-                                    autoFocus
-                                    value={agentsSearchQuery}
-                                    onChange={(event) =>
-                                        setAgentsSearchQuery(event.target.value)
-                                    }
-                                />
-                            )}
+                            <TextInput
+                                placeholder="Search agents..."
+                                autoFocus
+                                value={agentsSearchQuery}
+                                onChange={setAgentsSearchQuery}
+                            />
                         </DropdownItem>
                         <DropdownItem divider />
                         {filteredAgents.isEmpty() ? (
@@ -604,16 +600,12 @@ export const TicketListActionsContainer = ({
                             className="dropdown-item-input"
                             toggle={false}
                         >
-                            {openDropdown === ActionDropdown.Teams && ( // rebuild input on each opening so "autoFocus" works
-                                <Input
-                                    placeholder="Search teams..."
-                                    autoFocus
-                                    value={teamsSearchQuery}
-                                    onChange={(event) =>
-                                        setTeamsSearchQuery(event.target.value)
-                                    }
-                                />
-                            )}
+                            <TextInput
+                                placeholder="Search teams..."
+                                autoFocus
+                                value={teamsSearchQuery}
+                                onChange={setTeamsSearchQuery}
+                            />
                         </DropdownItem>
                         <DropdownItem divider />
                         {filteredTeams.isEmpty() ? (
@@ -684,7 +676,11 @@ export const TicketListActionsContainer = ({
                             </ButtonIconLabel>
                         </Button>
                     </DropdownToggle>
-                    <TagDropdownMenu right disabled={isDisabled}>
+                    <TagDropdownMenu
+                        right
+                        disabled={isDisabled}
+                        style={{padding: '0.5rem 4px'}}
+                    >
                         <DropdownItem header className="mb-2">
                             ADD TAG:
                         </DropdownItem>
@@ -692,16 +688,12 @@ export const TicketListActionsContainer = ({
                             className="dropdown-item-input"
                             toggle={false}
                         >
-                            {openDropdown === ActionDropdown.Tags && ( // rebuild input on each opening so "autoFocus" works
-                                <Input
-                                    placeholder="Search tags..."
-                                    autoFocus
-                                    value={tagsSearchQuery}
-                                    onChange={(event) =>
-                                        searchTags(event.target.value)
-                                    }
-                                />
-                            )}
+                            <TextInput
+                                placeholder="Search tags..."
+                                autoFocus
+                                value={tagsSearchQuery}
+                                onChange={searchTags}
+                            />
                         </DropdownItem>
                         <DropdownItem divider />
                         {renderTagsMenu()}

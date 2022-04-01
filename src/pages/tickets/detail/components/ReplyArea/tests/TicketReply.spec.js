@@ -9,6 +9,8 @@ import {ACTION_TEMPLATES} from '../../../../../../config'
 
 jest.unmock('../../../../../../business/ticket.ts')
 
+jest.mock('lodash/uniqueId', () => (id) => `${id}42`)
+
 describe('<TicketReply/>', () => {
     const answerableSourceType = 'email'
     const nonAnswerableSourceType = 'chat'

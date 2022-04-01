@@ -1,12 +1,11 @@
 import React, {Component} from 'react'
 import type {KeyboardEvent} from 'react'
 import ReactDOM from 'react-dom'
-
 import classnames from 'classnames'
 import {fromJS, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
-import {Dropdown, DropdownItem, DropdownToggle, Input} from 'reactstrap'
+import {Dropdown, DropdownItem, DropdownToggle} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {RootState} from 'state/types'
@@ -19,6 +18,7 @@ import withCancellableRequest, {
 import shortcutManager from 'services/shortcutManager'
 import {TagLabel} from 'pages/common/utils/labels'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from './TicketTags.less'
 
@@ -72,12 +72,7 @@ export class TicketTags extends Component<Props, State> {
                 .map((x: Map<any, any>) => x.get('name') as string)
 
             if (!prevExistingTagNames.equals(existingTagNames)) {
-                const node = ReactDOM.findDOMNode(
-                    this.searchInputRef.current
-                ) as HTMLInputElement
-                if (node) {
-                    node.focus()
-                }
+                this.searchInputRef.current.focus()
             }
         }
 
@@ -108,7 +103,7 @@ export class TicketTags extends Component<Props, State> {
     }
 
     tagRef = React.createRef<DropdownItem>()
-    searchInputRef = React.createRef<Input>()
+    searchInputRef = React.createRef<HTMLInputElement>()
 
     addTag = (name: string): void => {
         if (!name) {
@@ -300,22 +295,18 @@ export class TicketTags extends Component<Props, State> {
                             </strong>
                         )}
                     </DropdownToggle>
-                    <TagDropdownMenu>
+                    <TagDropdownMenu style={{padding: '0.5rem 4px'}}>
                         <DropdownItem header>ADD TAG:</DropdownItem>
                         <DropdownItem header className="dropdown-item-input">
-                            {this.state.dropdownOpen && ( // rebuild input on each opening so "autoFocus" works
-                                <Input
-                                    ref={this.searchInputRef}
-                                    placeholder="Search tags..."
-                                    autoFocus
-                                    value={this.state.search}
-                                    onChange={(e) =>
-                                        this.search(e.target.value)
-                                    }
-                                    onKeyDown={this.handleSearchKeyDown}
-                                    role="menuitem"
-                                />
-                            )}
+                            <TextInput
+                                ref={this.searchInputRef}
+                                placeholder="Search tags..."
+                                autoFocus
+                                value={this.state.search}
+                                onChange={this.search}
+                                onKeyDown={this.handleSearchKeyDown}
+                                role="menuitem"
+                            />
                         </DropdownItem>
                         <DropdownItem divider />
                         {this.displayMenu()}

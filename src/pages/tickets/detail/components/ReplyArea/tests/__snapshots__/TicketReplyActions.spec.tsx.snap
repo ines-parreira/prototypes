@@ -297,57 +297,39 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
       <div
         class="argsWrapper"
       >
-        <div>
-          <div
-            class="argInput"
+        <div
+          class="input"
+        >
+          <label
+            class="label label"
+            for="checkbox-2"
           >
-            <div
-              class="d-inline-block form-check"
-              color=""
-            >
-              <label
-                class="control-label form-check-label"
-                for="id-input-2"
-              >
-                <input
-                  checked=""
-                  class="form-check-input form-check-input"
-                  id="id-input-2"
-                  type="checkbox"
-                />
-                <span
-                  style="vertical-align: middle;"
-                >
-                  Restock
-                </span>
-              </label>
-            </div>
-          </div>
-          <div
-            class="argInput"
+            <input
+              checked=""
+              class="input"
+              id="checkbox-2"
+              name="checkbox-2"
+              type="checkbox"
+            />
+            Restock
+          </label>
+        </div>
+        <div
+          class="input"
+        >
+          <label
+            class="label label"
+            for="checkbox-3"
           >
-            <div
-              class="d-inline-block form-check"
-              color=""
-            >
-              <label
-                class="control-label form-check-label"
-                for="id-input-3"
-              >
-                <input
-                  checked=""
-                  class="form-check-input form-check-input"
-                  id="id-input-3"
-                  type="checkbox"
-                />
-                <span
-                  style="vertical-align: middle;"
-                >
-                  Refund
-                </span>
-              </label>
-            </div>
-          </div>
+            <input
+              checked=""
+              class="input"
+              id="checkbox-3"
+              name="checkbox-3"
+              type="checkbox"
+            />
+            Refund
+          </label>
         </div>
       </div>
     </div>
@@ -397,38 +379,47 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
       <div
         class="argsWrapper"
       >
-        <div>
-          <div
-            class="argInput"
+        <span
+          class="input wrapper group horizontal"
+        >
+          <input
+            appendposition="left"
+            class="input"
+            max="Infinity"
+            min="-Infinity"
+            required=""
+            step="0.01"
+            type="number"
+            value="Map { \\"label\\": \\"Amount\\", \\"default\\": \\"\\", \\"editable\\": true, \\"required\\": true, \\"display_order\\": 1, \\"input\\": Map { \\"type\\": \\"number\\", \\"step\\": 0.01 } }"
+          />
+          <span
+            class="controls group vertical"
           >
-            <div
-              class="InputField required d-inline-block form-group"
-              color=""
+            <button
+              class="wrapper button wrapper small secondary small top"
+              type="button"
             >
-              <label
-                class="control-label"
-                for="id-input-4"
+              <i
+                class="material-icons icon"
               >
-                Amount
-              </label>
-              <div
-                class=""
+                arrow_drop_up
+              </i>
+            </button>
+            <button
+              class="wrapper button wrapper small secondary small bottom"
+              type="button"
+            >
+              <i
+                class="material-icons icon"
               >
-                <input
-                  class="form-control"
-                  id="id-input-4"
-                  required=""
-                  step="0.01"
-                  type="number"
-                  value="Map { \\"label\\": \\"Amount\\", \\"default\\": \\"\\", \\"editable\\": true, \\"required\\": true, \\"display_order\\": 1, \\"input\\": Map { \\"type\\": \\"number\\", \\"step\\": 0.01 } }"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+                arrow_drop_down
+              </i>
+            </button>
+          </span>
+        </span>
       </div>
       <div
-        class="note"
+        class="caption note"
       >
         <i
           class="material-icons mr-1"
@@ -460,7 +451,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
         close
       </i>
       <div
-        class="note"
+        class="caption note"
       >
         <i
           class="material-icons mr-1"

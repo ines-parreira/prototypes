@@ -13,8 +13,8 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
     >
       <input
         class="input mr-2 input"
-        id="input-text-2"
-        name="input-text-2"
+        id="input-text-3"
+        name="input-text-3"
         placeholder="Subject"
         tabindex="1"
         type="text"
@@ -197,7 +197,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
             aria-hidden="true"
             class="dropdown-menu"
             role="menu"
-            style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
             tabindex="-1"
           >
             <h6
@@ -209,7 +209,21 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
             <h6
               class="dropdown-item-input dropdown-header"
               tabindex="-1"
-            />
+            >
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-4"
+                  name="input-text-4"
+                  placeholder="Search tags..."
+                  role="menuitem"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </h6>
             <div
               class="dropdown-divider"
               tabindex="-1"
@@ -346,7 +360,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
       class="wrapper component"
     >
       <input
-        class="input mr-2 input edit-mode"
+        class="input mr-2 input"
         id="input-text-1"
         name="input-text-1"
         placeholder="Subject"
@@ -397,7 +411,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
             aria-hidden="true"
             class="dropdown-menu"
             role="menu"
-            style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
             tabindex="-1"
           >
             <h6
@@ -409,7 +423,21 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
             <h6
               class="dropdown-item-input dropdown-header"
               tabindex="-1"
-            />
+            >
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-2"
+                  name="input-text-2"
+                  placeholder="Search tags..."
+                  role="menuitem"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </h6>
             <div
               class="dropdown-divider"
               tabindex="-1"
@@ -547,8 +575,8 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
     >
       <input
         class="input mr-2 input"
-        id="input-text-3"
-        name="input-text-3"
+        id="input-text-5"
+        name="input-text-5"
         placeholder="Subject"
         tabindex="1"
         type="text"
@@ -741,7 +769,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
             aria-hidden="true"
             class="dropdown-menu"
             role="menu"
-            style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
             tabindex="-1"
           >
             <h6
@@ -753,7 +781,21 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
             <h6
               class="dropdown-item-input dropdown-header"
               tabindex="-1"
-            />
+            >
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-6"
+                  name="input-text-6"
+                  placeholder="Search tags..."
+                  role="menuitem"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </h6>
             <div
               class="dropdown-divider"
               tabindex="-1"
@@ -891,8 +933,8 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
     >
       <input
         class="input mr-2 input"
-        id="input-text-4"
-        name="input-text-4"
+        id="input-text-7"
+        name="input-text-7"
         placeholder="Subject"
         tabindex="1"
         type="text"
@@ -1081,7 +1123,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
             aria-hidden="true"
             class="dropdown-menu"
             role="menu"
-            style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
             tabindex="-1"
           >
             <h6
@@ -1093,7 +1135,21 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
             <h6
               class="dropdown-item-input dropdown-header"
               tabindex="-1"
-            />
+            >
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  id="input-text-8"
+                  name="input-text-8"
+                  placeholder="Search tags..."
+                  role="menuitem"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </h6>
             <div
               class="dropdown-divider"
               tabindex="-1"

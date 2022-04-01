@@ -2,11 +2,12 @@ import classnames from 'classnames'
 import React from 'react'
 import {Form} from 'reactstrap'
 
+import {SectionDraft} from 'models/section/types'
 import Button from 'pages/common/components/button/Button'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {SectionDraft} from '../../../models/section/types'
-import Modal from '../../common/components/Modal'
-import EmojiSelect from '../../common/components/ViewTable/EmojiSelect/EmojiSelect'
+import Modal from 'pages/common/components/Modal'
+import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import InputField from 'pages/common/forms/input/InputField'
+import InputGroup from 'pages/common/forms/input/InputGroup'
 
 import css from './SectionFormModal.less'
 
@@ -50,7 +51,7 @@ export default function SectionFormModal({
                     onSubmit()
                 }}
             >
-                <div className="d-flex">
+                <InputGroup className={css.inputGroup}>
                     <EmojiSelect
                         className={css.emojiSelect}
                         emoji={sectionForm.decoration?.emoji || null}
@@ -59,17 +60,16 @@ export default function SectionFormModal({
                         }
                         onEmojiClear={() => onChange('decoration', null)}
                     />
-                    <DEPRECATED_InputField
-                        autoFocus
+                    <InputField
+                        id="name"
                         className={classnames('flex-grow', css.nameInput)}
-                        type="text"
-                        name="name"
-                        required
                         value={sectionForm.name}
-                        onChange={(name: string) => onChange('name', name)}
                         placeholder="Choose a helpful name"
+                        onChange={(name: string) => onChange('name', name)}
+                        autoFocus
+                        isRequired
                     />
-                </div>
+                </InputGroup>
                 {isNewSection && (
                     <>
                         <div className={css.tipWrapper}>

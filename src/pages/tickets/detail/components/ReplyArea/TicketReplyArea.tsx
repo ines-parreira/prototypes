@@ -3,29 +3,25 @@ import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
-import {Input} from 'reactstrap'
 import {ContentState} from 'draft-js'
 
-import {RootState} from '../../../../../state/types'
-import {clearMacroBeforeApply} from '../../../../../business/macro'
-import shortcutManager from '../../../../../services/shortcutManager/index'
+import {clearMacroBeforeApply} from 'business/macro'
+import RichField from 'pages/common/forms/RichField/RichField'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
-} from '../../../../common/utils/withCancellableRequest'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import {applyMacro} from '../../../../../state/ticket/actions'
-import * as ticketSelectors from '../../../../../state/ticket/selectors'
+} from 'pages/common/utils/withCancellableRequest'
 import {
     getCurrentMacro,
     getDefaultSelectedMacroId,
-} from '../../../common/macros/utils'
-import {getPreferences} from '../../../../../state/currentUser/selectors'
-import {
-    fetchMacros,
-    fetchMacrosParamsTypes,
-} from '../../../../../state/macro/actions'
-import {notify} from '../../../../../state/notifications/actions'
-import RichField from '../../../../common/forms/RichField/RichField'
+} from 'pages/tickets/common/macros/utils'
+import shortcutManager from 'services/shortcutManager/index'
+import {getPreferences} from 'state/currentUser/selectors'
+import {fetchMacros, fetchMacrosParamsTypes} from 'state/macro/actions'
+import {getNewMessageType, isCacheAdded} from 'state/newMessage/selectors'
+import {notify} from 'state/notifications/actions'
+import {applyMacro} from 'state/ticket/actions'
+import {DEPRECATED_getTicket} from 'state/ticket/selectors'
+import {RootState} from 'state/types'
 
 import TicketMacros from './TicketMacros'
 import TicketReply from './TicketReply'
@@ -57,7 +53,7 @@ type State = {
 
 export class TicketReplyArea extends Component<Props, State> {
     richArea: Maybe<RichField>
-    macroInput?: HTMLInputElement
+    macroInput?: HTMLInputElement | null
     cacheAdded = false
 
     constructor(props: Props) {
@@ -387,10 +383,9 @@ export class TicketReplyArea extends Component<Props, State> {
                     >
                         bolt
                     </i>
-                    <Input
-                        innerRef={(macroInput) =>
-                            (this.macroInput = macroInput as HTMLInputElement)
-                        }
+                    <input
+                        ref={(macroInput) => (this.macroInput = macroInput)}
+                        className={css.input}
                         tabIndex={3}
                         onChange={this.searchMacros}
                         onKeyDown={this.handleSearchKeyDown}
@@ -454,10 +449,10 @@ export class TicketReplyArea extends Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
-        cacheAdded: newMessageSelectors.isCacheAdded(state),
-        currentTicket: ticketSelectors.DEPRECATED_getTicket(state),
+        cacheAdded: isCacheAdded(state),
+        currentTicket: DEPRECATED_getTicket(state),
         newMessage: state.newMessage,
-        newMessageType: newMessageSelectors.getNewMessageType(state),
+        newMessageType: getNewMessageType(state),
         preferences: getPreferences(state),
     }),
     {

@@ -10,11 +10,11 @@ export default function TagDropdownMenu(props: Props) {
         <DropdownMenu
             {...props}
             style={{
+                padding: 0,
                 ...props.style,
                 width: 'auto',
                 minWidth: `${230 / 14}em`,
                 maxWidth: `${480 / 14}em`,
-                padding: 0,
             }}
         />
     )

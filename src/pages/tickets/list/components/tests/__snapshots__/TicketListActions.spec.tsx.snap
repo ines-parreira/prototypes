@@ -124,7 +124,20 @@ exports[`TicketListActions component should not render export tickets button for
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-28"
+              name="input-text-28"
+              placeholder="Search agents..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -195,7 +208,20 @@ exports[`TicketListActions component should not render export tickets button for
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-29"
+              name="input-text-29"
+              placeholder="Search teams..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -255,7 +281,7 @@ exports[`TicketListActions component should not render export tickets button for
         class="dropdown-menu dropdown-menu-right"
         disabled=""
         role="menu"
-        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
         tabindex="-1"
       >
         <h6
@@ -268,7 +294,20 @@ exports[`TicketListActions component should not render export tickets button for
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-30"
+              name="input-text-30"
+              placeholder="Search tags..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -434,7 +473,20 @@ exports[`TicketListActions component should not render the delete button for bas
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-22"
+              name="input-text-22"
+              placeholder="Search agents..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -505,7 +557,20 @@ exports[`TicketListActions component should not render the delete button for bas
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-23"
+              name="input-text-23"
+              placeholder="Search teams..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -565,7 +630,7 @@ exports[`TicketListActions component should not render the delete button for bas
         class="dropdown-menu dropdown-menu-right"
         disabled=""
         role="menu"
-        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
         tabindex="-1"
       >
         <h6
@@ -578,7 +643,20 @@ exports[`TicketListActions component should not render the delete button for bas
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-24"
+              name="input-text-24"
+              placeholder="Search tags..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -738,7 +816,20 @@ exports[`TicketListActions component should render agents options in assign agen
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-13"
+              name="input-text-13"
+              placeholder="Search agents..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -898,7 +989,20 @@ exports[`TicketListActions component should render agents options in assign agen
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-14"
+              name="input-text-14"
+              placeholder="Search teams..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -955,7 +1059,7 @@ exports[`TicketListActions component should render agents options in assign agen
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
         role="menu"
-        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
         tabindex="-1"
       >
         <h6
@@ -968,7 +1072,20 @@ exports[`TicketListActions component should render agents options in assign agen
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-15"
+              name="input-text-15"
+              placeholder="Search tags..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -1146,7 +1263,20 @@ exports[`TicketListActions component should render enabled buttons when some tic
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-1"
+              name="input-text-1"
+              placeholder="Search agents..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -1215,7 +1345,20 @@ exports[`TicketListActions component should render enabled buttons when some tic
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-2"
+              name="input-text-2"
+              placeholder="Search teams..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -1272,7 +1415,7 @@ exports[`TicketListActions component should render enabled buttons when some tic
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
         role="menu"
-        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
         tabindex="-1"
       >
         <h6
@@ -1285,7 +1428,20 @@ exports[`TicketListActions component should render enabled buttons when some tic
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-3"
+              name="input-text-3"
+              placeholder="Search tags..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -1469,7 +1625,20 @@ exports[`TicketListActions component should render export tickets button for age
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-25"
+              name="input-text-25"
+              placeholder="Search agents..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -1540,7 +1709,20 @@ exports[`TicketListActions component should render export tickets button for age
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-26"
+              name="input-text-26"
+              placeholder="Search teams..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -1600,7 +1782,7 @@ exports[`TicketListActions component should render export tickets button for age
         class="dropdown-menu dropdown-menu-right"
         disabled=""
         role="menu"
-        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
         tabindex="-1"
       >
         <h6
@@ -1613,7 +1795,20 @@ exports[`TicketListActions component should render export tickets button for age
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-27"
+              name="input-text-27"
+              placeholder="Search tags..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -1793,7 +1988,20 @@ exports[`TicketListActions component should render teams in assign team dropdown
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-10"
+              name="input-text-10"
+              placeholder="Search agents..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -1862,7 +2070,20 @@ exports[`TicketListActions component should render teams in assign team dropdown
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-11"
+              name="input-text-11"
+              placeholder="Search teams..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -2010,7 +2231,7 @@ exports[`TicketListActions component should render teams in assign team dropdown
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
         role="menu"
-        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
         tabindex="-1"
       >
         <h6
@@ -2023,7 +2244,20 @@ exports[`TicketListActions component should render teams in assign team dropdown
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-12"
+              name="input-text-12"
+              placeholder="Search tags..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -2207,7 +2441,20 @@ exports[`TicketListActions component should render the delete action for lead an
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-16"
+              name="input-text-16"
+              placeholder="Search agents..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -2278,7 +2525,20 @@ exports[`TicketListActions component should render the delete action for lead an
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-17"
+              name="input-text-17"
+              placeholder="Search teams..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -2338,7 +2598,7 @@ exports[`TicketListActions component should render the delete action for lead an
         class="dropdown-menu dropdown-menu-right"
         disabled=""
         role="menu"
-        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
         tabindex="-1"
       >
         <h6
@@ -2351,7 +2611,20 @@ exports[`TicketListActions component should render the delete action for lead an
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-18"
+              name="input-text-18"
+              placeholder="Search tags..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -2537,7 +2810,20 @@ exports[`TicketListActions component should render the special actions for lead 
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-19"
+              name="input-text-19"
+              placeholder="Search agents..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -2608,7 +2894,20 @@ exports[`TicketListActions component should render the special actions for lead 
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-20"
+              name="input-text-20"
+              placeholder="Search teams..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"
@@ -2668,7 +2967,7 @@ exports[`TicketListActions component should render the special actions for lead 
         class="dropdown-menu dropdown-menu-right"
         disabled=""
         role="menu"
-        style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
         tabindex="-1"
       >
         <h6
@@ -2681,7 +2980,20 @@ exports[`TicketListActions component should render the special actions for lead 
           class="dropdown-item-input dropdown-item"
           role="menuitem"
           tabindex="0"
-        />
+        >
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-21"
+              name="input-text-21"
+              placeholder="Search tags..."
+              type="text"
+              value=""
+            />
+          </div>
+        </button>
         <div
           class="dropdown-divider"
           tabindex="-1"

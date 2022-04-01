@@ -62,7 +62,7 @@ exports[`TicketTags component should display current tags 1`] = `
       aria-hidden="true"
       class="dropdown-menu"
       role="menu"
-      style="width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; padding: 0px;"
+      style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
       tabindex="-1"
     >
       <h6
@@ -74,7 +74,21 @@ exports[`TicketTags component should display current tags 1`] = `
       <h6
         class="dropdown-item-input dropdown-header"
         tabindex="-1"
-      />
+      >
+        <div
+          class="wrapper"
+        >
+          <input
+            class="input"
+            id="input-text-1"
+            name="input-text-1"
+            placeholder="Search tags..."
+            role="menuitem"
+            type="text"
+            value=""
+          />
+        </div>
+      </h6>
       <div
         class="dropdown-divider"
         tabindex="-1"

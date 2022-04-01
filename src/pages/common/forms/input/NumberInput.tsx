@@ -146,7 +146,7 @@ function NumberInput(
                 max={max}
                 min={min}
                 onChange={(e) => {
-                    const parsedValue = parseInt(e.target.value)
+                    const parsedValue = Number(e.target.value)
 
                     onChange(isNaN(parsedValue) ? undefined : parsedValue)
                 }}

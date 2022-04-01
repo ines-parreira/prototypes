@@ -34,17 +34,23 @@
         margin-top: 0.5rem;
     }
 
-    .argInput {
-        display: flex;
+    .input {
         align-items: center;
-        margin-bottom: 10px;
-
-        :global(.form-group) {
-            min-width: 50%;
-        }
+        display: flex;
+        width: fit-content;
     }
 
-    .note {
-        color: @classic-neutral-grey-4;
+    .inputField {
+        width: 50%;
+    }
+
+    .selectFieldWrapper {
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+    }
+
+    .label {
+        margin-bottom: 4px;
     }
 }

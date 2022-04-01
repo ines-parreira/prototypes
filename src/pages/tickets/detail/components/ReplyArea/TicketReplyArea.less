@@ -49,4 +49,16 @@
         justify-content: center;
         padding: 15px;
     }
+
+    .input {
+        width: 100%;
+
+        &:focus {
+            box-shadow: 0 0 0 2px fade(@classic-main-primary, 20%);
+        }
+
+        &:focus-visible {
+            outline: none;
+        }
+    }
 }

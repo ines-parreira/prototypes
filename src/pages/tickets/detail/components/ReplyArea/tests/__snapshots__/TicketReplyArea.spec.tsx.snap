@@ -29,27 +29,15 @@ exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and f
       >
         bolt
       </i>
-      <Input
+      <input
+        className="input"
         disabled={false}
-        innerRef={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
         onKeyDown={[Function]}
         placeholder="Search macros by name, tags or body..."
         tabIndex={3}
-        type="text"
-      >
-        <input
-          className="form-control"
-          disabled={false}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          placeholder="Search macros by name, tags or body..."
-          tabIndex={3}
-          type="text"
-        />
-      </Input>
+      />
     </div>
     <div
       className="content"
@@ -104,27 +92,15 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
       >
         bolt
       </i>
-      <Input
+      <input
+        className="input"
         disabled={true}
-        innerRef={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
         onKeyDown={[Function]}
         placeholder="Search macros by name, tags or body..."
         tabIndex={3}
-        type="text"
-      >
-        <input
-          className="form-control"
-          disabled={true}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          placeholder="Search macros by name, tags or body..."
-          tabIndex={3}
-          type="text"
-        />
-      </Input>
+      />
     </div>
     <div
       className="content"
@@ -163,15 +139,14 @@ exports[`<TicketReplyArea/> should render 1`] = `
     >
       bolt
     </i>
-    <Input
+    <input
+      className="input"
       disabled={false}
-      innerRef={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
       onKeyDown={[Function]}
       placeholder="Search macros by name, tags or body..."
       tabIndex={3}
-      type="text"
     />
   </div>
   <div

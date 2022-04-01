@@ -15,7 +15,7 @@ import _cloneDeep from 'lodash/cloneDeep'
 import _trim from 'lodash/trim'
 import _isArray from 'lodash/isArray'
 
-import {ReceiverValue} from '../../../../../../../../state/ticket/utils'
+import {ReceiverValue} from 'state/ticket/utils'
 
 import css from './MultiSelectAsyncField.less'
 
