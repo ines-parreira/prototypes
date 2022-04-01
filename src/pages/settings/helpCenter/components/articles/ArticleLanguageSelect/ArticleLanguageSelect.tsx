@@ -38,6 +38,11 @@ export const ArticleLanguageSelect = ({
         [selected, list]
     )
 
+    const handleOnSelect = (option: OptionItem) => {
+        onSelect(option.value)
+        onClose()
+    }
+
     const renderActions = (option: OptionItem) => {
         const handleOnClickAction =
             (action: ActionType) => (event: React.MouseEvent) => {
@@ -60,7 +65,7 @@ export const ArticleLanguageSelect = ({
                     )}
                     <ActionButton
                         variant="neutral"
-                        onClick={handleOnClickAction('view')}
+                        onClick={() => handleOnSelect(option)}
                     >
                         view
                     </ActionButton>
@@ -71,17 +76,12 @@ export const ArticleLanguageSelect = ({
             <div className={css.actions}>
                 <ActionButton
                     help="Add language version"
-                    onClick={handleOnClickAction('create')}
+                    onClick={() => handleOnSelect(option)}
                 >
                     create
                 </ActionButton>
             </div>
         )
-    }
-
-    const handleOnSelect = (option: OptionItem) => {
-        onSelect(option.value)
-        onClose()
     }
 
     return (
