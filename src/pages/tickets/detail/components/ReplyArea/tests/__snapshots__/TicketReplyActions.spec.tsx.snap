@@ -396,7 +396,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
             class="controls group vertical"
           >
             <button
-              class="wrapper button wrapper small secondary small top"
+              class="wrapper button wrapper small fill secondary small top"
               type="button"
             >
               <i
@@ -406,7 +406,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
               </i>
             </button>
             <button
-              class="wrapper button wrapper small secondary small bottom"
+              class="wrapper button wrapper small fill secondary small bottom"
               type="button"
             >
               <i
