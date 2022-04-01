@@ -8,7 +8,7 @@ exports[`UpgradeButton should display with custom callback 1`] = `
     class="d-flex align-items-center upgradeLink"
   >
     <button
-      class="wrapper primary medium"
+      class="wrapper fill primary medium"
       type="button"
     >
       <span
@@ -37,7 +37,7 @@ exports[`UpgradeButton should display with custom props 1`] = `
       to="[object Object]"
     >
       <button
-        class="wrapper primary medium"
+        class="wrapper fill primary medium"
         type="button"
       >
         <span
@@ -65,7 +65,7 @@ exports[`UpgradeButton should display with default props 1`] = `
       to="[object Object]"
     >
       <button
-        class="wrapper primary medium"
+        class="wrapper fill primary medium"
         type="button"
       >
         <span

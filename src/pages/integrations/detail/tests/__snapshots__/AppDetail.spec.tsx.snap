@@ -192,7 +192,7 @@ exports[`AppDetail should render 2`] = `
           target="_blank"
         >
           <button
-            class="wrapper actionButton primary medium"
+            class="wrapper actionButton fill primary medium"
             type="button"
           >
             Connect App

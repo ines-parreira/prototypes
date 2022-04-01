@@ -659,7 +659,7 @@ Sincerely,
                   type="submit"
                 >
                   <button
-                    className="wrapper mr-2 primary medium"
+                    className="wrapper mr-2 fill primary medium"
                     disabled={false}
                     type="submit"
                   >
@@ -673,7 +673,7 @@ Sincerely,
                   onClick={[Function]}
                 >
                   <button
-                    className="wrapper secondary medium"
+                    className="wrapper fill secondary medium"
                     disabled={false}
                     onClick={[Function]}
                     type="button"

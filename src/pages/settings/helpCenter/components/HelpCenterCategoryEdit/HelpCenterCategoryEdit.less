@@ -45,26 +45,9 @@
         }
     }
 
-    .copyButton {
-        position: absolute;
-        top: 0;
-        right: 0;
-        color: @classic-main-primary;
-        background-color: transparent;
-        border: 0;
-        padding: 0 8px;
-        font-size: 12px;
-        font-weight: 500;
-        line-height: 20px;
-
-        i {
-            margin-left: 4px;
-            font-size: 14px;
-        }
-    }
-
-    .copyButton:focus:not(:focus-visible) {
-        outline: none;
+    .slugWrapper {
+        display: flex;
+        justify-content: space-between;
     }
 
     .slug-prefix,

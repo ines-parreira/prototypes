@@ -2,7 +2,7 @@
 
 exports[`<PopoverModal /> should render  1`] = `
 <button
-  class="wrapper wrapper secondary medium"
+  class="wrapper wrapper fill secondary medium"
   type="button"
 >
   <span

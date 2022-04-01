@@ -475,7 +475,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
                 class="d-inline-block"
               >
                 <button
-                  class="wrapper secondary medium"
+                  class="wrapper fill secondary medium"
                   id="color-picker-2"
                   type="button"
                 >
@@ -497,14 +497,14 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
           class="d-flex"
         >
           <button
-            class="wrapper primary medium isDisabled"
+            class="wrapper fill primary medium isDisabled"
             disabled=""
             type="button"
           >
             Add new Help Center
           </button>
           <button
-            class="wrapper cancelButton secondary medium"
+            class="wrapper cancelButton fill secondary medium"
             type="button"
           >
             Cancel

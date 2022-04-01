@@ -7,6 +7,11 @@ const storyConfig: Meta = {
     title: 'General/Button/Button',
     component: Button,
     argTypes: {
+        fillStyle: {
+            control: {
+                type: 'select',
+            },
+        },
         isDisabled: {
             control: {
                 type: 'boolean',
@@ -36,12 +41,20 @@ const Template: Story<ComponentProps<typeof Button>> = (props) => (
 )
 const templateParameters = {
     controls: {
-        include: ['isDisabled', 'isLoading', 'size', 'children', 'onClick'],
+        include: [
+            'fillStyle',
+            'isDisabled',
+            'isLoading',
+            'size',
+            'children',
+            'onClick',
+        ],
     },
 }
 
 const defaultProps: ComponentProps<typeof Button> = {
     children: 'Click me!',
+    fillStyle: 'fill',
     intent: 'primary',
     isDisabled: false,
     isLoading: false,
@@ -58,13 +71,6 @@ Secondary.args = {
     intent: 'secondary',
 }
 Secondary.parameters = templateParameters
-
-export const Text = Template.bind({})
-Text.args = {
-    ...defaultProps,
-    intent: 'text',
-}
-Text.parameters = templateParameters
 
 export const Destructive = Template.bind({})
 Destructive.args = {

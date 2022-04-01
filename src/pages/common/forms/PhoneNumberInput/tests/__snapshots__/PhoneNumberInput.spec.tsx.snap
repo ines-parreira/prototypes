@@ -11,7 +11,7 @@ exports[`<PhoneNumberInput/> should render 1`] = `
     class="group wrapper group horizontal"
   >
     <button
-      class="wrapper button secondary medium left isAuxiliaryButton"
+      class="wrapper button fill secondary medium left isAuxiliaryButton"
       type="button"
     >
       <span

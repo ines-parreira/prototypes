@@ -203,7 +203,8 @@ export class Row extends Component<Props, State> {
                 <td className="smallest">
                     <div className={classNames('cell-wrapper', css.actions)}>
                         <IconButton
-                            intent="text"
+                            fillStyle="ghost"
+                            intent="secondary"
                             onClick={this._onEdit}
                             className={classNames(css.actionButton, 'mr-1')}
                         >
@@ -227,12 +228,10 @@ export class Row extends Component<Props, State> {
                             {({uid, onDisplayConfirmation}) => (
                                 <IconButton
                                     id={uid}
-                                    intent="text"
+                                    fillStyle="ghost"
+                                    intent="destructive"
                                     onClick={onDisplayConfirmation}
-                                    className={classNames(
-                                        css.actionButton,
-                                        css.deleteActionButton
-                                    )}
+                                    className="css.actionButton"
                                 >
                                     delete
                                 </IconButton>

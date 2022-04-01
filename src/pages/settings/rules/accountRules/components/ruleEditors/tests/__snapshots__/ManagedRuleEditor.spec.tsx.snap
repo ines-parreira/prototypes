@@ -162,7 +162,7 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
   >
     <div>
       <button
-        class="wrapper primary medium isDisabled"
+        class="wrapper fill primary medium isDisabled"
         disabled=""
         form="rule-form"
         id="rule-item-save"
@@ -173,7 +173,7 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
     </div>
     <div>
       <button
-        class="wrapper destructive medium"
+        class="wrapper fill destructive medium"
         id="rule-item-delete"
         type="button"
       >

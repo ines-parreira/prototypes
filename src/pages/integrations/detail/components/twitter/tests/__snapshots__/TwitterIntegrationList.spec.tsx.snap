@@ -33,7 +33,7 @@ exports[`<TwitterIntegrationList/> render() should render 1`] = `
     </nav>
     <div>
       <button
-        class="wrapper createIntegrationButton primary medium"
+        class="wrapper createIntegrationButton fill primary medium"
         type="submit"
       >
         <div>
@@ -133,7 +133,7 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
     </nav>
     <div>
       <button
-        class="wrapper createIntegrationButton primary medium"
+        class="wrapper createIntegrationButton fill primary medium"
         type="submit"
       >
         <div>
@@ -392,7 +392,7 @@ exports[`<TwitterIntegrationList/> render() should render with empty list 1`] = 
     </nav>
     <div>
       <button
-        class="wrapper createIntegrationButton primary medium"
+        class="wrapper createIntegrationButton fill primary medium"
         type="submit"
       >
         <div>

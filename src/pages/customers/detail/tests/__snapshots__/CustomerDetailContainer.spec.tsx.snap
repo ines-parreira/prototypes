@@ -16,14 +16,14 @@ exports[`<CustomerDetailContainer /> should display the customer and its history
         to="/app/ticket/new?customer=1"
       >
         <button
-          class="wrapper secondary medium"
+          class="wrapper fill secondary medium"
           type="button"
         >
           Create ticket
         </button>
       </a>
       <button
-        class="wrapper primary medium"
+        class="wrapper fill primary medium"
         type="button"
       >
         Edit customer

@@ -18,7 +18,7 @@ exports[`<AutomationStatsSelfServiceMetric /> should render paywall 1`] = `
           class="d-flex align-items-center upgradeLink"
         >
           <button
-            class="wrapper primary medium"
+            class="wrapper fill primary medium"
             type="button"
           >
             <span
@@ -53,7 +53,7 @@ exports[`<AutomationStatsSelfServiceMetric /> should render setup 1`] = `
       class="mt-3 button"
     >
       <button
-        class="wrapper primary medium"
+        class="wrapper fill primary medium"
         type="button"
       >
         Setup Self-Service
@@ -77,7 +77,7 @@ exports[`<AutomationStatsSelfServiceMetric /> should render setup and paywall 1`
       class="mt-3 button"
     >
       <button
-        class="wrapper primary medium"
+        class="wrapper fill primary medium"
         type="button"
       >
         Setup Self-Service
@@ -100,7 +100,7 @@ exports[`<AutomationStatsSelfServiceMetric /> should render setup and paywall 1`
           class="d-flex align-items-center upgradeLink"
         >
           <button
-            class="wrapper primary medium"
+            class="wrapper fill primary medium"
             type="button"
           >
             <span
@@ -228,7 +228,7 @@ exports[`<AutomationStatsSelfServiceMetric /> should render stats and paywall 1`
           class="d-flex align-items-center upgradeLink"
         >
           <button
-            class="wrapper primary medium"
+            class="wrapper fill primary medium"
             type="button"
           >
             <span

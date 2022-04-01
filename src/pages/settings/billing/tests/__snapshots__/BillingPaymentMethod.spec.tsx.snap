@@ -157,7 +157,7 @@ exports[`BillingPaymentMethod Shopify should render a button 1`] = `
                   onClick={[Function]}
                 >
                   <button
-                    className="wrapper primary medium"
+                    className="wrapper fill primary medium"
                     disabled={false}
                     onClick={[Function]}
                     type="button"
@@ -534,7 +534,7 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                             isDisabled={false}
                           >
                             <button
-                              className="wrapper primary medium"
+                              className="wrapper fill primary medium"
                               type="button"
                             >
                               Add payment method
@@ -727,7 +727,7 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                           intent="secondary"
                         >
                           <button
-                            className="wrapper secondary medium"
+                            className="wrapper fill secondary medium"
                             type="button"
                           >
                             Change card

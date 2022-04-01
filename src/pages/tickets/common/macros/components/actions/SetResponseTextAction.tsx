@@ -95,7 +95,8 @@ export class SetResponseTextAction extends Component<Props> {
                 </UncontrolledButtonDropdown>
             ) : (
                 <Button
-                    intent="text"
+                    fillStyle="ghost"
+                    intent="secondary"
                     style={{color: 'inherit'}}
                     onClick={() => {
                         this._insertText(category.value!)

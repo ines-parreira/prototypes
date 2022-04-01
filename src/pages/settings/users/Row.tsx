@@ -5,8 +5,8 @@ import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import IconButton from 'pages/common/components/button/IconButton'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {RoleLabel} from '../../common/utils/labels'
 import Avatar from '../../common/components/Avatar/Avatar'
 import {fetchPagination, deleteAgent} from '../../../state/agents/actions'
@@ -76,9 +76,12 @@ export class RowContainer extends Component<Props> {
                         </span>
                     )}
                     <span className={css.delete}>
-                        <ConfirmButton
-                            className={css.deleteButton}
-                            confirmationContent={
+                        <ConfirmationPopover
+                            buttonProps={{
+                                intent: 'destructive',
+                            }}
+                            id={`delete-agent-${agent.get('id') as number}`}
+                            content={
                                 <span>
                                     You are about to <b>delete</b> this user.
                                     This action is <b>irreversible</b>. This
@@ -88,10 +91,18 @@ export class RowContainer extends Component<Props> {
                                 </span>
                             }
                             onConfirm={this._deleteAgent}
-                            intent="text"
                         >
-                            <ButtonIconLabel icon="delete" />
-                        </ConfirmButton>
+                            {({uid, onDisplayConfirmation}) => (
+                                <IconButton
+                                    onClick={onDisplayConfirmation}
+                                    fillStyle="ghost"
+                                    intent="destructive"
+                                    id={uid}
+                                >
+                                    delete
+                                </IconButton>
+                            )}
+                        </ConfirmationPopover>
                     </span>
                 </span>
             </Link>

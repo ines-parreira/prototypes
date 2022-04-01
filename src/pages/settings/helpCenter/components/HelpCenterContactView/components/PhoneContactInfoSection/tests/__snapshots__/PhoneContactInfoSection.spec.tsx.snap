@@ -55,7 +55,7 @@ exports[`<PhoneContactInfoSection /> should render the component 1`] = `
       </small>
     </div>
     <button
-      class="wrapper secondary medium isDisabled"
+      class="wrapper fill secondary medium isDisabled"
       disabled=""
       type="button"
     >

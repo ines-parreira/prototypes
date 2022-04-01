@@ -285,7 +285,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -314,7 +314,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -999,7 +999,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -1028,7 +1028,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -1280,7 +1280,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   Save changes
                 </button>
                 <button
-                  class="wrapper float-right destructive medium isDisabled"
+                  class="wrapper float-right fill destructive medium isDisabled"
                   disabled=""
                   id="confirm-1561334400000"
                   type="button"
@@ -1730,7 +1730,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -1759,7 +1759,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -2010,7 +2010,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   Save changes
                 </button>
                 <button
-                  class="wrapper float-right destructive medium"
+                  class="wrapper float-right fill destructive medium"
                   id="confirm-1561334400000"
                   type="button"
                 >
@@ -2467,7 +2467,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -2496,7 +2496,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -2747,7 +2747,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   Save changes
                 </button>
                 <button
-                  class="wrapper float-right destructive medium"
+                  class="wrapper float-right fill destructive medium"
                   id="confirm-1561334400000"
                   type="button"
                 >
@@ -3196,7 +3196,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -3225,7 +3225,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -3476,7 +3476,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   Save changes
                 </button>
                 <button
-                  class="wrapper float-right destructive medium"
+                  class="wrapper float-right fill destructive medium"
                   id="confirm-1561334400000"
                   type="button"
                 >
@@ -3939,7 +3939,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -3968,7 +3968,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -4219,7 +4219,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   Save changes
                 </button>
                 <button
-                  class="wrapper float-right destructive medium"
+                  class="wrapper float-right fill destructive medium"
                   id="confirm-1561334400000"
                   type="button"
                 >
@@ -4758,7 +4758,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >
@@ -4787,7 +4787,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="d-inline-block"
                       >
                         <button
-                          class="wrapper secondary medium"
+                          class="wrapper fill secondary medium"
                           id="color-picker-42"
                           type="button"
                         >

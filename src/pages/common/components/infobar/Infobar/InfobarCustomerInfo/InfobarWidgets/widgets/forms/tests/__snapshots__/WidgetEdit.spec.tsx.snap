@@ -94,13 +94,13 @@ exports[`<WidgetEdit/> should hide the hidden fields 1`] = `
       </div>
       <div>
         <button
-          class="wrapper mr-2 primary medium"
+          class="wrapper mr-2 fill primary medium"
           type="submit"
         >
           Submit
         </button>
         <button
-          class="wrapper secondary medium"
+          class="wrapper fill secondary medium"
           type="button"
         >
           Cancel
@@ -182,13 +182,13 @@ exports[`<WidgetEdit/> should render 1`] = `
       </div>
       <div>
         <button
-          class="wrapper mr-2 primary medium"
+          class="wrapper mr-2 fill primary medium"
           type="submit"
         >
           Submit
         </button>
         <button
-          class="wrapper secondary medium"
+          class="wrapper fill secondary medium"
           type="button"
         >
           Cancel

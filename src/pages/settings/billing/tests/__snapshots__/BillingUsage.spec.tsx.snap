@@ -162,7 +162,7 @@ exports[`<BillingUsage/> should display price 1`] = `
             </strong>
           </div>
           <button
-            class="wrapper primary medium"
+            class="wrapper fill primary medium"
             type="button"
           >
             Update plan
@@ -210,7 +210,7 @@ exports[`<BillingUsage/> should display price 1`] = `
             class="d-flex align-items-center upgradeLink"
           >
             <button
-              class="wrapper primary medium"
+              class="wrapper fill primary medium"
               type="button"
             >
               <span
@@ -403,7 +403,7 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
             </strong>
           </div>
           <button
-            class="wrapper primary medium"
+            class="wrapper fill primary medium"
             type="button"
           >
             Update plan
@@ -451,7 +451,7 @@ exports[`<BillingUsage/> should load with empty props 1`] = `
             class="d-flex align-items-center upgradeLink"
           >
             <button
-              class="wrapper primary medium"
+              class="wrapper fill primary medium"
               type="button"
             >
               <span

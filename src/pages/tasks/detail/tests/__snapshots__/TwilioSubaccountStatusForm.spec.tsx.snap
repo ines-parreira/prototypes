@@ -114,7 +114,7 @@ exports[`<TwilioSubaccountStatusForm /> render() should render with the Twillio 
           class="mt-4 form-group"
         >
           <button
-            class="wrapper primary medium isDisabled"
+            class="wrapper fill primary medium isDisabled"
             disabled=""
             type="submit"
           >

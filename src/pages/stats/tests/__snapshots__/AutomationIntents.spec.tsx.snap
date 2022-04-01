@@ -18,7 +18,7 @@ exports[`AutomationIntents should render the filters and stats when stats filter
           Intents
         </span>
         <button
-          class="wrapper wrapper ml-3 secondary medium"
+          class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
           <span
@@ -268,7 +268,7 @@ exports[`AutomationIntents should render the filters and stats when stats filter
           </div>
           <div>
             <button
-              class="wrapper secondary medium"
+              class="wrapper fill secondary medium"
               type="button"
             >
               <span

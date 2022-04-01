@@ -137,7 +137,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                           class="actions"
                         >
                           <button
-                            class="wrapper button wrapper small secondary small"
+                            class="wrapper button wrapper small fill secondary small"
                             title="Bold"
                             type="button"
                           >
@@ -148,7 +148,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                             </i>
                           </button>
                           <button
-                            class="wrapper button wrapper small secondary small"
+                            class="wrapper button wrapper small fill secondary small"
                             title="Italic"
                             type="button"
                           >
@@ -159,7 +159,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                             </i>
                           </button>
                           <button
-                            class="wrapper button wrapper small secondary small"
+                            class="wrapper button wrapper small fill secondary small"
                             title="Underline"
                             type="button"
                           >
@@ -173,7 +173,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                             class="popoverWrapper"
                           >
                             <button
-                              class="wrapper button wrapper small secondary small"
+                              class="wrapper button wrapper small fill secondary small"
                               title="Insert link"
                               type="button"
                             >
@@ -191,7 +191,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                             class="popoverWrapper"
                           >
                             <button
-                              class="wrapper button wrapper small secondary small"
+                              class="wrapper button wrapper small fill secondary small"
                               title="Insert image"
                               type="button"
                             >
@@ -209,7 +209,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
                             class="popoverWrapper"
                           >
                             <button
-                              class="wrapper button wrapper small secondary small"
+                              class="wrapper button wrapper small fill secondary small"
                               title="Insert emoji"
                               type="button"
                             >
@@ -576,7 +576,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                           class="actions"
                         >
                           <button
-                            class="wrapper button wrapper small secondary small"
+                            class="wrapper button wrapper small fill secondary small"
                             title="Bold"
                             type="button"
                           >
@@ -587,7 +587,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                             </i>
                           </button>
                           <button
-                            class="wrapper button wrapper small secondary small"
+                            class="wrapper button wrapper small fill secondary small"
                             title="Italic"
                             type="button"
                           >
@@ -598,7 +598,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                             </i>
                           </button>
                           <button
-                            class="wrapper button wrapper small secondary small"
+                            class="wrapper button wrapper small fill secondary small"
                             title="Underline"
                             type="button"
                           >
@@ -612,7 +612,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                             class="popoverWrapper"
                           >
                             <button
-                              class="wrapper button wrapper small secondary small"
+                              class="wrapper button wrapper small fill secondary small"
                               title="Insert link"
                               type="button"
                             >
@@ -630,7 +630,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                             class="popoverWrapper"
                           >
                             <button
-                              class="wrapper button wrapper small secondary small"
+                              class="wrapper button wrapper small fill secondary small"
                               title="Insert image"
                               type="button"
                             >
@@ -648,7 +648,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
                             class="popoverWrapper"
                           >
                             <button
-                              class="wrapper button wrapper small secondary small"
+                              class="wrapper button wrapper small fill secondary small"
                               title="Insert emoji"
                               type="button"
                             >
@@ -818,7 +818,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                           class="actions"
                         >
                           <button
-                            class="wrapper button wrapper small secondary small"
+                            class="wrapper button wrapper small fill secondary small"
                             title="Bold"
                             type="button"
                           >
@@ -829,7 +829,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                             </i>
                           </button>
                           <button
-                            class="wrapper button wrapper small secondary small"
+                            class="wrapper button wrapper small fill secondary small"
                             title="Italic"
                             type="button"
                           >
@@ -840,7 +840,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                             </i>
                           </button>
                           <button
-                            class="wrapper button wrapper small secondary small"
+                            class="wrapper button wrapper small fill secondary small"
                             title="Underline"
                             type="button"
                           >
@@ -854,7 +854,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                             class="popoverWrapper"
                           >
                             <button
-                              class="wrapper button wrapper small secondary small"
+                              class="wrapper button wrapper small fill secondary small"
                               title="Insert link"
                               type="button"
                             >
@@ -872,7 +872,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                             class="popoverWrapper"
                           >
                             <button
-                              class="wrapper button wrapper small secondary small"
+                              class="wrapper button wrapper small fill secondary small"
                               title="Insert image"
                               type="button"
                             >
@@ -890,7 +890,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
                             class="popoverWrapper"
                           >
                             <button
-                              class="wrapper button wrapper small secondary small"
+                              class="wrapper button wrapper small fill secondary small"
                               title="Insert emoji"
                               type="button"
                             >

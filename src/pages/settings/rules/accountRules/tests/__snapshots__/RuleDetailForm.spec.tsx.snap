@@ -286,7 +286,7 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
       >
         <div>
           <button
-            class="wrapper primary medium"
+            class="wrapper fill primary medium"
             form="rule-form"
             id="rule-item-save"
             type="button"
@@ -294,7 +294,7 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
             Update rule
           </button>
           <button
-            class="wrapper ml-3 secondary medium"
+            class="wrapper ml-3 fill secondary medium"
             id="rule-item-duplicate"
             type="submit"
           >
@@ -303,7 +303,7 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
         </div>
         <div>
           <button
-            class="wrapper destructive medium"
+            class="wrapper fill destructive medium"
             id="rule-item-delete"
             type="button"
           >
@@ -651,7 +651,7 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
       >
         <div>
           <button
-            class="wrapper primary medium"
+            class="wrapper fill primary medium"
             form="rule-form"
             id="rule-item-save"
             type="button"
@@ -659,7 +659,7 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
             Update rule
           </button>
           <button
-            class="wrapper ml-3 secondary medium"
+            class="wrapper ml-3 fill secondary medium"
             id="rule-item-duplicate"
             type="submit"
           >
@@ -668,7 +668,7 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
         </div>
         <div>
           <button
-            class="wrapper destructive medium"
+            class="wrapper fill destructive medium"
             id="rule-item-delete"
             type="button"
           >
@@ -1016,7 +1016,7 @@ exports[`<RuleSettingsForm /> rendering should render an empty form when no rule
       >
         <div>
           <button
-            class="wrapper primary medium"
+            class="wrapper fill primary medium"
             form="rule-form"
             id="rule-item-save"
             type="button"

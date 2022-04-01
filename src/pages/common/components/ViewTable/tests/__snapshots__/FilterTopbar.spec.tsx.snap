@@ -162,13 +162,13 @@ exports[`<FilterTopbar /> render should not render delete button when creating n
         class="footer"
       >
         <button
-          class="wrapper primary medium"
+          class="wrapper fill primary medium"
           type="submit"
         >
           Create view
         </button>
         <button
-          class="wrapper ml-2 secondary medium"
+          class="wrapper ml-2 fill secondary medium"
           type="submit"
         >
           Cancel
@@ -350,7 +350,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
       class="cardActions"
     >
       <button
-        class="wrapper secondary medium"
+        class="wrapper fill secondary medium"
         title="Export all view tickets"
         type="button"
       >
@@ -530,14 +530,14 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
             class="group horizontal"
           >
             <button
-              class="wrapper primary medium left"
+              class="wrapper fill primary medium left"
               id="confirm-0"
               type="button"
             >
               Update View
             </button>
             <button
-              class="wrapper wrapper medium primary medium right"
+              class="wrapper wrapper fill primary medium right"
               type="button"
             >
               <i
@@ -575,7 +575,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
           </div>
         </div>
         <button
-          class="wrapper ml-2 secondary medium"
+          class="wrapper ml-2 fill secondary medium"
           type="submit"
         >
           Cancel
@@ -587,7 +587,7 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
         </span>
       </div>
       <button
-        class="wrapper destructive medium"
+        class="wrapper fill destructive medium"
         id="delete-view"
         type="button"
       >

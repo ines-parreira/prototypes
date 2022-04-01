@@ -276,7 +276,8 @@ export class EventContainer extends React.Component<Props, State> {
                         <AgentLabel name={user.get('name') as string} />
 
                         <IconButton
-                            intent="text"
+                            fillStyle="ghost"
+                            intent="secondary"
                             onClick={() =>
                                 this.setState({
                                     showDetails: !this.state.showDetails,

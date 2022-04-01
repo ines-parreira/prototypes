@@ -86,7 +86,7 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
     class="align-middle smallest actions"
   >
     <button
-      class="wrapper actionButton mr-1 wrapper medium text medium isDisabled"
+      class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium isDisabled"
       disabled=""
       title="Duplicate rule"
       type="button"
@@ -98,7 +98,7 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
       </i>
     </button>
     <button
-      class="wrapper actionButton deleteActionButton mr-1 wrapper medium text medium"
+      class="wrapper actionButton mr-1 wrapper ghost ghost destructive medium"
       id="delete-rule-1"
       title="Delete rule"
       type="button"
@@ -189,7 +189,7 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     class="align-middle smallest actions"
   >
     <button
-      class="wrapper actionButton mr-1 wrapper medium text medium"
+      class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
       title="Duplicate rule"
       type="button"
     >
@@ -200,7 +200,7 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
       </i>
     </button>
     <button
-      class="wrapper actionButton deleteActionButton mr-1 wrapper medium text medium"
+      class="wrapper actionButton mr-1 wrapper ghost ghost destructive medium"
       id="delete-rule-1"
       title="Delete rule"
       type="button"

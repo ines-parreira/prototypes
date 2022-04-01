@@ -47,8 +47,9 @@ exports[`<SharedBody/> render() should render 1`] = `
       tag="li"
     >
       <ForwardRef
-        className="float-right text-danger"
-        intent="text"
+        className="float-right"
+        fillStyle="ghost"
+        intent="destructive"
         onClick={[Function]}
         size="small"
       >
@@ -67,8 +68,9 @@ exports[`<SharedBody/> render() should render 1`] = `
       tag="li"
     >
       <ForwardRef
-        className="float-right text-danger"
-        intent="text"
+        className="float-right"
+        fillStyle="ghost"
+        intent="destructive"
         onClick={[Function]}
         size="small"
       >
@@ -101,8 +103,9 @@ exports[`<SharedBody/> render() should render 1`] = `
       tag="li"
     >
       <ForwardRef
-        className="float-right text-danger"
-        intent="text"
+        className="float-right"
+        fillStyle="ghost"
+        intent="destructive"
         onClick={[Function]}
         size="small"
       >
@@ -121,8 +124,9 @@ exports[`<SharedBody/> render() should render 1`] = `
       tag="li"
     >
       <ForwardRef
-        className="float-right text-danger"
-        intent="text"
+        className="float-right"
+        fillStyle="ghost"
+        intent="destructive"
         onClick={[Function]}
         size="small"
       >

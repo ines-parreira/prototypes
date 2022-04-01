@@ -155,13 +155,13 @@ exports[`<SmsAppPreferences/> render() should render 1`] = `
             class="mt-5"
           >
             <button
-              class="wrapper primary medium"
+              class="wrapper fill primary medium"
               type="submit"
             >
               Save changes
             </button>
             <button
-              class="wrapper float-right destructive medium"
+              class="wrapper float-right fill destructive medium"
               id="delete-integration"
               type="button"
             >
@@ -339,7 +339,7 @@ exports[`<SmsAppPreferences/> render() should submit a valid payload with the se
             class="mt-5"
           >
             <button
-              class="wrapper primary medium isDisabled"
+              class="wrapper fill primary medium isDisabled"
               disabled=""
               type="submit"
             >
@@ -356,7 +356,7 @@ exports[`<SmsAppPreferences/> render() should submit a valid payload with the se
               Save changes
             </button>
             <button
-              class="wrapper float-right destructive medium"
+              class="wrapper float-right fill destructive medium"
               id="delete-integration"
               type="button"
             >

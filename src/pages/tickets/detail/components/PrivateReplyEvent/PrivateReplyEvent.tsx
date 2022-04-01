@@ -168,7 +168,8 @@ export default function PrivateReplyEvent({event, isLast}: Props): JSX.Element {
 
         expandButton = (
             <IconButton
-                intent="text"
+                fillStyle="ghost"
+                intent="secondary"
                 onClick={() => setDisplayErrorDetails(!displayErrorDetails)}
                 title="More details"
             >

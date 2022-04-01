@@ -166,7 +166,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                 Reconnect
               </button>
               <button
-                class="wrapper float-right destructive medium"
+                class="wrapper float-right fill destructive medium"
                 id="confirm-1615240000000"
                 type="button"
               >

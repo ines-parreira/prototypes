@@ -222,7 +222,7 @@ exports[`<OrderManagementFlowsPreferences/> ToggleInput.onChange() should deacti
                           class="d-flex align-items-center upgradeLink"
                         >
                           <button
-                            class="wrapper primary medium"
+                            class="wrapper fill primary medium"
                             type="button"
                           >
                             <span
@@ -605,7 +605,7 @@ exports[`<OrderManagementFlowsPreferences/> render() should render the 4 policy 
                           class="d-flex align-items-center upgradeLink"
                         >
                           <button
-                            class="wrapper primary medium"
+                            class="wrapper fill primary medium"
                             type="button"
                           >
                             <span

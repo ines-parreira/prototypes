@@ -49,9 +49,17 @@ exports[`<Row /> should render 1`] = `
     <span
       class="delete"
     >
-      <div>
-        delete
-      </div>
+      <button
+        class="wrapper wrapper ghost ghost destructive medium"
+        id="delete-agent-1"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          delete
+        </i>
+      </button>
     </span>
   </span>
 </a>
@@ -115,9 +123,17 @@ exports[`<Row /> should render 2FA information when enabled 1`] = `
     <span
       class="delete"
     >
-      <div>
-        delete
-      </div>
+      <button
+        class="wrapper wrapper ghost ghost destructive medium"
+        id="delete-agent-1"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          delete
+        </i>
+      </button>
     </span>
   </span>
 </a>
@@ -181,9 +197,17 @@ exports[`<Row /> should render 2FA information when enabled and agent has 2FA di
     <span
       class="delete"
     >
-      <div>
-        delete
-      </div>
+      <button
+        class="wrapper wrapper ghost ghost destructive medium"
+        id="delete-agent-1"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          delete
+        </i>
+      </button>
     </span>
   </span>
 </a>
@@ -233,9 +257,17 @@ exports[`<Row /> should render a user without a name 1`] = `
     <span
       class="delete"
     >
-      <div>
-        delete
-      </div>
+      <button
+        class="wrapper wrapper ghost ghost destructive medium"
+        id="delete-agent-1"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          delete
+        </i>
+      </button>
     </span>
   </span>
 </a>

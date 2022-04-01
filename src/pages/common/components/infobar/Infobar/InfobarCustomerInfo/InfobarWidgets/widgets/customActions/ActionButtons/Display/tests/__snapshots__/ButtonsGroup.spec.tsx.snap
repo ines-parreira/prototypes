@@ -6,13 +6,13 @@ exports[`<ButtonsGroup/> should render with correct label and without a dropdown
     class="actionButtons group horizontal"
   >
     <button
-      class="wrapper actionButton secondary medium left"
+      class="wrapper actionButton fill secondary medium left"
       type="button"
     >
       renders
     </button>
     <button
-      class="wrapper actionButton secondary medium right"
+      class="wrapper actionButton fill secondary medium right"
       type="button"
     >
       ok 1234 Johanna

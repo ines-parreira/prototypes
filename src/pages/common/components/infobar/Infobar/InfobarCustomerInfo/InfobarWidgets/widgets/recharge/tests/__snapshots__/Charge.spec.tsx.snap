@@ -87,7 +87,7 @@ exports[`Charge AfterTitle should display the refund action when the status is S
     class="container group horizontal"
   >
     <button
-      class="wrapper secondary medium"
+      class="wrapper fill secondary medium"
       id="action-button-3"
       type="button"
     >
@@ -115,7 +115,7 @@ exports[`Charge AfterTitle should display the refund action when the status is S
     class="container group horizontal"
   >
     <button
-      class="wrapper secondary medium"
+      class="wrapper fill secondary medium"
       id="action-button-4"
       type="button"
     >
@@ -143,7 +143,7 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
     class="container group horizontal"
   >
     <button
-      class="wrapper secondary medium"
+      class="wrapper fill secondary medium"
       id="action-button-5"
       type="button"
     >
@@ -171,7 +171,7 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
     class="container group horizontal"
   >
     <button
-      class="wrapper secondary medium"
+      class="wrapper fill secondary medium"
       id="action-button-6"
       type="button"
     >
@@ -255,7 +255,7 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
     class="container group horizontal"
   >
     <button
-      class="wrapper secondary medium"
+      class="wrapper fill secondary medium"
       id="action-button-1"
       type="button"
     >
@@ -283,7 +283,7 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
     class="container group horizontal"
   >
     <button
-      class="wrapper secondary medium"
+      class="wrapper fill secondary medium"
       id="action-button-2"
       type="button"
     >

@@ -782,7 +782,7 @@ exports[`<Paywall /> should render the default upgrade CTA 1`] = `
                   to="[object Object]"
                 >
                   <button
-                    class="wrapper primary medium"
+                    class="wrapper fill primary medium"
                     type="button"
                   >
                     <span

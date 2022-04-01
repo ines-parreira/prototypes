@@ -51,7 +51,7 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
       onClick={[Function]}
     >
       <button
-        className="wrapper mr-2 mb-2 float-left primary medium"
+        className="wrapper mr-2 mb-2 float-left fill primary medium"
         onClick={[Function]}
         type="button"
       >
@@ -64,7 +64,7 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
       onClick={[Function]}
     >
       <button
-        className="wrapper mr-2 mb-2 secondary medium"
+        className="wrapper mr-2 mb-2 fill secondary medium"
         onClick={[Function]}
         type="button"
       >

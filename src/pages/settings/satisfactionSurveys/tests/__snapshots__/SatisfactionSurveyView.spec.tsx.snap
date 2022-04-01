@@ -634,11 +634,11 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               onClick={[Function]}
                                             >
                                               <ForwardRef
-                                                className="toolbarItem"
-                                                intent="text"
+                                                fillStyle="ghost"
+                                                intent="secondary"
                                               >
                                                 <button
-                                                  className="wrapper toolbarItem text medium"
+                                                  className="wrapper ghost secondary medium"
                                                   type="button"
                                                 >
                                                   <ButtonIconLabel
@@ -785,11 +785,11 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                               onClick={[Function]}
                                             >
                                               <ForwardRef
-                                                className="toolbarItem"
-                                                intent="text"
+                                                fillStyle="ghost"
+                                                intent="secondary"
                                               >
                                                 <button
-                                                  className="wrapper toolbarItem text medium"
+                                                  className="wrapper ghost secondary medium"
                                                   type="button"
                                                 >
                                                   <ButtonIconLabel
@@ -919,13 +919,13 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 </Dropdown>
                               </UncontrolledDropdown>
                               <ForwardRef
-                                className="toolbarItem"
-                                intent="text"
+                                fillStyle="ghost"
+                                intent="secondary"
                                 key="2"
                                 onClick={[Function]}
                               >
                                 <button
-                                  className="wrapper toolbarItem text medium"
+                                  className="wrapper ghost secondary medium"
                                   onClick={[Function]}
                                   type="button"
                                 >
@@ -3279,7 +3279,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           title="Bold"
                                                                         >
                                                                           <button
-                                                                            className="wrapper button wrapper small secondary small"
+                                                                            className="wrapper button wrapper small fill secondary small"
                                                                             onClick={[Function]}
                                                                             onMouseDown={[Function]}
                                                                             title="Bold"
@@ -3331,7 +3331,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           title="Italic"
                                                                         >
                                                                           <button
-                                                                            className="wrapper button wrapper small secondary small"
+                                                                            className="wrapper button wrapper small fill secondary small"
                                                                             onClick={[Function]}
                                                                             onMouseDown={[Function]}
                                                                             title="Italic"
@@ -3383,7 +3383,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                           title="Underline"
                                                                         >
                                                                           <button
-                                                                            className="wrapper button wrapper small secondary small"
+                                                                            className="wrapper button wrapper small fill secondary small"
                                                                             onClick={[Function]}
                                                                             onMouseDown={[Function]}
                                                                             title="Underline"
@@ -3481,7 +3481,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                                 title="Insert link"
                                                                               >
                                                                                 <button
-                                                                                  className="wrapper button wrapper small secondary small"
+                                                                                  className="wrapper button wrapper small fill secondary small"
                                                                                   onClick={[Function]}
                                                                                   onMouseDown={[Function]}
                                                                                   title="Insert link"
@@ -3559,7 +3559,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                               title="Insert image"
                                                                             >
                                                                               <button
-                                                                                className="wrapper button wrapper small secondary small"
+                                                                                className="wrapper button wrapper small fill secondary small"
                                                                                 onClick={[Function]}
                                                                                 onMouseDown={[Function]}
                                                                                 title="Insert image"
@@ -3633,7 +3633,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                               title="Insert emoji"
                                                                             >
                                                                               <button
-                                                                                className="wrapper button wrapper small secondary small"
+                                                                                className="wrapper button wrapper small fill secondary small"
                                                                                 onClick={[Function]}
                                                                                 onMouseDown={[Function]}
                                                                                 title="Insert emoji"
@@ -3687,7 +3687,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                       type="submit"
                     >
                       <button
-                        className="wrapper primary medium"
+                        className="wrapper fill primary medium"
                         disabled={false}
                         type="submit"
                       >

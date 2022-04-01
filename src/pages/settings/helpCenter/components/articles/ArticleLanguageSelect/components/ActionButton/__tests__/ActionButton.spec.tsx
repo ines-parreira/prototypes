@@ -16,11 +16,11 @@ describe('<ActionButton />', () => {
 
         const btn = getByText('Delete')
 
-        expect(btn.classList.contains('danger')).toBe(true)
+        expect(btn.classList.contains('destructive')).toBe(true)
 
         rerender(<ActionButton variant="neutral">Delete</ActionButton>)
 
-        expect(btn.classList.contains('neutral')).toBe(true)
+        expect(btn.classList.contains('secondary')).toBe(true)
     })
 
     it('shows the tooltip on hover', async () => {

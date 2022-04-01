@@ -165,7 +165,8 @@ class App extends React.Component<Props> {
                                         <div className="mobile-nav d-md-none d-flex justify-content-between align-items-center">
                                             <IconButton
                                                 className="mr-3"
-                                                intent="text"
+                                                fillStyle="ghost"
+                                                intent="secondary"
                                                 onClick={() =>
                                                     this.props.openPanel(
                                                         'navbar'
@@ -177,7 +178,8 @@ class App extends React.Component<Props> {
                                             {infobarOnMobile && (
                                                 <Button
                                                     className="ml-3"
-                                                    intent="text"
+                                                    fillStyle="ghost"
+                                                    intent="secondary"
                                                     onClick={() =>
                                                         this.props.openPanel(
                                                             'infobar'

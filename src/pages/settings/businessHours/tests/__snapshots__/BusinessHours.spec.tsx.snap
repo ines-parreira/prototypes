@@ -1160,7 +1160,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                               onClick={[Function]}
                             >
                               <button
-                                className="wrapper secondary medium"
+                                className="wrapper fill secondary medium"
                                 onClick={[Function]}
                                 type="button"
                               >
@@ -1273,7 +1273,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                     type="submit"
                   >
                     <button
-                      className="wrapper primary medium"
+                      className="wrapper fill primary medium"
                       disabled={false}
                       type="submit"
                     >

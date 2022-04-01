@@ -121,13 +121,13 @@ exports[`<RechargeIntegrationDetail/> render() should not render anything about 
           </div>
           <div>
             <button
-              class="wrapper primary medium"
+              class="wrapper fill primary medium"
               type="button"
             >
               Reconnect
             </button>
             <button
-              class="wrapper float-right destructive medium"
+              class="wrapper float-right fill destructive medium"
               id="confirm-button-1"
               type="button"
             >
@@ -261,7 +261,7 @@ exports[`<RechargeIntegrationDetail/> render() should render a small paragraph b
           </div>
           <div>
             <button
-              class="wrapper float-right destructive medium"
+              class="wrapper float-right fill destructive medium"
               id="confirm-button-1"
               type="button"
             >
@@ -405,7 +405,7 @@ exports[`<RechargeIntegrationDetail/> render() should render an alert because th
           </div>
           <div>
             <button
-              class="wrapper float-right destructive medium"
+              class="wrapper float-right fill destructive medium"
               id="confirm-button-1"
               type="button"
             >
@@ -549,7 +549,7 @@ exports[`<RechargeIntegrationDetail/> render() should render buttons loading and
           </div>
           <div>
             <button
-              class="wrapper float-right destructive medium"
+              class="wrapper float-right fill destructive medium"
               id="confirm-button-1"
               type="button"
             >
@@ -693,7 +693,7 @@ exports[`<RechargeIntegrationDetail/> render() should render not render deactiva
           </div>
           <div>
             <button
-              class="wrapper float-right destructive medium"
+              class="wrapper float-right fill destructive medium"
               id="confirm-button-1"
               type="button"
             >

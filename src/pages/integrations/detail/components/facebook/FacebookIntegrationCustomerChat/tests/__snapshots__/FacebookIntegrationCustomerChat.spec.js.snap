@@ -532,7 +532,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                           type="button"
                         >
                           <button
-                            className="wrapper copy mr-4 primary medium"
+                            className="wrapper copy mr-4 fill primary medium"
                             data-clipboard-target="#code-snippet"
                             id="copy-code-snippet"
                             type="button"

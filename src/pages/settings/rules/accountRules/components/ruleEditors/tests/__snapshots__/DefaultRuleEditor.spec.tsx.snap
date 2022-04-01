@@ -252,7 +252,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
   >
     <div>
       <button
-        class="wrapper primary medium"
+        class="wrapper fill primary medium"
         form="rule-form"
         id="rule-item-save"
         type="button"
@@ -260,7 +260,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
         Update rule
       </button>
       <button
-        class="wrapper ml-3 secondary medium"
+        class="wrapper ml-3 fill secondary medium"
         id="rule-item-duplicate"
         type="submit"
       >
@@ -269,7 +269,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
     </div>
     <div>
       <button
-        class="wrapper destructive medium"
+        class="wrapper fill destructive medium"
         id="rule-item-delete"
         type="button"
       >

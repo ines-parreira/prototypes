@@ -8,7 +8,7 @@ exports[`Detail should add a domain query param to connectUrl if an App 1`] = `
   target="_blank"
 >
   <button
-    class="wrapper actionButton primary medium"
+    class="wrapper actionButton fill primary medium"
     type="button"
   >
     Connect App
@@ -183,7 +183,7 @@ exports[`Detail should render 1`] = `
           target="_blank"
         >
           <button
-            class="wrapper actionButton primary medium"
+            class="wrapper actionButton fill primary medium"
             type="button"
           >
             Connect App
@@ -291,7 +291,7 @@ exports[`Detail should render an internal link if not an app or not external 1`]
   to=""
 >
   <button
-    class="wrapper actionButton primary medium"
+    class="wrapper actionButton fill primary medium"
     type="button"
   >
     Connect App

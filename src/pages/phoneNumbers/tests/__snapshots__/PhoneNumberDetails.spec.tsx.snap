@@ -182,13 +182,13 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper primary medium"
+          class="wrapper fill primary medium"
           type="submit"
         >
           Save changes
         </button>
         <button
-          class="wrapper float-right destructive medium"
+          class="wrapper float-right fill destructive medium"
           id="delete-number"
           type="button"
         >
@@ -391,13 +391,13 @@ exports[`<PhoneNumberDetails/> render() should not render the link to an SMS int
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper primary medium"
+          class="wrapper fill primary medium"
           type="submit"
         >
           Save changes
         </button>
         <button
-          class="wrapper float-right destructive medium"
+          class="wrapper float-right fill destructive medium"
           id="delete-number"
           type="button"
         >
@@ -600,13 +600,13 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper primary medium"
+          class="wrapper fill primary medium"
           type="submit"
         >
           Save changes
         </button>
         <button
-          class="wrapper float-right destructive medium"
+          class="wrapper float-right fill destructive medium"
           id="delete-number"
           type="button"
         >
@@ -834,13 +834,13 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper primary medium"
+          class="wrapper fill primary medium"
           type="submit"
         >
           Save changes
         </button>
         <button
-          class="wrapper float-right destructive medium"
+          class="wrapper float-right fill destructive medium"
           id="delete-number"
           type="button"
         >
@@ -1073,13 +1073,13 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper primary medium"
+          class="wrapper fill primary medium"
           type="submit"
         >
           Save changes
         </button>
         <button
-          class="wrapper float-right destructive medium"
+          class="wrapper float-right fill destructive medium"
           id="delete-number"
           type="button"
         >
@@ -1300,13 +1300,13 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper primary medium"
+          class="wrapper fill primary medium"
           type="submit"
         >
           Save changes
         </button>
         <button
-          class="wrapper float-right destructive medium"
+          class="wrapper float-right fill destructive medium"
           id="delete-number"
           type="button"
         >
@@ -1509,13 +1509,13 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper primary medium"
+          class="wrapper fill primary medium"
           type="submit"
         >
           Save changes
         </button>
         <button
-          class="wrapper float-right destructive medium"
+          class="wrapper float-right fill destructive medium"
           id="delete-number"
           type="button"
         >
@@ -1718,13 +1718,13 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
         class="mt-4 col-lg-6"
       >
         <button
-          class="wrapper primary medium"
+          class="wrapper fill primary medium"
           type="submit"
         >
           Save changes
         </button>
         <button
-          class="wrapper float-right destructive medium"
+          class="wrapper float-right fill destructive medium"
           id="delete-number"
           type="button"
         >

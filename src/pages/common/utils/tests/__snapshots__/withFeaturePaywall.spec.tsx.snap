@@ -115,7 +115,7 @@ exports[`withFeaturePaywall should not render the passed component when the feat
                     to="[object Object]"
                   >
                     <button
-                      class="wrapper primary medium"
+                      class="wrapper fill primary medium"
                       type="button"
                     >
                       <span
@@ -266,7 +266,7 @@ exports[`withFeaturePaywall should pass custom paywall configuration props 1`] =
                     to="[object Object]"
                   >
                     <button
-                      class="wrapper primary medium"
+                      class="wrapper fill primary medium"
                       type="button"
                     >
                       <span

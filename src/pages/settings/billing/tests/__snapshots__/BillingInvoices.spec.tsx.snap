@@ -203,7 +203,7 @@ exports[`BillingInvoices component should display invoices, without PDF download
                   intent="secondary"
                 >
                   <button
-                    className="wrapper secondary medium"
+                    className="wrapper fill secondary medium"
                     type="button"
                   >
                     <ButtonIconLabel

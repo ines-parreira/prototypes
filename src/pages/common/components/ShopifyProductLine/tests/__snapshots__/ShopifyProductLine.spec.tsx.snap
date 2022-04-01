@@ -253,7 +253,7 @@ exports[`<ShopifyProductLine/> should render the variants picker of a product 1`
         class="backContainer"
       >
         <button
-          class="wrapper mr-2 primary small"
+          class="wrapper mr-2 fill primary small"
           tabindex="-1"
           type="button"
         >

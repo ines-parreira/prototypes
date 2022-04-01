@@ -37,7 +37,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
         >
           <button
             aria-label="help center preview"
-            class="wrapper secondary medium"
+            class="wrapper fill secondary medium"
             type="button"
           >
             <i
@@ -438,7 +438,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 class="d-inline-block"
               >
                 <button
-                  class="wrapper secondary medium"
+                  class="wrapper fill secondary medium"
                   id="color-picker-2"
                   type="button"
                 >
@@ -900,14 +900,14 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             class="form-group"
           >
             <button
-              class="wrapper mr-2 primary medium isDisabled"
+              class="wrapper mr-2 fill primary medium isDisabled"
               disabled=""
               type="button"
             >
               Save Changes
             </button>
             <button
-              class="wrapper secondary medium"
+              class="wrapper fill secondary medium"
               type="button"
             >
               Cancel

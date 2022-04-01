@@ -2,7 +2,7 @@
 
 exports[`<ConfirmationPopover /> should render 1`] = `
 <button
-  class="wrapper primary medium"
+  class="wrapper fill primary medium"
   id="foo"
   type="button"
 >

@@ -299,7 +299,7 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
       role="group"
     >
       <button
-        class="wrapper previousButton wrapper medium secondary medium isDisabled"
+        class="wrapper previousButton wrapper fill secondary medium isDisabled"
         disabled=""
         id="prev-btn"
         type="button"
@@ -311,7 +311,7 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
         </i>
       </button>
       <button
-        class="wrapper nextButton wrapper medium secondary medium"
+        class="wrapper nextButton wrapper fill secondary medium"
         id="next-btn"
         type="button"
       >

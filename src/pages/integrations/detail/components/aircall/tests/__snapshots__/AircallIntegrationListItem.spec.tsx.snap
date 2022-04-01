@@ -49,7 +49,7 @@ exports[`<AircallIntegrationListItem/> render() should render the aircall integr
       class="align-middle"
     >
       <button
-        class="wrapper float-right destructive medium"
+        class="wrapper float-right fill destructive medium"
         id="delete-button-7"
         type="button"
       >
@@ -118,7 +118,7 @@ exports[`<AircallIntegrationListItem/> render() should render the aircall integr
       class="align-middle"
     >
       <button
-        class="wrapper float-right destructive medium"
+        class="wrapper float-right fill destructive medium"
         id="delete-button-7"
         type="button"
       >

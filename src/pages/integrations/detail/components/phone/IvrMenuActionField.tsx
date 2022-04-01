@@ -123,9 +123,9 @@ const IvrMenuActionField = ({
                                 <h3>Add message</h3>
                                 <Drawer.HeaderActions>
                                     <IconButton
-                                        intent="text"
+                                        fillStyle="ghost"
+                                        intent="secondary"
                                         onClick={() => setDrawerOpen(false)}
-                                        className={css.closeDrawerButton}
                                     >
                                         keyboard_tab
                                     </IconButton>
@@ -190,9 +190,9 @@ const IvrMenuActionField = ({
             </Col>
             <Col className={classNames(css.smallColumn, 'pl-0')}>
                 <IconButton
-                    intent="text"
+                    fillStyle="ghost"
+                    intent="destructive"
                     onClick={onRemove}
-                    className={css.deleteButton}
                 >
                     close
                 </IconButton>

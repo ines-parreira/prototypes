@@ -472,7 +472,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                   class="actions"
                                 >
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="wrapper button wrapper small fill secondary small"
                                     title="Bold"
                                     type="button"
                                   >
@@ -483,7 +483,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                     </i>
                                   </button>
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="wrapper button wrapper small fill secondary small"
                                     title="Italic"
                                     type="button"
                                   >
@@ -494,7 +494,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                     </i>
                                   </button>
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="wrapper button wrapper small fill secondary small"
                                     title="Underline"
                                     type="button"
                                   >
@@ -508,7 +508,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                     class="popoverWrapper"
                                   >
                                     <button
-                                      class="wrapper button wrapper small secondary small"
+                                      class="wrapper button wrapper small fill secondary small"
                                       title="Insert link"
                                       type="button"
                                     >
@@ -526,7 +526,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                     class="popoverWrapper"
                                   >
                                     <button
-                                      class="wrapper button wrapper small secondary small"
+                                      class="wrapper button wrapper small fill secondary small"
                                       title="Insert image"
                                       type="button"
                                     >
@@ -544,7 +544,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                                     class="popoverWrapper"
                                   >
                                     <button
-                                      class="wrapper button wrapper small secondary small"
+                                      class="wrapper button wrapper small fill secondary small"
                                       title="Insert emoji"
                                       type="button"
                                     >
@@ -1192,7 +1192,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                   class="actions"
                                 >
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="wrapper button wrapper small fill secondary small"
                                     title="Bold"
                                     type="button"
                                   >
@@ -1203,7 +1203,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                     </i>
                                   </button>
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="wrapper button wrapper small fill secondary small"
                                     title="Italic"
                                     type="button"
                                   >
@@ -1214,7 +1214,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                     </i>
                                   </button>
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="wrapper button wrapper small fill secondary small"
                                     title="Underline"
                                     type="button"
                                   >
@@ -1228,7 +1228,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                     class="popoverWrapper"
                                   >
                                     <button
-                                      class="wrapper button wrapper small secondary small"
+                                      class="wrapper button wrapper small fill secondary small"
                                       title="Insert link"
                                       type="button"
                                     >
@@ -1246,7 +1246,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                     class="popoverWrapper"
                                   >
                                     <button
-                                      class="wrapper button wrapper small secondary small"
+                                      class="wrapper button wrapper small fill secondary small"
                                       title="Insert image"
                                       type="button"
                                     >
@@ -1264,7 +1264,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                     class="popoverWrapper"
                                   >
                                     <button
-                                      class="wrapper button wrapper small secondary small"
+                                      class="wrapper button wrapper small fill secondary small"
                                       title="Insert emoji"
                                       type="button"
                                     >
@@ -1298,7 +1298,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                   Save
                 </button>
                 <button
-                  class="wrapper float-right destructive medium"
+                  class="wrapper float-right fill destructive medium"
                   id="confirm-42"
                   type="button"
                 >
@@ -1933,7 +1933,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                   class="actions"
                                 >
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="wrapper button wrapper small fill secondary small"
                                     title="Bold"
                                     type="button"
                                   >
@@ -1944,7 +1944,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                     </i>
                                   </button>
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="wrapper button wrapper small fill secondary small"
                                     title="Italic"
                                     type="button"
                                   >
@@ -1955,7 +1955,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                     </i>
                                   </button>
                                   <button
-                                    class="wrapper button wrapper small secondary small"
+                                    class="wrapper button wrapper small fill secondary small"
                                     title="Underline"
                                     type="button"
                                   >
@@ -1969,7 +1969,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                     class="popoverWrapper"
                                   >
                                     <button
-                                      class="wrapper button wrapper small secondary small"
+                                      class="wrapper button wrapper small fill secondary small"
                                       title="Insert link"
                                       type="button"
                                     >
@@ -1987,7 +1987,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                     class="popoverWrapper"
                                   >
                                     <button
-                                      class="wrapper button wrapper small secondary small"
+                                      class="wrapper button wrapper small fill secondary small"
                                       title="Insert image"
                                       type="button"
                                     >
@@ -2005,7 +2005,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                     class="popoverWrapper"
                                   >
                                     <button
-                                      class="wrapper button wrapper small secondary small"
+                                      class="wrapper button wrapper small fill secondary small"
                                       title="Insert emoji"
                                       type="button"
                                     >
@@ -2039,7 +2039,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                   Save
                 </button>
                 <button
-                  class="wrapper float-right destructive medium"
+                  class="wrapper float-right fill destructive medium"
                   id="confirm-42"
                   type="button"
                 >

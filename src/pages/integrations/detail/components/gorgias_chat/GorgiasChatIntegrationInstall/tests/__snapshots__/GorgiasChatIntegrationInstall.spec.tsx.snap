@@ -541,7 +541,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         onClick={[Function]}
                                       >
                                         <button
-                                          className="wrapper disconnect-button destructive medium"
+                                          className="wrapper disconnect-button fill destructive medium"
                                           disabled={false}
                                           id="disconnect-button-undefined"
                                           onClick={[Function]}
@@ -764,7 +764,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         onClick={[Function]}
                                       >
                                         <button
-                                          className="wrapper disconnect-button destructive medium"
+                                          className="wrapper disconnect-button fill destructive medium"
                                           disabled={false}
                                           id="disconnect-button-2"
                                           onClick={[Function]}
@@ -987,7 +987,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         onClick={[Function]}
                                       >
                                         <button
-                                          className="wrapper disconnect-button destructive medium"
+                                          className="wrapper disconnect-button fill destructive medium"
                                           disabled={false}
                                           id="disconnect-button-3"
                                           onClick={[Function]}
@@ -1210,7 +1210,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                         onClick={[Function]}
                                       >
                                         <button
-                                          className="wrapper disconnect-button destructive medium"
+                                          className="wrapper disconnect-button fill destructive medium"
                                           disabled={false}
                                           id="disconnect-button-1"
                                           onClick={[Function]}
@@ -3468,7 +3468,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                         onClick={[Function]}
                                       >
                                         <button
-                                          className="wrapper disconnect-button destructive medium"
+                                          className="wrapper disconnect-button fill destructive medium"
                                           disabled={false}
                                           id="disconnect-button-3"
                                           onClick={[Function]}

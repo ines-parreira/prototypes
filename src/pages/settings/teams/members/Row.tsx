@@ -69,8 +69,8 @@ export default class Row extends Component<Props, State> {
                     </span>
                     <span className={css.delete}>
                         <IconButton
-                            className={css.deleteButton}
-                            intent="text"
+                            fillStyle="ghost"
+                            intent="destructive"
                             onClick={this._deleteTeamMember}
                             isLoading={isDeleting}
                         >

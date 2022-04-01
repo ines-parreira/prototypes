@@ -190,7 +190,7 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
     </li>
   </ul>
   <button
-    class="wrapper addButton secondary medium"
+    class="wrapper addButton fill secondary medium"
     type="button"
   >
     <span

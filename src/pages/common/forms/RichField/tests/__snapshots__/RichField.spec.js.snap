@@ -2680,7 +2680,7 @@ exports[`RichField should render default content state 1`] = `
                                                 title="Bold"
                                               >
                                                 <button
-                                                  className="wrapper button wrapper small secondary small"
+                                                  className="wrapper button wrapper small fill secondary small"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
                                                   title="Bold"
@@ -2732,7 +2732,7 @@ exports[`RichField should render default content state 1`] = `
                                                 title="Italic"
                                               >
                                                 <button
-                                                  className="wrapper button wrapper small secondary small"
+                                                  className="wrapper button wrapper small fill secondary small"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
                                                   title="Italic"
@@ -2784,7 +2784,7 @@ exports[`RichField should render default content state 1`] = `
                                                 title="Underline"
                                               >
                                                 <button
-                                                  className="wrapper button wrapper small secondary small"
+                                                  className="wrapper button wrapper small fill secondary small"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
                                                   title="Underline"
@@ -2882,7 +2882,7 @@ exports[`RichField should render default content state 1`] = `
                                                       title="Insert link"
                                                     >
                                                       <button
-                                                        className="wrapper button wrapper small secondary small"
+                                                        className="wrapper button wrapper small fill secondary small"
                                                         onClick={[Function]}
                                                         onMouseDown={[Function]}
                                                         title="Insert link"
@@ -2960,7 +2960,7 @@ exports[`RichField should render default content state 1`] = `
                                                     title="Insert image"
                                                   >
                                                     <button
-                                                      className="wrapper button wrapper small secondary small"
+                                                      className="wrapper button wrapper small fill secondary small"
                                                       onClick={[Function]}
                                                       onMouseDown={[Function]}
                                                       title="Insert image"
@@ -3034,7 +3034,7 @@ exports[`RichField should render default content state 1`] = `
                                                     title="Insert emoji"
                                                   >
                                                     <button
-                                                      className="wrapper button wrapper small secondary small"
+                                                      className="wrapper button wrapper small fill secondary small"
                                                       onClick={[Function]}
                                                       onMouseDown={[Function]}
                                                       title="Insert emoji"
@@ -8404,7 +8404,7 @@ exports[`RichField should render immutable variable 1`] = `
                                                 title="Bold"
                                               >
                                                 <button
-                                                  className="wrapper button wrapper small secondary small"
+                                                  className="wrapper button wrapper small fill secondary small"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
                                                   title="Bold"
@@ -8456,7 +8456,7 @@ exports[`RichField should render immutable variable 1`] = `
                                                 title="Italic"
                                               >
                                                 <button
-                                                  className="wrapper button wrapper small secondary small"
+                                                  className="wrapper button wrapper small fill secondary small"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
                                                   title="Italic"
@@ -8508,7 +8508,7 @@ exports[`RichField should render immutable variable 1`] = `
                                                 title="Underline"
                                               >
                                                 <button
-                                                  className="wrapper button wrapper small secondary small"
+                                                  className="wrapper button wrapper small fill secondary small"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
                                                   title="Underline"
@@ -8606,7 +8606,7 @@ exports[`RichField should render immutable variable 1`] = `
                                                       title="Insert link"
                                                     >
                                                       <button
-                                                        className="wrapper button wrapper small secondary small"
+                                                        className="wrapper button wrapper small fill secondary small"
                                                         onClick={[Function]}
                                                         onMouseDown={[Function]}
                                                         title="Insert link"
@@ -8684,7 +8684,7 @@ exports[`RichField should render immutable variable 1`] = `
                                                     title="Insert image"
                                                   >
                                                     <button
-                                                      className="wrapper button wrapper small secondary small"
+                                                      className="wrapper button wrapper small fill secondary small"
                                                       onClick={[Function]}
                                                       onMouseDown={[Function]}
                                                       title="Insert image"
@@ -8758,7 +8758,7 @@ exports[`RichField should render immutable variable 1`] = `
                                                     title="Insert emoji"
                                                   >
                                                     <button
-                                                      className="wrapper button wrapper small secondary small"
+                                                      className="wrapper button wrapper small fill secondary small"
                                                       onClick={[Function]}
                                                       onMouseDown={[Function]}
                                                       title="Insert emoji"
@@ -11366,7 +11366,7 @@ exports[`RichField should render mutable variable 1`] = `
                                                 title="Bold"
                                               >
                                                 <button
-                                                  className="wrapper button wrapper small secondary small"
+                                                  className="wrapper button wrapper small fill secondary small"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
                                                   title="Bold"
@@ -11418,7 +11418,7 @@ exports[`RichField should render mutable variable 1`] = `
                                                 title="Italic"
                                               >
                                                 <button
-                                                  className="wrapper button wrapper small secondary small"
+                                                  className="wrapper button wrapper small fill secondary small"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
                                                   title="Italic"
@@ -11470,7 +11470,7 @@ exports[`RichField should render mutable variable 1`] = `
                                                 title="Underline"
                                               >
                                                 <button
-                                                  className="wrapper button wrapper small secondary small"
+                                                  className="wrapper button wrapper small fill secondary small"
                                                   onClick={[Function]}
                                                   onMouseDown={[Function]}
                                                   title="Underline"
@@ -11568,7 +11568,7 @@ exports[`RichField should render mutable variable 1`] = `
                                                       title="Insert link"
                                                     >
                                                       <button
-                                                        className="wrapper button wrapper small secondary small"
+                                                        className="wrapper button wrapper small fill secondary small"
                                                         onClick={[Function]}
                                                         onMouseDown={[Function]}
                                                         title="Insert link"
@@ -11646,7 +11646,7 @@ exports[`RichField should render mutable variable 1`] = `
                                                     title="Insert image"
                                                   >
                                                     <button
-                                                      className="wrapper button wrapper small secondary small"
+                                                      className="wrapper button wrapper small fill secondary small"
                                                       onClick={[Function]}
                                                       onMouseDown={[Function]}
                                                       title="Insert image"
@@ -11720,7 +11720,7 @@ exports[`RichField should render mutable variable 1`] = `
                                                     title="Insert emoji"
                                                   >
                                                     <button
-                                                      className="wrapper button wrapper small secondary small"
+                                                      className="wrapper button wrapper small fill secondary small"
                                                       onClick={[Function]}
                                                       onMouseDown={[Function]}
                                                       title="Insert emoji"

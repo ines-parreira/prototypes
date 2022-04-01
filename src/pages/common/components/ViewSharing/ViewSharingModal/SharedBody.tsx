@@ -58,8 +58,9 @@ export default function SharedBody({
                             className={css.listGroupItem}
                         >
                             <IconButton
-                                className="float-right text-danger"
-                                intent="text"
+                                className="float-right"
+                                fillStyle="ghost"
+                                intent="destructive"
                                 onClick={() => onRemoveTeam(team)}
                                 size="small"
                             >
@@ -97,8 +98,9 @@ export default function SharedBody({
                             )}
                         >
                             <IconButton
-                                className="float-right text-danger"
-                                intent="text"
+                                className="float-right"
+                                fillStyle="ghost"
+                                intent="destructive"
                                 onClick={() => onRemoveUser(user)}
                                 size="small"
                             >

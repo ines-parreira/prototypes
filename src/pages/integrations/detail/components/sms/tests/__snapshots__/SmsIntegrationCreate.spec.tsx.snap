@@ -203,7 +203,7 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
             />
           </div>
           <button
-            class="wrapper mt-5 mb-5 primary medium"
+            class="wrapper mt-5 mb-5 fill primary medium"
             type="submit"
           >
             Add SMS integration
@@ -418,7 +418,7 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
             />
           </div>
           <button
-            class="wrapper mt-5 mb-5 primary medium isDisabled"
+            class="wrapper mt-5 mb-5 fill primary medium isDisabled"
             disabled=""
             type="submit"
           >

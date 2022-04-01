@@ -77,8 +77,8 @@ export default class RichFieldWithVariables extends Component<Props> {
                                 <UncontrolledDropdown key={index}>
                                     <DropdownToggle tag="div">
                                         <Button
-                                            className={css.toolbarItem}
-                                            intent="text"
+                                            fillStyle="ghost"
+                                            intent="secondary"
                                         >
                                             <ButtonIconLabel
                                                 icon="arrow_drop_down"
@@ -109,9 +109,9 @@ export default class RichFieldWithVariables extends Component<Props> {
                             </>
                         ) : (
                             <Button
+                                fillStyle="ghost"
                                 key={index}
-                                className={css.toolbarItem}
-                                intent="text"
+                                intent="secondary"
                                 onClick={() => {
                                     this._insertText(category.value!)
                                 }}

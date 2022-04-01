@@ -16,7 +16,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
           class="group horizontal"
         >
           <button
-            class="wrapper primary medium left"
+            class="wrapper fill primary medium left"
             color="primary"
             type="button"
           >
@@ -28,7 +28,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
             class=""
           >
             <button
-              class="wrapper wrapper medium primary medium right"
+              class="wrapper wrapper fill primary medium right"
               type="button"
             >
               <i
@@ -65,7 +65,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
         </div>
       </div>
       <button
-        class="wrapper secondary medium"
+        class="wrapper fill secondary medium"
         type="button"
       >
         Discard changes
@@ -124,7 +124,7 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
         1752
       </div>
       <button
-        class="wrapper deleteButton secondary medium"
+        class="wrapper deleteButton fill secondary medium"
         type="button"
       >
         <i

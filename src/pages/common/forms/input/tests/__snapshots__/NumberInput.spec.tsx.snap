@@ -16,7 +16,7 @@ exports[`<NumberInput /> should render a number input 1`] = `
     class="controls group vertical"
   >
     <button
-      class="wrapper button wrapper small secondary small top"
+      class="wrapper button wrapper small fill secondary small top"
       type="button"
     >
       <i
@@ -26,7 +26,7 @@ exports[`<NumberInput /> should render a number input 1`] = `
       </i>
     </button>
     <button
-      class="wrapper button wrapper small secondary small bottom"
+      class="wrapper button wrapper small fill secondary small bottom"
       type="button"
     >
       <i

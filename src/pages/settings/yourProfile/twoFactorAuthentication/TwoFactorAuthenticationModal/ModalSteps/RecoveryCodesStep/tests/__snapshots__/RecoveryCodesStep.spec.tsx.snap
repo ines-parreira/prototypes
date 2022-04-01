@@ -108,7 +108,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
     class="actionButtonsContainer mb16"
   >
     <button
-      class="wrapper actionButton mr8 secondary medium"
+      class="wrapper actionButton mr8 fill secondary medium"
       type="button"
     >
       <span
@@ -129,7 +129,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
       target="_blank"
     >
       <button
-        class="wrapper actionButton secondary medium"
+        class="wrapper actionButton fill secondary medium"
         type="button"
       >
         <span
@@ -145,7 +145,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
       </button>
     </a>
     <button
-      class="wrapper actionButton secondary medium"
+      class="wrapper actionButton fill secondary medium"
       data-clipboard-text="abcdefgh01
 abcdefgh02
 abcdefgh03
@@ -292,7 +292,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
     class="actionButtonsContainer mb16"
   >
     <button
-      class="wrapper actionButton mr8 secondary medium"
+      class="wrapper actionButton mr8 fill secondary medium"
       type="button"
     >
       <span
@@ -313,7 +313,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
       target="_blank"
     >
       <button
-        class="wrapper actionButton secondary medium"
+        class="wrapper actionButton fill secondary medium"
         type="button"
       >
         <span
@@ -329,7 +329,7 @@ exports[`<RecoveryCodesStep /> render() should render the component with the rec
       </button>
     </a>
     <button
-      class="wrapper actionButton secondary medium"
+      class="wrapper actionButton fill secondary medium"
       data-clipboard-text="abcdefgh01
 abcdefgh02
 abcdefgh03

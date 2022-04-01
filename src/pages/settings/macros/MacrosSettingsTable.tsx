@@ -219,7 +219,8 @@ export function MacrosSettingsTableContainer({
                                     <BodyCellContent>
                                         <IconButton
                                             className="mr-1"
-                                            intent="text"
+                                            fillStyle="ghost"
+                                            intent="secondary"
                                             onClick={() => {
                                                 void handleMacroDuplicate(
                                                     macroId
@@ -248,12 +249,10 @@ export function MacrosSettingsTableContainer({
                                         >
                                             {({uid, onDisplayConfirmation}) => (
                                                 <IconButton
-                                                    className={classnames(
-                                                        'mr-1',
-                                                        css.deleteButton
-                                                    )}
+                                                    className="mr-1"
                                                     id={uid}
-                                                    intent="text"
+                                                    fillStyle="ghost"
+                                                    intent="destructive"
                                                     onClick={
                                                         onDisplayConfirmation
                                                     }

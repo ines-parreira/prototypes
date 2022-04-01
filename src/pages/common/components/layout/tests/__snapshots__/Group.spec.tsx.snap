@@ -5,19 +5,19 @@ exports[`<Group /> should render a group of buttons 1`] = `
   class="group horizontal"
 >
   <button
-    class="wrapper primary medium left"
+    class="wrapper fill primary medium left"
     type="button"
   >
     Foo
   </button>
   <button
-    class="wrapper primary medium center"
+    class="wrapper fill primary medium center"
     type="button"
   >
     Bar
   </button>
   <button
-    class="wrapper primary medium right"
+    class="wrapper fill primary medium right"
     type="button"
   >
     Baz

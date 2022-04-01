@@ -126,7 +126,7 @@ exports[`<DraftOrderTable/> should render 1`] = `
             </span>
           </strong>
           <button
-            class="wrapper delete wrapper medium text medium"
+            class="wrapper wrapper ghost ghost destructive medium"
             tabindex="0"
             type="button"
           >
@@ -241,7 +241,7 @@ exports[`<DraftOrderTable/> should render 1`] = `
             </span>
           </strong>
           <button
-            class="wrapper delete wrapper medium text medium"
+            class="wrapper wrapper ghost ghost destructive medium"
             tabindex="0"
             type="button"
           >
@@ -423,7 +423,7 @@ exports[`<DraftOrderTable/> should render without products 1`] = `
             </span>
           </strong>
           <button
-            class="wrapper delete wrapper medium text medium"
+            class="wrapper wrapper ghost ghost destructive medium"
             tabindex="0"
             type="button"
           >
@@ -539,7 +539,7 @@ exports[`<DraftOrderTable/> should render without products 1`] = `
             </span>
           </strong>
           <button
-            class="wrapper delete wrapper medium text medium"
+            class="wrapper wrapper ghost ghost destructive medium"
             tabindex="0"
             type="button"
           >

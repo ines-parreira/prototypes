@@ -5,7 +5,7 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
   class="wrapper group horizontal"
 >
   <button
-    class="wrapper secondary medium left isAuxiliaryButton"
+    class="wrapper fill secondary medium left isAuxiliaryButton"
     type="button"
   >
     Foo
@@ -25,7 +25,7 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
       class="controls group vertical"
     >
       <button
-        class="wrapper button wrapper small secondary small top isAuxiliaryButton"
+        class="wrapper button wrapper small fill secondary small top isAuxiliaryButton"
         type="button"
       >
         <i
@@ -35,7 +35,7 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
         </i>
       </button>
       <button
-        class="wrapper button wrapper small secondary small bottom isAuxiliaryButton"
+        class="wrapper button wrapper small fill secondary small bottom isAuxiliaryButton"
         type="button"
       >
         <i
@@ -47,13 +47,13 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
     </span>
   </span>
   <button
-    class="wrapper secondary medium center isAuxiliaryButton"
+    class="wrapper fill secondary medium center isAuxiliaryButton"
     type="button"
   >
     Bar
   </button>
   <button
-    class="wrapper secondary medium right isAuxiliaryButton"
+    class="wrapper fill secondary medium right isAuxiliaryButton"
     type="button"
   >
     Baz

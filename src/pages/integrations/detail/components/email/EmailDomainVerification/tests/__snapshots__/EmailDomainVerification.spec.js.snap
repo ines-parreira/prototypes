@@ -49,7 +49,7 @@ exports[`<EmailDomainVerificationContainer/> render() should render a delete but
       />
     </table>
     <button
-      class="wrapper destructive medium"
+      class="wrapper fill destructive medium"
       id="confirm-42"
       type="button"
     >

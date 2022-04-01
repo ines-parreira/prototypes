@@ -2,7 +2,7 @@
 
 exports[`<IconButton /> should render a button containing an icon 1`] = `
 <button
-  class="wrapper wrapper medium primary medium"
+  class="wrapper wrapper fill primary medium"
   type="button"
 >
   <i

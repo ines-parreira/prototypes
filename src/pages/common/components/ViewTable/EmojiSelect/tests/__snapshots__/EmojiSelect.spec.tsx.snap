@@ -52,7 +52,7 @@ exports[`<EmojiSelect/> .render() show emoji picker on icon click 1`] = `
               />
             </div>
             <button
-              class="wrapper clearButton text medium"
+              class="wrapper clearButton ghost primary medium"
               type="button"
             >
               <span

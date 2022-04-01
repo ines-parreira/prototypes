@@ -18,7 +18,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
           Performance overview
         </span>
         <button
-          class="wrapper wrapper ml-3 secondary medium"
+          class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
           <span
@@ -739,7 +739,7 @@ exports[`SupportPerformanceOverview should render the filters and stats when sta
           </div>
           <div>
             <button
-              class="wrapper secondary medium"
+              class="wrapper fill secondary medium"
               type="button"
             >
               <span

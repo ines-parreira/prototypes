@@ -65,7 +65,7 @@ exports[`<Row /> should render 1`] = `
       class="delete"
     >
       <button
-        class="wrapper deleteButton wrapper medium text medium"
+        class="wrapper wrapper ghost ghost destructive medium"
         type="button"
       >
         <i

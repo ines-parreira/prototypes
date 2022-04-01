@@ -338,7 +338,7 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
     </div>
     <button
       aria-label="Switch to Basic Plan"
-      class="wrapper footerButton text medium"
+      class="wrapper footerButton ghost primary medium"
       type="button"
     >
       Switch to Basic Plan
@@ -682,7 +682,7 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
     </div>
     <button
       aria-label="Current Plan"
-      class="wrapper footerButton text medium isDisabled"
+      class="wrapper footerButton ghost primary medium isDisabled"
       disabled=""
       type="button"
     >
@@ -1037,7 +1037,7 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
     </div>
     <button
       aria-label="Current Plan"
-      class="wrapper footerButton text medium isDisabled"
+      class="wrapper footerButton ghost primary medium isDisabled"
       disabled=""
       type="button"
     >
@@ -1346,7 +1346,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
     </div>
     <button
       aria-label="Current Plan"
-      class="wrapper footerButton text medium isDisabled"
+      class="wrapper footerButton ghost primary medium isDisabled"
       disabled=""
       type="button"
     >
@@ -1648,7 +1648,7 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
     </div>
     <button
       aria-label="Current Plan"
-      class="wrapper footerButton text medium isDisabled"
+      class="wrapper footerButton ghost primary medium isDisabled"
       disabled=""
       type="button"
     >
@@ -1996,7 +1996,7 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
     </div>
     <button
       aria-label="Switch to Basic Plan"
-      class="wrapper footerButton text medium isDisabled"
+      class="wrapper footerButton ghost primary medium isDisabled"
       disabled=""
       type="button"
     >

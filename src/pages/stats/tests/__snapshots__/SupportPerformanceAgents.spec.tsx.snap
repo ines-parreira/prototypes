@@ -18,7 +18,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
           Agents
         </span>
         <button
-          class="wrapper wrapper ml-3 secondary medium"
+          class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
           <span
@@ -629,7 +629,7 @@ exports[`SupportPerformanceAgents should render the filters and stats when stats
           </div>
           <div>
             <button
-              class="wrapper secondary medium"
+              class="wrapper fill secondary medium"
               type="button"
             >
               <span

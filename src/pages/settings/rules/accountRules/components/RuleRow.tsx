@@ -288,7 +288,8 @@ export function RuleRow({
             <td className={classnames('align-middle smallest', css.actions)}>
                 <IconButton
                     className={classnames(css.actionButton, 'mr-1')}
-                    intent="text"
+                    fillStyle="ghost"
+                    intent="secondary"
                     isDisabled={rule.type === RuleType.Managed}
                     onClick={(e) => {
                         e.stopPropagation()
@@ -313,13 +314,10 @@ export function RuleRow({
                 >
                     {({uid, onDisplayConfirmation}) => (
                         <IconButton
-                            className={classnames(
-                                css.actionButton,
-                                css.deleteActionButton,
-                                'mr-1'
-                            )}
+                            className={classnames(css.actionButton, 'mr-1')}
                             onClick={onDisplayConfirmation}
-                            intent="text"
+                            fillStyle="ghost"
+                            intent="destructive"
                             isLoading={isDeleting}
                             title="Delete rule"
                             id={uid}

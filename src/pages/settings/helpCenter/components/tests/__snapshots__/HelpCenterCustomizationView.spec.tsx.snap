@@ -37,7 +37,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
         >
           <button
             aria-label="help center preview"
-            class="wrapper secondary medium"
+            class="wrapper fill secondary medium"
             type="button"
           >
             <i
@@ -247,7 +247,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
               id="help-header"
             >
               <button
-                class="wrapper add-link secondary medium"
+                class="wrapper add-link fill secondary medium"
                 type="button"
               >
                 <i
@@ -317,7 +317,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
               id="help-footer"
             >
               <button
-                class="wrapper add-link secondary medium"
+                class="wrapper add-link fill secondary medium"
                 type="button"
               >
                 <i
@@ -482,13 +482,13 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
           class="form-group"
         >
           <button
-            class="wrapper mr-2 primary medium"
+            class="wrapper mr-2 fill primary medium"
             type="button"
           >
             Save Changes
           </button>
           <button
-            class="wrapper secondary medium"
+            class="wrapper fill secondary medium"
             type="button"
           >
             Cancel

@@ -31,7 +31,7 @@ exports[`<OngoingPhoneCall/> should render 1`] = `
       )
     </span>
     <button
-      class="wrapper dialPad wrapper medium secondary medium"
+      class="wrapper dialPad wrapper fill secondary medium"
       data-testid="dial-pad-button"
       id="dial-pad-button"
       type="button"
@@ -43,7 +43,7 @@ exports[`<OngoingPhoneCall/> should render 1`] = `
       </i>
     </button>
     <button
-      class="wrapper mute wrapper medium secondary medium"
+      class="wrapper mute wrapper fill secondary medium"
       data-testid="mute-call-button"
       type="button"
     >
@@ -54,7 +54,7 @@ exports[`<OngoingPhoneCall/> should render 1`] = `
       </i>
     </button>
     <button
-      class="wrapper recording wrapper medium secondary medium"
+      class="wrapper recording wrapper fill secondary medium"
       data-testid="record-call-button"
       type="button"
     >
@@ -65,7 +65,7 @@ exports[`<OngoingPhoneCall/> should render 1`] = `
       </i>
     </button>
     <button
-      class="wrapper wrapper medium destructive medium"
+      class="wrapper wrapper fill destructive medium"
       data-testid="end-call-button"
       type="button"
     >

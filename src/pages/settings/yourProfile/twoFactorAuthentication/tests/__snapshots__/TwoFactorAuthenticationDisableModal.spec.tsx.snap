@@ -59,13 +59,13 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
               class="modalFooter modal-footer"
             >
               <button
-                class="wrapper mr-auto secondary medium"
+                class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper destructive medium"
+                class="wrapper fill destructive medium"
                 type="button"
               >
                 Foo action button text
@@ -141,13 +141,13 @@ exports[`<TwoFactorAuthenticationDisableModal /> should call the delete function
               class="modalFooter modal-footer"
             >
               <button
-                class="wrapper mr-auto secondary medium"
+                class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper destructive medium"
+                class="wrapper fill destructive medium"
                 type="button"
               >
                 Foo action button text
@@ -231,13 +231,13 @@ exports[`<TwoFactorAuthenticationDisableModal /> should render the modal 1`] = `
               class="modalFooter modal-footer"
             >
               <button
-                class="wrapper mr-auto secondary medium"
+                class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper destructive medium"
+                class="wrapper fill destructive medium"
                 type="button"
               >
                 Foo action button text
@@ -333,13 +333,13 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
               class="modalFooter modal-footer"
             >
               <button
-                class="wrapper mr-auto secondary medium"
+                class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper destructive medium"
+                class="wrapper fill destructive medium"
                 type="button"
               >
                 Foo action button text
@@ -435,13 +435,13 @@ exports[`<TwoFactorAuthenticationDisableModal /> should show an error if the del
               class="modalFooter modal-footer"
             >
               <button
-                class="wrapper mr-auto secondary medium"
+                class="wrapper mr-auto fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper destructive medium"
+                class="wrapper fill destructive medium"
                 type="button"
               >
                 Foo action button text

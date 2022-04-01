@@ -94,10 +94,11 @@ const QuickResponseListItem: React.FC<QuickResponseListItemProps> = ({
                                 response flow?
                             </span>
                         }
+                        fillStyle="ghost"
                         onConfirm={onDeleteConfirmation}
                         placement="top"
                         confirmationButtonIntent="destructive"
-                        intent="text"
+                        intent="destructive"
                         className={css.actionButton}
                     >
                         <div className="material-icons delete">delete</div>

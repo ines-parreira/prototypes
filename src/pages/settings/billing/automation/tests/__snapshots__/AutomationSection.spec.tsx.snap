@@ -62,7 +62,7 @@ exports[`<AutomationSection /> should render 1`] = `
         class="d-flex align-items-center upgradeLink"
       >
         <button
-          class="wrapper primary medium"
+          class="wrapper fill primary medium"
           type="button"
         >
           <span
@@ -158,7 +158,7 @@ exports[`<AutomationSection /> should render for customers already with full add
       </div>
     </div>
     <button
-      class="wrapper align-self-end secondary medium"
+      class="wrapper align-self-end fill secondary medium"
       type="button"
     >
       Manage add-on
@@ -229,7 +229,7 @@ exports[`<AutomationSection /> should render for customers already with legacy a
         class="d-flex align-items-center upgradeLink"
       >
         <button
-          class="wrapper primary medium"
+          class="wrapper fill primary medium"
           type="button"
         >
           <span
@@ -314,7 +314,7 @@ exports[`<AutomationSection /> should render for trialing customers 1`] = `
           to="[object Object]"
         >
           <button
-            class="wrapper primary medium"
+            class="wrapper fill primary medium"
             type="button"
           >
             <span

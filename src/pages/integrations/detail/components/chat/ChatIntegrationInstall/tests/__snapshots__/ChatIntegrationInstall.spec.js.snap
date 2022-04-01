@@ -506,7 +506,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                           type="button"
                         >
                           <button
-                            className="wrapper copy primary medium"
+                            className="wrapper copy fill primary medium"
                             data-clipboard-target="#code-snippet"
                             id="copy-code-snippet"
                             type="button"

@@ -1031,7 +1031,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                           type="submit"
                         >
                           <button
-                            className="wrapper submitButton primary medium"
+                            className="wrapper submitButton fill primary medium"
                             disabled={false}
                             type="submit"
                           >
@@ -1925,7 +1925,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                           type="submit"
                         >
                           <button
-                            className="wrapper submitButton primary medium"
+                            className="wrapper submitButton fill primary medium"
                             disabled={false}
                             type="submit"
                           >

@@ -18,7 +18,7 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
         tabindex="10"
       />
       <button
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
       >
@@ -36,7 +36,7 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
         class="m-3"
       >
         <button
-          class="wrapper secondary medium"
+          class="wrapper fill secondary medium"
           type="button"
         >
           <span
@@ -89,7 +89,7 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
         tabindex="10"
       />
       <button
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
       >
@@ -131,7 +131,7 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
             style="margin-bottom: 30px;"
           >
             <button
-              class="wrapper mr-2 primary medium"
+              class="wrapper mr-2 fill primary medium"
               type="button"
             >
               <span
@@ -183,7 +183,7 @@ exports[`<Infobar/> should render customer context 1`] = `
         tabindex="10"
       />
       <button
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
       >
@@ -229,7 +229,7 @@ exports[`<Infobar/> should render loading state because the customer is being fe
         tabindex="10"
       />
       <button
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
       >
@@ -279,7 +279,7 @@ exports[`<Infobar/> should render loading state because the search is in progres
         tabindex="10"
       />
       <button
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
       >
@@ -329,7 +329,7 @@ exports[`<Infobar/> should render search results 1`] = `
         tabindex="10"
       />
       <button
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
       >
@@ -347,7 +347,7 @@ exports[`<Infobar/> should render search results 1`] = `
         class="m-3"
       >
         <button
-          class="wrapper secondary medium"
+          class="wrapper fill secondary medium"
           type="button"
         >
           <span
@@ -401,7 +401,7 @@ exports[`<Infobar/> should render selected customer 1`] = `
           tabindex="10"
         />
         <button
-          class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium isDisabled"
+          class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium isDisabled"
           disabled=""
           id="toggle-widgets-edition-button"
           type="button"
@@ -420,7 +420,7 @@ exports[`<Infobar/> should render selected customer 1`] = `
           class="m-3"
         >
           <button
-            class="wrapper selectionBackButton secondary medium"
+            class="wrapper selectionBackButton fill secondary medium"
             type="button"
           >
             <span
@@ -438,7 +438,7 @@ exports[`<Infobar/> should render selected customer 1`] = `
             class="float-right d-none d-md-block"
           >
             <button
-              class="wrapper secondary medium"
+              class="wrapper fill secondary medium"
               type="button"
             >
               Merge
@@ -481,7 +481,7 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
         tabindex="10"
       />
       <button
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
       >
@@ -499,7 +499,7 @@ exports[`<Infobar/> should render the error when loading error 1`] = `
         class="m-3"
       >
         <button
-          class="wrapper secondary medium"
+          class="wrapper fill secondary medium"
           type="button"
         >
           <span
@@ -553,7 +553,7 @@ exports[`<Infobar/> should render ticket context 1`] = `
         tabindex="10"
       />
       <button
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
         id="toggle-widgets-edition-button"
         type="button"
       >
@@ -599,7 +599,7 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
         tabindex="10"
       />
       <button
-        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper medium secondary medium isDisabled"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium isDisabled"
         disabled=""
         id="toggle-widgets-edition-button"
         type="button"
@@ -626,14 +626,14 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
     </div>
     <div>
       <button
-        class="wrapper mr-2 primary medium isDisabled"
+        class="wrapper mr-2 fill primary medium isDisabled"
         disabled=""
         type="button"
       >
         Save changes
       </button>
       <button
-        class="wrapper secondary medium isDisabled"
+        class="wrapper fill secondary medium isDisabled"
         disabled=""
         type="button"
       >

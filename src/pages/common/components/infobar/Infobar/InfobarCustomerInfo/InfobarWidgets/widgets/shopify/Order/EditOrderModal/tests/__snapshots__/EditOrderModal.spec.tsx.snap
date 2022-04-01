@@ -215,7 +215,7 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
               class="numberCol centered"
             >
               <button
-                class="wrapper delete wrapper medium text medium"
+                class="wrapper wrapper ghost ghost destructive medium"
                 tabindex="0"
                 type="button"
               >
@@ -323,7 +323,7 @@ exports[`<EditOrderModal/> should render with a default currency if missing from
               class="numberCol centered"
             >
               <button
-                class="wrapper delete wrapper medium text medium"
+                class="wrapper wrapper ghost ghost destructive medium"
                 tabindex="0"
                 type="button"
               >
@@ -635,7 +635,7 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
               class="numberCol centered"
             >
               <button
-                class="wrapper delete wrapper medium text medium"
+                class="wrapper wrapper ghost ghost destructive medium"
                 tabindex="0"
                 type="button"
               >
@@ -743,7 +743,7 @@ exports[`<EditOrderModal/> should render with a populated order table when data 
               class="numberCol centered"
             >
               <button
-                class="wrapper delete wrapper medium text medium"
+                class="wrapper wrapper ghost ghost destructive medium"
                 tabindex="0"
                 type="button"
               >

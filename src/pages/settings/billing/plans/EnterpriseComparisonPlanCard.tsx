@@ -59,7 +59,7 @@ export default function EnterpriseComparisonPlanCard({
                     <Button
                         aria-label={switchPlanButtonText}
                         className={css.footerButton}
-                        intent="text"
+                        fillStyle="ghost"
                         isLoading={isUpdating}
                         isDisabled={!canChoosePlan}
                         onClick={() => {

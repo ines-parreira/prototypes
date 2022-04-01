@@ -19,13 +19,13 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       For an added layer of security, your admin requires you to use two-factor authentication (2FA) when you sign in to Gorgias.
     </div>
     <button
-      class="wrapper mr-2 secondary medium"
+      class="wrapper mr-2 fill secondary medium"
       type="button"
     >
       Update 2FA
     </button>
     <button
-      class="wrapper destructive medium"
+      class="wrapper fill destructive medium"
       type="button"
     >
       Disable 2FA
@@ -58,7 +58,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       For an added layer of security, your admin requires you to use two-factor authentication (2FA) when you sign in to Gorgias.
     </div>
     <button
-      class="wrapper mr-2 primary medium"
+      class="wrapper mr-2 fill primary medium"
       type="button"
     >
       Enable 2FA
@@ -91,13 +91,13 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       For an added layer of security, your admin requires you to use two-factor authentication (2FA) when you sign in to Gorgias.
     </div>
     <button
-      class="wrapper mr-2 secondary medium"
+      class="wrapper mr-2 fill secondary medium"
       type="button"
     >
       Update 2FA
     </button>
     <button
-      class="wrapper destructive medium"
+      class="wrapper fill destructive medium"
       type="button"
     >
       Disable 2FA
@@ -125,7 +125,7 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       For an added layer of security, your admin requires you to use two-factor authentication (2FA) when you sign in to Gorgias.
     </div>
     <button
-      class="wrapper mr-2 primary medium"
+      class="wrapper mr-2 fill primary medium"
       type="button"
     >
       Enable 2FA

@@ -2961,13 +2961,13 @@ exports[`<CsvColumnMatching /> renders initial mappings with default help center
     class="mt-5 form-group"
   >
     <button
-      class="wrapper mr-2 primary medium"
+      class="wrapper mr-2 fill primary medium"
       type="button"
     >
       Confirm Import
     </button>
     <button
-      class="wrapper secondary medium"
+      class="wrapper fill secondary medium"
       type="button"
     >
       Cancel

@@ -815,7 +815,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
                 Step 1 of 2 - Phone Information
               </span>
               <button
-                class="wrapper primary medium"
+                class="wrapper fill primary medium"
                 type="button"
               >
                 Next
@@ -1656,7 +1656,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
               class="footer modal-footer"
             >
               <button
-                class="wrapper primary medium"
+                class="wrapper fill primary medium"
                 type="button"
               >
                 Create phone number
@@ -1928,7 +1928,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
               class="footer modal-footer"
             >
               <button
-                class="wrapper primary medium"
+                class="wrapper fill primary medium"
                 type="button"
               >
                 Create phone number

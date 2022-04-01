@@ -110,7 +110,7 @@ exports[`<Form /> should render 1`] = `
             Role
           </label>
           <button
-            class="wrapper wrapper learnMore secondary medium"
+            class="wrapper wrapper learnMore fill secondary medium"
             type="button"
           >
             <span
@@ -219,13 +219,13 @@ exports[`<Form /> should render 1`] = `
         class="mt-5 form-group"
       >
         <button
-          class="wrapper mr-2 primary medium"
+          class="wrapper mr-2 fill primary medium"
           type="submit"
         >
           Save user
         </button>
         <button
-          class="wrapper secondary medium"
+          class="wrapper fill secondary medium"
           type="button"
         >
           <span
@@ -240,14 +240,14 @@ exports[`<Form /> should render 1`] = `
           </span>
         </button>
         <button
-          class="wrapper ml-2 destructive medium"
+          class="wrapper ml-2 fill destructive medium"
           id="set-owner"
           type="button"
         >
           Set as account owner
         </button>
         <button
-          class="wrapper float-right destructive medium"
+          class="wrapper float-right fill destructive medium"
           id="delete-user"
           type="button"
         >
@@ -378,7 +378,7 @@ exports[`<Form /> should render with 2FA information when enabled 1`] = `
             Role
           </label>
           <button
-            class="wrapper wrapper learnMore secondary medium"
+            class="wrapper wrapper learnMore fill secondary medium"
             type="button"
           >
             <span
@@ -500,7 +500,7 @@ exports[`<Form /> should render with 2FA information when enabled 1`] = `
             Enabled
           </div>
           <button
-            class="wrapper ml-2 text medium"
+            class="wrapper ml-2 ghost secondary medium"
             type="button"
           >
             <span
@@ -520,13 +520,13 @@ exports[`<Form /> should render with 2FA information when enabled 1`] = `
         class="mt-5 form-group"
       >
         <button
-          class="wrapper mr-2 primary medium"
+          class="wrapper mr-2 fill primary medium"
           type="submit"
         >
           Save user
         </button>
         <button
-          class="wrapper secondary medium"
+          class="wrapper fill secondary medium"
           type="button"
         >
           <span
@@ -541,14 +541,14 @@ exports[`<Form /> should render with 2FA information when enabled 1`] = `
           </span>
         </button>
         <button
-          class="wrapper ml-2 destructive medium"
+          class="wrapper ml-2 fill destructive medium"
           id="set-owner"
           type="button"
         >
           Set as account owner
         </button>
         <button
-          class="wrapper float-right destructive medium"
+          class="wrapper float-right fill destructive medium"
           id="delete-user"
           type="button"
         >

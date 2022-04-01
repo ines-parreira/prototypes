@@ -18,7 +18,7 @@ exports[`StatsPage should render the title, children and filters 1`] = `
           Foo
         </span>
         <button
-          class="wrapper wrapper ml-3 secondary medium"
+          class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
           <span

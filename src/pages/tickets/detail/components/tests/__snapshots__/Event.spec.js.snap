@@ -59,7 +59,8 @@ exports[`Event component should display correctly a failed event for a Recharge 
         shouldDisplayAvatar={false}
       />
       <ForwardRef
-        intent="text"
+        fillStyle="ghost"
+        intent="secondary"
         onClick={[Function]}
         title="More details"
       >
@@ -179,7 +180,8 @@ exports[`Event component should display correctly a failed event for a Recharge 
         shouldDisplayAvatar={false}
       />
       <ForwardRef
-        intent="text"
+        fillStyle="ghost"
+        intent="secondary"
         onClick={[Function]}
         title="More details"
       >
@@ -289,7 +291,8 @@ exports[`Event component should display correctly a failed event for a Shopify O
         shouldDisplayAvatar={false}
       />
       <ForwardRef
-        intent="text"
+        fillStyle="ghost"
+        intent="secondary"
         onClick={[Function]}
         title="More details"
       >
@@ -399,7 +402,8 @@ exports[`Event component should display correctly a successful event for a Recha
         shouldDisplayAvatar={false}
       />
       <ForwardRef
-        intent="text"
+        fillStyle="ghost"
+        intent="secondary"
         onClick={[Function]}
         title="More details"
       >
@@ -508,7 +512,8 @@ exports[`Event component should display correctly a successful event for a Recha
         shouldDisplayAvatar={false}
       />
       <ForwardRef
-        intent="text"
+        fillStyle="ghost"
+        intent="secondary"
         onClick={[Function]}
         title="More details"
       >
@@ -607,7 +612,8 @@ exports[`Event component should display correctly a successful event for a Shopi
         shouldDisplayAvatar={false}
       />
       <ForwardRef
-        intent="text"
+        fillStyle="ghost"
+        intent="secondary"
         onClick={[Function]}
         title="More details"
       >
@@ -706,7 +712,8 @@ exports[`Event component should display correctly a successful event for a Shopi
         shouldDisplayAvatar={false}
       />
       <ForwardRef
-        intent="text"
+        fillStyle="ghost"
+        intent="secondary"
         onClick={[Function]}
         title="More details"
       >
@@ -819,7 +826,8 @@ exports[`Event component should display the correct label for an action 1`] = `
         shouldDisplayAvatar={false}
       />
       <ForwardRef
-        intent="text"
+        fillStyle="ghost"
+        intent="secondary"
         onClick={[Function]}
         title="More details"
       >

@@ -8,7 +8,7 @@ exports[`<ColorPicker /> should display popup on button click with default color
     class="d-inline-block"
   >
     <button
-      class="wrapper secondary medium"
+      class="wrapper fill secondary medium"
       id="color-picker-4"
       type="button"
     >
@@ -146,7 +146,7 @@ exports[`<ColorPicker /> should display popup on button click with provided colo
       class="d-inline-block"
     >
       <button
-        class="wrapper secondary medium"
+        class="wrapper fill secondary medium"
         id="color-picker-5"
         type="button"
       >
@@ -202,7 +202,7 @@ exports[`<ColorPicker /> should render with background color matching defaultVal
   class="d-inline-block"
 >
   <button
-    class="wrapper secondary medium"
+    class="wrapper fill secondary medium"
     id="color-picker-3"
     type="button"
   >
@@ -219,7 +219,7 @@ exports[`<ColorPicker /> should render with background color matching value 1`] 
   class="d-inline-block"
 >
   <button
-    class="wrapper secondary medium"
+    class="wrapper fill secondary medium"
     id="color-picker-2"
     type="button"
   >
@@ -236,7 +236,7 @@ exports[`<ColorPicker /> should render with minimal props 1`] = `
   class="d-inline-block"
 >
   <button
-    class="wrapper secondary medium"
+    class="wrapper fill secondary medium"
     id="color-picker-1"
     type="button"
   >

@@ -194,7 +194,7 @@ exports[`CustomerChannels component should display all passed channels (includin
       type="button"
     >
       <button
-        className="wrapper container secondary medium"
+        className="wrapper container fill secondary medium"
         onClick={[Function]}
         type="button"
       >
@@ -853,7 +853,7 @@ exports[`CustomerChannels component should display all passed channels (includin
       type="button"
     >
       <button
-        className="wrapper container secondary medium"
+        className="wrapper container fill secondary medium"
         onClick={[Function]}
         type="button"
       >

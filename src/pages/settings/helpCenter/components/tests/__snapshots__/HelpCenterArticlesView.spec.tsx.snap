@@ -37,7 +37,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         >
           <button
             aria-label="help center preview"
-            class="wrapper secondary medium"
+            class="wrapper fill secondary medium"
             type="button"
           >
             <i
@@ -50,13 +50,13 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             </span>
           </button>
           <button
-            class="wrapper secondary medium"
+            class="wrapper fill secondary medium"
             type="button"
           >
             Create Category
           </button>
           <button
-            class="wrapper primary medium"
+            class="wrapper fill primary medium"
             type="button"
           >
             Create Article
@@ -133,7 +133,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         Write your first article or create your first category to be displayed in your very own Help Center.
       </p>
       <button
-        class="wrapper mr-2 primary medium"
+        class="wrapper mr-2 fill primary medium"
         type="button"
       >
         <i
@@ -144,7 +144,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         Create Article
       </button>
       <button
-        class="wrapper secondary medium"
+        class="wrapper fill secondary medium"
         type="button"
       >
         <i
@@ -169,7 +169,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
            or by uploading a CSV.
         </p>
         <button
-          class="wrapper secondary medium"
+          class="wrapper fill secondary medium"
           type="button"
         >
           <i
@@ -263,15 +263,19 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             </div>
             <button
               aria-label="close modal"
-              class="close-btn"
+              class="wrapper close-btn ghost secondary medium"
               data-testid="close-drawer"
               type="button"
             >
-              <i
-                class="material-icons"
+              <span
+                class="wrapper"
               >
-                keyboard_tab
-              </i>
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  keyboard_tab
+                </i>
+              </span>
             </button>
           </div>
         </header>
@@ -370,23 +374,31 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           <div
             class="textfield required form-group"
           >
-            <label
-              class=""
-              for="slug"
+            <div
+              class="slugWrapper"
             >
-              Slug
-            </label>
-            <button
-              class="copyButton"
-              type="button"
-            >
-              Copy URL
-              <i
-                class="material-icons"
+              <label
+                class=""
+                for="slug"
               >
-                content_copy
-              </i>
-            </button>
+                Slug
+              </label>
+              <button
+                class="wrapper ghost primary small"
+                type="button"
+              >
+                <span
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons icon isLeft small"
+                  >
+                    content_copy
+                  </i>
+                  Copy URL
+                </span>
+              </button>
+            </div>
             <div
               class="input-group"
             >
@@ -579,7 +591,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           class="footer"
         >
           <button
-            class="wrapper primary medium isDisabled"
+            class="wrapper fill primary medium isDisabled"
             data-testid="button-save"
             disabled=""
             type="button"

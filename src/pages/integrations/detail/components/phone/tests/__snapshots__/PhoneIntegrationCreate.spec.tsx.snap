@@ -284,7 +284,7 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
             </div>
           </div>
           <button
-            class="wrapper mt-5 mb-5 primary medium"
+            class="wrapper mt-5 mb-5 fill primary medium"
             type="submit"
           >
             Add voice integration
@@ -580,7 +580,7 @@ exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with t
             </div>
           </div>
           <button
-            class="wrapper mt-5 mb-5 primary medium isDisabled"
+            class="wrapper mt-5 mb-5 fill primary medium isDisabled"
             disabled=""
             type="submit"
           >

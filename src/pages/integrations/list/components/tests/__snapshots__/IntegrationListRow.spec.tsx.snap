@@ -74,7 +74,7 @@ exports[`IntegrationListRow should display an integration with upgrade requireme
             to="[object Object]"
           >
             <button
-              class="wrapper primary small"
+              class="wrapper fill primary small"
               type="button"
             >
               <span

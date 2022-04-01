@@ -43,7 +43,7 @@ exports[`<GorgiasChatIntegrationOneClickInstallationCard/> should NOT display th
             Install
           </button>
           <button
-            class="wrapper disconnect-button destructive medium"
+            class="wrapper disconnect-button fill destructive medium"
             id="disconnect-button-3"
             type="button"
           >
@@ -114,7 +114,7 @@ exports[`<GorgiasChatIntegrationOneClickInstallationCard/> should display one sh
             Install
           </button>
           <button
-            class="wrapper disconnect-button destructive medium"
+            class="wrapper disconnect-button fill destructive medium"
             id="disconnect-button-3"
             type="button"
           >
@@ -185,7 +185,7 @@ exports[`<GorgiasChatIntegrationOneClickInstallationCard/> should display one sh
             Uninstall
           </button>
           <button
-            class="wrapper disconnect-button destructive medium"
+            class="wrapper disconnect-button fill destructive medium"
             id="disconnect-button-3"
             type="button"
           >
@@ -256,7 +256,7 @@ exports[`<GorgiasChatIntegrationOneClickInstallationCard/> should display the me
             Install
           </button>
           <button
-            class="wrapper disconnect-button destructive medium"
+            class="wrapper disconnect-button fill destructive medium"
             id="disconnect-button-3"
             type="button"
           >

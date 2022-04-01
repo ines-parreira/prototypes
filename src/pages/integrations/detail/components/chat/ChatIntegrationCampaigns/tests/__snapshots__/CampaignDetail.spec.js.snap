@@ -501,7 +501,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                               class="actions"
                             >
                               <button
-                                class="wrapper button wrapper small secondary small"
+                                class="wrapper button wrapper small fill secondary small"
                                 title="Bold"
                                 type="button"
                               >
@@ -512,7 +512,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 </i>
                               </button>
                               <button
-                                class="wrapper button wrapper small secondary small"
+                                class="wrapper button wrapper small fill secondary small"
                                 title="Italic"
                                 type="button"
                               >
@@ -523,7 +523,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 </i>
                               </button>
                               <button
-                                class="wrapper button wrapper small secondary small"
+                                class="wrapper button wrapper small fill secondary small"
                                 title="Underline"
                                 type="button"
                               >
@@ -537,7 +537,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="wrapper button wrapper small secondary small"
+                                  class="wrapper button wrapper small fill secondary small"
                                   title="Insert image"
                                   type="button"
                                 >
@@ -555,7 +555,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="wrapper button wrapper small secondary small"
+                                  class="wrapper button wrapper small fill secondary small"
                                   title="Insert emoji"
                                   type="button"
                                 >
@@ -1255,7 +1255,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                               class="actions"
                             >
                               <button
-                                class="wrapper button wrapper small secondary small"
+                                class="wrapper button wrapper small fill secondary small"
                                 title="Bold"
                                 type="button"
                               >
@@ -1266,7 +1266,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 </i>
                               </button>
                               <button
-                                class="wrapper button wrapper small secondary small"
+                                class="wrapper button wrapper small fill secondary small"
                                 title="Italic"
                                 type="button"
                               >
@@ -1277,7 +1277,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 </i>
                               </button>
                               <button
-                                class="wrapper button wrapper small secondary small"
+                                class="wrapper button wrapper small fill secondary small"
                                 title="Underline"
                                 type="button"
                               >
@@ -1291,7 +1291,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="wrapper button wrapper small secondary small"
+                                  class="wrapper button wrapper small fill secondary small"
                                   title="Insert image"
                                   type="button"
                                 >
@@ -1309,7 +1309,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="wrapper button wrapper small secondary small"
+                                  class="wrapper button wrapper small fill secondary small"
                                   title="Insert emoji"
                                   type="button"
                                 >
@@ -1343,7 +1343,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
               Save
             </button>
             <button
-              class="wrapper float-right destructive medium"
+              class="wrapper float-right fill destructive medium"
               id="confirm-42"
               type="button"
             >
@@ -2030,7 +2030,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                               class="actions"
                             >
                               <button
-                                class="wrapper button wrapper small secondary small"
+                                class="wrapper button wrapper small fill secondary small"
                                 title="Bold"
                                 type="button"
                               >
@@ -2041,7 +2041,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 </i>
                               </button>
                               <button
-                                class="wrapper button wrapper small secondary small"
+                                class="wrapper button wrapper small fill secondary small"
                                 title="Italic"
                                 type="button"
                               >
@@ -2052,7 +2052,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 </i>
                               </button>
                               <button
-                                class="wrapper button wrapper small secondary small"
+                                class="wrapper button wrapper small fill secondary small"
                                 title="Underline"
                                 type="button"
                               >
@@ -2066,7 +2066,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="wrapper button wrapper small secondary small"
+                                  class="wrapper button wrapper small fill secondary small"
                                   title="Insert image"
                                   type="button"
                                 >
@@ -2084,7 +2084,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                                 class="popoverWrapper"
                               >
                                 <button
-                                  class="wrapper button wrapper small secondary small"
+                                  class="wrapper button wrapper small fill secondary small"
                                   title="Insert emoji"
                                   type="button"
                                 >
@@ -2118,7 +2118,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
               Save
             </button>
             <button
-              class="wrapper float-right destructive medium"
+              class="wrapper float-right fill destructive medium"
               id="confirm-42"
               type="button"
             >

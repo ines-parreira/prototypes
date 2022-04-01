@@ -16,7 +16,8 @@ const DropdownButton = forwardRef(
         {
             children,
             className,
-            size = 'medium',
+            fillStyle,
+            size,
             onToggleClick,
             toggleId,
             toggleRef,
@@ -27,14 +28,16 @@ const DropdownButton = forwardRef(
         return (
             <div className={classnames(className, css.wrapper)} ref={ref}>
                 <Button
-                    className={classnames(css.mainAction, css[size])}
+                    className={classnames(css.mainAction, css[size || ''])}
+                    fillStyle={fillStyle}
                     size={size}
                     {...others}
                 >
                     {children}
                 </Button>
                 <IconButton
-                    className={classnames(css.toggle, css[size])}
+                    className={classnames(css.toggle, css[size || ''])}
+                    fillStyle={fillStyle}
                     id={toggleId}
                     intent={others.intent}
                     onClick={onToggleClick}

@@ -20,7 +20,8 @@ type ButtonSize = 'medium' | 'small'
 
 type Props = {
     appendPosition?: AppendPosition
-    intent?: 'primary' | 'secondary' | 'text' | 'destructive'
+    fillStyle?: 'fill' | 'ghost'
+    intent?: 'primary' | 'secondary' | 'destructive'
     isDisabled?: boolean
     isLoading?: boolean
     size?: ButtonSize
@@ -39,6 +40,7 @@ const Button = forwardRef(function (
         appendPosition,
         children,
         className,
+        fillStyle = 'fill',
         intent = 'primary',
         isDisabled,
         isLoading,
@@ -58,6 +60,7 @@ const Button = forwardRef(function (
                 className={classnames(
                     css.wrapper,
                     className,
+                    css[fillStyle],
                     css[intent],
                     css[size],
                     css[appendPosition || ''],

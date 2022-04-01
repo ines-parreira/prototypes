@@ -7,6 +7,12 @@ const storyConfig: Meta = {
     title: 'General/Button/IconButton',
     component: IconButton,
     argTypes: {
+        fillStyle: {
+            control: {
+                type: 'select',
+            },
+            options: ['fill', 'ghost'],
+        },
         isDisabled: {
             control: {
                 type: 'boolean',
@@ -36,12 +42,20 @@ const Template: Story<ComponentProps<typeof IconButton>> = (props) => (
 )
 const templateParameters = {
     controls: {
-        include: ['isDisabled', 'isLoading', 'size', 'children', 'onClick'],
+        include: [
+            'fillStyle',
+            'isDisabled',
+            'isLoading',
+            'size',
+            'children',
+            'onClick',
+        ],
     },
 }
 
 const defaultProps: ComponentProps<typeof IconButton> = {
     children: 'check',
+    fillStyle: 'fill',
     intent: 'primary',
     isDisabled: false,
     isLoading: false,
@@ -58,13 +72,6 @@ Secondary.args = {
     intent: 'secondary',
 }
 Secondary.parameters = templateParameters
-
-export const Text = Template.bind({})
-Text.args = {
-    ...defaultProps,
-    intent: 'text',
-}
-Text.parameters = templateParameters
 
 export const Destructive = Template.bind({})
 Destructive.args = {

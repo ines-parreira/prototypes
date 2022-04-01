@@ -3055,7 +3055,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                           type="button"
                                                         >
                                                           <button
-                                                            className="wrapper addButton secondary medium"
+                                                            className="wrapper addButton fill secondary medium"
                                                             onClick={[Function]}
                                                             type="button"
                                                           >
@@ -3158,7 +3158,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                         type="button"
                                                       >
                                                         <button
-                                                          className="wrapper addButton secondary medium"
+                                                          className="wrapper addButton fill secondary medium"
                                                           id="custom-action-link-1templatewidgets0"
                                                           type="button"
                                                         >
@@ -3229,7 +3229,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                               popperClassName="popover show"
                                                               target={
                                                                 <button
-                                                                  class="wrapper addButton secondary medium"
+                                                                  class="wrapper addButton fill secondary medium"
                                                                   id="custom-action-link-1templatewidgets0"
                                                                   type="button"
                                                                 >
@@ -4136,7 +4136,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                           type="button"
                                                         >
                                                           <button
-                                                            className="wrapper addButton secondary medium"
+                                                            className="wrapper addButton fill secondary medium"
                                                             onClick={[Function]}
                                                             type="button"
                                                           >
@@ -4239,7 +4239,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                         type="button"
                                                       >
                                                         <button
-                                                          className="wrapper addButton secondary medium"
+                                                          className="wrapper addButton fill secondary medium"
                                                           id="custom-action-link-2templatewidgets0"
                                                           type="button"
                                                         >
@@ -4310,7 +4310,7 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                               popperClassName="popover show"
                                                               target={
                                                                 <button
-                                                                  class="wrapper addButton secondary medium"
+                                                                  class="wrapper addButton fill secondary medium"
                                                                   id="custom-action-link-2templatewidgets0"
                                                                   type="button"
                                                                 >

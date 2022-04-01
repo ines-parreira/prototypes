@@ -14,15 +14,22 @@ const IconButton = forwardRef(
         {
             children,
             className,
+            fillStyle,
             iconClassName = 'material-icons',
-            size = 'medium',
+            size,
             ...others
         }: Props,
         ref: Ref<HTMLButtonElement> | null | undefined
     ) => {
         return (
             <Button
-                className={classnames(className, css.wrapper, css[size])}
+                className={classnames(
+                    className,
+                    css.wrapper,
+                    css[fillStyle || ''],
+                    css[size || '']
+                )}
+                fillStyle={fillStyle}
                 size={size}
                 {...others}
                 ref={ref}

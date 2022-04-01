@@ -27,18 +27,18 @@
             outline: none;
         }
 
-        &:hover:not(.isDisabled) {
-            box-shadow: 0px 1px 2px fade(@modern-neutral-neutral-6, 16%);
-        }
-
-        &:hover:active {
-            box-shadow: inset 0px 1px 2px fade(@modern-neutral-neutral-6, 16%);
+        &.ghost {
+            padding: 0 13px;
         }
 
         &.small {
             font-size: 12px;
             height: 24px;
             padding: 0 8px;
+
+            &.ghost {
+                padding: 0 9px;
+            }
         }
 
         &.left.isAuxiliaryButton {
@@ -75,83 +75,116 @@
             border-top-right-radius: 0;
             margin-top: -1px;
         }
-    }
 
-    .wrapper.primary {
-        background-color: @classic-main-primary;
-        border-color: @classic-main-primary-3;
-
-        &:hover {
-            background-color: @classic-main-primary-2;
-            border-color: @classic-main-primary;
-        }
-
-        &:active {
-            background-color: @classic-main-primary-3;
-            border-color: @classic-main-primary-4;
+        &.isDisabled,
+        &.isDisabled:hover {
+            pointer-events: none;
         }
     }
 
-    .wrapper.secondary {
-        background-color: @classic-neutral-grey-2;
-        border-color: @classic-neutral-grey-3;
-        color: @classic-neutral-grey-6;
+    .wrapper.fill {
+        &:hover:not(.isDisabled) {
+            box-shadow: 0px 1px 2px fade(@modern-neutral-neutral-6, 16%);
+        }
 
-        &:hover {
+        &:hover:active {
+            box-shadow: inset 0px 1px 2px fade(@modern-neutral-neutral-6, 16%);
+        }
+
+        &.primary {
+            background-color: @classic-main-primary;
+            border-color: @classic-main-primary-3;
+
+            &:hover {
+                background-color: @classic-main-primary-2;
+                border-color: @classic-main-primary;
+            }
+
+            &:active {
+                background-color: @classic-main-primary-3;
+                border-color: @classic-main-primary-4;
+            }
+        }
+
+        &.secondary {
+            background-color: @classic-neutral-grey-2;
+            border-color: @classic-neutral-grey-3;
+            color: @classic-neutral-grey-6;
+
+            &:hover {
+                border-color: @classic-neutral-grey-3;
+            }
+
+            &:active {
+                border-color: @classic-neutral-grey-4;
+            }
+        }
+
+        &.destructive {
+            background-color: @classic-feedback-error;
+            border-color: @classic-feedback-error-3;
+
+            &:hover {
+                background-color: @classic-feedback-error-2;
+                border-color: @classic-feedback-error;
+            }
+
+            &:active {
+                background-color: @classic-feedback-error-3;
+                border-color: @classic-feedback-error-4;
+            }
+        }
+
+        &.isDisabled,
+        &.isDisabled:hover {
+            color: @classic-neutral-grey-3;
+            background-color: @classic-neutral-grey-1;
             border-color: @classic-neutral-grey-3;
         }
-
-        &:active {
-            border-color: @classic-neutral-grey-4;
-        }
     }
 
-    .wrapper.text {
+    .wrapper.ghost {
         background-color: transparent;
-        border-color: transparent;
-        color: @classic-main-primary;
+        border: none;
 
         &:hover {
-            background-color: @classic-main-primary-0;
-            box-shadow: none;
+            background-color: @classic-neutral-grey-2;
         }
 
-        &:active {
-            box-shadow: none;
-            color: @classic-main-primary-3;
+        &.primary {
+            color: @classic-main-primary;
+
+            &:active {
+                background-color: @classic-main-primary-1;
+                color: @classic-main-primary-3;
+            }
         }
 
-        &.isDisabled {
-            background: none;
-            border-color: transparent;
-        }
-    }
+        &.secondary {
+            color: @classic-neutral-grey-5;
 
-    .wrapper.destructive {
-        background-color: @classic-feedback-error;
-        border-color: @classic-feedback-error-3;
-
-        &:hover {
-            background-color: @classic-feedback-error-2;
-            border-color: @classic-feedback-error;
+            &:active {
+                background-color: @classic-neutral-grey-3;
+                color: @classic-neutral-grey-6;
+            }
         }
 
-        &:active {
-            background-color: @classic-feedback-error-3;
-            border-color: @classic-feedback-error-4;
+        &.destructive {
+            color: @classic-feedback-error;
+
+            &:hover {
+                background-color: @modern-feedback-error-0;
+            }
+
+            &:active {
+                background-color: @modern-feedback-error-1;
+                color: @modern-feedback-error-3;
+            }
         }
-    }
 
-    .wrapper.isDisabled,
-    .wrapper.isDisabled:hover {
-        background-color: @classic-neutral-grey-1;
-        border-color: @classic-neutral-grey-3;
-        color: @classic-neutral-grey-3;
-        pointer-events: none;
-
-        &.text {
-            background-color: transparent;
-            border-color: transparent;
+        &.isDisabled,
+        &.isDisabled:hover {
+            color: @classic-neutral-grey-3;
         }
     }
 

@@ -18,7 +18,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
           Revenue
         </span>
         <button
-          class="wrapper wrapper ml-3 secondary medium"
+          class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
           <span
@@ -462,7 +462,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
           </div>
           <div>
             <button
-              class="wrapper secondary medium"
+              class="wrapper fill secondary medium"
               type="button"
             >
               <span

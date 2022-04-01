@@ -4,7 +4,7 @@ exports[`<DialPad/> should render as closed 1`] = `
 HTMLCollection [
   <div>
     <button
-      class="wrapper wrapper medium secondary medium"
+      class="wrapper wrapper fill secondary medium"
       data-testid="dial-pad-button"
       id="dial-pad-button"
       type="button"
@@ -23,7 +23,7 @@ exports[`<DialPad/> should render as open 1`] = `
 HTMLCollection [
   <div>
     <button
-      class="wrapper wrapper medium secondary medium"
+      class="wrapper wrapper fill secondary medium"
       data-testid="dial-pad-button"
       id="dial-pad-button"
       type="button"
@@ -229,7 +229,7 @@ exports[`<DialPad/> should render as open when 10 digits have been pressed 1`] =
 HTMLCollection [
   <div>
     <button
-      class="wrapper wrapper medium secondary medium"
+      class="wrapper wrapper fill secondary medium"
       data-testid="dial-pad-button"
       id="dial-pad-button"
       type="button"
@@ -437,7 +437,7 @@ exports[`<DialPad/> should render as open when 11 digits have been pressed 1`] =
 HTMLCollection [
   <div>
     <button
-      class="wrapper wrapper medium secondary medium"
+      class="wrapper wrapper fill secondary medium"
       data-testid="dial-pad-button"
       id="dial-pad-button"
       type="button"

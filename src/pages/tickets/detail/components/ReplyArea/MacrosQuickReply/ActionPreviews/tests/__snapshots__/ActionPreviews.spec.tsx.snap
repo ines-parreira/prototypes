@@ -87,7 +87,7 @@ exports[`<ActionPreviews /> should render both set text action and other type of
                       class="actions"
                     >
                       <button
-                        class="wrapper button wrapper small secondary small"
+                        class="wrapper button wrapper small fill secondary small"
                         title="Bold"
                         type="button"
                       >
@@ -98,7 +98,7 @@ exports[`<ActionPreviews /> should render both set text action and other type of
                         </i>
                       </button>
                       <button
-                        class="wrapper button wrapper small secondary small"
+                        class="wrapper button wrapper small fill secondary small"
                         title="Italic"
                         type="button"
                       >
@@ -109,7 +109,7 @@ exports[`<ActionPreviews /> should render both set text action and other type of
                         </i>
                       </button>
                       <button
-                        class="wrapper button wrapper small secondary small"
+                        class="wrapper button wrapper small fill secondary small"
                         title="Underline"
                         type="button"
                       >
@@ -123,7 +123,7 @@ exports[`<ActionPreviews /> should render both set text action and other type of
                         class="popoverWrapper"
                       >
                         <button
-                          class="wrapper button wrapper small secondary small"
+                          class="wrapper button wrapper small fill secondary small"
                           title="Insert link"
                           type="button"
                         >
@@ -141,7 +141,7 @@ exports[`<ActionPreviews /> should render both set text action and other type of
                         class="popoverWrapper"
                       >
                         <button
-                          class="wrapper button wrapper small secondary small"
+                          class="wrapper button wrapper small fill secondary small"
                           title="Insert image"
                           type="button"
                         >
@@ -159,7 +159,7 @@ exports[`<ActionPreviews /> should render both set text action and other type of
                         class="popoverWrapper"
                       >
                         <button
-                          class="wrapper button wrapper small secondary small"
+                          class="wrapper button wrapper small fill secondary small"
                           title="Insert emoji"
                           type="button"
                         >
@@ -303,7 +303,7 @@ exports[`<ActionPreviews /> should render set text action  1`] = `
                       class="actions"
                     >
                       <button
-                        class="wrapper button wrapper small secondary small"
+                        class="wrapper button wrapper small fill secondary small"
                         title="Bold"
                         type="button"
                       >
@@ -314,7 +314,7 @@ exports[`<ActionPreviews /> should render set text action  1`] = `
                         </i>
                       </button>
                       <button
-                        class="wrapper button wrapper small secondary small"
+                        class="wrapper button wrapper small fill secondary small"
                         title="Italic"
                         type="button"
                       >
@@ -325,7 +325,7 @@ exports[`<ActionPreviews /> should render set text action  1`] = `
                         </i>
                       </button>
                       <button
-                        class="wrapper button wrapper small secondary small"
+                        class="wrapper button wrapper small fill secondary small"
                         title="Underline"
                         type="button"
                       >
@@ -339,7 +339,7 @@ exports[`<ActionPreviews /> should render set text action  1`] = `
                         class="popoverWrapper"
                       >
                         <button
-                          class="wrapper button wrapper small secondary small"
+                          class="wrapper button wrapper small fill secondary small"
                           title="Insert link"
                           type="button"
                         >
@@ -357,7 +357,7 @@ exports[`<ActionPreviews /> should render set text action  1`] = `
                         class="popoverWrapper"
                       >
                         <button
-                          class="wrapper button wrapper small secondary small"
+                          class="wrapper button wrapper small fill secondary small"
                           title="Insert image"
                           type="button"
                         >
@@ -375,7 +375,7 @@ exports[`<ActionPreviews /> should render set text action  1`] = `
                         class="popoverWrapper"
                       >
                         <button
-                          class="wrapper button wrapper small secondary small"
+                          class="wrapper button wrapper small fill secondary small"
                           title="Insert emoji"
                           type="button"
                         >

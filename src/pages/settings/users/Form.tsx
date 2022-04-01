@@ -293,7 +293,8 @@ export class FormContainer extends Component<Props, State> {
                                             {has2FaEnabled && (
                                                 <Button
                                                     type="button"
-                                                    intent="text"
+                                                    fillStyle="ghost"
+                                                    intent="secondary"
                                                     className="ml-2"
                                                     onClick={() => {
                                                         this.setState({

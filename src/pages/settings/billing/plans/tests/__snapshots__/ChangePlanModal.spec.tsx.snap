@@ -65,13 +65,13 @@ exports[`<ChangePlanModal /> should display only compared plan when there is no 
               class="footer modal-footer"
             >
               <button
-                class="wrapper secondary medium"
+                class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper primary medium"
+                class="wrapper fill primary medium"
                 type="button"
               >
                 Confirm
@@ -184,13 +184,13 @@ exports[`<ChangePlanModal /> should render 1`] = `
               class="footer modal-footer"
             >
               <button
-                class="wrapper secondary medium"
+                class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper primary medium"
+                class="wrapper fill primary medium"
                 type="button"
               >
                 Confirm

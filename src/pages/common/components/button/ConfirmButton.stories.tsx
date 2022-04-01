@@ -8,13 +8,18 @@ import ConfirmButton from './ConfirmButton'
 const storyConfig: Meta = {
     title: 'General/Button/ConfirmButton',
     argTypes: {
+        fillStyle: {
+            control: {
+                type: 'select',
+            },
+            options: ['fill', 'ghost'],
+        },
         intent: {
             control: {
                 type: 'select',
                 options: {
                     Primary: 'primary',
                     Secondary: 'secondary',
-                    Text: 'text',
                     Destructive: 'destructive',
                 },
             },
@@ -69,6 +74,7 @@ const FormTemplate: Story<ComponentProps<typeof ConfirmButton>> = (props) => (
 const templateParameters = {
     controls: {
         include: [
+            'fillStyle',
             'isDisabled',
             'isLoading',
             'size',
@@ -84,6 +90,7 @@ const templateParameters = {
 
 const defaultProps: ComponentProps<typeof ConfirmButton> = {
     children: 'Click me!',
+    fillStyle: 'fill',
     intent: 'primary',
     isDisabled: false,
     isLoading: false,

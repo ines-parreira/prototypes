@@ -6,7 +6,7 @@ exports[`<TitleWrapper/> should match snapshot 1`] = `
     class="container group horizontal"
   >
     <button
-      class="wrapper secondary medium"
+      class="wrapper fill secondary medium"
       id="action-button-1"
       type="button"
     >

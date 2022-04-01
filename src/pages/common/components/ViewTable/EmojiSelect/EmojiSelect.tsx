@@ -57,7 +57,8 @@ const EmojiSelect = (props: Props) => {
                         />
                         {emoji && (
                             <Button
-                                intent="text"
+                                fillStyle="ghost"
+                                intent="primary"
                                 className={css.clearButton}
                                 onClick={() => {
                                     onEmojiClear()

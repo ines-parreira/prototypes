@@ -86,7 +86,7 @@ exports[`<LineItemRow/> should render 1`] = `
         class="quantityButtonsContainer input-group-append"
       >
         <button
-          class="wrapper focusable quantityBtn quantityBtnUp secondary medium isDisabled"
+          class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
           disabled=""
           tabindex="0"
           type="button"
@@ -94,7 +94,7 @@ exports[`<LineItemRow/> should render 1`] = `
           ▲
         </button>
         <button
-          class="wrapper focusable quantityBtn quantityBtnDown secondary medium"
+          class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
           tabindex="0"
           type="button"
         >
@@ -198,7 +198,7 @@ exports[`<LineItemRow/> should render for multi-currency order 1`] = `
         class="quantityButtonsContainer input-group-append"
       >
         <button
-          class="wrapper focusable quantityBtn quantityBtnUp secondary medium isDisabled"
+          class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
           disabled=""
           tabindex="0"
           type="button"
@@ -206,7 +206,7 @@ exports[`<LineItemRow/> should render for multi-currency order 1`] = `
           ▲
         </button>
         <button
-          class="wrapper focusable quantityBtn quantityBtnDown secondary medium"
+          class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
           tabindex="0"
           type="button"
         >
@@ -319,7 +319,7 @@ exports[`<LineItemRow/> should render with discounted price 1`] = `
         class="quantityButtonsContainer input-group-append"
       >
         <button
-          class="wrapper focusable quantityBtn quantityBtnUp secondary medium isDisabled"
+          class="wrapper focusable quantityBtn quantityBtnUp fill secondary medium isDisabled"
           disabled=""
           tabindex="0"
           type="button"
@@ -327,7 +327,7 @@ exports[`<LineItemRow/> should render with discounted price 1`] = `
           ▲
         </button>
         <button
-          class="wrapper focusable quantityBtn quantityBtnDown secondary medium"
+          class="wrapper focusable quantityBtn quantityBtnDown fill secondary medium"
           tabindex="0"
           type="button"
         >

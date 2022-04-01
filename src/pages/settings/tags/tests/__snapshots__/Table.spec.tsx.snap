@@ -31,7 +31,7 @@ exports[`ManageTags Table component should display the same number of rows as th
             class="actions"
           >
             <button
-              class="wrapper mr-2 skip-default secondary medium"
+              class="wrapper mr-2 skip-default fill secondary medium"
               id="bulk-merge-button"
               type="button"
             >
@@ -47,7 +47,7 @@ exports[`ManageTags Table component should display the same number of rows as th
               </span>
             </button>
             <button
-              class="wrapper mr-2 skip-default secondary medium"
+              class="wrapper mr-2 skip-default fill secondary medium"
               id="bulk-remove-button"
               type="button"
             >
@@ -154,7 +154,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           class="cell-wrapper actions"
         >
           <button
-            class="wrapper actionButton mr-1 wrapper medium text medium"
+            class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
             type="button"
           >
             <i
@@ -164,7 +164,7 @@ exports[`ManageTags Table component should display the same number of rows as th
             </i>
           </button>
           <button
-            class="wrapper actionButton deleteActionButton wrapper medium text medium"
+            class="wrapper css.actionButton wrapper ghost ghost destructive medium"
             id="remove-button-1"
             type="button"
           >
@@ -230,7 +230,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           class="cell-wrapper actions"
         >
           <button
-            class="wrapper actionButton mr-1 wrapper medium text medium"
+            class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
             type="button"
           >
             <i
@@ -240,7 +240,7 @@ exports[`ManageTags Table component should display the same number of rows as th
             </i>
           </button>
           <button
-            class="wrapper actionButton deleteActionButton wrapper medium text medium"
+            class="wrapper css.actionButton wrapper ghost ghost destructive medium"
             id="remove-button-2"
             type="button"
           >
@@ -306,7 +306,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           class="cell-wrapper actions"
         >
           <button
-            class="wrapper actionButton mr-1 wrapper medium text medium"
+            class="wrapper actionButton mr-1 wrapper ghost ghost secondary medium"
             type="button"
           >
             <i
@@ -316,7 +316,7 @@ exports[`ManageTags Table component should display the same number of rows as th
             </i>
           </button>
           <button
-            class="wrapper actionButton deleteActionButton wrapper medium text medium"
+            class="wrapper css.actionButton wrapper ghost ghost destructive medium"
             id="remove-button-3"
             type="button"
           >

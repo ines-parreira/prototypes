@@ -29,7 +29,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
           Live agents
         </span>
         <button
-          class="wrapper wrapper ml-3 secondary medium"
+          class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
           <span
@@ -874,7 +874,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
             role="group"
           >
             <button
-              class="wrapper previousButton wrapper medium secondary medium isDisabled"
+              class="wrapper previousButton wrapper fill secondary medium isDisabled"
               disabled=""
               id="prev-btn"
               type="button"
@@ -886,7 +886,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
               </i>
             </button>
             <button
-              class="wrapper nextButton wrapper medium secondary medium"
+              class="wrapper nextButton wrapper fill secondary medium"
               id="next-btn"
               type="button"
             >

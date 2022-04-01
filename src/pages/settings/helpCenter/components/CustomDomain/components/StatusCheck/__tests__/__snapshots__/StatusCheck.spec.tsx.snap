@@ -6,7 +6,7 @@ exports[`<StatusCheck /> matches snapshot 1`] = `
     data-testid="domain-status-check"
   >
     <button
-      class="wrapper mr-4 primary medium"
+      class="wrapper mr-4 fill primary medium"
       type="button"
     >
       <span

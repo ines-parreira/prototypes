@@ -22,7 +22,7 @@ exports[`<MacrosQuickReply /> should render the macros quick reply area 1`] = `
       class="buttonWrapper"
     >
       <button
-        class="wrapper button secondary small"
+        class="wrapper button fill secondary small"
         id="macro-quick-reply-0"
         type="button"
       >
@@ -33,7 +33,7 @@ exports[`<MacrosQuickReply /> should render the macros quick reply area 1`] = `
       class="buttonWrapper"
     >
       <button
-        class="wrapper button secondary small"
+        class="wrapper button fill secondary small"
         id="macro-quick-reply-1"
         type="button"
       >
@@ -44,7 +44,7 @@ exports[`<MacrosQuickReply /> should render the macros quick reply area 1`] = `
       class="buttonWrapper"
     >
       <button
-        class="wrapper button secondary small"
+        class="wrapper button fill secondary small"
         id="macro-quick-reply-2"
         type="button"
       >

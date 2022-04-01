@@ -10,7 +10,7 @@ exports[`<ConnectToShopSection /> renders in disabled state while fetching data 
       Connect this Help Center to a Shopify store to enable Self-service flows.
     </p>
     <button
-      class="wrapper primary medium"
+      class="wrapper fill primary medium"
       type="button"
     >
       Connect

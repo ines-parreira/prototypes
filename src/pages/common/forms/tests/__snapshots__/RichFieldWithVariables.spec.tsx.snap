@@ -16,8 +16,8 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         tag="div"
       >
         <ForwardRef
-          className="toolbarItem"
-          intent="text"
+          fillStyle="ghost"
+          intent="secondary"
         >
           <ButtonIconLabel
             icon="arrow_drop_down"
@@ -78,8 +78,8 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
         tag="div"
       >
         <ForwardRef
-          className="toolbarItem"
-          intent="text"
+          fillStyle="ghost"
+          intent="secondary"
         >
           <ButtonIconLabel
             icon="arrow_drop_down"

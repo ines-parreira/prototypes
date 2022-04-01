@@ -159,7 +159,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 class="actionButtonsContainer mb16"
               >
                 <button
-                  class="wrapper actionButton mr8 secondary medium"
+                  class="wrapper actionButton mr8 fill secondary medium"
                   type="button"
                 >
                   <span
@@ -180,7 +180,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   target="_blank"
                 >
                   <button
-                    class="wrapper actionButton secondary medium"
+                    class="wrapper actionButton fill secondary medium"
                     type="button"
                   >
                     <span
@@ -196,7 +196,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                   </button>
                 </a>
                 <button
-                  class="wrapper actionButton secondary medium"
+                  class="wrapper actionButton fill secondary medium"
                   data-clipboard-text="abcdefgh01
 abcdefgh02
 abcdefgh03
@@ -249,7 +249,7 @@ abcdefgh16"
               class="modal-footer"
             >
               <button
-                class="wrapper full-width primary medium isDisabled"
+                class="wrapper full-width fill primary medium isDisabled"
                 disabled=""
                 type="button"
               >
@@ -365,13 +365,13 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               class="modal-footer"
             >
               <button
-                class="wrapper secondary medium"
+                class="wrapper fill secondary medium"
                 type="button"
               >
                 Back
               </button>
               <button
-                class="wrapper primary medium isDisabled"
+                class="wrapper fill primary medium isDisabled"
                 disabled=""
                 type="button"
               >
@@ -468,13 +468,13 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               class="modal-footer"
             >
               <button
-                class="wrapper secondary medium"
+                class="wrapper fill secondary medium"
                 type="button"
               >
                 Back
               </button>
               <button
-                class="wrapper primary medium"
+                class="wrapper fill primary medium"
                 type="button"
               >
                 Continue
@@ -585,13 +585,13 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               class="modal-footer"
             >
               <button
-                class="wrapper secondary medium"
+                class="wrapper fill secondary medium"
                 type="button"
               >
                 Back
               </button>
               <button
-                class="wrapper primary medium isDisabled"
+                class="wrapper fill primary medium isDisabled"
                 disabled=""
                 type="button"
               >
@@ -688,13 +688,13 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               class="modal-footer"
             >
               <button
-                class="wrapper secondary medium"
+                class="wrapper fill secondary medium"
                 type="button"
               >
                 Back
               </button>
               <button
-                class="wrapper primary medium"
+                class="wrapper fill primary medium"
                 type="button"
               >
                 Continue
@@ -818,13 +818,13 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               class="modal-footer"
             >
               <button
-                class="wrapper secondary medium"
+                class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper primary medium"
+                class="wrapper fill primary medium"
                 type="button"
               >
                 Continue
@@ -940,13 +940,13 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               class="modal-footer"
             >
               <button
-                class="wrapper secondary medium"
+                class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper primary medium isDisabled"
+                class="wrapper fill primary medium isDisabled"
                 disabled=""
                 type="button"
               >
@@ -1065,13 +1065,13 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               class="modal-footer"
             >
               <button
-                class="wrapper secondary medium"
+                class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper primary medium"
+                class="wrapper fill primary medium"
                 type="button"
               >
                 Continue
@@ -1189,13 +1189,13 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR c
               class="modal-footer"
             >
               <button
-                class="wrapper secondary medium"
+                class="wrapper fill secondary medium"
                 type="button"
               >
                 Cancel
               </button>
               <button
-                class="wrapper primary medium"
+                class="wrapper fill primary medium"
                 type="button"
               >
                 Continue
@@ -1291,13 +1291,13 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
               class="modal-footer"
             >
               <button
-                class="wrapper secondary medium"
+                class="wrapper fill secondary medium"
                 type="button"
               >
                 Back
               </button>
               <button
-                class="wrapper primary medium isDisabled"
+                class="wrapper fill primary medium isDisabled"
                 disabled=""
                 type="button"
               >

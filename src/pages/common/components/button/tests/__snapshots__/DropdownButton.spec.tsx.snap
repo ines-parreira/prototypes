@@ -5,11 +5,11 @@ exports[`<DropdownButton /> should render a button with dropdown 1`] = `
   class="wrapper"
 >
   <button
-    class="wrapper mainAction medium primary medium"
+    class="wrapper mainAction fill primary medium"
     type="button"
   />
   <button
-    class="wrapper toggle medium wrapper medium primary medium"
+    class="wrapper toggle wrapper fill primary medium"
     type="button"
   >
     <i

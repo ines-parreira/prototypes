@@ -10,8 +10,6 @@ import {
     Label,
 } from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
@@ -23,11 +21,13 @@ import {
     LocaleCode,
     UpdateCategoryTranslationDto,
 } from 'models/helpCenter/types'
-import {getViewLanguage} from 'state/ui/helpCenter'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Drawer} from 'pages/common/components/Drawer'
+import Tooltip from 'pages/common/components/Tooltip'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Option, Value} from 'pages/common/forms/SelectField/types'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LOCALE,
@@ -41,25 +41,24 @@ import {
     slugify,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
     getParentCategories,
     getCategoriesById,
 } from 'state/entities/helpCenter/categories'
-import {Option, Value} from 'pages/common/forms/SelectField/types'
-import Tooltip from 'pages/common/components/Tooltip'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getViewLanguage} from 'state/ui/helpCenter'
 
-import {ConfirmationModal} from '../ConfirmationModal'
-import {SearchEnginePreview} from '../SearchEnginePreview'
 import {
     ActionType,
     ArticleLanguageSelect,
     OptionItem,
 } from '../articles/ArticleLanguageSelect'
 import {getCategoryDropdownOption} from '../articles/ArticleCategorySelect/hooks/useCategoriesOptions'
-import {eligibleParentCategories} from './utils'
-
+import {ConfirmationModal} from '../ConfirmationModal'
+import {SearchEnginePreview} from '../SearchEnginePreview'
 import css from './HelpCenterCategoryEdit.less'
+import {eligibleParentCategories} from './utils'
 
 type Props = {
     isOpen: boolean
@@ -338,15 +337,16 @@ export const HelpCenterCategoryEdit = ({
                         onSelect={handleOnChangeLocale}
                         onActionClick={handleOnClickAction}
                     />
-                    <button
-                        type="button"
+                    <Button
                         data-testid="close-drawer"
                         aria-label="close modal"
                         className={css['close-btn']}
+                        intent="secondary"
+                        fillStyle="ghost"
                         onClick={onClose}
                     >
-                        <i className="material-icons">keyboard_tab</i>
-                    </button>
+                        <ButtonIconLabel icon="keyboard_tab" />
+                    </Button>
                 </Drawer.HeaderActions>
             </Drawer.Header>
             <Drawer.Content>
@@ -412,15 +412,18 @@ export const HelpCenterCategoryEdit = ({
                     </FormGroup>
                 </div>
                 <FormGroup className={classNames(css.textfield, css.required)}>
-                    <Label for="slug">Slug</Label>
-                    <button
-                        className={css.copyButton}
-                        type="button"
-                        onClick={copyURL}
-                    >
-                        Copy URL
-                        <i className="material-icons">content_copy</i>
-                    </button>
+                    <div className={css.slugWrapper}>
+                        <Label for="slug">Slug</Label>
+                        <Button
+                            fillStyle="ghost"
+                            onClick={copyURL}
+                            size="small"
+                        >
+                            <ButtonIconLabel icon="content_copy">
+                                Copy URL
+                            </ButtonIconLabel>
+                        </Button>
+                    </div>
 
                     <InputGroup>
                         <InputGroupAddon addonType="prepend">

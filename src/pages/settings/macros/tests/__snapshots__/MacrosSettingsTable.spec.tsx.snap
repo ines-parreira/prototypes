@@ -71,7 +71,8 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         <BodyCellContent>
           <ForwardRef
             className="mr-1"
-            intent="text"
+            fillStyle="ghost"
+            intent="secondary"
             onClick={[Function]}
             title="Duplicate macro"
           >
@@ -148,7 +149,8 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
         <BodyCellContent>
           <ForwardRef
             className="mr-1"
-            intent="text"
+            fillStyle="ghost"
+            intent="secondary"
             onClick={[Function]}
             title="Duplicate macro"
           >

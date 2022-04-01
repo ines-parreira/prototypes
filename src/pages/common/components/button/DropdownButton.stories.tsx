@@ -7,6 +7,12 @@ const storyConfig: Meta = {
     title: 'General/Button/DropdownButton',
     component: DropdownButton,
     argTypes: {
+        fillStyle: {
+            control: {
+                type: 'select',
+            },
+            options: ['fill', 'ghost'],
+        },
         isDisabled: {
             control: {
                 type: 'boolean',
@@ -43,6 +49,7 @@ const Template: Story<ComponentProps<typeof DropdownButton>> = (props) => (
 const templateParameters = {
     controls: {
         include: [
+            'fillStyle',
             'isDisabled',
             'isLoading',
             'size',
@@ -56,6 +63,7 @@ const templateParameters = {
 const defaultProps: Partial<ComponentProps<typeof DropdownButton>> = {
     children: 'Click me!',
     color: 'primary',
+    fillStyle: 'fill',
     isDisabled: false,
     isLoading: false,
     size: 'medium',
@@ -71,13 +79,6 @@ Secondary.args = {
     intent: 'secondary',
 }
 Secondary.parameters = templateParameters
-
-export const Text = Template.bind({})
-Text.args = {
-    ...defaultProps,
-    intent: 'text',
-}
-Text.parameters = templateParameters
 
 export const Destructive = Template.bind({})
 Destructive.args = {

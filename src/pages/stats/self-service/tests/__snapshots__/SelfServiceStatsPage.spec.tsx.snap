@@ -33,7 +33,7 @@ exports[`<SelfServiceStatsPage /> should render the automation add-on upgrade pa
           Self-service
         </span>
         <button
-          class="wrapper wrapper ml-3 secondary medium"
+          class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
           <span
@@ -115,7 +115,7 @@ exports[`<SelfServiceStatsPage /> should render the automation add-on upgrade pa
                     class="d-flex align-items-center upgradeLink"
                   >
                     <button
-                      class="wrapper primary medium"
+                      class="wrapper fill primary medium"
                       type="button"
                     >
                       <span
@@ -159,7 +159,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           Self-service
         </span>
         <button
-          class="wrapper wrapper ml-3 secondary medium"
+          class="wrapper wrapper ml-3 fill secondary medium"
           type="button"
         >
           <span
@@ -247,7 +247,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
           </div>
           <div>
             <button
-              class="wrapper secondary medium"
+              class="wrapper fill secondary medium"
               type="button"
             >
               <span

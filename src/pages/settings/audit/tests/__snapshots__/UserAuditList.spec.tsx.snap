@@ -173,7 +173,7 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
         </div>
         <div>
           <button
-            class="wrapper secondary medium"
+            class="wrapper fill secondary medium"
             type="button"
           >
             <span
@@ -390,7 +390,7 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
         </div>
         <div>
           <button
-            class="wrapper secondary medium"
+            class="wrapper fill secondary medium"
             type="button"
           >
             <span
@@ -607,7 +607,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
         </div>
         <div>
           <button
-            class="wrapper secondary medium"
+            class="wrapper fill secondary medium"
             type="button"
           >
             <span
@@ -856,7 +856,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
         role="group"
       >
         <button
-          class="wrapper previousButton wrapper medium secondary medium isDisabled"
+          class="wrapper previousButton wrapper fill secondary medium isDisabled"
           disabled=""
           id="prev-btn"
           type="button"
@@ -868,7 +868,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
           </i>
         </button>
         <button
-          class="wrapper nextButton wrapper medium secondary medium"
+          class="wrapper nextButton wrapper fill secondary medium"
           id="next-btn"
           type="button"
         >
