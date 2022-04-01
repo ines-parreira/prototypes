@@ -1,5 +1,5 @@
 import React, {useCallback, useState, useEffect} from 'react'
-import {Col, Form, FormGroup, Label, Row} from 'reactstrap'
+import {Col, Form, FormGroup, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {AxiosError} from 'axios'
 
@@ -123,10 +123,8 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                             {country && shouldValidateAddress(country) && (
                                 <h4 className="mb-3">Phone number settings</h4>
                             )}
-                            <Label htmlFor="type" className="control-label">
-                                Title
-                            </Label>
                             <DEPRECATED_InputField
+                                label="Title"
                                 placeholder="Ex: Company Support Line"
                                 value={name}
                                 onChange={setName}

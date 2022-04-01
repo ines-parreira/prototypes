@@ -87,5 +87,33 @@ describe('<PhoneNumberSelectField/>', () => {
             expect(queryByText(/\+1 415 111 2223/)).toBeFalsy()
             expect(container).toMatchSnapshot()
         })
+
+        it("should hide phone numbers that have don't have the matching capability", () => {
+            const store = mockStore({
+                entities: {
+                    phoneNumbers: phoneNumbers.reduce(
+                        (acc, number) => ({
+                            ...acc,
+                            [number.id]: number,
+                        }),
+                        {}
+                    ),
+                },
+            } as RootState)
+
+            const {container, queryByText} = render(
+                <Provider store={store}>
+                    <PhoneNumberSelectField
+                        value={phoneNumbers[0]}
+                        onChange={onChange}
+                        onCreate={onCreate}
+                        integrationType={IntegrationType.Sms}
+                    />
+                </Provider>
+            )
+            expect(queryByText(/\+1 415 111 2222/)).toBeTruthy()
+            expect(queryByText(/\+1 415 111 2223/)).toBeFalsy()
+            expect(container).toMatchSnapshot()
+        })
     })
 })

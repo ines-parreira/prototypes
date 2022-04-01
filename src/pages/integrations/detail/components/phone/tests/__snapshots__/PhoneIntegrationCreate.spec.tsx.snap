@@ -65,29 +65,34 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
             <div
               class="container"
             >
-              <div
-                class="picker emojiPicker"
+              <span
+                class="inputGroup wrapper group horizontal"
               >
-                <span
-                  class="material-icons empty icon"
+                <div
+                  class="picker emojiPicker"
                 >
-                  insert_emoticon
-                </span>
-              </div>
-              <div
-                class="wrapper input"
-              >
-                <input
-                  class="input"
-                  id="title"
-                  name="title"
-                  placeholder="Ex: Company Support Line"
-                  required=""
-                  tabindex="0"
-                  type="text"
-                  value=""
-                />
-              </div>
+                  <span
+                    class="material-icons empty icon"
+                  >
+                    insert_emoticon
+                  </span>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    appendposition="right"
+                    class="input nested"
+                    id="title"
+                    name="title"
+                    placeholder="Ex: Company Support Line"
+                    required=""
+                    tabindex="0"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </span>
             </div>
           </div>
           <div
@@ -356,29 +361,34 @@ exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with t
             <div
               class="container"
             >
-              <div
-                class="picker emojiPicker"
+              <span
+                class="inputGroup wrapper group horizontal"
               >
-                <span
-                  class="material-icons empty icon"
+                <div
+                  class="picker emojiPicker"
                 >
-                  insert_emoticon
-                </span>
-              </div>
-              <div
-                class="wrapper input"
-              >
-                <input
-                  class="input"
-                  id="title"
-                  name="title"
-                  placeholder="Ex: Company Support Line"
-                  required=""
-                  tabindex="0"
-                  type="text"
-                  value=""
-                />
-              </div>
+                  <span
+                    class="material-icons empty icon"
+                  >
+                    insert_emoticon
+                  </span>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    appendposition="right"
+                    class="input nested"
+                    id="title"
+                    name="title"
+                    placeholder="Ex: Company Support Line"
+                    required=""
+                    tabindex="0"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </span>
             </div>
           </div>
           <div

@@ -106,20 +106,24 @@ describe('<PhoneNumberDetails/>', () => {
                 ],
             }
             const store = mockStore({
+                currentAccount: fromJS({
+                    domain: 'acme',
+                }),
                 entities: {
                     phoneNumbers: {
-                        1: phoneNumber,
+                        [phoneNumber.id]: phoneNumber,
                     },
                 },
             } as unknown as RootState)
 
-            const {container, queryByText} = render(
+            const {container, queryAllByText} = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
                 </Provider>
             )
-            expect(queryByText('Manage Integration')).toBeTruthy()
-            expect(queryByText('Add Integration')).toBeFalsy()
+
+            expect(queryAllByText('Manage Integration').length).toBe(1)
+            expect(queryAllByText('Add Integration').length).toBe(1)
             expect(container).toMatchSnapshot()
         })
 
@@ -131,18 +135,45 @@ describe('<PhoneNumberDetails/>', () => {
             const store = mockStore({
                 entities: {
                     phoneNumbers: {
-                        1: phoneNumber,
+                        [phoneNumber.id]: phoneNumber,
                     },
                 },
             } as unknown as RootState)
 
-            const {container, queryByText} = render(
+            const {container, queryAllByText} = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
                 </Provider>
             )
-            expect(queryByText('Manage Integration')).toBeFalsy()
-            expect(queryByText('Add Integration')).toBeTruthy()
+
+            expect(queryAllByText('Manage Integration').length).toBe(0)
+            expect(queryAllByText('Add Integration').length).toBe(1)
+            expect(container).toMatchSnapshot()
+        })
+
+        it('should not render a "Add Integration" link if missing capabilities', () => {
+            const phoneNumber: PhoneNumber = {
+                ...phoneNumbers[2],
+                integrations: [],
+            }
+            const store = mockStore({
+                entities: {
+                    phoneNumbers: {
+                        [phoneNumber.id]: phoneNumber,
+                    },
+                },
+            } as unknown as RootState)
+
+            const {container, queryAllByText} = render(
+                <Provider store={store}>
+                    <PhoneNumberDetails phoneNumber={phoneNumber} />
+                </Provider>
+            )
+            expect(phoneNumber.capabilities.voice).toBe(true)
+            expect(phoneNumber.capabilities.sms).toBe(false)
+            expect(queryAllByText('SMS').length).toBe(0)
+            expect(queryAllByText('Manage Integration').length).toBe(0)
+            expect(queryAllByText('Add Integration').length).toBe(1)
             expect(container).toMatchSnapshot()
         })
     })

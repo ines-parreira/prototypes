@@ -94,16 +94,16 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
                   <div
                     class="form-group"
                   >
-                    <label
-                      class="control-label"
-                      for="type"
-                    >
-                      Title
-                    </label>
                     <div
                       class="InputField required form-group"
                       color=""
                     >
+                      <label
+                        class="control-label"
+                        for="id-input-11"
+                      >
+                        Title
+                      </label>
                       <div
                         class=""
                       >
@@ -893,16 +893,16 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
                   <div
                     class="form-group"
                   >
-                    <label
-                      class="control-label"
-                      for="type"
-                    >
-                      Title
-                    </label>
                     <div
                       class="InputField required form-group"
                       color=""
                     >
+                      <label
+                        class="control-label"
+                        for="id-input-2"
+                      >
+                        Title
+                      </label>
                       <div
                         class=""
                       >
@@ -1734,16 +1734,16 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
                   <div
                     class="form-group"
                   >
-                    <label
-                      class="control-label"
-                      for="type"
-                    >
-                      Title
-                    </label>
                     <div
                       class="InputField required form-group"
                       color=""
                     >
+                      <label
+                        class="control-label"
+                        for="id-input-1"
+                      >
+                        Title
+                      </label>
                       <div
                         class=""
                       >

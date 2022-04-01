@@ -65,29 +65,34 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
             <div
               class="container"
             >
-              <div
-                class="picker emojiPicker"
+              <span
+                class="inputGroup wrapper group horizontal"
               >
-                <span
-                  class="material-icons empty icon"
+                <div
+                  class="picker emojiPicker"
                 >
-                  insert_emoticon
-                </span>
-              </div>
-              <div
-                class="wrapper input"
-              >
-                <input
-                  class="input"
-                  id="title"
-                  name="title"
-                  placeholder="Ex: Company Support Line"
-                  required=""
-                  tabindex="0"
-                  type="text"
-                  value=""
-                />
-              </div>
+                  <span
+                    class="material-icons empty icon"
+                  >
+                    insert_emoticon
+                  </span>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    appendposition="right"
+                    class="input nested"
+                    id="title"
+                    name="title"
+                    placeholder="Ex: Company Support Line"
+                    required=""
+                    tabindex="0"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </span>
             </div>
           </div>
           <div
@@ -187,28 +192,6 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                       CA
                        (
                       +1 813 111 2223
-                      )
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span
-                        role="img"
-                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
-                      >
-                        🇬🇧
-                      </span>
-                       
-                      Intl. Phone Number
-                       - 
-                      GB
-                       (
-                      +44 7123 456789
                       )
                     </span>
                   </button>
@@ -297,29 +280,34 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
             <div
               class="container"
             >
-              <div
-                class="picker emojiPicker"
+              <span
+                class="inputGroup wrapper group horizontal"
               >
-                <span
-                  class="material-icons empty icon"
+                <div
+                  class="picker emojiPicker"
                 >
-                  insert_emoticon
-                </span>
-              </div>
-              <div
-                class="wrapper input"
-              >
-                <input
-                  class="input"
-                  id="title"
-                  name="title"
-                  placeholder="Ex: Company Support Line"
-                  required=""
-                  tabindex="0"
-                  type="text"
-                  value="My SMS integration"
-                />
-              </div>
+                  <span
+                    class="material-icons empty icon"
+                  >
+                    insert_emoticon
+                  </span>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    appendposition="right"
+                    class="input nested"
+                    id="title"
+                    name="title"
+                    placeholder="Ex: Company Support Line"
+                    required=""
+                    tabindex="0"
+                    type="text"
+                    value="My SMS integration"
+                  />
+                </div>
+              </span>
             </div>
           </div>
           <div
@@ -419,28 +407,6 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
                       CA
                        (
                       +1 813 111 2223
-                      )
-                    </span>
-                  </button>
-                  <button
-                    class="option dropdown-item"
-                    role="menuitem"
-                    tabindex="0"
-                    type="button"
-                  >
-                    <span>
-                      <span
-                        role="img"
-                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
-                      >
-                        🇬🇧
-                      </span>
-                       
-                      Intl. Phone Number
-                       - 
-                      GB
-                       (
-                      +44 7123 456789
                       )
                     </span>
                   </button>

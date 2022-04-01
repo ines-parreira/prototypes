@@ -1,6 +1,6 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import classnames from 'classnames'
-import {Col, Form, FormGroup, Label, Row} from 'reactstrap'
+import {Col, Form, FormGroup, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 
 import {
@@ -197,13 +197,8 @@ export default function PhoneNumberCreateModalForm({
                         {step === Step.PhoneInformation && (
                             <>
                                 <FormGroup>
-                                    <Label
-                                        htmlFor="type"
-                                        className="control-label"
-                                    >
-                                        Title
-                                    </Label>
                                     <DEPRECATED_InputField
+                                        label="Title"
                                         placeholder="Ex: Company Support Line"
                                         value={name}
                                         onChange={setName}

@@ -34,6 +34,7 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
 import {SMS_INTEGRATION_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
+import {hasCapability} from 'pages/phoneNumbers/utils'
 import history from 'pages/history'
 import {errorToChildren} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -226,7 +227,14 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                             'py-3',
                             'ml-1',
                             'mr-1',
-                            {[css.disabledApp]: !voiceApp}
+                            {
+                                [css.disabledApp]:
+                                    !voiceApp ||
+                                    !hasCapability(
+                                        phoneNumber,
+                                        IntegrationType.Phone
+                                    ),
+                            }
                         )}
                     >
                         <Col lg={8}>
@@ -236,52 +244,20 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                             <strong>Voice</strong>
                         </Col>
                         <Col lg={4} className={css.appLink}>
-                            {voiceApp ? (
+                            {voiceApp && (
                                 <Link
                                     to={`/app/settings/integrations/phone/${voiceApp.id}/preferences`}
                                 >
                                     Manage Integration
                                 </Link>
-                            ) : (
-                                <Link
-                                    to={`/app/settings/integrations/phone/new?phoneNumberId=${phoneNumber.id}`}
-                                >
-                                    <i className="material-icons md-2 align-middle mr-2">
-                                        add
-                                    </i>
-                                    Add Integration
-                                </Link>
                             )}
-                        </Col>
-                    </Row>
-                    {SMS_INTEGRATION_PREVIEW_ACCOUNTS.includes(
-                        currentAccount.get('domain')
-                    ) && (
-                        <Row
-                            className={classnames(
-                                'border-bottom',
-                                'py-3',
-                                'ml-1',
-                                'mr-1',
-                                {[css.disabledApp]: !smsApp}
-                            )}
-                        >
-                            <Col lg={8}>
-                                <i className="material-icons md-2 align-middle mr-2">
-                                    sms
-                                </i>
-                                <strong>SMS</strong>
-                            </Col>
-                            <Col lg={4} className={css.appLink}>
-                                {smsApp ? (
+                            {!voiceApp &&
+                                hasCapability(
+                                    phoneNumber,
+                                    IntegrationType.Phone
+                                ) && (
                                     <Link
-                                        to={`/app/settings/integrations/sms/${smsApp.id}/preferences`}
-                                    >
-                                        Manage Integration
-                                    </Link>
-                                ) : (
-                                    <Link
-                                        to={`/app/settings/integrations/sms/new?phoneNumberId=${phoneNumber.id}`}
+                                        to={`/app/settings/integrations/phone/new?phoneNumberId=${phoneNumber.id}`}
                                     >
                                         <i className="material-icons md-2 align-middle mr-2">
                                             add
@@ -289,9 +265,54 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                         Add Integration
                                     </Link>
                                 )}
-                            </Col>
-                        </Row>
-                    )}
+                        </Col>
+                    </Row>
+                    {SMS_INTEGRATION_PREVIEW_ACCOUNTS.includes(
+                        currentAccount.get('domain')
+                    ) &&
+                        hasCapability(phoneNumber, IntegrationType.Sms) && (
+                            <Row
+                                className={classnames(
+                                    'border-bottom',
+                                    'py-3',
+                                    'ml-1',
+                                    'mr-1',
+                                    {
+                                        [css.disabledApp]:
+                                            !smsApp ||
+                                            !hasCapability(
+                                                phoneNumber,
+                                                IntegrationType.Sms
+                                            ),
+                                    }
+                                )}
+                            >
+                                <Col lg={8}>
+                                    <i className="material-icons md-2 align-middle mr-2">
+                                        sms
+                                    </i>
+                                    <strong>SMS</strong>
+                                </Col>
+                                <Col lg={4} className={css.appLink}>
+                                    {smsApp ? (
+                                        <Link
+                                            to={`/app/settings/integrations/sms/${smsApp.id}/preferences`}
+                                        >
+                                            Manage Integration
+                                        </Link>
+                                    ) : (
+                                        <Link
+                                            to={`/app/settings/integrations/sms/new?phoneNumberId=${phoneNumber.id}`}
+                                        >
+                                            <i className="material-icons md-2 align-middle mr-2">
+                                                add
+                                            </i>
+                                            Add Integration
+                                        </Link>
+                                    )}
+                                </Col>
+                            </Row>
+                        )}
                 </Col>
             </Row>
             <Row className="mt-4">

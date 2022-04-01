@@ -7,6 +7,7 @@ import {IntegrationType} from 'models/integration/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import PhoneNumberCreateModalForm from 'pages/phoneNumbers/PhoneNumberCreateModalForm'
 import useAppSelector from 'hooks/useAppSelector'
+import {hasCapability} from 'pages/phoneNumbers/utils'
 
 import css from './PhoneNumberSelectField.less'
 
@@ -49,7 +50,11 @@ function PhoneNumberSelectField({
             const existingIntegration = phoneNumber.integrations.find(
                 (integration) => integration.type === integrationType
             )
-            return !existingIntegration
+            return (
+                !existingIntegration &&
+                integrationType &&
+                hasCapability(phoneNumber, integrationType)
+            )
         })
         .map(([, phoneNumber]) => phoneNumber)
 

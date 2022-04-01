@@ -4,20 +4,20 @@ exports[`<EmojiTextInput/> render() should render 1`] = `
 <div
   className="container"
 >
-  <EmojiSelect
-    className="emojiPicker"
-    emoji="🍔"
-    onEmojiClear={[Function]}
-    onEmojiSelect={[Function]}
-  />
-  <ForwardRef(TextInput)
-    className="input"
-    id="foo"
-    isRequired={true}
-    onChange={[Function]}
-    placeholder="Placeholder..."
-    tabIndex={0}
-    value="Foo"
-  />
+  <InputGroup
+    className="inputGroup"
+  >
+    <GroupItem>
+      <Component />
+    </GroupItem>
+    <ForwardRef(TextInput)
+      id="foo"
+      isRequired={true}
+      onChange={[Function]}
+      placeholder="Placeholder..."
+      tabIndex={0}
+      value="Foo"
+    />
+  </InputGroup>
 </div>
 `;

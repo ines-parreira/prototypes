@@ -80,6 +80,108 @@ exports[`<PhoneNumberSelectField/> render() should hide phone numbers that have 
 </div>
 `;
 
+exports[`<PhoneNumberSelectField/> render() should hide phone numbers that have don't have the matching capability 1`] = `
+<div>
+  <div>
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle selectFullWidth"
+        >
+          <span
+            class="label"
+            style="min-width: 10px; opacity: 1;"
+          >
+            <span
+              role="img"
+              style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+            >
+              🇺🇸
+            </span>
+             
+            A Phone Number
+             - 
+            US
+             (
+            +1 415 111 2222
+            )
+          </span>
+          <input
+            autocomplete="chrome-off"
+            class="input"
+            id="phoneNumber"
+            style="min-width: 10px;"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="options optionsFullWidth dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        
+        <button
+          class="option option--focused dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <div
+              class="createLabel"
+            >
+              <i
+                class="material-icons"
+              >
+                add
+              </i>
+              <span>
+                Create phone number
+              </span>
+            </div>
+          </span>
+        </button>
+        <button
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <span>
+            <span
+              role="img"
+              style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+            >
+              🇨🇦
+            </span>
+             
+            Another Phone Number
+             - 
+            CA
+             (
+            +1 813 111 2223
+            )
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <form
+    class=""
+  />
+</div>
+`;
+
 exports[`<PhoneNumberSelectField/> render() should open a modal form when selecting the create option 1`] = `
 <body
   class="modal-open"
@@ -142,72 +244,6 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
               </div>
             </span>
           </button>
-          <button
-            class="option dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <span>
-              <span
-                role="img"
-                style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
-              >
-                🇺🇸
-              </span>
-               
-              A Phone Number
-               - 
-              US
-               (
-              +1 415 111 2222
-              )
-            </span>
-          </button>
-          <button
-            class="option dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <span>
-              <span
-                role="img"
-                style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
-              >
-                🇨🇦
-              </span>
-               
-              Another Phone Number
-               - 
-              CA
-               (
-              +1 813 111 2223
-              )
-            </span>
-          </button>
-          <button
-            class="option dropdown-item"
-            role="menuitem"
-            tabindex="0"
-            type="button"
-          >
-            <span>
-              <span
-                role="img"
-                style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
-              >
-                🇬🇧
-              </span>
-               
-              Intl. Phone Number
-               - 
-              GB
-               (
-              +44 7123 456789
-              )
-            </span>
-          </button>
         </div>
       </div>
     </div>
@@ -267,16 +303,16 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                   <div
                     class="form-group"
                   >
-                    <label
-                      class="control-label"
-                      for="type"
-                    >
-                      Title
-                    </label>
                     <div
                       class="InputField required form-group"
                       color=""
                     >
+                      <label
+                        class="control-label"
+                        for="id-input-1"
+                      >
+                        Title
+                      </label>
                       <div
                         class=""
                       >
@@ -493,22 +529,10 @@ exports[`<PhoneNumberSelectField/> render() should render 1`] = `
         class="select dropdown-toggle selectFullWidth"
       >
         <span
-          class="label"
+          class="label placeholder"
           style="min-width: 10px; opacity: 1;"
         >
-          <span
-            role="img"
-            style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
-          >
-            🇺🇸
-          </span>
-           
-          A Phone Number
-           - 
-          US
-           (
-          +1 415 111 2222
-          )
+          Select number
         </span>
         <input
           autocomplete="chrome-off"
@@ -546,50 +570,6 @@ exports[`<PhoneNumberSelectField/> render() should render 1`] = `
               Create phone number
             </span>
           </div>
-        </span>
-      </button>
-      <button
-        class="option dropdown-item"
-        role="menuitem"
-        tabindex="0"
-        type="button"
-      >
-        <span>
-          <span
-            role="img"
-            style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
-          >
-            🇨🇦
-          </span>
-           
-          Another Phone Number
-           - 
-          CA
-           (
-          +1 813 111 2223
-          )
-        </span>
-      </button>
-      <button
-        class="option dropdown-item"
-        role="menuitem"
-        tabindex="0"
-        type="button"
-      >
-        <span>
-          <span
-            role="img"
-            style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
-          >
-            🇬🇧
-          </span>
-           
-          Intl. Phone Number
-           - 
-          GB
-           (
-          +44 7123 456789
-          )
         </span>
       </button>
     </div>
