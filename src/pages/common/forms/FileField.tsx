@@ -21,6 +21,7 @@ import css from './FileField.less'
 const DEFAULT_ERROR = 'Failed to upload files. Please try again later.'
 
 export enum UploadType {
+    Attachment = 'attachment',
     Profile = 'profile_picture',
     Widget = 'widget_picture',
     Avatar = 'avatar_team_picture',
