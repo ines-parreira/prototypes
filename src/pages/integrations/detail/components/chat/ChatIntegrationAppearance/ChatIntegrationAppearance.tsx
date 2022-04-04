@@ -2,21 +2,11 @@ import {AxiosError} from 'axios'
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
-import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import _defaults from 'lodash/defaults'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    ButtonGroup,
-    Col,
-    Container,
-    Form,
-    Row,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Col, Container, Form, Row} from 'reactstrap'
 
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from 'config/integrations/index'
 import {
@@ -33,6 +23,8 @@ import {
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT,
 } from 'config/integrations/smooch_inside'
 import {IntegrationType, IntegrationDecoration} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
+import Group from 'pages/common/components/layout/Group'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -450,14 +442,7 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                     </div>
                                 </div>
 
-                                <Button
-                                    type="submit"
-                                    color="success"
-                                    className={classnames({
-                                        'btn-loading': isSubmitting,
-                                    })}
-                                    disabled={isSubmitting}
-                                >
+                                <Button type="submit" isLoading={isSubmitting}>
                                     {isUpdate ? 'Save changes' : 'Add new chat'}
                                 </Button>
 
@@ -483,10 +468,11 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                 className="d-flex justify-content-center align-items-center"
                                 style={{width: '30em'}} // same width as the preview
                             >
-                                <ButtonGroup className="mb-3">
+                                <Group className="mb-3">
                                     <Button
-                                        type="button"
-                                        color={isOnline ? 'info' : 'secondary'}
+                                        intent={
+                                            isOnline ? 'primary' : 'secondary'
+                                        }
                                         onClick={() =>
                                             this.setState({isOnline: true})
                                         }
@@ -494,15 +480,16 @@ export class ChatIntegrationAppearance extends Component<Props, State> {
                                         During business hours
                                     </Button>
                                     <Button
-                                        type="button"
-                                        color={!isOnline ? 'info' : 'secondary'}
+                                        intent={
+                                            !isOnline ? 'primary' : 'secondary'
+                                        }
                                         onClick={() =>
                                             this.setState({isOnline: false})
                                         }
                                     >
                                         Outside business hours
                                     </Button>
-                                </ButtonGroup>
+                                </Group>
                             </div>
                             <ChatIntegrationPreview
                                 currentUser={currentUser}

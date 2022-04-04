@@ -1,16 +1,10 @@
 import React from 'react'
 import _get from 'lodash/get'
-import {
-    Card,
-    CardImg,
-    CardBody,
-    CardTitle,
-    CardSubtitle,
-    Button,
-    ButtonGroup,
-} from 'reactstrap'
+import {Card, CardImg, CardBody, CardTitle, CardSubtitle} from 'reactstrap'
 import Slider from 'react-slick'
 
+import Button from 'pages/common/components/button/Button'
+import Group from 'pages/common/components/layout/Group'
 import {FacebookCarouselTemplate} from '../../../../models/ticket/types'
 
 import css from './FacebookCarousel.less'
@@ -69,18 +63,25 @@ const FacebookCarousel = ({data = []}: Props) => (
                                             {element.subtitle}
                                         </CardSubtitle>
                                     </CardBody>
-                                    <ButtonGroup
-                                        vertical
+                                    <Group
                                         className={css.buttons}
+                                        orientation="vertical"
                                     >
                                         {buttons.map((button, idx) => {
                                             if (button.type === 'web_url') {
                                                 return (
                                                     <Button
                                                         key={idx}
-                                                        tag="a"
-                                                        href={button.url}
-                                                        target="_blank"
+                                                        intent="secondary"
+                                                        onClick={() => {
+                                                            window
+                                                                .open(
+                                                                    button.url,
+                                                                    '_blank'
+                                                                )
+                                                                ?.focus()
+                                                        }}
+                                                        role="link"
                                                     >
                                                         {button.title}
                                                     </Button>
@@ -89,13 +90,16 @@ const FacebookCarousel = ({data = []}: Props) => (
                                                 button.type === 'element_share'
                                             ) {
                                                 return (
-                                                    <Button key={idx} disabled>
+                                                    <Button
+                                                        key={idx}
+                                                        isDisabled
+                                                    >
                                                         Share
                                                     </Button>
                                                 )
                                             }
                                         })}
-                                    </ButtonGroup>
+                                    </Group>
                                 </Card>
                             </div>
                         )

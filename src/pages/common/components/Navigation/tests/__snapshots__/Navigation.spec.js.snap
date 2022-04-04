@@ -3,12 +3,8 @@
 exports[`Navigation component should not render because there is no previous items nor next items 1`] = `""`;
 
 exports[`Navigation component should render with (prev button disabled: false) and (next button disabled: false) 1`] = `
-<ButtonGroup
-  role="group"
-  tag="div"
->
+<Group>
   <ForwardRef
-    className="previousButton"
     id="prev-btn"
     intent="secondary"
     isDisabled={false}
@@ -17,7 +13,6 @@ exports[`Navigation component should render with (prev button disabled: false) a
     keyboard_arrow_left
   </ForwardRef>
   <ForwardRef
-    className="nextButton"
     id="next-btn"
     intent="secondary"
     isDisabled={false}
@@ -25,16 +20,12 @@ exports[`Navigation component should render with (prev button disabled: false) a
   >
     keyboard_arrow_right
   </ForwardRef>
-</ButtonGroup>
+</Group>
 `;
 
 exports[`Navigation component should render with (prev button disabled: false) and (next button disabled: true) 1`] = `
-<ButtonGroup
-  role="group"
-  tag="div"
->
+<Group>
   <ForwardRef
-    className="previousButton"
     id="prev-btn"
     intent="secondary"
     isDisabled={false}
@@ -43,7 +34,6 @@ exports[`Navigation component should render with (prev button disabled: false) a
     keyboard_arrow_left
   </ForwardRef>
   <ForwardRef
-    className="nextButton"
     id="next-btn"
     intent="secondary"
     isDisabled={true}
@@ -51,16 +41,12 @@ exports[`Navigation component should render with (prev button disabled: false) a
   >
     keyboard_arrow_right
   </ForwardRef>
-</ButtonGroup>
+</Group>
 `;
 
 exports[`Navigation component should render with (prev button disabled: true) and (next button disabled: false) 1`] = `
-<ButtonGroup
-  role="group"
-  tag="div"
->
+<Group>
   <ForwardRef
-    className="previousButton"
     id="prev-btn"
     intent="secondary"
     isDisabled={true}
@@ -69,7 +55,6 @@ exports[`Navigation component should render with (prev button disabled: true) an
     keyboard_arrow_left
   </ForwardRef>
   <ForwardRef
-    className="nextButton"
     id="next-btn"
     intent="secondary"
     isDisabled={false}
@@ -77,5 +62,5 @@ exports[`Navigation component should render with (prev button disabled: true) an
   >
     keyboard_arrow_right
   </ForwardRef>
-</ButtonGroup>
+</Group>
 `;

@@ -7,25 +7,24 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
   <div
     class="intervalToggle"
   >
-    <div
-      class="btn-group"
-      role="group"
+    <span
+      class="group horizontal"
     >
       <button
         aria-label="Monthly interval"
-        class="btn btn-primary"
+        class="wrapper fill primary medium left"
         type="button"
       >
         Monthly
       </button>
       <button
         aria-label="Yearly interval"
-        class="btn btn-secondary"
+        class="wrapper fill secondary medium right"
         type="button"
       >
         Yearly
       </button>
-    </div>
+    </span>
   </div>
   <div
     class="mb-5 card-deck"
@@ -1423,25 +1422,24 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
   <div
     class="intervalToggle"
   >
-    <div
-      class="btn-group"
-      role="group"
+    <span
+      class="group horizontal"
     >
       <button
         aria-label="Monthly interval"
-        class="btn btn-primary"
+        class="wrapper fill primary medium left"
         type="button"
       >
         Monthly
       </button>
       <button
         aria-label="Yearly interval"
-        class="btn btn-secondary"
+        class="wrapper fill secondary medium right"
         type="button"
       >
         Yearly
       </button>
-    </div>
+    </span>
   </div>
   <div
     class="mb-5 card-deck"
@@ -3123,25 +3121,24 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
   <div
     class="intervalToggle"
   >
-    <div
-      class="btn-group"
-      role="group"
+    <span
+      class="group horizontal"
     >
       <button
         aria-label="Monthly interval"
-        class="btn btn-primary"
+        class="wrapper fill primary medium left"
         type="button"
       >
         Monthly
       </button>
       <button
         aria-label="Yearly interval"
-        class="btn btn-secondary"
+        class="wrapper fill secondary medium right"
         type="button"
       >
         Yearly
       </button>
-    </div>
+    </span>
   </div>
   <div
     class="mb-5 card-deck"
@@ -4506,25 +4503,24 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
   <div
     class="intervalToggle"
   >
-    <div
-      class="btn-group"
-      role="group"
+    <span
+      class="group horizontal"
     >
       <button
         aria-label="Monthly interval"
-        class="btn btn-primary"
+        class="wrapper fill primary medium left"
         type="button"
       >
         Monthly
       </button>
       <button
         aria-label="Yearly interval"
-        class="btn btn-secondary"
+        class="wrapper fill secondary medium right"
         type="button"
       >
         Yearly
       </button>
-    </div>
+    </span>
   </div>
   <div
     class="mb-5 card-deck"

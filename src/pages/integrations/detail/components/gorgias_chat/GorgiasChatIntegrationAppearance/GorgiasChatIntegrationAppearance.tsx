@@ -4,19 +4,14 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import _defaults from 'lodash/defaults'
 import _merge from 'lodash/merge'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    ButtonGroup,
-    Form,
-    Label,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Form, Label} from 'reactstrap'
 import classNames from 'classnames'
 
 import wrench from 'assets/img/icons/wrench.svg'
 import storefront from 'assets/img/icons/storefront.svg'
 
+import Button from 'pages/common/components/button/Button'
+import Group from 'pages/common/components/layout/Group'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
@@ -377,10 +372,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
     const chatPreview = (
         <>
-            <ButtonGroup className="mb-3">
+            <Group className="mb-3">
                 <Button
-                    type="button"
-                    color={isOnline ? 'info' : 'secondary'}
+                    intent={isOnline ? 'primary' : 'secondary'}
                     onClick={() =>
                         setState((prevState) => ({
                             ...prevState,
@@ -391,8 +385,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     During business hours
                 </Button>
                 <Button
-                    type="button"
-                    color={!isOnline ? 'info' : 'secondary'}
+                    intent={!isOnline ? 'primary' : 'secondary'}
                     onClick={() =>
                         setState((prevState) => ({
                             ...prevState,
@@ -402,7 +395,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 >
                     Outside business hours
                 </Button>
-            </ButtonGroup>
+            </Group>
             <ChatIntegrationPreview
                 currentUser={currentUser}
                 name={name}
@@ -835,13 +828,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         <div>
                             <Button
                                 type="submit"
-                                color="success"
-                                className={classNames({
-                                    'btn-loading': isSubmitting,
-                                })}
-                                disabled={
-                                    isSubmitting || (!isUpdate && !canSubmit)
-                                }
+                                isDisabled={!isUpdate && !canSubmit}
+                                isLoading={isSubmitting}
                             >
                                 {isUpdate ? 'Save changes' : 'Add new chat'}
                             </Button>

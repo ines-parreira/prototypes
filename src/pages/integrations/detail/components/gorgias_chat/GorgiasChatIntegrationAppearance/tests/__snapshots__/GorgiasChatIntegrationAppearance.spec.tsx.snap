@@ -559,7 +559,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               </div>
               <div>
                 <button
-                  class="btn btn-success disabled"
+                  class="wrapper fill primary medium isDisabled"
                   disabled=""
                   type="submit"
                 >
@@ -572,23 +572,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
         <div
           class="column preview col"
         >
-          <div
-            class="mb-3 btn-group"
-            role="group"
+          <span
+            class="mb-3 group horizontal"
           >
             <button
-              class="btn btn-info"
+              class="wrapper fill primary medium left"
               type="button"
             >
               During business hours
             </button>
             <button
-              class="btn btn-secondary"
+              class="wrapper fill secondary medium right"
               type="button"
             >
               Outside business hours
             </button>
-          </div>
+          </span>
           <div
             class="preview"
           >
@@ -1273,10 +1272,20 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               </div>
               <div>
                 <button
-                  class="btn-loading btn btn-success disabled"
+                  class="wrapper fill primary medium isDisabled"
                   disabled=""
                   type="submit"
                 >
+                  <div
+                    class="spinner spinner-border"
+                    role="status"
+                  >
+                    <span
+                      class="sr-only"
+                    >
+                      Loading...
+                    </span>
+                  </div>
                   Save changes
                 </button>
                 <button
@@ -1303,23 +1312,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
         <div
           class="column preview col"
         >
-          <div
-            class="mb-3 btn-group"
-            role="group"
+          <span
+            class="mb-3 group horizontal"
           >
             <button
-              class="btn btn-info"
+              class="wrapper fill primary medium left"
               type="button"
             >
               During business hours
             </button>
             <button
-              class="btn btn-secondary"
+              class="wrapper fill secondary medium right"
               type="button"
             >
               Outside business hours
             </button>
-          </div>
+          </span>
           <div
             class="preview"
           >
@@ -2004,7 +2012,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
               </div>
               <div>
                 <button
-                  class="btn btn-success"
+                  class="wrapper fill primary medium"
                   type="submit"
                 >
                   Save changes
@@ -2032,23 +2040,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
         <div
           class="column preview col"
         >
-          <div
-            class="mb-3 btn-group"
-            role="group"
+          <span
+            class="mb-3 group horizontal"
           >
             <button
-              class="btn btn-info"
+              class="wrapper fill primary medium left"
               type="button"
             >
               During business hours
             </button>
             <button
-              class="btn btn-secondary"
+              class="wrapper fill secondary medium right"
               type="button"
             >
               Outside business hours
             </button>
-          </div>
+          </span>
           <div
             class="preview"
           >
@@ -2741,7 +2748,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
               </div>
               <div>
                 <button
-                  class="btn btn-success"
+                  class="wrapper fill primary medium"
                   type="submit"
                 >
                   Save changes
@@ -2769,23 +2776,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
         <div
           class="column preview col"
         >
-          <div
-            class="mb-3 btn-group"
-            role="group"
+          <span
+            class="mb-3 group horizontal"
           >
             <button
-              class="btn btn-info"
+              class="wrapper fill primary medium left"
               type="button"
             >
               During business hours
             </button>
             <button
-              class="btn btn-secondary"
+              class="wrapper fill secondary medium right"
               type="button"
             >
               Outside business hours
             </button>
-          </div>
+          </span>
           <div
             class="preview"
           >
@@ -3470,7 +3476,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               </div>
               <div>
                 <button
-                  class="btn btn-success"
+                  class="wrapper fill primary medium"
                   type="submit"
                 >
                   Save changes
@@ -3498,23 +3504,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
         <div
           class="column preview col"
         >
-          <div
-            class="mb-3 btn-group"
-            role="group"
+          <span
+            class="mb-3 group horizontal"
           >
             <button
-              class="btn btn-info"
+              class="wrapper fill primary medium left"
               type="button"
             >
               During business hours
             </button>
             <button
-              class="btn btn-secondary"
+              class="wrapper fill secondary medium right"
               type="button"
             >
               Outside business hours
             </button>
-          </div>
+          </span>
           <div
             class="preview"
           >
@@ -4213,7 +4218,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
               </div>
               <div>
                 <button
-                  class="btn btn-success"
+                  class="wrapper fill primary medium"
                   type="submit"
                 >
                   Save changes
@@ -4241,23 +4246,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
         <div
           class="column preview col"
         >
-          <div
-            class="mb-3 btn-group"
-            role="group"
+          <span
+            class="mb-3 group horizontal"
           >
             <button
-              class="btn btn-info"
+              class="wrapper fill primary medium left"
               type="button"
             >
               During business hours
             </button>
             <button
-              class="btn btn-secondary"
+              class="wrapper fill secondary medium right"
               type="button"
             >
               Outside business hours
             </button>
-          </div>
+          </span>
           <div
             class="preview"
           >
@@ -5032,7 +5036,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
               </div>
               <div>
                 <button
-                  class="btn btn-success disabled"
+                  class="wrapper fill primary medium isDisabled"
                   disabled=""
                   type="submit"
                 >
@@ -5045,23 +5049,22 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
         <div
           class="column preview col"
         >
-          <div
-            class="mb-3 btn-group"
-            role="group"
+          <span
+            class="mb-3 group horizontal"
           >
             <button
-              class="btn btn-info"
+              class="wrapper fill primary medium left"
               type="button"
             >
               During business hours
             </button>
             <button
-              class="btn btn-secondary"
+              class="wrapper fill secondary medium right"
               type="button"
             >
               Outside business hours
             </button>
-          </div>
+          </span>
           <div
             class="preview"
           >

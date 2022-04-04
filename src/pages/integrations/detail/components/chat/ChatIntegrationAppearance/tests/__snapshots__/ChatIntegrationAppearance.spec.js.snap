@@ -225,15 +225,12 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
               </InputField>
             </div>
           </div>
-          <Button
-            className=""
-            color="success"
-            disabled={false}
-            tag="button"
+          <ForwardRef
+            isLoading={false}
             type="submit"
           >
             Add new chat
-          </Button>
+          </ForwardRef>
         </Form>
       </Col>
       <Col
@@ -257,28 +254,22 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
             }
           }
         >
-          <ButtonGroup
+          <Group
             className="mb-3"
-            role="group"
-            tag="div"
           >
-            <Button
-              color="info"
+            <ForwardRef
+              intent="primary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               During business hours
-            </Button>
-            <Button
-              color="secondary"
+            </ForwardRef>
+            <ForwardRef
+              intent="secondary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               Outside business hours
-            </Button>
-          </ButtonGroup>
+            </ForwardRef>
+          </Group>
         </div>
         <ChatIntegrationPreview
           avatarTeamPictureUrl={null}
@@ -558,15 +549,12 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
               </InputField>
             </div>
           </div>
-          <Button
-            className="btn-loading"
-            color="success"
-            disabled={true}
-            tag="button"
+          <ForwardRef
+            isLoading={true}
             type="submit"
           >
             Save changes
-          </Button>
+          </ForwardRef>
           <ConfirmButton
             className="float-right"
             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -603,28 +591,22 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
             }
           }
         >
-          <ButtonGroup
+          <Group
             className="mb-3"
-            role="group"
-            tag="div"
           >
-            <Button
-              color="info"
+            <ForwardRef
+              intent="primary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               During business hours
-            </Button>
-            <Button
-              color="secondary"
+            </ForwardRef>
+            <ForwardRef
+              intent="secondary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               Outside business hours
-            </Button>
-          </ButtonGroup>
+            </ForwardRef>
+          </Group>
         </div>
         <ChatIntegrationPreview
           avatarTeamPictureUrl={null}
@@ -904,15 +886,12 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
               </InputField>
             </div>
           </div>
-          <Button
-            className=""
-            color="success"
-            disabled={false}
-            tag="button"
+          <ForwardRef
+            isLoading={false}
             type="submit"
           >
             Save changes
-          </Button>
+          </ForwardRef>
           <ConfirmButton
             className="float-right"
             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -949,28 +928,22 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
             }
           }
         >
-          <ButtonGroup
+          <Group
             className="mb-3"
-            role="group"
-            tag="div"
           >
-            <Button
-              color="info"
+            <ForwardRef
+              intent="primary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               During business hours
-            </Button>
-            <Button
-              color="secondary"
+            </ForwardRef>
+            <ForwardRef
+              intent="secondary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               Outside business hours
-            </Button>
-          </ButtonGroup>
+            </ForwardRef>
+          </Group>
         </div>
         <ChatIntegrationPreview
           avatarTeamPictureUrl={null}
@@ -1271,15 +1244,12 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
               </InputField>
             </div>
           </div>
-          <Button
-            className=""
-            color="success"
-            disabled={false}
-            tag="button"
+          <ForwardRef
+            isLoading={false}
             type="submit"
           >
             Save changes
-          </Button>
+          </ForwardRef>
           <ConfirmButton
             className="float-right"
             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -1316,28 +1286,22 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
             }
           }
         >
-          <ButtonGroup
+          <Group
             className="mb-3"
-            role="group"
-            tag="div"
           >
-            <Button
-              color="info"
+            <ForwardRef
+              intent="primary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               During business hours
-            </Button>
-            <Button
-              color="secondary"
+            </ForwardRef>
+            <ForwardRef
+              intent="secondary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               Outside business hours
-            </Button>
-          </ButtonGroup>
+            </ForwardRef>
+          </Group>
         </div>
         <ChatIntegrationPreview
           avatarTeamPictureUrl={null}
@@ -1621,15 +1585,12 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
               </InputField>
             </div>
           </div>
-          <Button
-            className=""
-            color="success"
-            disabled={false}
-            tag="button"
+          <ForwardRef
+            isLoading={false}
             type="submit"
           >
             Save changes
-          </Button>
+          </ForwardRef>
           <ConfirmButton
             className="float-right"
             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -1666,28 +1627,22 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
             }
           }
         >
-          <ButtonGroup
+          <Group
             className="mb-3"
-            role="group"
-            tag="div"
           >
-            <Button
-              color="info"
+            <ForwardRef
+              intent="primary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               During business hours
-            </Button>
-            <Button
-              color="secondary"
+            </ForwardRef>
+            <ForwardRef
+              intent="secondary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               Outside business hours
-            </Button>
-          </ButtonGroup>
+            </ForwardRef>
+          </Group>
         </div>
         <ChatIntegrationPreview
           avatarTeamPictureUrl={null}
@@ -1998,15 +1953,12 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
               </InputField>
             </div>
           </div>
-          <Button
-            className=""
-            color="success"
-            disabled={false}
-            tag="button"
+          <ForwardRef
+            isLoading={false}
             type="submit"
           >
             Save changes
-          </Button>
+          </ForwardRef>
           <ConfirmButton
             className="float-right"
             confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
@@ -2043,28 +1995,22 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
             }
           }
         >
-          <ButtonGroup
+          <Group
             className="mb-3"
-            role="group"
-            tag="div"
           >
-            <Button
-              color="info"
+            <ForwardRef
+              intent="primary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               During business hours
-            </Button>
-            <Button
-              color="secondary"
+            </ForwardRef>
+            <ForwardRef
+              intent="secondary"
               onClick={[Function]}
-              tag="button"
-              type="button"
             >
               Outside business hours
-            </Button>
-          </ButtonGroup>
+            </ForwardRef>
+          </Group>
         </div>
         <ChatIntegrationPreview
           avatarTeamPictureUrl="https://gorgias.io/teampicture.png"

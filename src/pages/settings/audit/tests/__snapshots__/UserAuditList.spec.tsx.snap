@@ -851,12 +851,11 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
           </tr>
         </tbody>
       </table>
-      <div
-        class="btn-group"
-        role="group"
+      <span
+        class="group horizontal"
       >
         <button
-          class="wrapper previousButton wrapper fill secondary medium isDisabled"
+          class="wrapper wrapper fill secondary medium left isDisabled"
           disabled=""
           id="prev-btn"
           type="button"
@@ -868,7 +867,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
           </i>
         </button>
         <button
-          class="wrapper nextButton wrapper fill secondary medium"
+          class="wrapper wrapper fill secondary medium right"
           id="next-btn"
           type="button"
         >
@@ -878,7 +877,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
             keyboard_arrow_right
           </i>
         </button>
-      </div>
+      </span>
     </div>
   </div>
 </div>

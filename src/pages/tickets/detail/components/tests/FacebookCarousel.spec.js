@@ -3,6 +3,8 @@ import {shallow, mount} from 'enzyme'
 
 import FacebookCarousel from '../FacebookCarousel.tsx'
 
+import Button from 'pages/common/components/button/Button.tsx'
+
 describe('FacebookCarousel component', () => {
     it('default props', () => {
         expect(shallow(<FacebookCarousel />)).toMatchSnapshot()
@@ -130,7 +132,7 @@ describe('FacebookCarousel component', () => {
         ]
 
         expect(
-            mount(<FacebookCarousel data={data} />).find('Button').length
+            mount(<FacebookCarousel data={data} />).find(Button).length
         ).toBe(2)
     })
 })

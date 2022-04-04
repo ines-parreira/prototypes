@@ -1,9 +1,7 @@
 import React from 'react'
-import {ButtonGroup} from 'reactstrap'
 
 import IconButton from 'pages/common/components/button/IconButton'
-
-import css from './Navigation.less'
+import Group from 'pages/common/components/layout/Group'
 
 type Props = {
     className?: string
@@ -25,9 +23,8 @@ export default function Navigation({
     }
 
     return (
-        <ButtonGroup className={className}>
+        <Group className={className}>
             <IconButton
-                className={css.previousButton}
                 id="prev-btn"
                 intent="secondary"
                 isDisabled={!hasPrevItems}
@@ -36,7 +33,6 @@ export default function Navigation({
                 keyboard_arrow_left
             </IconButton>
             <IconButton
-                className={css.nextButton}
                 id="next-btn"
                 intent="secondary"
                 isDisabled={!hasNextItems}
@@ -44,6 +40,6 @@ export default function Navigation({
             >
                 keyboard_arrow_right
             </IconButton>
-        </ButtonGroup>
+        </Group>
     )
 }

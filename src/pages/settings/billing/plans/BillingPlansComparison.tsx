@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
 import {Map} from 'immutable'
 import classNames from 'classnames'
-import {Button, ButtonGroup, CardDeck, Container} from 'reactstrap'
+import {CardDeck, Container} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 
+import Button from 'pages/common/components/button/Button'
+import Group from 'pages/common/components/layout/Group'
 import {
     DEPRECATED_getCurrentPlan,
     getEquivalentRegularCurrentPlan,
@@ -122,11 +124,11 @@ export default function BillingPlansComparison({
         <SynchronizedScrollTopProvider>
             <Container fluid className={css.planContainer}>
                 <div className={css.intervalToggle}>
-                    <ButtonGroup>
+                    <Group>
                         <Button
                             aria-label="Monthly interval"
                             onClick={handleIntervalToggle}
-                            color={
+                            intent={
                                 selectedInterval === PlanInterval.Month
                                     ? 'primary'
                                     : 'secondary'
@@ -137,7 +139,7 @@ export default function BillingPlansComparison({
                         <Button
                             aria-label="Yearly interval"
                             onClick={handleIntervalToggle}
-                            color={
+                            intent={
                                 selectedInterval === PlanInterval.Year
                                     ? 'primary'
                                     : 'secondary'
@@ -145,7 +147,7 @@ export default function BillingPlansComparison({
                         >
                             Yearly
                         </Button>
-                    </ButtonGroup>
+                    </Group>
                 </div>
                 <CardDeck className={classNames('mb-5')}>
                     <>

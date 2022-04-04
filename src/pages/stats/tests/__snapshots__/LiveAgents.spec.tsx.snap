@@ -869,12 +869,11 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
         <div
           class="navigationWrapper"
         >
-          <div
-            class="btn-group"
-            role="group"
+          <span
+            class="group horizontal"
           >
             <button
-              class="wrapper previousButton wrapper fill secondary medium isDisabled"
+              class="wrapper wrapper fill secondary medium left isDisabled"
               disabled=""
               id="prev-btn"
               type="button"
@@ -886,7 +885,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
               </i>
             </button>
             <button
-              class="wrapper nextButton wrapper fill secondary medium"
+              class="wrapper wrapper fill secondary medium right"
               id="next-btn"
               type="button"
             >
@@ -896,7 +895,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 keyboard_arrow_right
               </i>
             </button>
-          </div>
+          </span>
         </div>
       </div>
     </div>

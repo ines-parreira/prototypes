@@ -276,67 +276,60 @@ exports[`FacebookCarousel component render generic template 1`] = `
                               </CardSubtitle>
                             </div>
                           </CardBody>
-                          <ButtonGroup
+                          <Group
                             className="buttons"
-                            role="group"
-                            tag="div"
-                            vertical={true}
+                            orientation="vertical"
                           >
-                            <div
-                              className="buttons btn-group-vertical"
-                              role="group"
+                            <span
+                              className="buttons group vertical"
                             >
-                              <Button
-                                color="secondary"
-                                href="https://sfbicycles.myshopify.com/"
-                                key="0"
-                                tag="a"
-                                target="_blank"
-                              >
-                                <a
-                                  aria-label={null}
-                                  className="btn btn-secondary"
-                                  href="https://sfbicycles.myshopify.com/"
-                                  onClick={[Function]}
-                                  target="_blank"
-                                >
-                                  View details
-                                </a>
-                              </Button>
-                              <Button
-                                color="secondary"
-                                disabled={true}
-                                key="1"
-                                tag="button"
+                              <ForwardRef
+                                appendPosition="top"
+                                intent="secondary"
+                                key=".$0"
+                                onClick={[Function]}
+                                role="link"
                               >
                                 <button
-                                  aria-label={null}
-                                  className="btn btn-secondary disabled"
-                                  disabled={true}
+                                  className="wrapper fill secondary medium top"
                                   onClick={[Function]}
+                                  role="link"
+                                  type="button"
+                                >
+                                  View details
+                                </button>
+                              </ForwardRef>
+                              <ForwardRef
+                                appendPosition="middle"
+                                isDisabled={true}
+                                key=".$1"
+                              >
+                                <button
+                                  className="wrapper fill primary medium middle isDisabled"
+                                  disabled={true}
+                                  type="button"
                                 >
                                   Share
                                 </button>
-                              </Button>
-                              <Button
-                                color="secondary"
-                                href="https://messenger-commerce.shopifyapps.com/"
-                                key="2"
-                                tag="a"
-                                target="_blank"
+                              </ForwardRef>
+                              <ForwardRef
+                                appendPosition="bottom"
+                                intent="secondary"
+                                key=".$2"
+                                onClick={[Function]}
+                                role="link"
                               >
-                                <a
-                                  aria-label={null}
-                                  className="btn btn-secondary"
-                                  href="https://messenger-commerce.shopifyapps.com/"
+                                <button
+                                  className="wrapper fill secondary medium bottom"
                                   onClick={[Function]}
-                                  target="_blank"
+                                  role="link"
+                                  type="button"
                                 >
                                   Buy now
-                                </a>
-                              </Button>
-                            </div>
-                          </ButtonGroup>
+                                </button>
+                              </ForwardRef>
+                            </span>
+                          </Group>
                         </div>
                       </Card>
                     </div>
