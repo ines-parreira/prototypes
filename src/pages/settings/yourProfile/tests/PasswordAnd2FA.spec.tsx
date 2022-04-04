@@ -35,24 +35,20 @@ describe('<PasswordAnd2FA />', () => {
             }
         )
 
-        it.each(['acme', 'some-unauthorized-domain-for-2fa'])(
-            'should render with or without 2FA section based on account access to the feature',
-            (domain) => {
-                const store = mockStore({
-                    currentUser: fromJS({
-                        has_password: true,
-                    }),
-                    currentAccount: fromJS({domain: domain}),
-                })
+        it('should always render with 2FA section', () => {
+            const store = mockStore({
+                currentUser: fromJS({
+                    has_password: true,
+                }),
+            })
 
-                const {container} = render(
-                    <Provider store={store}>
-                        <PasswordAnd2FA />
-                    </Provider>
-                )
+            const {container} = render(
+                <Provider store={store}>
+                    <PasswordAnd2FA />
+                </Provider>
+            )
 
-                expect(container.firstChild).toMatchSnapshot()
-            }
-        )
+            expect(container.firstChild).toMatchSnapshot()
+        })
     })
 })

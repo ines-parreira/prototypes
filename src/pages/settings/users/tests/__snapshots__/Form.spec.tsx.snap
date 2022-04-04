@@ -216,6 +216,39 @@ exports[`<Form /> should render 1`] = `
         </div>
       </div>
       <div
+        class="form-group"
+      >
+        <label
+          class="control-label"
+        >
+          Two-Factor Authentication (2FA)
+        </label>
+        <div
+          class="twoFaStatusContainer"
+        >
+          <div
+            class="badge badge"
+          >
+            Enabled
+          </div>
+          <button
+            class="wrapper ml-2 ghost secondary medium"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                update
+              </i>
+              Reset 2FA Token
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
         class="mt-5 form-group"
       >
         <button

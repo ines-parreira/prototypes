@@ -46,9 +46,7 @@ describe('<Form />', () => {
     })
 
     it('should render with 2FA information when enabled', async () => {
-        const {container, findByText} = render(
-            <FormContainer {...minProps} accountDomain="acme" />
-        )
+        const {container, findByText} = render(<FormContainer {...minProps} />)
         await findByText('Reset 2FA Token')
 
         expect(container.firstChild).toMatchSnapshot()

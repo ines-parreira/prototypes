@@ -6,18 +6,14 @@ import {Container} from 'reactstrap'
 import {Map} from 'immutable'
 
 import Button from 'pages/common/components/button/Button'
-import Loader from '../../common/components/Loader/Loader'
-import Pagination from '../../common/components/Pagination'
-import {fetchPagination} from '../../../state/agents/actions'
-import {
-    getPaginatedAgents,
-    getPagination,
-} from '../../../state/agents/selectors'
-import PageHeader from '../../common/components/PageHeader'
-import {RootState} from '../../../state/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import Pagination from 'pages/common/components/Pagination'
+import {fetchPagination} from 'state/agents/actions'
+import {getPaginatedAgents, getPagination} from 'state/agents/selectors'
+import PageHeader from 'pages/common/components/PageHeader'
+import {RootState} from 'state/types'
 import settingsCss from '../settings.less'
 
-import {checkAccessTo2FA} from '../yourProfile/twoFactorAuthentication/utils'
 import Row from './Row'
 import css from './List.less'
 import cssRow from './Row.less'
@@ -52,7 +48,6 @@ export class UserListContainer extends Component<Props, State> {
         }
 
         const currentPage = pagination.get('page') || 1
-        const hasAccessTo2FA = checkAccessTo2FA(this.props.accountDomain)
 
         return (
             <div className={classnames('full-width', css.component)}>
@@ -87,11 +82,7 @@ export class UserListContainer extends Component<Props, State> {
                             </span>
                             <span className={cssRow.meta} />
                             <span className={cssRow.role}>Role</span>
-                            {hasAccessTo2FA && (
-                                <span className={cssRow.twoFa}>
-                                    2FA enabled
-                                </span>
-                            )}
+                            <span className={cssRow.twoFa}>2FA enabled</span>
                             <span className={cssRow.delete} />
                         </span>
 
@@ -104,7 +95,6 @@ export class UserListContainer extends Component<Props, State> {
                                     isAccountOwner={
                                         agentId === this.props.accountOwnerId
                                     }
-                                    hasAccessTo2FA={hasAccessTo2FA}
                                     currentPage={currentPage}
                                     last={index === agents.size - 1}
                                 />
@@ -131,7 +121,6 @@ const connector = connect(
     (state: RootState) => ({
         agents: getPaginatedAgents(state),
         pagination: getPagination(state),
-        accountDomain: state.currentAccount.get('domain'),
         accountOwnerId: state.currentAccount.get('user_id'),
     }),
     {

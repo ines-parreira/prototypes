@@ -47,6 +47,15 @@ exports[`<Row /> should render 1`] = `
       </div>
     </span>
     <span
+      class="twoFa"
+    >
+      <div
+        class="badge"
+      >
+        Yes
+      </div>
+    </span>
+    <span
       class="delete"
     >
       <button
@@ -252,6 +261,15 @@ exports[`<Row /> should render a user without a name 1`] = `
         class="badge"
       >
         Admin
+      </div>
+    </span>
+    <span
+      class="twoFa"
+    >
+      <div
+        class="badge"
+      >
+        Yes
       </div>
     </span>
     <span

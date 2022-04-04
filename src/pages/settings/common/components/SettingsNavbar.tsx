@@ -9,14 +9,10 @@ import css from 'assets/css/navbar.less'
 import {hasRole} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {UserRole} from 'config/types/user'
-import {
-    buildPasswordAnd2FaText,
-    checkAccessTo2FA,
-} from '../../yourProfile/twoFactorAuthentication/utils'
+import {buildPasswordAnd2FaText} from '../../yourProfile/twoFactorAuthentication/utils'
 
 type Props = {
     currentUser: Map<any, any>
-    currentAccount: Map<any, any>
 } & RouteComponentProps
 
 type CategoryLink = {
@@ -42,17 +38,12 @@ export default class SettingsNavbar extends Component<Props> {
     render() {
         const {
             currentUser,
-            currentAccount,
             location: {pathname},
         } = this.props
 
         const hasPassword = currentUser.get('has_password')
-        const hasAccessTo2FA = checkAccessTo2FA(currentAccount.get('domain'))
 
-        const passwordAnd2FaText = buildPasswordAnd2FaText(
-            hasPassword,
-            hasAccessTo2FA
-        )
+        const passwordAnd2FaText = buildPasswordAnd2FaText(hasPassword)
 
         const categories: Category[] = [
             {
@@ -66,7 +57,6 @@ export default class SettingsNavbar extends Component<Props> {
                     {
                         to: 'password-2fa',
                         text: passwordAnd2FaText,
-                        isHidden: !hasPassword && !hasAccessTo2FA,
                     },
                     {
                         requiredRole: ADMIN_ROLE,

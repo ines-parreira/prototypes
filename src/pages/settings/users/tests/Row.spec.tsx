@@ -35,7 +35,6 @@ const minProps = {
     isAccountOwner: false,
     deleteAgent: jest.fn(),
     fetchAgents: jest.fn(),
-    hasAccessTo2FA: false,
     last: false,
 }
 
@@ -58,9 +57,7 @@ describe('<Row />', () => {
     })
 
     it('should render 2FA information when enabled', () => {
-        const {container} = render(
-            <RowContainer {...minProps} hasAccessTo2FA={true} />
-        )
+        const {container} = render(<RowContainer {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -69,7 +66,6 @@ describe('<Row />', () => {
         const {container} = render(
             <RowContainer
                 {...minProps}
-                hasAccessTo2FA={true}
                 agent={minProps.agent.set('has_2fa_enabled', false)}
             />
         )

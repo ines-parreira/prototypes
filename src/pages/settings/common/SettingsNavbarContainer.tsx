@@ -2,8 +2,8 @@ import React from 'react'
 import {RouteComponentProps, withRouter} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {RootState} from 'state/types'
 import Navbar from '../../common/components/Navbar'
-import {RootState} from '../../../state/types'
 
 import SettingsNavbar from './components/SettingsNavbar'
 
@@ -21,7 +21,6 @@ class SettingsNavbarContainer extends React.Component<Props> {
 
 const connector = connect((state: RootState) => ({
     currentUser: state.currentUser,
-    currentAccount: state.currentAccount,
 }))
 
 export default withRouter(connector(SettingsNavbarContainer))

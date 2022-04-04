@@ -7,9 +7,9 @@ import {connect, ConnectedProps} from 'react-redux'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {RoleLabel} from '../../common/utils/labels'
-import Avatar from '../../common/components/Avatar/Avatar'
-import {fetchPagination, deleteAgent} from '../../../state/agents/actions'
+import {RoleLabel} from 'pages/common/utils/labels'
+import Avatar from 'pages/common/components/Avatar/Avatar'
+import {fetchPagination, deleteAgent} from 'state/agents/actions'
 
 import css from './Row.less'
 
@@ -17,7 +17,6 @@ type Props = {
     agent: Map<any, any>
     currentPage: number
     isAccountOwner: boolean
-    hasAccessTo2FA: boolean
     last: boolean
 } & ConnectedProps<typeof connector>
 
@@ -33,7 +32,7 @@ export class RowContainer extends Component<Props> {
     }
 
     render() {
-        const {agent, isAccountOwner, hasAccessTo2FA} = this.props
+        const {agent, isAccountOwner} = this.props
         const editLink = `/app/settings/users/${agent.get('id') as number}`
         const has2FaEnabled = agent.get('has_2fa_enabled')
 
@@ -62,19 +61,17 @@ export class RowContainer extends Component<Props> {
                             <Badge type={ColorType.Dark}>Account Owner</Badge>
                         )}
                     </span>
-                    {hasAccessTo2FA && (
-                        <span className={css.twoFa}>
-                            <Badge
-                                type={
-                                    has2FaEnabled
-                                        ? ColorType.Success
-                                        : ColorType.Error
-                                }
-                            >
-                                {has2FaEnabled ? 'Yes' : 'No'}
-                            </Badge>
-                        </span>
-                    )}
+                    <span className={css.twoFa}>
+                        <Badge
+                            type={
+                                has2FaEnabled
+                                    ? ColorType.Success
+                                    : ColorType.Error
+                            }
+                        >
+                            {has2FaEnabled ? 'Yes' : 'No'}
+                        </Badge>
+                    </span>
                     <span className={css.delete}>
                         <ConfirmationPopover
                             buttonProps={{
