@@ -82,7 +82,7 @@ export const useCategoriesActions = () => {
                 dispatch(
                     saveCategories({
                         categories: [
-                            {...newCategory, children: [], articles: []},
+                            {...newCategory, children: []},
                             {
                                 ...parentCategory,
                                 children: [

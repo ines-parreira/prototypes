@@ -1,5 +1,6 @@
 import {cloneDeep as _cloneDeep} from 'lodash'
-import {Category, NonRootCategory} from 'models/helpCenter/types'
+import {Category} from 'models/helpCenter/types'
+import {isNonRootCategory} from 'state/entities/helpCenter/categories'
 
 type Props = {
     categories: Record<string, Category>
@@ -18,14 +19,14 @@ export const getCategoriesToUpdate = ({
 
     if (previousParentId !== currentParentId) {
         // Update the edited category
-        const category = categoriesById[
-            categoryId.toString()
-        ] as NonRootCategory
+        const category = categoriesById[categoryId.toString()]
 
-        category.parent_category_id = currentParentId
-        category.translation.parent_category_id = currentParentId
+        if (isNonRootCategory(category)) {
+            category.parent_category_id = currentParentId
+            category.translation.parent_category_id = currentParentId
 
-        categoriesToUpdate.push(category)
+            categoriesToUpdate.push(category)
+        }
 
         // Update the category that was parent to the edited category
         const previousParent = previousParentId
@@ -56,8 +57,6 @@ export const getCategoriesToUpdate = ({
     return categoriesToUpdate
 }
 
-export const removeElementFromArray = (arr: number[], id: number) => {
-    const childrenArray = [...arr]
-
+export const removeElementFromArray = (childrenArray: number[], id: number) => {
     return childrenArray.filter((element) => element !== id)
 }

@@ -11,10 +11,9 @@ const rootCategory = {
     available_locales: [],
     translation: null,
     children: [47],
-    articles: [],
 }
 
-const topLevelCategory = {
+const topLevelCategory: Category = {
     created_datetime: '2022-03-17T12:52:14.243Z',
     updated_datetime: '2022-03-17T12:52:14.243Z',
     deleted_datetime: null,
@@ -38,10 +37,9 @@ const topLevelCategory = {
         },
     },
     children: [48, 53],
-    articles: [],
 }
 
-const level1CategoryWithChildren = {
+const level1CategoryWithChildren: Category = {
     created_datetime: '2022-03-17T12:52:41.853Z',
     updated_datetime: '2022-03-17T12:52:41.853Z',
     deleted_datetime: null,
@@ -65,10 +63,9 @@ const level1CategoryWithChildren = {
         },
     },
     children: [49],
-    articles: [],
 }
 
-const level2Category = {
+const level2Category: Category = {
     created_datetime: '2022-03-17T12:53:43.235Z',
     updated_datetime: '2022-03-17T12:54:26.401Z',
     deleted_datetime: null,
@@ -92,10 +89,9 @@ const level2Category = {
         },
     },
     children: [50],
-    articles: [],
 }
 
-const level1Category = {
+const level1Category: Category = {
     created_datetime: '2022-03-23T10:34:42.017Z',
     updated_datetime: '2022-03-23T10:34:42.017Z',
     deleted_datetime: null,
@@ -119,15 +115,14 @@ const level1Category = {
         },
     },
     children: [],
-    articles: [],
 }
-const categories = [
+const categories: Category[] = [
     rootCategory,
     topLevelCategory,
     level1CategoryWithChildren,
     level2Category,
     level1Category,
-] as Category[]
+]
 
 describe('eligibleParentCategories()', () => {
     it('should return an empty array if the category is undefined', () => {
@@ -138,11 +133,7 @@ describe('eligibleParentCategories()', () => {
 
     it('should return the categories without the children of the provided category', () => {
         expect(
-            eligibleParentCategories(
-                categories,
-                'en-US',
-                topLevelCategory as Category
-            )
+            eligibleParentCategories(categories, 'en-US', topLevelCategory)
         ).toMatchSnapshot('only top level category returned')
     })
 
@@ -151,18 +142,14 @@ describe('eligibleParentCategories()', () => {
             eligibleParentCategories(
                 categories,
                 'en-US',
-                level1CategoryWithChildren as Category
+                level1CategoryWithChildren
             )
         ).toMatchSnapshot('top level and level 1 nodes returned')
     })
 
     it('should return the categories including the level 2 node because it is not a children of the provided category', () => {
         expect(
-            eligibleParentCategories(
-                categories,
-                'en-US',
-                level1Category as Category
-            )
+            eligibleParentCategories(categories, 'en-US', level1Category)
         ).toMatchSnapshot('top level and level 1 & level 2 nodes returned')
     })
 })

@@ -3,7 +3,6 @@
 exports[`eligibleParentCategories() should return an empty array if the category is undefined: return non-root categories in the targeted locale 1`] = `
 Array [
   Object {
-    "articles": Array [],
     "available_locales": Array [
       "en-US",
       "fr-FR",
@@ -35,7 +34,6 @@ Array [
     "updated_datetime": "2022-03-17T12:52:14.243Z",
   },
   Object {
-    "articles": Array [],
     "available_locales": Array [
       "fr-FR",
       "en-US",
@@ -66,7 +64,6 @@ Array [
     "updated_datetime": "2022-03-17T12:52:41.853Z",
   },
   Object {
-    "articles": Array [],
     "available_locales": Array [
       "fr-FR",
       "en-US",
@@ -102,7 +99,6 @@ Array [
 exports[`eligibleParentCategories() should return the categories including the level 2 node because it is not a children of the provided category: top level and level 1 & level 2 nodes returned 1`] = `
 Array [
   Object {
-    "articles": Array [],
     "available_locales": Array [
       "en-US",
       "fr-FR",
@@ -134,7 +130,6 @@ Array [
     "updated_datetime": "2022-03-17T12:52:14.243Z",
   },
   Object {
-    "articles": Array [],
     "available_locales": Array [
       "fr-FR",
       "en-US",
@@ -165,7 +160,6 @@ Array [
     "updated_datetime": "2022-03-17T12:52:41.853Z",
   },
   Object {
-    "articles": Array [],
     "available_locales": Array [
       "fr-FR",
       "en-US",
@@ -203,7 +197,6 @@ exports[`eligibleParentCategories() should return the categories without the chi
 exports[`eligibleParentCategories() should return the categories without the children of the provided level 1 category: top level and level 1 nodes returned 1`] = `
 Array [
   Object {
-    "articles": Array [],
     "available_locales": Array [
       "en-US",
       "fr-FR",
@@ -235,7 +228,6 @@ Array [
     "updated_datetime": "2022-03-17T12:52:14.243Z",
   },
   Object {
-    "articles": Array [],
     "available_locales": Array [
       "en-US",
     ],

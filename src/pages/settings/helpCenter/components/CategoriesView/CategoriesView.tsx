@@ -112,7 +112,6 @@ export const CategoriesViews = ({
                 </Container>
             )}
             <CategoriesTable
-                categories={categories}
                 renderArticleList={renderArticleList}
                 onReorderFinish={handleOnReorder}
                 shouldRenderEmptyUncategorizedRow={!showCreateFirst}

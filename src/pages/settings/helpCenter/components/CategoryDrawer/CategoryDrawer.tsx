@@ -26,10 +26,11 @@ type Props = {
 export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
     const dispatch = useAppDispatch()
     const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY)
-    const params = getParams() as Category & {
+    // @ts-expect-error
+    const params: Category & {
         isCreate?: boolean
         parentCategoryId?: number
-    }
+    } = getParams()
     const category = useAppSelector(getCategoryById(params?.id))
     const categoriesActions = useCategoriesActions()
 

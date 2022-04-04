@@ -246,7 +246,6 @@ export const getSingleCategory: Category = {
         },
     },
     children: [8],
-    articles: [],
 }
 
 export const getInitialRootCategory: Category = {
@@ -258,7 +257,6 @@ export const getInitialRootCategory: Category = {
     parent_category_id: null,
     available_locales: [],
     children: [],
-    articles: [],
     translation: null,
 }
 
@@ -271,6 +269,5 @@ export const getRootCategory: Category = {
     parent_category_id: null,
     available_locales: [],
     children: [5, 6, 7],
-    articles: [],
     translation: null,
 }

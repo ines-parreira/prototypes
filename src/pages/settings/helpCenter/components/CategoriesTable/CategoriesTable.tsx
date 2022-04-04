@@ -1,7 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {Category} from 'models/helpCenter/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -32,13 +31,11 @@ export type CategoriesTableProps = Pick<
     CategoriesTableRowProps,
     'renderArticleList'
 > & {
-    categories: Category[]
     onReorderFinish: (params: CategoriesPositionsType) => void
     shouldRenderEmptyUncategorizedRow: boolean
 }
 
 export const CategoriesTable = ({
-    categories,
     onReorderFinish,
     renderArticleList,
     shouldRenderEmptyUncategorizedRow,
@@ -50,7 +47,7 @@ export const CategoriesTable = ({
         return rootCategory.children
             .map((categoryId) => categoriesById[categoryId])
             .filter(isNonRootCategory)
-    }, [categories])
+    }, [categoriesById])
 
     const [defaultSiblingsPositions, setDefaultSiblingsPositions] = useState<
         number[]
@@ -79,12 +76,12 @@ export const CategoriesTable = ({
 
             dispatch(savePositions({children: siblings, categoryId: parentId}))
         },
-        [categoriesById, dispatch]
+        [categoriesById, defaultSiblingsPositions, dispatch]
     )
 
     const handleOnReorderFinish = useCallback(() => {
         onReorderFinish(categoriesToReorder)
-    }, [categoriesToReorder, onReorderFinish, defaultSiblingsPositions])
+    }, [categoriesToReorder, onReorderFinish])
 
     const handleOnCancelDnD = useCallback(
         (type: string) => {

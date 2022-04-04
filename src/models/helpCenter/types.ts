@@ -54,7 +54,6 @@ export type LocalCategoryTranslation =
     Components.Schemas.LocalCategoryTranslation
 
 export type Category = Omit<CategoryWithLocalTranslation, 'children'> & {
-    articles: Article[]
     children: number[]
 }
 

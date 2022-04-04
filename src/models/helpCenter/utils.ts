@@ -31,10 +31,9 @@ export function flattenCategories(
         flatTree.push({
             ...category,
             children: children.map((child) => child.id),
-            articles: [],
         })
 
-        node.children?.forEach((child) => {
+        node.children.forEach((child) => {
             parseNode(child)
         })
     }

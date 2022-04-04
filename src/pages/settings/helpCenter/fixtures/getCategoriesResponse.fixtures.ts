@@ -116,7 +116,6 @@ export const getSingleCategoryEnglish: Category = {
     id: 1,
     help_center_id: 1,
     available_locales: ['en-US'],
-    articles: [],
     children: [],
     created_datetime: '2021-06-01T09:46:30.044Z',
     updated_datetime: '2021-06-01T09:46:30.044Z',

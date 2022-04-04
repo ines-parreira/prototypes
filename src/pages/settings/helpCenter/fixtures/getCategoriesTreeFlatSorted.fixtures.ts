@@ -11,7 +11,6 @@ export const getCategoriesFlatSorted: Category[] = [
         available_locales: [],
         translation: null,
         children: [5, 6, 7],
-        articles: [],
     },
     {
         created_datetime: '2022-03-07T14:47:03.686Z',
@@ -37,7 +36,6 @@ export const getCategoriesFlatSorted: Category[] = [
             },
         },
         children: [8],
-        articles: [],
     },
     {
         created_datetime: '2022-03-07T14:47:39.237Z',
@@ -63,7 +61,6 @@ export const getCategoriesFlatSorted: Category[] = [
             },
         },
         children: [12],
-        articles: [],
     },
     {
         created_datetime: '2022-03-10T08:21:16.195Z',
@@ -89,7 +86,6 @@ export const getCategoriesFlatSorted: Category[] = [
             },
         },
         children: [13],
-        articles: [],
     },
     {
         created_datetime: '2022-03-10T08:22:08.318Z',
@@ -115,7 +111,6 @@ export const getCategoriesFlatSorted: Category[] = [
             },
         },
         children: [],
-        articles: [],
     },
     {
         created_datetime: '2022-03-07T14:47:16.170Z',
@@ -141,7 +136,6 @@ export const getCategoriesFlatSorted: Category[] = [
             },
         },
         children: [9],
-        articles: [],
     },
     {
         created_datetime: '2022-03-07T15:11:48.641Z',
@@ -167,7 +161,6 @@ export const getCategoriesFlatSorted: Category[] = [
             },
         },
         children: [],
-        articles: [],
     },
     {
         created_datetime: '2022-03-07T14:47:24.935Z',
@@ -193,7 +186,6 @@ export const getCategoriesFlatSorted: Category[] = [
             },
         },
         children: [10],
-        articles: [],
     },
     {
         created_datetime: '2022-03-07T15:12:09.705Z',
@@ -219,6 +211,5 @@ export const getCategoriesFlatSorted: Category[] = [
             },
         },
         children: [],
-        articles: [],
     },
 ]

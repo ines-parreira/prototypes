@@ -23,7 +23,7 @@ export const deleteCategory = createAction<number>(
 
 export const savePositions = createAction<{
     children: number[]
-    categoryId?: number | null
+    categoryId: number | null
 }>(CategoryActions.SAVE_POSITIONS)
 
 export const pushCategorySupportedLocales = createAction<{

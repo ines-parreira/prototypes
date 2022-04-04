@@ -145,7 +145,6 @@ describe('Help Center/Categories reducer', () => {
             categoriesById: {
                 1: {
                     ...categoryResponse,
-                    articles: [],
                     available_locales: ['en-US', 'fr-FR'],
                     translation: {
                         ...categoryResponse.translation,

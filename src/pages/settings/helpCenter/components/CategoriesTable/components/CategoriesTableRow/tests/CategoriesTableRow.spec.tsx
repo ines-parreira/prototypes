@@ -3,6 +3,7 @@ import {render} from '@testing-library/react'
 import {Provider as ReduxProvider} from 'react-redux'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
+import {DeepPartial} from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -18,7 +19,9 @@ import {Category} from 'models/helpCenter/types'
 import {CategoriesTableRow} from '../CategoriesTableRow'
 import {CategoriesTableBasicRow} from '../../CategoriesTableBasicRow/CategoriesTableBasicRow'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const mockStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
+    thunk,
+])
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
     return {
@@ -59,7 +62,7 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 
 describe('<CategoriesTableRow />', () => {
     it('should render null if shouldRenderRowWithoutArticles is false and there are no articles', () => {
-        const initialState: Partial<RootState> = {
+        const initialState: DeepPartial<RootState> = {
             entities: {
                 helpCenter: {
                     helpCenters: {
@@ -74,13 +77,13 @@ describe('<CategoriesTableRow />', () => {
                         categoriesById: {},
                     },
                 },
-            } as any,
+            },
             ui: {
                 helpCenter: {
                     currentId: 1,
                     currentLanguage: 'en-US',
                 },
-            } as any,
+            },
         }
 
         const {container} = render(
@@ -97,7 +100,7 @@ describe('<CategoriesTableRow />', () => {
     })
 
     it('should render "Uncategorized articles" row when shouldRenderRowWithoutArticles is false but there are some uncategorized articles', async () => {
-        const initialState: Partial<RootState> = {
+        const initialState: DeepPartial<RootState> = {
             entities: {
                 helpCenter: {
                     helpCenters: {
@@ -155,7 +158,7 @@ describe('<CategoriesTableRow />', () => {
         const nonRootCategories =
             getCategoriesFlatSorted.filter(isNonRootCategory)
         const category = nonRootCategories[0]
-        const initialState: Partial<RootState> = {
+        const initialState: DeepPartial<RootState> = {
             entities: {
                 helpCenter: {
                     helpCenters: {
@@ -172,13 +175,13 @@ describe('<CategoriesTableRow />', () => {
                         },
                     },
                 },
-            } as any,
+            },
             ui: {
                 helpCenter: {
                     currentId: 1,
                     currentLanguage: 'en-US',
                 },
-            } as any,
+            },
         }
 
         const {container, findByText} = render(
@@ -217,7 +220,7 @@ describe('<CategoriesTableRow />', () => {
         categories.forEach((category) => {
             categoriesById[category.id.toString()] = category
         })
-        const initialState: Partial<RootState> = {
+        const initialState: DeepPartial<RootState> = {
             entities: {
                 helpCenter: {
                     helpCenters: {
@@ -229,17 +232,19 @@ describe('<CategoriesTableRow />', () => {
                         articlesById: {},
                     },
                     categories: {
-                        '0': rootCategory,
-                        categoriesById,
+                        categoriesById: {
+                            '0': rootCategory,
+                            ...categoriesById,
+                        },
                     },
                 },
-            } as any,
+            },
             ui: {
                 helpCenter: {
                     currentId: 1,
                     currentLanguage: 'en-US',
                 },
-            } as any,
+            },
         }
 
         const {container, findByText} = render(
@@ -275,7 +280,7 @@ describe('<CategoriesTableRow />', () => {
         categories.forEach((category) => {
             categoriesById[category.id.toString()] = category
         })
-        const initialState: Partial<RootState> = {
+        const initialState: DeepPartial<RootState> = {
             entities: {
                 helpCenter: {
                     helpCenters: {
@@ -287,17 +292,19 @@ describe('<CategoriesTableRow />', () => {
                         articlesById: {},
                     },
                     categories: {
-                        '0': rootCategory,
-                        categoriesById,
+                        categoriesById: {
+                            '0': rootCategory,
+                            ...categoriesById,
+                        },
                     },
                 },
-            } as any,
+            },
             ui: {
                 helpCenter: {
                     currentId: 1,
                     currentLanguage: 'en-US',
                 },
-            } as any,
+            },
         }
 
         const {getByTestId} = render(
@@ -332,7 +339,7 @@ describe('<CategoriesTableRow />', () => {
         categories.forEach((category) => {
             categoriesById[category.id.toString()] = category
         })
-        const initialState: Partial<RootState> = {
+        const initialState: DeepPartial<RootState> = {
             entities: {
                 helpCenter: {
                     helpCenters: {
@@ -344,17 +351,19 @@ describe('<CategoriesTableRow />', () => {
                         articlesById: {},
                     },
                     categories: {
-                        '0': rootCategory,
-                        categoriesById,
+                        categoriesById: {
+                            '0': rootCategory,
+                            ...categoriesById,
+                        },
                     },
                 },
-            } as any,
+            },
             ui: {
                 helpCenter: {
                     currentId: 1,
                     currentLanguage: 'en-US',
                 },
-            } as any,
+            },
         }
 
         const {getByTestId} = render(

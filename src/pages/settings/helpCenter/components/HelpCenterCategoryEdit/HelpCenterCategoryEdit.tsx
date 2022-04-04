@@ -114,8 +114,11 @@ export const HelpCenterCategoryEdit = ({
     const screenSize = useScreenSize()
     const categories = useAppSelector(getParentCategories)
     const categoriesById = useAppSelector(getCategoriesById)
-    const [selectFieldClassName, setSelectFieldClassName] = useState<string>('')
+    const [isFirstOptionHidden, setIsFirstOptionHidden] = useState(false)
+    const [isClearSelectionButtonHidden, setIsClearSelectionButtonHidden] =
+        useState(false)
     const [parentOptions, setParentOptions] = useState<Option[]>([])
+    const clearSelectionText = 'Clear selection'
     const categoryOptionCandidates = useMemo(
         () => eligibleParentCategories(categories, locale, category),
         [categories, locale, category]
@@ -192,7 +195,7 @@ export const HelpCenterCategoryEdit = ({
             ),
             {
                 value: 0,
-                label: 'Clear selection',
+                label: clearSelectionText,
             },
         ])
     }, [categoryOptionCandidates])
@@ -285,24 +288,12 @@ export const HelpCenterCategoryEdit = ({
         setParentCategory(Number(categoryId))
 
     const handleOnSearchChange = (text: string) => {
-        if (text) {
-            setParentOptions([
-                ...categoryOptionCandidates.map((category) =>
-                    getCategoryDropdownOption(category)
-                ),
-            ])
-        } else {
-            setParentOptions([
-                ...categoryOptionCandidates.map((category) =>
-                    getCategoryDropdownOption(category)
-                ),
-                {
-                    value: 0,
-                    label: 'Clear selection',
-                },
-            ])
-        }
-        setSelectFieldClassName(text ? css['filteredParents'] : '')
+        setIsFirstOptionHidden(!!text)
+        setIsClearSelectionButtonHidden(
+            !!text &&
+                clearSelectionText.toLowerCase().indexOf(text.toLowerCase()) >
+                    -1
+        )
     }
 
     const copyURL = () => {
@@ -387,7 +378,7 @@ export const HelpCenterCategoryEdit = ({
                                 boundariesElement="body"
                             >
                                 Make this category a sub-category by adding a
-                                parent
+                                parent.
                             </Tooltip>
                         </Label>
                         <SelectField
@@ -395,7 +386,12 @@ export const HelpCenterCategoryEdit = ({
                             id="parentCategory"
                             dropdownMenuClassName={classNames(
                                 css['parentDropdown'],
-                                selectFieldClassName
+                                {
+                                    [css['hideFirstOption']]:
+                                        isFirstOptionHidden,
+                                    [css['hideClearSelection']]:
+                                        isClearSelectionButtonHidden,
+                                }
                             )}
                             value={
                                 parentCategory && categoriesById[parentCategory]

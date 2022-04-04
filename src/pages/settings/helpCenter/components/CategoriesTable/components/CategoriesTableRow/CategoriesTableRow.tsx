@@ -120,8 +120,6 @@ const DroppableCategoriesTableRow = ({
 
     const handleOnActionClick = useCallback(
         (ev: MouseEvent, name: string) => {
-            if (!category) return
-
             if (name === 'categorySettings') {
                 categoryModal.openModal(MODALS.CATEGORY, false, category)
                 return
@@ -411,9 +409,11 @@ export const CategoriesTableRow = ({
         <BodyCell
             className={css['cell']}
             innerClassName={bodyInnerClass}
-            onClick={() =>
-                (hasArticles || hasSubcategories) && setOpen(!isOpen)
-            }
+            onClick={() => {
+                if (hasArticles || hasSubcategories) {
+                    setOpen(!isOpen)
+                }
+            }}
         >
             {caret}
             <span
