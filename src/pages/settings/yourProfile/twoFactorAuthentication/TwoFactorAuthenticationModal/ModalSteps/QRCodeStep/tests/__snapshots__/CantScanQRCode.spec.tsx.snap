@@ -5,11 +5,12 @@ exports[`<CantScanQRCode /> render() should render the component with extra hidd
   <div
     class="cantScanQrCodeContainer"
   >
-    <span
-      class="link"
+    <button
+      class="wrapper ghost primary medium"
+      type="button"
     >
       Can't scan the QR code?
-    </span>
+    </button>
   </div>
 </div>
 `;
@@ -19,135 +20,155 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
   <div
     class="cantScanQrCodeContainer"
   >
-    <span
-      class="link"
+    <button
+      class="wrapper ghost primary medium"
+      type="button"
     >
       Can't scan the QR code?
-    </span>
+    </button>
   </div>
   <div
-    style="margin-top: 8px;"
+    class="mt-2"
   >
-    Manually enter the information below into your authenticator app:
     <div
-      class="form-group"
+      class="mb-2"
     >
+      Manually enter the information below into your authenticator app:
+    </div>
+    <div>
       <label
-        class="control-label"
+        class="label control-label mb-2"
         for="authenticatorField0"
       >
         Secret key
       </label>
-      <div
-        class="input-group"
+      <span
+        class="mb-3 full-width wrapper group horizontal"
       >
-        <input
-          class="form-control"
-          id="authenticatorField0"
-          readonly=""
-          type="text"
-          value="foo_secret"
-        />
         <div
-          class="input-group-append"
+          class="full-width"
         >
-          <button
-            class="copy-authenticator-field btn btn-secondary"
-            data-clipboard-target="#authenticatorField0"
+          <div
+            class="wrapper"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                file_copy
-              </i>
-              Copy
-            </span>
-          </button>
+            <input
+              appendposition="left"
+              class="input nested"
+              id="authenticatorField0"
+              name="authenticatorField0"
+              readonly=""
+              type="text"
+              value="foo_secret"
+            />
+          </div>
         </div>
-      </div>
+        <button
+          class="wrapper copy-authenticator-field fill secondary medium right isAuxiliaryButton"
+          data-clipboard-target="#authenticatorField0"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              file_copy
+            </i>
+            Copy
+          </span>
+        </button>
+      </span>
     </div>
-    <div
-      class="form-group"
-    >
+    <div>
       <label
-        class="control-label"
+        class="label control-label mb-2"
         for="authenticatorField1"
       >
         Account name
       </label>
-      <div
-        class="input-group"
+      <span
+        class="mb-3 full-width wrapper group horizontal"
       >
-        <input
-          class="form-control"
-          id="authenticatorField1"
-          readonly=""
-          type="text"
-          value="foo@email.com"
-        />
         <div
-          class="input-group-append"
+          class="full-width"
         >
-          <button
-            class="copy-authenticator-field btn btn-secondary"
-            data-clipboard-target="#authenticatorField1"
+          <div
+            class="wrapper"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                file_copy
-              </i>
-              Copy
-            </span>
-          </button>
+            <input
+              appendposition="left"
+              class="input nested"
+              id="authenticatorField1"
+              name="authenticatorField1"
+              readonly=""
+              type="text"
+              value="foo@email.com"
+            />
+          </div>
         </div>
-      </div>
+        <button
+          class="wrapper copy-authenticator-field fill secondary medium right isAuxiliaryButton"
+          data-clipboard-target="#authenticatorField1"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              file_copy
+            </i>
+            Copy
+          </span>
+        </button>
+      </span>
     </div>
-    <div
-      class="form-group"
-    >
+    <div>
       <label
-        class="control-label"
+        class="label control-label mb-2"
         for="authenticatorField2"
       >
         URL
       </label>
-      <div
-        class="input-group"
+      <span
+        class="mb-3 full-width wrapper group horizontal"
       >
-        <input
-          class="form-control"
-          id="authenticatorField2"
-          readonly=""
-          type="text"
-          value="otpauth://foo-uri-authenticator"
-        />
         <div
-          class="input-group-append"
+          class="full-width"
         >
-          <button
-            class="copy-authenticator-field btn btn-secondary"
-            data-clipboard-target="#authenticatorField2"
+          <div
+            class="wrapper"
           >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                file_copy
-              </i>
-              Copy
-            </span>
-          </button>
+            <input
+              appendposition="left"
+              class="input nested"
+              id="authenticatorField2"
+              name="authenticatorField2"
+              readonly=""
+              type="text"
+              value="otpauth://foo-uri-authenticator"
+            />
+          </div>
         </div>
-      </div>
+        <button
+          class="wrapper copy-authenticator-field fill secondary medium right isAuxiliaryButton"
+          data-clipboard-target="#authenticatorField2"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              file_copy
+            </i>
+            Copy
+          </span>
+        </button>
+      </span>
     </div>
   </div>
 </div>

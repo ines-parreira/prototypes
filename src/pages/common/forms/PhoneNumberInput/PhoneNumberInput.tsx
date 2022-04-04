@@ -101,8 +101,8 @@ const PhoneNumberInput = ({
             setCurrentCountry(country)
             setCountrySelectVisible(false)
             number === ''
-                ? onChange('')
-                : onChange(buildInternationalNumber(number, country))
+                ? onChange?.('')
+                : onChange?.(buildInternationalNumber(number, country))
         },
         [onChange, setCurrentCountry]
     )

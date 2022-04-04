@@ -807,11 +807,12 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               <div
                 class="cantScanQrCodeContainer"
               >
-                <span
-                  class="link"
+                <button
+                  class="wrapper ghost primary medium"
+                  type="button"
                 >
                   Can't scan the QR code?
-                </span>
+                </button>
               </div>
             </div>
             <div
@@ -1054,11 +1055,12 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               <div
                 class="cantScanQrCodeContainer"
               >
-                <span
-                  class="link"
+                <button
+                  class="wrapper ghost primary medium"
+                  type="button"
                 >
                   Can't scan the QR code?
-                </span>
+                </button>
               </div>
             </div>
             <div
@@ -1178,11 +1180,12 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR c
               <div
                 class="cantScanQrCodeContainer"
               >
-                <span
-                  class="link"
+                <button
+                  class="wrapper ghost primary medium"
+                  type="button"
                 >
                   Can't scan the QR code?
-                </span>
+                </button>
               </div>
             </div>
             <div

@@ -1,14 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import {
-    Button,
-    FormGroup,
-    Input,
-    InputGroup,
-    InputGroupAddon,
-    Label,
-} from 'reactstrap'
 import Clipboard from 'clipboard'
-import {AuthenticatorData} from '../../../../../../../models/twoFactorAuthentication/types'
+import Label from 'pages/common/forms/Label/Label'
+import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
+import InputGroup from 'pages/common/forms/input/InputGroup'
+import Button from 'pages/common/components/button/Button'
+import InputField from 'pages/common/forms/input/InputField'
 import ButtonIconLabel from '../../../../../../common/components/button/ButtonIconLabel'
 import css from './CantScanQRCode.less'
 
@@ -59,30 +55,34 @@ export default function CantScanQRCode({authenticatorData}: OwnProps) {
     return (
         <>
             <div className={css.cantScanQrCodeContainer}>
-                <span
-                    className={css.link}
+                <Button
+                    fillStyle="ghost"
+                    intent="primary"
                     onClick={() =>
                         setDisplayAuthenticatorData(!displayAuthenticatorData)
                     }
                 >
                     Can't scan the QR code?
-                </span>
+                </Button>
             </div>
             {displayAuthenticatorData && (
-                <div style={{marginTop: '8px'}}>
-                    Manually enter the information below into your authenticator
-                    app:
+                <div className="mt-2">
+                    <div className="mb-2">
+                        Manually enter the information below into your
+                        authenticator app:
+                    </div>
                     {Object.entries(authenticatorDataKeyLabelMapper).map(
                         ([key, label], index) => (
-                            <FormGroup key={index}>
+                            <div key={index}>
                                 <Label
-                                    className="control-label"
-                                    for={`authenticatorField${index}`}
+                                    className="control-label mb-2"
+                                    htmlFor={`authenticatorField${index}`}
                                 >
                                     {label}
                                 </Label>
-                                <InputGroup>
-                                    <Input
+                                <InputGroup className="mb-3 full-width">
+                                    <InputField
+                                        className="full-width"
                                         id={`authenticatorField${index}`}
                                         type="text"
                                         value={
@@ -92,23 +92,22 @@ export default function CantScanQRCode({authenticatorData}: OwnProps) {
                                         }
                                         readOnly
                                     />
-                                    <InputGroupAddon addonType="append">
-                                        <Button
-                                            className="copy-authenticator-field"
-                                            data-clipboard-target={`#authenticatorField${index}`}
-                                        >
-                                            <ButtonIconLabel icon="file_copy">
-                                                {copiedAuthenticatorField ===
-                                                authenticatorData[
-                                                    key as keyof AuthenticatorData
-                                                ]
-                                                    ? 'Copied!'
-                                                    : 'Copy'}
-                                            </ButtonIconLabel>
-                                        </Button>
-                                    </InputGroupAddon>
+                                    <Button
+                                        intent="secondary"
+                                        className="copy-authenticator-field"
+                                        data-clipboard-target={`#authenticatorField${index}`}
+                                    >
+                                        <ButtonIconLabel icon="file_copy">
+                                            {copiedAuthenticatorField ===
+                                            authenticatorData[
+                                                key as keyof AuthenticatorData
+                                            ]
+                                                ? 'Copied!'
+                                                : 'Copy'}
+                                        </ButtonIconLabel>
+                                    </Button>
                                 </InputGroup>
-                            </FormGroup>
+                            </div>
                         )
                     )}
                 </div>

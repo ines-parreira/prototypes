@@ -25,7 +25,7 @@ type Props = {
     isRequired?: boolean
     leftIcon?: ReactElement<ComponentProps<typeof IconInput>, typeof IconInput>
     rightIcon?: ReactElement<ComponentProps<typeof IconInput>, typeof IconInput>
-    onChange: (nextValue: string) => void
+    onChange?: (nextValue: string) => void
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'disabled' | 'onChange' | 'required'
@@ -78,7 +78,7 @@ function TextInput(
                 value={value}
                 id={inputId}
                 name={inputId}
-                onChange={(event) => onChange(event.target.value)}
+                onChange={(event) => onChange?.(event.target.value)}
                 required={isRequired}
                 disabled={context?.isDisabled || isDisabled}
                 ref={ref}
