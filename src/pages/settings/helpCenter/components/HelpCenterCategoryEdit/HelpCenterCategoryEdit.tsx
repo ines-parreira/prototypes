@@ -57,8 +57,10 @@ import {
 import {getCategoryDropdownOption} from '../articles/ArticleCategorySelect/hooks/useCategoriesOptions'
 import {ConfirmationModal} from '../ConfirmationModal'
 import {SearchEnginePreview} from '../SearchEnginePreview'
-import css from './HelpCenterCategoryEdit.less'
+import {CloseModal} from '../articles/CloseModal'
 import {eligibleParentCategories} from './utils'
+
+import css from './HelpCenterCategoryEdit.less'
 
 type Props = {
     isOpen: boolean
@@ -123,6 +125,8 @@ export const HelpCenterCategoryEdit = ({
         () => eligibleParentCategories(categories, locale, category),
         [categories, locale, category]
     )
+    const [hasPendingChanges, setHasPendingChanges] = useState(false)
+    const [isAttemptingToClose, setIsAttemptingToClose] = useState(false)
 
     const domain = useMemo(() => getHelpCenterDomain(helpCenter), [helpCenter])
 
@@ -235,6 +239,8 @@ export const HelpCenterCategoryEdit = ({
         if (isPristineSlug) {
             setSlug(slugify(ev.target.value))
         }
+
+        setHasPendingChanges(true)
     }
 
     const handleChangeSlug = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -243,13 +249,28 @@ export const HelpCenterCategoryEdit = ({
         if (isPristineSlug) {
             setPristineSlug(false)
         }
+        setHasPendingChanges(true)
     }
 
     const handleChangeDescription = (ev: ChangeEvent<HTMLInputElement>) => {
         setDescription(ev.target.value)
+        setHasPendingChanges(true)
+    }
+
+    const handleChangeMetaTitle = (metaTitle: string | null) => {
+        setMetaTitle(metaTitle)
+        setHasPendingChanges(true)
+    }
+
+    const handleChangeMetaDescription = (metaDescription: string | null) => {
+        setMetaDescription(metaDescription)
+        setHasPendingChanges(true)
     }
 
     const handleOnSave = () => {
+        setIsAttemptingToClose(false)
+        setHasPendingChanges(false)
+
         if (isCreate) {
             onCreate?.({
                 parent_category_id: parentCategory,
@@ -284,9 +305,24 @@ export const HelpCenterCategoryEdit = ({
         )
     }
 
-    const handleOnParentChange = (categoryId: Value) =>
-        setParentCategory(Number(categoryId))
+    const handleDiscard = () => {
+        onClose()
+        setHasPendingChanges(false)
+        setIsAttemptingToClose(false)
+    }
 
+    const handleCloseModalAttempt = () => {
+        if (hasPendingChanges) {
+            setIsAttemptingToClose(true)
+        } else {
+            onClose()
+        }
+    }
+
+    const handleChangeParent = (categoryId: Value) => {
+        setParentCategory(Number(categoryId))
+        setHasPendingChanges(true)
+    }
     const handleOnSearchChange = (text: string) => {
         setIsFirstOptionHidden(!!text)
         setIsClearSelectionButtonHidden(
@@ -317,8 +353,16 @@ export const HelpCenterCategoryEdit = ({
     const slugPrefix = getCategoryUrl({domain, locale})
     const slugSuffix = category?.id ? `-${category.id.toString()}` : ''
 
-    const content = () => (
-        <>
+    return (
+        <Drawer
+            name="category-edit"
+            open={isOpen}
+            fullscreen={screenSize === SCREEN_SIZE.SMALL}
+            isLoading={isLoading}
+            portalRootId="app-root"
+            onBackdropClick={handleCloseModalAttempt}
+            transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
+        >
             <Drawer.Header>
                 <h3>Category Settings</h3>
                 <Drawer.HeaderActions>
@@ -402,7 +446,7 @@ export const HelpCenterCategoryEdit = ({
                             fullWidth
                             options={parentOptions}
                             placeholder="Category parent"
-                            onChange={handleOnParentChange}
+                            onChange={handleChangeParent}
                             onSearchChange={handleOnSearchChange}
                         />
                     </FormGroup>
@@ -476,7 +520,7 @@ export const HelpCenterCategoryEdit = ({
                     name="seoTitle"
                     label="Meta Title"
                     value={metaTitle}
-                    onChange={setMetaTitle}
+                    onChange={handleChangeMetaTitle}
                     populateLabel="Use the same as Title"
                     populateValue={title}
                     help="SEO Title tag is how your category is going to be displayed in Search Engines."
@@ -487,7 +531,7 @@ export const HelpCenterCategoryEdit = ({
                     name="seoDescription"
                     label="Meta Description"
                     value={metaDescription}
-                    onChange={setMetaDescription}
+                    onChange={handleChangeMetaDescription}
                     populateLabel="Use the same as Description"
                     populateValue={description}
                     help="Category description is displayed in search engines to help people find it."
@@ -565,20 +609,22 @@ export const HelpCenterCategoryEdit = ({
                     </span>
                 </ConfirmationModal>
             )}
-        </>
-    )
-
-    return (
-        <Drawer
-            name="category-edit"
-            open={isOpen}
-            fullscreen={screenSize === SCREEN_SIZE.SMALL}
-            isLoading={isLoading}
-            portalRootId="app-root"
-            onBackdropClick={onClose}
-            transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
-        >
-            {content()}
+            <CloseModal
+                isOpen={hasPendingChanges && isAttemptingToClose}
+                title={<span>Are you sure?</span>}
+                style={{width: '100%', maxWidth: 500}}
+                saveText="Save category"
+                editText="Edit category"
+                discardText="Discard changes"
+                onDiscard={handleDiscard}
+                onContinueEditing={() => setIsAttemptingToClose(false)}
+                onSave={handleOnSave}
+            >
+                <span>
+                    If you close this category, you'll lose all changes made. Do
+                    you want to save them?
+                </span>
+            </CloseModal>
         </Drawer>
     )
 }

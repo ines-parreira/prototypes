@@ -1,9 +1,9 @@
 import React from 'react'
 import {act, fireEvent, render} from '@testing-library/react'
 
-import {CloseArticleModal} from '../CloseArticleModal'
+import {CloseModal} from '../CloseModal'
 
-describe('<CloseArticleModal />', () => {
+describe('<CloseModal />', () => {
     const handleOnSave = jest.fn()
     const handleOnEdit = jest.fn()
     const handleOnDiscard = jest.fn()
@@ -14,15 +14,21 @@ describe('<CloseArticleModal />', () => {
 
     it('matches snapshot', () => {
         const {container} = render(
-            <CloseArticleModal
+            <CloseModal
                 isOpen
                 title="Are you sure?"
+                saveText="Save label"
+                discardText="Discard label"
+                editText="Edit label"
                 onSave={handleOnSave}
                 onContinueEditing={handleOnEdit}
                 onDiscard={handleOnDiscard}
             >
                 Test content
-            </CloseArticleModal>
+            </CloseModal>,
+            {
+                container: document.body,
+            }
         )
 
         expect(container).toMatchSnapshot()
@@ -30,15 +36,18 @@ describe('<CloseArticleModal />', () => {
 
     it('calls the onSave callback', () => {
         const {getByRole} = render(
-            <CloseArticleModal
+            <CloseModal
                 isOpen
                 title="Are you sure?"
+                saveText="Save label"
+                discardText="Discard label"
+                editText="Edit label"
                 onSave={handleOnSave}
                 onContinueEditing={handleOnEdit}
                 onDiscard={handleOnDiscard}
             >
                 Test content
-            </CloseArticleModal>
+            </CloseModal>
         )
 
         act(() => {
@@ -50,15 +59,18 @@ describe('<CloseArticleModal />', () => {
 
     it('calls the onContinueEditing callback', () => {
         const {getByRole} = render(
-            <CloseArticleModal
+            <CloseModal
                 isOpen
                 title="Are you sure?"
+                saveText="Save label"
+                discardText="Discard label"
+                editText="Edit label"
                 onSave={handleOnSave}
                 onContinueEditing={handleOnEdit}
                 onDiscard={handleOnDiscard}
             >
                 Test content
-            </CloseArticleModal>
+            </CloseModal>
         )
 
         act(() => {
@@ -70,15 +82,18 @@ describe('<CloseArticleModal />', () => {
 
     it('calls the onDiscard callback', () => {
         const {getByRole} = render(
-            <CloseArticleModal
+            <CloseModal
                 isOpen
                 title="Are you sure?"
+                saveText="Save label"
+                discardText="Discard label"
+                editText="Edit label"
                 onSave={handleOnSave}
                 onContinueEditing={handleOnEdit}
                 onDiscard={handleOnDiscard}
             >
                 Test content
-            </CloseArticleModal>
+            </CloseModal>
         )
 
         act(() => {

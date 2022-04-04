@@ -43,7 +43,7 @@ import {ArticleMode, getArticleMode} from '../types/articleMode'
 import {useEditionManager} from '../providers/EditionManagerContext'
 
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
-import {CloseArticleModal} from './articles/CloseArticleModal'
+import {CloseModal} from './articles/CloseModal'
 import {DiscardChangesModal} from './articles/DiscardChangesModal'
 import HelpCenterEditModal from './articles/HelpCenterEditModal'
 import {ArticlesTable} from './ArticlesTable'
@@ -766,13 +766,16 @@ export const HelpCenterArticlesView: React.FC = () => {
             </HelpCenterEditModal>
 
             {isPendingCloseArticle && (
-                <CloseArticleModal
+                <CloseModal
                     isOpen={
                         !!isPendingCloseArticle &&
                         (canSaveArticle || isEditorCodeViewActive)
                     }
                     title={<span>Are you sure?</span>}
                     style={{width: '100%', maxWidth: 500}}
+                    saveText="Save article"
+                    discardText="Discard changes"
+                    editText="Edit article"
                     onDiscard={onConfirmDiscardChanges}
                     onContinueEditing={onConfirmEditing}
                     onSave={onConfirmSaveArticle}
@@ -783,7 +786,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                             <span>Do you want to save them?</span>
                         )}
                     </span>
-                </CloseArticleModal>
+                </CloseModal>
             )}
 
             {isPendingDiscardChanges && (

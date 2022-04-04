@@ -3,25 +3,31 @@ import classNames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 
-import Modal from '../../../../../common/components/Modal'
+import Modal from 'pages/common/components/Modal'
 
-import css from './CloseArticleModal.less'
+import css from './CloseModal.less'
 
 export type ConfirmationModalProps = {
     children: React.ReactNode
     isOpen: boolean
     style?: React.CSSProperties
     title: React.ReactNode
+    saveText: string
+    discardText: string
+    editText: string
     onDiscard: () => void
     onContinueEditing: () => void
     onSave?: () => void
 }
 
-export const CloseArticleModal = ({
+export const CloseModal = ({
     children,
     isOpen,
     style,
     title,
+    saveText,
+    discardText,
+    editText,
     onDiscard,
     onContinueEditing,
     onSave,
@@ -36,18 +42,18 @@ export const CloseArticleModal = ({
             footer={
                 <div className={css.footerWrapper}>
                     <Button intent="destructive" onClick={onDiscard}>
-                        Discard changes
+                        {discardText}
                     </Button>
                     <div>
                         <Button intent="secondary" onClick={onContinueEditing}>
-                            Edit article
+                            {editText}
                         </Button>
                         {onSave && (
                             <Button
                                 className={classNames('ml-3', css.confirmBtn)}
                                 onClick={onSave}
                             >
-                                Save article
+                                {saveText}
                             </Button>
                         )}
                     </div>

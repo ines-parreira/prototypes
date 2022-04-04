@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CloseModal /> matches snapshot 1`] = `
+<body
+  class="modal-open"
+>
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog centered"
+          role="document"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Are you sure?
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              Test content
+            </div>
+            <div
+              class="actions modal-footer"
+            >
+              <div
+                class="footerWrapper"
+              >
+                <button
+                  class="wrapper fill destructive medium"
+                  type="button"
+                >
+                  Discard label
+                </button>
+                <div>
+                  <button
+                    class="wrapper fill secondary medium"
+                    type="button"
+                  >
+                    Edit label
+                  </button>
+                  <button
+                    class="wrapper ml-3 confirmBtn fill primary medium"
+                    type="button"
+                  >
+                    Save label
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
