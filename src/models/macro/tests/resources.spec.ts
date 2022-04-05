@@ -104,7 +104,11 @@ describe('macro resources', () => {
     })
 
     describe('createMacro', () => {
-        const macroDraftMock = _pick(macrosFixtures[0], ['actions', 'name'])
+        const macroDraftMock = _pick(macrosFixtures[0], [
+            'actions',
+            'name',
+            'language',
+        ])
 
         it('should resolve with a new Macro on success', async () => {
             mockedServer.onPost('/api/macros/').reply(200, macrosFixtures[0])

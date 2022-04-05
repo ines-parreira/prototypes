@@ -4,22 +4,6 @@ exports[`<TicketMacros /> should display macros list, and selected macro 1`] = `
 <div
   class="component"
 >
-  <a
-    class="clearMacros"
-    id="clear-macro-button"
-  >
-    <i
-      class="material-icons d-none d-md-inline-block"
-    >
-      close
-    </i>
-    <button
-      class="wrapper d-md-none fill secondary small"
-      type="button"
-    >
-      Close
-    </button>
-  </a>
   <div
     class="content"
   >

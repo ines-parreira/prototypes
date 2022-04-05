@@ -64,6 +64,7 @@ export enum SegmentEvent {
     MacrosQuickReplyTooltip = 'macros-quick-reply-tooltip',
     MacrosQuickReplyGetDetails = 'macros-quick-reply-get-details',
     MacrosQuickReplySent = 'macros-quick-reply-sent',
+    MacrosFilterChanged = 'macros-filter-changed',
     NavbarViewMoved = 'navbar-view-moved',
     NavbarViewToggled = 'navbar-view-toggled',
     OnboardingWidgetClicked = 'onboarding-widget-clicked',

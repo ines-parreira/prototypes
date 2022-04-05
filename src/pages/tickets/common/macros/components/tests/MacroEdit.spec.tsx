@@ -1,9 +1,23 @@
 import React, {ComponentProps} from 'react'
-import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
+import {render} from '@testing-library/react'
 
 import {MacroEdit} from '../MacroEdit'
+
+// To avoid snapshoting all languages
+jest.mock('constants/languages', () => {
+    const module: Record<string, unknown> = jest.requireActual(
+        'constants/languages'
+    )
+    return {
+        ...module,
+        ISO639English: {
+            aa: 'Afar',
+            ab: 'Abkhazian',
+        },
+    }
+})
 
 describe('MacroEdit component', () => {
     const defaultProps = {
@@ -17,17 +31,15 @@ describe('MacroEdit component', () => {
     } as any as ComponentProps<typeof MacroEdit>
 
     it('should render the macro edit form', () => {
-        const component = mount(<MacroEdit {...defaultProps} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(<MacroEdit {...defaultProps} />)
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should change name input value', () => {
-        const component = mount(
+        const {getByDisplayValue} = render(
             <MacroEdit {...defaultProps} name="Pizza Capricciosa" />
         )
 
-        expect(component.find('input#id-name').props().value).toBe(
-            'Pizza Capricciosa'
-        )
+        expect(getByDisplayValue('Pizza Capricciosa'))
     })
 })

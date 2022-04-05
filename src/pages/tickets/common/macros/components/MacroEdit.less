@@ -2,8 +2,8 @@
 
 :local {
     .title {
-        font-weight: 500;
-        font-size: 17px;
+        font-weight: 600;
+        font-size: 14px;
     }
 
     .dropdown {
@@ -20,5 +20,13 @@
         color: @classic-neutral-grey-4;
         font-size: 0.9rem;
         margin-bottom: 10px;
+    }
+
+    .languageDetected div > span {
+        font-weight: 500;
+        &::after {
+            content: ' - detected';
+            font-weight: 300;
+        }
     }
 }

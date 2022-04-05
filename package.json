@@ -40,6 +40,7 @@
     "license": "UNLICENSED",
     "dependencies": {
         "@datadog/browser-logs": "2.0.3",
+        "@formatjs/intl-displaynames": "5.4.3",
         "@formatjs/intl-numberformat": "5.5.0",
         "@formatjs/intl-pluralrules": "3.4.7",
         "@hot-loader/react-dom": "16.13.0",
@@ -250,7 +251,7 @@
     },
     "resolutions": {
         "@types/react": "16.14.0",
-        "@formatjs/ecma402-abstract": "1.2.2",
+        "@formatjs/ecma402-abstract": "1.11.4",
         "jquery": "3.5.1"
     },
     "engines": {

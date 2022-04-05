@@ -7,6 +7,11 @@ import {ContentState} from 'draft-js'
 
 import {clearMacroBeforeApply} from 'business/macro'
 import RichField from 'pages/common/forms/RichField/RichField'
+import {
+    fetchMacros,
+    fetchMacrosParamsTypes,
+    MacrosSearchResult,
+} from 'state/macro/actions'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
@@ -16,7 +21,6 @@ import {
 } from 'pages/tickets/common/macros/utils'
 import shortcutManager from 'services/shortcutManager/index'
 import {getPreferences} from 'state/currentUser/selectors'
-import {fetchMacros, fetchMacrosParamsTypes} from 'state/macro/actions'
 import {getNewMessageType, isCacheAdded} from 'state/newMessage/selectors'
 import {notify} from 'state/notifications/actions'
 import {applyMacro} from 'state/ticket/actions'
@@ -25,6 +29,7 @@ import {RootState} from 'state/types'
 
 import TicketMacros from './TicketMacros'
 import TicketReply from './TicketReply'
+import TicketMacrosSearch from './TicketMacrosSearch'
 import css from './TicketReplyArea.less'
 
 const CONTENT_STATE_PATH = ['state', 'contentState']
@@ -42,13 +47,11 @@ type Props = {
 type State = {
     hasShownMacros: boolean
     isInitialMacrosLoading: boolean
-    macros: List<any>
-    macroSearchQuery: string
+    searchParams: fetchMacrosParamsTypes
+    searchResults: MacrosSearchResult
     macrosVisible: boolean
-    page: number
     selectedMacroId?: Maybe<number>
     shouldFocusEditor: boolean
-    totalPages: number
 }
 
 export class TicketReplyArea extends Component<Props, State> {
@@ -59,12 +62,22 @@ export class TicketReplyArea extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
 
+        const languages = this.props.ticket.get('language')
+            ? [this.props.ticket.get('language'), null]
+            : []
+
         this.state = {
-            macros: fromJS([]),
-            page: 1,
-            totalPages: 1,
+            searchParams: {
+                search: '',
+                page: 1,
+                languages,
+            },
+            searchResults: {
+                page: 1,
+                totalPages: 1,
+                macros: fromJS([]),
+            },
             macrosVisible: false,
-            macroSearchQuery: '',
             selectedMacroId: undefined,
             isInitialMacrosLoading: false,
             shouldFocusEditor: false,
@@ -75,7 +88,7 @@ export class TicketReplyArea extends Component<Props, State> {
     async componentDidMount() {
         this.bindKeys()
         this.setState({isInitialMacrosLoading: true})
-        await this.loadMacros()
+        await this.loadMacros(this.state.searchParams)
         this.setState({isInitialMacrosLoading: false})
     }
 
@@ -118,7 +131,7 @@ export class TicketReplyArea extends Component<Props, State> {
             : true
 
         return (
-            this.state.macros.size > 0 &&
+            this.state.searchResults.macros.size > 0 &&
             (this.props.newMessage.getIn(['newMessage', 'body_text']) as string)
                 .length < 3 &&
             !this.props.ticket.getIn(['state', 'appliedMacro']) &&
@@ -171,25 +184,27 @@ export class TicketReplyArea extends Component<Props, State> {
         }
     }
 
-    loadMacros = async ({
-        search = '',
-        page = 1,
-    }: fetchMacrosParamsTypes = {}): Promise<void> => {
+    loadMacros = async (
+        searchParams: fetchMacrosParamsTypes = {
+            search: '',
+            page: 1,
+        }
+    ): Promise<void> => {
         const ticketId = this.props.currentTicket.get('id')
         const commonFilters = {
-            currentMacros: this.state.macros,
-            currentPage: this.state.page,
-            search,
-            page,
+            ...searchParams,
+            currentMacros: this.state.searchResults.macros,
+            currentPage: this.state.searchResults.page,
         }
-        const orderDir = 'desc'
-        let orderBy = 'usage'
-        let filters = {}
+        const orderDir = 'asc'
+        const orderBy = 'name'
+        let filters: fetchMacrosParamsTypes = {}
 
         if (ticketId) {
-            orderBy = 'relevance'
             filters = {
-                ticketId: this.props.currentTicket.get('id'),
+                ...filters,
+                numberPredictions: 3,
+                ticketId: ticketId,
                 messageId: this.props.currentTicket.getIn([
                     'messages',
                     (this.props.currentTicket.get('messages') as List<any>)
@@ -216,9 +231,11 @@ export class TicketReplyArea extends Component<Props, State> {
             this.setState(
                 {
                     selectedMacroId,
-                    macros: res.macros,
-                    page: res.page,
-                    totalPages: res.totalPages,
+                    searchResults: {
+                        macros: res.macros,
+                        page: res.page,
+                        totalPages: res.totalPages,
+                    },
                 },
                 resolve
             )
@@ -257,7 +274,7 @@ export class TicketReplyArea extends Component<Props, State> {
                 action: (e) => {
                     e.preventDefault()
                     if (this.shouldDisplayQuickReply()) {
-                        const macros = this.state.macros
+                        const macros = this.state.searchResults.macros
                         const macroIdx =
                             parseInt((e as KeyboardEvent).code.slice(-1)) - 1
                         if (macros.size > macroIdx) {
@@ -270,7 +287,7 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     handleSearchKeyDown = (e: KeyboardEventReact) => {
-        const {macros} = this.state
+        const {macros} = this.state.searchResults
         const macrosIds = macros
             .map((macro: Map<any, any>) => macro.get('id') as number)
             .toList()
@@ -311,12 +328,14 @@ export class TicketReplyArea extends Component<Props, State> {
 
     debounceLoadMacros = _debounce(this.loadMacros, 350)
 
-    searchMacros = (e: {target: {value: string}}) => {
-        const search = e.target.value || ''
-        this.setState({macroSearchQuery: search})
+    searchMacros = (searchParams: fetchMacrosParamsTypes = {}) => {
+        this.setState({searchParams: searchParams})
 
-        if (!search.trim().length || search.trim().length > 1) {
-            void this.debounceLoadMacros({search, page: 1})
+        if (
+            !searchParams.search?.trim().length ||
+            searchParams.search.trim().length > 1
+        ) {
+            void this.debounceLoadMacros({...searchParams, page: 1})
         }
     }
 
@@ -350,15 +369,13 @@ export class TicketReplyArea extends Component<Props, State> {
 
     render() {
         const {
-            totalPages,
-            macros,
-            macroSearchQuery,
+            searchParams,
+            searchResults,
             isInitialMacrosLoading,
             macrosVisible,
-            page,
         } = this.state
         const currentMacro = getCurrentMacro(
-            this.state.macros,
+            this.state.searchResults.macros,
             this.state.selectedMacroId
         )
         const {currentTicket, newMessageType} = this.props
@@ -374,26 +391,16 @@ export class TicketReplyArea extends Component<Props, State> {
                     [css.macrosVisible]: this.state.macrosVisible,
                 })}
             >
-                <div className={css.search}>
-                    <i
-                        className={classnames(
-                            css.searchIcon,
-                            'material-icons md-2 text-info'
-                        )}
-                    >
-                        bolt
-                    </i>
-                    <input
-                        ref={(macroInput) => (this.macroInput = macroInput)}
-                        className={css.input}
-                        tabIndex={3}
-                        onChange={this.searchMacros}
-                        onKeyDown={this.handleSearchKeyDown}
-                        onFocus={this.showMacros}
-                        placeholder="Search macros by name, tags or body..."
-                        disabled={requireCustomerSelection}
-                    />
-                </div>
+                <TicketMacrosSearch
+                    setFocus={(input) => (this.macroInput = input)}
+                    searchParams={searchParams}
+                    macrosVisible={macrosVisible}
+                    searchMacros={this.searchMacros}
+                    showMacros={this.showMacros}
+                    handleSearchKeyDown={this.handleSearchKeyDown}
+                    requireCustomerSelection={requireCustomerSelection}
+                    onClearMacro={this.hideMacrosAndFocusEditor}
+                />
                 <div className={css.content}>
                     {requireCustomerSelection ? (
                         <div
@@ -417,15 +424,14 @@ export class TicketReplyArea extends Component<Props, State> {
                         </div>
                     ) : macrosVisible ? (
                         <TicketMacros
-                            macros={macros}
-                            page={page}
+                            macros={searchResults.macros}
+                            page={searchResults.page}
                             isInitialMacrosLoading={isInitialMacrosLoading}
-                            totalPages={totalPages}
+                            totalPages={searchResults.totalPages}
                             currentMacro={currentMacro}
                             selectMacro={this.setSelectedMacroId}
                             fetchMacros={this.loadMacros}
-                            searchQuery={macroSearchQuery}
-                            onClearMacro={this.hideMacrosAndFocusEditor}
+                            searchParams={searchParams}
                             applyMacro={this.applyMacro}
                         />
                     ) : (
@@ -436,7 +442,7 @@ export class TicketReplyArea extends Component<Props, State> {
                                 'appliedMacro',
                             ])}
                             richAreaRef={(ref) => (this.richArea = ref)}
-                            macros={this.state.macros}
+                            macros={this.state.searchResults.macros}
                             applyMacro={this.applyMacro}
                             shouldDisplayQuickReply={this.shouldDisplayQuickReply()}
                         />

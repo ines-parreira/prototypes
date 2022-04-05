@@ -1,369 +1,264 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MacroEdit component should render the macro edit form 1`] = `
-<MacroEdit
-  actions={Immutable.List []}
-  agents={Immutable.Map {}}
-  currentMacro={
-    Immutable.Map {
-      "id": 1,
-    }
-  }
-  hasIntegrationOfTypes={[Function]}
-  name="Pizza Pepperoni"
-  setActions={[Function]}
-  setName={[Function]}
->
-  <form>
-    <div>
-      <div>
+<form>
+  <div>
+    <div
+      class="d-flex"
+    >
+      <div
+        class="flex-grow-1 mr-4"
+      >
         <div
-          className="mb-2 title"
+          class="mb-0"
         >
-          Macro name
-        </div>
-        <InputField
-          name="name"
-          onChange={[Function]}
-          required={true}
-          type="text"
-          value="Pizza Pepperoni"
-        >
-          <FormGroup
-            className="InputField required"
-            color=""
-            tag="div"
+          <label
+            class="label label"
+            for="input-text-1"
           >
-            <div
-              className="InputField required form-group"
-              color=""
+            Macro name
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
             >
-              <div
-                className=""
-              >
-                <Input
-                  className="field"
-                  id="id-name"
-                  onChange={[Function]}
-                  required={true}
-                  type="text"
-                  value="Pizza Pepperoni"
-                >
-                  <input
-                    className="field form-control"
-                    id="id-name"
-                    onChange={[Function]}
-                    required={true}
-                    type="text"
-                    value="Pizza Pepperoni"
-                  />
-                </Input>
-              </div>
-            </div>
-          </FormGroup>
-        </InputField>
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-1"
+              name="name"
+              required=""
+              type="text"
+              value="Pizza Pepperoni"
+            />
+          </div>
+        </div>
+        <span
+          class="text-muted form-text"
+        >
+          Name that all agents will see while searching for it.
+        </span>
       </div>
       <div
-        className="mt-3"
+        class="flex-grow-1"
       >
-        <UncontrolledButtonDropdown
-          className="mr-2"
+        <div
+          class="mb-2 title"
         >
-          <ButtonDropdown
-            className="mr-2"
-            isOpen={false}
-            toggle={[Function]}
+          Language
+        </div>
+        <div>
+          <div
+            class="dropdown"
           >
-            <Dropdown
-              a11y={true}
-              active={false}
-              addonType={false}
-              className="mr-2"
-              direction="down"
-              group={true}
-              inNavbar={false}
-              isOpen={false}
-              nav={false}
-              setActiveFromChild={false}
-              toggle={[Function]}
+            <div
+              aria-expanded="false"
+              aria-haspopup="true"
+              class=""
+              data-toggle="dropdown"
             >
-              <Manager>
-                <div
-                  className="mr-2 btn-group"
-                  onKeyDown={[Function]}
+              <div
+                class="select dropdown-toggle selectFullWidth"
+              >
+                <span
+                  class="label"
+                  style="min-width: 82px; opacity: 1;"
                 >
-                  <DropdownToggle
-                    aria-haspopup={true}
-                    caret={true}
-                    color="primary"
-                    type="button"
+                  <span
+                    class="text-muted"
                   >
-                    <Reference>
-                      <InnerReference
-                        setReferenceNode={[Function]}
-                      >
-                        <Button
-                          aria-expanded={false}
-                          aria-haspopup={true}
-                          className="dropdown-toggle"
-                          color="primary"
-                          innerRef={[Function]}
-                          onClick={[Function]}
-                          tag="button"
-                          type="button"
-                        >
-                          <button
-                            aria-expanded={false}
-                            aria-haspopup={true}
-                            aria-label={null}
-                            className="dropdown-toggle btn btn-primary"
-                            onClick={[Function]}
-                            type="button"
-                          >
-                            Add action
-                          </button>
-                        </Button>
-                      </InnerReference>
-                    </Reference>
-                  </DropdownToggle>
-                  <DropdownMenu
-                    className="dropdown"
-                    flip={true}
-                    tag="div"
+                    - No language -
+                  </span>
+                </span>
+                <input
+                  autocomplete="chrome-off"
+                  class="input"
+                  style="min-width: 82px;"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              aria-hidden="true"
+              class="options optionsFullWidth dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              
+              <button
+                class="option option--focused dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  <span
+                    class="material-icons mr-1"
                   >
-                    <div
-                      aria-hidden={true}
-                      className="dropdown dropdown-menu"
-                      role="menu"
-                      tabIndex="-1"
-                    >
-                      <DropdownItem
-                        header={true}
-                        tag="button"
-                        toggle={true}
-                      >
-                        <h6
-                          className="dropdown-header"
-                          onClick={[Function]}
-                          tabIndex="-1"
-                        >
-                          TICKET ACTIONS
-                        </h6>
-                      </DropdownItem>
-                      <DropdownItem
-                        divider={true}
-                        tag="button"
-                        toggle={true}
-                      >
-                        <div
-                          className="dropdown-divider"
-                          onClick={[Function]}
-                          tabIndex="-1"
-                        />
-                      </DropdownItem>
-                      <DropdownItem
-                        key="setResponseText"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          role="menuitem"
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Add response text
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="addAttachments"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          role="menuitem"
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Add attachments
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="addTags"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          role="menuitem"
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Add tags
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="setStatus"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          role="menuitem"
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Set status
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="setAssignee"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          role="menuitem"
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Assign an agent
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="setTeamAssignee"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          role="menuitem"
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Assign a team
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="setSubject"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          role="menuitem"
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Set subject
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="snoozeTicket"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          role="menuitem"
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Snooze for
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="addInternalNote"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          role="menuitem"
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Add internal note
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        divider={true}
-                        tag="button"
-                        toggle={true}
-                      >
-                        <div
-                          className="dropdown-divider"
-                          onClick={[Function]}
-                          tabIndex="-1"
-                        />
-                      </DropdownItem>
-                      <DropdownItem
-                        header={true}
-                        tag="button"
-                        toggle={true}
-                      >
-                        <h6
-                          className="dropdown-header"
-                          onClick={[Function]}
-                          tabIndex="-1"
-                        >
-                          EXTERNAL ACTIONS
-                        </h6>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="http"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          role="menuitem"
-                          tabIndex="0"
-                          type="button"
-                        >
-                          HTTP hook
-                        </button>
-                      </DropdownItem>
-                    </div>
-                  </DropdownMenu>
-                </div>
-              </Manager>
-            </Dropdown>
-          </ButtonDropdown>
-        </UncontrolledButtonDropdown>
+                    auto_awesome
+                  </span>
+                  Auto detect
+                </span>
+              </button>
+              <button
+                class="option dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Afar
+                </span>
+              </button>
+              <button
+                class="option dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  Abkhazian
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <span
+          class="text-muted form-text"
+        >
+          Language in which this macro is written.
+        </span>
       </div>
     </div>
-  </form>
-</MacroEdit>
+    <div
+      class="mt-3"
+    >
+      <div
+        class="mr-2 btn-group"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="dropdown-toggle btn btn-primary"
+          type="button"
+        >
+          Add action
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdown dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          <h6
+            class="dropdown-header"
+            tabindex="-1"
+          >
+            TICKET ACTIONS
+          </h6>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Add response text
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Add attachments
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Add tags
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Set status
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Assign an agent
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Assign a team
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Set subject
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Snooze for
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Add internal note
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <h6
+            class="dropdown-header"
+            tabindex="-1"
+          >
+            EXTERNAL ACTIONS
+          </h6>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            HTTP hook
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 `;

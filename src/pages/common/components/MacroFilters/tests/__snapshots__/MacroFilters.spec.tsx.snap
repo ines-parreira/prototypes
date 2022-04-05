@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MacroFilters /> should render MacroFilters 1`] = `
+<div
+  class="d-flex"
+>
+  <div
+    class="dropdown"
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+      type="button"
+    >
+      <span>
+        French
+      </span>
+    </button>
+    <div
+      aria-hidden="true"
+      class="dropdown dropdown-menu dropdown-menu-right"
+      role="menu"
+      tabindex="-1"
+    >
+      <h6
+        class="dropdown-item-input dropdownItemInput dropdown-header"
+        tabindex="-1"
+      >
+        <input
+          class="form-control"
+          placeholder="Search languages..."
+          type="text"
+          value=""
+        />
+      </h6>
+      <div
+        class="dropdownDivider dropdown-divider"
+        tabindex="-1"
+      />
+      <div
+        class="content"
+      >
+        <div
+          class="wrapperItem"
+        >
+          <label
+            class="label label labelItem"
+            for="checkbox-5"
+          >
+            <input
+              class="input"
+              id="checkbox-5"
+              name="checkbox-5"
+              type="checkbox"
+            />
+             English
+          </label>
+        </div>
+        <div
+          class="wrapperItem"
+        >
+          <label
+            class="label label labelItem"
+            for="checkbox-1"
+          >
+            <input
+              checked=""
+              class="input"
+              id="checkbox-1"
+              name="checkbox-1"
+              type="checkbox"
+            />
+             French
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="dropdown"
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+      type="button"
+    >
+      <span>
+        2 tags
+      </span>
+    </button>
+    <div
+      aria-hidden="true"
+      class="dropdown dropdown-menu dropdown-menu-right"
+      role="menu"
+      tabindex="-1"
+    >
+      <h6
+        class="dropdown-item-input dropdownItemInput dropdown-header"
+        tabindex="-1"
+      >
+        <input
+          class="form-control"
+          placeholder="Search tags..."
+          type="text"
+          value=""
+        />
+      </h6>
+      <button
+        class="component dropdown-item"
+        role="menuitem"
+        tabindex="0"
+      >
+        <div
+          class="checkbox"
+        >
+          <label
+            class="label label quickSelectionOption"
+            for="checkbox-2"
+          >
+            <input
+              checked=""
+              class="input"
+              id="checkbox-2"
+              name="checkbox-2"
+              type="checkbox"
+            />
+            Deselect all
+            <div
+              class="badge badge--unselect"
+            >
+              2
+            </div>
+          </label>
+        </div>
+      </button>
+      <div
+        class="dropdownDivider dropdown-divider"
+        tabindex="-1"
+      />
+      <div
+        class="content"
+      >
+        <div
+          class="wrapperItem"
+        >
+          <label
+            class="label label labelItem"
+            for="checkbox-3"
+          >
+            <input
+              checked=""
+              class="input"
+              id="checkbox-3"
+              name="checkbox-3"
+              type="checkbox"
+            />
+             tag1
+          </label>
+        </div>
+        <div
+          class="wrapperItem"
+        >
+          <label
+            class="label label labelItem"
+            for="checkbox-4"
+          >
+            <input
+              checked=""
+              class="input"
+              id="checkbox-4"
+              name="checkbox-4"
+              type="checkbox"
+            />
+             tag2
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

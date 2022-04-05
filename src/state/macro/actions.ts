@@ -2,6 +2,7 @@ import axios, {CancelToken, AxiosError} from 'axios'
 import {fromJS, Map, List} from 'immutable'
 import _get from 'lodash/get'
 
+import qs from 'qs'
 import {Macro} from '../../models/macro/types'
 import client from '../../models/api/resources'
 import {ApiListResponsePagination} from '../../models/api/types'
@@ -22,6 +23,9 @@ export type fetchMacrosParamsTypes = {
     messageId?: number
     perPage?: number
     _fallbackOrderBy?: string
+    languages?: string[]
+    tags?: string[]
+    numberPredictions?: number
 }
 
 export type MacrosSearchResult = {
@@ -47,6 +51,9 @@ export const fetchMacros =
             message_id?: number
             per_page?: number
             _fallback_order_by?: string
+            languages?: string[]
+            tags?: string[]
+            number_predictions?: number
         } = {}
         if (filters['page']) {
             params.page = filters['page']
@@ -67,9 +74,26 @@ export const fetchMacros =
             params._fallback_order_by = filters['_fallbackOrderBy']
         }
 
+        if (filters['languages']) {
+            params.languages = filters['languages']
+        }
+
+        if (filters['tags']) {
+            params.tags = filters['tags']
+        }
+
+        if (filters['numberPredictions']) {
+            params.number_predictions = filters['numberPredictions']
+            params.ticket_id = filters['ticketId']
+            params.message_id = filters['messageId']
+            params._fallback_order_by = filters['_fallbackOrderBy']
+        }
+
         return client
             .get<ApiListResponsePagination<Macro[]>>('/api/macros/', {
                 params,
+                paramsSerializer: (params) =>
+                    qs.stringify(params, {arrayFormat: 'repeat'}),
                 ...(cancelToken ? {cancelToken} : {}),
             })
             .then((json) => json?.data)

@@ -23,6 +23,8 @@ type APIFetchMacrosOptions = {
     page?: FetchMacrosOptions['page']
     search?: FetchMacrosOptions['search']
     ticket_id?: FetchMacrosOptions['ticketId']
+    languages?: string[]
+    tags?: string[]
 }
 
 export const fetchMacros = async (
@@ -37,7 +39,12 @@ export const fetchMacros = async (
     if (params.order_by) {
         params.order_by = _snakeCase(options.orderBy)
     }
-    const res = await client.get('/api/macros/', {params, cancelToken})
+    const res = await client.get('/api/macros/', {
+        params,
+        paramsSerializer: (params) =>
+            qs.stringify(params, {arrayFormat: 'repeat'}),
+        cancelToken,
+    })
     return res.data as ApiListResponsePagination<Macro[]>
 }
 
@@ -68,9 +75,8 @@ export const fetchMacrosProperties = async (
         '/api/macros/parameters_options/',
         {
             params,
-            paramsSerializer: (params) => {
-                return qs.stringify(params, {arrayFormat: 'repeat'})
-            },
+            paramsSerializer: (params) =>
+                qs.stringify(params, {arrayFormat: 'repeat'}),
         }
     )
     return res.data.data

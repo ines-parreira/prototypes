@@ -397,6 +397,7 @@ Sincerely,
             ],
             "created_datetime": "2017-08-01T17:56:51.190187+00:00",
             "id": 1,
+            "language": null,
             "name": "Waive Fee",
             "updated_datetime": "2017-08-01T17:56:51.190199+00:00",
             "usage": 1,
@@ -496,6 +497,7 @@ Sincerely,
         ],
         "created_datetime": "2017-08-01T17:56:51.190187+00:00",
         "id": 1,
+        "language": null,
         "name": "Waive Fee",
         "updated_datetime": "2017-08-01T17:56:51.190199+00:00",
         "usage": 1,
@@ -637,10 +639,13 @@ Sincerely,
                       },
                     },
                   ],
+                  "language": "",
                 }
               }
+              language=""
               name="New macro"
               setActions={[Function]}
+              setLanguage={[Function]}
               setName={[Function]}
             >
               MacroEdit
@@ -790,10 +795,13 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
                 },
               },
             ],
+            "language": "",
           }
         }
+        language=""
         name="New macro"
         setActions={[Function]}
+        setLanguage={[Function]}
         setName={[Function]}
       />
       <FormGroup

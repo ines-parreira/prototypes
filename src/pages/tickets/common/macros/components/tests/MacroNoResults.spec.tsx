@@ -18,7 +18,7 @@ describe('<MacroNoResults />', () => {
         currentUser: fromJS(user),
     }
     const minProps: ComponentProps<typeof MacroNoResults> = {
-        searchQuery: '',
+        searchParams: {search: ''},
         newAction: jest.fn(),
     }
 
@@ -35,7 +35,10 @@ describe('<MacroNoResults />', () => {
     it('should display no macros found with search query', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <MacroNoResults {...minProps} searchQuery="Pizza Pepperoni" />
+                <MacroNoResults
+                    {...minProps}
+                    searchParams={{search: 'Pizza Pepperoni'}}
+                />
             </Provider>
         )
 

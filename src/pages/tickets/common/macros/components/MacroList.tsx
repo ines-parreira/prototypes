@@ -1,122 +1,80 @@
-import React, {Component} from 'react'
+import React from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
-import {List, Map} from 'immutable'
-import {connect, ConnectedProps} from 'react-redux'
+import {Map} from 'immutable'
 
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import {scrollToReactNode} from 'pages/common/utils/keyboard'
-import {fetchMacrosParamsTypes} from 'state/macro/actions'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {RootState} from 'state/types'
+import {MacrosSearchResult} from 'state/macro/actions'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {isMacroDisabled} from '../utils'
-
 import css from './MacroList.less'
 
 type Props = {
-    macros: List<any>
-    currentMacro: Map<any, any>
-    onClickItem: (item: Map<any, any>) => void
-    onHoverItem: (item: Map<any, any>) => void
-    search: string
-    page: number
-    totalPages: number
     className?: string
+    searchResults: MacrosSearchResult
+    currentMacro: Map<any, any>
     disableExternalActions?: boolean
-    fetchMacros: (params: fetchMacrosParamsTypes) => Promise<void>
-} & ConnectedProps<typeof connector>
-
-export class MacroListContainer extends Component<Props> {
-    _activeItem: HTMLElement | null = null
-
-    static defaultProps = {
-        onClickItem: _noop,
-        onHoverItem: _noop,
-    }
-
-    componentDidUpdate(prevProps: Props) {
-        if (
-            prevProps.currentMacro.get('id') !==
-                this.props.currentMacro.get('id') &&
-            this._activeItem
-        ) {
-            scrollToReactNode(this._activeItem)
-        }
-    }
-
-    _loadMacros = () => {
-        return this.props.fetchMacros({
-            search: this.props.search,
-            page: this.props.page + 1,
-        })
-    }
-
-    _setActiveItem = (isActive: boolean, node: HTMLElement | null) => {
-        if (!isActive || !node) {
-            return
-        }
-        this._activeItem = node
-    }
-
-    render() {
-        const {
-            className,
-            currentUser,
-            currentMacro,
-            macros,
-            page,
-            totalPages,
-            disableExternalActions,
-            onClickItem,
-            onHoverItem,
-        } = this.props
-
-        return (
-            <InfiniteScroll
-                className={classnames(css.component, className)}
-                onLoad={this._loadMacros as any}
-                shouldLoadMore={page < totalPages}
-            >
-                {macros.map((macro: Map<any, any>) => {
-                    const isDisabled = isMacroDisabled(
-                        macro,
-                        disableExternalActions
-                    )
-                    const isActive =
-                        currentMacro &&
-                        macro.get('id') === currentMacro.get('id')
-                    return (
-                        <div
-                            key={macro.get('id')}
-                            className={classnames(css.item, {
-                                [css.active]: isActive,
-                                [css.disabled]: isDisabled,
-                            })}
-                            onClick={() => {
-                                if (isDisabled) {
-                                    return
-                                }
-                                logEvent(SegmentEvent.MacroAppliedSearchbar, {
-                                    user_id: currentUser.get('id'),
-                                })
-                                onClickItem(macro)
-                            }}
-                            onMouseEnter={() => onHoverItem(macro)}
-                            ref={(ref) => this._setActiveItem(isActive, ref)}
-                        >
-                            {macro.get('name')}
-                        </div>
-                    )
-                })}
-            </InfiniteScroll>
-        )
-    }
+    onClickItem: (item: Map<any, any>) => void
+    onHoverItem?: (item: Map<any, any>) => void
+    loadMore: () => Promise<void>
 }
 
-const connector = connect((state: RootState) => ({
-    currentUser: getCurrentUser(state),
-}))
+const MacroListContainer = ({
+    searchResults,
+    className,
+    currentMacro,
+    disableExternalActions,
+    loadMore,
+    onClickItem = _noop,
+    onHoverItem = _noop,
+}: Props) => {
+    const currentUser = useAppSelector(getCurrentUser)
+    const isSuggestion = (rank: number) => rank !== 0 && rank !== 100000
 
-export default connector(MacroListContainer)
+    return (
+        <InfiniteScroll
+            className={classnames(css.component, className)}
+            onLoad={loadMore}
+            shouldLoadMore={searchResults.page < searchResults.totalPages}
+        >
+            {searchResults.macros.map((macro: Map<any, any>) => {
+                const isDisabled = isMacroDisabled(
+                    macro,
+                    disableExternalActions
+                )
+                const isActive = macro.get('id') === currentMacro.get('id')
+                return (
+                    <div
+                        key={macro.get('id')}
+                        className={classnames(css.item, {
+                            [css.active]: isActive,
+                            [css.disabled]: isDisabled,
+                        })}
+                        onClick={() => {
+                            if (isDisabled) return
+
+                            logEvent(SegmentEvent.MacroAppliedSearchbar, {
+                                user_id: currentUser.get('id'),
+                                rank: macro.get('relevance_rank'),
+                            })
+                            onClickItem(macro)
+                        }}
+                        onMouseEnter={() => onHoverItem(macro)}
+                    >
+                        {macro.get('name')}
+                        {isSuggestion(macro.get('relevance_rank', 0)) && (
+                            <span className="material-icons md-2 float-right text-secondary">
+                                auto_awesome
+                            </span>
+                        )}
+                    </div>
+                )
+            })}
+        </InfiniteScroll>
+    )
+}
+
+export default MacroListContainer
