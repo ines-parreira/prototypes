@@ -36,12 +36,10 @@ const MacroFilters = ({selectedProperties, onChange}: Props) => {
 
     useEffect(() => {
         //If ticket language is not in the list of macro languages, remove language filter.
+        const languages = selectedProperties.languages?.filter(Boolean)
         if (
-            selectedProperties.languages &&
-            !isEqual(
-                selectedProperties.languages,
-                intersection(selectedProperties.languages, properties.languages)
-            )
+            languages &&
+            !isEqual(languages, intersection(languages, properties.languages))
         )
             onChange({...selectedProperties, languages: []})
     }, [onChange, properties, selectedProperties])
