@@ -62,8 +62,10 @@ export const fetchMacros =
             params.search = filters['search']
         }
 
-        params.order_by = orderBy
-        params.order_dir = orderDir
+        if (orderBy) {
+            params.order_by = orderBy
+            params.order_dir = orderDir
+        }
 
         if (filters['perPage']) {
             params.per_page = filters['perPage']
