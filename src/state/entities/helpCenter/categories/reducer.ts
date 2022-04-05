@@ -61,8 +61,8 @@ export default createReducer<HelpCenterCategoriesState>(
             //   Delete category by id
             .addCase(deleteCategory, (state, {payload}) => {
                 const parentId =
-                    state.categoriesById[payload.toString()]
-                        .parent_category_id ?? 0
+                    state.categoriesById[payload.toString()].translation
+                        ?.parent_category_id ?? 0
                 const {children} = state.categoriesById[parentId.toString()]
 
                 //Remove the child from the parent's list

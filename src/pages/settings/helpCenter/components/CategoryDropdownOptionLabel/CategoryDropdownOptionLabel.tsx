@@ -15,7 +15,7 @@ export const getParentsInfo = (
     const parents: Category[] = []
 
     const getParents = (category: Category) => {
-        const parentId = category.parent_category_id
+        const parentId = category.translation?.parent_category_id
         if (parentId) {
             parents.push(categoriesById[parentId])
             getParents(categoriesById[parentId])

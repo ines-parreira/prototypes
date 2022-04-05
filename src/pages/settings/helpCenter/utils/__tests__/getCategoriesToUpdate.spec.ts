@@ -17,7 +17,7 @@ describe('getCategoriesToUpdate', () => {
         })
 
         expect(received.length).toEqual(3)
-        expect(received[0].parent_category_id).toEqual(5)
+        expect(received[0].translation?.parent_category_id).toEqual(5)
         expect(received[1].children).not.toContain(6)
         expect(received[2].children).toContain(6)
     })

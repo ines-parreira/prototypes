@@ -165,7 +165,9 @@ export const HelpCenterCategoryEdit = ({
             setDescription(translation?.description || '')
             setMetaTitle(translation?.seo_meta.title || null)
             setMetaDescription(translation?.seo_meta.description || null)
-            setParentCategory(category.parent_category_id ?? undefined)
+            setParentCategory(
+                category.translation?.parent_category_id ?? undefined
+            )
 
             if (translation?.locale) {
                 setLocale(translation?.locale)
@@ -273,7 +275,6 @@ export const HelpCenterCategoryEdit = ({
 
         if (isCreate) {
             onCreate?.({
-                parent_category_id: parentCategory,
                 translation: {
                     locale,
                     title,

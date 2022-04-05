@@ -149,7 +149,9 @@ const DroppableCategoriesTableRow = ({
             dragItem={{
                 id: category.id,
                 position,
-                type: getCategoryDndType(category.parent_category_id),
+                type: getCategoryDndType(
+                    category.translation.parent_category_id
+                ),
             }}
             onDragStart={onDragStart}
             onMoveEntity={onMoveEntity}
@@ -244,12 +246,13 @@ export const CategoriesTableRow = ({
     )
 
     const handleOnDragStart = useCallback(() => {
-        const parentCategoryId = props.category.parent_category_id || 0
+        const parentCategoryId =
+            props.category.translation.parent_category_id || 0
         const defaultChildrenPositions =
             categories[parentCategoryId.toString()].children
         onDragStart(defaultChildrenPositions)
         setOpen(false)
-    }, [categories, onDragStart, props.category.parent_category_id])
+    }, [categories, onDragStart, props.category.translation.parent_category_id])
 
     const renderContent = () => {
         if (!isOpen) {

@@ -22,7 +22,6 @@ export const getCategoriesToUpdate = ({
         const category = categoriesById[categoryId.toString()]
 
         if (isNonRootCategory(category)) {
-            category.parent_category_id = currentParentId
             category.translation.parent_category_id = currentParentId
 
             categoriesToUpdate.push(category)

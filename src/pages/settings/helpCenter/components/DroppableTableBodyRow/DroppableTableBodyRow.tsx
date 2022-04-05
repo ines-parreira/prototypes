@@ -45,7 +45,7 @@ export const DroppableTableBodyRow = ({
 }: DroppableTableBodyRowProps): JSX.Element => {
     const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
         dragItem,
-        [getCategoryDndType(category.parent_category_id)],
+        [getCategoryDndType(category.translation?.parent_category_id ?? null)],
         {onHover: onMoveEntity, onDrop: onDropEntity, onCancel: onCancelDnD}
     )
 

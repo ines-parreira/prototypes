@@ -73,7 +73,8 @@ export const useCategoriesActions = () => {
                         payload
                     )
                     .then((response) => response.data)
-                const parentCategoryId = newCategory.parent_category_id
+                const parentCategoryId =
+                    newCategory.translation.parent_category_id
                 const parentCategory =
                     categoriesById[
                         parentCategoryId ? parentCategoryId.toString() : '0'
@@ -133,7 +134,8 @@ export const useCategoriesActions = () => {
                 }
 
                 const previousParentId =
-                    categoriesById[categoryId.toString()].parent_category_id
+                    categoriesById[categoryId.toString()].translation
+                        ?.parent_category_id ?? null
                 const currentParentId = payload.parent_category_id || null
                 if (previousParentId !== currentParentId) {
                     const categoriesToUpdate = getCategoriesToUpdate({
