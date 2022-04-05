@@ -60,10 +60,11 @@ export const fetchMacros =
         }
         if (filters['search']) {
             params.search = filters['search']
-        } else if (orderBy) {
-            params.order_by = orderBy
-            params.order_dir = orderDir
         }
+
+        params.order_by = orderBy
+        params.order_dir = orderDir
+
         if (filters['perPage']) {
             params.per_page = filters['perPage']
         }
@@ -118,6 +119,11 @@ export const fetchMacros =
                             macros
                         ) as List<any>
                     }
+
+                    macros = macros.sort(
+                        (a: Map<any, any>, b: Map<any, any>) =>
+                            a.get('relevance_rank') - b.get('relevance_rank')
+                    ) as List<any>
 
                     return {
                         macros,
