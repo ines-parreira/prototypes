@@ -19,7 +19,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
         class=""
       >
         <input
-          class="form-control"
+          class="field form-control"
           id="id-title"
           maxlength="250"
           required=""
@@ -54,7 +54,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
             </span>
           </span>
           <input
-            class="form-control"
+            class="field form-control"
             id="id-slug"
             required=""
             type="text"
@@ -102,7 +102,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
         class=""
       >
         <textarea
-          class="form-control"
+          class="field form-control"
           id="id-excerpt"
           maxlength="250"
           rows="2"
@@ -131,7 +131,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             disabled=""
             id="id-seoTitle"
             required=""
@@ -178,7 +178,7 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
           class=""
         >
           <textarea
-            class="form-control"
+            class="field form-control"
             disabled=""
             id="id-seoDescription"
             required=""

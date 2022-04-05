@@ -26,7 +26,8 @@
             outline: none;
         }
 
-        &:disabled {
+        &:disabled,
+        &[readonly] {
             background-color: @classic-neutral-grey-1;
             color: @classic-neutral-grey-4;
             cursor: not-allowed;
@@ -52,14 +53,14 @@
         &.hasRightIcon {
             padding-right: 35px;
         }
-    }
 
-    .inputError {
-        border-color: @classic-feedback-error;
-
-        &:focus {
+        &.error {
             border-color: @classic-feedback-error;
-            box-shadow: 0 0 0 2px fade(@classic-feedback-error, 20%);
+
+            &:focus {
+                border-color: @classic-feedback-error;
+                box-shadow: 0 0 0 2px fade(@classic-feedback-error, 20%);
+            }
         }
     }
 

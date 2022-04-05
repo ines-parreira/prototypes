@@ -4,15 +4,14 @@ import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container, Form, Row, Col} from 'reactstrap'
 import {fromJS} from 'immutable'
 
-import {fetchContact, updateContact} from 'state/billing/actions'
-import {getContact} from 'state/billing/selectors'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
-import {RootState} from 'state/types'
-import {BillingContact} from 'state/billing/types'
 import Button from 'pages/common/components/button/Button'
-
-import BillingAddressInput from '../common/BillingAddressInputs'
+import BillingAddressInput from 'pages/settings/billing/common/BillingAddressInputs'
+import {BillingContact} from 'state/billing/types'
+import {fetchContact, updateContact} from 'state/billing/actions'
+import {getContact} from 'state/billing/selectors'
+import {RootState} from 'state/types'
 
 import css from './BillingDetailsForm.less'
 
@@ -113,7 +112,7 @@ export class BillingDetailsFormContainer extends Component<Props, State> {
                 />
 
                 <Container fluid className={css.pageContainer}>
-                    <h3>Billing information</h3>
+                    <h3 className={css.title}>Billing information</h3>
                     <Row>
                         <Col lg={6}>
                             {isLoading ? (

@@ -1,15 +1,7 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import Clipboard from 'clipboard'
-import {
-    Button as ReactstrapButton,
-    Container,
-    FormGroup,
-    Input,
-    InputGroup,
-    InputGroupAddon,
-    Label,
-} from 'reactstrap'
+import {Container, FormGroup, Label} from 'reactstrap'
 import classnames from 'classnames'
 import _camelCase from 'lodash/camelCase'
 
@@ -23,6 +15,9 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
 import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import InputGroup from 'pages/common/forms/input/InputGroup'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from '../settings.less'
 
@@ -140,24 +135,21 @@ export class APIViewContainer extends Component<Props, State> {
     _renderApiKeySection(apiKey: string) {
         return (
             <InputGroup>
-                <Input id="apiKey" type="text" value={apiKey} readOnly />
-                <InputGroupAddon addonType="append">
-                    <ReactstrapButton
-                        className="resetBtn"
-                        color="danger"
-                        onClick={this._resetApiKey}
-                    >
-                        <i className="material-icons mr-2">refresh</i>
+                <TextInput id="apiKey" value={apiKey} readOnly />
+                <Button intent="destructive" onClick={this._resetApiKey}>
+                    <ButtonIconLabel className="resetBtn" icon="refresh">
                         Reset
-                    </ReactstrapButton>
-                    <ReactstrapButton
-                        className="copyBtn"
-                        data-clipboard-target="#apiKey"
-                    >
-                        <i className="material-icons mr-2">file_copy</i>
+                    </ButtonIconLabel>
+                </Button>
+                <Button
+                    intent="secondary"
+                    className="copyBtn"
+                    data-clipboard-target="#apiKey"
+                >
+                    <ButtonIconLabel icon="file_copy">
                         {this.state.isCopiedApiKey ? 'Copied!' : 'Copy'}
-                    </ReactstrapButton>
-                </InputGroupAddon>
+                    </ButtonIconLabel>
+                </Button>
             </InputGroup>
         )
     }
@@ -243,25 +235,22 @@ export class APIViewContainer extends Component<Props, State> {
                                 Base API URL
                             </Label>
                             <InputGroup>
-                                <Input
+                                <TextInput
                                     id="url"
-                                    type="text"
                                     value={`https://${domain}.gorgias.com/api/`}
                                     readOnly
                                 />
-                                <InputGroupAddon addonType="append">
-                                    <ReactstrapButton
-                                        className="copyBtn"
-                                        data-clipboard-target="#url"
-                                    >
-                                        <i className="material-icons mr-2">
-                                            file_copy
-                                        </i>
+                                <Button
+                                    intent="secondary"
+                                    className="copyBtn"
+                                    data-clipboard-target="#url"
+                                >
+                                    <ButtonIconLabel icon="file_copy">
                                         {this.state.isCopiedUrl
                                             ? 'Copied!'
                                             : 'Copy'}
-                                    </ReactstrapButton>
-                                </InputGroupAddon>
+                                    </ButtonIconLabel>
+                                </Button>
                             </InputGroup>
                         </FormGroup>
                         <FormGroup className={css.inputField}>
@@ -269,25 +258,18 @@ export class APIViewContainer extends Component<Props, State> {
                                 Username (your email address)
                             </Label>
                             <InputGroup>
-                                <Input
-                                    id="email"
-                                    type="text"
-                                    value={email}
-                                    readOnly
-                                />
-                                <InputGroupAddon addonType="append">
-                                    <ReactstrapButton
-                                        className="copyBtn"
-                                        data-clipboard-target="#email"
-                                    >
-                                        <i className="material-icons mr-2">
-                                            file_copy
-                                        </i>
+                                <TextInput id="email" value={email} readOnly />
+                                <Button
+                                    intent="secondary"
+                                    className="copyBtn"
+                                    data-clipboard-target="#email"
+                                >
+                                    <ButtonIconLabel icon="file_copy">
                                         {this.state.isCopiedEmail
                                             ? 'Copied!'
                                             : 'Copy'}
-                                    </ReactstrapButton>
-                                </InputGroupAddon>
+                                    </ButtonIconLabel>
+                                </Button>
                             </InputGroup>
                         </FormGroup>
                         <FormGroup

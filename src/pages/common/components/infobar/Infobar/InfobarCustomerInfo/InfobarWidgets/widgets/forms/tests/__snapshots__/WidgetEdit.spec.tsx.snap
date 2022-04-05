@@ -84,7 +84,7 @@ exports[`<WidgetEdit/> should hide the hidden fields 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-card.title"
             placeholder="Order {{id}}"
             type="text"
@@ -131,7 +131,7 @@ exports[`<WidgetEdit/> should render 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-card.title"
             placeholder="Order {{id}}"
             type="text"
@@ -153,7 +153,7 @@ exports[`<WidgetEdit/> should render 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-card.meta.link"
             placeholder="http://myapi.com/{{id}}"
             type="text"

@@ -1227,14 +1227,14 @@ exports[`BusinessHours component should render values from state 1`] = `
                                   className=""
                                 >
                                   <Input
-                                    className=""
+                                    className="field"
                                     id="id-timezone"
                                     onChange={[Function]}
                                     type="select"
                                     value="US/Pacific"
                                   >
                                     <select
-                                      className="form-control"
+                                      className="field form-control"
                                       id="id-timezone"
                                       onChange={[Function]}
                                       value="US/Pacific"

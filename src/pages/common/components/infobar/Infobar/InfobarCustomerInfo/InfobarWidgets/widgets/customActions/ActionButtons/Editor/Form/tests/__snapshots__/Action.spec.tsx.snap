@@ -22,7 +22,7 @@ exports[`<Action/> should render with a Body component 1`] = `
           class=""
         >
           <select
-            class="form-control"
+            class="field form-control"
             id="id-method"
             required=""
           >
@@ -67,7 +67,7 @@ exports[`<Action/> should render with a Body component 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-url"
             pattern="*"
             required=""
@@ -219,7 +219,7 @@ exports[`<Action/> should render without a Body component 1`] = `
           class=""
         >
           <select
-            class="form-control"
+            class="field form-control"
             id="id-method"
             required=""
           >
@@ -264,7 +264,7 @@ exports[`<Action/> should render without a Body component 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-url"
             pattern="*"
             required=""

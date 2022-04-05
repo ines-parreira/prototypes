@@ -18,7 +18,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
       class=""
     >
       <input
-        class="form-control"
+        class="field form-control"
         form="macro_form"
         id="id-title"
         required=""
@@ -47,7 +47,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
           class=""
         >
           <select
-            class="form-control"
+            class="field form-control"
             form="macro_form"
             id="id-method"
             required=""
@@ -93,7 +93,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             form="macro_form"
             id="id-url"
             pattern="*"

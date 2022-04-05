@@ -42,7 +42,7 @@ exports[`<ActionEditor/> should render with correct labels 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-somekey1"
             required=""
             type="text"
@@ -64,7 +64,7 @@ exports[`<ActionEditor/> should render with correct labels 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-somekey2"
             required=""
             type="text"
@@ -86,7 +86,7 @@ exports[`<ActionEditor/> should render with correct labels 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-somekey3"
             type="text"
             value="somevalue3"

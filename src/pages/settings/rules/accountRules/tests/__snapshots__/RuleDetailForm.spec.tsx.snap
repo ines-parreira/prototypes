@@ -58,7 +58,7 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
           >
             <input
               aria-invalid="false"
-              class="form-control"
+              class="field form-control"
               id="ruleName"
               type="text"
               value="New rule"
@@ -79,7 +79,7 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
             class=""
           >
             <textarea
-              class="form-control"
+              class="field form-control"
               id="ruleDescription"
             />
           </div>
@@ -423,7 +423,7 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
           >
             <input
               aria-invalid="false"
-              class="form-control"
+              class="field form-control"
               id="ruleName"
               type="text"
               value="New rule"
@@ -444,7 +444,7 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
             class=""
           >
             <textarea
-              class="form-control"
+              class="field form-control"
               id="ruleDescription"
             />
           </div>
@@ -788,7 +788,7 @@ exports[`<RuleSettingsForm /> rendering should render an empty form when no rule
           >
             <input
               aria-invalid="false"
-              class="form-control"
+              class="field form-control"
               id="ruleName"
               type="text"
               value="New rule"
@@ -809,7 +809,7 @@ exports[`<RuleSettingsForm /> rendering should render an empty form when no rule
             class=""
           >
             <textarea
-              class="form-control"
+              class="field form-control"
               id="ruleDescription"
             />
           </div>

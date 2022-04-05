@@ -108,7 +108,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
                         class=""
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-11"
                           placeholder="Ex: Company Support Line"
                           required=""
@@ -907,7 +907,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
                         class=""
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-2"
                           placeholder="Ex: Company Support Line"
                           required=""
@@ -1748,7 +1748,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
                         class=""
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-1"
                           placeholder="Ex: Company Support Line"
                           required=""

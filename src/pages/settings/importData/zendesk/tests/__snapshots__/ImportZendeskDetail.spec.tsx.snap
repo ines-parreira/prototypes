@@ -89,7 +89,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                 class="input-group"
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   disabled=""
                   id="id-domain"
                   readonly=""
@@ -313,7 +313,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                 class="input-group"
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   disabled=""
                   id="id-domain"
                   readonly=""
@@ -520,7 +520,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
                 class="input-group"
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   disabled=""
                   id="id-domain"
                   readonly=""

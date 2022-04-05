@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InputField should render a basic text input 1`] = `
+exports[`DEPRECATED_InputField should render a basic text input 1`] = `
 <FormGroup
   className="InputField"
   color=""
@@ -26,7 +26,7 @@ exports[`InputField should render a basic text input 1`] = `
     className=""
   >
     <Input
-      className=""
+      className="field"
       id="id-input-2"
       onChange={[Function]}
       placeholder="placeholder"
@@ -37,7 +37,7 @@ exports[`InputField should render a basic text input 1`] = `
 </FormGroup>
 `;
 
-exports[`InputField should render a help text 1`] = `
+exports[`DEPRECATED_InputField should render a help text 1`] = `
 <FormGroup
   className="InputField"
   color=""
@@ -47,7 +47,7 @@ exports[`InputField should render a help text 1`] = `
     className=""
   >
     <Input
-      className=""
+      className="field"
       id="id-input-5"
       onChange={[Function]}
       type="text"
@@ -63,7 +63,7 @@ exports[`InputField should render a help text 1`] = `
 </FormGroup>
 `;
 
-exports[`InputField should render a hidden text input 1`] = `
+exports[`DEPRECATED_InputField should render a hidden text input 1`] = `
 <FormGroup
   className="InputField"
   color=""
@@ -73,7 +73,7 @@ exports[`InputField should render a hidden text input 1`] = `
     className=""
   >
     <Input
-      className=""
+      className="field"
       hidden={true}
       id="id-input-11"
       onChange={[Function]}
@@ -84,7 +84,7 @@ exports[`InputField should render a hidden text input 1`] = `
 </FormGroup>
 `;
 
-exports[`InputField should render a lowercase value and convert any uppercase input to lowercase 1`] = `
+exports[`DEPRECATED_InputField should render a lowercase value and convert any uppercase input to lowercase 1`] = `
 <InputField
   caseInsensitive={true}
   onChange={[Function]}
@@ -104,14 +104,14 @@ exports[`InputField should render a lowercase value and convert any uppercase in
         className=""
       >
         <Input
-          className=""
+          className="field"
           id="id-input-14"
           onChange={[Function]}
           type="text"
           value="value"
         >
           <input
-            className="form-control"
+            className="field form-control"
             id="id-input-14"
             onChange={[Function]}
             type="text"
@@ -124,7 +124,7 @@ exports[`InputField should render a lowercase value and convert any uppercase in
 </InputField>
 `;
 
-exports[`InputField should render a number input with an onChange handler, and call this handler on change 1`] = `
+exports[`DEPRECATED_InputField should render a number input with an onChange handler, and call this handler on change 1`] = `
 <InputField
   onChange={[MockFunction]}
   type="number"
@@ -143,14 +143,14 @@ exports[`InputField should render a number input with an onChange handler, and c
         className=""
       >
         <Input
-          className=""
+          className="field"
           id="id-input-10"
           onChange={[Function]}
           type="number"
           value="value"
         >
           <input
-            className="form-control"
+            className="field form-control"
             id="id-input-10"
             onChange={[Function]}
             type="number"
@@ -163,7 +163,7 @@ exports[`InputField should render a number input with an onChange handler, and c
 </InputField>
 `;
 
-exports[`InputField should render a required text input 1`] = `
+exports[`DEPRECATED_InputField should render a required text input 1`] = `
 <FormGroup
   className="InputField required"
   color=""
@@ -173,7 +173,7 @@ exports[`InputField should render a required text input 1`] = `
     className=""
   >
     <Input
-      className=""
+      className="field"
       id="id-input-3"
       onChange={[Function]}
       required={true}
@@ -184,7 +184,7 @@ exports[`InputField should render a required text input 1`] = `
 </FormGroup>
 `;
 
-exports[`InputField should render a text input with a right addon 1`] = `
+exports[`DEPRECATED_InputField should render a text input with a right addon 1`] = `
 <FormGroup
   className="InputField"
   color=""
@@ -194,7 +194,7 @@ exports[`InputField should render a text input with a right addon 1`] = `
     className="input-group"
   >
     <Input
-      className=""
+      className="field"
       id="id-input-8"
       onChange={[Function]}
       type="text"
@@ -213,7 +213,7 @@ exports[`InputField should render a text input with a right addon 1`] = `
 </FormGroup>
 `;
 
-exports[`InputField should render a text input with a suffix 1`] = `
+exports[`DEPRECATED_InputField should render a text input with a suffix 1`] = `
 <FormGroup
   className="InputField"
   color=""
@@ -223,7 +223,7 @@ exports[`InputField should render a text input with a suffix 1`] = `
     className="with-suffix"
   >
     <Input
-      className=""
+      className="field"
       id="id-input-12"
       onChange={[Function]}
       suffix="px"
@@ -248,7 +248,7 @@ exports[`InputField should render a text input with a suffix 1`] = `
 </FormGroup>
 `;
 
-exports[`InputField should render a text input with an onChange handler, and call this handler on change 1`] = `
+exports[`DEPRECATED_InputField should render a text input with an onChange handler, and call this handler on change 1`] = `
 <InputField
   onChange={[Function]}
   type="text"
@@ -267,14 +267,14 @@ exports[`InputField should render a text input with an onChange handler, and cal
         className=""
       >
         <Input
-          className=""
+          className="field"
           id="id-input-9"
           onChange={[Function]}
           type="text"
           value="value"
         >
           <input
-            className="form-control"
+            className="field form-control"
             id="id-input-9"
             onChange={[Function]}
             type="text"
@@ -287,7 +287,7 @@ exports[`InputField should render a text input with an onChange handler, and cal
 </InputField>
 `;
 
-exports[`InputField should render a tooltip next to the label 1`] = `
+exports[`DEPRECATED_InputField should render a tooltip next to the label 1`] = `
 <FormGroup
   className="InputField"
   color=""
@@ -336,7 +336,7 @@ exports[`InputField should render a tooltip next to the label 1`] = `
     className=""
   >
     <Input
-      className=""
+      className="field"
       id="id-input-6"
       onChange={[Function]}
       type="text"
@@ -346,7 +346,7 @@ exports[`InputField should render a tooltip next to the label 1`] = `
 </FormGroup>
 `;
 
-exports[`InputField should render an inline required text input 1`] = `
+exports[`DEPRECATED_InputField should render an inline required text input 1`] = `
 <FormGroup
   className="InputField required d-inline-block"
   color=""
@@ -356,7 +356,7 @@ exports[`InputField should render an inline required text input 1`] = `
     className=""
   >
     <Input
-      className=""
+      className="field"
       id="id-input-7"
       onChange={[Function]}
       required={true}
@@ -367,7 +367,7 @@ exports[`InputField should render an inline required text input 1`] = `
 </FormGroup>
 `;
 
-exports[`InputField should render an inline text input 1`] = `
+exports[`DEPRECATED_InputField should render an inline text input 1`] = `
 <FormGroup
   className="InputField d-inline-block"
   color=""
@@ -377,7 +377,7 @@ exports[`InputField should render an inline text input 1`] = `
     className=""
   >
     <Input
-      className=""
+      className="field"
       id="id-input-4"
       onChange={[Function]}
       type="text"
@@ -387,7 +387,7 @@ exports[`InputField should render an inline text input 1`] = `
 </FormGroup>
 `;
 
-exports[`InputField should render the input with an error 1`] = `
+exports[`DEPRECATED_InputField should render the input with an error 1`] = `
 <FormGroup
   className="InputField"
   color="danger"
@@ -397,7 +397,7 @@ exports[`InputField should render the input with an error 1`] = `
     className=""
   >
     <Input
-      className="form-control-danger is-invalid"
+      className="field form-control-danger is-invalid"
       id="id-input-13"
       onChange={[Function]}
       type="text"
@@ -410,7 +410,7 @@ exports[`InputField should render the input with an error 1`] = `
 </FormGroup>
 `;
 
-exports[`InputField should use default props 1`] = `
+exports[`DEPRECATED_InputField should use default props 1`] = `
 Object {
   "onChange": [Function],
   "type": "text",

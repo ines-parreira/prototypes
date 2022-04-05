@@ -1,12 +1,45 @@
 @import '~css/new/mixins';
 
 :local {
-    .paymentInformationColumn {
-        padding-right: 12px;
+    .container {
+        display: flex;
+        gap: 24px;
+
+        @media @mobiles, @tablets {
+            flex-direction: column;
+        }
     }
 
-    .planCardColumn {
-        padding-left: 12px;
+    .form {
+        max-width: 680px;
+        width: 70%;
+
+        @media @mobiles, @tablets {
+            max-width: inherit;
+            width: 100%;
+        }
+    }
+
+    .inputRow {
+        &:nth-of-type(1) {
+            width: 50%;
+
+            @media @tablets {
+                width: 100%;
+            }
+        }
+
+        &:nth-of-type(2),
+        &:nth-of-type(3) {
+            flex-basis: 0;
+            flex-grow: 1;
+        }
+    }
+
+    .plan {
+        @media @desktops {
+            max-width: 320px;
+        }
     }
 
     .planCardBody {
@@ -14,24 +47,9 @@
         overflow: auto;
     }
 
-    .billingAddressHeader {
-        margin-top: 18px;
-    }
-
-    .formColumn :global .control-label {
-        white-space: nowrap;
-    }
-
-    .formFooter {
-        margin-bottom: 24px;
-        margin-top: 18px;
-    }
-
-    .formRow {
-        margin: 0 -8px;
-    }
-
-    .formColumn {
-        padding: 0 8px;
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
     }
 }

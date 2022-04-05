@@ -317,7 +317,7 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                         class=""
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-1"
                           placeholder="Ex: Company Support Line"
                           required=""

@@ -31,7 +31,7 @@ exports[`<Magento2OneClickIntegrationForm/> render() should render the page to c
             </span>
           </span>
           <input
-            class="form-control"
+            class="field form-control"
             id="id-name"
             pattern="^[a-z.0-9-]*\\\\.[a-z0-9]*\\\\/(index\\\\.php)?[\\\\/\\\\w\\\\d_-]*$"
             placeholder="ex: acme.com/admin_45f1c"

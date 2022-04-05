@@ -42,7 +42,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                 className=""
               >
                 <Input
-                  className=""
+                  className="field"
                   id="id-name"
                   onChange={[Function]}
                   required={true}
@@ -50,7 +50,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
                   value="Pizza Pepperoni"
                 >
                   <input
-                    className="form-control"
+                    className="field form-control"
                     id="id-name"
                     onChange={[Function]}
                     required={true}

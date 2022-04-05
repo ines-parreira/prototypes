@@ -22,7 +22,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
       >
         <input
           aria-invalid="false"
-          class="form-control"
+          class="field form-control"
           id="ruleName"
           type="text"
           value="my rule"
@@ -43,7 +43,7 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
         class=""
       >
         <textarea
-          class="form-control"
+          class="field form-control"
           id="ruleDescription"
         >
           foo

@@ -1,16 +1,17 @@
 import React, {useMemo} from 'react'
-import {Row, Col} from 'reactstrap'
 import produce from 'immer'
+import classnames from 'classnames'
 
 import untypedCountries from 'config/countries.json'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import settingsCss from 'pages/settings/settings.less'
 import {BillingContact} from 'state/billing/types'
 
 import css from './BillingAddressInputs.less'
 
-// $TsFixMe remove casting once countries is migrated
-const countries = untypedCountries as SelectableOption[]
+const countries: SelectableOption[] = untypedCountries
 
 type Props = {
     onChange: (value: BillingContact) => void
@@ -28,8 +29,9 @@ export default function BillingAddressInputs({onChange, value}: Props) {
 
     return (
         <>
-            <DEPRECATED_InputField
-                help="Invoices are sent to this email address."
+            <InputField
+                className={settingsCss.mb16}
+                caption="Invoices are sent to this email address."
                 label="Email"
                 name="email"
                 onChange={(email) =>
@@ -38,42 +40,40 @@ export default function BillingAddressInputs({onChange, value}: Props) {
                     })
                 }
                 placeholder="your@email.com"
-                required
+                isRequired
                 type="email"
                 value={value.email}
             />
 
-            <Row className={css.formRow}>
-                <Col className={css.formColumn} lg={6}>
-                    <DEPRECATED_InputField
-                        name="name"
-                        label="Company name"
-                        onChange={(name) =>
-                            handleFormChange((nextForm) => {
-                                nextForm.shipping.name = name
-                            })
-                        }
-                        placeholder="e.g. Gorgias"
-                        type="text"
-                        value={value.shipping.name}
-                    />
-                </Col>
-                <Col className={css.formColumn} lg={6}>
-                    <DEPRECATED_InputField
-                        label="Phone number"
-                        name="phone"
-                        onChange={(phone) =>
-                            handleFormChange((nextForm) => {
-                                nextForm.shipping.phone = phone
-                            })
-                        }
-                        placeholder="415 859 3010"
-                        type="tel"
-                        value={value.shipping.phone}
-                    />
-                </Col>
-            </Row>
-            <DEPRECATED_InputField
+            <div className={classnames(css.row, settingsCss.mb16)}>
+                <InputField
+                    className={css.inputRow}
+                    id="name"
+                    label="Company name"
+                    onChange={(name) =>
+                        handleFormChange((nextForm) => {
+                            nextForm.shipping.name = name
+                        })
+                    }
+                    placeholder="e.g. Gorgias"
+                    value={value.shipping.name}
+                />
+                <InputField
+                    className={css.inputRow}
+                    label="Phone number"
+                    id="phone"
+                    onChange={(phone) =>
+                        handleFormChange((nextForm) => {
+                            nextForm.shipping.phone = phone
+                        })
+                    }
+                    placeholder="415 859 3010"
+                    type="tel"
+                    value={value.shipping.phone}
+                />
+            </div>
+            <InputField
+                className={settingsCss.mb16}
                 label="Street address"
                 name="line1"
                 onChange={(address) =>
@@ -83,97 +83,90 @@ export default function BillingAddressInputs({onChange, value}: Props) {
                 }
                 placeholder="Gorgias Street"
                 type="text"
-                required
+                isRequired
                 value={value.shipping.address.line1}
             />
-            <DEPRECATED_InputField
+            <InputField
+                className={settingsCss.mb16}
                 label="Suite/Unit"
-                name="line2"
+                id="line2"
                 onChange={(addressComplement) =>
                     handleFormChange((nextForm) => {
                         nextForm.shipping.address.line2 = addressComplement
                     })
                 }
                 placeholder="e.g. Unit #2, Floor 5"
-                type="text"
                 value={value.shipping.address.line2}
             />
-            <Row className={css.formRow}>
-                <Col className={css.formColumn} lg={6}>
-                    <DEPRECATED_InputField
-                        name="country"
-                        label="Country"
-                        onChange={(country) =>
-                            handleFormChange((nextForm) => {
-                                nextForm.shipping.address.country = country
-                                if (country !== 'US') {
-                                    nextForm.shipping.address.state = ''
-                                }
-                            })
-                        }
-                        required
-                        type="select"
-                        value={value.shipping.address.country}
-                    >
-                        <option value="">-</option>
-                        {countries.map(({label, value}) => (
-                            <option key={value} value={value}>
-                                {label}
-                            </option>
-                        ))}
-                    </DEPRECATED_InputField>
-                </Col>
-                <Col className={css.formColumn} lg={6}>
-                    <DEPRECATED_InputField
-                        label="Zip code"
-                        name="postalCode"
-                        onChange={(postalCode) =>
-                            handleFormChange((nextForm) => {
-                                nextForm.shipping.address.postal_code =
-                                    postalCode
-                            })
-                        }
-                        placeholder="94103"
-                        required
-                        type="text"
-                        value={value.shipping.address.postal_code}
-                    />
-                </Col>
-            </Row>
-            <Row className={css.formRow}>
-                <Col className={css.formColumn} lg={isCountryUnitedStates && 6}>
-                    <DEPRECATED_InputField
-                        name="city"
-                        label="City"
-                        onChange={(city) =>
-                            handleFormChange((nextForm) => {
-                                nextForm.shipping.address.city = city
-                            })
-                        }
-                        placeholder="New York"
-                        required
-                        type="text"
-                        value={value.shipping.address.city}
-                    />
-                </Col>
-                {isCountryUnitedStates && (
-                    <Col className={css.formColumn} lg={6}>
-                        <DEPRECATED_InputField
-                            label="State"
-                            name="state"
-                            onChange={(state) =>
-                                handleFormChange((nextForm) => {
-                                    nextForm.shipping.address.state = state
-                                })
+
+            <div className={classnames(css.row, settingsCss.mb16)}>
+                <DEPRECATED_InputField
+                    className={css.inputRow}
+                    name="country"
+                    label="Country"
+                    onChange={(country) =>
+                        handleFormChange((nextForm) => {
+                            nextForm.shipping.address.country = country
+                            if (country !== 'US') {
+                                nextForm.shipping.address.state = ''
                             }
-                            placeholder="CA"
-                            required
-                            type="text"
-                            value={value.shipping.address.state}
-                        />
-                    </Col>
+                        })
+                    }
+                    required
+                    type="select"
+                    value={value.shipping.address.country}
+                >
+                    <option value="">-</option>
+                    {countries.map(({label, value}) => (
+                        <option key={value} value={value}>
+                            {label}
+                        </option>
+                    ))}
+                </DEPRECATED_InputField>
+                <InputField
+                    className={css.inputRow}
+                    label="Zip code"
+                    id="postalCode"
+                    onChange={(postalCode) =>
+                        handleFormChange((nextForm) => {
+                            nextForm.shipping.address.postal_code = postalCode
+                        })
+                    }
+                    placeholder="94103"
+                    isRequired
+                    value={value.shipping.address.postal_code}
+                />
+            </div>
+            <div className={classnames(css.row, settingsCss.mb32)}>
+                <InputField
+                    className={css.inputRow}
+                    id="city"
+                    label="City"
+                    onChange={(city) =>
+                        handleFormChange((nextForm) => {
+                            nextForm.shipping.address.city = city
+                        })
+                    }
+                    placeholder="New York"
+                    isRequired
+                    value={value.shipping.address.city}
+                />
+                {isCountryUnitedStates && (
+                    <InputField
+                        className={css.inputRow}
+                        label="State"
+                        id="state"
+                        onChange={(state) =>
+                            handleFormChange((nextForm) => {
+                                nextForm.shipping.address.state = state
+                            })
+                        }
+                        placeholder="CA"
+                        isRequired
+                        value={value.shipping.address.state}
+                    />
                 )}
-            </Row>
+            </div>
         </>
     )
 }

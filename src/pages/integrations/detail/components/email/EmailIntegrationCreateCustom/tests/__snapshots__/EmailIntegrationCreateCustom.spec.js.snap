@@ -67,7 +67,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
             class=""
           >
             <input
-              class="form-control"
+              class="field form-control"
               id="id-name"
               placeholder=" Support"
               required=""
@@ -95,7 +95,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
             class=""
           >
             <input
-              class="form-control"
+              class="field form-control"
               id="id-meta.address"
               placeholder="support@undefined.com"
               required=""
@@ -186,7 +186,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
             class=""
           >
             <input
-              class="form-control"
+              class="field form-control"
               id="id-name"
               placeholder=" Support"
               required=""
@@ -214,7 +214,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
             class=""
           >
             <input
-              class="form-control"
+              class="field form-control"
               id="id-meta.address"
               placeholder="support@undefined.com"
               required=""

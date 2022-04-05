@@ -76,7 +76,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-firstName"
                   placeholder="John"
                   type="text"
@@ -102,7 +102,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-lastName"
                   placeholder="Doe"
                   required=""
@@ -133,7 +133,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-company"
                   placeholder="Corp & cie"
                   type="text"
@@ -159,7 +159,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-phone"
                   placeholder="+1 111 111 1111"
                   type="text"
@@ -189,7 +189,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-address1"
                   placeholder="14 street"
                   required=""
@@ -216,7 +216,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-address2"
                   type="text"
                   value=""
@@ -2723,7 +2723,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-city"
                   placeholder="San Francisco"
                   required=""
@@ -2750,7 +2750,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-zip"
                   type="text"
                   value=""
@@ -2856,7 +2856,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-firstName"
                   placeholder="John"
                   type="text"
@@ -2882,7 +2882,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-lastName"
                   placeholder="Doe"
                   required=""
@@ -2913,7 +2913,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-company"
                   placeholder="Corp & cie"
                   type="text"
@@ -2939,7 +2939,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-phone"
                   placeholder="+1 111 111 1111"
                   type="text"
@@ -2969,7 +2969,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-address1"
                   placeholder="14 street"
                   required=""
@@ -2996,7 +2996,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-address2"
                   type="text"
                   value=""
@@ -6166,7 +6166,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-city"
                   placeholder="San Francisco"
                   required=""
@@ -6193,7 +6193,7 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-zip"
                   type="text"
                   value=""

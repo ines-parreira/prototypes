@@ -102,7 +102,9 @@ exports[`BillingDetailsForm component should display loader 1`] = `
         <div
           className="pageContainer container-fluid"
         >
-          <h3>
+          <h3
+            className="title"
+          >
             Billing information
           </h3>
           <Row
@@ -276,7 +278,9 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
         <div
           className="pageContainer container-fluid"
         >
-          <h3>
+          <h3
+            className="title"
+          >
             Billing information
           </h3>
           <Row
@@ -339,690 +343,507 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                         }
                       >
                         <InputField
-                          help="Invoices are sent to this email address."
+                          caption="Invoices are sent to this email address."
+                          className="mb16"
+                          isRequired={true}
                           label="Email"
                           name="email"
                           onChange={[Function]}
                           placeholder="your@email.com"
-                          required={true}
                           type="email"
                           value=""
                         >
-                          <FormGroup
-                            className="InputField required"
-                            color=""
-                            tag="div"
+                          <div
+                            className="mb16"
                           >
-                            <div
-                              className="InputField required form-group"
-                              color=""
+                            <Label
+                              className="label"
+                              htmlFor="input-text-3"
+                              isDisabled={false}
+                              isRequired={true}
                             >
-                              <Label
-                                className="control-label"
-                                htmlFor="id-email"
-                                tag="label"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
+                              <label
+                                className="label label"
+                                htmlFor="input-text-3"
                               >
-                                <label
-                                  className="control-label"
-                                  htmlFor="id-email"
+                                Email
+                                <abbr
+                                  aria-label="required"
+                                  className="abbr"
+                                  title="required"
                                 >
-                                  Email
-                                </label>
-                              </Label>
+                                  *
+                                </abbr>
+                              </label>
+                            </Label>
+                            <ForwardRef(TextInput)
+                              aria-describedby="input-text-3-caption"
+                              hasError={false}
+                              id="input-text-3"
+                              isDisabled={false}
+                              isRequired={true}
+                              name="email"
+                              onChange={[Function]}
+                              placeholder="your@email.com"
+                              type="email"
+                              value=""
+                            >
                               <div
-                                className=""
+                                className="wrapper"
                               >
-                                <Input
-                                  className=""
-                                  id="id-email"
+                                <input
+                                  aria-describedby="input-text-3-caption"
+                                  className="input"
+                                  disabled={false}
+                                  id="input-text-3"
+                                  name="email"
                                   onChange={[Function]}
                                   placeholder="your@email.com"
                                   required={true}
                                   type="email"
                                   value=""
+                                />
+                              </div>
+                            </ForwardRef(TextInput)>
+                            <Caption
+                              id="input-text-3-caption"
+                            >
+                              <div
+                                className="caption"
+                                id="input-text-3-caption"
+                              >
+                                Invoices are sent to this email address.
+                              </div>
+                            </Caption>
+                          </div>
+                        </InputField>
+                        <div
+                          className="row mb16"
+                        >
+                          <InputField
+                            className="inputRow"
+                            id="name"
+                            label="Company name"
+                            onChange={[Function]}
+                            placeholder="e.g. Gorgias"
+                            value=""
+                          >
+                            <div
+                              className="inputRow"
+                            >
+                              <Label
+                                className="label"
+                                htmlFor="name"
+                                isDisabled={false}
+                                isRequired={false}
+                              >
+                                <label
+                                  className="label label"
+                                  htmlFor="name"
+                                >
+                                  Company name
+                                </label>
+                              </Label>
+                              <ForwardRef(TextInput)
+                                hasError={false}
+                                id="name"
+                                isDisabled={false}
+                                isRequired={false}
+                                onChange={[Function]}
+                                placeholder="e.g. Gorgias"
+                                value=""
+                              >
+                                <div
+                                  className="wrapper"
                                 >
                                   <input
-                                    className="form-control"
-                                    id="id-email"
+                                    className="input"
+                                    disabled={false}
+                                    id="name"
+                                    name="name"
                                     onChange={[Function]}
-                                    placeholder="your@email.com"
-                                    required={true}
-                                    type="email"
+                                    placeholder="e.g. Gorgias"
+                                    required={false}
+                                    type="text"
                                     value=""
                                   />
-                                </Input>
-                              </div>
-                              <FormText
-                                color="muted"
-                                tag="small"
-                              >
-                                <small
-                                  className="form-text text-muted"
-                                >
-                                  Invoices are sent to this email address.
-                                </small>
-                              </FormText>
+                                </div>
+                              </ForwardRef(TextInput)>
                             </div>
-                          </FormGroup>
-                        </InputField>
-                        <Row
-                          className="formRow"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <div
-                            className="formRow row"
+                          </InputField>
+                          <InputField
+                            className="inputRow"
+                            id="phone"
+                            label="Phone number"
+                            onChange={[Function]}
+                            placeholder="415 859 3010"
+                            type="tel"
+                            value=""
                           >
-                            <Col
-                              className="formColumn"
-                              lg={6}
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
+                            <div
+                              className="inputRow"
                             >
-                              <div
-                                className="formColumn col-lg-6"
+                              <Label
+                                className="label"
+                                htmlFor="phone"
+                                isDisabled={false}
+                                isRequired={false}
                               >
-                                <InputField
-                                  label="Company name"
-                                  name="name"
-                                  onChange={[Function]}
-                                  placeholder="e.g. Gorgias"
-                                  type="text"
-                                  value=""
+                                <label
+                                  className="label label"
+                                  htmlFor="phone"
                                 >
-                                  <FormGroup
-                                    className="InputField"
-                                    color=""
-                                    tag="div"
-                                  >
-                                    <div
-                                      className="InputField form-group"
-                                      color=""
-                                    >
-                                      <Label
-                                        className="control-label"
-                                        htmlFor="id-name"
-                                        tag="label"
-                                        widths={
-                                          Array [
-                                            "xs",
-                                            "sm",
-                                            "md",
-                                            "lg",
-                                            "xl",
-                                          ]
-                                        }
-                                      >
-                                        <label
-                                          className="control-label"
-                                          htmlFor="id-name"
-                                        >
-                                          Company name
-                                        </label>
-                                      </Label>
-                                      <div
-                                        className=""
-                                      >
-                                        <Input
-                                          className=""
-                                          id="id-name"
-                                          onChange={[Function]}
-                                          placeholder="e.g. Gorgias"
-                                          type="text"
-                                          value=""
-                                        >
-                                          <input
-                                            className="form-control"
-                                            id="id-name"
-                                            onChange={[Function]}
-                                            placeholder="e.g. Gorgias"
-                                            type="text"
-                                            value=""
-                                          />
-                                        </Input>
-                                      </div>
-                                    </div>
-                                  </FormGroup>
-                                </InputField>
-                              </div>
-                            </Col>
-                            <Col
-                              className="formColumn"
-                              lg={6}
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <div
-                                className="formColumn col-lg-6"
+                                  Phone number
+                                </label>
+                              </Label>
+                              <ForwardRef(TextInput)
+                                hasError={false}
+                                id="phone"
+                                isDisabled={false}
+                                isRequired={false}
+                                onChange={[Function]}
+                                placeholder="415 859 3010"
+                                type="tel"
+                                value=""
                               >
-                                <InputField
-                                  label="Phone number"
-                                  name="phone"
-                                  onChange={[Function]}
-                                  placeholder="415 859 3010"
-                                  type="tel"
-                                  value=""
+                                <div
+                                  className="wrapper"
                                 >
-                                  <FormGroup
-                                    className="InputField"
-                                    color=""
-                                    tag="div"
-                                  >
-                                    <div
-                                      className="InputField form-group"
-                                      color=""
-                                    >
-                                      <Label
-                                        className="control-label"
-                                        htmlFor="id-phone"
-                                        tag="label"
-                                        widths={
-                                          Array [
-                                            "xs",
-                                            "sm",
-                                            "md",
-                                            "lg",
-                                            "xl",
-                                          ]
-                                        }
-                                      >
-                                        <label
-                                          className="control-label"
-                                          htmlFor="id-phone"
-                                        >
-                                          Phone number
-                                        </label>
-                                      </Label>
-                                      <div
-                                        className=""
-                                      >
-                                        <Input
-                                          className=""
-                                          id="id-phone"
-                                          onChange={[Function]}
-                                          placeholder="415 859 3010"
-                                          type="tel"
-                                          value=""
-                                        >
-                                          <input
-                                            className="form-control"
-                                            id="id-phone"
-                                            onChange={[Function]}
-                                            placeholder="415 859 3010"
-                                            type="tel"
-                                            value=""
-                                          />
-                                        </Input>
-                                      </div>
-                                    </div>
-                                  </FormGroup>
-                                </InputField>
-                              </div>
-                            </Col>
-                          </div>
-                        </Row>
+                                  <input
+                                    className="input"
+                                    disabled={false}
+                                    id="phone"
+                                    name="phone"
+                                    onChange={[Function]}
+                                    placeholder="415 859 3010"
+                                    required={false}
+                                    type="tel"
+                                    value=""
+                                  />
+                                </div>
+                              </ForwardRef(TextInput)>
+                            </div>
+                          </InputField>
+                        </div>
                         <InputField
+                          className="mb16"
+                          isRequired={true}
                           label="Street address"
                           name="line1"
                           onChange={[Function]}
                           placeholder="Gorgias Street"
-                          required={true}
                           type="text"
                           value=""
                         >
-                          <FormGroup
-                            className="InputField required"
-                            color=""
-                            tag="div"
+                          <div
+                            className="mb16"
                           >
-                            <div
-                              className="InputField required form-group"
-                              color=""
+                            <Label
+                              className="label"
+                              htmlFor="input-text-4"
+                              isDisabled={false}
+                              isRequired={true}
                             >
-                              <Label
-                                className="control-label"
-                                htmlFor="id-line1"
-                                tag="label"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
+                              <label
+                                className="label label"
+                                htmlFor="input-text-4"
                               >
-                                <label
-                                  className="control-label"
-                                  htmlFor="id-line1"
+                                Street address
+                                <abbr
+                                  aria-label="required"
+                                  className="abbr"
+                                  title="required"
                                 >
-                                  Street address
-                                </label>
-                              </Label>
+                                  *
+                                </abbr>
+                              </label>
+                            </Label>
+                            <ForwardRef(TextInput)
+                              hasError={false}
+                              id="input-text-4"
+                              isDisabled={false}
+                              isRequired={true}
+                              name="line1"
+                              onChange={[Function]}
+                              placeholder="Gorgias Street"
+                              type="text"
+                              value=""
+                            >
                               <div
-                                className=""
+                                className="wrapper"
                               >
-                                <Input
-                                  className=""
-                                  id="id-line1"
+                                <input
+                                  className="input"
+                                  disabled={false}
+                                  id="input-text-4"
+                                  name="line1"
                                   onChange={[Function]}
                                   placeholder="Gorgias Street"
                                   required={true}
                                   type="text"
                                   value=""
+                                />
+                              </div>
+                            </ForwardRef(TextInput)>
+                          </div>
+                        </InputField>
+                        <InputField
+                          className="mb16"
+                          id="line2"
+                          label="Suite/Unit"
+                          onChange={[Function]}
+                          placeholder="e.g. Unit #2, Floor 5"
+                          value=""
+                        >
+                          <div
+                            className="mb16"
+                          >
+                            <Label
+                              className="label"
+                              htmlFor="line2"
+                              isDisabled={false}
+                              isRequired={false}
+                            >
+                              <label
+                                className="label label"
+                                htmlFor="line2"
+                              >
+                                Suite/Unit
+                              </label>
+                            </Label>
+                            <ForwardRef(TextInput)
+                              hasError={false}
+                              id="line2"
+                              isDisabled={false}
+                              isRequired={false}
+                              onChange={[Function]}
+                              placeholder="e.g. Unit #2, Floor 5"
+                              value=""
+                            >
+                              <div
+                                className="wrapper"
+                              >
+                                <input
+                                  className="input"
+                                  disabled={false}
+                                  id="line2"
+                                  name="line2"
+                                  onChange={[Function]}
+                                  placeholder="e.g. Unit #2, Floor 5"
+                                  required={false}
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </ForwardRef(TextInput)>
+                          </div>
+                        </InputField>
+                        <div
+                          className="row mb16"
+                        >
+                          <InputField
+                            className="inputRow"
+                            label="Country"
+                            name="country"
+                            onChange={[Function]}
+                            required={true}
+                            type="select"
+                            value=""
+                          >
+                            <FormGroup
+                              className="InputField inputRow required"
+                              color=""
+                              tag="div"
+                            >
+                              <div
+                                className="InputField inputRow required form-group"
+                                color=""
+                              >
+                                <Label
+                                  className="control-label"
+                                  htmlFor="id-country"
+                                  tag="label"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
+                                >
+                                  <label
+                                    className="control-label"
+                                    htmlFor="id-country"
+                                  >
+                                    Country
+                                  </label>
+                                </Label>
+                                <div
+                                  className=""
+                                >
+                                  <Input
+                                    className="field"
+                                    id="id-country"
+                                    onChange={[Function]}
+                                    required={true}
+                                    type="select"
+                                    value=""
+                                  >
+                                    <select
+                                      className="field form-control"
+                                      id="id-country"
+                                      onChange={[Function]}
+                                      required={true}
+                                      value=""
+                                    >
+                                      <option
+                                        value=""
+                                      >
+                                        -
+                                      </option>
+                                      <option
+                                        key="FR"
+                                        value="FR"
+                                      >
+                                        France
+                                      </option>
+                                      <option
+                                        key="US"
+                                        value="US"
+                                      >
+                                        United States
+                                      </option>
+                                    </select>
+                                  </Input>
+                                </div>
+                              </div>
+                            </FormGroup>
+                          </InputField>
+                          <InputField
+                            className="inputRow"
+                            id="postalCode"
+                            isRequired={true}
+                            label="Zip code"
+                            onChange={[Function]}
+                            placeholder="94103"
+                            value=""
+                          >
+                            <div
+                              className="inputRow"
+                            >
+                              <Label
+                                className="label"
+                                htmlFor="postalCode"
+                                isDisabled={false}
+                                isRequired={true}
+                              >
+                                <label
+                                  className="label label"
+                                  htmlFor="postalCode"
+                                >
+                                  Zip code
+                                  <abbr
+                                    aria-label="required"
+                                    className="abbr"
+                                    title="required"
+                                  >
+                                    *
+                                  </abbr>
+                                </label>
+                              </Label>
+                              <ForwardRef(TextInput)
+                                hasError={false}
+                                id="postalCode"
+                                isDisabled={false}
+                                isRequired={true}
+                                onChange={[Function]}
+                                placeholder="94103"
+                                value=""
+                              >
+                                <div
+                                  className="wrapper"
                                 >
                                   <input
-                                    className="form-control"
-                                    id="id-line1"
+                                    className="input"
+                                    disabled={false}
+                                    id="postalCode"
+                                    name="postalCode"
                                     onChange={[Function]}
-                                    placeholder="Gorgias Street"
+                                    placeholder="94103"
                                     required={true}
                                     type="text"
                                     value=""
                                   />
-                                </Input>
-                              </div>
+                                </div>
+                              </ForwardRef(TextInput)>
                             </div>
-                          </FormGroup>
-                        </InputField>
-                        <InputField
-                          label="Suite/Unit"
-                          name="line2"
-                          onChange={[Function]}
-                          placeholder="e.g. Unit #2, Floor 5"
-                          type="text"
-                          value=""
+                          </InputField>
+                        </div>
+                        <div
+                          className="row mb32"
                         >
-                          <FormGroup
-                            className="InputField"
-                            color=""
-                            tag="div"
+                          <InputField
+                            className="inputRow"
+                            id="city"
+                            isRequired={true}
+                            label="City"
+                            onChange={[Function]}
+                            placeholder="New York"
+                            value=""
                           >
                             <div
-                              className="InputField form-group"
-                              color=""
+                              className="inputRow"
                             >
                               <Label
-                                className="control-label"
-                                htmlFor="id-line2"
-                                tag="label"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
+                                className="label"
+                                htmlFor="city"
+                                isDisabled={false}
+                                isRequired={true}
                               >
                                 <label
-                                  className="control-label"
-                                  htmlFor="id-line2"
+                                  className="label label"
+                                  htmlFor="city"
                                 >
-                                  Suite/Unit
+                                  City
+                                  <abbr
+                                    aria-label="required"
+                                    className="abbr"
+                                    title="required"
+                                  >
+                                    *
+                                  </abbr>
                                 </label>
                               </Label>
-                              <div
-                                className=""
+                              <ForwardRef(TextInput)
+                                hasError={false}
+                                id="city"
+                                isDisabled={false}
+                                isRequired={true}
+                                onChange={[Function]}
+                                placeholder="New York"
+                                value=""
                               >
-                                <Input
-                                  className=""
-                                  id="id-line2"
-                                  onChange={[Function]}
-                                  placeholder="e.g. Unit #2, Floor 5"
-                                  type="text"
-                                  value=""
+                                <div
+                                  className="wrapper"
                                 >
                                   <input
-                                    className="form-control"
-                                    id="id-line2"
+                                    className="input"
+                                    disabled={false}
+                                    id="city"
+                                    name="city"
                                     onChange={[Function]}
-                                    placeholder="e.g. Unit #2, Floor 5"
+                                    placeholder="New York"
+                                    required={true}
                                     type="text"
                                     value=""
                                   />
-                                </Input>
-                              </div>
+                                </div>
+                              </ForwardRef(TextInput)>
                             </div>
-                          </FormGroup>
-                        </InputField>
-                        <Row
-                          className="formRow"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <div
-                            className="formRow row"
-                          >
-                            <Col
-                              className="formColumn"
-                              lg={6}
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <div
-                                className="formColumn col-lg-6"
-                              >
-                                <InputField
-                                  label="Country"
-                                  name="country"
-                                  onChange={[Function]}
-                                  required={true}
-                                  type="select"
-                                  value=""
-                                >
-                                  <FormGroup
-                                    className="InputField required"
-                                    color=""
-                                    tag="div"
-                                  >
-                                    <div
-                                      className="InputField required form-group"
-                                      color=""
-                                    >
-                                      <Label
-                                        className="control-label"
-                                        htmlFor="id-country"
-                                        tag="label"
-                                        widths={
-                                          Array [
-                                            "xs",
-                                            "sm",
-                                            "md",
-                                            "lg",
-                                            "xl",
-                                          ]
-                                        }
-                                      >
-                                        <label
-                                          className="control-label"
-                                          htmlFor="id-country"
-                                        >
-                                          Country
-                                        </label>
-                                      </Label>
-                                      <div
-                                        className=""
-                                      >
-                                        <Input
-                                          className=""
-                                          id="id-country"
-                                          onChange={[Function]}
-                                          required={true}
-                                          type="select"
-                                          value=""
-                                        >
-                                          <select
-                                            className="form-control"
-                                            id="id-country"
-                                            onChange={[Function]}
-                                            required={true}
-                                            value=""
-                                          >
-                                            <option
-                                              value=""
-                                            >
-                                              -
-                                            </option>
-                                            <option
-                                              key="FR"
-                                              value="FR"
-                                            >
-                                              France
-                                            </option>
-                                            <option
-                                              key="US"
-                                              value="US"
-                                            >
-                                              United States
-                                            </option>
-                                          </select>
-                                        </Input>
-                                      </div>
-                                    </div>
-                                  </FormGroup>
-                                </InputField>
-                              </div>
-                            </Col>
-                            <Col
-                              className="formColumn"
-                              lg={6}
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <div
-                                className="formColumn col-lg-6"
-                              >
-                                <InputField
-                                  label="Zip code"
-                                  name="postalCode"
-                                  onChange={[Function]}
-                                  placeholder="94103"
-                                  required={true}
-                                  type="text"
-                                  value=""
-                                >
-                                  <FormGroup
-                                    className="InputField required"
-                                    color=""
-                                    tag="div"
-                                  >
-                                    <div
-                                      className="InputField required form-group"
-                                      color=""
-                                    >
-                                      <Label
-                                        className="control-label"
-                                        htmlFor="id-postalCode"
-                                        tag="label"
-                                        widths={
-                                          Array [
-                                            "xs",
-                                            "sm",
-                                            "md",
-                                            "lg",
-                                            "xl",
-                                          ]
-                                        }
-                                      >
-                                        <label
-                                          className="control-label"
-                                          htmlFor="id-postalCode"
-                                        >
-                                          Zip code
-                                        </label>
-                                      </Label>
-                                      <div
-                                        className=""
-                                      >
-                                        <Input
-                                          className=""
-                                          id="id-postalCode"
-                                          onChange={[Function]}
-                                          placeholder="94103"
-                                          required={true}
-                                          type="text"
-                                          value=""
-                                        >
-                                          <input
-                                            className="form-control"
-                                            id="id-postalCode"
-                                            onChange={[Function]}
-                                            placeholder="94103"
-                                            required={true}
-                                            type="text"
-                                            value=""
-                                          />
-                                        </Input>
-                                      </div>
-                                    </div>
-                                  </FormGroup>
-                                </InputField>
-                              </div>
-                            </Col>
-                          </div>
-                        </Row>
-                        <Row
-                          className="formRow"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <div
-                            className="formRow row"
-                          >
-                            <Col
-                              className="formColumn"
-                              lg={false}
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <div
-                                className="formColumn col"
-                              >
-                                <InputField
-                                  label="City"
-                                  name="city"
-                                  onChange={[Function]}
-                                  placeholder="New York"
-                                  required={true}
-                                  type="text"
-                                  value=""
-                                >
-                                  <FormGroup
-                                    className="InputField required"
-                                    color=""
-                                    tag="div"
-                                  >
-                                    <div
-                                      className="InputField required form-group"
-                                      color=""
-                                    >
-                                      <Label
-                                        className="control-label"
-                                        htmlFor="id-city"
-                                        tag="label"
-                                        widths={
-                                          Array [
-                                            "xs",
-                                            "sm",
-                                            "md",
-                                            "lg",
-                                            "xl",
-                                          ]
-                                        }
-                                      >
-                                        <label
-                                          className="control-label"
-                                          htmlFor="id-city"
-                                        >
-                                          City
-                                        </label>
-                                      </Label>
-                                      <div
-                                        className=""
-                                      >
-                                        <Input
-                                          className=""
-                                          id="id-city"
-                                          onChange={[Function]}
-                                          placeholder="New York"
-                                          required={true}
-                                          type="text"
-                                          value=""
-                                        >
-                                          <input
-                                            className="form-control"
-                                            id="id-city"
-                                            onChange={[Function]}
-                                            placeholder="New York"
-                                            required={true}
-                                            type="text"
-                                            value=""
-                                          />
-                                        </Input>
-                                      </div>
-                                    </div>
-                                  </FormGroup>
-                                </InputField>
-                              </div>
-                            </Col>
-                          </div>
-                        </Row>
+                          </InputField>
+                        </div>
                       </BillingAddressInputs>
                       <div>
                         <ForwardRef
@@ -1170,7 +991,9 @@ exports[`BillingDetailsForm component should display the form with billing conta
         <div
           className="pageContainer container-fluid"
         >
-          <h3>
+          <h3
+            className="title"
+          >
             Billing information
           </h3>
           <Row
@@ -1233,690 +1056,507 @@ exports[`BillingDetailsForm component should display the form with billing conta
                         }
                       >
                         <InputField
-                          help="Invoices are sent to this email address."
+                          caption="Invoices are sent to this email address."
+                          className="mb16"
+                          isRequired={true}
                           label="Email"
                           name="email"
                           onChange={[Function]}
                           placeholder="your@email.com"
-                          required={true}
                           type="email"
                           value="hello@acme.gorgias.io"
                         >
-                          <FormGroup
-                            className="InputField required"
-                            color=""
-                            tag="div"
+                          <div
+                            className="mb16"
                           >
-                            <div
-                              className="InputField required form-group"
-                              color=""
+                            <Label
+                              className="label"
+                              htmlFor="input-text-5"
+                              isDisabled={false}
+                              isRequired={true}
                             >
-                              <Label
-                                className="control-label"
-                                htmlFor="id-email"
-                                tag="label"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
+                              <label
+                                className="label label"
+                                htmlFor="input-text-5"
                               >
-                                <label
-                                  className="control-label"
-                                  htmlFor="id-email"
+                                Email
+                                <abbr
+                                  aria-label="required"
+                                  className="abbr"
+                                  title="required"
                                 >
-                                  Email
-                                </label>
-                              </Label>
+                                  *
+                                </abbr>
+                              </label>
+                            </Label>
+                            <ForwardRef(TextInput)
+                              aria-describedby="input-text-5-caption"
+                              hasError={false}
+                              id="input-text-5"
+                              isDisabled={false}
+                              isRequired={true}
+                              name="email"
+                              onChange={[Function]}
+                              placeholder="your@email.com"
+                              type="email"
+                              value="hello@acme.gorgias.io"
+                            >
                               <div
-                                className=""
+                                className="wrapper"
                               >
-                                <Input
-                                  className=""
-                                  id="id-email"
+                                <input
+                                  aria-describedby="input-text-5-caption"
+                                  className="input"
+                                  disabled={false}
+                                  id="input-text-5"
+                                  name="email"
                                   onChange={[Function]}
                                   placeholder="your@email.com"
                                   required={true}
                                   type="email"
                                   value="hello@acme.gorgias.io"
+                                />
+                              </div>
+                            </ForwardRef(TextInput)>
+                            <Caption
+                              id="input-text-5-caption"
+                            >
+                              <div
+                                className="caption"
+                                id="input-text-5-caption"
+                              >
+                                Invoices are sent to this email address.
+                              </div>
+                            </Caption>
+                          </div>
+                        </InputField>
+                        <div
+                          className="row mb16"
+                        >
+                          <InputField
+                            className="inputRow"
+                            id="name"
+                            label="Company name"
+                            onChange={[Function]}
+                            placeholder="e.g. Gorgias"
+                            value="Gorgias"
+                          >
+                            <div
+                              className="inputRow"
+                            >
+                              <Label
+                                className="label"
+                                htmlFor="name"
+                                isDisabled={false}
+                                isRequired={false}
+                              >
+                                <label
+                                  className="label label"
+                                  htmlFor="name"
+                                >
+                                  Company name
+                                </label>
+                              </Label>
+                              <ForwardRef(TextInput)
+                                hasError={false}
+                                id="name"
+                                isDisabled={false}
+                                isRequired={false}
+                                onChange={[Function]}
+                                placeholder="e.g. Gorgias"
+                                value="Gorgias"
+                              >
+                                <div
+                                  className="wrapper"
                                 >
                                   <input
-                                    className="form-control"
-                                    id="id-email"
+                                    className="input"
+                                    disabled={false}
+                                    id="name"
+                                    name="name"
                                     onChange={[Function]}
-                                    placeholder="your@email.com"
-                                    required={true}
-                                    type="email"
-                                    value="hello@acme.gorgias.io"
+                                    placeholder="e.g. Gorgias"
+                                    required={false}
+                                    type="text"
+                                    value="Gorgias"
                                   />
-                                </Input>
-                              </div>
-                              <FormText
-                                color="muted"
-                                tag="small"
-                              >
-                                <small
-                                  className="form-text text-muted"
-                                >
-                                  Invoices are sent to this email address.
-                                </small>
-                              </FormText>
+                                </div>
+                              </ForwardRef(TextInput)>
                             </div>
-                          </FormGroup>
-                        </InputField>
-                        <Row
-                          className="formRow"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <div
-                            className="formRow row"
+                          </InputField>
+                          <InputField
+                            className="inputRow"
+                            id="phone"
+                            label="Phone number"
+                            onChange={[Function]}
+                            placeholder="415 859 3010"
+                            type="tel"
+                            value="4155555556"
                           >
-                            <Col
-                              className="formColumn"
-                              lg={6}
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
+                            <div
+                              className="inputRow"
                             >
-                              <div
-                                className="formColumn col-lg-6"
+                              <Label
+                                className="label"
+                                htmlFor="phone"
+                                isDisabled={false}
+                                isRequired={false}
                               >
-                                <InputField
-                                  label="Company name"
-                                  name="name"
-                                  onChange={[Function]}
-                                  placeholder="e.g. Gorgias"
-                                  type="text"
-                                  value="Gorgias"
+                                <label
+                                  className="label label"
+                                  htmlFor="phone"
                                 >
-                                  <FormGroup
-                                    className="InputField"
-                                    color=""
-                                    tag="div"
-                                  >
-                                    <div
-                                      className="InputField form-group"
-                                      color=""
-                                    >
-                                      <Label
-                                        className="control-label"
-                                        htmlFor="id-name"
-                                        tag="label"
-                                        widths={
-                                          Array [
-                                            "xs",
-                                            "sm",
-                                            "md",
-                                            "lg",
-                                            "xl",
-                                          ]
-                                        }
-                                      >
-                                        <label
-                                          className="control-label"
-                                          htmlFor="id-name"
-                                        >
-                                          Company name
-                                        </label>
-                                      </Label>
-                                      <div
-                                        className=""
-                                      >
-                                        <Input
-                                          className=""
-                                          id="id-name"
-                                          onChange={[Function]}
-                                          placeholder="e.g. Gorgias"
-                                          type="text"
-                                          value="Gorgias"
-                                        >
-                                          <input
-                                            className="form-control"
-                                            id="id-name"
-                                            onChange={[Function]}
-                                            placeholder="e.g. Gorgias"
-                                            type="text"
-                                            value="Gorgias"
-                                          />
-                                        </Input>
-                                      </div>
-                                    </div>
-                                  </FormGroup>
-                                </InputField>
-                              </div>
-                            </Col>
-                            <Col
-                              className="formColumn"
-                              lg={6}
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <div
-                                className="formColumn col-lg-6"
+                                  Phone number
+                                </label>
+                              </Label>
+                              <ForwardRef(TextInput)
+                                hasError={false}
+                                id="phone"
+                                isDisabled={false}
+                                isRequired={false}
+                                onChange={[Function]}
+                                placeholder="415 859 3010"
+                                type="tel"
+                                value="4155555556"
                               >
-                                <InputField
-                                  label="Phone number"
-                                  name="phone"
-                                  onChange={[Function]}
-                                  placeholder="415 859 3010"
-                                  type="tel"
-                                  value="4155555556"
+                                <div
+                                  className="wrapper"
                                 >
-                                  <FormGroup
-                                    className="InputField"
-                                    color=""
-                                    tag="div"
-                                  >
-                                    <div
-                                      className="InputField form-group"
-                                      color=""
-                                    >
-                                      <Label
-                                        className="control-label"
-                                        htmlFor="id-phone"
-                                        tag="label"
-                                        widths={
-                                          Array [
-                                            "xs",
-                                            "sm",
-                                            "md",
-                                            "lg",
-                                            "xl",
-                                          ]
-                                        }
-                                      >
-                                        <label
-                                          className="control-label"
-                                          htmlFor="id-phone"
-                                        >
-                                          Phone number
-                                        </label>
-                                      </Label>
-                                      <div
-                                        className=""
-                                      >
-                                        <Input
-                                          className=""
-                                          id="id-phone"
-                                          onChange={[Function]}
-                                          placeholder="415 859 3010"
-                                          type="tel"
-                                          value="4155555556"
-                                        >
-                                          <input
-                                            className="form-control"
-                                            id="id-phone"
-                                            onChange={[Function]}
-                                            placeholder="415 859 3010"
-                                            type="tel"
-                                            value="4155555556"
-                                          />
-                                        </Input>
-                                      </div>
-                                    </div>
-                                  </FormGroup>
-                                </InputField>
-                              </div>
-                            </Col>
-                          </div>
-                        </Row>
+                                  <input
+                                    className="input"
+                                    disabled={false}
+                                    id="phone"
+                                    name="phone"
+                                    onChange={[Function]}
+                                    placeholder="415 859 3010"
+                                    required={false}
+                                    type="tel"
+                                    value="4155555556"
+                                  />
+                                </div>
+                              </ForwardRef(TextInput)>
+                            </div>
+                          </InputField>
+                        </div>
                         <InputField
+                          className="mb16"
+                          isRequired={true}
                           label="Street address"
                           name="line1"
                           onChange={[Function]}
                           placeholder="Gorgias Street"
-                          required={true}
                           type="text"
                           value="52 Washburn St"
                         >
-                          <FormGroup
-                            className="InputField required"
-                            color=""
-                            tag="div"
+                          <div
+                            className="mb16"
                           >
-                            <div
-                              className="InputField required form-group"
-                              color=""
+                            <Label
+                              className="label"
+                              htmlFor="input-text-6"
+                              isDisabled={false}
+                              isRequired={true}
                             >
-                              <Label
-                                className="control-label"
-                                htmlFor="id-line1"
-                                tag="label"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
+                              <label
+                                className="label label"
+                                htmlFor="input-text-6"
                               >
-                                <label
-                                  className="control-label"
-                                  htmlFor="id-line1"
+                                Street address
+                                <abbr
+                                  aria-label="required"
+                                  className="abbr"
+                                  title="required"
                                 >
-                                  Street address
-                                </label>
-                              </Label>
+                                  *
+                                </abbr>
+                              </label>
+                            </Label>
+                            <ForwardRef(TextInput)
+                              hasError={false}
+                              id="input-text-6"
+                              isDisabled={false}
+                              isRequired={true}
+                              name="line1"
+                              onChange={[Function]}
+                              placeholder="Gorgias Street"
+                              type="text"
+                              value="52 Washburn St"
+                            >
                               <div
-                                className=""
+                                className="wrapper"
                               >
-                                <Input
-                                  className=""
-                                  id="id-line1"
+                                <input
+                                  className="input"
+                                  disabled={false}
+                                  id="input-text-6"
+                                  name="line1"
                                   onChange={[Function]}
                                   placeholder="Gorgias Street"
                                   required={true}
                                   type="text"
                                   value="52 Washburn St"
-                                >
-                                  <input
-                                    className="form-control"
-                                    id="id-line1"
-                                    onChange={[Function]}
-                                    placeholder="Gorgias Street"
-                                    required={true}
-                                    type="text"
-                                    value="52 Washburn St"
-                                  />
-                                </Input>
+                                />
                               </div>
-                            </div>
-                          </FormGroup>
+                            </ForwardRef(TextInput)>
+                          </div>
                         </InputField>
                         <InputField
+                          className="mb16"
+                          id="line2"
                           label="Suite/Unit"
-                          name="line2"
                           onChange={[Function]}
                           placeholder="e.g. Unit #2, Floor 5"
-                          type="text"
                           value=""
                         >
-                          <FormGroup
-                            className="InputField"
-                            color=""
-                            tag="div"
+                          <div
+                            className="mb16"
                           >
-                            <div
-                              className="InputField form-group"
-                              color=""
+                            <Label
+                              className="label"
+                              htmlFor="line2"
+                              isDisabled={false}
+                              isRequired={false}
                             >
-                              <Label
-                                className="control-label"
-                                htmlFor="id-line2"
-                                tag="label"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
+                              <label
+                                className="label label"
+                                htmlFor="line2"
                               >
-                                <label
-                                  className="control-label"
-                                  htmlFor="id-line2"
-                                >
-                                  Suite/Unit
-                                </label>
-                              </Label>
+                                Suite/Unit
+                              </label>
+                            </Label>
+                            <ForwardRef(TextInput)
+                              hasError={false}
+                              id="line2"
+                              isDisabled={false}
+                              isRequired={false}
+                              onChange={[Function]}
+                              placeholder="e.g. Unit #2, Floor 5"
+                              value=""
+                            >
                               <div
-                                className=""
+                                className="wrapper"
                               >
-                                <Input
-                                  className=""
-                                  id="id-line2"
+                                <input
+                                  className="input"
+                                  disabled={false}
+                                  id="line2"
+                                  name="line2"
                                   onChange={[Function]}
                                   placeholder="e.g. Unit #2, Floor 5"
+                                  required={false}
                                   type="text"
                                   value=""
+                                />
+                              </div>
+                            </ForwardRef(TextInput)>
+                          </div>
+                        </InputField>
+                        <div
+                          className="row mb16"
+                        >
+                          <InputField
+                            className="inputRow"
+                            label="Country"
+                            name="country"
+                            onChange={[Function]}
+                            required={true}
+                            type="select"
+                            value="United States"
+                          >
+                            <FormGroup
+                              className="InputField inputRow required"
+                              color=""
+                              tag="div"
+                            >
+                              <div
+                                className="InputField inputRow required form-group"
+                                color=""
+                              >
+                                <Label
+                                  className="control-label"
+                                  htmlFor="id-country"
+                                  tag="label"
+                                  widths={
+                                    Array [
+                                      "xs",
+                                      "sm",
+                                      "md",
+                                      "lg",
+                                      "xl",
+                                    ]
+                                  }
+                                >
+                                  <label
+                                    className="control-label"
+                                    htmlFor="id-country"
+                                  >
+                                    Country
+                                  </label>
+                                </Label>
+                                <div
+                                  className=""
+                                >
+                                  <Input
+                                    className="field"
+                                    id="id-country"
+                                    onChange={[Function]}
+                                    required={true}
+                                    type="select"
+                                    value="United States"
+                                  >
+                                    <select
+                                      className="field form-control"
+                                      id="id-country"
+                                      onChange={[Function]}
+                                      required={true}
+                                      value="United States"
+                                    >
+                                      <option
+                                        value=""
+                                      >
+                                        -
+                                      </option>
+                                      <option
+                                        key="FR"
+                                        value="FR"
+                                      >
+                                        France
+                                      </option>
+                                      <option
+                                        key="US"
+                                        value="US"
+                                      >
+                                        United States
+                                      </option>
+                                    </select>
+                                  </Input>
+                                </div>
+                              </div>
+                            </FormGroup>
+                          </InputField>
+                          <InputField
+                            className="inputRow"
+                            id="postalCode"
+                            isRequired={true}
+                            label="Zip code"
+                            onChange={[Function]}
+                            placeholder="94103"
+                            value="94103"
+                          >
+                            <div
+                              className="inputRow"
+                            >
+                              <Label
+                                className="label"
+                                htmlFor="postalCode"
+                                isDisabled={false}
+                                isRequired={true}
+                              >
+                                <label
+                                  className="label label"
+                                  htmlFor="postalCode"
+                                >
+                                  Zip code
+                                  <abbr
+                                    aria-label="required"
+                                    className="abbr"
+                                    title="required"
+                                  >
+                                    *
+                                  </abbr>
+                                </label>
+                              </Label>
+                              <ForwardRef(TextInput)
+                                hasError={false}
+                                id="postalCode"
+                                isDisabled={false}
+                                isRequired={true}
+                                onChange={[Function]}
+                                placeholder="94103"
+                                value="94103"
+                              >
+                                <div
+                                  className="wrapper"
                                 >
                                   <input
-                                    className="form-control"
-                                    id="id-line2"
+                                    className="input"
+                                    disabled={false}
+                                    id="postalCode"
+                                    name="postalCode"
                                     onChange={[Function]}
-                                    placeholder="e.g. Unit #2, Floor 5"
+                                    placeholder="94103"
+                                    required={true}
                                     type="text"
-                                    value=""
+                                    value="94103"
                                   />
-                                </Input>
-                              </div>
+                                </div>
+                              </ForwardRef(TextInput)>
                             </div>
-                          </FormGroup>
-                        </InputField>
-                        <Row
-                          className="formRow"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
+                          </InputField>
+                        </div>
+                        <div
+                          className="row mb32"
                         >
-                          <div
-                            className="formRow row"
+                          <InputField
+                            className="inputRow"
+                            id="city"
+                            isRequired={true}
+                            label="City"
+                            onChange={[Function]}
+                            placeholder="New York"
+                            value="San Francisco"
                           >
-                            <Col
-                              className="formColumn"
-                              lg={6}
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
+                            <div
+                              className="inputRow"
                             >
-                              <div
-                                className="formColumn col-lg-6"
+                              <Label
+                                className="label"
+                                htmlFor="city"
+                                isDisabled={false}
+                                isRequired={true}
                               >
-                                <InputField
-                                  label="Country"
-                                  name="country"
-                                  onChange={[Function]}
-                                  required={true}
-                                  type="select"
-                                  value="United States"
+                                <label
+                                  className="label label"
+                                  htmlFor="city"
                                 >
-                                  <FormGroup
-                                    className="InputField required"
-                                    color=""
-                                    tag="div"
+                                  City
+                                  <abbr
+                                    aria-label="required"
+                                    className="abbr"
+                                    title="required"
                                   >
-                                    <div
-                                      className="InputField required form-group"
-                                      color=""
-                                    >
-                                      <Label
-                                        className="control-label"
-                                        htmlFor="id-country"
-                                        tag="label"
-                                        widths={
-                                          Array [
-                                            "xs",
-                                            "sm",
-                                            "md",
-                                            "lg",
-                                            "xl",
-                                          ]
-                                        }
-                                      >
-                                        <label
-                                          className="control-label"
-                                          htmlFor="id-country"
-                                        >
-                                          Country
-                                        </label>
-                                      </Label>
-                                      <div
-                                        className=""
-                                      >
-                                        <Input
-                                          className=""
-                                          id="id-country"
-                                          onChange={[Function]}
-                                          required={true}
-                                          type="select"
-                                          value="United States"
-                                        >
-                                          <select
-                                            className="form-control"
-                                            id="id-country"
-                                            onChange={[Function]}
-                                            required={true}
-                                            value="United States"
-                                          >
-                                            <option
-                                              value=""
-                                            >
-                                              -
-                                            </option>
-                                            <option
-                                              key="FR"
-                                              value="FR"
-                                            >
-                                              France
-                                            </option>
-                                            <option
-                                              key="US"
-                                              value="US"
-                                            >
-                                              United States
-                                            </option>
-                                          </select>
-                                        </Input>
-                                      </div>
-                                    </div>
-                                  </FormGroup>
-                                </InputField>
-                              </div>
-                            </Col>
-                            <Col
-                              className="formColumn"
-                              lg={6}
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <div
-                                className="formColumn col-lg-6"
+                                    *
+                                  </abbr>
+                                </label>
+                              </Label>
+                              <ForwardRef(TextInput)
+                                hasError={false}
+                                id="city"
+                                isDisabled={false}
+                                isRequired={true}
+                                onChange={[Function]}
+                                placeholder="New York"
+                                value="San Francisco"
                               >
-                                <InputField
-                                  label="Zip code"
-                                  name="postalCode"
-                                  onChange={[Function]}
-                                  placeholder="94103"
-                                  required={true}
-                                  type="text"
-                                  value="94103"
+                                <div
+                                  className="wrapper"
                                 >
-                                  <FormGroup
-                                    className="InputField required"
-                                    color=""
-                                    tag="div"
-                                  >
-                                    <div
-                                      className="InputField required form-group"
-                                      color=""
-                                    >
-                                      <Label
-                                        className="control-label"
-                                        htmlFor="id-postalCode"
-                                        tag="label"
-                                        widths={
-                                          Array [
-                                            "xs",
-                                            "sm",
-                                            "md",
-                                            "lg",
-                                            "xl",
-                                          ]
-                                        }
-                                      >
-                                        <label
-                                          className="control-label"
-                                          htmlFor="id-postalCode"
-                                        >
-                                          Zip code
-                                        </label>
-                                      </Label>
-                                      <div
-                                        className=""
-                                      >
-                                        <Input
-                                          className=""
-                                          id="id-postalCode"
-                                          onChange={[Function]}
-                                          placeholder="94103"
-                                          required={true}
-                                          type="text"
-                                          value="94103"
-                                        >
-                                          <input
-                                            className="form-control"
-                                            id="id-postalCode"
-                                            onChange={[Function]}
-                                            placeholder="94103"
-                                            required={true}
-                                            type="text"
-                                            value="94103"
-                                          />
-                                        </Input>
-                                      </div>
-                                    </div>
-                                  </FormGroup>
-                                </InputField>
-                              </div>
-                            </Col>
-                          </div>
-                        </Row>
-                        <Row
-                          className="formRow"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <div
-                            className="formRow row"
-                          >
-                            <Col
-                              className="formColumn"
-                              lg={false}
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <div
-                                className="formColumn col"
-                              >
-                                <InputField
-                                  label="City"
-                                  name="city"
-                                  onChange={[Function]}
-                                  placeholder="New York"
-                                  required={true}
-                                  type="text"
-                                  value="San Francisco"
-                                >
-                                  <FormGroup
-                                    className="InputField required"
-                                    color=""
-                                    tag="div"
-                                  >
-                                    <div
-                                      className="InputField required form-group"
-                                      color=""
-                                    >
-                                      <Label
-                                        className="control-label"
-                                        htmlFor="id-city"
-                                        tag="label"
-                                        widths={
-                                          Array [
-                                            "xs",
-                                            "sm",
-                                            "md",
-                                            "lg",
-                                            "xl",
-                                          ]
-                                        }
-                                      >
-                                        <label
-                                          className="control-label"
-                                          htmlFor="id-city"
-                                        >
-                                          City
-                                        </label>
-                                      </Label>
-                                      <div
-                                        className=""
-                                      >
-                                        <Input
-                                          className=""
-                                          id="id-city"
-                                          onChange={[Function]}
-                                          placeholder="New York"
-                                          required={true}
-                                          type="text"
-                                          value="San Francisco"
-                                        >
-                                          <input
-                                            className="form-control"
-                                            id="id-city"
-                                            onChange={[Function]}
-                                            placeholder="New York"
-                                            required={true}
-                                            type="text"
-                                            value="San Francisco"
-                                          />
-                                        </Input>
-                                      </div>
-                                    </div>
-                                  </FormGroup>
-                                </InputField>
-                              </div>
-                            </Col>
-                          </div>
-                        </Row>
+                                  <input
+                                    className="input"
+                                    disabled={false}
+                                    id="city"
+                                    name="city"
+                                    onChange={[Function]}
+                                    placeholder="New York"
+                                    required={true}
+                                    type="text"
+                                    value="San Francisco"
+                                  />
+                                </div>
+                              </ForwardRef(TextInput)>
+                            </div>
+                          </InputField>
+                        </div>
                       </BillingAddressInputs>
                       <div>
                         <ForwardRef

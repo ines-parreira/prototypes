@@ -469,7 +469,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   disabled=""
                   id="id-seoTitle"
                   required=""
@@ -516,7 +516,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 class=""
               >
                 <textarea
-                  class="form-control"
+                  class="field form-control"
                   disabled=""
                   id="id-seoDescription"
                   required=""

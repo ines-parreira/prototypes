@@ -49,7 +49,7 @@ exports[`<TextInput /> should render an input with error state 1`] = `
   class="wrapper class-for-wrapper"
 >
   <input
-    class="input inputError"
+    class="input error"
     id="input-text-42"
     name="input-text-42"
     type="text"

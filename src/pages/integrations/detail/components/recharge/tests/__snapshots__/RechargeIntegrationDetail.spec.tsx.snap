@@ -100,7 +100,7 @@ exports[`<RechargeIntegrationDetail/> render() should not render anything about 
               class="input-group"
             >
               <input
-                class="form-control"
+                class="field form-control"
                 disabled=""
                 id="id-name"
                 placeholder="ex: \\"acme\\" for acme.myshopify.com"
@@ -240,7 +240,7 @@ exports[`<RechargeIntegrationDetail/> render() should render a small paragraph b
               class="input-group"
             >
               <input
-                class="form-control"
+                class="field form-control"
                 disabled=""
                 id="id-name"
                 placeholder="ex: \\"acme\\" for acme.myshopify.com"
@@ -384,7 +384,7 @@ exports[`<RechargeIntegrationDetail/> render() should render an alert because th
               class="input-group"
             >
               <input
-                class="form-control"
+                class="field form-control"
                 disabled=""
                 id="id-name"
                 placeholder="ex: \\"acme\\" for acme.myshopify.com"
@@ -528,7 +528,7 @@ exports[`<RechargeIntegrationDetail/> render() should render buttons loading and
               class="input-group"
             >
               <input
-                class="form-control"
+                class="field form-control"
                 disabled=""
                 id="id-name"
                 placeholder="ex: \\"acme\\" for acme.myshopify.com"
@@ -672,7 +672,7 @@ exports[`<RechargeIntegrationDetail/> render() should render not render deactiva
               class="input-group"
             >
               <input
-                class="form-control"
+                class="field form-control"
                 disabled=""
                 id="id-name"
                 placeholder="ex: \\"acme\\" for acme.myshopify.com"

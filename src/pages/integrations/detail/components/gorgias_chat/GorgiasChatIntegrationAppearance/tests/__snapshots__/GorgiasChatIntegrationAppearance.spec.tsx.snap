@@ -212,7 +212,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
@@ -235,7 +235,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -257,7 +257,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -344,7 +344,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <select
-                        class="form-control"
+                        class="field form-control"
                         id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
@@ -401,7 +401,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -453,7 +453,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -494,7 +494,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <select
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
@@ -877,7 +877,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
@@ -900,7 +900,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -922,7 +922,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -1057,7 +1057,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <select
-                        class="form-control"
+                        class="field form-control"
                         id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
@@ -1114,7 +1114,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -1166,7 +1166,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -1207,7 +1207,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <select
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
@@ -1617,7 +1617,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
@@ -1640,7 +1640,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -1662,7 +1662,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -1797,7 +1797,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class=""
                     >
                       <select
-                        class="form-control"
+                        class="field form-control"
                         id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
@@ -1854,7 +1854,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -1906,7 +1906,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -1947,7 +1947,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class=""
                   >
                     <select
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
@@ -2345,7 +2345,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
@@ -2368,7 +2368,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -2390,7 +2390,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -2533,7 +2533,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class=""
                     >
                       <select
-                        class="form-control"
+                        class="field form-control"
                         id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
@@ -2590,7 +2590,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -2642,7 +2642,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -2683,7 +2683,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     class=""
                   >
                     <select
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
@@ -3081,7 +3081,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
@@ -3104,7 +3104,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -3126,7 +3126,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -3261,7 +3261,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class=""
                     >
                       <select
-                        class="form-control"
+                        class="field form-control"
                         id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
@@ -3318,7 +3318,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -3370,7 +3370,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -3411,7 +3411,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class=""
                   >
                     <select
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
@@ -3809,7 +3809,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
@@ -3832,7 +3832,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -3854,7 +3854,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -4003,7 +4003,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class=""
                     >
                       <select
-                        class="form-control"
+                        class="field form-control"
                         id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
@@ -4060,7 +4060,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -4112,7 +4112,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -4153,7 +4153,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class=""
                   >
                     <select
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >
@@ -4689,7 +4689,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       placeholder="Ex: Company Support"
                       required=""
@@ -4712,7 +4712,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -4734,7 +4734,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       maxlength="50"
                       type="text"
@@ -4821,7 +4821,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class=""
                     >
                       <select
-                        class="form-control"
+                        class="field form-control"
                         id="id-input-42"
                         options="[object Object],[object Object],[object Object],[object Object]"
                       >
@@ -4878,7 +4878,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -4930,7 +4930,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="with-suffix"
                       >
                         <input
-                          class="form-control"
+                          class="field form-control"
                           id="id-input-42"
                           max="200"
                           min="-20"
@@ -4971,7 +4971,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     class=""
                   >
                     <select
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-42"
                       options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
                     >

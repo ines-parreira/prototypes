@@ -339,7 +339,7 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
               class=""
             >
               <textarea
-                class="form-control"
+                class="field form-control"
                 id="id-input-42"
               >
                 gorgias.com
@@ -533,7 +533,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
               class=""
             >
               <textarea
-                class="form-control-danger is-invalid form-control"
+                class="field form-control-danger is-invalid form-control"
                 id="id-input-42"
               >
                 gmail.com

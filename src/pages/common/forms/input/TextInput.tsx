@@ -68,7 +68,7 @@ function TextInput(
                 className={classnames(
                     css.input,
                     {
-                        [css.inputError]: hasError,
+                        [css.error]: hasError,
                         [css.hasLeftIcon]: !!leftIcon,
                         [css.hasRightIcon]: !!rightIcon,
                         [css.nested]: isInsideInputGroup,

@@ -42,7 +42,7 @@ exports[`<Form/> should render with preloaded data 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-label"
             required=""
             type="text"
@@ -71,7 +71,7 @@ exports[`<Form/> should render with preloaded data 1`] = `
                 class=""
               >
                 <select
-                  class="form-control"
+                  class="field form-control"
                   id="id-method"
                   required=""
                 >
@@ -116,7 +116,7 @@ exports[`<Form/> should render with preloaded data 1`] = `
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-url"
                   pattern="*"
                   required=""
@@ -233,7 +233,7 @@ exports[`<Form/> should render without any data 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-label"
             required=""
             type="text"
@@ -262,7 +262,7 @@ exports[`<Form/> should render without any data 1`] = `
                 class=""
               >
                 <select
-                  class="form-control"
+                  class="field form-control"
                   id="id-method"
                   required=""
                 >
@@ -307,7 +307,7 @@ exports[`<Form/> should render without any data 1`] = `
                 class=""
               >
                 <input
-                  class="form-control"
+                  class="field form-control"
                   id="id-url"
                   pattern="*"
                   required=""

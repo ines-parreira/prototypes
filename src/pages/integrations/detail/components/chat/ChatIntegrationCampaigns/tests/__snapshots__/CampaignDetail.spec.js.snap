@@ -131,7 +131,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                   class=""
                 >
                   <input
-                    class="form-control"
+                    class="field form-control"
                     id="id-name"
                     placeholder="My new campaign"
                     required=""
@@ -251,7 +251,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-value"
                       type="input"
                       value=""
@@ -803,7 +803,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   class=""
                 >
                   <input
-                    class="form-control"
+                    class="field form-control"
                     id="id-name"
                     placeholder="My new campaign"
                     required=""
@@ -923,7 +923,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-value"
                       type="input"
                       value="gorgias"
@@ -1004,7 +1004,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                     class="input-group"
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-2"
                       step="1"
                       type="number"
@@ -1578,7 +1578,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                   class=""
                 >
                   <input
-                    class="form-control"
+                    class="field form-control"
                     id="id-name"
                     placeholder="My new campaign"
                     required=""
@@ -1698,7 +1698,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                     class=""
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-value"
                       type="input"
                       value="gorgias"
@@ -1779,7 +1779,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                     class="input-group"
                   >
                     <input
-                      class="form-control"
+                      class="field form-control"
                       id="id-input-4"
                       step="1"
                       type="number"

@@ -30,193 +30,100 @@ exports[`CreditCard component should display credit card form 1`] = `
     }
   />
   <Container
-    className="pageContainer"
+    className="pageContainer container"
     fluid={true}
     tag="div"
   >
-    <Row
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      className="form"
     >
-      <Col
-        className="paymentInformationColumn"
-        sm={7}
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <Alert
+        className="mb-3"
       >
-        <Alert
-          className="mb-3"
-        >
-          You will be charged for the current period of your plan once you add your Credit Card
-        </Alert>
-        <h3>
-          Payment information
-        </h3>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+        You will be charged for the current period of your plan once you add your Credit Card
+      </Alert>
+      <h3
+        className="heading-section-semibold"
+      >
+        Payment information
+      </h3>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <InputField
+          className="mb16"
+          id="name"
+          isRequired={true}
+          label="Name on the card"
+          onChange={[Function]}
+          placeholder="Marie Curie"
+          value=""
+        />
+        <div
+          className="row mb32"
         >
           <InputField
-            label="Name on the card"
-            name="name"
+            className="inputRow"
+            id="number"
+            isRequired={true}
+            label="Card number"
             onChange={[Function]}
-            placeholder="Marie Curie"
-            required={true}
-            type="text"
+            placeholder="4657 7894 1234 7895"
             value=""
           />
-          <Row
-            className="formRow"
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Col
-              className="formColumn"
-              sm={7}
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Card number"
-                name="number"
-                onChange={[Function]}
-                placeholder="4657 7894 1234 7895"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              className="formColumn"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Expiry date"
-                name="expDate"
-                onChange={[Function]}
-                placeholder="05 / 21"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              className="formColumn"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="CVC"
-                name="cvc"
-                onChange={[Function]}
-                placeholder="693"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-          </Row>
-          <h3
-            className="billingAddressHeader"
-          >
-            Billing address
-          </h3>
-          <BillingAddressInputs
+          <InputField
+            className="inputRow"
+            id="expDate"
+            isRequired={true}
+            label="Expiry date"
             onChange={[Function]}
-            value={Object {}}
+            placeholder="05 / 21"
+            value=""
           />
-          <div
-            className="formFooter"
-          >
-            <FormGroup
-              color="danger"
-              tag="div"
-            >
-              <Errors />
-            </FormGroup>
-            <ForwardRef
-              isDisabled={true}
-              isLoading={false}
-              type="submit"
-            >
-              Add payment method
-               
-               and pay $1000
-            </ForwardRef>
-          </div>
-        </Form>
-      </Col>
-      <Col
-        className="planCardColumn"
-        sm={4}
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <BillingPlanCard
-          footer={false}
-          isCurrentPlan={true}
-          plan={Object {}}
-          renderBody={[Function]}
+          <InputField
+            className="inputRow"
+            id="cvc"
+            isRequired={true}
+            label="CVC"
+            onChange={[Function]}
+            placeholder="693"
+            value=""
+          />
+        </div>
+        <h3
+          className="heading-section-semibold"
+        >
+          Billing address
+        </h3>
+        <BillingAddressInputs
+          onChange={[Function]}
+          value={Object {}}
         />
-      </Col>
-    </Row>
+        <FormGroup
+          color="danger"
+          tag="div"
+        >
+          <Errors />
+        </FormGroup>
+        <ForwardRef
+          isDisabled={true}
+          isLoading={false}
+          type="submit"
+        >
+          Add payment method
+           
+           and pay $1000
+        </ForwardRef>
+      </Form>
+    </div>
+    <BillingPlanCard
+      className="plan"
+      footer={false}
+      isCurrentPlan={true}
+      plan={Object {}}
+      renderBody={[Function]}
+    />
   </Container>
 </div>
 `;
@@ -259,162 +166,83 @@ exports[`CreditCard component should not render the billing address form when a 
     }
   />
   <Container
-    className="pageContainer"
+    className="pageContainer container"
     fluid={true}
     tag="div"
   >
-    <Row
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      className="form"
     >
-      <Col
-        className="paymentInformationColumn"
-        sm={7}
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <Alert
+        className="mb-3"
       >
-        <Alert
-          className="mb-3"
-        >
-          You will be charged for the current period of your plan once you add your Credit Card
-        </Alert>
-        <h3>
-          Payment information
-        </h3>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+        You will be charged for the current period of your plan once you add your Credit Card
+      </Alert>
+      <h3
+        className="heading-section-semibold"
+      >
+        Payment information
+      </h3>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <InputField
+          className="mb16"
+          id="name"
+          isRequired={true}
+          label="Name on the card"
+          onChange={[Function]}
+          placeholder="Marie Curie"
+          value=""
+        />
+        <div
+          className="row mb32"
         >
           <InputField
-            label="Name on the card"
-            name="name"
+            className="inputRow"
+            id="number"
+            isRequired={true}
+            label="Card number"
             onChange={[Function]}
-            placeholder="Marie Curie"
-            required={true}
-            type="text"
+            placeholder="4657 7894 1234 7895"
             value=""
           />
-          <Row
-            className="formRow"
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Col
-              className="formColumn"
-              sm={7}
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Card number"
-                name="number"
-                onChange={[Function]}
-                placeholder="4657 7894 1234 7895"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              className="formColumn"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Expiry date"
-                name="expDate"
-                onChange={[Function]}
-                placeholder="05 / 21"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              className="formColumn"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="CVC"
-                name="cvc"
-                onChange={[Function]}
-                placeholder="693"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-          </Row>
-          <div
-            className="formFooter"
-          >
-            <FormGroup
-              color="danger"
-              tag="div"
-            >
-              <Errors />
-            </FormGroup>
-            <ForwardRef
-              isDisabled={true}
-              isLoading={false}
-              type="submit"
-            >
-              Add payment method
-               
-            </ForwardRef>
-          </div>
-        </Form>
-      </Col>
-    </Row>
+          <InputField
+            className="inputRow"
+            id="expDate"
+            isRequired={true}
+            label="Expiry date"
+            onChange={[Function]}
+            placeholder="05 / 21"
+            value=""
+          />
+          <InputField
+            className="inputRow"
+            id="cvc"
+            isRequired={true}
+            label="CVC"
+            onChange={[Function]}
+            placeholder="693"
+            value=""
+          />
+        </div>
+        <FormGroup
+          color="danger"
+          tag="div"
+        >
+          <Errors />
+        </FormGroup>
+        <ForwardRef
+          isDisabled={true}
+          isLoading={false}
+          type="submit"
+        >
+          Add payment method
+           
+        </ForwardRef>
+      </Form>
+    </div>
   </Container>
 </div>
 `;
@@ -449,227 +277,134 @@ exports[`CreditCard component should render billing plan card with automation fo
     }
   />
   <Container
-    className="pageContainer"
+    className="pageContainer container"
     fluid={true}
     tag="div"
   >
-    <Row
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      className="form"
     >
-      <Col
-        className="paymentInformationColumn"
-        sm={7}
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <Alert
+        className="mb-3"
       >
-        <Alert
-          className="mb-3"
-        >
-          You will be charged for the current period of your plan once you add your Credit Card
-        </Alert>
-        <h3>
-          Payment information
-        </h3>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+        You will be charged for the current period of your plan once you add your Credit Card
+      </Alert>
+      <h3
+        className="heading-section-semibold"
+      >
+        Payment information
+      </h3>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <InputField
+          className="mb16"
+          id="name"
+          isRequired={true}
+          label="Name on the card"
+          onChange={[Function]}
+          placeholder="Marie Curie"
+          value=""
+        />
+        <div
+          className="row mb32"
         >
           <InputField
-            label="Name on the card"
-            name="name"
+            className="inputRow"
+            id="number"
+            isRequired={true}
+            label="Card number"
             onChange={[Function]}
-            placeholder="Marie Curie"
-            required={true}
-            type="text"
+            placeholder="4657 7894 1234 7895"
             value=""
           />
-          <Row
-            className="formRow"
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Col
-              className="formColumn"
-              sm={7}
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Card number"
-                name="number"
-                onChange={[Function]}
-                placeholder="4657 7894 1234 7895"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              className="formColumn"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Expiry date"
-                name="expDate"
-                onChange={[Function]}
-                placeholder="05 / 21"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              className="formColumn"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="CVC"
-                name="cvc"
-                onChange={[Function]}
-                placeholder="693"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-          </Row>
-          <h3
-            className="billingAddressHeader"
-          >
-            Billing address
-          </h3>
-          <BillingAddressInputs
+          <InputField
+            className="inputRow"
+            id="expDate"
+            isRequired={true}
+            label="Expiry date"
             onChange={[Function]}
-            value={Object {}}
+            placeholder="05 / 21"
+            value=""
           />
-          <div
-            className="formFooter"
-          >
-            <FormGroup
-              color="danger"
-              tag="div"
-            >
-              <Errors />
-            </FormGroup>
-            <ForwardRef
-              isDisabled={true}
-              isLoading={false}
-              type="submit"
-            >
-              Add payment method
-               
-               and pay $1000
-            </ForwardRef>
-          </div>
-        </Form>
-      </Col>
-      <Col
-        className="planCardColumn"
-        sm={4}
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <BillingPlanCard
-          footer={
-            <React.Fragment>
-              <AutomationAmount
-                addOnAmount={200}
-                editable={false}
-                plan={
-                  Object {
-                    "amount": 800,
-                    "automation_addon_included": true,
-                    "currencySign": "$",
-                    "name": "basic",
-                  }
-                }
-              />
-              <TotalAmount
-                addOnAmount={200}
-                isEditable={false}
-                plan={
-                  Object {
-                    "amount": 800,
-                    "automation_addon_included": true,
-                    "currencySign": "$",
-                    "name": "basic",
-                  }
-                }
-              />
-            </React.Fragment>
-          }
-          isCurrentPlan={true}
-          plan={
-            Object {
-              "amount": 800,
-              "automation_addon_included": true,
-              "currencySign": "$",
-              "name": "basic",
-            }
-          }
-          renderBody={[Function]}
+          <InputField
+            className="inputRow"
+            id="cvc"
+            isRequired={true}
+            label="CVC"
+            onChange={[Function]}
+            placeholder="693"
+            value=""
+          />
+        </div>
+        <h3
+          className="heading-section-semibold"
+        >
+          Billing address
+        </h3>
+        <BillingAddressInputs
+          onChange={[Function]}
+          value={Object {}}
         />
-      </Col>
-    </Row>
+        <FormGroup
+          color="danger"
+          tag="div"
+        >
+          <Errors />
+        </FormGroup>
+        <ForwardRef
+          isDisabled={true}
+          isLoading={false}
+          type="submit"
+        >
+          Add payment method
+           
+           and pay $1000
+        </ForwardRef>
+      </Form>
+    </div>
+    <BillingPlanCard
+      className="plan"
+      footer={
+        <React.Fragment>
+          <AutomationAmount
+            addOnAmount={200}
+            editable={false}
+            plan={
+              Object {
+                "amount": 800,
+                "automation_addon_included": true,
+                "currencySign": "$",
+                "name": "basic",
+              }
+            }
+          />
+          <TotalAmount
+            addOnAmount={200}
+            isEditable={false}
+            plan={
+              Object {
+                "amount": 800,
+                "automation_addon_included": true,
+                "currencySign": "$",
+                "name": "basic",
+              }
+            }
+          />
+        </React.Fragment>
+      }
+      isCurrentPlan={true}
+      plan={
+        Object {
+          "amount": 800,
+          "automation_addon_included": true,
+          "currencySign": "$",
+          "name": "basic",
+        }
+      }
+      renderBody={[Function]}
+    />
   </Container>
 </div>
 `;
@@ -704,171 +439,92 @@ exports[`CreditCard component should render nothing if loaded, but no current su
     }
   />
   <Container
-    className="pageContainer"
+    className="pageContainer container"
     fluid={true}
     tag="div"
   >
-    <Row
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      className="form"
     >
-      <Col
-        className="paymentInformationColumn"
-        sm={7}
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <Alert
+        className="mb-3"
       >
-        <Alert
-          className="mb-3"
-        >
-          You will be charged for the current period of your plan once you add your Credit Card
-        </Alert>
-        <h3>
-          Payment information
-        </h3>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+        You will be charged for the current period of your plan once you add your Credit Card
+      </Alert>
+      <h3
+        className="heading-section-semibold"
+      >
+        Payment information
+      </h3>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <InputField
+          className="mb16"
+          id="name"
+          isRequired={true}
+          label="Name on the card"
+          onChange={[Function]}
+          placeholder="Marie Curie"
+          value=""
+        />
+        <div
+          className="row mb32"
         >
           <InputField
-            label="Name on the card"
-            name="name"
+            className="inputRow"
+            id="number"
+            isRequired={true}
+            label="Card number"
             onChange={[Function]}
-            placeholder="Marie Curie"
-            required={true}
-            type="text"
+            placeholder="4657 7894 1234 7895"
             value=""
           />
-          <Row
-            className="formRow"
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Col
-              className="formColumn"
-              sm={7}
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Card number"
-                name="number"
-                onChange={[Function]}
-                placeholder="4657 7894 1234 7895"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              className="formColumn"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Expiry date"
-                name="expDate"
-                onChange={[Function]}
-                placeholder="05 / 21"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              className="formColumn"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="CVC"
-                name="cvc"
-                onChange={[Function]}
-                placeholder="693"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-          </Row>
-          <h3
-            className="billingAddressHeader"
-          >
-            Billing address
-          </h3>
-          <BillingAddressInputs
+          <InputField
+            className="inputRow"
+            id="expDate"
+            isRequired={true}
+            label="Expiry date"
             onChange={[Function]}
-            value={Object {}}
+            placeholder="05 / 21"
+            value=""
           />
-          <div
-            className="formFooter"
-          >
-            <FormGroup
-              color="danger"
-              tag="div"
-            >
-              <Errors />
-            </FormGroup>
-            <ForwardRef
-              isDisabled={true}
-              isLoading={false}
-              type="submit"
-            >
-              Add payment method
-               
-            </ForwardRef>
-          </div>
-        </Form>
-      </Col>
-    </Row>
+          <InputField
+            className="inputRow"
+            id="cvc"
+            isRequired={true}
+            label="CVC"
+            onChange={[Function]}
+            placeholder="693"
+            value=""
+          />
+        </div>
+        <h3
+          className="heading-section-semibold"
+        >
+          Billing address
+        </h3>
+        <BillingAddressInputs
+          onChange={[Function]}
+          value={Object {}}
+        />
+        <FormGroup
+          color="danger"
+          tag="div"
+        >
+          <Errors />
+        </FormGroup>
+        <ForwardRef
+          isDisabled={true}
+          isLoading={false}
+          type="submit"
+        >
+          Add payment method
+           
+        </ForwardRef>
+      </Form>
+    </div>
   </Container>
 </div>
 `;
@@ -903,171 +559,92 @@ exports[`CreditCard component should render the billing address form when accoun
     }
   />
   <Container
-    className="pageContainer"
+    className="pageContainer container"
     fluid={true}
     tag="div"
   >
-    <Row
-      tag="div"
-      widths={
-        Array [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      className="form"
     >
-      <Col
-        className="paymentInformationColumn"
-        sm={7}
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <Alert
+        className="mb-3"
       >
-        <Alert
-          className="mb-3"
-        >
-          You will be charged for the current period of your plan once you add your Credit Card
-        </Alert>
-        <h3>
-          Payment information
-        </h3>
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+        You will be charged for the current period of your plan once you add your Credit Card
+      </Alert>
+      <h3
+        className="heading-section-semibold"
+      >
+        Payment information
+      </h3>
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <InputField
+          className="mb16"
+          id="name"
+          isRequired={true}
+          label="Name on the card"
+          onChange={[Function]}
+          placeholder="Marie Curie"
+          value=""
+        />
+        <div
+          className="row mb32"
         >
           <InputField
-            label="Name on the card"
-            name="name"
+            className="inputRow"
+            id="number"
+            isRequired={true}
+            label="Card number"
             onChange={[Function]}
-            placeholder="Marie Curie"
-            required={true}
-            type="text"
+            placeholder="4657 7894 1234 7895"
             value=""
           />
-          <Row
-            className="formRow"
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Col
-              className="formColumn"
-              sm={7}
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Card number"
-                name="number"
-                onChange={[Function]}
-                placeholder="4657 7894 1234 7895"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              className="formColumn"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="Expiry date"
-                name="expDate"
-                onChange={[Function]}
-                placeholder="05 / 21"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-            <Col
-              className="formColumn"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <InputField
-                label="CVC"
-                name="cvc"
-                onChange={[Function]}
-                placeholder="693"
-                required={true}
-                type="text"
-                value=""
-              />
-            </Col>
-          </Row>
-          <h3
-            className="billingAddressHeader"
-          >
-            Billing address
-          </h3>
-          <BillingAddressInputs
+          <InputField
+            className="inputRow"
+            id="expDate"
+            isRequired={true}
+            label="Expiry date"
             onChange={[Function]}
-            value={Object {}}
+            placeholder="05 / 21"
+            value=""
           />
-          <div
-            className="formFooter"
-          >
-            <FormGroup
-              color="danger"
-              tag="div"
-            >
-              <Errors />
-            </FormGroup>
-            <ForwardRef
-              isDisabled={true}
-              isLoading={false}
-              type="submit"
-            >
-              Add payment method
-               
-            </ForwardRef>
-          </div>
-        </Form>
-      </Col>
-    </Row>
+          <InputField
+            className="inputRow"
+            id="cvc"
+            isRequired={true}
+            label="CVC"
+            onChange={[Function]}
+            placeholder="693"
+            value=""
+          />
+        </div>
+        <h3
+          className="heading-section-semibold"
+        >
+          Billing address
+        </h3>
+        <BillingAddressInputs
+          onChange={[Function]}
+          value={Object {}}
+        />
+        <FormGroup
+          color="danger"
+          tag="div"
+        >
+          <Errors />
+        </FormGroup>
+        <ForwardRef
+          isDisabled={true}
+          isLoading={false}
+          type="submit"
+        >
+          Add payment method
+           
+        </ForwardRef>
+      </Form>
+    </div>
   </Container>
 </div>
 `;

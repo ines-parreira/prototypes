@@ -4,7 +4,7 @@ import _noop from 'lodash/noop'
 
 import DEPRECATED_InputField from '../DEPRECATED_InputField'
 
-describe('InputField', () => {
+describe('DEPRECATED_InputField', () => {
     const minProps: ComponentProps<typeof DEPRECATED_InputField> = {
         value: 'value',
         onChange: _noop,

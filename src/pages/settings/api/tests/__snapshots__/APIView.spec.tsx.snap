@@ -78,33 +78,23 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
         >
           Base API URL
         </Label>
-        <InputGroup
-          tag="div"
-        >
-          <Input
+        <InputGroup>
+          <ForwardRef(TextInput)
             id="url"
             readOnly={true}
-            type="text"
             value="https://justatest.gorgias.com/api/"
           />
-          <InputGroupAddon
-            addonType="append"
-            tag="div"
+          <ForwardRef
+            className="copyBtn"
+            data-clipboard-target="#url"
+            intent="secondary"
           >
-            <Button
-              className="copyBtn"
-              color="secondary"
-              data-clipboard-target="#url"
-              tag="button"
+            <ButtonIconLabel
+              icon="file_copy"
             >
-              <i
-                className="material-icons mr-2"
-              >
-                file_copy
-              </i>
               Copy
-            </Button>
-          </InputGroupAddon>
+            </ButtonIconLabel>
+          </ForwardRef>
         </InputGroup>
       </FormGroup>
       <FormGroup
@@ -127,33 +117,23 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
         >
           Username (your email address)
         </Label>
-        <InputGroup
-          tag="div"
-        >
-          <Input
+        <InputGroup>
+          <ForwardRef(TextInput)
             id="email"
             readOnly={true}
-            type="text"
             value=""
           />
-          <InputGroupAddon
-            addonType="append"
-            tag="div"
+          <ForwardRef
+            className="copyBtn"
+            data-clipboard-target="#email"
+            intent="secondary"
           >
-            <Button
-              className="copyBtn"
-              color="secondary"
-              data-clipboard-target="#email"
-              tag="button"
+            <ButtonIconLabel
+              icon="file_copy"
             >
-              <i
-                className="material-icons mr-2"
-              >
-                file_copy
-              </i>
               Copy
-            </Button>
-          </InputGroupAddon>
+            </ButtonIconLabel>
+          </ForwardRef>
         </InputGroup>
       </FormGroup>
       <FormGroup
@@ -323,33 +303,23 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
         >
           Base API URL
         </Label>
-        <InputGroup
-          tag="div"
-        >
-          <Input
+        <InputGroup>
+          <ForwardRef(TextInput)
             id="url"
             readOnly={true}
-            type="text"
             value="https://justatest.gorgias.com/api/"
           />
-          <InputGroupAddon
-            addonType="append"
-            tag="div"
+          <ForwardRef
+            className="copyBtn"
+            data-clipboard-target="#url"
+            intent="secondary"
           >
-            <Button
-              className="copyBtn"
-              color="secondary"
-              data-clipboard-target="#url"
-              tag="button"
+            <ButtonIconLabel
+              icon="file_copy"
             >
-              <i
-                className="material-icons mr-2"
-              >
-                file_copy
-              </i>
               Copy
-            </Button>
-          </InputGroupAddon>
+            </ButtonIconLabel>
+          </ForwardRef>
         </InputGroup>
       </FormGroup>
       <FormGroup
@@ -372,33 +342,23 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
         >
           Username (your email address)
         </Label>
-        <InputGroup
-          tag="div"
-        >
-          <Input
+        <InputGroup>
+          <ForwardRef(TextInput)
             id="email"
             readOnly={true}
-            type="text"
             value=""
           />
-          <InputGroupAddon
-            addonType="append"
-            tag="div"
+          <ForwardRef
+            className="copyBtn"
+            data-clipboard-target="#email"
+            intent="secondary"
           >
-            <Button
-              className="copyBtn"
-              color="secondary"
-              data-clipboard-target="#email"
-              tag="button"
+            <ButtonIconLabel
+              icon="file_copy"
             >
-              <i
-                className="material-icons mr-2"
-              >
-                file_copy
-              </i>
               Copy
-            </Button>
-          </InputGroupAddon>
+            </ButtonIconLabel>
+          </ForwardRef>
         </InputGroup>
       </FormGroup>
       <FormGroup
@@ -421,46 +381,34 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
         >
           Password (API Key)
         </Label>
-        <InputGroup
-          tag="div"
-        >
-          <Input
+        <InputGroup>
+          <ForwardRef(TextInput)
             id="apiKey"
             readOnly={true}
-            type="text"
             value="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510"
           />
-          <InputGroupAddon
-            addonType="append"
-            tag="div"
+          <ForwardRef
+            intent="destructive"
+            onClick={[Function]}
           >
-            <Button
+            <ButtonIconLabel
               className="resetBtn"
-              color="danger"
-              onClick={[Function]}
-              tag="button"
+              icon="refresh"
             >
-              <i
-                className="material-icons mr-2"
-              >
-                refresh
-              </i>
               Reset
-            </Button>
-            <Button
-              className="copyBtn"
-              color="secondary"
-              data-clipboard-target="#apiKey"
-              tag="button"
+            </ButtonIconLabel>
+          </ForwardRef>
+          <ForwardRef
+            className="copyBtn"
+            data-clipboard-target="#apiKey"
+            intent="secondary"
+          >
+            <ButtonIconLabel
+              icon="file_copy"
             >
-              <i
-                className="material-icons mr-2"
-              >
-                file_copy
-              </i>
               Copy
-            </Button>
-          </InputGroupAddon>
+            </ButtonIconLabel>
+          </ForwardRef>
         </InputGroup>
       </FormGroup>
       <div

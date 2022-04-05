@@ -42,6 +42,8 @@ import StatusSelect from './widget/StatusSelect'
 import Select from './widget/ReactSelect'
 import SelfServiceFlowSelect from './widget/SelfServiceFlowSelect'
 
+import css from './Widget.less'
+
 type Property = {
     key: {
         name: string
@@ -268,6 +270,7 @@ export class Widget extends Component<Props, State> {
         return (
             <div className="widget d-inline-block">
                 <TimedeltaPicker
+                    className={css.timedeltaPicker}
                     value={value}
                     min={1}
                     onChange={this._handleChange as any}
@@ -286,6 +289,7 @@ export class Widget extends Component<Props, State> {
         return (
             <div className="widget d-inline-block">
                 <TimedeltaPicker
+                    className={css.timedeltaPicker}
                     value={value}
                     min={1}
                     units={units}

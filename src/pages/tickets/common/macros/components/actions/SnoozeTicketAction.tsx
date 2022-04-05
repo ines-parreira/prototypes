@@ -34,13 +34,12 @@ export default function SnoozeTicketAction(props: Props) {
     }
 
     return (
-        <div className={css.snooze}>
-            <TimedeltaPicker
-                units={units}
-                value={duration}
-                min={1}
-                onChange={onChange}
-            />
-        </div>
+        <TimedeltaPicker
+            className={css.timedeltaPicker}
+            units={units}
+            value={duration}
+            min={1}
+            onChange={onChange}
+        />
     )
 }

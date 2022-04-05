@@ -73,7 +73,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       class=""
     >
       <input
-        class="form-control"
+        class="field form-control"
         id="id-input-8"
         required=""
         type="text"
@@ -95,7 +95,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       class=""
     >
       <input
-        class="form-control"
+        class="field form-control"
         id="id-input-9"
         required=""
         type="text"
@@ -123,7 +123,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-10"
             type="text"
             value=""
@@ -148,7 +148,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-11"
             required=""
             type="text"
@@ -178,7 +178,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-12"
             required=""
             type="text"
@@ -204,7 +204,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-13"
             required=""
             type="text"
@@ -230,7 +230,7 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             disabled=""
             id="id-input-14"
             required=""
@@ -317,7 +317,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       class=""
     >
       <input
-        class="form-control"
+        class="field form-control"
         id="id-input-15"
         required=""
         type="text"
@@ -339,7 +339,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       class=""
     >
       <input
-        class="form-control"
+        class="field form-control"
         id="id-input-16"
         required=""
         type="text"
@@ -367,7 +367,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-17"
             type="text"
             value=""
@@ -392,7 +392,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-18"
             required=""
             type="text"
@@ -422,7 +422,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-19"
             required=""
             type="text"
@@ -448,7 +448,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-20"
             required=""
             type="text"
@@ -474,7 +474,7 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             disabled=""
             id="id-input-21"
             required=""
@@ -560,7 +560,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       class=""
     >
       <input
-        class="form-control"
+        class="field form-control"
         id="id-input-22"
         required=""
         type="text"
@@ -582,7 +582,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       class=""
     >
       <input
-        class="form-control"
+        class="field form-control"
         id="id-input-23"
         required=""
         type="text"
@@ -610,7 +610,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-24"
             type="text"
             value=""
@@ -635,7 +635,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-25"
             required=""
             type="text"
@@ -665,7 +665,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-26"
             required=""
             type="text"
@@ -691,7 +691,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-27"
             required=""
             type="text"
@@ -717,7 +717,7 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             disabled=""
             id="id-input-28"
             required=""
@@ -803,7 +803,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       class=""
     >
       <input
-        class="form-control"
+        class="field form-control"
         id="id-input-1"
         required=""
         type="text"
@@ -825,7 +825,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       class=""
     >
       <input
-        class="form-control"
+        class="field form-control"
         id="id-input-2"
         required=""
         type="text"
@@ -853,7 +853,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-3"
             type="text"
             value=""
@@ -878,7 +878,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-4"
             required=""
             type="text"
@@ -908,7 +908,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-5"
             required=""
             type="text"
@@ -934,7 +934,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-input-6"
             required=""
             type="text"
@@ -960,7 +960,7 @@ exports[`<PhoneAddressFields /> should render 1`] = `
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             disabled=""
             id="id-input-7"
             required=""

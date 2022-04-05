@@ -27,9 +27,10 @@ type Unit = {
 }
 
 type Props = {
-    value: string
+    className?: string
     onChange: (value: string) => void
     units?: Array<Unit>
+    value: string
 } & Omit<ComponentProps<typeof NumberInput>, 'onChange' | 'value'>
 
 const UNITS = [
@@ -40,6 +41,7 @@ const UNITS = [
 ]
 
 const TimedeltaPicker = ({
+    className,
     min = 0,
     onChange,
     units = UNITS,
@@ -85,7 +87,7 @@ const TimedeltaPicker = ({
     }, [min])
 
     return (
-        <InputGroup>
+        <InputGroup className={className}>
             <NumberInput
                 value={quantity}
                 onChange={(value) => onChange(`${value!}${unit}`)}

@@ -5,15 +5,14 @@ import _pick from 'lodash/pick'
 import {
     Breadcrumb,
     BreadcrumbItem,
-    Col,
     Container,
     Form,
     FormGroup,
-    Row,
 } from 'reactstrap'
 import {fromJS, Map} from 'immutable'
 import {AxiosError} from 'axios'
 import {AnyAction} from 'redux'
+import classnames from 'classnames'
 
 import Errors from 'pages/common/forms/Errors'
 import {fetchContact, setCreditCard, updateContact} from 'state/billing/actions'
@@ -28,7 +27,7 @@ import {
 } from 'state/billing/selectors'
 import Loader from 'pages/common/components/Loader/Loader'
 import {loadScript} from 'utils'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import PageHeader from 'pages/common/components/PageHeader'
 import * as currentAccountSelectors from 'state/currentAccount/selectors'
@@ -50,6 +49,7 @@ import Button from 'pages/common/components/button/Button'
 
 import AutomationAmount from '../plans/AutomationAmount'
 import TotalAmount from '../plans/TotalAmount'
+
 import {
     creditCardCVCNormalizer,
     creditCardExpDateNormalizer,
@@ -396,167 +396,159 @@ export class CreditCardContainer extends Component<Props, State> {
                     }
                 />
 
-                <Container fluid className={settingsCss.pageContainer}>
-                    <Row>
-                        <Col className={css.paymentInformationColumn} sm={7}>
-                            {accountHasLegacyPlan && (
-                                <LegacyPlanBanner
-                                    isCustomPlan={currentPlan.get('custom')}
-                                />
-                            )}
-                            {!isUpdating && (
-                                <Alert className="mb-3">
-                                    You will be charged for the current period
-                                    of your plan once you add your Credit Card
-                                </Alert>
-                            )}
-                            <h3>Payment information</h3>
-                            <Form onSubmit={this._submit}>
-                                <DEPRECATED_InputField
-                                    type="text"
-                                    name="name"
-                                    label="Name on the card"
-                                    placeholder="Marie Curie"
-                                    required
-                                    value={this.state.name}
-                                    onChange={(name) =>
-                                        this._updateField({name})
+                <Container
+                    fluid
+                    className={classnames(
+                        settingsCss.pageContainer,
+                        css.container
+                    )}
+                >
+                    <div className={css.form}>
+                        {accountHasLegacyPlan && (
+                            <LegacyPlanBanner
+                                isCustomPlan={currentPlan.get('custom')}
+                            />
+                        )}
+                        {!isUpdating && (
+                            <Alert className="mb-3">
+                                You will be charged for the current period of
+                                your plan once you add your Credit Card
+                            </Alert>
+                        )}
+                        <h3 className="heading-section-semibold">
+                            Payment information
+                        </h3>
+                        <Form onSubmit={this._submit}>
+                            <InputField
+                                className={settingsCss.mb16}
+                                id="name"
+                                label="Name on the card"
+                                placeholder="Marie Curie"
+                                isRequired
+                                value={this.state.name}
+                                onChange={(name) => this._updateField({name})}
+                                error={errors.name}
+                            />
+                            <div
+                                className={classnames(
+                                    css.row,
+                                    settingsCss.mb32
+                                )}
+                            >
+                                <InputField
+                                    className={css.inputRow}
+                                    id="number"
+                                    label="Card number"
+                                    placeholder="4657 7894 1234 7895"
+                                    isRequired
+                                    value={this.state.number}
+                                    onChange={(number) =>
+                                        this._updateField({
+                                            number: creditCardNormalizer(
+                                                number,
+                                                this.state.number
+                                            ),
+                                        })
                                     }
-                                    error={errors.name}
+                                    error={errors.number}
                                 />
-                                <Row className={css.formRow}>
-                                    <Col className={css.formColumn} sm={7}>
-                                        <DEPRECATED_InputField
-                                            type="text"
-                                            name="number"
-                                            label="Card number"
-                                            placeholder="4657 7894 1234 7895"
-                                            required
-                                            value={this.state.number}
-                                            onChange={(number) =>
-                                                this._updateField({
-                                                    number: creditCardNormalizer(
-                                                        number,
-                                                        this.state.number
-                                                    ),
-                                                })
-                                            }
-                                            error={errors.number}
-                                        />
-                                    </Col>
-                                    <Col className={css.formColumn}>
-                                        <DEPRECATED_InputField
-                                            type="text"
-                                            name="expDate"
-                                            label="Expiry date"
-                                            placeholder="05 / 21"
-                                            required
-                                            value={this.state.expDate}
-                                            onChange={(expDate) =>
-                                                this._updateField({
-                                                    expDate:
-                                                        creditCardExpDateNormalizer(
-                                                            expDate,
-                                                            this.state.expDate
-                                                        ),
-                                                })
-                                            }
-                                            error={errors.expDate}
-                                        />
-                                    </Col>
-                                    <Col className={css.formColumn}>
-                                        <DEPRECATED_InputField
-                                            type="text"
-                                            name="cvc"
-                                            label="CVC"
-                                            placeholder="693"
-                                            required
-                                            value={this.state.cvc}
-                                            onChange={(cvc) =>
-                                                this._updateField({
-                                                    cvc: creditCardCVCNormalizer(
-                                                        cvc,
-                                                        this.state.cvc
-                                                    ),
-                                                })
-                                            }
-                                            error={errors.cvc}
-                                        />
-                                    </Col>
-                                </Row>
-                                {this.shouldDisplayBillingAddressForm && (
+                                <InputField
+                                    className={css.inputRow}
+                                    id="expDate"
+                                    label="Expiry date"
+                                    placeholder="05 / 21"
+                                    isRequired
+                                    value={this.state.expDate}
+                                    onChange={(expDate) =>
+                                        this._updateField({
+                                            expDate:
+                                                creditCardExpDateNormalizer(
+                                                    expDate,
+                                                    this.state.expDate
+                                                ),
+                                        })
+                                    }
+                                    error={errors.expDate}
+                                />
+                                <InputField
+                                    className={css.inputRow}
+                                    id="cvc"
+                                    label="CVC"
+                                    placeholder="693"
+                                    isRequired
+                                    value={this.state.cvc}
+                                    onChange={(cvc) =>
+                                        this._updateField({
+                                            cvc: creditCardCVCNormalizer(
+                                                cvc,
+                                                this.state.cvc
+                                            ),
+                                        })
+                                    }
+                                    error={errors.cvc}
+                                />
+                            </div>
+                            {this.shouldDisplayBillingAddressForm && (
+                                <>
+                                    <h3 className={'heading-section-semibold'}>
+                                        Billing address
+                                    </h3>
+                                    <BillingAddressInputs
+                                        onChange={(contactForm) =>
+                                            this.setState({contactForm})
+                                        }
+                                        value={contactForm}
+                                    />
+                                </>
+                            )}
+                            <FormGroup color="danger">
+                                <Errors>{this.state.errors.global}</Errors>
+                            </FormGroup>
+
+                            <Button
+                                type="submit"
+                                isLoading={this.state.isSubmitting}
+                                isDisabled={
+                                    this.state.isSubmitting ||
+                                    invalid ||
+                                    !this.state.dirty
+                                }
+                            >
+                                {isUpdating
+                                    ? 'Update card'
+                                    : 'Add payment method'}{' '}
+                                {payment}
+                            </Button>
+                        </Form>
+                    </div>
+                    {!currentPlan.isEmpty() && regularCurrentPlan && (
+                        <BillingPlanCard
+                            className={css.plan}
+                            plan={regularCurrentPlan.toJS()}
+                            isCurrentPlan
+                            renderBody={(features) => (
+                                <div className={css.planCardBody}>
+                                    {features}
+                                </div>
+                            )}
+                            footer={
+                                hasAutomationAddOn && (
                                     <>
-                                        <h3
-                                            className={css.billingAddressHeader}
-                                        >
-                                            Billing address
-                                        </h3>
-                                        <BillingAddressInputs
-                                            onChange={(contactForm) =>
-                                                this.setState({contactForm})
-                                            }
-                                            value={contactForm}
+                                        <AutomationAmount
+                                            addOnAmount={automationAddOnAmount}
+                                            plan={regularCurrentPlan.toJS()}
+                                            editable={false}
+                                        />
+                                        <TotalAmount
+                                            addOnAmount={automationAddOnAmount}
+                                            plan={regularCurrentPlan.toJS()}
+                                            isEditable={false}
                                         />
                                     </>
-                                )}
-                                <div className={css.formFooter}>
-                                    <FormGroup color="danger">
-                                        <Errors>
-                                            {this.state.errors.global}
-                                        </Errors>
-                                    </FormGroup>
-
-                                    <Button
-                                        type="submit"
-                                        isLoading={this.state.isSubmitting}
-                                        isDisabled={
-                                            this.state.isSubmitting ||
-                                            invalid ||
-                                            !this.state.dirty
-                                        }
-                                    >
-                                        {isUpdating
-                                            ? 'Update card'
-                                            : 'Add payment method'}{' '}
-                                        {payment}
-                                    </Button>
-                                </div>
-                            </Form>
-                        </Col>
-                        {!currentPlan.isEmpty() && regularCurrentPlan && (
-                            <Col className={css.planCardColumn} sm={4}>
-                                <BillingPlanCard
-                                    plan={regularCurrentPlan.toJS()}
-                                    isCurrentPlan
-                                    renderBody={(features) => (
-                                        <div className={css.planCardBody}>
-                                            {features}
-                                        </div>
-                                    )}
-                                    footer={
-                                        hasAutomationAddOn && (
-                                            <>
-                                                <AutomationAmount
-                                                    addOnAmount={
-                                                        automationAddOnAmount
-                                                    }
-                                                    plan={regularCurrentPlan.toJS()}
-                                                    editable={false}
-                                                />
-                                                <TotalAmount
-                                                    addOnAmount={
-                                                        automationAddOnAmount
-                                                    }
-                                                    plan={regularCurrentPlan.toJS()}
-                                                    isEditable={false}
-                                                />
-                                            </>
-                                        )
-                                    }
-                                />
-                            </Col>
-                        )}
-                    </Row>
+                                )
+                            }
+                        />
+                    )}
                 </Container>
             </div>
         )

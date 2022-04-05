@@ -31,7 +31,7 @@ exports[`<Magento2ManualIntegrationForm/> render() should render the page to cre
             </span>
           </span>
           <input
-            class="form-control"
+            class="field form-control"
             id="id-name"
             pattern="^[a-z.0-9-]*\\\\.[a-z0-9]*\\\\/(index\\\\.php)?[\\\\/\\\\w\\\\d_-]*$"
             placeholder="ex: acme.com/admin_45f1c"
@@ -59,7 +59,7 @@ exports[`<Magento2ManualIntegrationForm/> render() should render the page to cre
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-consumerKey"
             required=""
             type="text"
@@ -85,7 +85,7 @@ exports[`<Magento2ManualIntegrationForm/> render() should render the page to cre
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-consumerSecret"
             required=""
             type="text"
@@ -111,7 +111,7 @@ exports[`<Magento2ManualIntegrationForm/> render() should render the page to cre
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-accessToken"
             required=""
             type="text"
@@ -137,7 +137,7 @@ exports[`<Magento2ManualIntegrationForm/> render() should render the page to cre
           class=""
         >
           <input
-            class="form-control"
+            class="field form-control"
             id="id-accessTokenSecret"
             required=""
             type="text"

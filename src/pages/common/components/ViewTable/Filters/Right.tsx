@@ -27,6 +27,8 @@ import TimedeltaPicker from '../../../forms/TimedeltaPicker'
 import MultiSelectField from '../../../forms/MultiSelectField'
 import FilterMultiSelectField from '../FilterMultiSelectField'
 
+import css from './Right.less'
+
 type OwnProps = {
     operator: Identifier
     config: Map<any, any>
@@ -201,6 +203,7 @@ export class RightContainer extends Component<Props, State> {
             if (timedeltaOperators.includes(operator.name)) {
                 return (
                     <TimedeltaPicker
+                        className={css.timedeltaPicker}
                         value={displayedValue as string}
                         onChange={(value: string) =>
                             updateFieldFilter(index, value)

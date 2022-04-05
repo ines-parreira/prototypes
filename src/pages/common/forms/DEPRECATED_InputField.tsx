@@ -72,7 +72,7 @@ export default class InputField<
 
         return (
             <BootstrapInput
-                className={classnames({
+                className={classnames(css.field, {
                     'form-control-danger': error,
                     'is-invalid': error,
                 })}
