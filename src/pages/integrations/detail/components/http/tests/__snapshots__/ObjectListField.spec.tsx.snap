@@ -66,6 +66,7 @@ exports[`ObjectListField component should display the field with items 1`] = `
         placeholder="Key"
         required={true}
         type="text"
+        value="bar"
       />
     </Col>
     <Col
@@ -88,6 +89,7 @@ exports[`ObjectListField component should display the field with items 1`] = `
         placeholder="Value"
         required={true}
         type="text"
+        value="foo"
       />
     </Col>
     <Col

@@ -8,7 +8,7 @@ import Tooltip from '../../../../../common/components/Tooltip'
 import JsonField from '../../../../../common/forms/JsonField'
 import {SelectableOption} from '../../../../../common/forms/SelectField/types'
 
-import {CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM} from './constants.js'
+import {CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM} from './constants'
 import {HTTPForm} from './HTTPIntegrationOverview'
 
 type Props = {

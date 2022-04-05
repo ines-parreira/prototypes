@@ -1,6 +1,6 @@
-describe('httpHeaderValidation', () => {
-    const httpHeaderValidation = require('../httpHeaderValidation')
+import {validateHeaderName} from '../httpHeaderValidation'
 
+describe('httpHeaderValidation', () => {
     const standard = [
         'A-IM',
         'Accept',
@@ -77,27 +77,21 @@ describe('httpHeaderValidation', () => {
         it.each(standard)(
             'should return true for standard header names',
             (headerName) => {
-                expect(
-                    httpHeaderValidation.validateHeaderName(headerName)
-                ).toBe(true)
+                expect(validateHeaderName(headerName)).toBe(true)
             }
         )
 
         it.each(nonStandard)(
             'should return true for non-standard header names',
             (headerName) => {
-                expect(
-                    httpHeaderValidation.validateHeaderName(headerName)
-                ).toBe(true)
+                expect(validateHeaderName(headerName)).toBe(true)
             }
         )
 
         it.each(invalid)(
             'should return false for invalid header names',
             (headerName) => {
-                expect(
-                    httpHeaderValidation.validateHeaderName(headerName)
-                ).toBe(false)
+                expect(validateHeaderName(headerName)).toBe(false)
             }
         )
     })

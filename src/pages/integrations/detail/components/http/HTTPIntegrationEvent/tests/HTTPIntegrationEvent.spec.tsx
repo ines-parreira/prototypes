@@ -1,11 +1,12 @@
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {fromJS, Map} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {HTTPIntegrationEventContainer} from '../HTTPIntegrationEvent.tsx'
-import {getMomentNow} from '../../../../../../../utils/date.ts'
+import {getMomentNow} from 'utils/date'
 
-const HTTPEventWithHTMLResp = fromJS({
+import {HTTPIntegrationEventContainer} from '../HTTPIntegrationEvent'
+
+const HTTPEventWithHTMLResp: Map<any, any> = fromJS({
     created_datetime: getMomentNow(),
     status: 200,
     request: {
@@ -22,7 +23,7 @@ const HTTPEventWithHTMLResp = fromJS({
     },
 })
 
-const HTTPEventWithJSONResp = fromJS({
+const HTTPEventWithJSONResp: Map<any, any> = fromJS({
     created_datetime: getMomentNow(),
     status: 200,
     request: {
@@ -39,7 +40,7 @@ const HTTPEventWithJSONResp = fromJS({
     },
 })
 
-const HTTPEventWithEmptyBodies = fromJS({
+const HTTPEventWithEmptyBodies: Map<any, any> = fromJS({
     created_datetime: getMomentNow(),
     status: 200,
     request: {
@@ -53,7 +54,7 @@ const HTTPEventWithEmptyBodies = fromJS({
     },
 })
 
-const HTTPEventWithErrorInResponse = fromJS({
+const HTTPEventWithErrorInResponse: Map<any, any> = fromJS({
     created_datetime: getMomentNow(),
     status: null,
     request: {
@@ -68,7 +69,7 @@ const HTTPEventWithErrorInResponse = fromJS({
     },
 })
 
-const httpEventWithoutRequest = fromJS({
+const httpEventWithoutRequest: Map<any, any> = fromJS({
     created_datetime: getMomentNow(),
     status: null,
     request: null,
@@ -77,7 +78,7 @@ const httpEventWithoutRequest = fromJS({
     },
 })
 
-const HTTPEventWithJSONParamsAndGETMethod = fromJS({
+const HTTPEventWithJSONParamsAndGETMethod: Map<string, any> = fromJS({
     created_datetime: getMomentNow(),
     status: 200,
     request: {
@@ -94,6 +95,13 @@ const HTTPEventWithJSONParamsAndGETMethod = fromJS({
     },
 })
 
+const minProps: ComponentProps<typeof HTTPIntegrationEventContainer> = {
+    eventId: 1,
+    integrationId: 1,
+    event: fromJS({}),
+    fetchHTTPIntegrationEvent: jest.fn(() => Promise.resolve()),
+}
+
 describe('<HTTPIntegrationEvent />', () => {
     describe('component', () => {
         it('should fetch an event when the component will mount', (done) => {
@@ -102,8 +110,9 @@ describe('<HTTPIntegrationEvent />', () => {
             )
             const integrationId = 1
             const eventId = 2
-            const component = shallow(
+            const component = shallow<HTTPIntegrationEventContainer>(
                 <HTTPIntegrationEventContainer
+                    {...minProps}
                     integrationId={integrationId}
                     eventId={eventId}
                     fetchHTTPIntegrationEvent={
@@ -131,8 +140,8 @@ describe('<HTTPIntegrationEvent />', () => {
         it('should render a loader while the component is fetching an event', () => {
             const component = shallow(
                 <HTTPIntegrationEventContainer
-                    eventId="2"
-                    integationId="1"
+                    {...minProps}
+                    eventId={2}
                     event={HTTPEventWithHTMLResp}
                 />
             )
@@ -143,7 +152,7 @@ describe('<HTTPIntegrationEvent />', () => {
 
         it('should render a loader because the component has no event', () => {
             const component = shallow(
-                <HTTPIntegrationEventContainer eventId="2" integationId="1" />
+                <HTTPIntegrationEventContainer {...minProps} eventId={2} />
             )
             component.setState({isFetching: false})
 
@@ -152,103 +161,120 @@ describe('<HTTPIntegrationEvent />', () => {
 
         it('should render a loader because the component has an empty event', () => {
             const component = shallow(
-                <HTTPIntegrationEventContainer
-                    eventId="2"
-                    integationId="1"
-                    event={fromJS({})}
-                />
+                <HTTPIntegrationEventContainer {...minProps} eventId={2} />
             )
             component.setState({isFetching: false})
 
             expect(component).toMatchSnapshot()
         })
 
-        it('should render the data of a HTTP request (html response)', () => {
+        it('should render the data of a HTTP request (html response)', (done) => {
             const component = shallow(
                 <HTTPIntegrationEventContainer
-                    eventId="2"
-                    integationId="1"
+                    {...minProps}
+                    eventId={2}
                     event={HTTPEventWithHTMLResp}
                 />
             )
-            expect(component).toMatchSnapshot()
+            setImmediate(() => {
+                expect(component).toMatchSnapshot()
+                done()
+            })
         })
 
-        it('should render the data of HTTP request (JSON bodies)', () => {
+        it('should render the data of HTTP request (JSON bodies)', (done) => {
             const component = shallow(
                 <HTTPIntegrationEventContainer
-                    eventId="2"
-                    integationId="1"
+                    {...minProps}
+                    eventId={2}
                     event={HTTPEventWithJSONResp}
                 />
             )
-            expect(component).toMatchSnapshot()
+            setImmediate(() => {
+                expect(component).toMatchSnapshot()
+                done()
+            })
         })
 
-        it('should render the data of HTTP request (Empty bodies)', () => {
+        it('should render the data of HTTP request (Empty bodies)', (done) => {
             const component = shallow(
                 <HTTPIntegrationEventContainer
-                    eventId="2"
-                    integationId="1"
+                    {...minProps}
+                    eventId={2}
                     event={HTTPEventWithEmptyBodies}
                 />
             )
-            expect(component).toMatchSnapshot()
+            setImmediate(() => {
+                expect(component).toMatchSnapshot()
+                done()
+            })
         })
 
-        it('should render the data of the HTTP request when there was an error making the request', () => {
+        it('should render the data of the HTTP request when there was an error making the request', (done) => {
             const component = shallow(
                 <HTTPIntegrationEventContainer
-                    eventId="2"
-                    integationId="1"
+                    {...minProps}
+                    eventId={2}
                     event={HTTPEventWithErrorInResponse}
                 />
             )
-            expect(component).toMatchSnapshot()
+            setImmediate(() => {
+                expect(component).toMatchSnapshot()
+                done()
+            })
         })
 
-        it('should render the data of the HTTP request with GET method and JSON Params, with a warning', () => {
+        it('should render the data of the HTTP request with GET method and JSON Params, with a warning', (done) => {
             const component = shallow(
                 <HTTPIntegrationEventContainer
-                    eventId="2"
-                    integationId="1"
+                    {...minProps}
+                    eventId={2}
                     event={HTTPEventWithJSONParamsAndGETMethod}
                 />
             )
-            expect(component).toMatchSnapshot()
+            setImmediate(() => {
+                expect(component).toMatchSnapshot()
+                done()
+            })
         })
 
         it(
             'should render the data of the HTTP request when there was an error making the request and the default ' +
                 'message is already in the event',
-            () => {
+            (done) => {
                 const error =
                     'There was an error while making this request. Foo bar. There is an error.'
 
                 const component = shallow(
                     <HTTPIntegrationEventContainer
-                        eventId="2"
-                        integationId="1"
+                        {...minProps}
+                        eventId={2}
                         event={HTTPEventWithErrorInResponse.setIn(
                             ['response', 'error'],
                             error
                         )}
                     />
                 )
-                expect(component).toMatchSnapshot()
+                setImmediate(() => {
+                    expect(component).toMatchSnapshot()
+                    done()
+                })
             }
         )
 
-        it('should render the error that occurred before we could send the request', () => {
+        it('should render the error that occurred before we could send the request', (done) => {
             const component = shallow(
                 <HTTPIntegrationEventContainer
-                    eventId="2"
-                    integationId="1"
+                    {...minProps}
+                    eventId={2}
                     event={httpEventWithoutRequest}
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            setImmediate(() => {
+                expect(component).toMatchSnapshot()
+                done()
+            })
         })
     })
 })

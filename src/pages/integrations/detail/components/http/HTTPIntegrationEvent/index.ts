@@ -1,0 +1,2 @@
+import HTTPIntegrationEventContainer from './HTTPIntegrationEvent'
+export default HTTPIntegrationEventContainer

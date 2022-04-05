@@ -1,23 +1,23 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {HTTPIntegrationOverview} from '../HTTPIntegrationOverview.tsx'
-
-const actions = {
-    deactivateIntegration: () => {},
-    activateIntegration: () => {},
-    deleteIntegration: () => {},
-    updateOrCreateIntegration: () => {},
-}
+import {HTTPIntegrationOverview} from '../HTTPIntegrationOverview'
 
 describe('HTTPIntegrationOverview', () => {
+    const minProps: ComponentProps<typeof HTTPIntegrationOverview> = {
+        integration: fromJS({}),
+        isUpdate: false,
+        loading: fromJS({}),
+        deactivateIntegration: jest.fn(),
+        activateIntegration: jest.fn(),
+        deleteIntegration: jest.fn(),
+        updateOrCreateIntegration: jest.fn(),
+    }
     it('should display default values because there is no integration (creation)', () => {
         const component = shallow(
             <HTTPIntegrationOverview
-                integration={fromJS({})}
-                isUpdate={false}
-                {...actions}
+                {...minProps}
                 loading={fromJS({integration: false})}
             />
         )
@@ -28,6 +28,7 @@ describe('HTTPIntegrationOverview', () => {
     it('should display data about the integration', () => {
         const component = shallow(
             <HTTPIntegrationOverview
+                {...minProps}
                 integration={fromJS({
                     id: 1,
                     type: 'http',
@@ -57,7 +58,6 @@ describe('HTTPIntegrationOverview', () => {
                     },
                 })}
                 isUpdate={true}
-                {...actions}
                 loading={fromJS({integration: false})}
             />
         )
@@ -68,6 +68,7 @@ describe('HTTPIntegrationOverview', () => {
     it('should display loading state because the integration is loading', () => {
         const component = shallow(
             <HTTPIntegrationOverview
+                {...minProps}
                 integration={fromJS({
                     id: 1,
                     type: 'http',
@@ -96,8 +97,6 @@ describe('HTTPIntegrationOverview', () => {
                         },
                     },
                 })}
-                isUpdate={false}
-                {...actions}
                 loading={fromJS({integration: true})}
             />
         )
@@ -108,6 +107,7 @@ describe('HTTPIntegrationOverview', () => {
     it('should display data with url-encoded format', () => {
         const component = shallow(
             <HTTPIntegrationOverview
+                {...minProps}
                 integration={fromJS({
                     id: 1,
                     type: 'http',
@@ -136,7 +136,6 @@ describe('HTTPIntegrationOverview', () => {
                     },
                 })}
                 isUpdate={true}
-                {...actions}
                 loading={fromJS({integration: false})}
             />
         )

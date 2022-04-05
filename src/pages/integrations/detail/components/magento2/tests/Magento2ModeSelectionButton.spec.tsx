@@ -2,7 +2,7 @@ import React from 'react'
 
 import {render} from '@testing-library/react'
 
-import Magento2ModeSelectionButton from '../Magento2ModeSelectionButton.tsx'
+import Magento2ModeSelectionButton from '../Magento2ModeSelectionButton'
 
 describe('<Magento2ModeSelectionButton/>', () => {
     describe('render()', () => {
@@ -12,7 +12,7 @@ describe('<Magento2ModeSelectionButton/>', () => {
                     text="Some button text"
                     icon="icon-name"
                     selected={true}
-                    onClick={() => {}}
+                    onClick={jest.fn()}
                 />
             )
 

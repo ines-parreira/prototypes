@@ -23,8 +23,8 @@ import {
 import {toJS, validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 
 import ObjectListField, {Field} from '../ObjectListField'
-import {DEFAULT_FORM} from './constants.js'
-import {validateHeaderName} from './httpHeaderValidation.js'
+import {DEFAULT_FORM} from './constants'
+import {validateHeaderName} from './httpHeaderValidation'
 import JSONBody from './JSONBody'
 
 export type HTTPForm =

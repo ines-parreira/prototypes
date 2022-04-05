@@ -1,27 +1,23 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {Component} from 'react'
+import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import _truncate from 'lodash/truncate'
 
-import ToggleInput from '../../../../common/forms/ToggleInput.tsx'
-import IntegrationList from '../IntegrationList.tsx'
-import ForwardIcon from '../ForwardIcon.tsx'
-import * as integrationsActions from '../../../../../state/integrations/actions.ts'
-import history from '../../../../history.ts'
+import * as integrationsActions from 'state/integrations/actions'
+import {IntegrationType} from 'models/integration/constants'
 
-@connect(null, {
-    activate: integrationsActions.activateIntegration,
-    deactivate: integrationsActions.deactivateIntegration,
-})
-export default class HTTPIntegrationList extends React.Component {
-    static propTypes = {
-        integrations: PropTypes.object.isRequired,
-        loading: PropTypes.object.isRequired,
-        activate: PropTypes.func.isRequired,
-        deactivate: PropTypes.func.isRequired,
-    }
+import ToggleInput from '../../../../common/forms/ToggleInput'
+import IntegrationList from '../IntegrationList'
+import ForwardIcon from '../ForwardIcon'
+import history from '../../../../history'
 
+type Props = {
+    integrations: List<Map<any, any>>
+    loading: Map<any, any>
+} & ConnectedProps<typeof connector>
+
+export class HTTPIntegrationList extends Component<Props> {
     render() {
         const {integrations, loading} = this.props
         const longTypeDescription = (
@@ -46,9 +42,9 @@ export default class HTTPIntegrationList extends React.Component {
             </div>
         )
 
-        const integrationToItemDisplay = (int) => {
-            const toggleIntegration = (value) => {
-                const integrationId = int.get('id')
+        const integrationToItemDisplay = (int: Map<any, any>) => {
+            const toggleIntegration = (value: boolean) => {
+                const integrationId: number = int.get('id')
                 return value
                     ? this.props.activate(integrationId)
                     : this.props.deactivate(integrationId)
@@ -56,7 +52,9 @@ export default class HTTPIntegrationList extends React.Component {
 
             const isDisabled = int.get('deactivated_datetime')
 
-            const editLink = `/app/settings/integrations/http/${int.get('id')}`
+            const editLink = `/app/settings/integrations/http/${
+                int.get('id') as string
+            }`
 
             return (
                 <tr key={int.get('id')}>
@@ -87,10 +85,12 @@ export default class HTTPIntegrationList extends React.Component {
 
         return (
             <IntegrationList
-                integrationType="http"
-                integrations={integrations.filter(
-                    (v) => v.get('type') === 'http'
-                )}
+                integrationType={IntegrationType.Http}
+                integrations={
+                    integrations.filter(
+                        (v) => v!.get('type') === 'http'
+                    ) as List<Map<any, any>>
+                }
                 longTypeDescription={longTypeDescription}
                 createIntegration={() =>
                     history.push('/app/settings/integrations/http/new')
@@ -102,3 +102,10 @@ export default class HTTPIntegrationList extends React.Component {
         )
     }
 }
+
+const connector = connect(null, {
+    activate: integrationsActions.activateIntegration,
+    deactivate: integrationsActions.deactivateIntegration,
+})
+
+export default connector(HTTPIntegrationList)

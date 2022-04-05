@@ -1,32 +1,31 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {Magento2IntegrationDetail} from '../Magento2IntegrationDetail.tsx'
+import {Magento2IntegrationDetail} from '../Magento2IntegrationDetail'
 
 describe('<Magento2IntegrationDetail/>', () => {
-    const commonProps = {
+    const minProps: ComponentProps<typeof Magento2IntegrationDetail> = {
+        integration: fromJS({}),
+        isUpdate: false,
+        loading: fromJS({}),
         redirectUri: 'gorgias.io',
         location: {
             search: '?message=&message_type=info',
+            pathname: fromJS({}),
+            state: fromJS({}),
+            hash: fromJS({}),
         },
+        history: fromJS({}),
+        match: fromJS({}),
         notify: jest.fn(),
-        actions: {
-            activateIntegration: jest.fn(),
-            deactivateIntegration: jest.fn(),
-            deleteIntegration: jest.fn(),
-        },
-        loading: fromJS({}),
+        triggerCreateSuccess: jest.fn(),
     }
 
     describe('render()', () => {
         it('should render the page to create a new integration', () => {
             const component = shallow(
-                <Magento2IntegrationDetail
-                    integration={fromJS({})}
-                    isUpdate={false}
-                    {...commonProps}
-                />
+                <Magento2IntegrationDetail {...minProps} />
             )
 
             expect(component).toMatchSnapshot()
@@ -35,11 +34,7 @@ describe('<Magento2IntegrationDetail/>', () => {
         it('should render the page for an integration being created with the name of another existing integration', () => {
             const storeUrl = 'magento.gorgi.us'
             const component = shallow(
-                <Magento2IntegrationDetail
-                    integration={fromJS({})}
-                    isUpdate={false}
-                    {...commonProps}
-                />
+                <Magento2IntegrationDetail {...minProps} />
             ).setState({url: storeUrl})
 
             expect(component).toMatchSnapshot()
@@ -49,6 +44,7 @@ describe('<Magento2IntegrationDetail/>', () => {
             const storeUrl = 'magento.gorgi.us'
             const component = shallow(
                 <Magento2IntegrationDetail
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         name: storeUrl,
@@ -59,7 +55,6 @@ describe('<Magento2IntegrationDetail/>', () => {
                         },
                     })}
                     isUpdate={true}
-                    {...commonProps}
                 />
             ).setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
 
@@ -70,6 +65,7 @@ describe('<Magento2IntegrationDetail/>', () => {
             const storeUrl = 'magento.gorgi.us'
             const component = shallow(
                 <Magento2IntegrationDetail
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         name: storeUrl,
@@ -81,7 +77,6 @@ describe('<Magento2IntegrationDetail/>', () => {
                         deactivated_datetime: '2018-01-01T18:52:17',
                     })}
                     isUpdate={true}
-                    {...commonProps}
                 />
             ).setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
 
@@ -92,6 +87,7 @@ describe('<Magento2IntegrationDetail/>', () => {
             const storeUrl = 'magento.gorgi.us'
             const component = shallow(
                 <Magento2IntegrationDetail
+                    {...minProps}
                     integration={fromJS({
                         id: 1,
                         name: storeUrl,
@@ -102,7 +98,6 @@ describe('<Magento2IntegrationDetail/>', () => {
                         },
                     })}
                     isUpdate={true}
-                    {...commonProps}
                 />
             ).setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
 

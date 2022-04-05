@@ -43,7 +43,7 @@ import GorgiasChatIntegrationPreferences from './components/gorgias_chat/Gorgias
 import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies'
 import GorgiasChatIntegrationSelfService from './components/gorgias_chat/GorgiasChatIntegrationSelfService'
 
-import HTTPIntegrationList from './components/http/HTTPIntegrationList.js'
+import HTTPIntegrationList from './components/http/HTTPIntegrationList'
 
 import Magento2IntegrationDetail from './components/magento2/Magento2IntegrationDetail'
 import Magento2IntegrationList from './components/magento2/Magento2IntegrationList'
@@ -387,7 +387,6 @@ export const IntegrationDetailContainer = ({
 
             return (
                 <HTTPIntegrationList
-                    actions={actions}
                     integrations={integrationsProp}
                     loading={loading}
                 />

@@ -67,7 +67,7 @@ jest.mock(
     () => () => <div>FacebookIntegrationCustomerChat</div>
 )
 
-jest.mock('../components/http/HTTPIntegrationList.js', () => () => (
+jest.mock('../components/http/HTTPIntegrationList', () => () => (
     <div>HTTPIntegrationList</div>
 ))
 jest.mock(
