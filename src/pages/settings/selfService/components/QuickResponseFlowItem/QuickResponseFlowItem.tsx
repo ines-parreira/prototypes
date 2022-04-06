@@ -125,6 +125,8 @@ const QuickResponseFlowItem = ({
                         <Button
                             onClick={() => history.push(baseURL)}
                             className={css.backButton}
+                            fillStyle="ghost"
+                            intent="secondary"
                         >
                             <ButtonIconLabel icon="arrow_back">
                                 {initialValue ? 'Edit Flow' : 'New Flow'}
@@ -243,7 +245,6 @@ const QuickResponseFlowItem = ({
                                     </Button>
                                 ) : (
                                     <ConfirmButton
-                                        // TODO: use same design as in list
                                         id="delete-flow"
                                         intent="destructive"
                                         confirmationButtonIntent="destructive"
