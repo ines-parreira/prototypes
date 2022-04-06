@@ -7,11 +7,10 @@ exports[`<ShowMore/> render() should render children 1`] = `
   onClick={[Function]}
   type="button"
 >
-  <img
-    alt="Expand"
-    className="mr-3"
-    src="test-file-stub"
-  />
-  Show more
+  <ButtonIconLabel
+    icon="keyboard_double_arrow_down"
+  >
+    Show more
+  </ButtonIconLabel>
 </ForwardRef>
 `;

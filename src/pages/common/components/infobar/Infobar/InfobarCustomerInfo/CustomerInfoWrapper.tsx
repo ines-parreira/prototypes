@@ -1,9 +1,7 @@
 import React, {Children, ReactNode, useState} from 'react'
-import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
-import expandDown from 'assets/img/infobar/expand-down.svg'
-import expandUp from 'assets/img/infobar/expand-up-blue.svg'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './ShowMore.less'
 
@@ -25,29 +23,18 @@ export default function CustomerInfoWrapper({
             {isOpen ? children : array.slice(0, displayedElementsCount)}
             {count <= displayedElementsCount ? null : (
                 <Button
-                    type="button"
                     intent="secondary"
-                    className={classnames(css.container)}
+                    className={css.container}
                     onClick={() => setOpen((prevState) => !prevState)}
                 >
                     {isOpen ? (
-                        <>
-                            <img
-                                src={expandUp}
-                                alt="Contract"
-                                className="mr-3"
-                            />
+                        <ButtonIconLabel icon="keyboard_double_arrow_up">
                             Less info
-                        </>
+                        </ButtonIconLabel>
                     ) : (
-                        <>
-                            <img
-                                src={expandDown}
-                                alt="Expand"
-                                className="mr-3"
-                            />
+                        <ButtonIconLabel icon="keyboard_double_arrow_down">
                             More info
-                        </>
+                        </ButtonIconLabel>
                     )}
                 </Button>
             )}

@@ -191,19 +191,30 @@ exports[`CustomerChannels component should display all passed channels (includin
       className="container"
       intent="secondary"
       onClick={[Function]}
-      type="button"
     >
       <button
         className="wrapper container fill secondary medium"
         onClick={[Function]}
         type="button"
       >
-        <img
-          alt="Expand"
-          className="mr-3"
-          src="test-file-stub"
-        />
-        More info
+        <ButtonIconLabel
+          icon="keyboard_double_arrow_down"
+        >
+          <span
+            className="wrapper"
+          >
+            <Icon
+              className="icon isLeft"
+            >
+              <i
+                className="material-icons icon isLeft medium"
+              >
+                keyboard_double_arrow_down
+              </i>
+            </Icon>
+            More info
+          </span>
+        </ButtonIconLabel>
       </button>
     </ForwardRef>
   </div>
@@ -850,19 +861,30 @@ exports[`CustomerChannels component should display all passed channels (includin
       className="container"
       intent="secondary"
       onClick={[Function]}
-      type="button"
     >
       <button
         className="wrapper container fill secondary medium"
         onClick={[Function]}
         type="button"
       >
-        <img
-          alt="Contract"
-          className="mr-3"
-          src="test-file-stub"
-        />
-        Less info
+        <ButtonIconLabel
+          icon="keyboard_double_arrow_up"
+        >
+          <span
+            className="wrapper"
+          >
+            <Icon
+              className="icon isLeft"
+            >
+              <i
+                className="material-icons icon isLeft medium"
+              >
+                keyboard_double_arrow_up
+              </i>
+            </Icon>
+            Less info
+          </span>
+        </ButtonIconLabel>
       </button>
     </ForwardRef>
   </div>

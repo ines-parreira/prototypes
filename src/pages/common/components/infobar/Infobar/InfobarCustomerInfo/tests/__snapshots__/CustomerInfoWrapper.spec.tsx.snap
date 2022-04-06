@@ -12,12 +12,16 @@ exports[`CustomerInfoWrapper component should only 2 children and a Show More bu
     class="wrapper container fill secondary medium"
     type="button"
   >
-    <img
-      alt="Expand"
-      class="mr-3"
-      src="test-file-stub"
-    />
-    More info
+    <span
+      class="wrapper"
+    >
+      <i
+        class="material-icons icon isLeft medium"
+      >
+        keyboard_double_arrow_down
+      </i>
+      More info
+    </span>
   </button>
 </div>
 `;
@@ -40,12 +44,16 @@ exports[`CustomerInfoWrapper component should render all 4 children and a Show L
     class="wrapper container fill secondary medium"
     type="button"
   >
-    <img
-      alt="Contract"
-      class="mr-3"
-      src="test-file-stub"
-    />
-    Less info
+    <span
+      class="wrapper"
+    >
+      <i
+        class="material-icons icon isLeft medium"
+      >
+        keyboard_double_arrow_up
+      </i>
+      Less info
+    </span>
   </button>
 </div>
 `;
@@ -62,12 +70,16 @@ exports[`CustomerInfoWrapper component should render child a and child b with th
     class="wrapper container fill secondary medium"
     type="button"
   >
-    <img
-      alt="Expand"
-      class="mr-3"
-      src="test-file-stub"
-    />
-    More info
+    <span
+      class="wrapper"
+    >
+      <i
+        class="material-icons icon isLeft medium"
+      >
+        keyboard_double_arrow_down
+      </i>
+      More info
+    </span>
   </button>
 </div>
 `;

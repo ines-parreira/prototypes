@@ -2,7 +2,7 @@ import React, {ReactNode} from 'react'
 import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
-import expandDown from 'assets/img/infobar/expand-down.svg'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import css from './ShowMore.less'
 
@@ -20,8 +20,9 @@ export function ShowMore({children, className, onClick}: Props) {
             className={classnames(css.container, className)}
             onClick={onClick}
         >
-            <img src={expandDown} alt="Expand" className="mr-3" />
-            {children}
+            <ButtonIconLabel icon="keyboard_double_arrow_down">
+                {children}
+            </ButtonIconLabel>
         </Button>
     )
 }
