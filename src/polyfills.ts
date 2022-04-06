@@ -1,5 +1,6 @@
 import includes from 'array-includes'
 import Promise from 'promise-polyfill'
+import '@formatjs/intl-locale/polyfill'
 import '@formatjs/intl-numberformat/polyfill'
 import '@formatjs/intl-numberformat/locale-data/en'
 import '@formatjs/intl-pluralrules/polyfill'

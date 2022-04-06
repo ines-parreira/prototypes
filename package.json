@@ -41,6 +41,7 @@
     "dependencies": {
         "@datadog/browser-logs": "2.0.3",
         "@formatjs/intl-displaynames": "5.4.3",
+        "@formatjs/intl-locale": "2.4.47",
         "@formatjs/intl-numberformat": "5.5.0",
         "@formatjs/intl-pluralrules": "3.4.7",
         "@hot-loader/react-dom": "16.13.0",
