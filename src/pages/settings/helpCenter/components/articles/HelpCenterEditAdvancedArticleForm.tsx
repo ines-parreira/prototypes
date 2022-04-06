@@ -2,15 +2,16 @@ import React from 'react'
 import copy from 'copy-to-clipboard'
 
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ArticleTranslationSeoMeta,
     CreateArticleTranslationDto,
     LocalArticleTranslation,
-} from '../../../../../models/helpCenter/types'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import AutoPopulateInput from '../../../../common/forms/AutoPopulateInput/AutoPopulateInput'
+} from 'models/helpCenter/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
+import Label from 'pages/common/forms/Label/Label'
 import {HELP_CENTER_TITLE_MAX_LENGTH} from '../../constants'
 import {
     getAbsoluteUrl,
@@ -18,23 +19,30 @@ import {
     slugify,
 } from '../../utils/helpCenter.utils'
 import {SearchEnginePreview} from '../SearchEnginePreview'
+import ArticleCategorySelect from './ArticleCategorySelect'
 
 import css from './HelpCenterEditAdvancedArticleForm.less'
 
 type Props = {
     articleId?: number
+    categoryId?: number | null
+    helpCenterId: number
     translation: CreateArticleTranslationDto | LocalArticleTranslation
     domain: string
     onChange: (
         translation: CreateArticleTranslationDto | LocalArticleTranslation
     ) => void
+    onCategoryChange: (categoryId: number | null) => void
 }
 
 export const HelpCenterEditAdvancedArticleForm = ({
     articleId,
+    categoryId,
+    helpCenterId,
     translation,
     domain,
     onChange,
+    onCategoryChange,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
 
@@ -70,6 +78,10 @@ export const HelpCenterEditAdvancedArticleForm = ({
             })
         }
 
+    const onChangeCategory = (selectedCategoryId: number | null) => {
+        onCategoryChange(selectedCategoryId)
+    }
+
     const copyURL = () => {
         const {locale, slug} = translation
 
@@ -94,6 +106,15 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 onChange={onEditArticle('title')}
                 maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
             />
+            <div className={css.categorySelect}>
+                <Label>Category</Label>
+                <ArticleCategorySelect
+                    locale={translation.locale}
+                    helpCenterId={helpCenterId}
+                    categoryId={categoryId ?? null}
+                    onChange={onChangeCategory}
+                />
+            </div>
             <div className={css.inputWrapper}>
                 <DEPRECATED_InputField
                     required

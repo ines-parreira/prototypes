@@ -2,10 +2,7 @@ import React, {useCallback} from 'react'
 
 import {LocaleCode} from 'models/helpCenter/types'
 import {Components} from 'rest_api/help_center_api/client.generated'
-import {
-    SCREEN_SIZE,
-    useScreenSize,
-} from '../../../../../../../hooks/useScreenSize'
+import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 
 import {EDITOR_MODAL_CONTAINER_ID} from '../../../../constants'
 import {

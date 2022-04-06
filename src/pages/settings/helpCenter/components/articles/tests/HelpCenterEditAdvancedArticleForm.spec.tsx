@@ -1,25 +1,44 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import {DeepPartial} from 'redux'
 import configureMockStore from 'redux-mock-store'
 
+import {RootState, StoreDispatch} from 'state/types'
+import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer'
+import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import HelpCenterEditAdvancedArticleForm from '../HelpCenterEditAdvancedArticleForm'
 import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
 
-const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
 const mockedOnChange = jest.fn()
+const mockedOnCategoryChange = jest.fn()
+
+jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
+;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
+    getSingleHelpCenterResponseFixture
+)
 
 describe('<HelpCenterEditAdvancedArticleForm/>', () => {
-    const defaultState: Partial<RootState> = {}
-
     const {translation} = getSingleArticleEnglish
     const props = {
         articleId: 1,
+        helpCenterId: 1,
+        categoryId: 1,
         translation,
         domain: 'acme.gorgias.rehab',
         onChange: mockedOnChange,
+        onCategoryChange: mockedOnCategoryChange,
+    }
+
+    const defaultState: DeepPartial<RootState> = {
+        entities: {
+            helpCenter: helpCenterState,
+        },
+        ui: {helpCenter: uiState},
     }
 
     beforeEach(() => {

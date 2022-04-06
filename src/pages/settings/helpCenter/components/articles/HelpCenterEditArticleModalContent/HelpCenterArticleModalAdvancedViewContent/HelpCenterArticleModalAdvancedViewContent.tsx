@@ -1,10 +1,7 @@
 import React from 'react'
 
-import {
-    CreateArticleTranslationDto,
-    LocaleCode,
-} from '../../../../../../../models/helpCenter/types'
-import {Components} from '../../../../../../../rest_api/help_center_api/client.generated'
+import {CreateArticleTranslationDto, LocaleCode} from 'models/helpCenter/types'
+import {Components} from 'rest_api/help_center_api/client.generated'
 import {useCurrentHelpCenter} from '../../../../providers/CurrentHelpCenter'
 import {useEditionManager} from '../../../../providers/EditionManagerContext'
 import {
@@ -62,8 +59,13 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     onChangesDiscard,
     articleMode,
 }: Props) => {
-    const {setEditModal, selectedArticle, setSelectedArticle} =
-        useEditionManager()
+    const {
+        setEditModal,
+        selectedArticle,
+        setSelectedArticle,
+        selectedCategoryId,
+        setSelectedCategoryId,
+    } = useEditionManager()
 
     const helpCenter = useCurrentHelpCenter()
 
@@ -117,7 +119,10 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                         ? selectedArticle.id
                         : undefined
                 }
+                categoryId={selectedCategoryId}
+                helpCenterId={helpCenter.id}
                 translation={selectedArticle.translation}
+                onCategoryChange={setSelectedCategoryId}
                 onChange={(translation: CreateArticleTranslationDto) =>
                     setSelectedArticle((prevSelectedArticle) =>
                         prevSelectedArticle
