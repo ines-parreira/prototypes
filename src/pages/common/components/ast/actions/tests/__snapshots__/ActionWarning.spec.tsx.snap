@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ActionWarning /> should render a warning 1`] = `
+<span
+  class="alert-warning wrapper"
+>
+  Foo bar
+</span>
+`;

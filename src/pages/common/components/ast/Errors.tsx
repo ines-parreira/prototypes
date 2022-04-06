@@ -1,7 +1,9 @@
+import classnames from 'classnames'
 import React, {ReactNode, FunctionComponent, CSSProperties} from 'react'
 
 type Props = {
     belowInput?: boolean
+    className?: string
     children?: ReactNode
     inline?: boolean
     tag?: keyof JSX.IntrinsicElements | FunctionComponent<any>
@@ -9,6 +11,7 @@ type Props = {
 
 export default function Errors({
     belowInput = false,
+    className,
     children,
     inline = false,
     tag: Tag = 'div',
@@ -20,7 +23,13 @@ export default function Errors({
 
     if (inline) {
         return (
-            <Tag className="d-inline-block text-danger ml-2" {...rest}>
+            <Tag
+                className={classnames(
+                    'd-inline-block text-danger ml-2',
+                    className
+                )}
+                {...rest}
+            >
                 {children}
             </Tag>
         )
@@ -35,7 +44,11 @@ export default function Errors({
     }
 
     return (
-        <Tag className="text-danger" style={style} {...rest}>
+        <Tag
+            className={classnames('text-danger', className)}
+            style={style}
+            {...rest}
+        >
             {children}
         </Tag>
     )

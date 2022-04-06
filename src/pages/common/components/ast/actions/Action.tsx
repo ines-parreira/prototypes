@@ -2,6 +2,7 @@ import React, {ReactNode} from 'react'
 import classnames from 'classnames'
 import {Map, List} from 'immutable'
 import {Card, CardBody} from 'reactstrap'
+import {Link} from 'react-router-dom'
 
 import _isFunction from 'lodash/isFunction'
 import _isArray from 'lodash/isArray'
@@ -15,6 +16,8 @@ import {isEmailList, findProperty} from '../../../../../utils'
 import {RuleItemActions} from '../../../../settings/rules/types'
 
 import ActionSelect from './ActionSelect'
+import ActionWarning from './ActionWarning'
+import css from './Action.less'
 
 type Email = {
     body_text?: Maybe<string>
@@ -302,13 +305,10 @@ export default class Action extends React.Component<Props> {
             value === 'facebookLikeComment'
         ) {
             return (
-                <span
-                    className="alert-warning"
-                    style={{paddingLeft: '5px', paddingRight: '5px'}}
-                >
+                <ActionWarning>
                     An extensive use of automatic Facebook actions may
                     deactivate your page on Facebook!
-                </span>
+                </ActionWarning>
             )
         }
 
@@ -349,10 +349,22 @@ export default class Action extends React.Component<Props> {
 
         if (config.compact) {
             return [
-                <span key="children" className="compact-action">
+                <span
+                    key="children"
+                    className={classnames(css.compactAction, 'compact-action')}
+                >
                     {children}
                 </span>,
-                <Errors key="errors" inline>
+                value === 'setTeamAssignee' ? (
+                    <ActionWarning key="warning">
+                        To set up team auto-assignment, go to the{' '}
+                        <Link to="/app/settings/ticket-assignment">
+                            Ticket assignment
+                        </Link>{' '}
+                        page
+                    </ActionWarning>
+                ) : null,
+                <Errors className={css.inlineErrors} key="errors" inline>
                     {errors}
                 </Errors>,
             ]

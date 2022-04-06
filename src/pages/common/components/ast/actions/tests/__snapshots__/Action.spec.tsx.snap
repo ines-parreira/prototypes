@@ -13,17 +13,9 @@ exports[`Action render() should render a warning about potential page deactivati
     parent={1}
     value="facebookHideComment"
   />
-  <span
-    className="alert-warning"
-    style={
-      Object {
-        "paddingLeft": "5px",
-        "paddingRight": "5px",
-      }
-    }
-  >
+  <ActionWarning>
     An extensive use of automatic Facebook actions may deactivate your page on Facebook!
-  </span>
+  </ActionWarning>
 </div>
 `;
 
@@ -40,17 +32,53 @@ exports[`Action render() should render a warning about potential page deactivati
     parent={2}
     value="facebookLikeComment"
   />
-  <span
-    className="alert-warning"
-    style={
-      Object {
-        "paddingLeft": "5px",
-        "paddingRight": "5px",
-      }
-    }
-  >
+  <ActionWarning>
     An extensive use of automatic Facebook actions may deactivate your page on Facebook!
+  </ActionWarning>
+</div>
+`;
+
+exports[`Action render() should render a warning regarding team assignment 1`] = `
+<div
+  className="Action d-flex align-items-baseline"
+  style={
+    Object {
+      "paddingLeft": "NaNpx",
+    }
+  }
+>
+  <ActionSelect
+    parent={4}
+    value="setTeamAssignee"
+  />
+  <span
+    className="compactAction compact-action"
+    key="children"
+  >
+    <MockedChild
+      compact={true}
+      key=".0"
+      properties={Array []}
+    />
   </span>
+  <ActionWarning
+    key="warning"
+  >
+    To set up team auto-assignment, go to the
+     
+    <Link
+      to="/app/settings/ticket-assignment"
+    >
+      Ticket assignment
+    </Link>
+     
+    page
+  </ActionWarning>
+  <Errors
+    className="inlineErrors"
+    inline={true}
+    key="errors"
+  />
 </div>
 `;
 
