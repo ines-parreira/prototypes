@@ -321,6 +321,40 @@ describe('Config: ticket', () => {
             }
         )
 
+        it('should return message source type "internal-note" for Twilio ticket with no messages', () => {
+            const via = TicketVia.Twilio
+            const messages: TicketMessage[] = []
+
+            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                TicketMessageSourceType.InternalNote
+            )
+        })
+
+        it('should return SMS channel if the last message is an SMS on a Twilio ticket', () => {
+            const message = {
+                source: {type: TicketMessageSourceType.Sms},
+            } as TicketMessage
+            const messages: TicketMessage[] = [message]
+
+            const via = TicketVia.Twilio
+
+            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                TicketMessageSourceType.Sms
+            )
+        })
+
+        it('should return SMS source type for SMS ticket that has one SMS message', () => {
+            const message = {
+                source: {type: TicketMessageSourceType.Sms},
+            } as TicketMessage
+            const messages: TicketMessage[] = [message]
+            const via = TicketVia.Helpdesk
+
+            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
+                TicketMessageSourceType.Sms
+            )
+        })
+
         it('should return default message source type for email ticket that has no message', () => {
             const messages: TicketMessage[] = []
             const via = TicketVia.Email
@@ -339,18 +373,6 @@ describe('Config: ticket', () => {
 
             expect(ticketConfig.responseSourceType(messages, via)).toEqual(
                 ticketConfig.DEFAULT_SOURCE_TYPE
-            )
-        })
-
-        it('should return SMS source type for SMS ticket that has one SMS message', () => {
-            const message = {
-                source: {type: TicketMessageSourceType.Sms},
-            } as TicketMessage
-            const messages: TicketMessage[] = [message]
-            const via = TicketVia.Helpdesk
-
-            expect(ticketConfig.responseSourceType(messages, via)).toEqual(
-                TicketMessageSourceType.Sms
             )
         })
 
@@ -409,12 +431,12 @@ describe('Config: ticket', () => {
             expect(channel).toBe(ticketConfig.DEFAULT_CHANNEL)
         })
 
-        it('should return the default channel if the last not system message is from twilio', () => {
+        it('should return the phone channel if the last not system message is from twilio', () => {
             const channel = ticketConfig.sourceTypeToChannel(
                 TicketMessageSourceType.InternalNote,
                 [{via: TicketVia.Twilio} as TicketMessage]
             )
-            expect(channel).toBe(ticketConfig.DEFAULT_CHANNEL)
+            expect(channel).toBe(TicketChannel.Phone)
         })
 
         it.each([

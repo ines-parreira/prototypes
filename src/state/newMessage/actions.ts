@@ -1011,13 +1011,16 @@ export function sendTicketMessage(
                                 messageId,
                             })
                             const sourceTypeOfResponse =
-                                getSourceTypeOfResponse(messages, via)
-
+                                getSourceTypeOfResponse(
+                                    messages.push(resp),
+                                    via
+                                )
                             if (
                                 [
                                     TicketMessageSourceType.InstagramComment,
                                     TicketMessageSourceType.InstagramAdComment,
                                     TicketMessageSourceType.InstagramMentionComment,
+                                    TicketMessageSourceType.Sms,
                                 ].includes(sourceTypeOfResponse)
                             ) {
                                 dispatch(prepare(sourceTypeOfResponse))

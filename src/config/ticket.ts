@@ -290,7 +290,7 @@ export function sourceTypeToChannel(
         }
 
         if (lastMessage.get('via') === TicketVia.Twilio) {
-            return DEFAULT_CHANNEL
+            return TicketChannel.Phone
         }
         const lastSourceType = lastMessage.getIn(['source', 'type'])
         return sourceTypeToChannel(lastSourceType, messages)
@@ -358,11 +358,12 @@ export function responseSourceType(
 ): TicketMessageSourceType {
     const lastMessage = lastNonSystemTypeMessage(messages)
 
-    if (via === TicketVia.Twilio) {
-        return TicketMessageSourceType.InternalNote
-    }
     // some messages don't have sources - failed imports, api, etc..
     if (!lastMessage || !lastMessage.get('source')) {
+        if (via === TicketVia.Twilio) {
+            return TicketMessageSourceType.InternalNote
+        }
+
         return DEFAULT_SOURCE_TYPE
     }
 
@@ -413,6 +414,13 @@ export function responseSourceType(
 
     if (lastSourceType === TicketMessageSourceType.Sms) {
         return TicketMessageSourceType.Sms
+    }
+
+    if (
+        lastSourceType === TicketMessageSourceType.Twilio ||
+        via === TicketVia.Twilio
+    ) {
+        return TicketMessageSourceType.InternalNote
     }
 
     if (!isAnswerableType(lastSourceType)) {

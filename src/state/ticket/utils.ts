@@ -9,6 +9,7 @@ import _first from 'lodash/first'
 import _last from 'lodash/last'
 import _set from 'lodash/set'
 import _get from 'lodash/get'
+import parsePhoneNumber from 'libphonenumber-js'
 
 import {SOURCE_VALUE_PROP} from 'config'
 import {INTEGRATION_TYPE_WITH_VARIABLES} from 'config/integrations'
@@ -19,7 +20,11 @@ import {getActionTemplate, isImmutable, toImmutable} from 'utils'
 import {renderTemplate} from 'pages/common/utils/template'
 import {tryLocalStorage} from 'services/common/utils'
 import * as responseUtils from 'state/newMessage/responseUtils'
-import {TicketVia, TicketMessageSourceType} from 'business/types/ticket'
+import {
+    TicketVia,
+    TicketMessageSourceType,
+    TicketChannel,
+} from 'business/types/ticket'
 import {PHONE_EVENTS} from 'constants/event'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -64,6 +69,16 @@ export function getLastSameSourceTypeMessage(
             TicketMessageSourceType.TwitterTweet,
             TicketMessageSourceType.TwitterQuotedTweet,
             TicketMessageSourceType.TwitterMentionTweet,
+        ]
+    } else if (
+        sourceType === TicketMessageSourceType.Twilio ||
+        sourceType === TicketMessageSourceType.Phone ||
+        sourceType === TicketMessageSourceType.Sms
+    ) {
+        sourceTypesToSearch = [
+            TicketMessageSourceType.Twilio,
+            TicketMessageSourceType.Phone,
+            TicketMessageSourceType.Sms,
         ]
     }
 
@@ -249,12 +264,28 @@ export function guessReceiversFromTicket(
         ccReceivers = lastMessage.getIn(['source', 'cc'], fromJS([]))
     }
 
-    const cleanReceivers = (receivers: List<any>) =>
+    const cleanReceivers = (
+        receivers: List<any>,
+        sourceType: TicketMessageSourceType
+    ) =>
         receivers
             .filter((receiver) => !!receiver) // remove falsy values
             .map((receiver: Map<any, any>) => {
+                const address = receiver.get('address')
                 // set address to lowercase
-                if (receiver.get('address')) {
+                if (address) {
+                    if (
+                        sourceType === TicketMessageSourceType.Sms ||
+                        sourceType === TicketMessageSourceType.Phone
+                    ) {
+                        const parsedNumber = parsePhoneNumber(address)
+                        if (parsedNumber) {
+                            return receiver.set(
+                                'address',
+                                parsedNumber.format('E.164')
+                            )
+                        }
+                    }
                     return receiver.update('address', _toLower)
                 }
 
@@ -269,10 +300,13 @@ export function guessReceiversFromTicket(
             })
 
     const ret: Receivers = {
-        to: cleanReceivers(toReceivers).toJS(),
+        to: cleanReceivers(toReceivers, newMessageSourceType).toJS(),
     }
 
-    const cc: Receiver[] | undefined = cleanReceivers(ccReceivers).toJS()
+    const cc: Receiver[] | undefined = cleanReceivers(
+        ccReceivers,
+        newMessageSourceType
+    ).toJS()
 
     // To avoid setting an empty `cc` field in every source
     if (cc && cc.length) {
@@ -283,10 +317,13 @@ export function guessReceiversFromTicket(
     if (ret.to.length === 0) {
         // if selected type needs a `to` field
         if (!ticketConfig.isSystemType(newMessageSourceType)) {
-            const newMessageChannel = ticketConfig.sourceTypeToChannel(
-                newMessageSourceType,
-                messages
-            )
+            const newMessageChannel =
+                newMessageSourceType === TicketMessageSourceType.Sms
+                    ? TicketChannel.Phone
+                    : ticketConfig.sourceTypeToChannel(
+                          newMessageSourceType,
+                          messages
+                      )
             const customerChannel = (
                 ticket.getIn(['customer', 'channels'], fromJS([])) as List<any>
             )
@@ -307,7 +344,7 @@ export function guessReceiversFromTicket(
                             ) || '',
                     },
                 ])
-                ret.to = cleanReceivers(receivers).toJS()
+                ret.to = cleanReceivers(receivers, newMessageSourceType).toJS()
             }
         }
     }

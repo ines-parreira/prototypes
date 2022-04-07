@@ -357,12 +357,18 @@ export const getPhoneChannelsForSmsSource = makeGetPhoneChannels(
 )
 
 export const getChannelsByType = (type: string) =>
-    createSelector<RootState, List<any>, List<any>>(
+    createSelector<RootState, List<any>, List<any>, List<any>, List<any>>(
         getEmailChannels,
-        (state) =>
-            state.filter(
-                (integration: Map<any, any>) => integration.get('type') === type
-            ) as List<any>
+        getPhoneChannelsForSmsSource,
+        getPhoneChannelsForPhoneSource,
+        (emailChannels, smsChannels, phoneChannels) =>
+            emailChannels
+                .concat(smsChannels)
+                .concat(phoneChannels)
+                .filter(
+                    (integration: Map<any, any>) =>
+                        integration.get('type') === type
+                ) as List<any>
     )
 
 export const getChannelByTypeAndAddress = (
