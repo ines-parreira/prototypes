@@ -1,10 +1,10 @@
 import React from 'react'
 import {Provider} from 'react-redux'
 import {useParams, useRouteMatch} from 'react-router-dom'
-import {render, screen, fireEvent} from '@testing-library/react'
+import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import MockDate from 'mockdate'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import configureMockStore from 'redux-mock-store'
 
@@ -13,10 +13,23 @@ import {RootState, StoreDispatch} from 'state/types'
 import {account} from 'fixtures/account'
 import {basicPlan} from 'fixtures/subscriptionPlan'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
 import history from '../../../../../history'
 import QuickResponseFlowNewItem from '../QuickResponseFlowNewItem'
 import {defaultState} from '../../QuickResponseFlowsPreferences/tests/constants'
 import * as hooks from '../../QuickResponseFlowItem/hooks'
+
+jest.mock('store/middlewares/segmentTracker', () => {
+    const segmentTracker: Record<string, unknown> = jest.requireActual(
+        'store/middlewares/segmentTracker'
+    )
+
+    return {
+        ...segmentTracker,
+        logEvent: jest.fn(),
+    }
+})
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
@@ -74,7 +87,7 @@ describe('<QuickResponseFlowNewItem />', () => {
         screen.getByText('Leverage the power of Self-service')
     })
 
-    it('should create a new flow', () => {
+    it('should create a new flow', async () => {
         const updateQuickReplyPoliciesSpy = jest.fn()
         jest.spyOn(hooks, 'useUpdateQuickReplyPolicies').mockImplementation(
             () => ({updateQuickReplyPolicies: updateQuickReplyPoliciesSpy})
@@ -140,6 +153,17 @@ describe('<QuickResponseFlowNewItem />', () => {
                 title: 'label',
             },
         ])
+        await waitFor(() =>
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.QuickResponseFlowCreated,
+                {
+                    buttonLabel: 'label',
+                    responseText: {
+                        message: Map({html: '<div><br></div>', text: ''}),
+                    },
+                }
+            )
+        )
     })
 
     it('should prevent creation if another flow has same title', () => {

@@ -3,6 +3,7 @@ import {useLatest} from 'react-use'
 import {Table, Form, FormGroup, FormText, Label, Input} from 'reactstrap'
 import {produce} from 'immer'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/Modal'
 import ReactSortable from 'pages/common/components/dragging/ReactSortable'
@@ -114,7 +115,7 @@ const QuickResponseList = () => {
         }
     }
 
-    const handleDeleteEntity = (position: number) => () => {
+    const handleDeleteEntity = (position: number) => async () => {
         const newQuickResponses = produce(
             quickResponses,
             (quickResponsesDraft) => {
@@ -122,10 +123,14 @@ const QuickResponseList = () => {
             }
         )
 
-        void updateQuickReplyPolicies(newQuickResponses)
+        await updateQuickReplyPolicies(newQuickResponses)
+        logEvent(SegmentEvent.QuickResponseFlowDeleted, {
+            id: quickResponses[position].id,
+        })
     }
 
-    const handleToggleClick = (position: number) => () => {
+    const handleToggleClick = (position: number) => async () => {
+        let type = SegmentEvent.QuickResponseFlowActivated
         const newQuickResponses = produce(
             quickResponses,
             (quickResponsesDraft) => {
@@ -134,11 +139,15 @@ const QuickResponseList = () => {
                 } else {
                     quickResponsesDraft[position].deactivated_datetime =
                         new Date().toISOString()
+                    type = SegmentEvent.QuickResponseFlowDeactivated
                 }
             }
         )
 
-        void updateQuickReplyPolicies(newQuickResponses)
+        await updateQuickReplyPolicies(newQuickResponses)
+        logEvent(type, {
+            id: quickResponses[position].id,
+        })
     }
 
     const handleDragAndDrop = (sortedIds: string[]) => {

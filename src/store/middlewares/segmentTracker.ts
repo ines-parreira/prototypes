@@ -176,6 +176,11 @@ export enum SegmentEvent {
     TwoFaModalOpened = 'access/2fa/setup-modal-opened',
     TwoFaModalCancelled = 'access/2fa/setup-modal-cancelled',
     TwoFaModalBackToQrCode = 'access/2fa/setup-modal-back-to-qrcode-button-clicked',
+    QuickResponseFlowCreated = 'quick-response-flow-created',
+    QuickResponseFlowDeleted = 'quick-response-flow-deleted',
+    QuickResponseFlowEdited = 'quick-response-flow-edited',
+    QuickResponseFlowActivated = 'quick-response-flow-activated',
+    QuickResponseFlowDeactivated = 'quick-response-flow-deactivated',
 }
 
 export enum StatViewLinkClickedStat {

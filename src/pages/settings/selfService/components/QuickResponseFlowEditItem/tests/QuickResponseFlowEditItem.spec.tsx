@@ -1,10 +1,10 @@
 import React from 'react'
 import {Provider} from 'react-redux'
 import {useParams, useRouteMatch} from 'react-router-dom'
-import {render, screen, fireEvent} from '@testing-library/react'
+import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import MockDate from 'mockdate'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import configureMockStore from 'redux-mock-store'
 
@@ -13,10 +13,23 @@ import {RootState, StoreDispatch} from 'state/types'
 import {account} from 'fixtures/account'
 import {basicPlan} from 'fixtures/subscriptionPlan'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
 import history from '../../../../../history'
 import QuickResponseFlowEditItem from '../QuickResponseFlowEditItem'
 import {defaultState} from '../../QuickResponseFlowsPreferences/tests/constants'
 import * as hooks from '../../QuickResponseFlowItem/hooks'
+
+jest.mock('store/middlewares/segmentTracker', () => {
+    const segmentTracker: Record<string, unknown> = jest.requireActual(
+        'store/middlewares/segmentTracker'
+    )
+
+    return {
+        ...segmentTracker,
+        logEvent: jest.fn(),
+    }
+})
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
@@ -106,7 +119,7 @@ describe('<QuickResponseFlowEditItem />', () => {
         screen.getByText('Leverage the power of Self-service')
     })
 
-    it('should edit existing flow', () => {
+    it('should edit existing flow', async () => {
         const updateQuickReplyPoliciesSpy = jest.fn()
         jest.spyOn(hooks, 'useUpdateQuickReplyPolicies').mockImplementation(
             () => ({updateQuickReplyPolicies: updateQuickReplyPoliciesSpy})
@@ -146,6 +159,18 @@ describe('<QuickResponseFlowEditItem />', () => {
                 response_message_content: {html: '<div><br></div>', text: ''},
             },
         ])
+        await waitFor(() =>
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.QuickResponseFlowEdited,
+                {
+                    buttonLabel: 'label',
+                    responseText: {
+                        message: Map({html: '<div><br></div>', text: ''}),
+                    },
+                    id: 'some-id',
+                }
+            )
+        )
     })
 
     it('should prevent edition if another flow has same title', () => {
@@ -174,7 +199,7 @@ describe('<QuickResponseFlowEditItem />', () => {
         expect(updateQuickReplyPoliciesSpy).not.toHaveBeenCalled()
     })
 
-    it('should allow edition if flow title was not changed', () => {
+    it('should allow edition if flow title was not changed', async () => {
         const updateQuickReplyPoliciesSpy = jest.fn()
         jest.spyOn(hooks, 'useUpdateQuickReplyPolicies').mockImplementation(
             () => ({updateQuickReplyPolicies: updateQuickReplyPoliciesSpy})
@@ -208,9 +233,21 @@ describe('<QuickResponseFlowEditItem />', () => {
                 id: 'another-id',
             },
         ])
+        await waitFor(() =>
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.QuickResponseFlowEdited,
+                {
+                    buttonLabel: 'title',
+                    responseText: {
+                        message: Map({html: '<div><br></div>', text: ''}),
+                    },
+                    id: 'some-id',
+                }
+            )
+        )
     })
 
-    it('should delete existing flow', () => {
+    it('should delete existing flow', async () => {
         const updateQuickReplyPoliciesSpy = jest.fn()
         jest.spyOn(hooks, 'useUpdateQuickReplyPolicies').mockImplementation(
             () => ({updateQuickReplyPolicies: updateQuickReplyPoliciesSpy})
@@ -241,6 +278,12 @@ describe('<QuickResponseFlowEditItem />', () => {
 
         expect(history.push).toHaveBeenLastCalledWith(
             '/app/settings/self-service/shopify/mystore1/preferences/quick-response'
+        )
+        await waitFor(() =>
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.QuickResponseFlowDeleted,
+                {id: 'some-id'}
+            )
         )
     })
 })

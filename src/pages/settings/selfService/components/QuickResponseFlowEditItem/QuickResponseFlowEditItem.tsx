@@ -2,6 +2,7 @@ import React, {useMemo} from 'react'
 import {useParams} from 'react-router-dom'
 import {fromJS} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import history from 'pages/history'
 
@@ -33,7 +34,7 @@ const QuickResponseFlowEditItem = () => {
         return null
     }
 
-    const handleSubmit = ({
+    const handleSubmit = async ({
         buttonLabel,
         responseText,
     }: {
@@ -53,16 +54,24 @@ const QuickResponseFlowEditItem = () => {
                 : quickResponse
         )
 
-        void updateQuickReplyPolicies(newQuickResponses)
+        await updateQuickReplyPolicies(newQuickResponses)
+        logEvent(SegmentEvent.QuickResponseFlowEdited, {
+            id: quickResponseId,
+            buttonLabel,
+            responseText,
+        })
         history.push(baseURL)
     }
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         const newQuickResponses = quickResponses.filter(
             (quickResponse) => quickResponseId !== quickResponse.id
         )
 
-        void updateQuickReplyPolicies(newQuickResponses)
+        await updateQuickReplyPolicies(newQuickResponses)
+        logEvent(SegmentEvent.QuickResponseFlowDeleted, {
+            id: quickResponseId,
+        })
         history.push(baseURL)
     }
 

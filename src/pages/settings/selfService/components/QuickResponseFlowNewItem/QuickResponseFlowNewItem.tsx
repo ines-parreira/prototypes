@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
 import {produce} from 'immer'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import history from 'pages/history'
 import QuickResponseFlowItem from '../QuickResponseFlowItem/QuickResponseFlowItem'
@@ -26,7 +27,7 @@ const QuickResponseFlowNewItem = () => {
 
     const {updateQuickReplyPolicies} = useUpdateQuickReplyPolicies()
 
-    const handleSubmit = ({
+    const handleSubmit = async ({
         buttonLabel,
         responseText,
     }: {
@@ -49,7 +50,11 @@ const QuickResponseFlowNewItem = () => {
                 })
             }
         )
-        void updateQuickReplyPolicies(newQuickResponses)
+        await updateQuickReplyPolicies(newQuickResponses)
+        logEvent(SegmentEvent.QuickResponseFlowCreated, {
+            buttonLabel,
+            responseText,
+        })
 
         history.push(baseURL)
     }
