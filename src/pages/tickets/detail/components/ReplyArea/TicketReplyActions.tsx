@@ -40,12 +40,15 @@ export default function TicketReplyActions({
         return null
     }
 
-    const sortedBackendActions = backendActions.sort((a, b) =>
-        a === MacroActionName.AddInternalNote || a < b
-            ? -1
-            : b === MacroActionName.AddInternalNote || a > b
-            ? 1
-            : 0
+    const sortedBackendActions = backendActions.sort(
+        (a: Map<any, any>, b: Map<any, any>) =>
+            a.get('name') === MacroActionName.AddInternalNote ||
+            a.get('name') < b.get('name')
+                ? -1
+                : b.get('name') === MacroActionName.AddInternalNote ||
+                  a.get('name') > b.get('name')
+                ? 1
+                : 0
     )
 
     return (
