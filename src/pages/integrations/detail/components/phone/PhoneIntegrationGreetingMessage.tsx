@@ -22,7 +22,7 @@ type Props = {
     integration: Maybe<PhoneIntegration>
 }
 
-const MAX_RECORDING_DURATION = 20
+const MAX_RECORDING_DURATION = 30
 
 export function PhoneIntegrationGreetingMessage({
     integration,
