@@ -1,5 +1,5 @@
 import {cloneDeep as _cloneDeep} from 'lodash'
-import {Category} from 'models/helpCenter/types'
+import {Category, CategoryTranslation} from 'models/helpCenter/types'
 import {isNonRootCategory} from 'state/entities/helpCenter/categories'
 
 type Props = {
@@ -7,12 +7,14 @@ type Props = {
     categoryId: number
     previousParentId: number | null
     currentParentId: number | null
+    translation: CategoryTranslation
 }
 export const getCategoriesToUpdate = ({
     categories,
     categoryId,
     previousParentId,
     currentParentId,
+    translation,
 }: Props): Category[] => {
     const categoriesToUpdate: Category[] = []
     const categoriesById: Record<string, Category> = _cloneDeep(categories)
@@ -22,6 +24,7 @@ export const getCategoriesToUpdate = ({
         const category = categoriesById[categoryId.toString()]
 
         if (isNonRootCategory(category)) {
+            category.translation = _cloneDeep(translation)
             category.translation.parent_category_id = currentParentId
 
             categoriesToUpdate.push(category)

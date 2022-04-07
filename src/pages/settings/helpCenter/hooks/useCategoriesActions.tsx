@@ -143,6 +143,7 @@ export const useCategoriesActions = () => {
                         categoryId,
                         previousParentId,
                         currentParentId,
+                        translation,
                     })
 
                     dispatch(

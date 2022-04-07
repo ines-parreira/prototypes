@@ -1,4 +1,5 @@
 import {keyBy as _keyBy} from 'lodash'
+import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import {getCategoriesFlatSorted} from '../../fixtures/getCategoriesTreeFlatSorted.fixtures'
 import {
     getCategoriesToUpdate,
@@ -6,6 +7,21 @@ import {
 } from '../getCategoriesToUpdate'
 
 const categories = _keyBy(getCategoriesFlatSorted, 'id')
+const translation = {
+    created_datetime: '2022-03-07T14:47:03.686Z',
+    updated_datetime: '2022-03-07T14:47:03.686Z',
+    deleted_datetime: null,
+    parent_category_id: null,
+    description: '',
+    title: 'Category 1',
+    slug: 'category-1',
+    category_id: 5,
+    locale: HELP_CENTER_DEFAULT_LOCALE,
+    seo_meta: {
+        title: null,
+        description: null,
+    },
+}
 
 describe('getCategoriesToUpdate', () => {
     it('updates the previous parent, the next parent and the category', () => {
@@ -14,6 +30,7 @@ describe('getCategoriesToUpdate', () => {
             previousParentId: null,
             currentParentId: 5,
             categoryId: 6,
+            translation,
         })
 
         expect(received.length).toEqual(3)
@@ -28,6 +45,7 @@ describe('getCategoriesToUpdate', () => {
             previousParentId: null,
             currentParentId: null,
             categoryId: 6,
+            translation,
         })
 
         expect(received.length).toEqual(0)
