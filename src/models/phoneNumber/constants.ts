@@ -20,4 +20,7 @@ export const SMS_INTEGRATION_PREVIEW_ACCOUNTS = [
     'bravenewlook',
     'kagedmuscle',
     'test-illia-3-hash',
+    'lumedeodorant',
+    'decathlon-usa',
+    'cariuma',
 ]
