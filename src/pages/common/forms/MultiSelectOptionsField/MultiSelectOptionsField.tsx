@@ -22,6 +22,7 @@ type Props = {
     isDisabled?: boolean
     onChange: (options: Option[]) => void
     onInputChange?: (value: string) => void
+    onSelectTag?: (tag: string) => void
     onBlur?: () => void
     onFocus?: () => void
     loading?: boolean
@@ -180,8 +181,13 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
     }
 
     _onDropdownSelect = (option: Option) => {
-        const {allowCustomOptions, options, caseInsensitive, selectedOptions} =
-            this.props
+        const {
+            allowCustomOptions,
+            options,
+            caseInsensitive,
+            selectedOptions,
+            onSelectTag,
+        } = this.props
 
         if (option.isDeprecated) {
             return
@@ -215,6 +221,15 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
                 },
             ])
         )
+
+        // Check if chosen option is a suggested tag and log the event
+        if (
+            this.props.singular === 'tag' &&
+            onSelectTag &&
+            this.tagExistsInOptions(processedValue, options)
+        ) {
+            onSelectTag(processedValue)
+        }
     }
 
     tagExistsInOptions = (tag: string, options: Option[]): boolean => {

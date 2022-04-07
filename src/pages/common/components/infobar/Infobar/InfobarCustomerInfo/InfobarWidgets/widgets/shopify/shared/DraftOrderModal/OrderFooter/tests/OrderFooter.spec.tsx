@@ -74,6 +74,7 @@ describe('<OrderFooterComponent/>', () => {
                             currencyCode="USD"
                             payload={fromJS(shopifyDraftOrderPayloadFixture())}
                             onPayloadChange={onPayloadChange}
+                            currentAccount={fromJS({domain: 'acme'})}
                         />
                     </IntegrationContext.Provider>
                 </Provider>
@@ -95,6 +96,7 @@ describe('<OrderFooterComponent/>', () => {
                             currencyCode="USD"
                             payload={fromJS(payload)}
                             onPayloadChange={onPayloadChange}
+                            currentAccount={fromJS({domain: 'acme'})}
                         />
                     </IntegrationContext.Provider>
                 </Provider>
@@ -132,6 +134,7 @@ describe('<OrderFooterComponent/>', () => {
                                 currencyCode="USD"
                                 payload={payload}
                                 onPayloadChange={onPayloadChange}
+                                currentAccount={fromJS({domain: 'acme'})}
                             />
                         </IntegrationContext.Provider>
                     </Provider>
@@ -177,6 +180,7 @@ describe('<OrderFooterComponent/>', () => {
                                 currencyCode="USD"
                                 payload={payload}
                                 onPayloadChange={onPayloadChange}
+                                currentAccount={fromJS({domain: 'acme'})}
                             />
                         </IntegrationContext.Provider>
                     </Provider>
@@ -224,6 +228,7 @@ describe('<OrderFooterComponent/>', () => {
                             currencyCode="USD"
                             payload={payload}
                             onPayloadChange={onPayloadChange}
+                            currentAccount={fromJS({domain: 'acme'})}
                         />
                     </IntegrationContext.Provider>
                 </Provider>

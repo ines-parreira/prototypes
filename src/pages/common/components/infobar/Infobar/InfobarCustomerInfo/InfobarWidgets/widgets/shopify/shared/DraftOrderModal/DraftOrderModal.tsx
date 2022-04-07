@@ -38,6 +38,7 @@ import {IntegrationContext} from '../../../IntegrationContext'
 import {ShopifyActionType} from '../../types'
 import Alert, {AlertType} from '../../../../../../../../Alert/Alert'
 
+import {WidgetContext} from '../../../../WidgetContext'
 import AddCustomItemPopover from './AddCustomItemPopover/AddCustomItemPopover'
 import EmailInvoicePopover from './EmailInvoicePopover/EmailInvoicePopover'
 import DraftOrderFooter from './OrderFooter/OrderFooter'
@@ -82,6 +83,7 @@ export function DraftOrderModalContainer({
     ConnectedProps<typeof connector>) {
     const {customerId} = useContext(CustomerContext)
     const {integrationId} = useContext(IntegrationContext)
+    const {widget_resource_ids} = useContext(WidgetContext)
 
     const currentIntegration = useMemo(
         () =>
@@ -304,6 +306,13 @@ export function DraftOrderModalContainer({
                         editable
                         actionName={data.actionName!}
                         currencyCode={currencyCode}
+                        widgetData={{
+                            target_id: widget_resource_ids.target_id,
+                            customer_id:
+                                widget_resource_ids.customer_id ||
+                                widget_resource_ids.target_id ||
+                                customerId,
+                        }}
                     />
                     {draftOrder.get('status') === 'invoice_sent' ? (
                         <div className={css.emailInvoiceContainer}>

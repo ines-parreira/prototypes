@@ -218,6 +218,7 @@ const minProps = {
     onPayloadChange: jest.fn(),
     onCreateDraftOrder: jest.fn().mockResolvedValue(draftOrder.set('id', 1)),
     onReset: jest.fn(),
+    currentAccount: fromJS({}),
 }
 
 describe('<DraftOrderModal/>', () => {

@@ -21,6 +21,7 @@ import {getOptionsFromTags} from 'pages/common/components/infobar/Infobar/Infoba
 import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
+import {getLoggerOnTagSelectionEvent} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/logEventData'
 
 type OwnProps = {
     selectedOptions: string
@@ -103,6 +104,7 @@ export function EditableListWidget({
             }
         }
     }
+
     const _submitChanges = () => {
         let tagsListStr = ''
         selectedValues.forEach((selectedValue, i) => {
@@ -150,6 +152,27 @@ export function EditableListWidget({
                 onBlur={_submitChanges}
                 isDisabled={notEditable}
                 options={options}
+                onSelectTag={
+                    data_source === 'Customer'
+                        ? getLoggerOnTagSelectionEvent(
+                              {
+                                  account_id: currentAccount.get('domain'),
+                                  customer_id:
+                                      widget_resource_ids?.customer_id ||
+                                      widget_resource_ids?.target_id,
+                                  order_id: null,
+                              },
+                              SegmentEvent.ShopifyEditCustomerTagsSuggestionUsed
+                          )
+                        : getLoggerOnTagSelectionEvent(
+                              {
+                                  account_id: currentAccount.get('domain'),
+                                  customer_id: widget_resource_ids?.customer_id,
+                                  order_id: widget_resource_ids?.target_id,
+                              },
+                              SegmentEvent.ShopifyEditOrderTagsSuggestionUsed
+                          )
+                }
                 allowCustomOptions
                 matchInput
                 isCompact

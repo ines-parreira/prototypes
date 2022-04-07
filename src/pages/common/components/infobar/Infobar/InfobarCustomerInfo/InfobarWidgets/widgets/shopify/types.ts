@@ -12,3 +12,10 @@ export enum ShopifyActionType {
     UpdateOrderTags = 'shopifyUpdateOrderTags',
     SendDraftOrderInvoice = 'shopifySendDraftOrderInvoice',
 }
+
+export type ShopifyTagSelectionEventData = {
+    account_id: string
+    customer_id: number | null
+    order_id?: number | null
+    tag?: string
+}

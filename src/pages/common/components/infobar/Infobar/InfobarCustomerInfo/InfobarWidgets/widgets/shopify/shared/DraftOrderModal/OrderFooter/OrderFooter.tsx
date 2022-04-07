@@ -19,6 +19,8 @@ import {onPayloadChange} from 'state/infobarActions/shopify/createOrder/actions'
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
 import {getOptionsFromTags} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/utils'
+import {getLoggerOnTagSelectionEvent} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/logEventData'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 type Props = {
     editable: boolean
@@ -30,6 +32,8 @@ type Props = {
         record: Map<any, any>,
         shouldCalculate?: boolean
     ) => void
+    currentAccount: Map<any, any>
+    widgetData?: Record<string, any>
 }
 
 type State = {
@@ -123,7 +127,14 @@ export class OrderFooterComponent extends Component<Props, State> {
     }
 
     render() {
-        const {editable, payload, currencyCode, actionName} = this.props
+        const {
+            editable,
+            payload,
+            currencyCode,
+            actionName,
+            widgetData,
+            currentAccount,
+        } = this.props
         const {note, options} = this.state
         const tags = payload.get('tags') || ''
 
@@ -161,6 +172,36 @@ export class OrderFooterComponent extends Component<Props, State> {
                                 allowCustomOptions
                                 matchInput
                                 className={css.tagsDropdown}
+                                onSelectTag={
+                                    actionName === ShopifyActionType.CreateOrder
+                                        ? getLoggerOnTagSelectionEvent(
+                                              {
+                                                  account_id:
+                                                      currentAccount.get(
+                                                          'domain'
+                                                      ),
+                                                  customer_id:
+                                                      widgetData?.customer_id ||
+                                                      widgetData?.target_id,
+                                                  order_id: null,
+                                              },
+                                              SegmentEvent.ShopifyCreateOrderTagsSuggestionUsed
+                                          )
+                                        : getLoggerOnTagSelectionEvent(
+                                              {
+                                                  account_id:
+                                                      currentAccount.get(
+                                                          'domain'
+                                                      ),
+                                                  customer_id:
+                                                      widgetData?.customer_id ||
+                                                      widgetData?.target_id,
+                                                  order_id:
+                                                      widgetData?.target_id,
+                                              },
+                                              SegmentEvent.ShopifyDuplicateOrderTagsSuggestionUsed
+                                          )
+                                }
                             />
                         </div>
                     </Col>
@@ -183,6 +224,7 @@ export class OrderFooterComponent extends Component<Props, State> {
 
 const mapStateToProps = (state: RootState) => ({
     payload: getCreateOrderState(state).get('payload'),
+    currentAccount: getCurrentAccountState(state),
 })
 
 const mapDispatchToProps = {
