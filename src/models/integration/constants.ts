@@ -80,3 +80,5 @@ export const DEFAULT_IVR_SETTINGS = {
 }
 
 export const DEFAULT_EMAIL_DKIM_KEY_SIZE = 1024
+
+export const TAGS_LIMIT = 30

@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import React, {Component, ComponentType, CSSProperties} from 'react'
 
+import {TAGS_LIMIT} from 'models/integration/constants'
 import Dropdown from './Dropdown'
 import css from './MultiSelectOptionsField.less'
 import OptionTag from './Tag'
@@ -216,6 +217,12 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
         )
     }
 
+    tagExistsInOptions = (tag: string, options: Option[]): boolean => {
+        return options.some(
+            (option) => option.label === tag && option.value === tag
+        )
+    }
+
     render() {
         const {
             className,
@@ -231,8 +238,13 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
 
         let displayOptions = filteredOptions
         if (allowCustomOptions && input) {
-            displayOptions = [this._getCustomOption()].concat(displayOptions)
+            if (!this.tagExistsInOptions(input, displayOptions)) {
+                displayOptions = [this._getCustomOption()].concat(
+                    displayOptions
+                )
+            }
         }
+        displayOptions = displayOptions.slice(0, TAGS_LIMIT)
 
         return (
             <div

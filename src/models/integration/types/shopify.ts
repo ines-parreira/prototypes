@@ -1,13 +1,11 @@
 // g/integrations/shopify/schemas.py
 
-import {createTypeGuard} from '../../../utils'
-
 import {IntegrationType} from '../constants'
 
+import {createTypeGuard} from '../../../utils'
 import {IntegrationBase} from './base'
 import {OAuth2} from './misc'
-
-import type {Integration} from './'
+import {Integration} from './index'
 
 export type ShopifyIntegration = IntegrationBase & {
     type: IntegrationType.Shopify
@@ -42,6 +40,28 @@ type ShopifyImportState = {
 export const isShopifyIntegration = createTypeGuard<
     Maybe<Integration>,
     ShopifyIntegration
->((input: Maybe<Integration>) =>
-    input?.type === IntegrationType.Shopify ? input : undefined
-)
+>((input) => (input?.type === IntegrationType.Shopify ? input : undefined))
+
+export enum ShopifyTags {
+    customers = 'customers',
+    orders = 'orders',
+}
+
+export type ShopifyOrderTags = {
+    data: {
+        shop: {
+            orderTags: {
+                edges: Record<string, string>[]
+            }
+        }
+    }
+}
+export type ShopifyCustomerTags = {
+    data: {
+        shop: {
+            customerTags: {
+                edges: Record<string, string>[]
+            }
+        }
+    }
+}

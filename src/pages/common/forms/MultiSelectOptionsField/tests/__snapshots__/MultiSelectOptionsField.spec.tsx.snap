@@ -1,5 +1,343 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`MultiSelectField select option should display max TAGS_LIMIT options 1`] = `
+<div
+  class="MultiSelectField"
+>
+  <div
+    class="container"
+  >
+    <div
+      class="inputContainer multiSelectOptionField-dropdown"
+    >
+      <div
+        class="dropdown"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="true"
+          class=""
+          data-toggle="dropdown"
+        >
+          <input
+            class="input"
+            placeholder="Add tags..."
+            value=""
+          />
+        </div>
+        <div
+          aria-hidden="true"
+          class="options dropdown-menu"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="option option--focused dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag0
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag1
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag2
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag3
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag4
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag5
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag6
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag7
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag8
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag9
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag10
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag11
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag12
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag13
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag14
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag15
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag16
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag17
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag18
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag19
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag20
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag21
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag22
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag23
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag24
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag25
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag26
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag27
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag28
+            </span>
+          </button>
+          <button
+            class="option dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <span>
+              tag29
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`MultiSelectField should init state with custom props 1`] = `
 Object {
   "filteredOptions": Array [

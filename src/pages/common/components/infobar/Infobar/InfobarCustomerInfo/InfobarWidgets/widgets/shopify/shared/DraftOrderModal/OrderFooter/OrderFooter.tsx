@@ -4,20 +4,21 @@ import {Map} from 'immutable'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
 
-import {RootState} from '../../../../../../../../../../../../state/types'
-import {getCreateOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
-import {onPayloadChange} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
-import MultiSelectOptionsField from '../../../../../../../../../../forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from '../../../../../../../../../../forms/MultiSelectOptionsField/types'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {ShopifyActionType} from '../../../types'
-import {IntegrationContext} from '../../../../IntegrationContext'
-
-import OrderTotals from './OrderTotals/OrderTotals'
-import css from './OrderFooter.less'
+import {uniqBy} from 'lodash'
+import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/OrderFooter/OrderFooter.less'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import OrderTotals from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/OrderFooter/OrderTotals/OrderTotals'
+import {reportError} from 'utils/errors'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import {RootState} from 'state/types'
+import {getCreateOrderState} from 'state/infobarActions/shopify/createOrder/selectors'
+import {onPayloadChange} from 'state/infobarActions/shopify/createOrder/actions'
+import {ShopifyTags} from 'models/integration/types'
+import {fetchShopTags} from 'models/integration/resources/shopify'
+import {getOptionsFromTags} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/utils'
 
 type Props = {
     editable: boolean
@@ -33,6 +34,7 @@ type Props = {
 
 type State = {
     note: string
+    options: Option[]
 }
 
 export class OrderFooterComponent extends Component<Props, State> {
@@ -47,8 +49,9 @@ export class OrderFooterComponent extends Component<Props, State> {
             }))
     }
 
-    state = {
+    state: State = {
         note: this.props.payload.get('note') || '',
+        options: [],
     }
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
@@ -101,10 +104,34 @@ export class OrderFooterComponent extends Component<Props, State> {
         )
     }
 
+    handleFocus = async () => {
+        const {integrationId} = this.context
+        if (integrationId) {
+            let tags: string[] = []
+
+            try {
+                tags = await fetchShopTags(integrationId, ShopifyTags.orders)
+            } catch (e) {
+                reportError(e)
+            }
+
+            const tagsOptions = getOptionsFromTags(tags)
+            this.setState({
+                options: tagsOptions,
+            })
+        }
+    }
+
     render() {
         const {editable, payload, currencyCode, actionName} = this.props
-        const {note} = this.state
+        const {note, options} = this.state
         const tags = payload.get('tags') || ''
+
+        let tagsOptions = options.concat(
+            OrderFooterComponent.tagsToOptions(this._defaultTags)
+        )
+
+        tagsOptions = uniqBy(tagsOptions, (tag) => tag.label)
 
         return (
             <Container fluid className={css.container}>
@@ -123,15 +150,14 @@ export class OrderFooterComponent extends Component<Props, State> {
                         <div>
                             <h4>Tags</h4>
                             <MultiSelectOptionsField
-                                options={OrderFooterComponent.tagsToOptions(
-                                    this._defaultTags
-                                )}
+                                options={tagsOptions}
                                 selectedOptions={OrderFooterComponent.tagsToOptions(
                                     tags
                                 )}
                                 plural="tags"
                                 singular="tag"
                                 onChange={this._onTagsChange}
+                                onFocus={this.handleFocus}
                                 allowCustomOptions
                                 matchInput
                                 className={css.tagsDropdown}

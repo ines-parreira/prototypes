@@ -5,6 +5,8 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
+import {ShopifyTags} from 'models/integration/types'
+import {fetchShopTags} from 'models/integration/resources/shopify'
 import {
     SegmentEvent,
     logEvent,
@@ -13,6 +15,7 @@ import {shopifyDraftOrderPayloadFixture} from '../../../../../../../../../../../
 import {ShopifyActionType} from '../../../../types'
 import {IntegrationContext} from '../../../../../IntegrationContext'
 import {OrderFooterComponent} from '../OrderFooter'
+import MultiSelectOptionsField from '../../../../../../../../../../../forms/MultiSelectOptionsField/MultiSelectOptionsField'
 
 jest.useFakeTimers()
 
@@ -30,6 +33,12 @@ jest.mock(
         }
     }
 )
+
+jest.mock('models/integration/resources/shopify', () => {
+    return {
+        fetchShopTags: jest.fn().mockResolvedValue(['tag0', 'tag1', 'tag2']),
+    }
+})
 
 describe('<OrderFooterComponent/>', () => {
     const mockStore = configureMockStore([thunk])
@@ -50,6 +59,7 @@ describe('<OrderFooterComponent/>', () => {
     >
 
     beforeEach(() => {
+        jest.clearAllMocks()
         onPayloadChange = jest.fn()
     })
 
@@ -187,5 +197,49 @@ describe('<OrderFooterComponent/>', () => {
                 expect(logEvent).toHaveBeenCalled()
             }
         )
+    })
+
+    describe('handleFocus()', () => {
+        it.each([
+            [
+                ShopifyActionType.CreateOrder,
+                SegmentEvent.ShopifyCreateOrderTagsChanged,
+            ],
+            [
+                ShopifyActionType.DuplicateOrder,
+                SegmentEvent.ShopifyDuplicateOrderTagsChanged,
+            ],
+        ])('should call fetchShopTags()', (actionName) => {
+            const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
+
+            render(
+                <Provider store={mockStore(storeData)}>
+                    <IntegrationContext.Provider value={integrationContextData}>
+                        <OrderFooterComponent
+                            editable
+                            actionName={actionName}
+                            currencyCode="USD"
+                            payload={payload}
+                            onPayloadChange={onPayloadChange}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
+            )
+
+            MultiSelectOptionsField.prototype.setState = jest.fn()
+
+            const input = screen.getAllByPlaceholderText('Add tags...')[0]
+
+            fireEvent.click(input)
+
+            expect(fetchShopTags).toBeCalledTimes(1)
+            expect(fetchShopTags).toBeCalledWith(
+                integrationContextData.integrationId,
+                ShopifyTags.orders
+            )
+        })
     })
 })

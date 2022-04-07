@@ -1,24 +1,26 @@
-import React, {useContext, useState, useMemo} from 'react'
+import React, {useContext, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import _uniqueId from 'lodash/uniqueId'
 
-import MultiSelectOptionsField from '../../../../../../forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {getActiveCustomerId} from '../../../../../../../../state/customers/selectors'
-import {getCurrentAccountState} from '../../../../../../../../state/currentAccount/selectors'
-import {isEditing} from '../../../../../../../../state/widgets/selectors'
-import {executeAction} from '../../../../../../../../state/infobar/actions'
-import {RootState} from '../../../../../../../../state/types'
+import {reportError} from 'utils/errors'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import {getActiveCustomerId} from 'state/customers/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {isEditing} from 'state/widgets/selectors'
+import {executeAction} from 'state/infobar/actions'
+import {RootState} from 'state/types'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../store/middlewares/segmentTracker'
-import Tooltip from '../../../../../Tooltip'
-import {WidgetContext} from '../../InfobarWidgets/WidgetContext'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import Tooltip from 'pages/common/components/Tooltip'
+import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
 
-import {ShopifyActionType} from './shopify/types'
-import {ActionButtonContext} from './ActionButton'
-import {IntegrationContext} from './IntegrationContext'
+import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import {ActionButtonContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {getOptionsFromTags} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/utils'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import {ShopifyTags} from 'models/integration/types'
+import {fetchShopTags} from 'models/integration/resources/shopify'
 
 type OwnProps = {
     selectedOptions: string
@@ -38,6 +40,7 @@ export function EditableListWidget({
 }: OwnProps & ConnectedProps<typeof connector>) {
     const [selectedValues, setSelectedValues] = useState<SelectedValues[]>([])
     const [syncedValues, setSyncedValues] = useState('')
+    const [options, setOptions] = useState<Option[]>([])
 
     const {actionError} = useContext(ActionButtonContext)
     const {integrationId} = useContext(IntegrationContext)
@@ -66,18 +69,38 @@ export function EditableListWidget({
     const _onTagsChange = (tags: SelectedValues[]) => {
         setSelectedValues(tags)
     }
+
     const _onFocus = () => {
+        let tagsType = null
+
         if (data_source === 'Customer') {
+            tagsType = ShopifyTags.customers
             logEvent(SegmentEvent.ShopifyEditCustomerTagSelect, {
                 account_id: currentAccount.get('domain'),
                 customer_id: widget_resource_ids?.target_id,
             })
         } else if (data_source === 'Order') {
+            tagsType = ShopifyTags.orders
             logEvent(SegmentEvent.ShopifyEditOrderTagEditStarted, {
                 account_id: currentAccount.get('domain'),
                 order_id: widget_resource_ids?.target_id,
                 customer_id: widget_resource_ids?.customer_id,
             })
+        }
+
+        if (integrationId && tagsType) {
+            try {
+                fetchShopTags(integrationId, tagsType)
+                    .then((tags) => {
+                        const tagsOptions: Option[] = getOptionsFromTags(tags)
+                        setOptions(tagsOptions)
+                    })
+                    .catch((err) => {
+                        reportError(err)
+                    })
+            } catch (err) {
+                reportError(err)
+            }
         }
     }
     const _submitChanges = () => {
@@ -126,6 +149,7 @@ export function EditableListWidget({
                 onFocus={_onFocus}
                 onBlur={_submitChanges}
                 isDisabled={notEditable}
+                options={options}
                 allowCustomOptions
                 matchInput
                 isCompact

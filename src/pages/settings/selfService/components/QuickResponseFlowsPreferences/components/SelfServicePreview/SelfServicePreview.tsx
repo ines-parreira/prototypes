@@ -3,6 +3,7 @@ import {useRouteMatch} from 'react-router'
 import {ListGroup} from 'reactstrap'
 
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
+
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import {getIntegrations} from 'state/integrations/selectors'
 import GorgiasChatIntegrationPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'

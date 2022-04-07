@@ -2,11 +2,13 @@ import {mount, render} from 'enzyme'
 import _noop from 'lodash/noop'
 import React, {ComponentProps, ReactElement} from 'react'
 
+import {TAGS_LIMIT} from 'models/integration/constants'
 import TagDropdownMenu from '../../../components/TagDropdownMenu/TagDropdownMenu'
 
 import Dropdown from '../Dropdown'
 import MultiSelectField from '../MultiSelectOptionsField'
 import OptionTag from '../Tag'
+import {getOptionsFromTags} from '../../../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/utils'
 
 type OptionProps = ComponentProps<typeof MultiSelectField>['options']
 
@@ -386,6 +388,20 @@ describe('MultiSelectField', () => {
                 />
             )
             expect(wrapper.find(TagDropdownMenu)).toHaveLength(1)
+        })
+
+        it('should display max TAGS_LIMIT options', () => {
+            const tags: string[] = []
+            for (let i = 0; i < TAGS_LIMIT * 3; i++) {
+                tags.push(`tag${i}`)
+            }
+            props.options = getOptionsFromTags(tags)
+
+            const component = render(
+                <MultiSelectField {...minProps} {...props} />
+            )
+
+            expect(component).toMatchSnapshot()
         })
     })
 })
