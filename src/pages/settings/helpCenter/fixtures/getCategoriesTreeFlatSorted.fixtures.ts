@@ -7,7 +7,6 @@ export const getCategoriesFlatSorted: Category[] = [
         deleted_datetime: null,
         id: 0,
         help_center_id: 3,
-        parent_category_id: null,
         available_locales: [],
         translation: null,
         children: [5, 6, 7],
@@ -18,7 +17,6 @@ export const getCategoriesFlatSorted: Category[] = [
         deleted_datetime: null,
         id: 5,
         help_center_id: 3,
-        parent_category_id: null,
         available_locales: ['en-US'],
         translation: {
             created_datetime: '2022-03-07T14:47:03.686Z',
@@ -43,7 +41,6 @@ export const getCategoriesFlatSorted: Category[] = [
         deleted_datetime: null,
         id: 8,
         help_center_id: 3,
-        parent_category_id: 5,
         available_locales: ['en-US'],
         translation: {
             created_datetime: '2022-03-07T14:47:39.237Z',
@@ -68,7 +65,6 @@ export const getCategoriesFlatSorted: Category[] = [
         deleted_datetime: null,
         id: 12,
         help_center_id: 3,
-        parent_category_id: 8,
         available_locales: ['en-US'],
         translation: {
             created_datetime: '2022-03-10T08:21:16.195Z',
@@ -93,7 +89,6 @@ export const getCategoriesFlatSorted: Category[] = [
         deleted_datetime: null,
         id: 13,
         help_center_id: 3,
-        parent_category_id: 12,
         available_locales: ['en-US'],
         translation: {
             created_datetime: '2022-03-10T08:22:08.318Z',
@@ -118,7 +113,6 @@ export const getCategoriesFlatSorted: Category[] = [
         deleted_datetime: null,
         id: 6,
         help_center_id: 3,
-        parent_category_id: null,
         available_locales: ['en-US'],
         translation: {
             created_datetime: '2022-03-07T14:47:16.170Z',
@@ -143,7 +137,6 @@ export const getCategoriesFlatSorted: Category[] = [
         deleted_datetime: null,
         id: 9,
         help_center_id: 3,
-        parent_category_id: 6,
         available_locales: ['en-US'],
         translation: {
             created_datetime: '2022-03-07T15:11:48.641Z',
@@ -168,7 +161,6 @@ export const getCategoriesFlatSorted: Category[] = [
         deleted_datetime: null,
         id: 7,
         help_center_id: 3,
-        parent_category_id: null,
         available_locales: ['en-US'],
         translation: {
             created_datetime: '2022-03-07T14:47:24.935Z',
@@ -193,7 +185,6 @@ export const getCategoriesFlatSorted: Category[] = [
         deleted_datetime: null,
         id: 10,
         help_center_id: 3,
-        parent_category_id: 7,
         available_locales: ['en-US'],
         translation: {
             created_datetime: '2022-03-07T15:12:09.705Z',

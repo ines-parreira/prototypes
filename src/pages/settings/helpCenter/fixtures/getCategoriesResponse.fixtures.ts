@@ -9,7 +9,6 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             id: 1,
             help_center_id: 1,
             available_locales: ['en-US'],
-            parent_category_id: 0,
             translation: {
                 parent_category_id: 0,
                 created_datetime: '2021-06-01T09:46:30.044Z',
@@ -34,7 +33,6 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             id: 2,
             help_center_id: 1,
             available_locales: ['en-US'],
-            parent_category_id: 0,
             translation: {
                 parent_category_id: 0,
                 created_datetime: '2021-06-01T09:46:30.044Z',
@@ -59,7 +57,6 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             id: 3,
             help_center_id: 1,
             available_locales: ['en-US'],
-            parent_category_id: 0,
             translation: {
                 parent_category_id: 0,
                 created_datetime: '2021-06-01T09:46:30.044Z',
@@ -84,7 +81,6 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             id: 4,
             help_center_id: 1,
             available_locales: ['en-US'],
-            parent_category_id: 0,
             translation: {
                 parent_category_id: 0,
                 created_datetime: '2021-06-01T09:46:30.044Z',
@@ -120,7 +116,6 @@ export const getSingleCategoryEnglish: Category = {
     created_datetime: '2021-06-01T09:46:30.044Z',
     updated_datetime: '2021-06-01T09:46:30.044Z',
     deleted_datetime: null,
-    parent_category_id: 0,
     translation: {
         parent_category_id: 0,
         category_id: 1,

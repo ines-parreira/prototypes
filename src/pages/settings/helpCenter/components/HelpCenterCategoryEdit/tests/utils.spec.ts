@@ -1,13 +1,12 @@
 import {Category} from '../../../../../../models/helpCenter/types'
 import {eligibleParentCategories} from '../utils'
 
-const rootCategory = {
+const rootCategory: Category = {
     created_datetime: '2022-03-14T13:11:08.813Z',
     updated_datetime: '2022-03-14T13:11:08.813Z',
     deleted_datetime: null,
     id: 0,
     help_center_id: 1,
-    parent_category_id: null,
     available_locales: [],
     translation: null,
     children: [47],
@@ -19,7 +18,6 @@ const topLevelCategory: Category = {
     deleted_datetime: null,
     id: 47,
     help_center_id: 1,
-    parent_category_id: null,
     available_locales: ['en-US', 'fr-FR'],
     translation: {
         created_datetime: '2022-03-17T12:52:14.243Z',
@@ -45,7 +43,6 @@ const level1CategoryWithChildren: Category = {
     deleted_datetime: null,
     id: 48,
     help_center_id: 1,
-    parent_category_id: 47,
     available_locales: ['fr-FR', 'en-US'],
     translation: {
         created_datetime: '2022-03-17T12:53:10.489Z',
@@ -71,7 +68,6 @@ const level2Category: Category = {
     deleted_datetime: null,
     id: 49,
     help_center_id: 1,
-    parent_category_id: 48,
     available_locales: ['fr-FR', 'en-US'],
     translation: {
         created_datetime: '2022-03-17T12:53:43.235Z',
@@ -97,7 +93,6 @@ const level1Category: Category = {
     deleted_datetime: null,
     id: 53,
     help_center_id: 1,
-    parent_category_id: 47,
     available_locales: ['en-US'],
     translation: {
         created_datetime: '2022-03-23T10:34:42.017Z',

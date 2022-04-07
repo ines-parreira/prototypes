@@ -115,7 +115,6 @@ jest.mock('state/entities/helpCenter/categories', () => ({
             deleted_datetime: null,
             id: 0,
             help_center_id: 3,
-            parent_category_id: null,
             available_locales: [],
             translation: null,
             children: [1],
@@ -127,7 +126,6 @@ jest.mock('state/entities/helpCenter/categories', () => ({
             deleted_datetime: null,
             id: 1,
             help_center_id: 3,
-            parent_category_id: null,
             available_locales: ['en-US', 'fr-FR'],
             translation: {
                 created_datetime: '2022-03-07T14:47:03.686Z',

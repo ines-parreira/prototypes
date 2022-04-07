@@ -30,7 +30,6 @@ jest.mock('../useHelpCenterApi', () => {
                             deleted_datetime: null,
                             id: 0,
                             help_center_id: 3,
-                            parent_category_id: null,
                             available_locales: [],
                             children: [],
                             articles: [],

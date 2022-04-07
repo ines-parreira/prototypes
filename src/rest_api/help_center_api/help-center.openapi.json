@@ -4058,7 +4058,6 @@
                         "nullable": true
                     },
                     "help_center_id": {"type": "number"},
-                    "parent_category_id": {"type": "number", "nullable": true},
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -4087,7 +4086,6 @@
                     "created_datetime",
                     "updated_datetime",
                     "help_center_id",
-                    "parent_category_id",
                     "available_locales",
                     "translation",
                     "id"
@@ -4239,7 +4237,6 @@
                         "nullable": true
                     },
                     "help_center_id": {"type": "number"},
-                    "parent_category_id": {"type": "number", "nullable": true},
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -4280,7 +4277,6 @@
                     "created_datetime",
                     "updated_datetime",
                     "help_center_id",
-                    "parent_category_id",
                     "available_locales",
                     "translation",
                     "children",

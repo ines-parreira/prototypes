@@ -15,7 +15,6 @@ Array [
     "deleted_datetime": null,
     "help_center_id": 1,
     "id": 47,
-    "parent_category_id": null,
     "translation": Object {
       "category_id": 47,
       "created_datetime": "2022-03-17T12:52:14.243Z",
@@ -45,7 +44,6 @@ Array [
     "deleted_datetime": null,
     "help_center_id": 1,
     "id": 48,
-    "parent_category_id": 47,
     "translation": Object {
       "category_id": 48,
       "created_datetime": "2022-03-17T12:53:10.489Z",
@@ -75,7 +73,6 @@ Array [
     "deleted_datetime": null,
     "help_center_id": 1,
     "id": 49,
-    "parent_category_id": 48,
     "translation": Object {
       "category_id": 49,
       "created_datetime": "2022-03-17T12:53:43.235Z",
@@ -111,7 +108,6 @@ Array [
     "deleted_datetime": null,
     "help_center_id": 1,
     "id": 47,
-    "parent_category_id": null,
     "translation": Object {
       "category_id": 47,
       "created_datetime": "2022-03-17T12:52:14.243Z",
@@ -141,7 +137,6 @@ Array [
     "deleted_datetime": null,
     "help_center_id": 1,
     "id": 48,
-    "parent_category_id": 47,
     "translation": Object {
       "category_id": 48,
       "created_datetime": "2022-03-17T12:53:10.489Z",
@@ -171,7 +166,6 @@ Array [
     "deleted_datetime": null,
     "help_center_id": 1,
     "id": 49,
-    "parent_category_id": 48,
     "translation": Object {
       "category_id": 49,
       "created_datetime": "2022-03-17T12:53:43.235Z",
@@ -209,7 +203,6 @@ Array [
     "deleted_datetime": null,
     "help_center_id": 1,
     "id": 47,
-    "parent_category_id": null,
     "translation": Object {
       "category_id": 47,
       "created_datetime": "2022-03-17T12:52:14.243Z",
@@ -236,7 +229,6 @@ Array [
     "deleted_datetime": null,
     "help_center_id": 1,
     "id": 53,
-    "parent_category_id": 47,
     "translation": Object {
       "category_id": 53,
       "created_datetime": "2022-03-23T10:34:42.017Z",

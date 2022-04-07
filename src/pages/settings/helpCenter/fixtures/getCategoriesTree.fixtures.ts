@@ -6,7 +6,6 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
     deleted_datetime: null,
     id: 0,
     help_center_id: 3,
-    parent_category_id: null,
     available_locales: [],
     children: [
         {
@@ -15,7 +14,6 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
             deleted_datetime: null,
             id: 5,
             help_center_id: 3,
-            parent_category_id: null,
             available_locales: ['en-US'],
             children: [
                 {
@@ -24,7 +22,6 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                     deleted_datetime: null,
                     id: 8,
                     help_center_id: 3,
-                    parent_category_id: 5,
                     available_locales: ['en-US'],
                     children: [
                         {
@@ -33,7 +30,6 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                             deleted_datetime: null,
                             id: 12,
                             help_center_id: 3,
-                            parent_category_id: 8,
                             available_locales: ['en-US'],
                             children: [
                                 {
@@ -44,7 +40,6 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                                     deleted_datetime: null,
                                     id: 13,
                                     help_center_id: 3,
-                                    parent_category_id: 12,
                                     available_locales: ['en-US'],
                                     children: [],
                                     translation: {
@@ -122,7 +117,6 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
             deleted_datetime: null,
             id: 6,
             help_center_id: 3,
-            parent_category_id: null,
             available_locales: ['en-US'],
             children: [
                 {
@@ -131,7 +125,6 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                     deleted_datetime: null,
                     id: 9,
                     help_center_id: 3,
-                    parent_category_id: 6,
                     available_locales: ['en-US'],
                     children: [],
                     translation: {
@@ -173,7 +166,6 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
             deleted_datetime: null,
             id: 7,
             help_center_id: 3,
-            parent_category_id: null,
             available_locales: ['en-US'],
             children: [
                 {
@@ -182,7 +174,6 @@ export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
                     deleted_datetime: null,
                     id: 10,
                     help_center_id: 3,
-                    parent_category_id: 7,
                     available_locales: ['en-US'],
                     children: [],
                     translation: {
@@ -228,7 +219,6 @@ export const getSingleCategory: Category = {
     deleted_datetime: null,
     id: 5,
     help_center_id: 3,
-    parent_category_id: null,
     available_locales: ['en-US'],
     translation: {
         created_datetime: '2022-03-07T14:47:03.686Z',
@@ -254,7 +244,6 @@ export const getInitialRootCategory: Category = {
     deleted_datetime: null,
     id: 0,
     help_center_id: 3,
-    parent_category_id: null,
     available_locales: [],
     children: [],
     translation: null,
@@ -266,7 +255,6 @@ export const getRootCategory: Category = {
     deleted_datetime: null,
     id: 0,
     help_center_id: 3,
-    parent_category_id: null,
     available_locales: [],
     children: [5, 6, 7],
     translation: null,

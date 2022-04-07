@@ -362,7 +362,6 @@ declare namespace Components {
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
       help_center_id: number;
-      parent_category_id: number | null;
       available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
       translation: {
         created_datetime: string; // date-time
@@ -387,7 +386,6 @@ declare namespace Components {
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
       help_center_id: number;
-      parent_category_id: number | null;
       available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
       translation: LocalCategoryTranslation;
       id: number;
