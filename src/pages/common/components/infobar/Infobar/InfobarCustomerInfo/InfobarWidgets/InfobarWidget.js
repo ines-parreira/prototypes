@@ -3,16 +3,6 @@ import PropTypes from 'prop-types'
 import {fromJS, Map} from 'immutable'
 
 import {
-    HTTP_WIDGET_TYPE,
-    MAGENTO2_WIDGET_TYPE,
-    RECHARGE_WIDGET_TYPE,
-    SHOPIFY_WIDGET_TYPE,
-    SMILE_WIDGET_TYPE,
-    SMOOCH_INSIDE_WIDGET_TYPE,
-    YOTPO_WIDGET_TYPE,
-    KLAVIYO_WIDGET_TYPE,
-} from '../../../../../../../state/widgets/constants.ts'
-import {
     guessFieldValueFromRawData,
     prepareWidgetToDisplay,
 } from '../../../utils.tsx'
@@ -32,6 +22,17 @@ import yotpo from './widgets/yotpo/index.ts'
 import klaviyo from './widgets/klaviyo'
 import {WidgetContext} from './WidgetContext.ts'
 import {infobarWidgetShouldRender} from './predicates.ts'
+
+import {
+    HTTP_WIDGET_TYPE,
+    MAGENTO2_WIDGET_TYPE,
+    RECHARGE_WIDGET_TYPE,
+    SHOPIFY_WIDGET_TYPE,
+    SMILE_WIDGET_TYPE,
+    SMOOCH_INSIDE_WIDGET_TYPE,
+    YOTPO_WIDGET_TYPE,
+    KLAVIYO_WIDGET_TYPE,
+} from 'state/widgets/constants.ts'
 
 export default class InfobarWidget extends React.Component {
     static propTypes = {
@@ -79,19 +80,16 @@ export default class InfobarWidget extends React.Component {
             [KLAVIYO_WIDGET_TYPE]: klaviyo,
         }
 
-        let extension = {}
         const passedData = {
             template: updatedTemplate,
             isEditing,
             source: data,
         }
 
+        let extension = {}
         const extensionMethod = extensionMethodsByType[widget.get('type')]
         if (extensionMethod) {
-            extension = {
-                ...extension,
-                ...extensionMethod(passedData),
-            }
+            extension = extensionMethod(passedData)
         }
 
         // Setting context
