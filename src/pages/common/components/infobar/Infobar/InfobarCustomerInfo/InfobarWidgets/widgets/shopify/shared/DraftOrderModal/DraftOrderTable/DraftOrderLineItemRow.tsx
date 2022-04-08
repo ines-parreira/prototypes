@@ -1,4 +1,4 @@
-import React, {ChangeEvent, memo, useCallback, useState} from 'react'
+import React, {ChangeEvent, memo, useCallback, useEffect, useState} from 'react'
 import {Input} from 'reactstrap'
 import {Map, List} from 'immutable'
 import {getSizedImageUrl} from '@shopify/theme-images'
@@ -97,6 +97,8 @@ function DraftOrderLineItemRow({
         lineItem.get('restock_item', false)
     )
 
+    const lineItemQuantity = lineItem.get('quantity')
+    useEffect(() => setQuantity(lineItemQuantity), [lineItemQuantity])
     const handleRestockItemsChange = useCallback(
         (newValue: boolean) => {
             setRestock(newValue)
