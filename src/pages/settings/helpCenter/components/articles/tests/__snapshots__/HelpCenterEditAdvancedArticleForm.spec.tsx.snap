@@ -146,30 +146,34 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </button>
     </div>
     <div
-      class="InputField form-group"
-      color=""
+      class="excerpt"
     >
-      <label
-        class="control-label"
-        for="id-excerpt"
-      >
-        Excerpt
-      </label>
       <div
-        class=""
+        class="InputField form-group"
+        color=""
       >
-        <textarea
-          class="field form-control"
-          id="id-excerpt"
-          maxlength="250"
-          rows="2"
-        />
+        <label
+          class="control-label"
+          for="id-excerpt"
+        >
+          Excerpt
+        </label>
+        <div
+          class=""
+        >
+          <textarea
+            class="field form-control"
+            id="id-excerpt"
+            maxlength="250"
+            rows="2"
+          />
+        </div>
+        <small
+          class="form-text text-muted"
+        >
+          A short summary displayed below the title of your article.
+        </small>
       </div>
-      <small
-        class="form-text text-muted"
-      >
-        A short summary displayed below the title of your article.
-      </small>
     </div>
     <div
       class="container"

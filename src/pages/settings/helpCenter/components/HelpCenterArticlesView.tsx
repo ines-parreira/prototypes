@@ -64,6 +64,7 @@ export const HelpCenterArticlesView: React.FC = () => {
     const articlesActions = useArticlesActions()
     const helpCenter = useCurrentHelpCenter()
     const {getHelpCenterCustomDomain} = useHelpCenterActions()
+    const [isReady, setIsReady] = useState(false)
 
     /**
      * EditionManagerContext
@@ -120,6 +121,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         articleModal.on(MODALS.ARTICLE, Event.afterOpen, onArticleCreate)
         dispatch(resetCategories())
         dispatch(resetArticles())
+        setIsReady(true)
     }, [])
 
     useEffect(() => {
@@ -733,22 +735,24 @@ export const HelpCenterArticlesView: React.FC = () => {
             <MaxArticleBanner
                 nbArticles={limitations.createArticle.currentNumber}
             />
-            <CategoriesViews
-                helpCenter={helpCenter}
-                onCreateArticle={onArticleCreate}
-                onCreateCategory={onCategoryCreate}
-                renderArticleList={(categoryId, articles, level) => (
-                    <ArticlesTable
-                        isNested
-                        categoryId={categoryId}
-                        level={level}
-                        articles={articles}
-                        onClick={onArticleSelect}
-                        onReorderFinish={onArticlesReorder}
-                        onClickSettings={onArticleRowSettingsClick}
-                    />
-                )}
-            />
+            {isReady && (
+                <CategoriesViews
+                    helpCenter={helpCenter}
+                    onCreateArticle={onArticleCreate}
+                    onCreateCategory={onCategoryCreate}
+                    renderArticleList={(categoryId, articles, level) => (
+                        <ArticlesTable
+                            isNested
+                            categoryId={categoryId}
+                            level={level}
+                            articles={articles}
+                            onClick={onArticleSelect}
+                            onReorderFinish={onArticlesReorder}
+                            onClickSettings={onArticleRowSettingsClick}
+                        />
+                    )}
+                />
+            )}
             <CategoryDrawer helpCenter={helpCenter} />
             <HelpCenterEditModal
                 isLoading={isFetchingArticleTranslations}

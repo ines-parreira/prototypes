@@ -138,16 +138,18 @@ export const HelpCenterEditAdvancedArticleForm = ({
                     </button>
                 )}
             </div>
-            <DEPRECATED_InputField
-                type="textarea"
-                rows="2"
-                name="excerpt"
-                label="Excerpt"
-                value={translation.excerpt}
-                onChange={onEditArticle('excerpt')}
-                help="A short summary displayed below the title of your article."
-                maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
-            />
+            <div className={css.excerpt}>
+                <DEPRECATED_InputField
+                    type="textarea"
+                    rows="2"
+                    name="excerpt"
+                    label="Excerpt"
+                    value={translation.excerpt}
+                    onChange={onEditArticle('excerpt')}
+                    help="A short summary displayed below the title of your article."
+                    maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
+                />
+            </div>
             <AutoPopulateInput
                 type="text"
                 name="seoTitle"
