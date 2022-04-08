@@ -42,12 +42,6 @@ const storyConfig: Meta = {
                 type: 'text',
             },
         },
-        onChange: {
-            action: 'changed!',
-            table: {
-                disable: true,
-            },
-        },
         placeholder: {
             control: {
                 type: 'text',

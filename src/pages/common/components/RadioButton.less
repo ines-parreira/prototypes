@@ -13,28 +13,26 @@
     .input[type='radio'] {
         -webkit-appearance: none;
         appearance: none;
-        margin: 0;
-
-        width: 16px;
-        height: 16px;
         border: 2px solid @classic-neutral-grey-3;
         border-radius: 50%;
-
-        display: grid;
-        place-content: center;
-        margin-right: 8px;
         cursor: pointer;
+        display: grid;
+        flex-shrink: 0;
+        height: 16px;
+        margin: 0;
+        margin-right: 8px;
+        place-content: center;
         transition: background-color 0.2s linear, border-color 0.2s linear;
+        width: 16px;
 
         &::before {
-            content: '';
-            width: 8px;
-            height: 8px;
             border-radius: 50%;
+            box-shadow: inset 1em 1em @classic-main-primary;
+            content: '';
+            height: 8px;
             transform: scale(0);
             transition: 200ms transform ease-in-out;
-            box-shadow: inset 1em 1em @classic-main-primary;
-            transition: transform 0.2s linear;
+            width: 8px;
         }
 
         &:checked {
