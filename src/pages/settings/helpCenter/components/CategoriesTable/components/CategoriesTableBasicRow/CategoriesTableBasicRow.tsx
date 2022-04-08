@@ -189,6 +189,7 @@ export const CategoriesTableBasicRow = ({
             className={css['cell']}
             innerClassName={bodyInnerClass}
             onClick={() => hasArticles && setOpen(!isOpen)}
+            data-testid="openCaret"
         >
             {caret}
             <span
