@@ -1,17 +1,18 @@
 import React, {ComponentType} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {hasRole} from '../../../utils'
-import history from '../../history'
-import {UserRole} from '../../../config/types/user'
-import {RootState} from '../../../state/types'
-
-import NotAllowed from './NotAllowed'
+import RestrictedPage from 'pages/common/components/RestrictedPage'
+import history from 'pages/history'
+import {UserRole} from 'config/types/user'
+import {PageSection} from 'config/pages'
+import {RootState} from 'state/types'
+import {hasRole} from 'utils'
 
 // check user role before render the desired component
 const withUserRoleRequired = (
     Component: ComponentType<any>,
     requiredRole: UserRole,
+    restrictedPage?: PageSection,
     redirectTo?: string
 ) => {
     const UserRoleRequired = (
@@ -27,7 +28,9 @@ const withUserRoleRequired = (
             history.push(redirectTo)
             return null
         }
-        return <NotAllowed />
+        return (
+            <RestrictedPage requiredRole={requiredRole} page={restrictedPage} />
+        )
     }
 
     const connector = connect((state: RootState) => ({

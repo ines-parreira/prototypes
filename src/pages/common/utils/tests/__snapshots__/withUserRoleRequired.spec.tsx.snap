@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`withUserRoleRequired should not return the wrapped component if the user does not have an adequate role and pass necessary props 1`] = `
+<div>
+  <span>
+    Required role: 
+    admin
+  </span>
+  <span>
+    Page: 
+    billing
+  </span>
+</div>
+`;
+
+exports[`withUserRoleRequired should return the wrapped component if the user has an adequate role 1`] = `
+<div>
+  Just a component...
+</div>
+`;

@@ -1,0 +1,286 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RestrictedPage/> should render for a specific page 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="d-flex align-items-center"
+    >
+      Billing & Usage
+    </h1>
+  </div>
+  <div
+    class="content"
+  >
+    <div
+      class="badge"
+    >
+      <div
+        class="badge"
+      >
+        Admin
+      </div>
+    </div>
+    <h2
+      class="heading"
+    >
+      Restricted access
+    </h2>
+    <p
+      class="description"
+    >
+      To be able to see 
+      Billing & Usage
+       you need to be 
+      an
+       
+      <b>
+        Admin
+      </b>
+      .
+    </p>
+    <a
+      class="link"
+      href="https://docs.gorgias.com/user/adding-team-members#user_permissions"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      See all permissions
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<RestrictedPage/> should render for admin role and include higher permission roles 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="content"
+  >
+    <div
+      class="badge"
+    >
+      <div
+        class="badge"
+      >
+        Admin
+      </div>
+    </div>
+    <h2
+      class="heading"
+    >
+      Restricted access
+    </h2>
+    <p
+      class="description"
+    >
+      To be able to see 
+      this page
+       you need to be 
+      an
+       
+      <b>
+        Admin
+      </b>
+      .
+    </p>
+    <a
+      class="link"
+      href="https://docs.gorgias.com/user/adding-team-members#user_permissions"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      See all permissions
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<RestrictedPage/> should render for agent role and include higher permission roles 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="content"
+  >
+    <div
+      class="badge"
+    >
+      <div
+        class="badge"
+      >
+        Lead agent
+      </div>
+    </div>
+    <h2
+      class="heading"
+    >
+      Restricted access
+    </h2>
+    <p
+      class="description"
+    >
+      To be able to see 
+      this page
+       you need to be 
+      a
+       
+      <b>
+        Lead Agent or Admin
+      </b>
+      .
+    </p>
+    <a
+      class="link"
+      href="https://docs.gorgias.com/user/adding-team-members#user_permissions"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      See all permissions
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<RestrictedPage/> should render for basic-agent role and include higher permission roles 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="content"
+  >
+    <div
+      class="badge"
+    >
+      <div
+        class="badge"
+      >
+        Basic agent
+      </div>
+    </div>
+    <h2
+      class="heading"
+    >
+      Restricted access
+    </h2>
+    <p
+      class="description"
+    >
+      To be able to see 
+      this page
+       you need to be 
+      a
+       
+      <b>
+        Basic Agent, Lead Agent or Admin
+      </b>
+      .
+    </p>
+    <a
+      class="link"
+      href="https://docs.gorgias.com/user/adding-team-members#user_permissions"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      See all permissions
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<RestrictedPage/> should render for lite-agent role and include higher permission roles 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="content"
+  >
+    <div
+      class="badge"
+    >
+      <div
+        class="badge"
+      >
+        Lite agent
+      </div>
+    </div>
+    <h2
+      class="heading"
+    >
+      Restricted access
+    </h2>
+    <p
+      class="description"
+    >
+      To be able to see 
+      this page
+       you need to be 
+      a
+       
+      <b>
+        Lite Agent, Basic Agent, Lead Agent or Admin
+      </b>
+      .
+    </p>
+    <a
+      class="link"
+      href="https://docs.gorgias.com/user/adding-team-members#user_permissions"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      See all permissions
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<RestrictedPage/> should render for observer-agent role and include higher permission roles 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="content"
+  >
+    <div
+      class="badge"
+    >
+      <div
+        class="badge"
+      >
+        Observer agent
+      </div>
+    </div>
+    <h2
+      class="heading"
+    >
+      Restricted access
+    </h2>
+    <p
+      class="description"
+    >
+      To be able to see 
+      this page
+       you need to be 
+      an
+       
+      <b>
+        Observer Agent, Lite Agent, Basic Agent, Lead Agent or Admin
+      </b>
+      .
+    </p>
+    <a
+      class="link"
+      href="https://docs.gorgias.com/user/adding-team-members#user_permissions"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      See all permissions
+    </a>
+  </div>
+</div>
+`;

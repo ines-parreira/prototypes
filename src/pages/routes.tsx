@@ -1,14 +1,15 @@
 import React, {ComponentType, ReactNode} from 'react'
 import {
-    Route,
-    Switch,
     Redirect,
+    Route,
     RouteComponentProps,
+    Switch,
     useLocation,
 } from 'react-router-dom'
 import {useUpdateEffect} from 'react-use'
 
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
+import {PageSection} from 'config/pages'
 import {currentAccountHasFeature} from 'state/currentAccount/selectors'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
@@ -46,7 +47,7 @@ import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
 import StatsNavbarContainer from './stats/common/StatsNavbarContainer'
 import NoMatch from './common/components/NoMatch'
 import TicketListInfobarContainer from './tickets/list/TicketListInfobarContainer'
-import withUserRoleRequired from './common/components/UserRoleRequired'
+import withUserRoleRequired from './common/utils/withUserRoleRequired'
 import BillingContainer from './settings/billing/BillingContainer'
 import CreditCardContainer from './settings/billing/credit-cards/CreditCard'
 import BillingDetailsFormContainer from './settings/billing/details/BillingDetailsForm'
@@ -584,7 +585,11 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/audit`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(UserAuditList, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        UserAuditList,
+                        ADMIN_ROLE,
+                        PageSection.Audit
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -597,7 +602,8 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         ManageTagsContainer,
-                        AGENT_ROLE
+                        AGENT_ROLE,
+                        PageSection.ManageTags
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -606,7 +612,11 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
             <Route
                 path={`${path}/access`}
                 render={appRender({
-                    content: withUserRoleRequired(Access, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        Access,
+                        ADMIN_ROLE,
+                        PageSection.Access
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
                 exact
@@ -619,14 +629,24 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                         AccountFeature.SatisfactionSurveys,
                         undefined,
                         satisfactionPaywallConfig
-                    )(withUserRoleRequired(SatisfactionSurveyView, ADMIN_ROLE)),
+                    )(
+                        withUserRoleRequired(
+                            SatisfactionSurveyView,
+                            ADMIN_ROLE,
+                            PageSection.SatisfactionSurveys
+                        )
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
             <Route
                 path={`${path}/business-hours`}
                 render={appRender({
-                    content: withUserRoleRequired(BusinessHours, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        BusinessHours,
+                        ADMIN_ROLE,
+                        PageSection.BusinessHours
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
                 exact
@@ -635,7 +655,11 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/ticket-assignment`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(TicketAssignment, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        TicketAssignment,
+                        ADMIN_ROLE,
+                        PageSection.TicketAssignment
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -652,7 +676,11 @@ export function IntegrationsSettingsRoutes({
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(IntegrationList, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        IntegrationList,
+                        ADMIN_ROLE,
+                        PageSection.Integrations
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -670,7 +698,8 @@ export function IntegrationsSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         IntegrationDetailContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.Integrations
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -690,7 +719,8 @@ export function PhoneNumbersSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         PhoneNumbersListContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.PhoneNumbers
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -701,7 +731,8 @@ export function PhoneNumbersSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         PhoneNumberCreateContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.PhoneNumbers
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -712,7 +743,8 @@ export function PhoneNumbersSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         PhoneNumberDetailContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.PhoneNumbers
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -736,7 +768,8 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                             )(
                                 withUserRoleRequired(
                                     HelpCenterStartView,
-                                    ADMIN_ROLE
+                                    ADMIN_ROLE,
+                                    PageSection.HelpCenter
                                 )
                             ),
                             navbar: SettingsNavbarContainer,
@@ -752,7 +785,8 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                             )(
                                 withUserRoleRequired(
                                     HelpCenterNewView,
-                                    ADMIN_ROLE
+                                    ADMIN_ROLE,
+                                    PageSection.HelpCenter
                                 )
                             ),
                             navbar: SettingsNavbarContainer,
@@ -767,7 +801,8 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                             )(
                                 withUserRoleRequired(
                                     CurrentHelpCenter,
-                                    ADMIN_ROLE
+                                    ADMIN_ROLE,
+                                    PageSection.HelpCenter
                                 )
                             ),
                             navbar: SettingsNavbarContainer,
@@ -792,7 +827,8 @@ export function SelfServiceSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.SelfService
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -810,7 +846,8 @@ export function SelfServiceSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceQuickResponseFlowsPreferencesContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.SelfService
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -821,7 +858,8 @@ export function SelfServiceSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceQuickResponseFlowNewItemContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.SelfService
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -832,7 +870,8 @@ export function SelfServiceSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceQuickResponseFlowEditItemContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.SelfService
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -843,7 +882,8 @@ export function SelfServiceSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceOrderManagementFlowsPreferencesContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.SelfService
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -854,7 +894,8 @@ export function SelfServiceSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceCancellationsPolicyContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.SelfService
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -865,7 +906,8 @@ export function SelfServiceSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceReturnsPolicyContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.SelfService
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -876,7 +918,8 @@ export function SelfServiceSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceReportIssuePolicyContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.SelfService
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -887,7 +930,8 @@ export function SelfServiceSettingsRoutes({
                 render={appRender({
                     content: withUserRoleRequired(
                         SelfServiceReportIssueCaseEditorContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.SelfService
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -905,7 +949,8 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         MacrosSettingsContent,
-                        AGENT_ROLE
+                        AGENT_ROLE,
+                        PageSection.Macros
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -916,7 +961,8 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         MacrosSettingsForm,
-                        AGENT_ROLE
+                        AGENT_ROLE,
+                        PageSection.Macros
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -927,7 +973,8 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         MacrosSettingsForm,
-                        AGENT_ROLE
+                        AGENT_ROLE,
+                        PageSection.Macros
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -943,7 +990,11 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(RulesView, AGENT_ROLE),
+                    content: withUserRoleRequired(
+                        RulesView,
+                        AGENT_ROLE,
+                        PageSection.Rules
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -951,7 +1002,11 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                 path={`${path}/new`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(RuleDetailForm, AGENT_ROLE),
+                    content: withUserRoleRequired(
+                        RuleDetailForm,
+                        AGENT_ROLE,
+                        PageSection.Rules
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -959,7 +1014,11 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                 path={`${path}/:ruleId`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(RuleDetailForm, AGENT_ROLE),
+                    content: withUserRoleRequired(
+                        RuleDetailForm,
+                        AGENT_ROLE,
+                        PageSection.Rules
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -974,7 +1033,11 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(TeamsList as any, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        TeamsList as any,
+                        ADMIN_ROLE,
+                        PageSection.Teams
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -982,7 +1045,11 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/create`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(TeamsForm, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        TeamsForm,
+                        ADMIN_ROLE,
+                        PageSection.Teams
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -990,7 +1057,11 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(TeamsForm, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        TeamsForm,
+                        ADMIN_ROLE,
+                        PageSection.Teams
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -998,7 +1069,11 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id/members`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(List, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        List,
+                        ADMIN_ROLE,
+                        PageSection.Teams
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -1013,7 +1088,11 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(TeamList as any, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        TeamList as any,
+                        ADMIN_ROLE,
+                        PageSection.Users
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -1021,7 +1100,11 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/add`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(TeamForm, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        TeamForm,
+                        ADMIN_ROLE,
+                        PageSection.Users
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -1029,7 +1112,11 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(TeamForm, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        TeamForm,
+                        ADMIN_ROLE,
+                        PageSection.Users
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -1044,7 +1131,11 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(BillingContainer, ADMIN_ROLE),
+                    content: withUserRoleRequired(
+                        BillingContainer,
+                        ADMIN_ROLE,
+                        PageSection.Billing
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />
@@ -1054,7 +1145,8 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         CreditCardContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.Billing
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -1065,7 +1157,8 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         CreditCardContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.Billing
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -1076,7 +1169,8 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         BillingDetailsFormContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.Billing
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -1087,7 +1181,8 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         BillingPlansContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.Billing
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -1105,7 +1200,8 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         ImportDataContainer,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.ImportData
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -1116,7 +1212,8 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         ImportZendeskCreate,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.ImportData
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -1127,7 +1224,8 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         ImportZendeskDetail,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.ImportData
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -1145,7 +1243,8 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         ImportPhoneNumber,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.ImportPhoneNumber
                     ),
                     navbar: SettingsNavbarContainer,
                 })}
@@ -1156,7 +1255,8 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                 render={appRender({
                     content: withUserRoleRequired(
                         TwilioSubaccountStatusForm,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
+                        PageSection.TwilioSubaccountStatus
                     ),
                     navbar: SettingsNavbarContainer,
                 })}

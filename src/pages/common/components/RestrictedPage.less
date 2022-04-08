@@ -1,0 +1,28 @@
+@import (reference) '~css/new/colorTokens';
+@import (reference) '~css/typography';
+
+:local {
+    .content {
+        padding: 24px;
+    }
+
+    .badge {
+        margin-bottom: 20px;
+        line-height: 1;
+    }
+
+    .heading {
+        .heading-page-semibold();
+        margin-bottom: 8px;
+    }
+
+    .description,
+    .link {
+        .heading-subsection-regular();
+    }
+
+    .description {
+        color: @classic-neutral-grey-5;
+        margin-bottom: 0px;
+    }
+}
