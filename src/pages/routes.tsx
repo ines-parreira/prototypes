@@ -73,7 +73,7 @@ import BusinessHours from './settings/businessHours/BusinessHours'
 import TicketAssignment from './settings/ticketAssignment/TicketAssignment'
 
 import withFeaturePaywall from './common/utils/withFeaturePaywall'
-import OnboardingContent from './onboarding/OnboardingContent'
+import CanduContent from './onboarding/CanduContent'
 import ReferralContent from './referral/ReferralContent'
 import SelfServiceQuickResponseFlowsPreferencesContainer from './settings/selfService/components/QuickResponseFlowsPreferences'
 import SelfServiceQuickResponseFlowEditItemContainer from './settings/selfService/components/QuickResponseFlowEditItem'
@@ -156,14 +156,7 @@ export function AppRoutes({match: {path}}: RouteComponentProps) {
                 render={(props) => <StatsRoutes {...props} />}
             />
             <Route path={`${path}/settings`} render={SettingsRoutes} />
-            <Route
-                path={`${path}/home`}
-                exact
-                render={appRender({
-                    content: OnboardingContent,
-                    navbar: TicketNavbar,
-                })}
-            />
+            <Route path={`${path}/home`} render={HomepageRoutes} />
             <Route
                 path={`${path}/referral-program`}
                 exact
@@ -1259,6 +1252,36 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                         PageSection.TwilioSubaccountStatus
                     ),
                     navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function HomepageRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    children: (
+                        <CanduContent containerId="candu-home" title="Home" />
+                    ),
+                    navbar: TicketNavbar,
+                })}
+            />
+            <Route
+                path={`${path}/automation`}
+                exact
+                render={appRender({
+                    children: (
+                        <CanduContent
+                            containerId="candu-automation"
+                            title="Automation Add-on"
+                        />
+                    ),
+                    navbar: TicketNavbar,
                 })}
             />
         </Switch>

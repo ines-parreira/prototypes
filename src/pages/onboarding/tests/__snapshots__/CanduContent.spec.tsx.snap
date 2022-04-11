@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<OnboardingContent /> should display an empty container 1`] = `
+exports[`<CanduContent /> should display an empty container 1`] = `
 <div
   class="full-width"
 >
@@ -10,12 +10,12 @@ exports[`<OnboardingContent /> should display an empty container 1`] = `
     <h1
       class="d-flex align-items-center"
     >
-      Home
+      Candu content
     </h1>
   </div>
   <div
     class="container-fluid"
-    id="candu-home"
+    id="candu-content"
   />
 </div>
 `;
