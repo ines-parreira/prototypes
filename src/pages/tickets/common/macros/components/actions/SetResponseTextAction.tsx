@@ -16,7 +16,7 @@ import {getVariables} from 'config/ticket'
 import {convertToHTML, getPlainText} from 'utils/editor'
 import {RootState} from 'state/types'
 import {IntegrationType} from 'models/integration/types'
-import RichField from 'pages/common/forms/RichField/RichField'
+import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import * as integrationsSelectors from 'state/integrations/selectors'
 
 type Props = {
@@ -26,7 +26,7 @@ type Props = {
 } & ConnectedProps<typeof connector>
 
 export class SetResponseTextAction extends Component<Props> {
-    richArea?: RichField | null
+    richArea?: DEPRECATED_RichField | null
 
     _insertText = (text: string) => {
         if (!this.richArea) {
@@ -116,7 +116,7 @@ export class SetResponseTextAction extends Component<Props> {
                 <div className="textarea-toolbar">
                     {this._renderInsertVariable()}
                 </div>
-                <RichField
+                <DEPRECATED_RichField
                     ref={(richArea) => {
                         this.richArea = richArea
                     }}

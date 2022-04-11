@@ -491,7 +491,6 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                     <FormGroup>
                         <RichFieldWithVariables
                             allowExternalChanges
-                            name="signature"
                             label="Signature"
                             value={{
                                 text:

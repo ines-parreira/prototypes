@@ -169,7 +169,6 @@ class SatisfactionSurveyView extends Component<Props, State> {
                                 >
                                     <RichFieldWithVariables
                                         allowExternalChanges
-                                        name="survey_email"
                                         label="Survey message"
                                         value={{
                                             text: this.state.settings.get(

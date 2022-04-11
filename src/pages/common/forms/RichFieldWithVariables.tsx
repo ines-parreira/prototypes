@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, ComponentProps} from 'react'
 import {
     DropdownItem,
     DropdownMenu,
@@ -15,12 +15,11 @@ import Button from 'pages/common/components/button/Button'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import RichField from './RichField/RichField'
+import DEPRECATED_RichField from './RichField/DEPRECATED_RichField'
 import css from './RichFieldWithVariables.less'
 
 type Props = {
     label?: string
-    name?: string
     value: {
         html?: string
         text: string
@@ -28,15 +27,14 @@ type Props = {
     allowExternalChanges?: boolean
     variableTypes: Array<string>
     onChange: (editorState: EditorState) => void
-    type?: string
-    rows?: string
-    placeholder?: string
-    required?: boolean
-}
+} & Pick<
+    ComponentProps<typeof DEPRECATED_RichField>,
+    'isRequired' | 'placeholder'
+>
 
-export default class RichFieldWithVariables extends Component<Props> {
+export default class DEPRECATED_RichFieldWithVariables extends Component<Props> {
     id?: string
-    richArea?: RichField | null
+    richArea?: DEPRECATED_RichField | null
 
     _insertText = (text: string) => {
         if (!this.richArea) {
@@ -55,9 +53,10 @@ export default class RichFieldWithVariables extends Component<Props> {
     render() {
         const {
             allowExternalChanges,
+            isRequired,
             label,
-            name,
             onChange,
+            placeholder,
             value,
             variableTypes,
         } = this.props
@@ -121,14 +120,15 @@ export default class RichFieldWithVariables extends Component<Props> {
                         )
                     )}
                 </div>
-                <RichField
+                <DEPRECATED_RichField
                     ref={(richArea) => {
                         this.richArea = richArea
                     }}
-                    name={name}
                     value={value}
                     onChange={onChange}
                     allowExternalChanges={allowExternalChanges}
+                    isRequired={isRequired}
+                    placeholder={placeholder}
                 />
             </div>
         )

@@ -8,7 +8,7 @@ import {isRichType} from 'config/ticket'
 import {getIconFromActionType} from 'models/macroAction/helpers'
 
 import {actionTypeToName} from 'models/macroAction/types'
-import RichField from 'pages/common/forms/RichField/RichField'
+import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 
 import {
     TagLabel,
@@ -60,9 +60,10 @@ class Preview extends Component<Props> {
 
     renderResponseText(responseTextAction: Map<string, any>) {
         if (responseTextAction) {
-            const value: ComponentProps<typeof RichField>['value'] = {
-                text: responseTextAction.getIn(['arguments', 'body_text']),
-            }
+            const value: ComponentProps<typeof DEPRECATED_RichField>['value'] =
+                {
+                    text: responseTextAction.getIn(['arguments', 'body_text']),
+                }
 
             const hasSourceType = !!this.props.ticketMessageSourceType
 
@@ -94,7 +95,7 @@ class Preview extends Component<Props> {
 
             return (
                 <div className={css.macroData}>
-                    <RichField
+                    <DEPRECATED_RichField
                         value={value}
                         onChange={() => null}
                         displayOnly

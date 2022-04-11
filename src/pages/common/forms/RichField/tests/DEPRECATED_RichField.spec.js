@@ -6,14 +6,14 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import RichField from '../RichField.tsx'
+import RichField from '../DEPRECATED_RichField.tsx'
 import createToolbarPlugin from '../../../draftjs/plugins/toolbar/index.ts'
 import {convertToHTML} from '../../../../../utils/editor.tsx'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 
-describe('RichField', () => {
+describe('DEPRECATED_RichField', () => {
     const mockStore = configureMockStore([thunk])
     let store = mockStore({})
     const defaultProps = {

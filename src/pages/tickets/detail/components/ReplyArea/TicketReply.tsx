@@ -11,7 +11,7 @@ import {
 } from '../../../../../state/ticket/actions'
 import {deleteAttachment} from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import RichField from '../../../../common/forms/RichField/RichField'
+import DEPRECATED_RichField from '../../../../common/forms/RichField/DEPRECATED_RichField'
 
 import TicketAttachments from './TicketAttachments'
 import css from './TicketReply.less'
@@ -23,7 +23,7 @@ type Props = {
     applyMacro: (macro: Map<any, any>) => void
     className?: string
     macros: List<any>
-    richAreaRef: (ref: RichField | null) => void
+    richAreaRef: (ref: DEPRECATED_RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>
 } & ConnectedProps<typeof connector>

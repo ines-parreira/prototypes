@@ -1,17 +1,10 @@
 import {ContentState, EditorState} from 'draft-js'
 import 'draft-js/dist/Draft.css'
 import _isEqual from 'lodash/isEqual'
-import React from 'react'
+import React, {Component} from 'react'
 
-import {
-    contentStateFromTextOrHTML,
-    convertToHTML,
-} from '../../../../utils/editor'
-import {attachEntitiesToVariables} from '../../draftjs/plugins/variables/utils.js'
-import DEPRECATED_InputField, {
-    InputFieldProps,
-    InputFieldState,
-} from '../DEPRECATED_InputField'
+import {contentStateFromTextOrHTML, convertToHTML} from 'utils/editor'
+import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
 
 import RichFieldEditor, {Props as RichFieldEditorProps} from './RichFieldEditor'
 
@@ -24,16 +17,16 @@ type Props = {
     defaultContentState?: ContentState
     productCardsEnabled?: boolean
     onChange: (arg: EditorState) => void
-} & Partial<Omit<RichFieldEditorProps, 'editorState'>> &
-    Omit<InputFieldProps, 'value'>
+} & Partial<Omit<RichFieldEditorProps, 'editorState'>>
 
 type State = {
     editorState: EditorState
     isFocused: boolean
-} & InputFieldState
+}
 
 // Deprecated component, use RichFieldEditor instead
-export default class RichField extends DEPRECATED_InputField<Props, State> {
+
+export default class RichField extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
         const {defaultContentState} = props
@@ -134,7 +127,7 @@ export default class RichField extends DEPRECATED_InputField<Props, State> {
         this.setState({isFocused: false})
     }
 
-    _getField = () => {
+    render() {
         return (
             <RichFieldEditor
                 {...(this.props as Omit<RichFieldEditorProps, 'editorState'>)}

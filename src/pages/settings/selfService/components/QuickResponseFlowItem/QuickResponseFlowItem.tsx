@@ -25,7 +25,7 @@ import history from 'pages/history'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import RichField from 'pages/common/forms/RichField/RichField'
+import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import Tooltip from 'pages/common/components/Tooltip'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
@@ -183,7 +183,7 @@ const QuickResponseFlowItem = ({
                                         this option in the quick answers section
                                     </Tooltip>
                                 </Label>
-                                <RichField
+                                <DEPRECATED_RichField
                                     value={{
                                         html: responseText.message.get('html'),
                                     }}

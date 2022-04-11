@@ -13,6 +13,7 @@ import React, {
     MouseEvent,
     DragEvent,
     ComponentProps,
+    Component,
 } from 'react'
 
 import {ConnectedAction} from '../../../../state/types'
@@ -36,10 +37,6 @@ import {
     removeMentions,
 } from '../../../../utils/editor'
 
-import DEPRECATED_InputField, {
-    InputFieldProps,
-    InputFieldState,
-} from '../DEPRECATED_InputField'
 import EmailExtraButton from './EmailExtraButton'
 import provideToolbarPlugin, {
     InjectedProps as ToolbarPluginProps,
@@ -80,17 +77,20 @@ export type Props = {
     spellCheck?: boolean
     predictionContext?: Map<any, any>
     ticket?: any
+    isFocused: boolean
+    isRequired: boolean
+    placeholder?: string
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
-    GrammarlyUsageTrackingProps &
-    InputFieldProps
+    GrammarlyUsageTrackingProps
 
 type State = {
     isDragging: boolean
     wasEverFocused: boolean
-} & InputFieldState
+    id: string
+}
 
-export class RichFieldEditor extends DEPRECATED_InputField<Props, State> {
+export class RichFieldEditor extends Component<Props, State> {
     static defaultProps: Pick<
         Props,
         | 'emailExtraEnabled'
@@ -100,11 +100,9 @@ export class RichFieldEditor extends DEPRECATED_InputField<Props, State> {
         | 'canDropFiles'
         | 'canInsertInlineImages'
         | 'isFocused'
-    > &
-        Pick<InputFieldProps, 'type' | 'onChange'> = {
+    > = {
         emailExtraEnabled: false,
         productCardsEnabled: true,
-        type: 'text',
         notify: () => Promise.resolve(),
         attachFiles: _noop,
         canDropFiles: false,
@@ -339,9 +337,9 @@ export class RichFieldEditor extends DEPRECATED_InputField<Props, State> {
         detectGrammarly()
     }
 
-    _getField = () => {
+    render() {
         const {
-            required,
+            isRequired,
             displayOnly,
             onFocus,
             emailExtraEnabled,
@@ -404,7 +402,7 @@ export class RichFieldEditor extends DEPRECATED_InputField<Props, State> {
                             suggestions={this.props.mentionSearchResults}
                             canAddMention={!!this.props.canAddMention}
                         />
-                        {required && (
+                        {isRequired && (
                             <input
                                 value={this.props.editorState
                                     .getCurrentContent()
@@ -416,7 +414,7 @@ export class RichFieldEditor extends DEPRECATED_InputField<Props, State> {
                                     margin: 'none',
                                     overflow: 'hidden',
                                 }}
-                                required
+                                required={isRequired}
                             />
                         )}
                     </div>

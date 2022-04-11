@@ -94,7 +94,6 @@ exports[`TicketReplyEditor component should allow inline image 1`] = `
     placeholder="Click here to reply, or press r."
     spellCheck={true}
     tabIndex={4}
-    type="text"
     value={
       Object {
         "html": "",
@@ -174,7 +173,6 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
     readOnly={false}
     spellCheck={true}
     tabIndex={4}
-    type="text"
     value={
       Object {
         "html": "",
@@ -279,7 +277,6 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
     readOnly={false}
     spellCheck={true}
     tabIndex={4}
-    type="text"
     value={
       Object {
         "html": "",
@@ -378,7 +375,6 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     readOnly={false}
     spellCheck={true}
     tabIndex={4}
-    type="text"
     value={
       Object {
         "html": "",

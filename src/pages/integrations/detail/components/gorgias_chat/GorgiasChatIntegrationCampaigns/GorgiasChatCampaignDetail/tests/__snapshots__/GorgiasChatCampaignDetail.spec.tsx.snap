@@ -380,193 +380,175 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                     </div>
                   </div>
                   <div
-                    class="InputField required form-group"
-                    color=""
+                    class="rich-textarea-wrapper"
                   >
                     <div
-                      class=""
+                      class="editor-wrapper"
                     >
                       <div
-                        class="InputField required form-group"
-                        color=""
+                        class="withMinHeight"
                       >
                         <div
-                          class=""
+                          class="DraftEditor-root"
                         >
                           <div
-                            class="rich-textarea-wrapper"
+                            class="public-DraftEditorPlaceholder-root"
                           >
                             <div
-                              class="editor-wrapper"
+                              class="public-DraftEditorPlaceholder-inner"
+                              id="placeholder-someRandomKey"
+                              style="white-space: pre-wrap;"
                             >
-                              <div
-                                class="withMinHeight"
-                              >
-                                <div
-                                  class="DraftEditor-root"
-                                >
-                                  <div
-                                    class="public-DraftEditorPlaceholder-root"
-                                  >
-                                    <div
-                                      class="public-DraftEditorPlaceholder-inner"
-                                      id="placeholder-someRandomKey"
-                                      style="white-space: pre-wrap;"
-                                    >
-                                      Write your message
-                                    </div>
-                                  </div>
-                                  <div
-                                    class="DraftEditor-editorContainer"
-                                  >
-                                    <div
-                                      aria-autocomplete="list"
-                                      aria-describedby="placeholder-someRandomKey"
-                                      aria-expanded="true"
-                                      class="notranslate public-DraftEditor-content"
-                                      contenteditable="true"
-                                      role="combobox"
-                                      spellcheck="false"
-                                      style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
-                                    >
-                                      <div
-                                        data-contents="true"
-                                      >
-                                        <div
-                                          class=""
-                                          data-block="true"
-                                          data-editor="someRandomKey"
-                                          data-offset-key="someRandomKey-0-0"
-                                        >
-                                          <div
-                                            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                                            data-offset-key="someRandomKey-0-0"
-                                          >
-                                            <span
-                                              data-offset-key="someRandomKey-0-0"
-                                            >
-                                              <br
-                                                data-text="true"
-                                              />
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <input
-                                  required=""
-                                  style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
-                                  value=""
-                                />
-                              </div>
+                              Write your message
                             </div>
+                          </div>
+                          <div
+                            class="DraftEditor-editorContainer"
+                          >
                             <div
-                              class="editor-toolbar page"
+                              aria-autocomplete="list"
+                              aria-describedby="placeholder-someRandomKey"
+                              aria-expanded="true"
+                              class="notranslate public-DraftEditor-content"
+                              contenteditable="true"
+                              role="combobox"
+                              spellcheck="false"
+                              style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                             >
                               <div
-                                class="actionsWrapper"
+                                data-contents="true"
                               >
                                 <div
-                                  class="actions"
+                                  class=""
+                                  data-block="true"
+                                  data-editor="someRandomKey"
+                                  data-offset-key="someRandomKey-0-0"
                                 >
-                                  <button
-                                    class="wrapper button wrapper small fill secondary small"
-                                    title="Bold"
-                                    type="button"
+                                  <div
+                                    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                    data-offset-key="someRandomKey-0-0"
                                   >
-                                    <i
-                                      class="material-icons icon"
+                                    <span
+                                      data-offset-key="someRandomKey-0-0"
                                     >
-                                      format_bold
-                                    </i>
-                                  </button>
-                                  <button
-                                    class="wrapper button wrapper small fill secondary small"
-                                    title="Italic"
-                                    type="button"
-                                  >
-                                    <i
-                                      class="material-icons icon"
-                                    >
-                                      format_italic
-                                    </i>
-                                  </button>
-                                  <button
-                                    class="wrapper button wrapper small fill secondary small"
-                                    title="Underline"
-                                    type="button"
-                                  >
-                                    <i
-                                      class="material-icons icon"
-                                    >
-                                      format_underline
-                                    </i>
-                                  </button>
-                                  <span
-                                    class="popoverWrapper"
-                                  >
-                                    <button
-                                      class="wrapper button wrapper small fill secondary small"
-                                      title="Insert link"
-                                      type="button"
-                                    >
-                                      <i
-                                        class="material-icons icon"
-                                      >
-                                        link
-                                      </i>
-                                    </button>
-                                    <div
-                                      class="popover top-left hidden"
-                                    />
-                                  </span>
-                                  <span
-                                    class="popoverWrapper"
-                                  >
-                                    <button
-                                      class="wrapper button wrapper small fill secondary small"
-                                      title="Insert image"
-                                      type="button"
-                                    >
-                                      <i
-                                        class="material-icons icon"
-                                      >
-                                        insert_photo
-                                      </i>
-                                    </button>
-                                    <div
-                                      class="popover top-left hidden"
-                                    />
-                                  </span>
-                                  <span
-                                    class="popoverWrapper"
-                                  >
-                                    <button
-                                      class="wrapper button wrapper small fill secondary small"
-                                      title="Insert emoji"
-                                      type="button"
-                                    >
-                                      <i
-                                        class="material-icons icon"
-                                      >
-                                        insert_emoticon
-                                      </i>
-                                    </button>
-                                    <div
-                                      class="p-0 d-flex popover top-left hidden"
-                                    />
-                                  </span>
-                                </div>
-                                <div
-                                  class="hoverOverlay"
-                                >
-                                  Add files as attachments
+                                      <br
+                                        data-text="true"
+                                      />
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
+                        </div>
+                        <input
+                          required=""
+                          style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="editor-toolbar page"
+                    >
+                      <div
+                        class="actionsWrapper"
+                      >
+                        <div
+                          class="actions"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small"
+                            title="Bold"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              format_bold
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small"
+                            title="Italic"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              format_italic
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small"
+                            title="Underline"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              format_underline
+                            </i>
+                          </button>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="wrapper button wrapper small fill secondary small"
+                              title="Insert link"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                link
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
+                            />
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="wrapper button wrapper small fill secondary small"
+                              title="Insert image"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                insert_photo
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
+                            />
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="wrapper button wrapper small fill secondary small"
+                              title="Insert emoji"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                insert_emoticon
+                              </i>
+                            </button>
+                            <div
+                              class="p-0 d-flex popover top-left hidden"
+                            />
+                          </span>
+                        </div>
+                        <div
+                          class="hoverOverlay"
+                        >
+                          Add files as attachments
                         </div>
                       </div>
                     </div>
@@ -672,6 +654,729 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
 `;
 
 exports[`<GorgiasChatCampaignDetail/> render() should display the campaign correctly when updating it 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat/1"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            My new chat
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/campaigns"
+      >
+        Campaigns
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/installation"
+      >
+        Installation
+      </a>
+    </nav>
+    <div>
+      <div
+        class="backWrapper"
+      >
+        <a
+          class="d-flex"
+          to="/app/settings/integrations/gorgias_chat/1/campaigns"
+        >
+          <img
+            alt="Back to campaigns"
+            src="test-file-stub"
+          />
+          Edit Campaign
+        </a>
+      </div>
+      <div
+        class="pageContainer container-fluid"
+      >
+        <div
+          class="row row"
+        >
+          <div
+            class="content col"
+          >
+            <div
+              class="formWrapper"
+            >
+              <form
+                class=""
+              >
+                <div
+                  class="mb-4"
+                >
+                  <div
+                    class="InputField required form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-name"
+                    >
+                      Campaign name
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <input
+                        class="field form-control"
+                        id="id-name"
+                        placeholder="My new campaign"
+                        required=""
+                        type="text"
+                        value="My little campaign"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <h5
+                  class="section"
+                >
+                  Choose your audience
+                </h5>
+                <div
+                  class="mb-4"
+                >
+                  <div
+                    class="triggerWrapper"
+                  >
+                    <div
+                      class="btn-frozen btn btn-secondary"
+                    >
+                      Current URL
+                    </div>
+                    <div>
+                      <div
+                        class="dropdown"
+                      >
+                        <div
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class=""
+                          data-toggle="dropdown"
+                        >
+                          <div
+                            class="select dropdown-toggle"
+                          >
+                            <span
+                              class="label"
+                              style="min-width: 10px; opacity: 1;"
+                            >
+                              contains
+                            </span>
+                            <input
+                              autocomplete="chrome-off"
+                              class="input"
+                              style="min-width: 10px;"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                        <div
+                          aria-hidden="true"
+                          class="options dropdown-menu"
+                          role="menu"
+                          tabindex="-1"
+                        >
+                          
+                          <button
+                            class="option option--focused dropdown-item"
+                            role="menuitem"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span>
+                              is
+                            </span>
+                          </button>
+                          <button
+                            class="option dropdown-item"
+                            role="menuitem"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span>
+                              is not
+                            </span>
+                          </button>
+                          <button
+                            class="option dropdown-item"
+                            role="menuitem"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span>
+                              does not contain
+                            </span>
+                          </button>
+                          <button
+                            class="option dropdown-item"
+                            role="menuitem"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span>
+                              starts with
+                            </span>
+                          </button>
+                          <button
+                            class="option dropdown-item"
+                            role="menuitem"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span>
+                              ends with
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="InputField flex-grow-1 mb-0 last form-group"
+                      color=""
+                    >
+                      <div
+                        class=""
+                      >
+                        <input
+                          class="field form-control"
+                          id="id-value"
+                          type="text"
+                          value="gorgias"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="closeWrapper"
+                    >
+                      <i
+                        class="material-icons md-2 text-danger"
+                      >
+                        clear
+                      </i>
+                    </div>
+                  </div>
+                  <div
+                    class="triggerWrapper"
+                  >
+                    <div
+                      class="btn-frozen btn btn-warning"
+                    >
+                      AND
+                    </div>
+                    <div
+                      class="btn-frozen btn btn-secondary"
+                    >
+                      Time spent on page
+                    </div>
+                    <div
+                      class="fixedOperator"
+                    >
+                      is greater than
+                    </div>
+                    <div
+                      class="InputField flex-grow-1 mb-0 last form-group"
+                      color=""
+                    >
+                      <div
+                        class="input-group"
+                      >
+                        <input
+                          class="field form-control"
+                          id="id-input-1"
+                          step="1"
+                          type="number"
+                          value="42"
+                        />
+                        <span
+                          class="input-group-append"
+                        >
+                          <span
+                            class="input-group-text"
+                          >
+                            seconds
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="closeWrapper"
+                    >
+                      <i
+                        class="material-icons md-2 text-danger"
+                      >
+                        clear
+                      </i>
+                    </div>
+                  </div>
+                  <div
+                    class="addTriggerButton dropdown"
+                  >
+                    <button
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="mr-2 dropdown-toggle btn btn-secondary"
+                      type="button"
+                    >
+                      <i
+                        class="material-icons mr-2"
+                      >
+                        add
+                      </i>
+                      Add condition
+                    </button>
+                    <div
+                      aria-hidden="true"
+                      class="dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <button
+                        class="dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        Current URL
+                      </button>
+                      <button
+                        class="dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                      >
+                        Time spent on page
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <h5
+                  class="section"
+                >
+                  Write your message
+                </h5>
+                <div
+                  class="mb-4"
+                >
+                  <div
+                    class="mb-2 authorWrapper"
+                  >
+                    <span>
+                      From: 
+                    </span>
+                    <div>
+                      <div
+                        class="dropdown"
+                      >
+                        <div
+                          aria-expanded="false"
+                          aria-haspopup="true"
+                          class="authorInput"
+                          data-toggle="dropdown"
+                        >
+                          <div
+                            class="select dropdown-toggle"
+                          >
+                            <span
+                              class="label placeholder"
+                              style="min-width: 10px; opacity: 1;"
+                            >
+                              Select an option
+                            </span>
+                            <input
+                              autocomplete="chrome-off"
+                              class="input"
+                              style="min-width: 10px;"
+                              type="text"
+                              value=""
+                            />
+                          </div>
+                        </div>
+                        <div
+                          aria-hidden="true"
+                          class="options dropdown-menu"
+                          role="menu"
+                          tabindex="-1"
+                        >
+                          
+                          <button
+                            class="option option--focused dropdown-item"
+                            role="menuitem"
+                            tabindex="0"
+                            type="button"
+                          >
+                            <span>
+                              <div
+                                class="AgentLabel"
+                              >
+                                <span
+                                  class="material-icons md-2"
+                                >
+                                  account_circle
+                                </span>
+                                <span
+                                  class="name"
+                                  style="max-width: 100px;"
+                                >
+                                  Random agent
+                                </span>
+                              </div>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="rich-textarea-wrapper"
+                  >
+                    <div
+                      class="editor-wrapper"
+                    >
+                      <div
+                        class="withMinHeight"
+                      >
+                        <div
+                          class="DraftEditor-root"
+                        >
+                          <div
+                            class="DraftEditor-editorContainer"
+                          >
+                            <div
+                              aria-autocomplete="list"
+                              aria-describedby="placeholder-someRandomKey"
+                              aria-expanded="true"
+                              class="notranslate public-DraftEditor-content"
+                              contenteditable="true"
+                              role="combobox"
+                              spellcheck="false"
+                              style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                            >
+                              <div
+                                data-contents="true"
+                              >
+                                <div
+                                  class=""
+                                  data-block="true"
+                                  data-editor="someRandomKey"
+                                  data-offset-key="someRandomKey-0-0"
+                                >
+                                  <div
+                                    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                    data-offset-key="someRandomKey-0-0"
+                                  >
+                                    <span
+                                      data-offset-key="someRandomKey-0-0"
+                                    >
+                                      <span
+                                        data-text="true"
+                                      >
+                                        My little message
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <input
+                          required=""
+                          style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
+                          value="My little message"
+                        />
+                      </div>
+                    </div>
+                    <div
+                      class="editor-toolbar page"
+                    >
+                      <div
+                        class="actionsWrapper"
+                      >
+                        <div
+                          class="actions"
+                        >
+                          <button
+                            class="wrapper button wrapper small fill secondary small"
+                            title="Bold"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              format_bold
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small"
+                            title="Italic"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              format_italic
+                            </i>
+                          </button>
+                          <button
+                            class="wrapper button wrapper small fill secondary small"
+                            title="Underline"
+                            type="button"
+                          >
+                            <i
+                              class="material-icons icon"
+                            >
+                              format_underline
+                            </i>
+                          </button>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="wrapper button wrapper small fill secondary small"
+                              title="Insert link"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                link
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
+                            />
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="wrapper button wrapper small fill secondary small"
+                              title="Insert image"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                insert_photo
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
+                            />
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="wrapper button wrapper small fill secondary small"
+                              title="Insert emoji"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                insert_emoticon
+                              </i>
+                            </button>
+                            <div
+                              class="p-0 d-flex popover top-left hidden"
+                            />
+                          </span>
+                        </div>
+                        <div
+                          class="hoverOverlay"
+                        >
+                          Add files as attachments
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  class="btn btn-success"
+                >
+                  Save
+                </button>
+                <button
+                  class="wrapper float-right fill destructive medium"
+                  id="confirm-42"
+                  type="button"
+                >
+                  <span
+                    class="wrapper"
+                  >
+                    <i
+                      class="material-icons icon isLeft medium"
+                    >
+                      delete
+                    </i>
+                    Delete campaign
+                  </span>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div
+            class="column preview col"
+          >
+            <div
+              class="preview"
+            >
+              <div
+                class="titlebar"
+              />
+              <div
+                class="campaign"
+              >
+                <div
+                  class="header"
+                >
+                  <div
+                    class="author"
+                  >
+                    <div
+                      class="component hasImage authorAvatar"
+                      style="width: 50px; height: 50px;"
+                    >
+                      <div
+                        class="initials"
+                        style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
+                      >
+                        <span
+                          style="line-height: 52px;"
+                        >
+                          J
+                        </span>
+                      </div>
+                      <img
+                        alt="avatar"
+                        class="gravatar"
+                        src="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="message"
+                  >
+                    <div
+                      class="authorName"
+                    >
+                      <b>
+                        John
+                      </b>
+                    </div>
+                    <div
+                      class="messageText"
+                    >
+                      <div>
+                        My little message
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="poweredBy"
+                >
+                  <div>
+                    <span>
+                      Powered by
+                    </span>
+                    <img
+                      alt="powered-by"
+                      src="test-file-stub"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="footer"
+                >
+                  Click to reply
+                </div>
+              </div>
+              <div
+                class="button bottom-right"
+                style="background-color: rgb(254, 254, 254);"
+              >
+                <img
+                  alt="Close icon"
+                  class="icon"
+                  src="test-file-stub"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatCampaignDetail/> render() should display the campaign correctly when updating it and strip the html 1`] = `
 <div>
   <div
     class="full-width"
@@ -1109,925 +1814,166 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                     </div>
                   </div>
                   <div
-                    class="InputField required form-group"
-                    color=""
+                    class="rich-textarea-wrapper"
                   >
                     <div
-                      class=""
+                      class="editor-wrapper"
                     >
                       <div
-                        class="InputField required form-group"
-                        color=""
+                        class="withMinHeight"
                       >
                         <div
-                          class=""
+                          class="DraftEditor-root"
                         >
                           <div
-                            class="rich-textarea-wrapper"
+                            class="DraftEditor-editorContainer"
                           >
                             <div
-                              class="editor-wrapper"
+                              aria-autocomplete="list"
+                              aria-describedby="placeholder-someRandomKey"
+                              aria-expanded="true"
+                              class="notranslate public-DraftEditor-content"
+                              contenteditable="true"
+                              role="combobox"
+                              spellcheck="false"
+                              style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                             >
                               <div
-                                class="withMinHeight"
+                                data-contents="true"
                               >
                                 <div
-                                  class="DraftEditor-root"
+                                  class=""
+                                  data-block="true"
+                                  data-editor="someRandomKey"
+                                  data-offset-key="someRandomKey-0-0"
                                 >
                                   <div
-                                    class="DraftEditor-editorContainer"
+                                    class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                    data-offset-key="someRandomKey-0-0"
                                   >
-                                    <div
-                                      aria-autocomplete="list"
-                                      aria-describedby="placeholder-someRandomKey"
-                                      aria-expanded="true"
-                                      class="notranslate public-DraftEditor-content"
-                                      contenteditable="true"
-                                      role="combobox"
-                                      spellcheck="false"
-                                      style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                                    <span
+                                      data-offset-key="someRandomKey-0-0"
                                     >
-                                      <div
-                                        data-contents="true"
+                                      <span
+                                        data-text="true"
                                       >
-                                        <div
-                                          class=""
-                                          data-block="true"
-                                          data-editor="someRandomKey"
-                                          data-offset-key="someRandomKey-0-0"
-                                        >
-                                          <div
-                                            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                                            data-offset-key="someRandomKey-0-0"
-                                          >
-                                            <span
-                                              data-offset-key="someRandomKey-0-0"
-                                            >
-                                              <span
-                                                data-text="true"
-                                              >
-                                                My little message
-                                              </span>
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
+                                        My little message
+                                      </span>
+                                    </span>
                                   </div>
                                 </div>
-                                <input
-                                  required=""
-                                  style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
-                                  value="My little message"
-                                />
-                              </div>
-                            </div>
-                            <div
-                              class="editor-toolbar page"
-                            >
-                              <div
-                                class="actionsWrapper"
-                              >
-                                <div
-                                  class="actions"
-                                >
-                                  <button
-                                    class="wrapper button wrapper small fill secondary small"
-                                    title="Bold"
-                                    type="button"
-                                  >
-                                    <i
-                                      class="material-icons icon"
-                                    >
-                                      format_bold
-                                    </i>
-                                  </button>
-                                  <button
-                                    class="wrapper button wrapper small fill secondary small"
-                                    title="Italic"
-                                    type="button"
-                                  >
-                                    <i
-                                      class="material-icons icon"
-                                    >
-                                      format_italic
-                                    </i>
-                                  </button>
-                                  <button
-                                    class="wrapper button wrapper small fill secondary small"
-                                    title="Underline"
-                                    type="button"
-                                  >
-                                    <i
-                                      class="material-icons icon"
-                                    >
-                                      format_underline
-                                    </i>
-                                  </button>
-                                  <span
-                                    class="popoverWrapper"
-                                  >
-                                    <button
-                                      class="wrapper button wrapper small fill secondary small"
-                                      title="Insert link"
-                                      type="button"
-                                    >
-                                      <i
-                                        class="material-icons icon"
-                                      >
-                                        link
-                                      </i>
-                                    </button>
-                                    <div
-                                      class="popover top-left hidden"
-                                    />
-                                  </span>
-                                  <span
-                                    class="popoverWrapper"
-                                  >
-                                    <button
-                                      class="wrapper button wrapper small fill secondary small"
-                                      title="Insert image"
-                                      type="button"
-                                    >
-                                      <i
-                                        class="material-icons icon"
-                                      >
-                                        insert_photo
-                                      </i>
-                                    </button>
-                                    <div
-                                      class="popover top-left hidden"
-                                    />
-                                  </span>
-                                  <span
-                                    class="popoverWrapper"
-                                  >
-                                    <button
-                                      class="wrapper button wrapper small fill secondary small"
-                                      title="Insert emoji"
-                                      type="button"
-                                    >
-                                      <i
-                                        class="material-icons icon"
-                                      >
-                                        insert_emoticon
-                                      </i>
-                                    </button>
-                                    <div
-                                      class="p-0 d-flex popover top-left hidden"
-                                    />
-                                  </span>
-                                </div>
-                                <div
-                                  class="hoverOverlay"
-                                >
-                                  Add files as attachments
-                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
+                        <input
+                          required=""
+                          style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
+                          value="My little message"
+                        />
                       </div>
                     </div>
-                  </div>
-                </div>
-                <button
-                  class="btn btn-success"
-                >
-                  Save
-                </button>
-                <button
-                  class="wrapper float-right fill destructive medium"
-                  id="confirm-42"
-                  type="button"
-                >
-                  <span
-                    class="wrapper"
-                  >
-                    <i
-                      class="material-icons icon isLeft medium"
-                    >
-                      delete
-                    </i>
-                    Delete campaign
-                  </span>
-                </button>
-              </form>
-            </div>
-          </div>
-          <div
-            class="column preview col"
-          >
-            <div
-              class="preview"
-            >
-              <div
-                class="titlebar"
-              />
-              <div
-                class="campaign"
-              >
-                <div
-                  class="header"
-                >
-                  <div
-                    class="author"
-                  >
                     <div
-                      class="component hasImage authorAvatar"
-                      style="width: 50px; height: 50px;"
+                      class="editor-toolbar page"
                     >
                       <div
-                        class="initials"
-                        style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
-                      >
-                        <span
-                          style="line-height: 52px;"
-                        >
-                          J
-                        </span>
-                      </div>
-                      <img
-                        alt="avatar"
-                        class="gravatar"
-                        src="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="message"
-                  >
-                    <div
-                      class="authorName"
-                    >
-                      <b>
-                        John
-                      </b>
-                    </div>
-                    <div
-                      class="messageText"
-                    >
-                      <div>
-                        My little message
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="poweredBy"
-                >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
-                    />
-                  </div>
-                </div>
-                <div
-                  class="footer"
-                >
-                  Click to reply
-                </div>
-              </div>
-              <div
-                class="button bottom-right"
-                style="background-color: rgb(254, 254, 254);"
-              >
-                <img
-                  alt="Close icon"
-                  class="icon"
-                  src="test-file-stub"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<GorgiasChatCampaignDetail/> render() should display the campaign correctly when updating it and strip the html 1`] = `
-<div>
-  <div
-    class="full-width"
-  >
-    <div
-      class="page-header pageHeader"
-    >
-      <nav
-        aria-label="breadcrumb"
-        class=""
-      >
-        <ol
-          class="breadcrumb"
-        >
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations"
-            >
-              Integrations
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            <a
-              to="/app/settings/integrations/gorgias_chat/1"
-            >
-              Chat
-            </a>
-          </li>
-          <li
-            class="breadcrumb-item"
-          >
-            My new chat
-          </li>
-        </ol>
-      </nav>
-    </div>
-    <nav
-      class="navbar navbar"
-    >
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/1/campaigns"
-      >
-        Campaigns
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/1/quick_replies"
-      >
-        Quick replies
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/1/appearance"
-      >
-        Appearance
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/1/preferences"
-      >
-        Preferences
-      </a>
-      <a
-        activeclassname="active"
-        class="link"
-        to="/app/settings/integrations/gorgias_chat/1/installation"
-      >
-        Installation
-      </a>
-    </nav>
-    <div>
-      <div
-        class="backWrapper"
-      >
-        <a
-          class="d-flex"
-          to="/app/settings/integrations/gorgias_chat/1/campaigns"
-        >
-          <img
-            alt="Back to campaigns"
-            src="test-file-stub"
-          />
-          Edit Campaign
-        </a>
-      </div>
-      <div
-        class="pageContainer container-fluid"
-      >
-        <div
-          class="row row"
-        >
-          <div
-            class="content col"
-          >
-            <div
-              class="formWrapper"
-            >
-              <form
-                class=""
-              >
-                <div
-                  class="mb-4"
-                >
-                  <div
-                    class="InputField required form-group"
-                    color=""
-                  >
-                    <label
-                      class="control-label"
-                      for="id-name"
-                    >
-                      Campaign name
-                    </label>
-                    <div
-                      class=""
-                    >
-                      <input
-                        class="field form-control"
-                        id="id-name"
-                        placeholder="My new campaign"
-                        required=""
-                        type="text"
-                        value="My little campaign"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <h5
-                  class="section"
-                >
-                  Choose your audience
-                </h5>
-                <div
-                  class="mb-4"
-                >
-                  <div
-                    class="triggerWrapper"
-                  >
-                    <div
-                      class="btn-frozen btn btn-secondary"
-                    >
-                      Current URL
-                    </div>
-                    <div>
-                      <div
-                        class="dropdown"
+                        class="actionsWrapper"
                       >
                         <div
-                          aria-expanded="false"
-                          aria-haspopup="true"
-                          class=""
-                          data-toggle="dropdown"
+                          class="actions"
                         >
-                          <div
-                            class="select dropdown-toggle"
+                          <button
+                            class="wrapper button wrapper small fill secondary small"
+                            title="Bold"
+                            type="button"
                           >
-                            <span
-                              class="label"
-                              style="min-width: 10px; opacity: 1;"
+                            <i
+                              class="material-icons icon"
                             >
-                              contains
-                            </span>
-                            <input
-                              autocomplete="chrome-off"
-                              class="input"
-                              style="min-width: 10px;"
-                              type="text"
-                              value=""
-                            />
-                          </div>
-                        </div>
-                        <div
-                          aria-hidden="true"
-                          class="options dropdown-menu"
-                          role="menu"
-                          tabindex="-1"
-                        >
-                          
-                          <button
-                            class="option option--focused dropdown-item"
-                            role="menuitem"
-                            tabindex="0"
-                            type="button"
-                          >
-                            <span>
-                              is
-                            </span>
+                              format_bold
+                            </i>
                           </button>
                           <button
-                            class="option dropdown-item"
-                            role="menuitem"
-                            tabindex="0"
+                            class="wrapper button wrapper small fill secondary small"
+                            title="Italic"
                             type="button"
                           >
-                            <span>
-                              is not
-                            </span>
+                            <i
+                              class="material-icons icon"
+                            >
+                              format_italic
+                            </i>
                           </button>
                           <button
-                            class="option dropdown-item"
-                            role="menuitem"
-                            tabindex="0"
+                            class="wrapper button wrapper small fill secondary small"
+                            title="Underline"
                             type="button"
                           >
-                            <span>
-                              does not contain
-                            </span>
+                            <i
+                              class="material-icons icon"
+                            >
+                              format_underline
+                            </i>
                           </button>
-                          <button
-                            class="option dropdown-item"
-                            role="menuitem"
-                            tabindex="0"
-                            type="button"
-                          >
-                            <span>
-                              starts with
-                            </span>
-                          </button>
-                          <button
-                            class="option dropdown-item"
-                            role="menuitem"
-                            tabindex="0"
-                            type="button"
-                          >
-                            <span>
-                              ends with
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="InputField flex-grow-1 mb-0 last form-group"
-                      color=""
-                    >
-                      <div
-                        class=""
-                      >
-                        <input
-                          class="field form-control"
-                          id="id-value"
-                          type="text"
-                          value="gorgias"
-                        />
-                      </div>
-                    </div>
-                    <div
-                      class="closeWrapper"
-                    >
-                      <i
-                        class="material-icons md-2 text-danger"
-                      >
-                        clear
-                      </i>
-                    </div>
-                  </div>
-                  <div
-                    class="triggerWrapper"
-                  >
-                    <div
-                      class="btn-frozen btn btn-warning"
-                    >
-                      AND
-                    </div>
-                    <div
-                      class="btn-frozen btn btn-secondary"
-                    >
-                      Time spent on page
-                    </div>
-                    <div
-                      class="fixedOperator"
-                    >
-                      is greater than
-                    </div>
-                    <div
-                      class="InputField flex-grow-1 mb-0 last form-group"
-                      color=""
-                    >
-                      <div
-                        class="input-group"
-                      >
-                        <input
-                          class="field form-control"
-                          id="id-input-4"
-                          step="1"
-                          type="number"
-                          value="42"
-                        />
-                        <span
-                          class="input-group-append"
-                        >
                           <span
-                            class="input-group-text"
+                            class="popoverWrapper"
                           >
-                            seconds
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-                    <div
-                      class="closeWrapper"
-                    >
-                      <i
-                        class="material-icons md-2 text-danger"
-                      >
-                        clear
-                      </i>
-                    </div>
-                  </div>
-                  <div
-                    class="addTriggerButton dropdown"
-                  >
-                    <button
-                      aria-expanded="false"
-                      aria-haspopup="true"
-                      class="mr-2 dropdown-toggle btn btn-secondary"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons mr-2"
-                      >
-                        add
-                      </i>
-                      Add condition
-                    </button>
-                    <div
-                      aria-hidden="true"
-                      class="dropdown-menu"
-                      role="menu"
-                      tabindex="-1"
-                    >
-                      <button
-                        class="dropdown-item"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        Current URL
-                      </button>
-                      <button
-                        class="dropdown-item"
-                        role="menuitem"
-                        tabindex="0"
-                        type="button"
-                      >
-                        Time spent on page
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <h5
-                  class="section"
-                >
-                  Write your message
-                </h5>
-                <div
-                  class="mb-4"
-                >
-                  <div
-                    class="mb-2 authorWrapper"
-                  >
-                    <span>
-                      From: 
-                    </span>
-                    <div>
-                      <div
-                        class="dropdown"
-                      >
-                        <div
-                          aria-expanded="false"
-                          aria-haspopup="true"
-                          class="authorInput"
-                          data-toggle="dropdown"
-                        >
-                          <div
-                            class="select dropdown-toggle"
-                          >
-                            <span
-                              class="label placeholder"
-                              style="min-width: 10px; opacity: 1;"
+                            <button
+                              class="wrapper button wrapper small fill secondary small"
+                              title="Insert link"
+                              type="button"
                             >
-                              Select an option
-                            </span>
-                            <input
-                              autocomplete="chrome-off"
-                              class="input"
-                              style="min-width: 10px;"
-                              type="text"
-                              value=""
+                              <i
+                                class="material-icons icon"
+                              >
+                                link
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
                             />
-                          </div>
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="wrapper button wrapper small fill secondary small"
+                              title="Insert image"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                insert_photo
+                              </i>
+                            </button>
+                            <div
+                              class="popover top-left hidden"
+                            />
+                          </span>
+                          <span
+                            class="popoverWrapper"
+                          >
+                            <button
+                              class="wrapper button wrapper small fill secondary small"
+                              title="Insert emoji"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons icon"
+                              >
+                                insert_emoticon
+                              </i>
+                            </button>
+                            <div
+                              class="p-0 d-flex popover top-left hidden"
+                            />
+                          </span>
                         </div>
                         <div
-                          aria-hidden="true"
-                          class="options dropdown-menu"
-                          role="menu"
-                          tabindex="-1"
+                          class="hoverOverlay"
                         >
-                          
-                          <button
-                            class="option option--focused dropdown-item"
-                            role="menuitem"
-                            tabindex="0"
-                            type="button"
-                          >
-                            <span>
-                              <div
-                                class="AgentLabel"
-                              >
-                                <span
-                                  class="material-icons md-2"
-                                >
-                                  account_circle
-                                </span>
-                                <span
-                                  class="name"
-                                  style="max-width: 100px;"
-                                >
-                                  Random agent
-                                </span>
-                              </div>
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="InputField required form-group"
-                    color=""
-                  >
-                    <div
-                      class=""
-                    >
-                      <div
-                        class="InputField required form-group"
-                        color=""
-                      >
-                        <div
-                          class=""
-                        >
-                          <div
-                            class="rich-textarea-wrapper"
-                          >
-                            <div
-                              class="editor-wrapper"
-                            >
-                              <div
-                                class="withMinHeight"
-                              >
-                                <div
-                                  class="DraftEditor-root"
-                                >
-                                  <div
-                                    class="DraftEditor-editorContainer"
-                                  >
-                                    <div
-                                      aria-autocomplete="list"
-                                      aria-describedby="placeholder-someRandomKey"
-                                      aria-expanded="true"
-                                      class="notranslate public-DraftEditor-content"
-                                      contenteditable="true"
-                                      role="combobox"
-                                      spellcheck="false"
-                                      style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
-                                    >
-                                      <div
-                                        data-contents="true"
-                                      >
-                                        <div
-                                          class=""
-                                          data-block="true"
-                                          data-editor="someRandomKey"
-                                          data-offset-key="someRandomKey-0-0"
-                                        >
-                                          <div
-                                            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                                            data-offset-key="someRandomKey-0-0"
-                                          >
-                                            <span
-                                              data-offset-key="someRandomKey-0-0"
-                                            >
-                                              <span
-                                                data-text="true"
-                                              >
-                                                My little message
-                                              </span>
-                                            </span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <input
-                                  required=""
-                                  style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
-                                  value="My little message"
-                                />
-                              </div>
-                            </div>
-                            <div
-                              class="editor-toolbar page"
-                            >
-                              <div
-                                class="actionsWrapper"
-                              >
-                                <div
-                                  class="actions"
-                                >
-                                  <button
-                                    class="wrapper button wrapper small fill secondary small"
-                                    title="Bold"
-                                    type="button"
-                                  >
-                                    <i
-                                      class="material-icons icon"
-                                    >
-                                      format_bold
-                                    </i>
-                                  </button>
-                                  <button
-                                    class="wrapper button wrapper small fill secondary small"
-                                    title="Italic"
-                                    type="button"
-                                  >
-                                    <i
-                                      class="material-icons icon"
-                                    >
-                                      format_italic
-                                    </i>
-                                  </button>
-                                  <button
-                                    class="wrapper button wrapper small fill secondary small"
-                                    title="Underline"
-                                    type="button"
-                                  >
-                                    <i
-                                      class="material-icons icon"
-                                    >
-                                      format_underline
-                                    </i>
-                                  </button>
-                                  <span
-                                    class="popoverWrapper"
-                                  >
-                                    <button
-                                      class="wrapper button wrapper small fill secondary small"
-                                      title="Insert link"
-                                      type="button"
-                                    >
-                                      <i
-                                        class="material-icons icon"
-                                      >
-                                        link
-                                      </i>
-                                    </button>
-                                    <div
-                                      class="popover top-left hidden"
-                                    />
-                                  </span>
-                                  <span
-                                    class="popoverWrapper"
-                                  >
-                                    <button
-                                      class="wrapper button wrapper small fill secondary small"
-                                      title="Insert image"
-                                      type="button"
-                                    >
-                                      <i
-                                        class="material-icons icon"
-                                      >
-                                        insert_photo
-                                      </i>
-                                    </button>
-                                    <div
-                                      class="popover top-left hidden"
-                                    />
-                                  </span>
-                                  <span
-                                    class="popoverWrapper"
-                                  >
-                                    <button
-                                      class="wrapper button wrapper small fill secondary small"
-                                      title="Insert emoji"
-                                      type="button"
-                                    >
-                                      <i
-                                        class="material-icons icon"
-                                      >
-                                        insert_emoticon
-                                      </i>
-                                    </button>
-                                    <div
-                                      class="p-0 d-flex popover top-left hidden"
-                                    />
-                                  </span>
-                                </div>
-                                <div
-                                  class="hoverOverlay"
-                                >
-                                  Add files as attachments
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                          Add files as attachments
                         </div>
                       </div>
                     </div>

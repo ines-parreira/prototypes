@@ -23,7 +23,7 @@ import {
     getFileTooLargeError,
     getMaxAttachmentSize,
 } from '../../../../../utils/file'
-import RichField from '../../../../common/forms/RichField/RichField'
+import DEPRECATED_RichField from '../../../../common/forms/RichField/DEPRECATED_RichField'
 import {getContext} from '../../../../../state/prediction/selectors'
 import {canAddAttachments} from '../../../../../business/ticket'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
@@ -37,7 +37,7 @@ import css from './TicketReplyEditor.less'
 type Props = {
     applyMacro: (macro: Map<any, any>) => void
     macros: List<any>
-    richAreaRef: (ref: RichField | null) => void
+    richAreaRef: (ref: DEPRECATED_RichField | null) => void
     shouldDisplayQuickReply: boolean
     ticket: Map<any, any>
 } & ConnectedProps<typeof connector>
@@ -68,7 +68,7 @@ type State = {
 }
 
 export class TicketReplyEditorContainer extends Component<Props, State> {
-    richArea: Maybe<RichField>
+    richArea: Maybe<DEPRECATED_RichField>
 
     static defaultProps: Pick<Props, 'richAreaRef' | 'attachments'> = {
         richAreaRef: _noop,
@@ -379,7 +379,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
 
         return (
             <div className={css.component}>
-                <RichField
+                <DEPRECATED_RichField
                     ref={(richArea) => {
                         this.richArea = richArea
                         richAreaRef(richArea)

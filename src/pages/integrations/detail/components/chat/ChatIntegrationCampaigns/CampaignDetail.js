@@ -24,7 +24,7 @@ import css from './CampaignDetail.less'
 import ChatIntegrationNavigation from 'pages/integrations/detail/components/chat/ChatIntegrationNavigation.tsx'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField.tsx'
-import RichField from 'pages/common/forms/RichField/RichField.tsx'
+import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField.tsx'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import PageHeader from 'pages/common/components/PageHeader.tsx'
@@ -540,9 +540,7 @@ export class CampaignForm extends React.Component {
                                     />
                                 </div>
                                 {this.isInitialized && (
-                                    <RichField
-                                        type="text"
-                                        rows="8"
+                                    <DEPRECATED_RichField
                                         value={{html: message.get('html')}}
                                         onChange={(value) => {
                                             const content =
@@ -568,7 +566,7 @@ export class CampaignForm extends React.Component {
                                             'EMOJI',
                                         ]}
                                         placeholder={'Write your message'}
-                                        required
+                                        isRequired
                                     />
                                 )}
                             </div>

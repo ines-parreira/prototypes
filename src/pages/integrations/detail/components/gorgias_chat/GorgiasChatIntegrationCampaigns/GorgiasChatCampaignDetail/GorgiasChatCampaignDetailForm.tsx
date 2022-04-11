@@ -18,7 +18,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import RichField from 'pages/common/forms/RichField/RichField'
+import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import CampaignPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationCampaigns/CampaignPreview'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -411,9 +411,7 @@ export const GorgiasChatCampaignDetailForm = ({
                                 />
                             </div>
                             {stateInitialized && (
-                                <RichField
-                                    type="text"
-                                    rows="8"
+                                <DEPRECATED_RichField
                                     value={{
                                         html: message.get('html'),
                                     }}
@@ -435,7 +433,7 @@ export const GorgiasChatCampaignDetailForm = ({
                                         }))
                                     }}
                                     placeholder={'Write your message'}
-                                    required
+                                    isRequired
                                 />
                             )}
                         </div>

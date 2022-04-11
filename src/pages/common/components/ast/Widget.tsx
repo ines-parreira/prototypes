@@ -228,13 +228,11 @@ export class Widget extends Component<Props, State> {
         return (
             <RichFieldWithVariables
                 allowExternalChanges
-                type="text"
-                rows="8"
                 label={config.name as string}
                 value={value}
                 onChange={this._onRichFieldChange as any}
                 placeholder={(config.placeholder as string) || ''}
-                required={(config.required as boolean) || false}
+                isRequired={(config.required as boolean) || false}
                 variableTypes={variableTypes}
             />
         )

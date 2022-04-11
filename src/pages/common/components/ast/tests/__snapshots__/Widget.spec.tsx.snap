@@ -95,13 +95,11 @@ exports[`ast Widget should render InputField (eq operator) 1`] = `
 `;
 
 exports[`ast Widget should render RichFieldWithVariables 1`] = `
-<RichFieldWithVariables
+<DEPRECATED_RichFieldWithVariables
   allowExternalChanges={true}
+  isRequired={false}
   onChange={[Function]}
   placeholder=""
-  required={false}
-  rows="8"
-  type="text"
   value={
     Object {
       "html": "hello my good lad",

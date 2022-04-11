@@ -13,7 +13,7 @@ import {insertText} from 'utils'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
 import {convertToHTML, getPlainText} from 'utils/editor'
 import {getVariables} from 'config/ticket'
-import RichField from 'pages/common/forms/RichField/RichField'
+import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import useAppSelector from 'hooks/useAppSelector'
@@ -34,7 +34,7 @@ export default function AddInternalNoteAction({
     renderVariables = true,
 }: Props) {
     const hasIntegrationOfTypes = useAppSelector(makeHasIntegrationOfTypes)
-    const richArea = useRef<RichField>(null)
+    const richArea = useRef<DEPRECATED_RichField>(null)
 
     const _insertText = (text: string) => {
         if (richArea && richArea.current) {
@@ -118,7 +118,7 @@ export default function AddInternalNoteAction({
                     {_renderInsertVariable()}
                 </div>
             )}
-            <RichField
+            <DEPRECATED_RichField
                 ref={richArea}
                 value={{
                     text: action.getIn(['arguments', 'body_text'], ''),

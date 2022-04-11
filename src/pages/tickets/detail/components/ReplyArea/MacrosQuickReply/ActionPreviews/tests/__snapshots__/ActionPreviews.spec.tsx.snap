@@ -12,176 +12,158 @@ exports[`<ActionPreviews /> should render both set text action and other type of
       class="macroData"
     >
       <div
-        class="InputField form-group"
-        color=""
+        class="rich-textarea-wrapper display-only"
       >
         <div
-          class=""
+          class="editor-wrapper"
         >
           <div
-            class="InputField form-group"
-            color=""
+            class="withMinHeight"
           >
             <div
-              class=""
+              class="DraftEditor-root"
             >
               <div
-                class="rich-textarea-wrapper display-only"
+                class="DraftEditor-editorContainer"
               >
                 <div
-                  class="editor-wrapper"
+                  aria-describedby="placeholder-42"
+                  class="public-DraftEditor-content"
+                  contenteditable="false"
+                  spellcheck="false"
+                  style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                 >
                   <div
-                    class="withMinHeight"
+                    data-contents="true"
                   >
                     <div
-                      class="DraftEditor-root"
+                      class=""
+                      data-block="true"
+                      data-editor="42"
+                      data-offset-key="42-0-0"
                     >
                       <div
-                        class="DraftEditor-editorContainer"
+                        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                        data-offset-key="42-0-0"
                       >
-                        <div
-                          aria-describedby="placeholder-42"
-                          class="public-DraftEditor-content"
-                          contenteditable="false"
-                          spellcheck="false"
-                          style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                        <span
+                          data-offset-key="42-0-0"
                         >
-                          <div
-                            data-contents="true"
+                          <span
+                            data-text="true"
                           >
-                            <div
-                              class=""
-                              data-block="true"
-                              data-editor="42"
-                              data-offset-key="42-0-0"
-                            >
-                              <div
-                                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                                data-offset-key="42-0-0"
-                              >
-                                <span
-                                  data-offset-key="42-0-0"
-                                >
-                                  <span
-                                    data-text="true"
-                                  >
-                                    Thanks for placing an order with our company
-                                  </span>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                            Thanks for placing an order with our company
+                          </span>
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="editor-toolbar page"
-                >
-                  <div
-                    class="actionsWrapper"
-                  >
-                    <div
-                      class="actions"
-                    >
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        title="Bold"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          format_bold
-                        </i>
-                      </button>
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        title="Italic"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          format_italic
-                        </i>
-                      </button>
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        title="Underline"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          format_underline
-                        </i>
-                      </button>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          title="Insert link"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            link
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          title="Insert image"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_photo
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          title="Insert emoji"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_emoticon
-                          </i>
-                        </button>
-                        <div
-                          class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
-                    </div>
-                  </div>
-                </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="editor-toolbar page"
+        >
+          <div
+            class="actionsWrapper"
+          >
+            <div
+              class="actions"
+            >
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                title="Bold"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  format_bold
+                </i>
+              </button>
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                title="Italic"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  format_italic
+                </i>
+              </button>
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                title="Underline"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  format_underline
+                </i>
+              </button>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  title="Insert link"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    link
+                  </i>
+                </button>
+                <div
+                  class="popover top-left hidden"
+                />
+              </span>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  title="Insert image"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    insert_photo
+                  </i>
+                </button>
+                <div
+                  class="popover top-left hidden"
+                />
+              </span>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  title="Insert emoji"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    insert_emoticon
+                  </i>
+                </button>
+                <div
+                  class="p-0 d-flex popover top-left hidden"
+                />
+              </span>
+            </div>
+            <div
+              class="hoverOverlay"
+            >
+              Add files as attachments
             </div>
           </div>
         </div>
@@ -228,176 +210,158 @@ exports[`<ActionPreviews /> should render set text action  1`] = `
       class="macroData"
     >
       <div
-        class="InputField form-group"
-        color=""
+        class="rich-textarea-wrapper display-only"
       >
         <div
-          class=""
+          class="editor-wrapper"
         >
           <div
-            class="InputField form-group"
-            color=""
+            class="withMinHeight"
           >
             <div
-              class=""
+              class="DraftEditor-root"
             >
               <div
-                class="rich-textarea-wrapper display-only"
+                class="DraftEditor-editorContainer"
               >
                 <div
-                  class="editor-wrapper"
+                  aria-describedby="placeholder-42"
+                  class="public-DraftEditor-content"
+                  contenteditable="false"
+                  spellcheck="false"
+                  style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                 >
                   <div
-                    class="withMinHeight"
+                    data-contents="true"
                   >
                     <div
-                      class="DraftEditor-root"
+                      class=""
+                      data-block="true"
+                      data-editor="42"
+                      data-offset-key="42-0-0"
                     >
                       <div
-                        class="DraftEditor-editorContainer"
+                        class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                        data-offset-key="42-0-0"
                       >
-                        <div
-                          aria-describedby="placeholder-42"
-                          class="public-DraftEditor-content"
-                          contenteditable="false"
-                          spellcheck="false"
-                          style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                        <span
+                          data-offset-key="42-0-0"
                         >
-                          <div
-                            data-contents="true"
+                          <span
+                            data-text="true"
                           >
-                            <div
-                              class=""
-                              data-block="true"
-                              data-editor="42"
-                              data-offset-key="42-0-0"
-                            >
-                              <div
-                                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                                data-offset-key="42-0-0"
-                              >
-                                <span
-                                  data-offset-key="42-0-0"
-                                >
-                                  <span
-                                    data-text="true"
-                                  >
-                                    Thanks for placing an order with our company
-                                  </span>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
+                            Thanks for placing an order with our company
+                          </span>
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="editor-toolbar page"
-                >
-                  <div
-                    class="actionsWrapper"
-                  >
-                    <div
-                      class="actions"
-                    >
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        title="Bold"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          format_bold
-                        </i>
-                      </button>
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        title="Italic"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          format_italic
-                        </i>
-                      </button>
-                      <button
-                        class="wrapper button wrapper small fill secondary small"
-                        title="Underline"
-                        type="button"
-                      >
-                        <i
-                          class="material-icons icon"
-                        >
-                          format_underline
-                        </i>
-                      </button>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          title="Insert link"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            link
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          title="Insert image"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_photo
-                          </i>
-                        </button>
-                        <div
-                          class="popover top-left hidden"
-                        />
-                      </span>
-                      <span
-                        class="popoverWrapper"
-                      >
-                        <button
-                          class="wrapper button wrapper small fill secondary small"
-                          title="Insert emoji"
-                          type="button"
-                        >
-                          <i
-                            class="material-icons icon"
-                          >
-                            insert_emoticon
-                          </i>
-                        </button>
-                        <div
-                          class="p-0 d-flex popover top-left hidden"
-                        />
-                      </span>
-                    </div>
-                    <div
-                      class="hoverOverlay"
-                    >
-                      Add files as attachments
-                    </div>
-                  </div>
-                </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="editor-toolbar page"
+        >
+          <div
+            class="actionsWrapper"
+          >
+            <div
+              class="actions"
+            >
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                title="Bold"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  format_bold
+                </i>
+              </button>
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                title="Italic"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  format_italic
+                </i>
+              </button>
+              <button
+                class="wrapper button wrapper small fill secondary small"
+                title="Underline"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  format_underline
+                </i>
+              </button>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  title="Insert link"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    link
+                  </i>
+                </button>
+                <div
+                  class="popover top-left hidden"
+                />
+              </span>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  title="Insert image"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    insert_photo
+                  </i>
+                </button>
+                <div
+                  class="popover top-left hidden"
+                />
+              </span>
+              <span
+                class="popoverWrapper"
+              >
+                <button
+                  class="wrapper button wrapper small fill secondary small"
+                  title="Insert emoji"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    insert_emoticon
+                  </i>
+                </button>
+                <div
+                  class="p-0 d-flex popover top-left hidden"
+                />
+              </span>
+            </div>
+            <div
+              class="hoverOverlay"
+            >
+              Add files as attachments
             </div>
           </div>
         </div>

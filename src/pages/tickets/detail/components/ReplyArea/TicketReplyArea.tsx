@@ -6,7 +6,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {ContentState} from 'draft-js'
 
 import {clearMacroBeforeApply} from 'business/macro'
-import RichField from 'pages/common/forms/RichField/RichField'
+import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import {
     fetchMacros,
     fetchMacrosParamsTypes,
@@ -55,7 +55,7 @@ type State = {
 }
 
 export class TicketReplyArea extends Component<Props, State> {
-    richArea: Maybe<RichField>
+    richArea: Maybe<DEPRECATED_RichField>
     macroInput?: HTMLInputElement | null
     cacheAdded = false
 

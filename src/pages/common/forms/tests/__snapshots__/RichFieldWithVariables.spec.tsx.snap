@@ -143,7 +143,6 @@ exports[`RichFieldWithVariables should render an input with variable dropdowns 1
   </div>
   <RichField
     onChange={[Function]}
-    type="text"
     value={
       Object {
         "html": "html",
