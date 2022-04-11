@@ -416,9 +416,7 @@ export class AuditLogEventContainer extends Component<Props> {
 
     render() {
         const {event, isLast, users, events} = this.props
-        const viaRule = isViaRuleEvent(event, events)
         const isRuleExecuted = isRuleExecutedType(event)
-
         const icon = this._getIcon()
         const content = this._getContent()
 
@@ -429,9 +427,6 @@ export class AuditLogEventContainer extends Component<Props> {
         const user = users.find(
             (user: Map<any, any>) => user.get('id') === event.get('user_id')
         ) as Map<any, any>
-        const shouldRenderViaRule = viaRule && !isRuleExecuted
-        const shouldRenderByUser =
-            !shouldRenderViaRule && user && !isRuleExecuted
 
         return (
             <div
@@ -444,12 +439,19 @@ export class AuditLogEventContainer extends Component<Props> {
                         {icon}
                         {content}
 
-                        {shouldRenderViaRule && <Filler>via rule</Filler>}
-
-                        {shouldRenderByUser && <Filler>by</Filler>}
-                        {shouldRenderByUser && (
-                            <AgentLabel name={user.get('name')} />
-                        )}
+                        {isRuleExecuted ? null : isViaRuleEvent(
+                              event,
+                              events
+                          ) ? (
+                            <Filler>via rule</Filler>
+                        ) : user ? (
+                            <>
+                                <Filler>by</Filler>
+                                <AgentLabel name={user.get('name')} />
+                            </>
+                        ) : !!event.getIn(['data', 'auto_assigned']) ? (
+                            <Filler>via Team auto-assignment</Filler>
+                        ) : null}
                     </div>
 
                     <DatetimeLabel

@@ -233,6 +233,26 @@ describe('<AuditLogEvent/>', () => {
                 expect(component).toMatchSnapshot()
             })
 
+            it('should render via team auto assignment when the event is auto assigned', () => {
+                const event = getEvent(
+                    TICKET_EVENT_TYPES.TicketAssigned,
+                    {
+                        assignee_user_id: 9,
+                        auto_assigned: true,
+                    },
+                    {user_id: null}
+                )
+                const component = shallow(
+                    <AuditLogEventContainer
+                        {...minProps}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                )
+
+                expect(component).toMatchSnapshot()
+            })
+
             it('when the customer has changed', () => {
                 const event = getEvent(
                     TICKET_EVENT_TYPES.TicketCustomerUpdated,

@@ -18,6 +18,7 @@ export type TicketAssignedEventData = {
 
 export type TicketTeamAssignedEventData = {
     assignee_team_id: number
+    auto_assigned?: boolean
 }
 
 export type TicketRuleExecutedEventData =
