@@ -24,6 +24,9 @@ store.dispatch = jest.fn()
 jest.mock('state/integrations/actions', () => ({
     updateOrCreateIntegration: jest.fn(),
 }))
+afterEach(() => {
+    jest.clearAllMocks()
+})
 
 describe('<SmsIntegrationCreate/>', () => {
     describe('render()', () => {
@@ -55,6 +58,29 @@ describe('<SmsIntegrationCreate/>', () => {
 
             fireEvent.change(getByLabelText('Integration title'), {
                 target: {value: 'My SMS integration'},
+            })
+
+            fireEvent.click(getByText('Add SMS integration'))
+
+            expect(updateOrCreateIntegration).toHaveBeenCalledWith(payload)
+            expect(store.dispatch).toHaveBeenCalledTimes(1)
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it("should prefill the title field using the phone number's name", () => {
+            const {container, getByText} = render(
+                <Provider store={store}>
+                    <SmsIntegrationCreate selectedPhoneNumberId={1} />
+                </Provider>
+            )
+
+            const payload = fromJS({
+                type: 'sms',
+                name: 'A Phone Number - SMS',
+                meta: {
+                    emoji: null,
+                    twilio_phone_number_id: 1,
+                },
             })
 
             fireEvent.click(getByText('Add SMS integration'))

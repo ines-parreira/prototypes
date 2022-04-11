@@ -12,16 +12,10 @@ import {
     Row,
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
-import {useAsyncFn} from 'react-use'
-
-import {notify} from 'state/notifications/actions'
-import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
-import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType} from 'models/integration/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {PhoneNumber} from 'models/phoneNumber/types'
-import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import PageHeader from 'pages/common/components/PageHeader'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
@@ -36,27 +30,6 @@ type Props = {
 }
 
 function SmsIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
-    const [, handleFetchPhoneNumbers] = useAsyncFn(async () => {
-        try {
-            const res = await fetchPhoneNumbers()
-            if (!res) {
-                return
-            }
-            dispatch(phoneNumbersFetched(res.data))
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch phone numbers',
-                    status: NotificationStatus.Error,
-                })
-            )
-        }
-    })
-
-    useEffect(() => {
-        void handleFetchPhoneNumbers()
-    }, [handleFetchPhoneNumbers])
-
     const phoneNumbers = useAppSelector(getPhoneNumbers)
     const [title, setTitle] = useState('')
     const [phoneNumber, setPhoneNumber] = useState<Maybe<PhoneNumber>>(null)
@@ -68,10 +41,17 @@ function SmsIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
         if (!selectedPhoneNumberId) {
             return
         }
-
         const selectedNumber = phoneNumbers[selectedPhoneNumberId]
-        setPhoneNumber(selectedNumber)
-    }, [phoneNumbers, selectedPhoneNumberId])
+        if (!selectedNumber) {
+            return
+        }
+        if (!phoneNumber) {
+            setPhoneNumber(selectedNumber)
+        }
+        if (!title) {
+            setTitle(`${selectedNumber.name} - SMS`)
+        }
+    }, [phoneNumbers, selectedPhoneNumberId, phoneNumber, title])
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {

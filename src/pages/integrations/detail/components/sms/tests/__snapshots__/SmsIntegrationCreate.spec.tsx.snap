@@ -1,5 +1,231 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<SmsIntegrationCreate/> render() should prefill the title field using the phone number's name 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/sms"
+          >
+            SMS
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Add SMS Integration
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-lg-6"
+      >
+        <form
+          class=""
+        >
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+              for="title"
+            >
+              Integration title
+            </label>
+            <div
+              class="container"
+            >
+              <span
+                class="inputGroup wrapper group horizontal"
+              >
+                <div
+                  class="picker emojiPicker"
+                >
+                  <span
+                    class="material-icons empty icon"
+                  >
+                    insert_emoticon
+                  </span>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    appendposition="right"
+                    class="input nested"
+                    id="title"
+                    name="title"
+                    placeholder="Ex: Company Support Line"
+                    required=""
+                    tabindex="0"
+                    type="text"
+                    value="A Phone Number - SMS"
+                  />
+                </div>
+              </span>
+            </div>
+          </div>
+          <div
+            class="form-group"
+          >
+            <label
+              class="control-label"
+              for="phoneNumber"
+            >
+              Phone Number
+            </label>
+            <div>
+              <div
+                class="dropdown"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <div
+                    class="select dropdown-toggle selectFullWidth"
+                  >
+                    <span
+                      class="label"
+                      style="min-width: 10px; opacity: 1;"
+                    >
+                      <span
+                        role="img"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+                      >
+                        🇺🇸
+                      </span>
+                       
+                      A Phone Number
+                       - 
+                      US
+                       (
+                      +1 415 111 2222
+                      )
+                    </span>
+                    <input
+                      autocomplete="chrome-off"
+                      class="input"
+                      id="phoneNumber"
+                      style="min-width: 10px;"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options optionsFullWidth dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  
+                  <button
+                    class="option option--focused dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <div
+                        class="createLabel"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          add
+                        </i>
+                        <span>
+                          Create phone number
+                        </span>
+                      </div>
+                    </span>
+                  </button>
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      <span
+                        role="img"
+                        style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle; margin-right: 5px;"
+                      >
+                        🇨🇦
+                      </span>
+                       
+                      Another Phone Number
+                       - 
+                      CA
+                       (
+                      +1 813 111 2223
+                      )
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <form
+              class=""
+            />
+          </div>
+          <button
+            class="wrapper mt-5 mb-5 fill primary medium isDisabled"
+            disabled=""
+            type="submit"
+          >
+            <div
+              class="spinner spinner-border"
+              role="status"
+            >
+              <span
+                class="sr-only"
+              >
+                Loading...
+              </span>
+            </div>
+            Add SMS integration
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<SmsIntegrationCreate/> render() should render 1`] = `
 <div
   class="full-width"
@@ -89,7 +315,7 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                     required=""
                     tabindex="0"
                     type="text"
-                    value=""
+                    value="A Phone Number - SMS"
                   />
                 </div>
               </span>
