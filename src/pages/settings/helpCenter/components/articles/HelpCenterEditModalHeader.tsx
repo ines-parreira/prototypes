@@ -1,6 +1,8 @@
 import React, {ChangeEvent, ReactChild, useEffect, useMemo, useRef} from 'react'
 
-import {LocaleCode} from '../../../../../models/helpCenter/types'
+import {Article, LocaleCode} from 'models/helpCenter/types'
+import IconButton from 'pages/common/components/button/IconButton'
+
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_TITLE_MAX_LENGTH,
@@ -18,7 +20,6 @@ import {
 import ArticleCategorySelect from './ArticleCategorySelect'
 
 import css from './HelpCenterEditModalHeader.less'
-
 export type Props = {
     title: string
     isFullscreen?: boolean
@@ -32,6 +33,7 @@ export type Props = {
         action: ActionType,
         currentOption: OptionItem
     ) => void
+    onCopyLinkToClipboard: (article: Article) => void
     toggleModalBtn?: ReactChild
     autoFocus?: boolean
     showCategorySelect?: boolean
@@ -47,6 +49,7 @@ export const HelpCenterEditModalHeader = ({
     onResize,
     onLanguageSelect,
     onArticleLanguageSelectActionClick,
+    onCopyLinkToClipboard,
     toggleModalBtn,
     helpCenterId,
     autoFocus = false,
@@ -69,23 +72,25 @@ export const HelpCenterEditModalHeader = ({
 
     const getResizeModalButton = () =>
         isFullscreen ? (
-            <button
-                type="button"
-                className={css.controlButton}
+            <IconButton
                 onClick={onResize}
+                fillStyle="ghost"
+                intent="secondary"
+                size="small"
                 aria-label="halfscreen modal"
             >
-                <i className="material-icons">fullscreen_exit</i>
-            </button>
+                fullscreen_exit
+            </IconButton>
         ) : (
-            <button
-                type="button"
-                className={css.controlButton}
+            <IconButton
                 onClick={onResize}
+                fillStyle="ghost"
+                intent="secondary"
+                size="small"
                 aria-label="fullscreen modal"
             >
-                <i className="material-icons">fullscreen</i>
-            </button>
+                fullscreen
+            </IconButton>
         )
 
     const localeOptions = useMemo(
@@ -144,28 +149,43 @@ export const HelpCenterEditModalHeader = ({
                         onSelect={onLanguageSelect}
                         onActionClick={onArticleLanguageSelectActionClick}
                     />
+                    {onResize && getResizeModalButton()}
                     {previewUrl && (
-                        <button
-                            type="button"
+                        <IconButton
                             onClick={() =>
                                 window.open(previewUrl, '_blank')?.focus()
                             }
-                            className={css.controlButton}
+                            fillStyle="ghost"
+                            intent="secondary"
+                            size="small"
                             aria-label="preview article"
                         >
-                            <i className="material-icons">open_in_new</i>
-                        </button>
+                            open_in_new
+                        </IconButton>
+                    )}
+                    {isExistingArticle(selectedArticle) && (
+                        <IconButton
+                            onClick={() =>
+                                onCopyLinkToClipboard(selectedArticle)
+                            }
+                            fillStyle="ghost"
+                            intent="secondary"
+                            size="small"
+                            aria-label="copy url"
+                        >
+                            share
+                        </IconButton>
                     )}
                     {toggleModalBtn}
-                    {onResize && getResizeModalButton()}
-                    <button
-                        type="button"
-                        className={css.controlButton}
+                    <IconButton
                         onClick={onClose}
+                        fillStyle="ghost"
+                        intent="secondary"
+                        size="small"
                         aria-label="close edit modal"
                     >
-                        <i className="material-icons">keyboard_tab</i>
-                    </button>
+                        keyboard_tab
+                    </IconButton>
                 </div>
             </div>
             <div className={css.break} />

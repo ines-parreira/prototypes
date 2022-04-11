@@ -420,32 +420,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
 
         if (action === 'copyToClipboard') {
-            if (article.translation) {
-                const {id: articleId, translation} = article
-                const {locale, slug} = translation
-
-                const domain = getHelpCenterDomain(helpCenter)
-
-                try {
-                    copy(getArticleUrl({domain, locale, slug, articleId}))
-
-                    void dispatch(
-                        notify({
-                            message: 'Link copied with success',
-                            status: NotificationStatus.Success,
-                        })
-                    )
-                } catch (err) {
-                    void dispatch(
-                        notify({
-                            message: 'Failed to copy the link',
-                            status: NotificationStatus.Error,
-                        })
-                    )
-                    console.error(err)
-                }
-            }
-            return
+            onCopyLinkToClipboard(article)
         }
 
         if (action === 'duplicateArticle') {
@@ -468,6 +443,35 @@ export const HelpCenterArticlesView: React.FC = () => {
                 console.error(err)
             }
         }
+    }
+
+    const onCopyLinkToClipboard = (article: Article) => {
+        if (article.translation) {
+            const {id: articleId, translation} = article
+            const {locale, slug} = translation
+
+            const domain = getHelpCenterDomain(helpCenter)
+
+            try {
+                copy(getArticleUrl({domain, locale, slug, articleId}))
+
+                void dispatch(
+                    notify({
+                        message: 'Link copied with success',
+                        status: NotificationStatus.Success,
+                    })
+                )
+            } catch (err) {
+                void dispatch(
+                    notify({
+                        message: 'Failed to copy the link',
+                        status: NotificationStatus.Error,
+                    })
+                )
+                console.error(err)
+            }
+        }
+        return
     }
 
     const onArticleLanguageSelect = (
@@ -619,6 +623,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         }
                         onArticleModalClose={onCloseModalAttempt}
                         onChangesDiscard={onDiscardChangesAttempt}
+                        onCopyLinkToClipboard={onCopyLinkToClipboard}
                         requiredFieldsArticle={requiredFieldsArticle}
                         autoFocus={autoFocus}
                         articleMode={articleMode}
@@ -635,6 +640,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         canSaveArticle={canSaveArticle}
                         requiredFieldsArticle={requiredFieldsArticle}
                         onChangesDiscard={onDiscardChangesAttempt}
+                        onCopyLinkToClipboard={onCopyLinkToClipboard}
                         autoFocus={autoFocus}
                         articleMode={articleMode}
                     />

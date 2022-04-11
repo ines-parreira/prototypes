@@ -1,18 +1,20 @@
 import React, {useCallback} from 'react'
 
-import {LocaleCode} from 'models/helpCenter/types'
+import {Article, LocaleCode} from 'models/helpCenter/types'
 import {Components} from 'rest_api/help_center_api/client.generated'
 import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 
-import {EDITOR_MODAL_CONTAINER_ID} from '../../../../constants'
+import {EDITOR_MODAL_CONTAINER_ID} from 'pages/settings/helpCenter/constants'
 import {
     getArticleUrl,
     getHelpCenterDomain,
     isExistingArticle,
     slugify,
-} from '../../../../utils/helpCenter.utils'
-import {useCurrentHelpCenter} from '../../../../providers/CurrentHelpCenter'
-import {useEditionManager} from '../../../../providers/EditionManagerContext'
+} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
+import IconButton from 'pages/common/components/button/IconButton'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
@@ -20,7 +22,6 @@ import HelpCenterEditor from '../../HelpCenterEditor/HelpCenterEditor'
 import {HelpCenterArticleModalView} from '../types'
 
 import css from '../HelpCenterEditArticleModalContent.less'
-import {ArticleMode} from '../../../../types/articleMode'
 
 type Props = {
     onArticleLanguageSelect: (localeCode: LocaleCode) => void
@@ -60,6 +61,7 @@ type Props = {
     articleMode: ArticleMode
 
     onChangesDiscard: () => void
+    onCopyLinkToClipboard: (article: Article) => void
 }
 
 const HelpCenterArticleModalBasicViewContent = ({
@@ -72,6 +74,7 @@ const HelpCenterArticleModalBasicViewContent = ({
     canSaveArticle,
     requiredFieldsArticle,
     onChangesDiscard,
+    onCopyLinkToClipboard,
     articleMode,
 }: Props) => {
     const screenSize = useScreenSize()
@@ -146,19 +149,22 @@ const HelpCenterArticleModalBasicViewContent = ({
                 onArticleLanguageSelectActionClick={
                     onArticleLanguageSelectActionClick
                 }
+                onCopyLinkToClipboard={onCopyLinkToClipboard}
                 toggleModalBtn={
-                    <button
-                        type="button"
+                    <IconButton
                         onClick={() =>
                             setEditModal({
                                 isOpened: true,
                                 view: HelpCenterArticleModalView.ADVANCED,
                             })
                         }
-                        className={css.toggleModalBtn}
+                        fillStyle="ghost"
+                        intent="secondary"
+                        size="small"
+                        aria-label="advanced editor modal"
                     >
-                        <i className="material-icons">settings</i>
-                    </button>
+                        settings
+                    </IconButton>
                 }
                 autoFocus={autoFocus}
                 previewUrl={selectedArticleUrl}

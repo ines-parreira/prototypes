@@ -100,7 +100,7 @@ export const ARTICLE_ROW_ACTIONS = [
     },
     {
         name: 'copyToClipboard',
-        icon: 'insert_link',
+        icon: 'share',
         tooltip: 'Copy link to clipboard',
     },
 ]

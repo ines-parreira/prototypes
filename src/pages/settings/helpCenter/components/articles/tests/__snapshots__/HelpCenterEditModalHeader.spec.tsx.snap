@@ -46,11 +46,11 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
         </div>
         <button
           aria-label="close edit modal"
-          class="controlButton"
+          class="wrapper wrapper ghost small ghost secondary small"
           type="button"
         >
           <i
-            class="material-icons"
+            class="material-icons icon"
           >
             keyboard_tab
           </i>
@@ -182,11 +182,11 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
         </div>
         <button
           aria-label="close edit modal"
-          class="controlButton"
+          class="wrapper wrapper ghost small ghost secondary small"
           type="button"
         >
           <i
-            class="material-icons"
+            class="material-icons icon"
           >
             keyboard_tab
           </i>
@@ -246,22 +246,22 @@ exports[`<HelpCenterEditModalHeader /> should render a preview article button 1`
         </div>
         <button
           aria-label="preview article"
-          class="controlButton"
+          class="wrapper wrapper ghost small ghost secondary small"
           type="button"
         >
           <i
-            class="material-icons"
+            class="material-icons icon"
           >
             open_in_new
           </i>
         </button>
         <button
           aria-label="close edit modal"
-          class="controlButton"
+          class="wrapper wrapper ghost small ghost secondary small"
           type="button"
         >
           <i
-            class="material-icons"
+            class="material-icons icon"
           >
             keyboard_tab
           </i>
@@ -323,11 +323,11 @@ exports[`<HelpCenterEditModalHeader /> should render an input when onEditTitle i
         </div>
         <button
           aria-label="close edit modal"
-          class="controlButton"
+          class="wrapper wrapper ghost small ghost secondary small"
           type="button"
         >
           <i
-            class="material-icons"
+            class="material-icons icon"
           >
             keyboard_tab
           </i>

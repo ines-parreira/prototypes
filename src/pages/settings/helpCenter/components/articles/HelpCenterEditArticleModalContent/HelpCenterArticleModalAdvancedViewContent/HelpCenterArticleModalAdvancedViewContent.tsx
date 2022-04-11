@@ -1,16 +1,21 @@
 import React from 'react'
 
-import {CreateArticleTranslationDto, LocaleCode} from 'models/helpCenter/types'
+import IconButton from 'pages/common/components/button/IconButton'
+import {
+    Article,
+    CreateArticleTranslationDto,
+    LocaleCode,
+} from 'models/helpCenter/types'
 import {Components} from 'rest_api/help_center_api/client.generated'
-import {useCurrentHelpCenter} from '../../../../providers/CurrentHelpCenter'
-import {useEditionManager} from '../../../../providers/EditionManagerContext'
+import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
+import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {
     getArticleUrl,
     getHelpCenterDomain,
     isExistingArticle,
-} from '../../../../utils/helpCenter.utils'
+} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
-import {ArticleMode} from '../../../../types/articleMode'
 import HelpCenterEditAdvancedArticleForm from '../../HelpCenterEditAdvancedArticleForm'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
@@ -46,6 +51,7 @@ type Props = {
     articleMode: ArticleMode
 
     onChangesDiscard: () => void
+    onCopyLinkToClipboard: (article: Article) => void
 }
 
 const HelpCenterArticleModalAdvancedViewContent = ({
@@ -57,6 +63,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     canSaveArticle,
     requiredFieldsArticle,
     onChangesDiscard,
+    onCopyLinkToClipboard,
     articleMode,
 }: Props) => {
     const {
@@ -94,22 +101,25 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 title="Article Settings"
                 onClose={onArticleModalClose}
                 toggleModalBtn={
-                    <button
-                        type="button"
+                    <IconButton
                         onClick={() =>
                             setEditModal({
                                 isOpened: true,
                                 view: HelpCenterArticleModalView.BASIC,
                             })
                         }
-                        className={css.toggleModalBtn}
+                        fillStyle="ghost"
+                        intent="secondary"
+                        size="small"
+                        aria-label="basic editor modal"
                     >
-                        <i className="material-icons">edit</i>
-                    </button>
+                        edit
+                    </IconButton>
                 }
                 onArticleLanguageSelectActionClick={
                     onArticleLanguageSelectActionClick
                 }
+                onCopyLinkToClipboard={onCopyLinkToClipboard}
                 autoFocus={autoFocus}
                 previewUrl={selectedArticleUrl}
             />

@@ -52,6 +52,7 @@ jest.mock('../../../providers/EditionManagerContext', () => {
 const mockedOnLanguageSelect = jest.fn()
 const mockedOnClose = jest.fn()
 const mockedOnResize = jest.fn()
+const mockedOnCopyToClipboard = jest.fn()
 const mockedOnArticleLanguageSelectActionClick = jest.fn()
 
 jest.mock('../../../providers/SupportedLocales')
@@ -70,6 +71,7 @@ describe('<HelpCenterEditModalHeader />', () => {
         supportedLocales: ['en-US', 'fr-FR'] as LocaleCode[],
         onLanguageSelect: mockedOnLanguageSelect,
         onClose: mockedOnClose,
+        onCopyLinkToClipboard: mockedOnCopyToClipboard,
         onArticleLanguageSelectActionClick:
             mockedOnArticleLanguageSelectActionClick,
         helpCenterId: 1,
