@@ -8,7 +8,7 @@ export const SMS_INTEGRATION_PREVIEW_ACCOUNTS = [
     'artemisathletix',
     'livelyroot',
     'brumate',
-    'battlebox',
+    'battlbox',
     'smallwood',
     'verishop',
     'spoonfulofcomfort',
