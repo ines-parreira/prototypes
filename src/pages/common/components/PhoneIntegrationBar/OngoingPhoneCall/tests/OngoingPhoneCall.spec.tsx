@@ -7,13 +7,11 @@ import {Call} from '@twilio/voice-sdk'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 
-import {PreflightCheckStatus} from 'state/twilio/types'
-import {mockIncomingCall} from 'tests/twilioMocks'
-import {RootState, StoreDispatch} from 'state/types'
-import client from 'models/api/resources'
-
-import {CallRecordingStatus, TWILIO_CURRENT_ITEM} from '../../constants'
+import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
+import {RootState, StoreDispatch} from '../../../../../../state/types'
+import client from '../../../../../../models/api/resources'
 import OngoingPhoneCall from '../OngoingPhoneCall'
+import {CallRecordingStatus, TWILIO_CURRENT_ITEM} from '../../constants'
 
 jest.mock('@twilio/voice-sdk')
 
@@ -48,7 +46,6 @@ describe('<OngoingPhoneCall/>', () => {
                 isDialing: false,
                 isRinging: false,
                 isRecording: false,
-                preflightCheckStatus: PreflightCheckStatus.NotPerformed,
             },
             integrations: fromJS({
                 integrations: [integration],

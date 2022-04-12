@@ -5,17 +5,15 @@ import {
     SetIsRecordingAction,
     SetIsRingingAction,
     TwilioAction,
-    SetPreflightCheckStatusAction,
-} from 'state/twilio/actions'
+} from './actions'
 import {
     SET_TWILIO_CALL,
     SET_TWILIO_DEVICE,
     SET_TWILIO_IS_DIALING,
     SET_TWILIO_IS_RECORDING,
     SET_TWILIO_IS_RINGING,
-    SET_TWILIO_PREFLIGHT_CHECK_STATUS,
-} from 'state/twilio/constants'
-import {TwilioState, PreflightCheckStatus} from 'state/twilio/types'
+} from './constants'
+import {TwilioState} from './types'
 
 export const initialState: TwilioState = {
     device: null,
@@ -23,7 +21,6 @@ export const initialState: TwilioState = {
     isDialing: false,
     isRinging: false,
     isRecording: false,
-    preflightCheckStatus: PreflightCheckStatus.NotPerformed,
 }
 
 export default function reducer(
@@ -55,12 +52,6 @@ export default function reducer(
             return {
                 ...state,
                 isRecording: (action as SetIsRecordingAction).payload,
-            }
-        case SET_TWILIO_PREFLIGHT_CHECK_STATUS:
-            return {
-                ...state,
-                preflightCheckStatus: (action as SetPreflightCheckStatusAction)
-                    .payload,
             }
         default:
             return state

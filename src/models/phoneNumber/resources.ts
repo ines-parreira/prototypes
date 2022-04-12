@@ -35,28 +35,20 @@ export const createPhoneNumber = async (
 export const updatePhoneNumber = async (
     phoneNumber: PhoneNumber
 ): Promise<PhoneNumber> => {
-    const res = await client.put<PhoneNumber>(
+    const res = await client.put(
         `/api/integrations/phone/phone-numbers/${phoneNumber.id}/`,
         phoneNumber
     )
-    return res.data
+    return res.data as PhoneNumber
 }
 
 export const deletePhoneNumber = async (id: number): Promise<void> => {
     await client.delete(`/api/integrations/phone/phone-numbers/${id}/`)
 }
 
-export const fetchPhoneCapabilities =
-    async (): Promise<PhoneCapabilitiesLimitationsMap> => {
-        const res = await client.get<PhoneCapabilitiesLimitationsMap>(
-            '/api/phone-numbers/capabilities-limitations/'
-        )
-        return res.data
-    }
-
-export const fetchToken = async (): Promise<string | null> => {
-    const res = await client.get<{token: string | null}>(
-        '/integrations/phone/token'
+export const fetchPhoneCapabilities = async () => {
+    const res = await client.get<PhoneCapabilitiesLimitationsMap>(
+        '/api/phone-numbers/capabilities-limitations/'
     )
-    return res.data.token
+    return res.data
 }

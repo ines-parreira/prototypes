@@ -1,13 +1,12 @@
 import {Call, Device} from '@twilio/voice-sdk'
-import {PreflightCheckStatus} from 'state/twilio/types'
+
 import {
     SET_TWILIO_CALL,
     SET_TWILIO_DEVICE,
     SET_TWILIO_IS_DIALING,
     SET_TWILIO_IS_RECORDING,
     SET_TWILIO_IS_RINGING,
-    SET_TWILIO_PREFLIGHT_CHECK_STATUS,
-} from 'state/twilio/constants'
+} from './constants'
 
 export type SetDeviceAction = {
     type: string
@@ -34,17 +33,11 @@ export type SetIsRecordingAction = {
     payload: boolean
 }
 
-export type SetPreflightCheckStatusAction = {
-    type: string
-    payload: PreflightCheckStatus
-}
-
 export type TwilioAction =
     | SetDeviceAction
     | SetConnectionAction
     | SetIsDialingAction
     | SetIsRingingAction
-    | SetPreflightCheckStatusAction
 
 export function setDevice(device: Device | null): SetDeviceAction {
     return {
@@ -78,14 +71,5 @@ export function setIsRecording(isRecording: boolean): SetIsRingingAction {
     return {
         type: SET_TWILIO_IS_RECORDING,
         payload: isRecording,
-    }
-}
-
-export function setPreflightCheckStatus(
-    status: PreflightCheckStatus
-): SetPreflightCheckStatusAction {
-    return {
-        type: SET_TWILIO_PREFLIGHT_CHECK_STATUS,
-        payload: status,
     }
 }

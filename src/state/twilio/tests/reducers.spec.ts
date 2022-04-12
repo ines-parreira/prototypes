@@ -1,16 +1,14 @@
 import {Call, Device} from '@twilio/voice-sdk'
 
-import {mockIncomingCall, mockDevice} from 'tests/twilioMocks'
+import {mockIncomingCall, mockDevice} from '../../../tests/twilioMocks'
 
 import {
     SET_TWILIO_CALL,
     SET_TWILIO_DEVICE,
     SET_TWILIO_IS_DIALING,
     SET_TWILIO_IS_RINGING,
-    SET_TWILIO_PREFLIGHT_CHECK_STATUS,
-} from 'state/twilio/constants'
-import {PreflightCheckStatus} from 'state/twilio/types'
-import reducer, {initialState} from 'state/twilio/reducers'
+} from '../constants'
+import reducer, {initialState} from '../reducers'
 
 describe('Twilio reducer', () => {
     describe('SET_TWILIO_DEVICE', () => {
@@ -55,19 +53,6 @@ describe('Twilio reducer', () => {
                 }
                 const nextState = reducer(initialState, action)
                 expect(nextState.isRinging).toBe(true)
-            })
-        })
-
-        describe('SET_TWILIO_PREFLIGHT_CHECK_STATUS', () => {
-            it('should set the preflight status', () => {
-                const action = {
-                    type: SET_TWILIO_PREFLIGHT_CHECK_STATUS,
-                    payload: PreflightCheckStatus.Running,
-                }
-                const nextState = reducer(initialState, action)
-                expect(nextState.preflightCheckStatus).toBe(
-                    PreflightCheckStatus.Running
-                )
             })
         })
     })
