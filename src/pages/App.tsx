@@ -3,6 +3,7 @@ import React, {ComponentType, ReactNode} from 'react'
 import DocumentTitle from 'react-document-title'
 import {connect, ConnectedProps} from 'react-redux'
 import {Container} from 'reactstrap'
+import _isEqual from 'lodash/isEqual'
 import NotificationsSystem, {
     dismissNotification,
     Notification as ReapopNotification,
@@ -252,4 +253,4 @@ const connector = connect(
     }
 )
 
-export default connector(App)
+export default connector(React.memo(App, _isEqual))
