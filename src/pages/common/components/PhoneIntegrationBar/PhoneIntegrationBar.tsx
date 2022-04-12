@@ -8,11 +8,13 @@ import {
     setIsRinging,
 } from 'state/twilio/actions'
 import client from 'models/api/resources'
+import {fetchToken} from 'models/phoneNumber/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {usePhoneError} from 'hooks/integrations/phone/usePhoneError'
+import {usePreflightCheck} from 'hooks/integrations/phone/usePreflightCheck'
 import {TwilioErrorCode} from 'business/twilio'
 
 import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
@@ -20,6 +22,7 @@ import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
 import OutgoingPhoneCall from './OutgoingPhoneCall/OutgoingPhoneCall'
 
 export default function PhoneIntegrationBar(): JSX.Element | null {
+    usePreflightCheck()
     useDevice()
     const {call, isDialing, isRinging} = useAppSelector((state) => state.twilio)
 
@@ -55,7 +58,7 @@ function useDevice() {
                 return
             }
 
-            const token = await getToken()
+            const token = await fetchToken()
             if (!token) {
                 onErrorMessage(
                     "Couldn't fetch phone token",
@@ -79,12 +82,6 @@ function useDevice() {
             }
         }
     }, [])
-}
-
-async function getToken(): Promise<string | null> {
-    const response = await client.get('/integrations/phone/token')
-    const data: {token: string | null} = await response.data
-    return data.token
 }
 
 function useInstantiateDevice() {
@@ -193,7 +190,7 @@ function useInstantiateDevice() {
                 reconnectionAttempts++
 
                 setTimeout(() => {
-                    getToken()
+                    fetchToken()
                         .then((token) => {
                             if (token) {
                                 device.updateToken(token)

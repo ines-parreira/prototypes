@@ -6,15 +6,12 @@ import {Provider} from 'react-redux'
 import MockAdapter from 'axios-mock-adapter'
 import {Call, Device} from '@twilio/voice-sdk'
 
-import {
-    mockIncomingCall,
-    mockDevice,
-    mockOutgoingCall,
-} from '../../../../../tests/twilioMocks'
-import {SET_TWILIO_DEVICE} from '../../../../../state/twilio/constants'
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {initialState} from '../../../../../state/twilio/reducers'
-import client from '../../../../../models/api/resources'
+import {mockIncomingCall, mockDevice, mockOutgoingCall} from 'tests/twilioMocks'
+import {SET_TWILIO_DEVICE} from 'state/twilio/constants'
+import {RootState, StoreDispatch} from 'state/types'
+import {PreflightCheckStatus} from 'state/twilio/types'
+import {initialState as defaultInitialState} from 'state/twilio/reducers'
+import client from 'models/api/resources'
 import PhoneIntegrationBar from '../PhoneIntegrationBar'
 
 jest.mock('@twilio/voice-sdk')
@@ -26,6 +23,10 @@ describe('<PhoneIntegrationBar/>', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
+    const initialState = {
+        ...defaultInitialState,
+        preflightCheckStatus: PreflightCheckStatus.Succeeded,
+    }
 
     beforeEach(() => {
         window.location.protocol = 'https:'
@@ -95,22 +96,5 @@ describe('<PhoneIntegrationBar/>', () => {
         )
 
         expect(findByTestId('outgoing-phone-call')).toBeTruthy()
-    })
-
-    it('should render ongoing call bar because there is an ongoing call', () => {
-        const device = mockDevice() as Device
-        const call = mockIncomingCall() as Call
-
-        store = mockStore({
-            twilio: {...initialState, device, call, isRinging: false},
-        })
-
-        const {findByTestId} = render(
-            <Provider store={store}>
-                <PhoneIntegrationBar />
-            </Provider>
-        )
-
-        expect(findByTestId('ongoing-phone-call')).toBeTruthy()
     })
 })
