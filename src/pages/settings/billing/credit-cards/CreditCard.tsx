@@ -15,7 +15,12 @@ import {AnyAction} from 'redux'
 import classnames from 'classnames'
 
 import Errors from 'pages/common/forms/Errors'
-import {fetchContact, setCreditCard, updateContact} from 'state/billing/actions'
+import {
+    fetchContact,
+    fetchCreditCard,
+    setCreditCard,
+    updateContact,
+} from 'state/billing/actions'
 import {
     DEPRECATED_getCurrentPlan as currentPlanSelector,
     getAddOnAutomationAmountCurrentPlan,
@@ -68,6 +73,7 @@ type Props = {
     ConnectedProps<typeof connector>
 
 type State = {
+    isFetchingInfo: boolean
     isSubmitting: boolean
     isStripeLoaded: boolean
     dirty: boolean
@@ -77,12 +83,11 @@ type State = {
     expDate: string
     cvc: string
     contactForm: BillingContact
+    shouldDisplayBillingAddressForm: boolean
 }
 
 export class CreditCardContainer extends Component<Props, State> {
     gorgiasApi = new GorgiasApi()
-
-    shouldDisplayBillingAddressForm = false
 
     static defaultProps = {
         currentSubscription: fromJS({}),
@@ -94,6 +99,7 @@ export class CreditCardContainer extends Component<Props, State> {
     }
 
     state: State = {
+        isFetchingInfo: false,
         isSubmitting: false,
         isStripeLoaded: !!window.Stripe,
         dirty: false,
@@ -117,13 +123,10 @@ export class CreditCardContainer extends Component<Props, State> {
                 },
             },
         },
+        shouldDisplayBillingAddressForm: false,
     }
 
     componentWillMount() {
-        const {hasCreditCard, isMissingContactInformation} = this.props
-        this.shouldDisplayBillingAddressForm =
-            !hasCreditCard || isMissingContactInformation
-
         // load Stripe.js cause we need it to create token for credit card
         if (typeof Stripe === 'undefined') {
             loadScript('https://js.stripe.com/v2/', () => {
@@ -136,18 +139,28 @@ export class CreditCardContainer extends Component<Props, State> {
     }
 
     componentDidMount() {
-        const {contact, fetchContact} = this.props
+        const {contact, fetchContact, fetchCreditCard, hasCreditCard} =
+            this.props
 
-        if (contact == null) {
-            void fetchContact()
+        if (contact == null || !hasCreditCard) {
+            this.setState({isFetchingInfo: true})
+            Promise.all([fetchContact(), fetchCreditCard()]).finally(() => {
+                this.setState({isFetchingInfo: false})
+            })
         } else {
             this.setState({contactForm: contact.toJS()})
         }
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
-        const {currentPlan, currentSubscription, contact} = this.props
-        const {isStripeLoaded} = this.state
+        const {
+            currentPlan,
+            currentSubscription,
+            contact,
+            hasCreditCard,
+            isMissingContactInformation,
+        } = this.props
+        const {isFetchingInfo, isStripeLoaded} = this.state
         const noSubscriptionNorPlan =
             currentSubscription.isEmpty() || currentPlan.isEmpty()
 
@@ -162,6 +175,12 @@ export class CreditCardContainer extends Component<Props, State> {
         if (prevProps.contact !== contact && contact) {
             this.setState({
                 contactForm: contact.toJS(),
+            })
+        }
+        if (!isFetchingInfo && prevState.isFetchingInfo !== isFetchingInfo) {
+            this.setState({
+                shouldDisplayBillingAddressForm:
+                    !hasCreditCard || isMissingContactInformation,
             })
         }
     }
@@ -180,9 +199,9 @@ export class CreditCardContainer extends Component<Props, State> {
             notify,
             updateContact,
         } = this.props
-        const {contactForm} = this.state
+        const {contactForm, shouldDisplayBillingAddressForm} = this.state
 
-        if (this.shouldDisplayBillingAddressForm) {
+        if (shouldDisplayBillingAddressForm) {
             const response = (await updateContact(
                 fromJS(contactForm)
             )) as AnyAction
@@ -353,7 +372,12 @@ export class CreditCardContainer extends Component<Props, State> {
             location,
             accountHasLegacyPlan,
         } = this.props
-        const {isStripeLoaded, errors, contactForm} = this.state
+        const {
+            isStripeLoaded,
+            errors,
+            contactForm,
+            shouldDisplayBillingAddressForm,
+        } = this.state
 
         const invalid =
             Object.keys(errors).length > 0 ||
@@ -488,7 +512,7 @@ export class CreditCardContainer extends Component<Props, State> {
                                     error={errors.cvc}
                                 />
                             </div>
-                            {this.shouldDisplayBillingAddressForm && (
+                            {shouldDisplayBillingAddressForm && (
                                 <>
                                     <h3 className={'heading-section-semibold'}>
                                         Billing address
@@ -576,6 +600,7 @@ const connector = connect(
         setCreditCard,
         updateContact,
         fetchContact,
+        fetchCreditCard,
     }
 )
 

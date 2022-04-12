@@ -36,6 +36,7 @@ describe('CreditCard component', () => {
         updateContact: jest.fn(),
         contact: fromJS({}),
         fetchContact: jest.fn(),
+        fetchCreditCard: jest.fn(),
         regularCurrentPlan: fromJS({}),
     } as unknown as ComponentProps<typeof CreditCardContainer>
 
@@ -105,9 +106,10 @@ describe('CreditCard component', () => {
                 {...minProps}
                 hasCreditCard
                 isMissingContactInformation
+                contact={null}
             />
         )
-        component.setState({isStripeLoaded: true})
+        component.setState({isStripeLoaded: true, isFetchingInfo: false})
         expect(component).toMatchSnapshot()
     })
 
@@ -146,6 +148,7 @@ describe('CreditCard component', () => {
             },
             isStripeLoaded: true,
             expDate: '12/12',
+            isFetchingInfo: false,
         })
 
         void component

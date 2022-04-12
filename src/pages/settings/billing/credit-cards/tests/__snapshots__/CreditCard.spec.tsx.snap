@@ -91,15 +91,6 @@ exports[`CreditCard component should display credit card form 1`] = `
             value=""
           />
         </div>
-        <h3
-          className="heading-section-semibold"
-        >
-          Billing address
-        </h3>
-        <BillingAddressInputs
-          onChange={[Function]}
-          value={Object {}}
-        />
         <FormGroup
           color="danger"
           tag="div"
@@ -338,15 +329,6 @@ exports[`CreditCard component should render billing plan card with automation fo
             value=""
           />
         </div>
-        <h3
-          className="heading-section-semibold"
-        >
-          Billing address
-        </h3>
-        <BillingAddressInputs
-          onChange={[Function]}
-          value={Object {}}
-        />
         <FormGroup
           color="danger"
           tag="div"
@@ -500,15 +482,6 @@ exports[`CreditCard component should render nothing if loaded, but no current su
             value=""
           />
         </div>
-        <h3
-          className="heading-section-semibold"
-        >
-          Billing address
-        </h3>
-        <BillingAddressInputs
-          onChange={[Function]}
-          value={Object {}}
-        />
         <FormGroup
           color="danger"
           tag="div"
@@ -627,7 +600,23 @@ exports[`CreditCard component should render the billing address form when accoun
         </h3>
         <BillingAddressInputs
           onChange={[Function]}
-          value={Object {}}
+          value={
+            Object {
+              "email": "",
+              "shipping": Object {
+                "address": Object {
+                  "city": "",
+                  "country": "",
+                  "line1": "",
+                  "line2": "",
+                  "postal_code": "",
+                  "state": "",
+                },
+                "name": "",
+                "phone": "",
+              },
+            }
+          }
         />
         <FormGroup
           color="danger"
