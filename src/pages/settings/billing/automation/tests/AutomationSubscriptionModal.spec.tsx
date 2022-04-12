@@ -77,7 +77,7 @@ describe('<AutomationSubscriptionModal />', () => {
     })
 
     it('should render for customers already with full add-on features', async () => {
-        const {findByText} = render(
+        const {baseElement, findByText} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -94,9 +94,8 @@ describe('<AutomationSubscriptionModal />', () => {
             </Provider>
         )
 
-        const footerText = await findByText(/Cancel subscription/i)
-
-        expect(footerText.parentElement).toMatchSnapshot()
+        await findByText(/Cancel subscription/i)
+        expect(baseElement).toMatchSnapshot()
     })
 
     it('should display image', async () => {

@@ -35,22 +35,118 @@ exports[`<AutomationSubscriptionModal /> should not render the modal 1`] = `
 `;
 
 exports[`<AutomationSubscriptionModal /> should render for customers already with full add-on features 1`] = `
-<div
-  class="footer footerUnsubscribe modal-footer"
+<body
+  class="modal-open"
 >
-  <button
-    class="wrapper fill destructive medium"
-    type="button"
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
   >
-    Cancel subscription
-  </button>
-  <button
-    class="wrapper fill secondary medium"
-    type="button"
-  >
-    OK
-  </button>
-</div>
+    <div
+      class=""
+    >
+      <div
+        class="modal fade"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog modal modal-dialog-centered"
+          role="document"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Manage automation add-on
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modalBody modal-body"
+              data-candu-id="cancel-automation-addon-modal-body"
+            >
+              <div
+                class="description"
+              >
+                <div
+                  class="flex"
+                >
+                  <div>
+                    Your current subscription started on
+                     
+                    <b>
+                      Aug 22
+                    </b>
+                    .
+                    <br />
+                    <br />
+                    If you cancel now, you will lose access to self-service
+                     
+                    custom report issue flow 
+                    immediately.
+                  </div>
+                  <div
+                    class="amountWrapper amount"
+                  >
+                    <span
+                      class="amount"
+                      id="subscription-amount-tooltip-target-3"
+                    >
+                      0
+                      <b>
+                        $0
+                      </b>
+                       
+                      / 
+                      month
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="footer footerUnsubscribe modal-footer"
+            >
+              <button
+                class="wrapper fill destructive medium"
+                type="button"
+              >
+                Cancel subscription
+              </button>
+              <button
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop fade"
+      />
+    </div>
+  </div>
+</body>
 `;
 
 exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
@@ -100,6 +196,7 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
             </div>
             <div
               class="modalBody modal-body"
+              data-candu-id="manage-automation-addon-modal-body"
             >
               <div
                 class="description"

@@ -118,7 +118,14 @@ const AutomationSubscriptionModal = ({
             centered
         >
             <ModalHeader toggle={onClose}>{header}</ModalHeader>
-            <ModalBody className={css.modalBody}>
+            <ModalBody
+                className={css.modalBody}
+                data-candu-id={
+                    hasAutomationAddOn
+                        ? 'cancel-automation-addon-modal-body'
+                        : 'manage-automation-addon-modal-body'
+                }
+            >
                 <AutomationSubscriptionDescription />
                 {!!image && (
                     <img
