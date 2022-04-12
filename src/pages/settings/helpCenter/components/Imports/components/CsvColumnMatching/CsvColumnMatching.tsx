@@ -1,4 +1,4 @@
-import React, {ReactNode, useState} from 'react'
+import React, {Fragment, ReactNode, useState} from 'react'
 import {Container, FormGroup, UncontrolledTooltip} from 'reactstrap'
 import classNames from 'classnames'
 import Button from 'pages/common/components/button/Button'
@@ -261,7 +261,7 @@ export const CsvColumnMatching = ({
                 </TableHead>
                 <TableBody>
                     {fieldsMappings.map(({localeCode, mappings}) => (
-                        <>
+                        <Fragment key={localeCode}>
                             <TableBodyRow>
                                 <th
                                     className={
@@ -306,7 +306,7 @@ export const CsvColumnMatching = ({
                                     />
                                 )
                             )}
-                        </>
+                        </Fragment>
                     ))}
                 </TableBody>
             </TableWrapper>

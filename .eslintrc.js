@@ -13,6 +13,12 @@ const commonRules = {
     'react/display-name': ['off'],
     'react/no-find-dom-node': ['off'],
     'react/no-deprecated': ['off'],
+    'react/jsx-key': [
+        'error',
+        {
+            checkFragmentShorthand: true,
+        },
+    ],
 }
 
 const commonConfigs = [

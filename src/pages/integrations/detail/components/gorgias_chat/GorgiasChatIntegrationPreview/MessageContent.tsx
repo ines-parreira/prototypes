@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, Fragment} from 'react'
 import classnames from 'classnames'
 import {Map} from 'immutable'
 
@@ -51,14 +51,13 @@ export default class MessageContent extends Component<Props> {
                         </div>
 
                         {agentMessages.map(({content, isHtml}) => (
-                            <>
+                            <Fragment key={content}>
                                 {isHtml ? (
                                     <div
                                         className={classnames(
                                             css.bubble,
                                             css.firstMessageOfAppMaker
                                         )}
-                                        key={content}
                                         dangerouslySetInnerHTML={{
                                             __html: content,
                                         }}
@@ -69,12 +68,11 @@ export default class MessageContent extends Component<Props> {
                                             css.bubble,
                                             css.firstMessageOfAppMaker
                                         )}
-                                        key={content}
                                     >
                                         {content}
                                     </div>
                                 )}
-                            </>
+                            </Fragment>
                         ))}
                     </div>
                 </div>
