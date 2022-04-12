@@ -2,9 +2,10 @@
 
 :local {
     .operatorLabel {
-        &:global(.OperatorLabel) {
+        &:global(.OperatorLabel.btn-frozen) {
             background-color: @classic-feedback-warning;
-            border: 1px solid #ed9154;
+            border: 1px solid
+                darken(desaturate(@classic-feedback-warning, 16%), 4%);
         }
     }
 }
