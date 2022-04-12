@@ -10,6 +10,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import HeaderWithInfo from 'pages/common/components/HeaderWithInfo'
 import UserActivityManager from 'services/userActivityManager'
 import {fetchChats} from 'state/chats/actions'
 import {submitSetting} from 'state/currentAccount/actions'
@@ -134,7 +135,16 @@ export class TicketAssignmentContainer extends Component<Props, State> {
 
         return (
             <div className="full-width">
-                <PageHeader title="Ticket assignment" />
+                <PageHeader
+                    title={
+                        <HeaderWithInfo
+                            title="Ticket assignment"
+                            description="Automate the assignment of tickets among your team members or the unassignment when your 
+                    agents are not available to respond. You can use both at the same time!"
+                            helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
+                        />
+                    }
+                />
 
                 <Container fluid className={css.pageContainer}>
                     <Form onSubmit={this._onSubmit}>

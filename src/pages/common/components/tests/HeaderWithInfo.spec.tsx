@@ -1,12 +1,12 @@
 import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 
-import StatsPageTitle from '../StatsPageTitle'
+import HeaderWithInfo from '../HeaderWithInfo'
 
-describe('StatsPageTitle', () => {
+describe('<HeaderWithInfo />', () => {
     it('should render the title', () => {
         const {container} = render(
-            <StatsPageTitle
+            <HeaderWithInfo
                 title="Foo"
                 description="Foo statistic page"
                 helpUrl="http://example.com"
@@ -17,7 +17,7 @@ describe('StatsPageTitle', () => {
 
     it('should render the description on learn button click', async () => {
         const {getByText, findByTestId} = render(
-            <StatsPageTitle
+            <HeaderWithInfo
                 title="Foo"
                 description={<span data-testid="description">description</span>}
                 helpUrl="http://example.com"

@@ -98,7 +98,13 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
   className="full-width"
 >
   <PageHeader
-    title="Ticket assignment"
+    title={
+      <HeaderWithInfo
+        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
+        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
+        title="Ticket assignment"
+      />
+    }
   />
   <Container
     className="pageContainer"
@@ -345,7 +351,13 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
   className="full-width"
 >
   <PageHeader
-    title="Ticket assignment"
+    title={
+      <HeaderWithInfo
+        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
+        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
+        title="Ticket assignment"
+      />
+    }
   />
   <Container
     className="pageContainer"
@@ -592,7 +604,13 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
   className="full-width"
 >
   <PageHeader
-    title="Ticket assignment"
+    title={
+      <HeaderWithInfo
+        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
+        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
+        title="Ticket assignment"
+      />
+    }
   />
   <Container
     className="pageContainer"
@@ -839,7 +857,13 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
   className="full-width"
 >
   <PageHeader
-    title="Ticket assignment"
+    title={
+      <HeaderWithInfo
+        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
+        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
+        title="Ticket assignment"
+      />
+    }
   />
   <Container
     className="pageContainer"
@@ -1086,7 +1110,13 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
   className="full-width"
 >
   <PageHeader
-    title="Ticket assignment"
+    title={
+      <HeaderWithInfo
+        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
+        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
+        title="Ticket assignment"
+      />
+    }
   />
   <Container
     className="pageContainer"
@@ -1333,7 +1363,13 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
   className="full-width"
 >
   <PageHeader
-    title="Ticket assignment"
+    title={
+      <HeaderWithInfo
+        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
+        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
+        title="Ticket assignment"
+      />
+    }
   />
   <Container
     className="pageContainer"
@@ -1580,7 +1616,13 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
   className="full-width"
 >
   <PageHeader
-    title="Ticket assignment"
+    title={
+      <HeaderWithInfo
+        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
+        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
+        title="Ticket assignment"
+      />
+    }
   />
   <Container
     className="pageContainer"

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StatsPageTitle should render the title 1`] = `
+exports[`<HeaderWithInfo /> should render the title 1`] = `
 <div>
   <h1
     class="align-items-center"

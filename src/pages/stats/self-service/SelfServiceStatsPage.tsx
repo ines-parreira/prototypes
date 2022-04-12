@@ -31,6 +31,7 @@ import {DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
 import {getStatsFilters} from 'state/stats/selectors'
 import {mergeStatsFilters} from 'state/stats/actions'
 import Loader from 'pages/common/components/Loader/Loader'
+import HeaderWithInfo from 'pages/common/components/HeaderWithInfo'
 import PageHeader from 'pages/common/components/PageHeader'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
@@ -41,7 +42,6 @@ import TableStat from '../common/components/charts/TableStat/TableStat'
 import KeyMetricStatWrapper from '../KeyMetricStatWrapper'
 import PeriodStatsFilter from '../PeriodStatsFilter'
 import StatsPage from '../StatsPage'
-import StatsPageTitle from '../StatsPageTitle'
 import StatWrapper from '../StatWrapper'
 import useStatResource from '../useStatResource'
 
@@ -168,7 +168,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                 pageHeader={
                     <PageHeader
                         title={
-                            <StatsPageTitle
+                            <HeaderWithInfo
                                 title={TITLE}
                                 description={DESCRIPTION}
                                 helpUrl={HELP_URL}

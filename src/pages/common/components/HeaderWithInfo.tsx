@@ -3,7 +3,7 @@ import {Button} from 'reactstrap'
 
 import PopoverModal from 'pages/common/components/PopoverModal'
 
-import css from './StatsPageTitle.less'
+import css from './HeaderWithInfo.less'
 
 type Props = {
     title: string
@@ -11,7 +11,7 @@ type Props = {
     helpUrl: string
 }
 
-export default function StatsPageTitle({title, description, helpUrl}: Props) {
+export default function HeaderWithInfo({title, description, helpUrl}: Props) {
     return (
         <h1 className="align-items-center">
             <span>{title}</span>
@@ -22,7 +22,7 @@ export default function StatsPageTitle({title, description, helpUrl}: Props) {
                     color="secondary"
                     type="button"
                     onClick={() => {
-                        window.open(helpUrl, '_blank')!.focus()
+                        window.open(helpUrl, '_blank', 'noopener')!.focus()
                     }}
                 >
                     Learn More <i className="material-icons">arrow_forward</i>
