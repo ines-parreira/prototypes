@@ -272,10 +272,8 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
               }
             }
           >
-            <MessageContent
-              agentMessages={Array []}
-              conversationColor=""
-              customerInitialMessages={Array []}
+            <div
+              className="content"
             />
             <QuickReplies
               mainColor="#123456"
@@ -684,9 +682,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                         style={Object {}}
                       >
                         <div
-                          className="titlebar"
-                        />
-                        <div
                           className="dialog"
                         >
                           <div
@@ -770,10 +765,8 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                               </div>
                             </div>
                           </div>
-                          <MessageContent
-                            agentMessages={Array []}
-                            conversationColor=""
-                            customerInitialMessages={Array []}
+                          <div
+                            className="content"
                           />
                           <QuickReplies
                             mainColor="#123456"
@@ -1224,10 +1217,8 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
               }
             }
           >
-            <MessageContent
-              agentMessages={Array []}
-              conversationColor=""
-              customerInitialMessages={Array []}
+            <div
+              className="content"
             />
             <QuickReplies
               mainColor="#123456"
@@ -1636,9 +1627,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                         style={Object {}}
                       >
                         <div
-                          className="titlebar"
-                        />
-                        <div
                           className="dialog"
                         >
                           <div
@@ -1722,10 +1710,8 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                               </div>
                             </div>
                           </div>
-                          <MessageContent
-                            agentMessages={Array []}
-                            conversationColor=""
-                            customerInitialMessages={Array []}
+                          <div
+                            className="content"
                           />
                           <QuickReplies
                             mainColor="#123456"

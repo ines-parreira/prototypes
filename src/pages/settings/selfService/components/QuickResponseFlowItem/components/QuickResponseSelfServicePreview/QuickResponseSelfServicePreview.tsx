@@ -5,7 +5,7 @@ import {ConnectedProps, connect} from 'react-redux'
 
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 import {getIntegrations} from 'state/integrations/selectors'
-import GorgiasChatIntegrationPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
+import ChatIntegrationPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import MessageContentPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
 import useAppSelector from 'hooks/useAppSelector'
 import {RootState} from 'state/types'
@@ -42,7 +42,7 @@ const QuickResponseSelfServicePreview = ({
 
     return (
         <>
-            <ButtonGroup className="mb-3">
+            <ButtonGroup className="mb-4">
                 <Button
                     type="button"
                     color={isLandingPage ? 'info' : 'secondary'}
@@ -58,7 +58,7 @@ const QuickResponseSelfServicePreview = ({
                     Message Thread
                 </Button>
             </ButtonGroup>
-            <GorgiasChatIntegrationPreview
+            <ChatIntegrationPreview
                 name={chatIntegration.name}
                 introductionText={chatIntegration.decoration?.introduction_text}
                 mainColor={chatIntegration.decoration?.main_color}
@@ -118,7 +118,7 @@ const QuickResponseSelfServicePreview = ({
                         />
                     </>
                 )}
-            </GorgiasChatIntegrationPreview>
+            </ChatIntegrationPreview>
         </>
     )
 }

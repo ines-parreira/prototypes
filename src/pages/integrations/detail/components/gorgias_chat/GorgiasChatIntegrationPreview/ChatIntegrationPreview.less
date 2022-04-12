@@ -12,43 +12,12 @@
 
     .preview {
         position: relative;
-        overflow: hidden;
-        padding: 70px 40px 40px 40px;
-        background: @lighterGrey;
         border-radius: 5px;
-        width: 33em;
+        width: 384px;
         color: @textColor;
 
         font-weight: 600;
         pointer-events: none;
-
-        > .titlebar {
-            position: absolute;
-            z-index: 3;
-            display: block;
-            height: 28px;
-            padding-left: 5px;
-            top: 0;
-            left: 0;
-            background-color: #edeeef;
-            width: 100%;
-        }
-
-        > .titlebar:before {
-            display: block;
-            width: 4.2em;
-            height: 100%;
-            content: '';
-            background-image: radial-gradient(
-                ellipse at center,
-                @lighterGrey 0%,
-                @lighterGrey 45%,
-                transparent 45%
-            );
-            background-repeat: repeat-x;
-            background-size: 1.4em 1.4em;
-            background-position: 0 center;
-        }
     }
 
     .dialog {

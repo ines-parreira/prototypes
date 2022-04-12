@@ -6,9 +6,6 @@ exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = 
   style={Object {}}
 >
   <div
-    className="titlebar"
-  />
-  <div
     className="dialog"
   >
     <div
@@ -129,9 +126,6 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
     }
   }
 >
-  <div
-    className="titlebar"
-  />
   <div
     className="dialog"
   >
@@ -269,9 +263,6 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
   style={Object {}}
 >
   <div
-    className="titlebar"
-  />
-  <div
     className="dialog"
   >
     <div
@@ -402,9 +393,6 @@ exports[`<ChatIntegrationPreview/> render() should display optional email captur
   style={Object {}}
 >
   <div
-    className="titlebar"
-  />
-  <div
     className="dialog"
   >
     <div
@@ -532,9 +520,6 @@ exports[`<ChatIntegrationPreview/> render() should display required email captur
   style={Object {}}
 >
   <div
-    className="titlebar"
-  />
-  <div
     className="dialog"
   >
     <div
@@ -648,9 +633,6 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
   className="preview"
   style={Object {}}
 >
-  <div
-    className="titlebar"
-  />
   <div
     className="dialog"
   >
@@ -783,9 +765,6 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
   className="preview"
   style={Object {}}
 >
-  <div
-    className="titlebar"
-  />
   <div
     className="dialog"
   >
@@ -926,9 +905,6 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
   style={Object {}}
 >
   <div
-    className="titlebar"
-  />
-  <div
     className="dialog"
   >
     <div
@@ -1059,9 +1035,6 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
   style={Object {}}
 >
   <div
-    className="titlebar"
-  />
-  <div
     className="dialog"
   >
     <div
@@ -1191,9 +1164,6 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
   className="preview"
   style={Object {}}
 >
-  <div
-    className="titlebar"
-  />
   <div
     className="dialog"
   >
@@ -1334,9 +1304,6 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
   style={Object {}}
 >
   <div
-    className="titlebar"
-  />
-  <div
     className="dialog"
   >
     <div
@@ -1475,9 +1442,6 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
   className="preview"
   style={Object {}}
 >
-  <div
-    className="titlebar"
-  />
   <div
     className="dialog"
   >
@@ -1618,9 +1582,6 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
   style={Object {}}
 >
   <div
-    className="titlebar"
-  />
-  <div
     className="dialog"
   >
     <div
@@ -1759,9 +1720,6 @@ exports[`<ChatIntegrationPreview/> render() should not display button if hideBut
   className="preview"
   style={Object {}}
 >
-  <div
-    className="titlebar"
-  />
   <div
     className="dialog"
   >

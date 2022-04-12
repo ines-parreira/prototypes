@@ -3,7 +3,7 @@
 exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
 <div>
   <div
-    class="mb-3 btn-group"
+    class="mb-4 btn-group"
     role="group"
   >
     <button
@@ -22,9 +22,6 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
   <div
     class="preview"
   >
-    <div
-      class="titlebar"
-    />
     <div
       class="dialog"
     >
@@ -139,7 +136,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
 exports[`<ChatIntegrationPreview/> render() displays thread page 1`] = `
 <div>
   <div
-    class="mb-3 btn-group"
+    class="mb-4 btn-group"
     role="group"
   >
     <button
@@ -158,9 +155,6 @@ exports[`<ChatIntegrationPreview/> render() displays thread page 1`] = `
   <div
     class="preview"
   >
-    <div
-      class="titlebar"
-    />
     <div
       class="dialog"
     >

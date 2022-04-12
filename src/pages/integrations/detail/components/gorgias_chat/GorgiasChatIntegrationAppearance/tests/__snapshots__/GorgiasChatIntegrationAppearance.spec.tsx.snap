@@ -592,9 +592,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             class="preview"
           >
             <div
-              class="titlebar"
-            />
-            <div
               class="dialog"
             >
               <div
@@ -1332,9 +1329,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             class="preview"
           >
             <div
-              class="titlebar"
-            />
-            <div
               class="dialog"
             >
               <div
@@ -2059,9 +2053,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           <div
             class="preview"
           >
-            <div
-              class="titlebar"
-            />
             <div
               class="dialog"
             >
@@ -2796,9 +2787,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
             class="preview"
           >
             <div
-              class="titlebar"
-            />
-            <div
               class="dialog"
             >
               <div
@@ -3523,9 +3511,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           <div
             class="preview"
           >
-            <div
-              class="titlebar"
-            />
             <div
               class="dialog"
             >
@@ -4265,9 +4250,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           <div
             class="preview"
           >
-            <div
-              class="titlebar"
-            />
             <div
               class="dialog"
             >
@@ -5068,9 +5050,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
           <div
             class="preview"
           >
-            <div
-              class="titlebar"
-            />
             <div
               class="dialog"
             >

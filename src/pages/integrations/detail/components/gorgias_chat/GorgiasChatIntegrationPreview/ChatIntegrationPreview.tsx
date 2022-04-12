@@ -139,7 +139,6 @@ const ChatIntegrationPreview = (props: Props) => {
 
     return (
         <div className={css.preview} style={{...getPreviewCustomStyle()}}>
-            <div className={css.titlebar} />
             {isButtonOnTop && !hideButton && (
                 <div
                     className={classnames(css.button, css[position.alignment])}
