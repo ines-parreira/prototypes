@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import Clipboard from 'clipboard'
 import {Container, FormGroup, Label} from 'reactstrap'
 import classnames from 'classnames'
 import _camelCase from 'lodash/camelCase'
 
+import {InputType} from 'reactstrap/es/Input'
+import copy from 'copy-to-clipboard'
+import {fromJS} from 'immutable'
 import PageHeader from 'pages/common/components/PageHeader'
 import {fetchCurrentAuths, resetApiKey} from 'state/auths/actions'
 import {getApiKey} from 'state/auths/selectors'
@@ -16,9 +18,9 @@ import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import IconButton from 'pages/common/components/button/IconButton'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-
 import css from '../settings.less'
 
 type Props = ConnectedProps<typeof connector>
@@ -27,6 +29,7 @@ type State = {
     isCopiedApiKey: boolean
     isCopiedEmail: boolean
     isCopiedUrl: boolean
+    apiKeyType: 'password' | 'text'
 }
 
 export class APIViewContainer extends Component<Props, State> {
@@ -34,6 +37,13 @@ export class APIViewContainer extends Component<Props, State> {
         isCopiedApiKey: false,
         isCopiedEmail: false,
         isCopiedUrl: false,
+        apiKeyType: 'password',
+    }
+    private clipboardData: Record<string, string>
+
+    constructor(props: Props) {
+        super(props)
+        this.clipboardData = fromJS({})
     }
 
     componentWillMount() {
@@ -72,28 +82,34 @@ export class APIViewContainer extends Component<Props, State> {
 
     componentDidMount() {
         void this.props.fetchCurrentAuths()
+    }
 
-        const clipboard = new Clipboard('.copyBtn')
+    _copyToClipboard = () => {
+        if (this.clipboardData) {
+            const data = this.clipboardData.data
+            const clipboardTarget = this.clipboardData.targetPart
 
-        clipboard.on('success', (e) => {
-            const targetId = (
-                e.trigger as Element & {
-                    dataset: {clipboardTarget: string}
-                }
-            ).dataset.clipboardTarget
-            const targetPart = _camelCase(targetId.replace('#', ''))
+            copy(data)
+
+            const targetPart = _camelCase(clipboardTarget)
             const stateProp = `isCopied${targetPart
                 .charAt(0)
-                .toUpperCase()}${targetPart.slice(1)}` as keyof State
-            const newState: Partial<State> = {}
-            newState[stateProp] = true
+                .toUpperCase()}${targetPart.slice(1)}` as keyof Omit<
+                State,
+                'apiKeyType'
+            >
+            this.setState({
+                ...this.state,
+                [stateProp]: true,
+            })
 
-            this.setState(newState as State)
             setTimeout(() => {
-                newState[stateProp] = false
-                this.setState(newState as State)
+                this.setState({
+                    ...this.state,
+                    [stateProp]: false,
+                })
             }, 1500)
-        })
+        }
     }
 
     _subscribeToDeveloperNewsletter = () => {
@@ -114,6 +130,10 @@ export class APIViewContainer extends Component<Props, State> {
 
         if (confirm) {
             void this.props.resetApiKey()
+            this.setState({
+                ...this.state,
+                apiKeyType: 'password',
+            })
         }
     }
 
@@ -132,19 +152,47 @@ export class APIViewContainer extends Component<Props, State> {
         )
     }
 
+    _changeSecretVisibility = () => {
+        let newApiKeyType: InputType = 'password'
+        if (this.state.apiKeyType === 'password') {
+            newApiKeyType = 'text'
+        }
+        this.setState({
+            ...this.state,
+            apiKeyType: newApiKeyType,
+        })
+    }
+
     _renderApiKeySection(apiKey: string) {
         return (
             <InputGroup>
-                <TextInput id="apiKey" value={apiKey} readOnly />
+                <TextInput
+                    id="apiKey"
+                    value={apiKey}
+                    type={this.state.apiKeyType}
+                    readOnly
+                />
+                <IconButton
+                    intent="secondary"
+                    onClick={this._changeSecretVisibility}
+                >
+                    {this.state.apiKeyType === 'password'
+                        ? 'visibility'
+                        : 'visibility_off'}
+                </IconButton>
                 <Button intent="destructive" onClick={this._resetApiKey}>
-                    <ButtonIconLabel className="resetBtn" icon="refresh">
-                        Reset
-                    </ButtonIconLabel>
+                    <ButtonIconLabel icon="refresh">Reset</ButtonIconLabel>
                 </Button>
                 <Button
                     intent="secondary"
                     className="copyBtn"
-                    data-clipboard-target="#apiKey"
+                    onClick={() => {
+                        this.clipboardData = {
+                            data: apiKey,
+                            targetPart: 'apiKey',
+                        }
+                        this._copyToClipboard()
+                    }}
                 >
                     <ButtonIconLabel icon="file_copy">
                         {this.state.isCopiedApiKey ? 'Copied!' : 'Copy'}
@@ -179,6 +227,7 @@ export class APIViewContainer extends Component<Props, State> {
         const postmanParams = encodeURI(
             `env[Gorgias Helpdesk]=${btoa(JSON.stringify(postmanVars))}`
         )
+        const url = `https://${domain}.gorgias.com/api/`
 
         return (
             <div className="full-width">
@@ -235,15 +284,17 @@ export class APIViewContainer extends Component<Props, State> {
                                 Base API URL
                             </Label>
                             <InputGroup>
-                                <TextInput
-                                    id="url"
-                                    value={`https://${domain}.gorgias.com/api/`}
-                                    readOnly
-                                />
+                                <TextInput id="url" value={url} readOnly />
                                 <Button
                                     intent="secondary"
                                     className="copyBtn"
-                                    data-clipboard-target="#url"
+                                    onClick={() => {
+                                        this.clipboardData = {
+                                            data: url,
+                                            targetPart: 'url',
+                                        }
+                                        this._copyToClipboard()
+                                    }}
                                 >
                                     <ButtonIconLabel icon="file_copy">
                                         {this.state.isCopiedUrl
@@ -262,7 +313,13 @@ export class APIViewContainer extends Component<Props, State> {
                                 <Button
                                     intent="secondary"
                                     className="copyBtn"
-                                    data-clipboard-target="#email"
+                                    onClick={() => {
+                                        this.clipboardData = {
+                                            data: email,
+                                            targetPart: 'email',
+                                        }
+                                        this._copyToClipboard()
+                                    }}
                                 >
                                     <ButtonIconLabel icon="file_copy">
                                         {this.state.isCopiedEmail

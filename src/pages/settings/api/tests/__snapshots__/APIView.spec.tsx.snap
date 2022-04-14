@@ -86,8 +86,8 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
           />
           <ForwardRef
             className="copyBtn"
-            data-clipboard-target="#url"
             intent="secondary"
+            onClick={[Function]}
           >
             <ButtonIconLabel
               icon="file_copy"
@@ -125,8 +125,8 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
           />
           <ForwardRef
             className="copyBtn"
-            data-clipboard-target="#email"
             intent="secondary"
+            onClick={[Function]}
           >
             <ButtonIconLabel
               icon="file_copy"
@@ -311,8 +311,8 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
           />
           <ForwardRef
             className="copyBtn"
-            data-clipboard-target="#url"
             intent="secondary"
+            onClick={[Function]}
           >
             <ButtonIconLabel
               icon="file_copy"
@@ -350,8 +350,8 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
           />
           <ForwardRef
             className="copyBtn"
-            data-clipboard-target="#email"
             intent="secondary"
+            onClick={[Function]}
           >
             <ButtonIconLabel
               icon="file_copy"
@@ -385,14 +385,20 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
           <ForwardRef(TextInput)
             id="apiKey"
             readOnly={true}
+            type="password"
             value="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510"
           />
+          <ForwardRef
+            intent="secondary"
+            onClick={[Function]}
+          >
+            visibility
+          </ForwardRef>
           <ForwardRef
             intent="destructive"
             onClick={[Function]}
           >
             <ButtonIconLabel
-              className="resetBtn"
               icon="refresh"
             >
               Reset
@@ -400,8 +406,8 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
           </ForwardRef>
           <ForwardRef
             className="copyBtn"
-            data-clipboard-target="#apiKey"
             intent="secondary"
+            onClick={[Function]}
           >
             <ButtonIconLabel
               icon="file_copy"
