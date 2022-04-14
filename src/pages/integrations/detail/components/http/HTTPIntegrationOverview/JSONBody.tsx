@@ -51,7 +51,11 @@ export default class JSONBody extends React.Component<Props, State> {
     }
 
     _formIsPresetOption = (
-        form: string | Record<string, unknown> | Array<Record<string, unknown>>
+        form:
+            | string
+            | null
+            | Record<string, unknown>
+            | Array<Record<string, unknown>>
     ): boolean => {
         const presetOptionsValues = this.presetOptions.map(
             (option) => option.value
@@ -96,7 +100,7 @@ export default class JSONBody extends React.Component<Props, State> {
                         <JsonField
                             name="http.form"
                             rows="8"
-                            value={form || DEFAULT_FORM}
+                            value={form}
                             onChange={
                                 this._onJSONChange as ComponentProps<
                                     typeof JsonField

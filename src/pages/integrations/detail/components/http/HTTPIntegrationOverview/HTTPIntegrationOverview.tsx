@@ -29,6 +29,7 @@ import JSONBody from './JSONBody'
 
 export type HTTPForm =
     | string
+    | null
     | Record<string, unknown>
     | Array<Record<string, unknown>>
 

@@ -12,11 +12,11 @@ type Props = InputFieldProps<HTTPForm | JSONValue>
 
 type State = {
     isJsonValid: boolean
-    value: string
+    value: string | null
 }
 
 export default class JsonField extends DEPRECATED_InputField<Props, State> {
-    defaultValue = '{}'
+    defaultValue = null
 
     state: State = {
         isJsonValid: true,
@@ -32,27 +32,27 @@ export default class JsonField extends DEPRECATED_InputField<Props, State> {
             )
 
             if (text === '""') {
-                text = null
+                text = this.defaultValue
             }
 
             this.setState({
                 isJsonValid: true,
-                value: text || this.defaultValue,
+                value: text,
             })
         }
     }
 
     _onChange = (evt: ChangeEvent<HTMLInputElement>) => {
-        const value = evt.target.value
+        const value = evt.target.value || this.defaultValue
         let isJsonValid = true
-        let parsedValue = JSON.parse(this.defaultValue)
+        let parsedValue = this.defaultValue
 
         try {
-            parsedValue = JSON.parse(value)
-        } catch (e) {
-            if (value !== '') {
-                isJsonValid = false
+            if (value !== this.defaultValue) {
+                parsedValue = JSON.parse(value)
             }
+        } catch (e) {
+            isJsonValid = false
         }
 
         if (isJsonValid && this.props.onChange) {
@@ -61,7 +61,7 @@ export default class JsonField extends DEPRECATED_InputField<Props, State> {
 
         this.setState({
             isJsonValid,
-            value: value || this.defaultValue,
+            value: value,
         })
     }
 
@@ -91,7 +91,7 @@ export default class JsonField extends DEPRECATED_InputField<Props, State> {
                         rows="6"
                         id={this.id}
                         onChange={this._onChange}
-                        value={this.state.value}
+                        value={this.state.value || ''}
                         {...rest}
                     >
                         {children}

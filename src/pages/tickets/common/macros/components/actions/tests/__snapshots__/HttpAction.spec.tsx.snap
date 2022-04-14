@@ -219,9 +219,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
               class="form-control"
               id="id-json"
               rows="6"
-            >
-              {}
-            </textarea>
+            />
           </div>
         </div>
       </div>
