@@ -360,7 +360,7 @@ export function receiversValueFromState(
     sourceType: TicketMessageSourceType
 ) {
     return Object.entries(options).reduce((acc, [key, receivers]) => {
-        acc[key as keyof ReceiversValue] = receivers!.map((receiver) => ({
+        acc[key as keyof ReceiversValue] = receivers.map((receiver) => ({
             name: receiver.name || '',
             label: getPersonLabelFromSource(receiver, sourceType),
             value: receiver.address || '',
@@ -385,7 +385,7 @@ export function receiversStateFromValue(
     const newValue = value || {}
 
     return Object.entries(newValue).reduce((acc, [key, receivers]) => {
-        acc[key as keyof Receivers] = receivers!.map((receiver) => ({
+        acc[key as keyof Receivers] = receivers.map((receiver) => ({
             name: receiver.name || '',
             address: receiver.value || '',
         }))

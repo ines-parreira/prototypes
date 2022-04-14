@@ -17,7 +17,7 @@ type Props = {
     headerClassName?: string
     footerClassName?: string
     bodyClassName?: string
-} & Pick<ModalProps, KnownKeys<ModalProps>>
+} & RemoveIndex<ModalProps>
 
 export default class Modal extends Component<Props> {
     static defaultProps: Pick<Props, 'dismissible'> = {

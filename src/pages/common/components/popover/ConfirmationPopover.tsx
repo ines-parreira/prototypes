@@ -93,7 +93,7 @@ export default function ConfirmationPopover({
                 elementRef,
             })}
 
-            {isMounted && (
+            {isMounted() && (
                 <Popover
                     container={container}
                     isOpen={isOpen || isOpened}

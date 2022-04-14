@@ -554,36 +554,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           </i>
                                         </button>
                                       </ForwardRef>
-                                      <Popover
-                                        isOpen={false}
-                                        onClick={[Function]}
-                                        placement="bottom"
-                                        placementPrefix="bs-popover"
-                                        target="disconnect-button-undefined"
-                                        toggle={[Function]}
-                                        trigger="legacy"
-                                      >
-                                        <TooltipPopoverWrapper
-                                          autohide={false}
-                                          delay={
-                                            Object {
-                                              "hide": 50,
-                                              "show": 0,
-                                            }
-                                          }
-                                          fade={true}
-                                          hideArrow={false}
-                                          innerClassName="popover-inner"
-                                          isOpen={false}
-                                          onClick={[Function]}
-                                          placement="bottom"
-                                          placementPrefix="bs-popover"
-                                          popperClassName="popover show"
-                                          target="disconnect-button-undefined"
-                                          toggle={[Function]}
-                                          trigger="legacy"
-                                        />
-                                      </Popover>
                                     </ConfirmationPopover>
                                   </ConfirmButton>
                                   <Tooltip
@@ -777,36 +747,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           </i>
                                         </button>
                                       </ForwardRef>
-                                      <Popover
-                                        isOpen={false}
-                                        onClick={[Function]}
-                                        placement="bottom"
-                                        placementPrefix="bs-popover"
-                                        target="disconnect-button-2"
-                                        toggle={[Function]}
-                                        trigger="legacy"
-                                      >
-                                        <TooltipPopoverWrapper
-                                          autohide={false}
-                                          delay={
-                                            Object {
-                                              "hide": 50,
-                                              "show": 0,
-                                            }
-                                          }
-                                          fade={true}
-                                          hideArrow={false}
-                                          innerClassName="popover-inner"
-                                          isOpen={false}
-                                          onClick={[Function]}
-                                          placement="bottom"
-                                          placementPrefix="bs-popover"
-                                          popperClassName="popover show"
-                                          target="disconnect-button-2"
-                                          toggle={[Function]}
-                                          trigger="legacy"
-                                        />
-                                      </Popover>
                                     </ConfirmationPopover>
                                   </ConfirmButton>
                                   <Tooltip
@@ -1000,36 +940,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           </i>
                                         </button>
                                       </ForwardRef>
-                                      <Popover
-                                        isOpen={false}
-                                        onClick={[Function]}
-                                        placement="bottom"
-                                        placementPrefix="bs-popover"
-                                        target="disconnect-button-3"
-                                        toggle={[Function]}
-                                        trigger="legacy"
-                                      >
-                                        <TooltipPopoverWrapper
-                                          autohide={false}
-                                          delay={
-                                            Object {
-                                              "hide": 50,
-                                              "show": 0,
-                                            }
-                                          }
-                                          fade={true}
-                                          hideArrow={false}
-                                          innerClassName="popover-inner"
-                                          isOpen={false}
-                                          onClick={[Function]}
-                                          placement="bottom"
-                                          placementPrefix="bs-popover"
-                                          popperClassName="popover show"
-                                          target="disconnect-button-3"
-                                          toggle={[Function]}
-                                          trigger="legacy"
-                                        />
-                                      </Popover>
                                     </ConfirmationPopover>
                                   </ConfirmButton>
                                   <Tooltip
@@ -1223,36 +1133,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           </i>
                                         </button>
                                       </ForwardRef>
-                                      <Popover
-                                        isOpen={false}
-                                        onClick={[Function]}
-                                        placement="bottom"
-                                        placementPrefix="bs-popover"
-                                        target="disconnect-button-1"
-                                        toggle={[Function]}
-                                        trigger="legacy"
-                                      >
-                                        <TooltipPopoverWrapper
-                                          autohide={false}
-                                          delay={
-                                            Object {
-                                              "hide": 50,
-                                              "show": 0,
-                                            }
-                                          }
-                                          fade={true}
-                                          hideArrow={false}
-                                          innerClassName="popover-inner"
-                                          isOpen={false}
-                                          onClick={[Function]}
-                                          placement="bottom"
-                                          placementPrefix="bs-popover"
-                                          popperClassName="popover show"
-                                          target="disconnect-button-1"
-                                          toggle={[Function]}
-                                          trigger="legacy"
-                                        />
-                                      </Popover>
                                     </ConfirmationPopover>
                                   </ConfirmButton>
                                   <Tooltip
@@ -3481,36 +3361,6 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                           </i>
                                         </button>
                                       </ForwardRef>
-                                      <Popover
-                                        isOpen={false}
-                                        onClick={[Function]}
-                                        placement="bottom"
-                                        placementPrefix="bs-popover"
-                                        target="disconnect-button-3"
-                                        toggle={[Function]}
-                                        trigger="legacy"
-                                      >
-                                        <TooltipPopoverWrapper
-                                          autohide={false}
-                                          delay={
-                                            Object {
-                                              "hide": 50,
-                                              "show": 0,
-                                            }
-                                          }
-                                          fade={true}
-                                          hideArrow={false}
-                                          innerClassName="popover-inner"
-                                          isOpen={false}
-                                          onClick={[Function]}
-                                          placement="bottom"
-                                          placementPrefix="bs-popover"
-                                          popperClassName="popover show"
-                                          target="disconnect-button-3"
-                                          toggle={[Function]}
-                                          trigger="legacy"
-                                        />
-                                      </Popover>
                                     </ConfirmationPopover>
                                   </ConfirmButton>
                                   <Tooltip

@@ -16,7 +16,7 @@ type Props = {
     boundariesElement?: string | Element
     arrowClassName?: string
     trigger?: Trigger[]
-} & Pick<UncontrolledTooltipProps, KnownKeys<UncontrolledTooltipProps>>
+} & RemoveIndex<UncontrolledTooltipProps>
 
 export default function Tooltip({
     children,

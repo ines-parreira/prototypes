@@ -8,10 +8,10 @@ declare type ArgumentsOf<F extends Function> = F extends (
     ? A
     : never
 
-type KnownKeys<T> = {
-    [K in keyof T]: string extends K ? never : number extends K ? never : K
-} extends {[key in keyof T]: infer U}
-    ? {} extends U
+type RemoveIndex<T> = {
+    [K in keyof T as string extends K
         ? never
-        : U
-    : never
+        : number extends K
+        ? never
+        : K]: T[K]
+}
