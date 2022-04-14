@@ -290,6 +290,10 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             attachmentsMask = 'image/*'
         }
 
+        if (newMessageType === TicketMessageSourceType.Sms) {
+            attachmentsMask = 'image/*'
+        }
+
         return [
             <div className="attachment" key="attachments">
                 <label
@@ -374,6 +378,10 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         }
 
         if (newMessageType === TicketMessageSourceType.TwitterTweet) {
+            attachmentsMask = 'image/*'
+        }
+
+        if (newMessageType === TicketMessageSourceType.Sms) {
             attachmentsMask = 'image/*'
         }
 
