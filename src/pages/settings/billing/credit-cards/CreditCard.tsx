@@ -139,10 +139,15 @@ export class CreditCardContainer extends Component<Props, State> {
     }
 
     componentDidMount() {
-        const {contact, fetchContact, fetchCreditCard, hasCreditCard} =
-            this.props
+        const {
+            contact,
+            fetchContact,
+            fetchCreditCard,
+            hasCreditCard,
+            isMissingContactInformation,
+        } = this.props
 
-        if (contact == null || !hasCreditCard) {
+        if (contact == null || !hasCreditCard || isMissingContactInformation) {
             this.setState({isFetchingInfo: true})
             Promise.all([fetchContact(), fetchCreditCard()]).finally(() => {
                 this.setState({isFetchingInfo: false})

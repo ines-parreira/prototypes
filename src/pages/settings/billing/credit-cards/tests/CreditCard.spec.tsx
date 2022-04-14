@@ -159,4 +159,20 @@ describe('CreditCard component', () => {
             done()
         })
     })
+
+    it('should fetch contact and credit card information when the information is missing', () => {
+        shallow<CreditCardContainer>(<CreditCardContainer {...minProps} />)
+
+        expect(minProps.fetchCreditCard).toHaveBeenCalled()
+        jest.resetAllMocks()
+        shallow<CreditCardContainer>(
+            <CreditCardContainer
+                {...minProps}
+                hasCreditCard
+                isMissingContactInformation
+            />
+        )
+
+        expect(minProps.fetchContact).toHaveBeenCalled()
+    })
 })
