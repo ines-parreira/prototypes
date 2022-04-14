@@ -27,7 +27,7 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
     </span>
   </div>
   <div
-    class="mb-5 card-deck"
+    class="cardDeck card-deck"
   >
     <div
       class="plan greyTheme mt-4 card"
@@ -1390,6 +1390,19 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
       </div>
     </div>
   </div>
+  <div
+    class="taxDisclaimer"
+  >
+    * Prices do not include
+     
+    <a
+      href="https://www.gorgias.com/pricing/billing-sales-tax"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      sales tax
+    </a>
+  </div>
 </div>
 `;
 
@@ -1442,7 +1455,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
     </span>
   </div>
   <div
-    class="mb-5 card-deck"
+    class="cardDeck card-deck"
   >
     <div
       class="plan greyTheme mt-4 planCard card"
@@ -3111,6 +3124,19 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
       </div>
     </div>
   </div>
+  <div
+    class="taxDisclaimer"
+  >
+    * Prices do not include
+     
+    <a
+      href="https://www.gorgias.com/pricing/billing-sales-tax"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      sales tax
+    </a>
+  </div>
 </div>
 `;
 
@@ -3141,7 +3167,7 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
     </span>
   </div>
   <div
-    class="mb-5 card-deck"
+    class="cardDeck card-deck"
   >
     <div
       class="plan blueTheme mt-4 card"
@@ -4493,6 +4519,19 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
       </div>
     </div>
   </div>
+  <div
+    class="taxDisclaimer"
+  >
+    * Prices do not include
+     
+    <a
+      href="https://www.gorgias.com/pricing/billing-sales-tax"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      sales tax
+    </a>
+  </div>
 </div>
 `;
 
@@ -4523,7 +4562,7 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
     </span>
   </div>
   <div
-    class="mb-5 card-deck"
+    class="cardDeck card-deck"
   >
     <div
       class="plan greyTheme mt-4 card"
@@ -5925,6 +5964,19 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
         </button>
       </div>
     </div>
+  </div>
+  <div
+    class="taxDisclaimer"
+  >
+    * Prices do not include
+     
+    <a
+      href="https://www.gorgias.com/pricing/billing-sales-tax"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      sales tax
+    </a>
   </div>
 </div>
 `;

@@ -149,7 +149,7 @@ export default function BillingPlansComparison({
                         </Button>
                     </Group>
                 </div>
-                <CardDeck className={classNames('mb-5')}>
+                <CardDeck className={css.cardDeck}>
                     <>
                         {accountHasLegacyPlan && (
                             <BillingComparisonPlanCard
@@ -242,6 +242,17 @@ export default function BillingPlansComparison({
                         />
                     )}
                 </CardDeck>
+
+                <div className={css.taxDisclaimer}>
+                    * Prices do not include{' '}
+                    <a
+                        href="https://www.gorgias.com/pricing/billing-sales-tax"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        sales tax
+                    </a>
+                </div>
             </Container>
         </SynchronizedScrollTopProvider>
     )
