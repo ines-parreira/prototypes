@@ -4,7 +4,7 @@ import {useParams, useRouteMatch} from 'react-router-dom'
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import MockDate from 'mockdate'
-import {fromJS, Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
 import configureMockStore from 'redux-mock-store'
 
@@ -111,6 +111,7 @@ describe('<QuickResponseFlowNewItem />', () => {
                                         response_message_content: {
                                             html: '<div><br></div>',
                                             text: '',
+                                            attachments: List(),
                                         },
                                     },
                                 ],
@@ -145,11 +146,19 @@ describe('<QuickResponseFlowNewItem />', () => {
                 deactivated_datetime: null,
                 id: 'another-id',
                 title: 'title',
-                response_message_content: {html: '<div><br></div>', text: ''},
+                response_message_content: {
+                    html: '<div><br></div>',
+                    text: '',
+                    attachments: List(),
+                },
             },
             {
                 deactivated_datetime: null,
-                response_message_content: {html: '<div><br></div>', text: ''},
+                response_message_content: {
+                    html: '<div><br></div>',
+                    text: '',
+                    attachments: List(),
+                },
                 title: 'label',
             },
         ])
@@ -161,6 +170,7 @@ describe('<QuickResponseFlowNewItem />', () => {
                     responseText: {
                         message: Map({html: '<div><br></div>', text: ''}),
                     },
+                    attachments: List(),
                 }
             )
         )
@@ -189,6 +199,7 @@ describe('<QuickResponseFlowNewItem />', () => {
                                         response_message_content: {
                                             html: '<div><br></div>',
                                             text: '',
+                                            attachments: List(),
                                         },
                                     },
                                 ],
@@ -221,11 +232,19 @@ describe('<QuickResponseFlowNewItem />', () => {
                 deactivated_datetime: null,
                 id: 'another-id',
                 title: 'title',
-                response_message_content: {html: '<div><br></div>', text: ''},
+                response_message_content: {
+                    html: '<div><br></div>',
+                    text: '',
+                    attachments: List(),
+                },
             },
             {
                 deactivated_datetime: null,
-                response_message_content: {html: '<div><br></div>', text: ''},
+                response_message_content: {
+                    html: '<div><br></div>',
+                    text: '',
+                    attachments: List(),
+                },
                 title: 'another title',
             },
         ])

@@ -2,6 +2,7 @@ import React, {useState, useMemo} from 'react'
 import {useLatest} from 'react-use'
 import {Table, Form, FormGroup, FormText, Label, Input} from 'reactstrap'
 import {produce} from 'immer'
+import {List} from 'immutable'
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import Button from 'pages/common/components/button/Button'
@@ -86,6 +87,7 @@ const QuickResponseList = () => {
                         response_message_content: {
                             html: '<div><br></div>',
                             text: '',
+                            attachments: List(),
                         },
                     })
                 }

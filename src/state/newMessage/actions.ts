@@ -1177,3 +1177,7 @@ export const newMessageResetFromMessage = createAction<{
     newMessage: NewMessage
     replyAreaState: ReplyAreaState
 }>(constants.NEW_MESSAGE_RESET_FROM_MESSAGE)
+
+export const newMessageQuickResponseFlow = createAction<{
+    attachments: List<any>
+}>(constants.NEW_MESSAGE_QUICK_RESPONSE_FLOW)

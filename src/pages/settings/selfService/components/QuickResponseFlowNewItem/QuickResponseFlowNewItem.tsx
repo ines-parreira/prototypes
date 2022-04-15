@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
 import {produce} from 'immer'
 
+import {List, Map} from 'immutable'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 import history from 'pages/history'
@@ -30,9 +31,11 @@ const QuickResponseFlowNewItem = () => {
     const handleSubmit = async ({
         buttonLabel,
         responseText,
+        attachments,
     }: {
         buttonLabel: string
         responseText: {message: Map<any, any>}
+        attachments: List<any>
     }) => {
         const deactivatedDatetime = isLimitReached
             ? new Date().toISOString()
@@ -46,6 +49,7 @@ const QuickResponseFlowNewItem = () => {
                     response_message_content: {
                         html: responseText.message.get('html'),
                         text: responseText.message.get('text'),
+                        attachments,
                     },
                 })
             }
@@ -54,6 +58,7 @@ const QuickResponseFlowNewItem = () => {
         logEvent(SegmentEvent.QuickResponseFlowCreated, {
             buttonLabel,
             responseText,
+            attachments,
         })
 
         history.push(baseURL)
@@ -63,3 +68,7 @@ const QuickResponseFlowNewItem = () => {
 }
 
 export default QuickResponseFlowNewItem
+
+// failing tests
+// QuickResponseFlowEditItem
+// QuickResponseFlowNewItem

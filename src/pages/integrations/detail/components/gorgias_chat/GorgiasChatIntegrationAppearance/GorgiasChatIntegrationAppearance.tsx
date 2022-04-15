@@ -422,6 +422,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         {
                             content: "Sure, what's your email / order number?",
                             isHtml: false,
+                            attachments: [],
                         },
                     ]}
                 />

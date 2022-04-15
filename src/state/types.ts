@@ -174,6 +174,7 @@ export type GorgiasAction = {
     templatePath?: string
     absolutePath?: string[]
     item?: Map<any, any>
+    attachments?: List<any>
 }
 
 export type CurrentUser = Map<any, any>

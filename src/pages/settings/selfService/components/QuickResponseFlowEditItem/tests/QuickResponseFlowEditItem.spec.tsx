@@ -4,7 +4,7 @@ import {useParams, useRouteMatch} from 'react-router-dom'
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import MockDate from 'mockdate'
-import {fromJS, Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
 import configureMockStore from 'redux-mock-store'
 
@@ -53,6 +53,7 @@ const defaultEntities = {
                     response_message_content: {
                         html: '<div><br></div>',
                         text: '',
+                        attachments: List(),
                     },
                 },
                 {
@@ -62,6 +63,7 @@ const defaultEntities = {
                     response_message_content: {
                         html: '<div><br></div>',
                         text: '',
+                        attachments: List(),
                     },
                 },
             ],
@@ -148,7 +150,11 @@ describe('<QuickResponseFlowEditItem />', () => {
         expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith([
             {
                 deactivated_datetime: null,
-                response_message_content: {html: '<div><br></div>', text: ''},
+                response_message_content: {
+                    html: '<div><br></div>',
+                    text: '',
+                    attachments: List(),
+                },
                 title: 'label',
                 id: 'some-id',
             },
@@ -156,7 +162,11 @@ describe('<QuickResponseFlowEditItem />', () => {
                 deactivated_datetime: null,
                 id: 'another-id',
                 title: 'another title',
-                response_message_content: {html: '<div><br></div>', text: ''},
+                response_message_content: {
+                    html: '<div><br></div>',
+                    text: '',
+                    attachments: List(),
+                },
             },
         ])
         await waitFor(() =>
@@ -165,9 +175,14 @@ describe('<QuickResponseFlowEditItem />', () => {
                 {
                     buttonLabel: 'label',
                     responseText: {
-                        message: Map({html: '<div><br></div>', text: ''}),
+                        message: Map({
+                            html: '<div><br></div>',
+                            text: '',
+                            attachments: List(),
+                        }),
                     },
                     id: 'some-id',
+                    attachments: List(),
                 }
             )
         )
@@ -224,11 +239,19 @@ describe('<QuickResponseFlowEditItem />', () => {
                 deactivated_datetime: null,
                 title: 'title',
                 id: 'some-id',
-                response_message_content: {html: '<div><br></div>', text: ''},
+                response_message_content: {
+                    html: '<div><br></div>',
+                    text: '',
+                    attachments: List(),
+                },
             },
             {
                 deactivated_datetime: null,
-                response_message_content: {html: '<div><br></div>', text: ''},
+                response_message_content: {
+                    html: '<div><br></div>',
+                    text: '',
+                    attachments: List(),
+                },
                 title: 'another title',
                 id: 'another-id',
             },
@@ -239,9 +262,14 @@ describe('<QuickResponseFlowEditItem />', () => {
                 {
                     buttonLabel: 'title',
                     responseText: {
-                        message: Map({html: '<div><br></div>', text: ''}),
+                        message: Map({
+                            html: '<div><br></div>',
+                            text: '',
+                            attachments: List(),
+                        }),
                     },
                     id: 'some-id',
+                    attachments: List(),
                 }
             )
         )
@@ -270,7 +298,11 @@ describe('<QuickResponseFlowEditItem />', () => {
         expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith([
             {
                 deactivated_datetime: null,
-                response_message_content: {html: '<div><br></div>', text: ''},
+                response_message_content: {
+                    html: '<div><br></div>',
+                    text: '',
+                    attachments: List(),
+                },
                 title: 'another title',
                 id: 'another-id',
             },

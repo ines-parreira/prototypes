@@ -257,7 +257,9 @@ exports[`<ChatIntegrationPreview/> render() displays thread page 1`] = `
             <div
               class="bubble firstMessageOfAppMaker"
             >
-              response
+              <div>
+                response
+              </div>
             </div>
             <div
               class="bubble firstMessageOfAppMaker"

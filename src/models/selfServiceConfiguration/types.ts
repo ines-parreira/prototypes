@@ -1,3 +1,5 @@
+import {List} from 'immutable'
+
 export type SelfServiceConfigurationFilter = {
     key: string
     value: string | string[]
@@ -60,6 +62,7 @@ export type QuickReplyPolicy = {
     response_message_content: {
         html: string
         text: string
+        attachments: List<any>
     }
     id?: string
 }

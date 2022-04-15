@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react'
 import {useParams} from 'react-router-dom'
-import {fromJS} from 'immutable'
+import {List, Map} from 'immutable'
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
@@ -37,9 +37,11 @@ const QuickResponseFlowEditItem = () => {
     const handleSubmit = async ({
         buttonLabel,
         responseText,
+        attachments,
     }: {
         buttonLabel: string
         responseText: {message: Map<any, any>}
+        attachments: List<any>
     }) => {
         const newQuickResponses = quickResponses.map((quickResponse) =>
             quickResponseId === quickResponse.id
@@ -49,6 +51,7 @@ const QuickResponseFlowEditItem = () => {
                       response_message_content: {
                           html: responseText.message.get('html'),
                           text: responseText.message.get('text'),
+                          attachments,
                       },
                   }
                 : quickResponse
@@ -59,6 +62,7 @@ const QuickResponseFlowEditItem = () => {
             id: quickResponseId,
             buttonLabel,
             responseText,
+            attachments,
         })
         history.push(baseURL)
     }
@@ -79,14 +83,7 @@ const QuickResponseFlowEditItem = () => {
         <QuickResponseFlowItem
             handleSubmit={handleSubmit}
             handleDelete={handleDelete}
-            initialValue={{
-                buttonLabel: quickResponseBeingEdited.title,
-                responseText: {
-                    message: fromJS(
-                        quickResponseBeingEdited.response_message_content
-                    ),
-                },
-            }}
+            quickResponseBeingEdited={quickResponseBeingEdited}
         />
     )
 }

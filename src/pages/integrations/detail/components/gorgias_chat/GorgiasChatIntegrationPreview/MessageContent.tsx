@@ -6,13 +6,51 @@ import Avatar from '../../../../../common/components/Avatar/Avatar'
 
 import css from './ChatIntegrationPreview.less'
 import CustomerInitialMessages from './CustomerInitialMessages'
+import ProductCardAttachment, {ProductAttachment} from './ProductCardAttachment'
 
 type Props = {
     conversationColor: string
     currentUser?: Map<any, any>
     customerInitialMessages: string[]
-    agentMessages: {content: string; isHtml: boolean}[]
+    agentMessages: {
+        content: string
+        isHtml: boolean
+        attachments: ProductAttachment[]
+    }[]
     hideMessageTimestamp?: boolean
+}
+
+const renderAgentMessage = ({
+    content,
+    isHtml,
+    attachments,
+}: {
+    content: string
+    isHtml: boolean
+    attachments: ProductAttachment[]
+}) => {
+    if (isHtml) {
+        return (
+            <>
+                <div
+                    dangerouslySetInnerHTML={{
+                        __html: content,
+                    }}
+                />
+                {attachments.map((attachment, index) => {
+                    const {url} = attachment
+
+                    return (
+                        <ProductCardAttachment
+                            key={`${url}-${index}`}
+                            attachment={attachment}
+                        />
+                    )
+                })}
+            </>
+        )
+    }
+    return <>{content}</>
 }
 
 export default class MessageContent extends Component<Props> {
@@ -50,29 +88,16 @@ export default class MessageContent extends Component<Props> {
                             {currentUser.get('name')}
                         </div>
 
-                        {agentMessages.map(({content, isHtml}) => (
-                            <Fragment key={content}>
-                                {isHtml ? (
-                                    <div
-                                        className={classnames(
-                                            css.bubble,
-                                            css.firstMessageOfAppMaker
-                                        )}
-                                        dangerouslySetInnerHTML={{
-                                            __html: content,
-                                        }}
-                                    />
-                                ) : (
-                                    <div
-                                        className={classnames(
-                                            css.bubble,
-                                            css.firstMessageOfAppMaker
-                                        )}
-                                    >
-                                        {content}
-                                    </div>
+                        {agentMessages.map((message) => (
+                            <div
+                                className={classnames(
+                                    css.bubble,
+                                    css.firstMessageOfAppMaker
                                 )}
-                            </Fragment>
+                                key={message.content}
+                            >
+                                {renderAgentMessage(message)}
+                            </div>
                         ))}
                     </div>
                 </div>

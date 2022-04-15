@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -12,8 +12,10 @@ import {
 import {Link, useParams} from 'react-router-dom'
 import {EditorState} from 'draft-js'
 import classNames from 'classnames'
-import {fromJS} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
+import {useDispatch} from 'react-redux'
+import {deleteAttachment as deleteAttachmentAction} from 'state/newMessage/actions'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -31,33 +33,38 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import {convertToHTML} from 'utils/editor'
 
+import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
+import {NEW_MESSAGE_QUICK_RESPONSE_FLOW} from 'state/newMessage/constants'
+import {QuickReplyPolicy} from 'models/selfServiceConfiguration/types'
+import {getNewMessageAttachments} from '../../../../../state/newMessage/selectors'
 import QuickResponseSelfServicePreview from './components/QuickResponseSelfServicePreview'
 import css from './QuickResponseFlowItem.less'
 
 type Props = {
-    handleSubmit: ({
-        buttonLabel,
-        responseText,
-    }: {
+    handleSubmit: (args: {
         buttonLabel: string
         responseText: {message: Map<any, any>}
-    }) => void
-    initialValue?: {buttonLabel: string; responseText: {message: Map<any, any>}}
+        attachments: List<any>
+    }) => Promise<void>
+    quickResponseBeingEdited?: QuickReplyPolicy
     handleDelete?: () => void
 }
 
 const QuickResponseFlowItem = ({
     handleSubmit,
-    initialValue,
+    quickResponseBeingEdited,
     handleDelete,
 }: Props) => {
     const configuration = useConfigurationData()
+    const dispatch = useDispatch()
     const [buttonLabel, setButtonLabel] = useState(
-        initialValue ? initialValue.buttonLabel : ''
+        quickResponseBeingEdited?.title ?? ''
     )
-    const [responseText, setResponseText] = useState<{message: Map<any, any>}>(
-        initialValue ? initialValue.responseText : {message: fromJS({})}
-    )
+    const [responseText, setResponseText] = useState<{message: Map<any, any>}>({
+        message: fromJS(
+            quickResponseBeingEdited?.response_message_content ?? {}
+        ),
+    })
     const [error, setError] = useState('')
 
     const baseURL = `/app/settings/self-service/shopify/${
@@ -69,10 +76,21 @@ const QuickResponseFlowItem = ({
     }>()
 
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-
+    const newMessageAttachments = useAppSelector(getNewMessageAttachments)
+    const deleteAttachment = (index: number) => {
+        dispatch(deleteAttachmentAction(index))
+    }
     const quickResponses = useMemo(() => {
         return configuration.configuration?.quick_response_policies || []
     }, [configuration])
+
+    useEffect(() => {
+        dispatch({
+            type: NEW_MESSAGE_QUICK_RESPONSE_FLOW,
+            attachments:
+                quickResponseBeingEdited?.response_message_content.attachments,
+        })
+    }, [dispatch, quickResponseBeingEdited])
 
     if (!hasAutomationAddOn) {
         return <GorgiasChatIntegrationSelfServicePaywall />
@@ -83,7 +101,7 @@ const QuickResponseFlowItem = ({
         setError('')
     }
 
-    const handleSubmitWrapper = (event: React.FormEvent) => {
+    const handleSubmitWrapper = async (event: React.FormEvent) => {
         event.preventDefault()
 
         const flowWithTheSameTitle = quickResponses
@@ -95,7 +113,11 @@ const QuickResponseFlowItem = ({
             return
         }
 
-        handleSubmit({buttonLabel, responseText})
+        await handleSubmit({
+            buttonLabel,
+            responseText,
+            attachments: newMessageAttachments,
+        })
     }
 
     return (
@@ -129,7 +151,9 @@ const QuickResponseFlowItem = ({
                             intent="secondary"
                         >
                             <ButtonIconLabel icon="arrow_back">
-                                {initialValue ? 'Edit Flow' : 'New Flow'}
+                                {quickResponseBeingEdited !== undefined
+                                    ? 'Edit Flow'
+                                    : 'New Flow'}
                             </ButtonIconLabel>
                         </Button>
 
@@ -206,10 +230,16 @@ const QuickResponseFlowItem = ({
                                     }}
                                     placeholder="Ex: Please more information about our product line in this article!"
                                 />
+                                <TicketAttachments
+                                    removable
+                                    attachments={newMessageAttachments}
+                                    deleteAttachment={deleteAttachment}
+                                    className="p-2 d-flex flex-wrap"
+                                />
                             </FormGroup>
                             <div
                                 className={
-                                    initialValue
+                                    quickResponseBeingEdited !== undefined
                                         ? css.spreadButtons
                                         : css.joinedButtons
                                 }
@@ -221,22 +251,14 @@ const QuickResponseFlowItem = ({
                                         !!error || buttonLabel.length === 0
                                     }
                                 >
-                                    {initialValue
+                                    {quickResponseBeingEdited !== undefined
                                         ? 'Save Changes'
                                         : 'Create Flow'}
                                 </Button>
-                                {initialValue === undefined ? (
+                                {quickResponseBeingEdited === undefined ? (
                                     <Button
-                                        intent={
-                                            initialValue
-                                                ? 'destructive'
-                                                : 'secondary'
-                                        }
-                                        color={
-                                            initialValue
-                                                ? 'destructive'
-                                                : 'secondary'
-                                        }
+                                        intent={'secondary'}
+                                        color={'secondary'}
                                         onClick={() => {
                                             history.push(baseURL)
                                         }}
@@ -269,9 +291,8 @@ const QuickResponseFlowItem = ({
                     <Col data-testid="previewColumn" className={css.preview}>
                         <QuickResponseSelfServicePreview
                             quickResponseTitle={buttonLabel}
-                            quickResponseResponse={responseText.message.get(
-                                'html'
-                            )}
+                            quickResponseMessage={responseText.message}
+                            newMessageAttachments={newMessageAttachments}
                         />
                     </Col>
                 </Row>

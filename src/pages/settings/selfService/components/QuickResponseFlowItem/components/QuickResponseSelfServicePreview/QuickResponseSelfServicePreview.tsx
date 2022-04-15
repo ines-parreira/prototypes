@@ -3,6 +3,7 @@ import {useRouteMatch} from 'react-router'
 import {ListGroup, Button, ButtonGroup} from 'reactstrap'
 import {ConnectedProps, connect} from 'react-redux'
 
+import {List, Map} from 'immutable'
 import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 import {getIntegrations} from 'state/integrations/selectors'
 import ChatIntegrationPreview from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
@@ -10,6 +11,7 @@ import MessageContentPreview from 'pages/integrations/detail/components/gorgias_
 import useAppSelector from 'hooks/useAppSelector'
 import {RootState} from 'state/types'
 
+import {toJS} from 'utils'
 import HomePageListGroupItem from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/components/HomePageListGroupItem'
 import css from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/SelfServicePreview.less'
 import {useChatIntegration} from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/hooks'
@@ -18,13 +20,15 @@ import QuickResponseReplies from '../QuickResponseReplies/QuickResponseReplies'
 
 type Props = {
     quickResponseTitle: string
-    quickResponseResponse: string
+    quickResponseMessage: Map<any, any>
+    newMessageAttachments: List<any>
 }
 
 const QuickResponseSelfServicePreview = ({
     quickResponseTitle,
-    quickResponseResponse,
+    quickResponseMessage,
     currentUser,
+    newMessageAttachments,
 }: Props & ConnectedProps<typeof connector>) => {
     const [isLandingPage, setIsLandingPage] = useState(true)
 
@@ -103,8 +107,19 @@ const QuickResponseSelfServicePreview = ({
                             currentUser={currentUser}
                             customerInitialMessages={[quickResponseTitle]}
                             agentMessages={[
-                                {content: quickResponseResponse, isHtml: true},
-                                {content: 'Was this helpful?', isHtml: false},
+                                {
+                                    content:
+                                        quickResponseMessage.get('text') !== ''
+                                            ? quickResponseMessage.get('html')
+                                            : '',
+                                    isHtml: true,
+                                    attachments: toJS(newMessageAttachments),
+                                },
+                                {
+                                    content: 'Was this helpful?',
+                                    isHtml: false,
+                                    attachments: [],
+                                },
                             ]}
                             hideMessageTimestamp
                         />

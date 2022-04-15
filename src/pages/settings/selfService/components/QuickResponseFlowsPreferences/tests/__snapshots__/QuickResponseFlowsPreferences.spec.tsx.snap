@@ -17,6 +17,7 @@ Array [
           "deactivated_datetime": null,
           "id": "1",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -26,6 +27,7 @@ Array [
           "deactivated_datetime": null,
           "id": "2",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -35,6 +37,7 @@ Array [
           "deactivated_datetime": null,
           "id": "3",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -44,6 +47,7 @@ Array [
           "deactivated_datetime": null,
           "id": "4",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -53,6 +57,7 @@ Array [
           "deactivated_datetime": "2020-01-01T00:00:00Z",
           "id": "5",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -91,6 +96,7 @@ Array [
           "deactivated_datetime": null,
           "id": "1",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -100,6 +106,7 @@ Array [
           "deactivated_datetime": null,
           "id": "2",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -109,6 +116,7 @@ Array [
           "deactivated_datetime": null,
           "id": "3",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -118,6 +126,7 @@ Array [
           "deactivated_datetime": null,
           "id": "4",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -127,6 +136,7 @@ Array [
           "deactivated_datetime": "2020-01-01T00:00:00Z",
           "id": "5",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -135,6 +145,7 @@ Array [
         Object {
           "deactivated_datetime": "2021-01-24T17:30:00.000Z",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "<div><br></div>",
             "text": "",
           },
@@ -178,6 +189,7 @@ Array [
           "deactivated_datetime": null,
           "id": "1",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -187,6 +199,7 @@ Array [
           "deactivated_datetime": null,
           "id": "2",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -196,6 +209,7 @@ Array [
           "deactivated_datetime": null,
           "id": "3",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -205,6 +219,7 @@ Array [
           "deactivated_datetime": null,
           "id": "4",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -214,6 +229,7 @@ Array [
           "deactivated_datetime": "2020-01-01T00:00:00Z",
           "id": "5",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -252,6 +268,7 @@ Array [
           "deactivated_datetime": null,
           "id": "1",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -261,6 +278,7 @@ Array [
           "deactivated_datetime": null,
           "id": "2",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -270,6 +288,7 @@ Array [
           "deactivated_datetime": null,
           "id": "3",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -279,6 +298,7 @@ Array [
           "deactivated_datetime": null,
           "id": "4",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -288,6 +308,7 @@ Array [
           "deactivated_datetime": "2020-01-01T00:00:00Z",
           "id": "5",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -296,6 +317,7 @@ Array [
         Object {
           "deactivated_datetime": "2021-01-24T17:30:00.000Z",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "<div><br></div>",
             "text": "",
           },
@@ -334,6 +356,7 @@ Array [
           "deactivated_datetime": null,
           "id": "1",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -343,6 +366,7 @@ Array [
           "deactivated_datetime": null,
           "id": "3",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -352,6 +376,7 @@ Array [
           "deactivated_datetime": null,
           "id": "4",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -361,6 +386,7 @@ Array [
           "deactivated_datetime": "2020-01-01T00:00:00Z",
           "id": "5",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -404,6 +430,7 @@ Array [
           "deactivated_datetime": null,
           "id": "1",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -413,6 +440,7 @@ Array [
           "deactivated_datetime": null,
           "id": "2",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -422,6 +450,7 @@ Array [
           "deactivated_datetime": null,
           "id": "3",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -431,6 +460,7 @@ Array [
           "deactivated_datetime": null,
           "id": "4",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },
@@ -440,6 +470,7 @@ Array [
           "deactivated_datetime": "2020-01-01T00:00:00Z",
           "id": "5",
           "response_message_content": Object {
+            "attachments": Immutable.List [],
             "html": "content",
             "text": "content",
           },

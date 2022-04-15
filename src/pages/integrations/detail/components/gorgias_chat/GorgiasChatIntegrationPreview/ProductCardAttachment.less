@@ -1,0 +1,55 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        border: 1px solid @classic-neutral-grey-3;
+        box-sizing: border-box;
+        border-radius: 4px;
+        cursor: pointer;
+        display: block;
+        margin-top: 8px;
+
+        .imageWrapper {
+            overflow: hidden;
+            height: 100px;
+            display: flex;
+            align-items: center;
+
+            .image {
+                max-width: 100%;
+            }
+        }
+
+        .information {
+            border-top: 1px solid @classic-neutral-grey-3;
+            padding: 12px;
+            background: white;
+
+            .name {
+                color: @classic-neutral-grey-6;
+                font-size: 14px;
+                font-weight: bold;
+
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .variant {
+                color: @classic-neutral-grey-4;
+                font-size: 12px;
+
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            .price {
+                color: @classic-neutral-grey-6;
+                font-size: 12px;
+            }
+        }
+    }
+}

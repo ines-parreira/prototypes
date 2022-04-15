@@ -36,7 +36,9 @@ const defaultProps: ComponentProps<typeof ChatIntegrationPreview> = {
             conversationColor=""
             currentUser={fromJS(user)}
             customerInitialMessages={['Hello']}
-            agentMessages={[{content: 'Nice to meet you', isHtml: false}]}
+            agentMessages={[
+                {content: 'Nice to meet you', isHtml: false, attachments: []},
+            ]}
         />
     ),
     introductionText: 'How can we help?',
@@ -93,7 +95,13 @@ WithQuickReplies.args = {
                 conversationColor=""
                 currentUser={fromJS(user)}
                 customerInitialMessages={['Hello']}
-                agentMessages={[{content: 'Nice to meet you', isHtml: false}]}
+                agentMessages={[
+                    {
+                        content: 'Nice to meet you',
+                        isHtml: false,
+                        attachments: [],
+                    },
+                ]}
             />
             <QuickResponseReplies
                 quickReplies={['Yes, thank you', 'No, I need more help']}

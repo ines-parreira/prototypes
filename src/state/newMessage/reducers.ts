@@ -185,6 +185,15 @@ export default function reducer(
             return initialState
         }
 
+        case types.NEW_MESSAGE_QUICK_RESPONSE_FLOW: {
+            return state
+                .setIn(['newMessage', 'channel'], TicketChannel.Chat)
+                .setIn(
+                    ['newMessage', 'attachments'],
+                    fromJS(action.attachments ?? []) as List<any>
+                )
+        }
+
         case types.NEW_MESSAGE_SUBMIT_TICKET_START: {
             return state
                 .setIn(['_internal', 'loading', 'submitMessage'], true)

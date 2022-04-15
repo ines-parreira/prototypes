@@ -2,7 +2,7 @@ import React from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import MockDate from 'mockdate'
 import {useParams, useRouteMatch} from 'react-router-dom'
 
@@ -18,6 +18,11 @@ const useRouteMatchMock = useRouteMatch as jest.MockedFunction<
     typeof useRouteMatch
 >
 jest.mock('react-router')
+
+const quickResponseMessage = Map({text: 'text', html: 'response'}) as Map<
+    any,
+    any
+>
 
 describe('<ChatIntegrationPreview/>', () => {
     const date = '2021-01-24T17:30:00.000Z'
@@ -52,8 +57,9 @@ describe('<ChatIntegrationPreview/>', () => {
             const {container, getByText} = render(
                 <Provider store={mockStore(state)}>
                     <QuickResponseSelfServicePreview
-                        quickResponseResponse="response"
+                        quickResponseMessage={quickResponseMessage}
                         quickResponseTitle="question"
+                        newMessageAttachments={List()}
                     />
                 </Provider>
             )
@@ -68,8 +74,9 @@ describe('<ChatIntegrationPreview/>', () => {
             const {container, getByText} = render(
                 <Provider store={mockStore(state)}>
                     <QuickResponseSelfServicePreview
-                        quickResponseResponse="response"
+                        quickResponseMessage={quickResponseMessage}
                         quickResponseTitle="question"
+                        newMessageAttachments={List()}
                     />
                 </Provider>
             )

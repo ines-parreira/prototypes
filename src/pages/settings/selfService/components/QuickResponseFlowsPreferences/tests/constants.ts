@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 
 import {ShopType} from 'models/selfServiceConfiguration/types'
 import {billingState} from 'fixtures/billing'
@@ -72,6 +72,7 @@ export const defaultState = {
                         response_message_content: {
                             html: 'content',
                             text: 'content',
+                            attachments: List(),
                         },
                         title: 'First',
                         deactivated_datetime: null,
@@ -81,6 +82,7 @@ export const defaultState = {
                         response_message_content: {
                             html: 'content',
                             text: 'content',
+                            attachments: List(),
                         },
                         title: 'Second',
                         deactivated_datetime: null,
@@ -90,6 +92,7 @@ export const defaultState = {
                         response_message_content: {
                             html: 'content',
                             text: 'content',
+                            attachments: List(),
                         },
                         title: 'Third',
                         deactivated_datetime: null,
@@ -99,6 +102,7 @@ export const defaultState = {
                         response_message_content: {
                             html: 'content',
                             text: 'content',
+                            attachments: List(),
                         },
                         title: 'Fourth',
                         deactivated_datetime: null,
@@ -108,6 +112,7 @@ export const defaultState = {
                         response_message_content: {
                             html: 'content',
                             text: 'content',
+                            attachments: List(),
                         },
                         title: 'Fifth',
                         deactivated_datetime: '2020-01-01T00:00:00Z',
