@@ -10,10 +10,10 @@ import React, {
 import {Article, CreateArticleDto, LocaleCode} from 'models/helpCenter/types'
 import {getViewLanguage} from 'state/ui/helpCenter/selectors'
 import {HelpCenterArticleModalState} from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
-import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
 import {changeViewLanguage} from 'state/ui/helpCenter'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {useCurrentHelpCenter} from '../CurrentHelpCenter'
 
 // TODO: move to redux (as UI states?)
 type EditionManagerContextValues = {
@@ -46,16 +46,15 @@ export const EditionManagerContextProvider = (props: {
     children: React.ReactNode
 }): JSX.Element => {
     const dispatch = useAppDispatch()
-
-    const viewLanguage =
-        useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
+    const helpCenter = useCurrentHelpCenter()
+    const viewLanguage = useAppSelector(getViewLanguage)
 
     // article & category states
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
         null
     )
     const [selectedArticleLanguage, setSelectedArticleLanguage] =
-        useState(viewLanguage)
+        useState<LocaleCode>(viewLanguage ?? helpCenter.supported_locales[0])
 
     const [selectedArticle, setSelectedArticle] = useState<
         CreateArticleDto | Article | null
