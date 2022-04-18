@@ -101,6 +101,7 @@ export type AccountSettingAccess = {
         allowed_domains: string[]
         google_sso_enabled: boolean
         office365_sso_enabled: boolean
+        two_fa_enforced_datetime: string | null
     }
 }
 export enum AccountSettingAccessSignupMode {

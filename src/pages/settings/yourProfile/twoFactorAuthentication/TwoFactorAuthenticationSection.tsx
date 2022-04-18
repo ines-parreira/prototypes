@@ -5,6 +5,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import css from 'pages/settings/settings.less'
+import {is2FAEnforcedSelector} from 'state/currentAccount/selectors'
 import {has2FaEnabled as has2FaEnabledSelector} from '../../../../state/currentUser/selectors'
 import TwoFactorAuthenticationDisableModal from './TwoFactorAuthenticationDisableModal'
 import TwoFactorAuthenticationModal from './TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
@@ -13,7 +14,7 @@ export default function TwoFactorAuthenticationSection() {
     const [isEnableModalOpen, setIsEnableModalOpen] = useState(false)
     const [isDisableModalOpen, setIsDisableModalOpen] = useState(false)
 
-    const is2FaEnforced = false // TODO(@Nicolas): fetch this from api when adding enforcing mechanism
+    const is2FaEnforced = useAppSelector(is2FAEnforcedSelector)
     const has2FaEnabled = useAppSelector(has2FaEnabledSelector)
 
     return (
@@ -56,6 +57,11 @@ export default function TwoFactorAuthenticationSection() {
                 <TwoFactorAuthenticationModal
                     isOpen={isEnableModalOpen}
                     setIsOpen={setIsEnableModalOpen}
+                    initialBannerInfoText={
+                        is2FaEnforced
+                            ? 'For security reasons, your admin requires you to setup two-factor authentication in order to access your account.'
+                            : undefined
+                    }
                 />
             )}
             {isDisableModalOpen && (

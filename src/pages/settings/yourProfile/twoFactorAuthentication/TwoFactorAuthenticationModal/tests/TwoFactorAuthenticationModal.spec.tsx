@@ -310,6 +310,30 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
                 expect(setIsOpenMock).toHaveBeenCalledWith(false)
             })
+
+            it('should call onFinish() if modal is dismissed on last step', async () => {
+                const onFinish = jest.fn()
+                validateVerificationCodeMock.mockResolvedValue()
+                saveTwoFASecretMock.mockResolvedValue()
+                createRecoveryCodesMock.mockResolvedValue(recoveryCodesFixture)
+
+                const {baseElement} = render(
+                    <Provider store={mockStore()}>
+                        <TwoFactorAuthenticationModal
+                            {...minProps}
+                            onFinish={onFinish}
+                        />
+                    </Provider>
+                )
+
+                await validateInput(baseElement)
+
+                // click on the X button from the modal header
+                const closeButton = screen.getByText(/×/)
+                fireEvent.click(closeButton)
+
+                expect(onFinish).toHaveBeenCalled()
+            })
         })
 
         it('should render modal with QR code step after pressing back button', async () => {

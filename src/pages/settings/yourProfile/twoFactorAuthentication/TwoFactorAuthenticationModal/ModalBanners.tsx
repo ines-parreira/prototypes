@@ -7,26 +7,22 @@ import css from './ModalBanners.less'
 
 type OwnProps = {
     currentStep: number
-    errorText: string
-    isEnforced: boolean
+    errorText?: string
+    initialBannerInfoText?: string
 }
 
 export default function ModalBanners({
     currentStep,
     errorText,
-    isEnforced,
+    initialBannerInfoText,
 }: OwnProps) {
     return (
         <>
-            {currentStep === 1 && isEnforced && (
+            {currentStep === 1 && initialBannerInfoText && (
                 <div className={classnames(css.banner, css.bannerInfo)}>
                     <img src={infoIcon} alt="icon" className={css.icon} />
                     <div className={css.bannerText}>
-                        <span>
-                            For security reasons, your admin requires you to
-                            setup two-factor authentication in order to access
-                            your account.
-                        </span>
+                        <span>{initialBannerInfoText}</span>
                     </div>
                 </div>
             )}

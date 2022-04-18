@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from '../../../../models/api/resources'
 
-import {SsoToggleButton} from '../SsoToggleButton.tsx'
+import {SsoToggleButton} from '../SsoToggleButton'
 
 const basicProps = {
     id: 'google',

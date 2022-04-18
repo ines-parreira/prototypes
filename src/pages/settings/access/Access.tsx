@@ -1,4 +1,10 @@
-import React, {FormEvent, useCallback, useEffect, useState} from 'react'
+import React, {
+    FormEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Container, Form} from 'reactstrap'
@@ -16,6 +22,8 @@ import {
     AccountSettingAccessSignupMode as SignupMode,
     AccountSettingType,
 } from 'state/currentAccount/types'
+import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
+import {checkAccessTo2FAEnforcement} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import css from '../settings.less'
 import SsoToggleButton from './SsoToggleButton'
 
@@ -25,6 +33,7 @@ enum LoadingKey {
     Settings = 'settings',
     GoogleSSO = 'sso_google',
     Office365SSO = 'sso_office_365',
+    TwoFAEnforcement = 'two_fa_enforcement',
 }
 
 const FORBIDDEN_DOMAINS = ['gmail.com', 'outlook.com']
@@ -41,6 +50,7 @@ function validateDomain(domain: string): string | undefined {
         return 'Generic domain: ' + domain
     }
 }
+
 function validateDomains(domains: string): string {
     return splitDomains(domains)
         .map(validateDomain)
@@ -63,6 +73,10 @@ export const AccessContainer = (props: Props) => {
         ['data', 'office365_sso_enabled'],
         false
     )
+    const twoFAEnforcedDatetime = accessSettings.getIn([
+        'data',
+        'two_fa_enforced_datetime',
+    ])
 
     const [isLoading, setIsLoading] = useState<LoadingKey>()
     const [signupMode, setSignupMode] = useState(signupModeSetting)
@@ -72,6 +86,11 @@ export const AccessContainer = (props: Props) => {
     const [domainError, setDomainError] = useState(
         validateDomains(allowedDomains)
     )
+    const hasAccessTo2FAEnforcement = useMemo(
+        () => checkAccessTo2FAEnforcement(accountDomain),
+        [accountDomain]
+    )
+
     useEffect(() => {
         setDomainError(validateDomains(allowedDomains))
     }, [allowedDomains])
@@ -89,6 +108,7 @@ export const AccessContainer = (props: Props) => {
                 allowed_domains: splitDomains(allowedDomains),
                 google_sso_enabled: googleSsoEnabled,
                 office365_sso_enabled: office365SsoEnabled,
+                two_fa_enforced_datetime: twoFAEnforcedDatetime,
             }
 
             setIsLoading(loadingKey)
@@ -109,6 +129,7 @@ export const AccessContainer = (props: Props) => {
             accessSettings,
             googleSsoEnabled,
             office365SsoEnabled,
+            twoFAEnforcedDatetime,
         ]
     )
 
@@ -132,6 +153,25 @@ export const AccessContainer = (props: Props) => {
                 {office365_sso_enabled: val},
                 `Microsoft 365 Single Sign-On successfully ${
                     val ? 'activated' : 'deactivated'
+                }`
+            )
+        },
+        [saveSettings]
+    )
+
+    const toggle2FAEnforcement = useCallback(
+        (val: boolean) => {
+            return saveSettings(
+                LoadingKey.TwoFAEnforcement,
+                {
+                    two_fa_enforced_datetime: val
+                        ? new Date().toISOString().split('.')[0]
+                        : null,
+                },
+                `Two-Factor Authentication ${
+                    val
+                        ? 'successfully enforced for all users.'
+                        : 'has successfully been made optional.'
                 }`
             )
         },
@@ -222,6 +262,20 @@ export const AccessContainer = (props: Props) => {
                                 help="Ex: domain.com, *.domain.com. Wildcards allowed. Use separate lines for multiple entries."
                                 value={allowedDomains}
                                 onChange={setAllowedDomains}
+                            />
+                        )}
+
+                        {hasAccessTo2FAEnforcement && (
+                            <TwoFactorAuthenticationEnforcement
+                                is2FAEnforced={!!twoFAEnforcedDatetime}
+                                loading={
+                                    isLoading === LoadingKey.TwoFAEnforcement
+                                }
+                                disabled={
+                                    !!isLoading &&
+                                    isLoading !== LoadingKey.TwoFAEnforcement
+                                }
+                                on2FAEnforced={toggle2FAEnforcement}
                             />
                         )}
 

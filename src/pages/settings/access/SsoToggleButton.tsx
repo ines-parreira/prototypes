@@ -49,13 +49,13 @@ export const SsoToggleButton = (props: Props) => {
 
     return (
         <>
-            <div className="mb-2 d-flex align-items-center">
-                <ToggleInput
-                    isToggled={value}
-                    isLoading={loading || isLoadingUsers || ssoModalVisible}
-                    isDisabled={disabled}
-                    onClick={handleToggle}
-                />
+            <ToggleInput
+                className="mb-2"
+                isToggled={value}
+                isLoading={loading || isLoadingUsers || ssoModalVisible}
+                isDisabled={disabled}
+                onClick={handleToggle}
+            >
                 <img
                     alt={name + ' logo'}
                     src={logo}
@@ -63,7 +63,7 @@ export const SsoToggleButton = (props: Props) => {
                     style={{height: '1.4em'}}
                 />
                 <b>{name} SSO</b>
-            </div>
+            </ToggleInput>
 
             <ConfirmationModal
                 isOpen={ssoModalVisible}

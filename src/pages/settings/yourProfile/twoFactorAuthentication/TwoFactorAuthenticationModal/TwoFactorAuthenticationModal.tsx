@@ -25,6 +25,7 @@ import {
 } from 'models/twoFactorAuthentication/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {has2FaEnabled as has2FaEnabledSelector} from 'state/currentUser/selectors'
+import {is2FAEnforcedSelector} from 'state/currentAccount/selectors'
 import css from './TwoFactorAuthenticationModal.less'
 import ModalContinueButton from './ModalContinueButton'
 import ModalStep from './ModalStep'
@@ -35,6 +36,7 @@ export type OwnProps = {
     setIsOpen: Dispatch<SetStateAction<boolean>>
     onCancel?: () => void
     onFinish?: () => void
+    initialBannerInfoText?: string
 }
 
 export default function TwoFactorAuthenticationModal({
@@ -42,15 +44,16 @@ export default function TwoFactorAuthenticationModal({
     setIsOpen,
     onCancel,
     onFinish,
+    initialBannerInfoText,
 }: OwnProps) {
     const dispatch = useAppDispatch()
     const has2FaEnabled = useAppSelector(has2FaEnabledSelector)
+    const isEnforced = useAppSelector(is2FAEnforcedSelector)
 
     const [step, setStep] = useState(1)
     const [authenticatorData, setAuthenticatorData] = useState(
         {} as AuthenticatorData
     )
-    const [isEnforced, setIsEnforced] = useState(false)
     const [errorText, setErrorText] = useState('')
     const [verificationCode, setVerificationCode] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -59,7 +62,6 @@ export default function TwoFactorAuthenticationModal({
 
     const resetModalState = useCallback(() => {
         setStep(1)
-        setIsEnforced(false) // TODO(@ionut): fetch this from api when adding enforcing mechanism
         setErrorText('')
         setVerificationCode('')
         setIsLoading(false)
@@ -70,11 +72,16 @@ export default function TwoFactorAuthenticationModal({
     const handleCancel = useCallback(() => {
         setIsOpen(false)
 
+        if (step === 3 && onFinish) {
+            onFinish()
+            return
+        }
+
         logEvent(SegmentEvent.TwoFaModalCancelled)
         if (onCancel) {
             onCancel()
         }
-    }, [setIsOpen, onCancel])
+    }, [setIsOpen, step, onCancel, onFinish])
 
     const handleFinish = useCallback(() => {
         setIsOpen(false)
@@ -264,7 +271,7 @@ export default function TwoFactorAuthenticationModal({
             <ModalBanners
                 currentStep={step}
                 errorText={errorText}
-                isEnforced={isEnforced}
+                initialBannerInfoText={initialBannerInfoText}
             />
             <ModalStep
                 authenticatorData={authenticatorData}

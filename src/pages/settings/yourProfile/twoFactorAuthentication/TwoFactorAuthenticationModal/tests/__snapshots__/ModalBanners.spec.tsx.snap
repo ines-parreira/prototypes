@@ -2,70 +2,11 @@
 
 exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 1- 1`] = `
 <div>
-  <div
-    class="banner bannerInfo"
-  >
-    <img
-      alt="icon"
-      class="icon"
-      src="test-file-stub"
-    />
-    <div
-      class="bannerText"
-    >
-      <span>
-        For security reasons, your admin requires you to setup two-factor authentication in order to access your account.
-      </span>
-    </div>
-  </div>
-  
-</div>
-`;
-
-exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 1- 2`] = `
-<div>
   
 </div>
 `;
 
 exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 1-Foo error banner 1`] = `
-<div>
-  <div
-    class="banner bannerInfo"
-  >
-    <img
-      alt="icon"
-      class="icon"
-      src="test-file-stub"
-    />
-    <div
-      class="bannerText"
-    >
-      <span>
-        For security reasons, your admin requires you to setup two-factor authentication in order to access your account.
-      </span>
-    </div>
-  </div>
-  <div
-    class="banner bannerError"
-  >
-    <img
-      alt="icon"
-      class="icon"
-      src="test-file-stub"
-    />
-    <div
-      class="bannerText"
-    >
-      <span>
-        Foo error banner
-      </span>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`<ModalBanners /> render() should render the appropriate banners based on current step and error text: 1-Foo error banner 2`] = `
 <div>
   <div
     class="banner bannerError"
@@ -193,6 +134,27 @@ exports[`<ModalBanners /> render() should render the appropriate banners based o
     >
       <span>
         Foo error banner
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModalBanners /> render() should render the initial banner info text 1`] = `
+<div>
+  <div
+    class="banner bannerInfo"
+  >
+    <img
+      alt="icon"
+      class="icon"
+      src="test-file-stub"
+    />
+    <div
+      class="bannerText"
+    >
+      <span>
+        Foo bar initial text
       </span>
     </div>
   </div>

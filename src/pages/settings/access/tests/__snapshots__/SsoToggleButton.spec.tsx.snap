@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SsoToggleButton/> should render properly 1`] = `
+<div>
+  <div
+    class="mb-2"
+  >
+    <label
+      aria-checked="false"
+      class="label label"
+      for="toggle-button-1"
+      role="switch"
+    >
+      <input
+        class="input"
+        disabled=""
+        id="toggle-button-1"
+        name="toggle-button-1"
+        type="checkbox"
+      />
+      <div
+        class="slider"
+      />
+      <img
+        alt="Google logo"
+        class="ml-3 mr-2"
+        style="height: 1.4em;"
+      />
+      <b>
+        Google
+         SSO
+      </b>
+    </label>
+  </div>
+</div>
+`;

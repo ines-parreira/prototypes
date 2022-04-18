@@ -7,3 +7,13 @@ export function buildPasswordAnd2FaText(hasPassword: boolean) {
 
     return passwordAnd2FaText
 }
+
+export function checkAccessTo2FAEnforcement(domain: string) {
+    return (
+        // allow access to 2FA enforcement for specified domains and for preview envs
+        domain
+            ? ['acme', 'test-martin', 'ionut-zamfir'].includes(domain) ||
+                  domain.includes('.preview')
+            : false
+    )
+}
