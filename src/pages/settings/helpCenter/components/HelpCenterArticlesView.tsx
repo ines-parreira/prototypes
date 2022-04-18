@@ -256,6 +256,25 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
     }
 
+    const onEditorReady = (content: string) => {
+        // Set the initial translation content and the selected article translation
+        // content once the Froala editor is done loading and pre-formatting the content
+        if (selectedExistingArticleTranslation && selectedArticle) {
+            setSelectedExistingArticleTranslation({
+                ...selectedExistingArticleTranslation,
+                content,
+            })
+
+            setSelectedArticle({
+                ...selectedArticle,
+                translation: {
+                    ...selectedArticle.translation,
+                    content,
+                },
+            })
+        }
+    }
+
     const onArticleSelect = (article: Article | CreateArticleDto) => {
         setSelectedArticleTranslations(null)
         setSelectedArticle(article)
@@ -617,6 +636,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         canSaveArticle={canSaveArticle}
                         counters={counters}
                         onArticleChange={onArticleChange}
+                        onEditorReady={onEditorReady}
                         onArticleLanguageSelect={onArticleLanguageSelectAttempt}
                         onArticleLanguageSelectActionClick={
                             onArticleLanguageSelectActionClick

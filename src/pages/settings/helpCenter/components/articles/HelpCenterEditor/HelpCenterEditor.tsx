@@ -19,6 +19,7 @@ type Props = {
     locale: LocaleCode
     value?: string
     onChange: (value: string, charCount?: number) => void
+    onEditorReady: (content: string) => void
 }
 
 type FroalaEditorInstance = FroalaEditorComponent & {
@@ -26,7 +27,12 @@ type FroalaEditorInstance = FroalaEditorComponent & {
     editorInitialized: boolean
 }
 
-const HelpCenterEditor = ({locale, value = '', onChange}: Props) => {
+const HelpCenterEditor = ({
+    locale,
+    value = '',
+    onChange,
+    onEditorReady,
+}: Props) => {
     const dispatch = useAppDispatch()
     const editorRef = useRef<FroalaEditorInstance | null>(null)
     const {setIsEditorCodeViewActive} = useEditionManager()
@@ -130,6 +136,13 @@ const HelpCenterEditor = ({locale, value = '', onChange}: Props) => {
                                 ', '
                             )}.`
                         )
+                    },
+                    initialized: function () {
+                        const editor = editorRef.current?.editor
+
+                        if (!editor) return
+                        const content = editor.html.get(true)
+                        onEditorReady(content)
                     },
                 },
             }}

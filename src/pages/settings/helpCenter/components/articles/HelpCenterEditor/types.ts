@@ -32,6 +32,7 @@ export type Editor = {
          * @param html - A text containing the new HTML to be set
          */
         set: (html: string) => void
+        get: (keepMarkers: boolean) => string
     }
 
     image: {

@@ -43,6 +43,8 @@ type Props = {
         counters: any
     ) => void
 
+    onEditorReady: (content: string) => void
+
     // should be removed
     counters?: {charCount: number}
 
@@ -70,6 +72,7 @@ const HelpCenterArticleModalBasicViewContent = ({
     onArticleModalClose,
     onArticleLanguageSelectActionClick,
     onArticleChange,
+    onEditorReady,
     counters,
     canSaveArticle,
     requiredFieldsArticle,
@@ -174,6 +177,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                 locale={selectedArticle.translation.locale}
                 value={selectedArticle.translation.content}
                 onChange={onArticleContentEdit}
+                onEditorReady={onEditorReady}
             />
             <HelpCenterEditModalFooter
                 rating={
