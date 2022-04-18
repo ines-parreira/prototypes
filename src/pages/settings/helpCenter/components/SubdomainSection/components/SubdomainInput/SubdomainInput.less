@@ -4,6 +4,11 @@
     .input {
         margin-bottom: 16px;
 
+        //TODO(@irinel-gorgias) remove this once we get rid of the <DEPRECATED_InputField>
+        input {
+            height: 34px !important;
+        }
+
         &.error {
             input {
                 border-color: @classic-feedback-error;

@@ -6,7 +6,6 @@ import isHexColor from 'validator/lib/isHexColor'
 
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {validLocaleCode} from 'models/helpCenter/utils'
 import {Value} from 'pages/common/forms/SelectField/types'
 
@@ -39,6 +38,9 @@ import {useSupportedLocales} from 'pages/settings/helpCenter/providers/Supported
 import useAppSelector from 'hooks/useAppSelector'
 import {Client, Components} from 'rest_api/help_center_api/client.generated'
 
+import settingsCss from 'pages/settings/settings.less'
+
+import InputField from 'pages/common/forms/input/InputField'
 import {ImageUpload} from './ImageUpload'
 import {UpdateToggle} from './UpdateToggle'
 import {FontSelectField} from './FontSelectField/FontSelectField'
@@ -46,6 +48,7 @@ import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import {ThemeSwitch} from './ThemeSwitch'
 import {ImageRepositioningModal} from './ImageRepositioningModal'
 import css from './HelpCenterAppearanceView.less'
+
 import {RepositionableImageUpload} from './RepositionableImageUpload/RepositionableImageUpload'
 
 export const HelpCenterAppearanceView: React.FC = () => {
@@ -470,7 +473,8 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     </div>
                 </div>
                 <div>
-                    <DEPRECATED_InputField
+                    <InputField
+                        className={settingsCss.mb16}
                         type="text"
                         name="name"
                         label="Banner title"

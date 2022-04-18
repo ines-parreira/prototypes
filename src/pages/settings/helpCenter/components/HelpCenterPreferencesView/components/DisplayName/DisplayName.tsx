@@ -1,7 +1,9 @@
 import React from 'react'
 
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {useHelpCenterPreferencesSettings} from 'pages/settings/helpCenter/providers/HelpCenterPreferencesSettings'
+import InputField from 'pages/common/forms/input/InputField'
+
+import settingsCss from 'pages/settings/settings.less'
 
 export const DisplayName: React.FC = () => {
     const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
@@ -12,14 +14,15 @@ export const DisplayName: React.FC = () => {
     }
     return (
         <section>
-            <DEPRECATED_InputField
+            <InputField
                 type="text"
+                className={settingsCss.mb16}
                 name="name"
                 label="Brand name"
-                help="This is going to be displayed whenever your logo isn’t available and also in search engines."
+                caption="This is going to be displayed whenever your logo isn’t available and also in search engines."
                 placeholder="Ex. Customer Support"
                 value={preferences.name}
-                required
+                isRequired
                 onChange={onChangeName}
             />
         </section>

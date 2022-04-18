@@ -4,10 +4,13 @@ import {Link} from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {ChatContactInfoDto} from 'models/helpCenter/types'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import TextArea from 'pages/common/forms/TextArea'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+
+import settingsCss from 'pages/settings/settings.less'
+
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 import ContactCard from '../ContactCard'
 import {MAX_DESCRIPTION_LENGTH} from '../EmailContactInfoSection/EmailContactInfoSection'
@@ -94,10 +97,8 @@ const ChatContactInfoSection: React.FC = () => {
                     </Link>
                     .
                 </p>
-                <DEPRECATED_InputField
-                    type="textarea"
+                <TextArea
                     label="Description text"
-                    value={description}
                     onChange={(value: string) => {
                         if (value.length > MAX_DESCRIPTION_LENGTH) {
                             setIsDescriptionTooLong(true)
@@ -110,14 +111,17 @@ const ChatContactInfoSection: React.FC = () => {
 
                         handleChange('description')(value)
                     }}
-                    help="This will appear in the chat card"
-                    disabled={!enabled}
+                    className={settingsCss.mb16}
+                    caption="This will appear in the chat card"
+                    isDisabled={!enabled}
                     error={
                         isDescriptionTooLong
                             ? `Description should be no longer than ${MAX_DESCRIPTION_LENGTH} characters`
                             : undefined
                     }
-                />
+                >
+                    {description}
+                </TextArea>
             </div>
             <ContactCard
                 icon="forum"

@@ -6,22 +6,29 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
     class="wrapper"
   >
     <div
-      class="InputField required form-group"
-      color=""
+      class="mb16"
     >
       <label
-        class="control-label"
-        for="id-title"
+        class="label label"
+        for="input-text-1"
       >
         Title
+        <abbr
+          aria-label="required"
+          class="abbr"
+          title="required"
+        >
+          *
+        </abbr>
       </label>
       <div
-        class=""
+        class="wrapper"
       >
         <input
-          class="field form-control"
-          id="id-title"
+          class="input"
+          id="input-text-1"
           maxlength="250"
+          name="title"
           required=""
           type="text"
           value="Uncategorized article"
@@ -146,33 +153,27 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </button>
     </div>
     <div
-      class="excerpt"
+      class="mb16"
     >
-      <div
-        class="InputField form-group"
-        color=""
+      <label
+        class="label label"
+        for="textarea-2"
       >
-        <label
-          class="control-label"
-          for="id-excerpt"
-        >
-          Excerpt
-        </label>
-        <div
-          class=""
-        >
-          <textarea
-            class="field form-control"
-            id="id-excerpt"
-            maxlength="250"
-            rows="2"
-          />
-        </div>
-        <small
-          class="form-text text-muted"
-        >
-          A short summary displayed below the title of your article.
-        </small>
+        Excerpt
+      </label>
+      <textarea
+        aria-describedby="textarea-2-caption"
+        class="textarea"
+        id="textarea-2"
+        maxlength="250"
+        name="excerpt"
+        rows="2"
+      />
+      <div
+        class="caption"
+        id="textarea-2-caption"
+      >
+        A short summary displayed below the title of your article.
       </div>
     </div>
     <div
@@ -209,13 +210,13 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       <div>
         <label
           class="label label"
-          for="checkbox-1"
+          for="checkbox-3"
         >
           <input
             checked=""
             class="input"
-            id="checkbox-1"
-            name="checkbox-1"
+            id="checkbox-3"
+            name="checkbox-3"
             type="checkbox"
           />
           Use the same as Title
@@ -255,13 +256,13 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       <div>
         <label
           class="label label"
-          for="checkbox-2"
+          for="checkbox-4"
         >
           <input
             checked=""
             class="input"
-            id="checkbox-2"
-            name="checkbox-2"
+            id="checkbox-4"
+            name="checkbox-4"
             type="checkbox"
           />
           Use the same as Excerpt

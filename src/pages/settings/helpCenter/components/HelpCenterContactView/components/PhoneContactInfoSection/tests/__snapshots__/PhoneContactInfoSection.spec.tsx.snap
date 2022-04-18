@@ -30,29 +30,27 @@ exports[`<PhoneContactInfoSection /> should render the component 1`] = `
       </label>
     </div>
     <div
-      class="InputField form-group"
-      color=""
+      class="mb16"
     >
       <label
-        class="control-label"
-        for="id-input-2"
+        class="label isDisabled label"
+        for="textarea-2"
       >
         Description text
       </label>
+      <textarea
+        aria-describedby="textarea-2-caption"
+        class="textarea"
+        disabled=""
+        id="textarea-2"
+        name="textarea-2"
+      />
       <div
-        class=""
-      >
-        <textarea
-          class="field form-control"
-          disabled=""
-          id="id-input-2"
-        />
-      </div>
-      <small
-        class="form-text text-muted"
+        class="caption"
+        id="textarea-2-caption"
       >
         This will appear in the phone number card
-      </small>
+      </div>
     </div>
     <button
       class="wrapper fill secondary medium isDisabled"

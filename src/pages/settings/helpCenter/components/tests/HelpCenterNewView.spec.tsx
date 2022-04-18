@@ -3,8 +3,8 @@ import {act, fireEvent, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import {renderWithRouter} from '../../../../../utils/testing'
+import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
 import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
@@ -39,27 +39,23 @@ describe('<HelpCenterNewView />', () => {
     })
 
     it('should render the component', async () => {
-        const {container, findByRole} = renderWithRouter(
+        const {container, findByTestId} = renderWithRouter(
             <Provider store={store}>
                 <HelpCenterNewView {...props} />
             </Provider>
         )
-        await findByRole('textbox', {
-            name: /help center name/i,
-        })
+        await findByTestId('name')
         expect(container).toMatchSnapshot()
     })
 
     describe('Submit form', () => {
         it('should disable the submit button if all the required fields are not filled', async () => {
-            const {findByRole} = renderWithRouter(
+            const {findByRole, findByTestId} = renderWithRouter(
                 <Provider store={store}>
                     <HelpCenterNewView {...props} />
                 </Provider>
             )
-            const brandInput = await findByRole('textbox', {
-                name: /help center name/i,
-            })
+            const brandInput = await findByTestId('name')
             fireEvent.change(brandInput, {target: {value: 'My brand'}})
             fireEvent.change(brandInput, {target: {value: ''}})
             const submitButton = await findByRole('button', {
@@ -69,15 +65,13 @@ describe('<HelpCenterNewView />', () => {
         })
 
         it('should enable the submit button when all the required fields are filled', async () => {
-            const {findByRole, getByRole} = renderWithRouter(
+            const {findByRole, getByRole, findByTestId} = renderWithRouter(
                 <Provider store={store}>
                     <HelpCenterNewView {...props} />
                 </Provider>
             )
 
-            const brandInput = await findByRole('textbox', {
-                name: /help center name/i,
-            })
+            const brandInput = await findByTestId('name')
             fireEvent.change(brandInput, {target: {value: 'My brand'}})
 
             const subdomainInput = getByRole('textbox', {
@@ -100,14 +94,12 @@ describe('<HelpCenterNewView />', () => {
         })
 
         it('should call helpcenter API on submit a new help center', async () => {
-            const {findByRole, getByTestId} = renderWithRouter(
+            const {findByRole, getByTestId, findByTestId} = renderWithRouter(
                 <Provider store={store}>
                     <HelpCenterNewView {...props} />
                 </Provider>
             )
-            const brandInput = await findByRole('textbox', {
-                name: /help center name/i,
-            })
+            const brandInput = await findByTestId('name')
             const submitButton = await findByRole('button', {
                 name: /add new help center/i,
             })

@@ -740,21 +740,21 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           </div>
           <div>
             <div
-              class="InputField form-group"
-              color=""
+              class="mb16"
             >
               <label
-                class="control-label"
-                for="id-name"
+                class="label label"
+                for="input-text-3"
               >
                 Banner title
               </label>
               <div
-                class=""
+                class="wrapper"
               >
                 <input
-                  class="field form-control"
-                  id="id-name"
+                  class="input"
+                  id="input-text-3"
+                  name="name"
                   placeholder="Banner title"
                   type="text"
                   value=""
@@ -845,14 +845,14 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             <label
               aria-checked="false"
               class="label label"
-              for="toggle-button-3"
+              for="toggle-button-4"
               role="switch"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-3"
-                name="toggle-button-3"
+                id="toggle-button-4"
+                name="toggle-button-4"
                 type="checkbox"
               />
               <div
@@ -872,15 +872,15 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             <label
               aria-checked="true"
               class="label label"
-              for="toggle-button-4"
+              for="toggle-button-5"
               role="switch"
             >
               <input
                 checked=""
                 class="input"
                 disabled=""
-                id="toggle-button-4"
-                name="toggle-button-4"
+                id="toggle-button-5"
+                name="toggle-button-5"
                 type="checkbox"
               />
               <div

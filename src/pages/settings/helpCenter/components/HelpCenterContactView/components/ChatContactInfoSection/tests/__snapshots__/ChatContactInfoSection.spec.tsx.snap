@@ -41,31 +41,29 @@ exports[`<ChatContactInfoSection /> should render the component 1`] = `
       .
     </p>
     <div
-      class="InputField form-group"
-      color=""
+      class="mb16"
     >
       <label
-        class="control-label"
-        for="id-input-2"
+        class="label isDisabled label"
+        for="textarea-2"
       >
         Description text
       </label>
-      <div
-        class=""
+      <textarea
+        aria-describedby="textarea-2-caption"
+        class="textarea"
+        disabled=""
+        id="textarea-2"
+        name="textarea-2"
       >
-        <textarea
-          class="field form-control"
-          disabled=""
-          id="id-input-2"
-        >
-          Start live conversation with our agents
-        </textarea>
-      </div>
-      <small
-        class="form-text text-muted"
+        Start live conversation with our agents
+      </textarea>
+      <div
+        class="caption"
+        id="textarea-2-caption"
       >
         This will appear in the chat card
-      </small>
+      </div>
     </div>
   </div>
   <div

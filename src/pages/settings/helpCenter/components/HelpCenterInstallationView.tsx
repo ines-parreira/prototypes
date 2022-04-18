@@ -15,7 +15,7 @@ import {
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
 import {useCurrentHelpCenter} from '../providers/CurrentHelpCenter'
@@ -228,7 +228,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                                 </strong>
                             </p>
 
-                            <DEPRECATED_InputField
+                            <InputField
                                 type="text"
                                 className={css['delete-modal-input']}
                                 name="help-center-delete-confirmation"

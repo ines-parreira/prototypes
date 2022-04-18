@@ -2,6 +2,7 @@ import React from 'react'
 import copy from 'copy-to-clipboard'
 
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     ArticleTranslationSeoMeta,
@@ -12,6 +13,8 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
 import Label from 'pages/common/forms/Label/Label'
+import TextArea from 'pages/common/forms/TextArea'
+import settingsCss from 'pages/settings/settings.less'
 import {HELP_CENTER_TITLE_MAX_LENGTH} from '../../constants'
 import {
     getAbsoluteUrl,
@@ -97,14 +100,15 @@ export const HelpCenterEditAdvancedArticleForm = ({
 
     return (
         <div className={css.wrapper}>
-            <DEPRECATED_InputField
-                required
+            <InputField
+                isRequired
                 type="text"
                 name="title"
                 label="Title"
                 value={translation.title}
                 onChange={onEditArticle('title')}
                 maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
+                className={settingsCss.mb16}
             />
             <div className={css.categorySelect}>
                 <Label>Category</Label>
@@ -138,18 +142,17 @@ export const HelpCenterEditAdvancedArticleForm = ({
                     </button>
                 )}
             </div>
-            <div className={css.excerpt}>
-                <DEPRECATED_InputField
-                    type="textarea"
-                    rows="2"
-                    name="excerpt"
-                    label="Excerpt"
-                    value={translation.excerpt}
-                    onChange={onEditArticle('excerpt')}
-                    help="A short summary displayed below the title of your article."
-                    maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
-                />
-            </div>
+            <TextArea
+                onChange={onEditArticle('excerpt')}
+                rows={2}
+                name="excerpt"
+                label="Excerpt"
+                caption="A short summary displayed below the title of your article."
+                maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
+                className={settingsCss.mb16}
+            >
+                {translation.excerpt}
+            </TextArea>
             <AutoPopulateInput
                 type="text"
                 name="seoTitle"

@@ -1,9 +1,13 @@
 import React, {useState} from 'react'
 
 import {EmailContactInfoDto} from 'models/helpCenter/types'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import InputField from 'pages/common/forms/input/InputField'
+import TextArea from 'pages/common/forms/TextArea'
+
+import settingsCss from 'pages/settings/settings.less'
+
 import ContactCard from '../ContactCard'
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 
@@ -43,10 +47,9 @@ const EmailContactInfoSection: React.FC = () => {
                 >
                     Email card
                 </ToggleInput>
-                <DEPRECATED_InputField
-                    type="textarea"
+                <TextArea
                     label="Description text"
-                    value={description}
+                    className={settingsCss.mb16}
                     onChange={(value: string) => {
                         if (value.length > MAX_DESCRIPTION_LENGTH) {
                             setIsDescriptionTooLong(true)
@@ -59,21 +62,24 @@ const EmailContactInfoSection: React.FC = () => {
 
                         handleChange('description')(value)
                     }}
-                    help="This will appear in the email card"
-                    disabled={!enabled}
+                    caption="This will appear in the email card"
+                    isDisabled={!enabled}
                     error={
                         isDescriptionTooLong
                             ? `Description should be no longer than ${MAX_DESCRIPTION_LENGTH} characters`
                             : undefined
                     }
-                />
-                <DEPRECATED_InputField
+                >
+                    {description}
+                </TextArea>
+                <InputField
                     type="email"
                     label="Email"
+                    className={settingsCss.mb16}
                     value={email}
                     onChange={handleChange('email')}
-                    help="This will appear in the email card"
-                    disabled={!enabled}
+                    caption="This will appear in the email card"
+                    isDisabled={!enabled}
                 />
             </div>
             <ContactCard

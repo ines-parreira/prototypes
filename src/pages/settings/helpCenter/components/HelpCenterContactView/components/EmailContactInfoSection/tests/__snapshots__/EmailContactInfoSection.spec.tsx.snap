@@ -32,56 +32,56 @@ exports[`<EmailContactInfoSection /> should render the component 1`] = `
       </label>
     </div>
     <div
-      class="InputField form-group"
-      color=""
+      class="mb16"
     >
       <label
-        class="control-label"
-        for="id-input-2"
+        class="label isDisabled label"
+        for="textarea-2"
       >
         Description text
       </label>
+      <textarea
+        aria-describedby="textarea-2-caption"
+        class="textarea"
+        disabled=""
+        id="textarea-2"
+        name="textarea-2"
+      />
       <div
-        class=""
-      >
-        <textarea
-          class="field form-control"
-          disabled=""
-          id="id-input-2"
-        />
-      </div>
-      <small
-        class="form-text text-muted"
+        class="caption"
+        id="textarea-2-caption"
       >
         This will appear in the email card
-      </small>
+      </div>
     </div>
     <div
-      class="InputField form-group"
-      color=""
+      class="mb16"
     >
       <label
-        class="control-label"
-        for="id-input-3"
+        class="label isDisabled label"
+        for="input-text-3"
       >
         Email
       </label>
       <div
-        class=""
+        class="wrapper isDisabled"
       >
         <input
-          class="field form-control"
+          aria-describedby="input-text-3-caption"
+          class="input"
           disabled=""
-          id="id-input-3"
+          id="input-text-3"
+          name="input-text-3"
           type="email"
           value=""
         />
       </div>
-      <small
-        class="form-text text-muted"
+      <div
+        class="caption"
+        id="input-text-3-caption"
       >
         This will appear in the email card
-      </small>
+      </div>
     </div>
   </div>
   <div

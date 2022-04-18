@@ -16,7 +16,9 @@ import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
+import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import Label from 'pages/common/forms/Label/Label'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {SubdomainInput} from '../components/SubdomainSection'
 import {
@@ -229,17 +231,25 @@ export const HelpCenterNewView = ({
             <Container fluid className={settingsCss.pageContainer}>
                 <div className={settingsCss.contentWrapper}>
                     <section className={css.form}>
-                        <DEPRECATED_InputField
-                            type="text"
-                            name="name"
-                            label="Help Center name"
-                            tooltip="This is going to be displayed whenever your logo isn’t available and also in search engines."
-                            placeholder="Ex. Customer Support"
-                            className={classnames(css.formInput)}
-                            required
-                            value={newHelpCenter.name}
-                            onChange={handleChangeName}
-                        />
+                        <div>
+                            <Label className={css.label}>
+                                Help Center name
+                            </Label>
+                            <IconTooltip className={css.iconTooltip}>
+                                This is going to be displayed whenever your logo
+                                isn’t available and also in search engines.
+                            </IconTooltip>
+                            <InputField
+                                data-testid="name"
+                                type="text"
+                                name="name"
+                                placeholder="Ex. Customer Support"
+                                className={classnames(css.formInput)}
+                                isRequired
+                                value={newHelpCenter.name}
+                                onChange={handleChangeName}
+                            />
+                        </div>
                         <SubdomainInput
                             value={newHelpCenter.subdomain}
                             onChange={handleChangeSubdomain}

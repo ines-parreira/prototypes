@@ -3,14 +3,17 @@ import classNames from 'classnames'
 import {useAsyncFn} from 'react-use'
 
 import Button from 'pages/common/components/button/Button'
+import InputField from 'pages/common/forms/input/InputField'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {CustomDomain as CustomDomainEntity} from '../../../../../models/helpCenter/types'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {isProduction} from '../../../../../utils/environment'
-import Loader from '../../../../common/components/Loader/Loader'
-import DEPRECATED_InputField from '../../../../common/forms/DEPRECATED_InputField'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {CustomDomain as CustomDomainEntity} from 'models/helpCenter/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {isProduction} from 'utils/environment'
+import Loader from 'pages/common/components/Loader/Loader'
+
+import settingsCss from 'pages/settings/settings.less'
+
 import {useHelpCenterActions} from '../../hooks/useHelpCenterActions'
 import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
 import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
@@ -239,9 +242,10 @@ export const CustomDomain = () => {
             <HelpText isHidden={currentDomain?.status === 'active'} />
             <div className={css.domainForm}>
                 <div className={css.domainInput}>
-                    <DEPRECATED_InputField
-                        disabled={!!currentDomain?.status}
-                        help="Add a custom domain"
+                    <InputField
+                        className={settingsCss.mb16}
+                        isDisabled={!!currentDomain?.status}
+                        caption="Add a custom domain"
                         label="Custom domain"
                         name="domain"
                         placeholder="help.brand-name.com"

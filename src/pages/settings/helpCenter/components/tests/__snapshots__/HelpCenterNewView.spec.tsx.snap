@@ -42,40 +42,39 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
         <section
           class="form"
         >
-          <div
-            class="InputField formInput required form-group"
-            color=""
-          >
-            <div
-              class="label-wrapper"
+          <div>
+            <label
+              class="label label"
             >
-              <label
-                class="control-label"
-                for="id-name"
+              Help Center name
+            </label>
+            <div
+              class="wrapper iconTooltip"
+            >
+              <i
+                class="material-icons-outlined icon"
+                id="tooltip-1"
               >
-                Help Center name
-              </label>
-              <span
-                id="id-name-tooltip"
-              >
-                <i
-                  class="material-icons-outlined tooltip"
-                >
-                  info
-                </i>
-              </span>
+                info
+              </i>
             </div>
             <div
-              class=""
+              class="formInput"
             >
-              <input
-                class="field form-control"
-                id="id-name"
-                placeholder="Ex. Customer Support"
-                required=""
-                type="text"
-                value=""
-              />
+              <div
+                class="wrapper"
+              >
+                <input
+                  class="input"
+                  data-testid="name"
+                  id="input-text-2"
+                  name="name"
+                  placeholder="Ex. Customer Support"
+                  required=""
+                  type="text"
+                  value=""
+                />
+              </div>
             </div>
           </div>
           <div
@@ -464,7 +463,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
           >
             <label
               class="control-label"
-              for="id-input-1"
+              for="id-input-3"
             >
               Primary Color
             </label>
@@ -476,7 +475,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
               >
                 <button
                   class="wrapper fill secondary medium"
-                  id="color-picker-2"
+                  id="color-picker-4"
                   type="button"
                 >
                   <div

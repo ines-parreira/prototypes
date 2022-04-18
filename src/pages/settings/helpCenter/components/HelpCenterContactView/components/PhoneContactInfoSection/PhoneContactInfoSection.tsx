@@ -2,9 +2,12 @@ import React, {useState} from 'react'
 import parsePhoneNumber from 'libphonenumber-js'
 
 import {PhoneContactInfoDto} from 'models/helpCenter/types'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import TextArea from 'pages/common/forms/TextArea'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+
+import settingsCss from 'pages/settings/settings.less'
+
 import ContactCard from '../ContactCard'
 
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
@@ -43,10 +46,9 @@ const PhoneContactInfoSection: React.FC = () => {
                 >
                     Phone number card
                 </ToggleInput>
-                <DEPRECATED_InputField
-                    type="textarea"
+                <TextArea
                     label="Description text"
-                    value={description}
+                    className={settingsCss.mb16}
                     onChange={(value: string) => {
                         if (value.length > MAX_DESCRIPTION_LENGTH) {
                             setIsDescriptionTooLong(true)
@@ -59,14 +61,16 @@ const PhoneContactInfoSection: React.FC = () => {
 
                         handleChange('description')(value)
                     }}
-                    help="This will appear in the phone number card"
-                    disabled={!enabled}
+                    caption="This will appear in the phone number card"
+                    isDisabled={!enabled}
                     error={
                         isDescriptionTooLong
                             ? `Description should be no longer than ${MAX_DESCRIPTION_LENGTH} characters`
                             : undefined
                     }
-                />
+                >
+                    {description}
+                </TextArea>
                 <PhoneNumbersForm
                     phoneNumbers={phone_numbers}
                     onChange={handleChange('phone_numbers')}

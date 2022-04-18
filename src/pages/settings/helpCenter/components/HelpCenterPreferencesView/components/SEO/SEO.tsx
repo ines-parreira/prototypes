@@ -1,15 +1,16 @@
 import React, {useMemo} from 'react'
 
-import {
-    HelpCenter,
-    HelpCenterTranslationSeoMeta,
-} from '../../../../../../../models/helpCenter/types'
-import DEPRECATED_InputField from '../../../../../../common/forms/DEPRECATED_InputField'
-import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
+import InputField from 'pages/common/forms/input/InputField'
+import {HelpCenter, HelpCenterTranslationSeoMeta} from 'models/helpCenter/types'
+import TextArea from 'pages/common/forms/TextArea'
+import {useHelpCenterPreferencesSettings} from 'pages/settings/helpCenter/providers/HelpCenterPreferencesSettings'
 import {
     getAbsoluteUrl,
     getHelpCenterDomain,
-} from '../../../../utils/helpCenter.utils'
+} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+
+import settingsCss from 'pages/settings/settings.less'
+
 import {SearchEnginePreview} from '../../../SearchEnginePreview'
 
 import css from './SEO.less'
@@ -48,23 +49,25 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
                 </div>
             </div>
 
-            <DEPRECATED_InputField
+            <InputField
                 type="text"
                 name="seoTitle"
+                className={settingsCss.mb16}
                 label="Meta Title"
                 value={seoMeta.title ?? ''}
                 onChange={onEditSeoMeta('title')}
-                help="Help center title is displayed in search engines to help people find it."
+                caption="Help center title is displayed in search engines to help people find it."
             />
-            <DEPRECATED_InputField
-                type="textarea"
-                rows="2"
+            <TextArea
+                rows={2}
+                className={settingsCss.mb16}
                 name="seoDescription"
                 label="Meta Description"
-                value={seoMeta.description ?? ''}
                 onChange={onEditSeoMeta('description')}
-                help="Help center description is displayed in search engines to help people find it."
-            />
+                caption="Help center description is displayed in search engines to help people find it."
+            >
+                {seoMeta.description ?? ''}
+            </TextArea>
             <SearchEnginePreview
                 baseUrl={getAbsoluteUrl({domain}, false)}
                 title={seoMeta.title || `${helpCenter.name} Help Center`}
