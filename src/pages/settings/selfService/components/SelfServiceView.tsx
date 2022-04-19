@@ -87,6 +87,7 @@ export const SelfServiceView = () => {
                 setLoading(false)
             }
         })()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

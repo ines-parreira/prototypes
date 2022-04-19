@@ -10,6 +10,7 @@ const commonRules = {
     'jsx-a11y/no-static-element-interactions': ['off'],
     'jsx-a11y/no-noninteractive-tabindex': ['off'],
     'jsx-a11y/no-noninteractive-element-interactions': ['off'],
+    'react-hooks/exhaustive-deps': ['error'],
     'react/display-name': ['off'],
     'react/no-find-dom-node': ['off'],
     'react/no-deprecated': ['off'],

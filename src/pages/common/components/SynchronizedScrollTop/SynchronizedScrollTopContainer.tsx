@@ -30,6 +30,7 @@ export default function SynchronizedScrollTopContainer({
                 )
             })
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [scrollHeight])
 
     if (containerRef.current) {

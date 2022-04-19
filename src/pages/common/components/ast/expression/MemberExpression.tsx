@@ -79,6 +79,7 @@ export function MemberExpressionContainer({
 
             return !currentIntegration || hasIntegrationType(currentIntegration)
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleSelect = (value: string) => {

@@ -25,6 +25,7 @@ export default function SnoozeTicketAction(props: Props) {
     const [duration, setDuration] = useState(defaultDuration)
     useEffect(() => {
         updateActionArgs(index, fromJS({snooze_timedelta: defaultDuration}))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const onChange = (value: string) => {

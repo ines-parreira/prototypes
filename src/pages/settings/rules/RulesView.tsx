@@ -122,6 +122,7 @@ export function RulesViewContainer({
     useEffect(() => {
         void handleFetchRules()
         void handleFetchRecipes()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {

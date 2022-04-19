@@ -110,6 +110,7 @@ const MessageSourceFields = forwardRef<MultiSelectAsyncField, Props>(
             )
 
             setDisplayedFields(displayedOptionalFields)
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [isOpen])
 
         const toggleOptionalField = (field: string) => {

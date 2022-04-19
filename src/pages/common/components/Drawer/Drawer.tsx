@@ -71,6 +71,7 @@ const Drawer = ({
 
     useEffect(() => {
         setContainerZIndex(open ? zIndexOpen : zIndexClosed)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open])
 
     const drawer = (

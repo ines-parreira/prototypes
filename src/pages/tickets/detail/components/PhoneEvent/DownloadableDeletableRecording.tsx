@@ -58,6 +58,7 @@ function useDeleteRecording(url: string) {
         } finally {
             setIsRequestPending(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isRequestPending])
 
     return {
@@ -105,6 +106,7 @@ function useDownloadRecording(url: string) {
         } finally {
             setIsRequestPending(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isRequestPending])
 
     return {

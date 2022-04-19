@@ -53,6 +53,7 @@ export const DroppableTableBodyRow = ({
         if (isDragging) {
             onDragStart()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isDragging])
 
     const opacity = isDragging ? 0 : 1

@@ -58,6 +58,7 @@ const BillingUsage = () => {
 
     useEffect(() => {
         void handleCurrentUsageFetch()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const renderTicketUsage = useCallback(() => {

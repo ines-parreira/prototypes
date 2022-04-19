@@ -43,6 +43,7 @@ export const TicketListContainer = ({
 
     useEffect(() => {
         void fetchTags()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const title = useMemo(() => {

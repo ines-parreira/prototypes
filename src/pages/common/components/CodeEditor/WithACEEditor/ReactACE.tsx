@@ -27,6 +27,7 @@ const ReactAce = ({
         if (editorRef && editorRef.current) {
             setEditor(ace.edit(editorRef.current))
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ace, editorRef])
 
     // Apply the props to the editor object
@@ -124,6 +125,7 @@ const ReactAce = ({
         if (props.onLoad) {
             props.onLoad(editor)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editor])
 
     // Handle the value changes
@@ -134,6 +136,7 @@ const ReactAce = ({
             editor.setValue(value)
             editor.on('change', onChange)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editor, value])
 
     const onChange = () => {

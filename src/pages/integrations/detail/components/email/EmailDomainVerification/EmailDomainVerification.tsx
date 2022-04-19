@@ -49,6 +49,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
         if (domain) {
             void actions.fetchEmailDomain(domain)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [domain])
 
     if (loading.get('integration') || loading.get('emailDomain')) {

@@ -102,6 +102,7 @@ export function DefaultRuleEditor({
                     ruleDraft.event_types !== emptyRule.event_types
             )
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rule, ruleDraft])
 
     const ruleDraftFromRule = (rule: Rule): RuleDraft => {

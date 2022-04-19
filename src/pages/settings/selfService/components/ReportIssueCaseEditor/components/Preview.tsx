@@ -44,6 +44,7 @@ const Preview = ({reasonOptions}: PreviewProps) => {
                 )
             })
         return chatIntegration
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [immutableIntegrations])
 
     if (!chatIntegration) {

@@ -49,6 +49,7 @@ export const CustomerDetailContainer = ({
                 },
             })
         })()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [customerId])
 
     const shouldDisplayLoader = customersIsLoading('active')

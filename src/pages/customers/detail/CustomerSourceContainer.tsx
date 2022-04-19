@@ -22,6 +22,7 @@ export const CustomerSourceContainer = ({
 
     useEffect(() => {
         actions.customers.fetchCustomer(params.customerId)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     if (!activeCustomerId) {

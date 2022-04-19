@@ -35,6 +35,7 @@ export const LinkToRecipeView = ({recipeSlug, children}: Props) => {
         if (!recipes.length) {
             void handleFetch()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const recipe = recipes[recipeSlug]

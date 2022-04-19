@@ -87,6 +87,7 @@ export const HelpCenterNewView = ({
         [newHelpCenter.subdomain, isSubdomainAvailable]
     )
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkSubdomainAvailability = useCallback(
         _debounce(async () => {
             if (

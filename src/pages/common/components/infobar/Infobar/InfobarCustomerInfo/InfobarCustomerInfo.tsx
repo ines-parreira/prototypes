@@ -108,6 +108,7 @@ export const InfobarCustomerInfoContainer = ({
     let clipboard: Maybe<Clipboard> = null
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         clipboard = new Clipboard('.js-clipboard-copy')
 
         return () => {
@@ -121,6 +122,7 @@ export const InfobarCustomerInfoContainer = ({
 
     useEffect(() => {
         initWidgets()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEditing, widgets, sources])
 
     const initWidgets = () => {

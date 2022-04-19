@@ -103,6 +103,7 @@ export function EditOrderModalContainer({
         () =>
             (currentIntegration?.getIn(['meta', 'currency']) as string) ||
             defaultCurrency,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [currentIntegration]
     )
     const previousIsOpen = usePrevious(isOpen)
@@ -118,6 +119,7 @@ export function EditOrderModalContainer({
             onClose()
             handleReset()
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [data, integrationId, onClose]
     )
 

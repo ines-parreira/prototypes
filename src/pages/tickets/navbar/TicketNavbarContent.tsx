@@ -137,6 +137,7 @@ export function TicketNavbarContentContainer({
                 isPrivate
             )
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [views, sections, isPrivate, viewUpdated, notify, elements]
     )
     const handleClickOnSection = (sectionId: number) => {

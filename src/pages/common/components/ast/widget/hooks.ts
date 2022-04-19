@@ -17,5 +17,6 @@ export const useOptions = (
             return options.push(selectedOption)
         }
         return options
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [options, selectedOption])
 }

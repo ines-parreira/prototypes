@@ -90,6 +90,7 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
         if (helpCenter.hotswap_session_token) {
             void updateHotswapImportProgressState()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [helpCenter.hotswap_session_token])
 
     if (!client) {

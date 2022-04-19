@@ -51,6 +51,7 @@ export const PeriodPickerContainer = ({
 
     useEffect(() => {
         return endHandlingTooltipHover
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const someDaysAgoStartOfDay = (days: number) =>
@@ -77,6 +78,7 @@ export const PeriodPickerContainer = ({
             'Last 60 days': [someDaysAgoStartOfDay(60), endOfToday()],
             'Last 90 days': [someDaysAgoStartOfDay(90), endOfToday()],
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const label = useMemo(() => {

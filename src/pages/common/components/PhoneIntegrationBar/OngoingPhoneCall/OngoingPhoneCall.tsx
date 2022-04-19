@@ -64,6 +64,7 @@ export function OngoingPhoneCall({
         if (isInboundAndRecordingEnabled || isOutboundAndRecordingEnabled) {
             setIsRecording(true)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -174,6 +175,7 @@ function useRecording(
         } finally {
             setIsRequestPending(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isRequestPending, isRecording, call])
 
     return {

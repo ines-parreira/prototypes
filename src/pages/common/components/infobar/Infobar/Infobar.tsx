@@ -129,6 +129,7 @@ export const Infobar = ({
     )
     const isEditing = useMemo(
         () => isWidgetEditing && isRouteEditingWidgets,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [isWidgetEditing]
     )
     const mode = useMemo(() => {
@@ -174,6 +175,7 @@ export const Infobar = ({
         } else if (!isRouteEditingWidgets && isWidgetEditing) {
             stopEditionMode()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isWidgetEditing, isRouteEditingWidgets])
 
     // if customer changed then try to find a suggestion of other customer to merge with it
@@ -181,6 +183,7 @@ export const Infobar = ({
         if (!prevCustomer || !prevCustomer.equals(customer)) {
             void updateSimilarCustomer()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [customer, prevCustomer])
 
     const [cancellableSearch] = useCancellableRequest(

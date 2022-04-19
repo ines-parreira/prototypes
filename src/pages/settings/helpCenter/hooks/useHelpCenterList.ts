@@ -86,6 +86,7 @@ export const useHelpCenterList = (
         if (client) {
             void fetchHelpCenters(0)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client])
 
     return {helpCenters, isLoading, hasMore, fetchMore}

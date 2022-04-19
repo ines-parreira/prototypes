@@ -58,6 +58,7 @@ export const useConfigurationData = () => {
         } else {
             setIsLoadingConfig(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const integration: Map<any, any> = shopifyIntegrations.find(

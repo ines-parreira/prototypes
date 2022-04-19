@@ -35,6 +35,7 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
                 shopifyIntegration?.get('name') === associatedShopifyStoreName
         )
         return associatedShopifyStore?.get('id') as number
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shopifyIntegrations, integration])
 
     const filteredShopifyIntegrations = useMemo(
@@ -74,7 +75,7 @@ export function GorgiasChatIntegrationOneClickInstallationCard({
                         shopifyIntegration?.get('created_datetime')
                     ).valueOf()
                 }),
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [shopifyIntegrations, integration]
     )
 

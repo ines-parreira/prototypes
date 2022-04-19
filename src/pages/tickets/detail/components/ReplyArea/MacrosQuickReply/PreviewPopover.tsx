@@ -22,6 +22,7 @@ export const PreviewPopover = ({isOpen, targetId, actions}: Props) => {
             document.getElementById('TicketHeader')?.getBoundingClientRect()
                 .bottom || 0
         return buttonTop ? buttonTop - viewTop - 50 : 'fit-content'
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [targetId, isOpen])
 
     const maxWidth = useMemo(() => {
@@ -31,6 +32,7 @@ export const PreviewPopover = ({isOpen, targetId, actions}: Props) => {
         return replyEditorContainer
             ? replyEditorContainer?.right - replyEditorContainer?.left - 34
             : 0
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen])
 
     return (

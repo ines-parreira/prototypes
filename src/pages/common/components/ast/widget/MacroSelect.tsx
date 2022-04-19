@@ -54,10 +54,12 @@ const MacroSelect = ({
             return
         }
         void getMacro(value)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedMacro])
 
     useEffect(() => {
         void handleMacrosSearch()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search])
 
     const options = useMemo(() => {

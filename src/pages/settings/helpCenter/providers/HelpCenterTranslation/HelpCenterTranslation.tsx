@@ -164,12 +164,14 @@ export const HelpCenterTranslation: React.FC<Props> = ({
 
     useEffect(() => {
         updateTranslationFromData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [helpCenter.translations, viewLanguage])
 
     useEffect(() => {
         if (!helpCenter.translations) {
             void fetchHelpCenterTranslations()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

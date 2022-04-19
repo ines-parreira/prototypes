@@ -134,6 +134,7 @@ export const TicketDetailContainer = ({
 
             clearTicket()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const [{loading: isGoToPrevOrNextTicketPending}, goToPrevOrNextTicket] =
@@ -308,6 +309,7 @@ export const TicketDetailContainer = ({
                     state.ticket.getIn(['customer', 'id']) === customerId,
             })
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [customer, customers, ticketIdParam])
 
     // if the ticket in the reducer is not the one asked, we fetch it and display it
@@ -318,6 +320,7 @@ export const TicketDetailContainer = ({
         }
 
         showTicket()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ticketIdParam])
 
     useEffect(() => {
@@ -339,6 +342,7 @@ export const TicketDetailContainer = ({
                 void setCustomer(receiver)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeCustomer, customerId, prevCustomer, ticketIdParam])
 
     // We update the cursor when we display the ticket for the first time.
@@ -348,6 +352,7 @@ export const TicketDetailContainer = ({
         if (ticketId) {
             updateCursor(ticket.get(activeView.get('order_by')))
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ticketId])
 
     useEffect(() => {
@@ -378,6 +383,7 @@ export const TicketDetailContainer = ({
                 void findAndSetCustomer(recipient.get('address'))
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipients])
 
     // When we're on a new ticket and the agent has removed the receivers of the new message, empty the
@@ -391,6 +397,7 @@ export const TicketDetailContainer = ({
         ) {
             void setCustomer(null)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipients])
 
     // When we're on a new ticket and the agent set a customer, set this customer's default email address
@@ -411,6 +418,7 @@ export const TicketDetailContainer = ({
 
             setReceivers(newReceivers)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [customer])
 
     const showTicket = () => {

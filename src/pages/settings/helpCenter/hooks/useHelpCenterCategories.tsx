@@ -60,6 +60,7 @@ export const useHelpCenterCategories = (
 
     useEffect(() => {
         void fetchCategories()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.locale])
     return {categories, isLoading}
 }

@@ -101,6 +101,7 @@ export default function ShopifyProductLine({
         } finally {
             setIsLoading(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter])
 
     const handleChange = useCallback(
@@ -138,6 +139,7 @@ export default function ShopifyProductLine({
                 setSubResults(variants)
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [productClicked, shopifyProducts]
     )
 
@@ -180,6 +182,7 @@ export default function ShopifyProductLine({
 
             productClicked(variantCardDetails)
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [productClicked, subResults, generateVariantName]
     )
 
@@ -195,6 +198,7 @@ export default function ShopifyProductLine({
             void fetchResults
             setOnOpen(!onOpen)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filter])
 
     return (

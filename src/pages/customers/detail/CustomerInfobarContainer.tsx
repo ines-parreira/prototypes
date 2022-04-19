@@ -32,6 +32,7 @@ export const CustomerInfobarContainer = ({
     useEffect(() => {
         actions.widgets.selectContext(WidgetContextType.Customer)
         actions.widgets.fetchWidgets()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     if (!activeCustomerId) {

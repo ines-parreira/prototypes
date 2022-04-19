@@ -32,6 +32,7 @@ const AutomationAmount = ({
     editable = true,
     isIntervalAbbreviated = false,
 }: Props) => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const id = useMemo(() => _uniqueId(plan.id), [])
 
     return (

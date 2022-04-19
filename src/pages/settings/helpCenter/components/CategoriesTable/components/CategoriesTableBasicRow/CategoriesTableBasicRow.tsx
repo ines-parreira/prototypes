@@ -132,6 +132,7 @@ export const CategoriesTableBasicRow = ({
         }
 
         void init()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -165,6 +166,7 @@ export const CategoriesTableBasicRow = ({
         if (isOpen && hasArticles && articles.length === 0) {
             void fetchMore()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, hasArticles, articles])
 
     const id = `category-title-uncategorized`

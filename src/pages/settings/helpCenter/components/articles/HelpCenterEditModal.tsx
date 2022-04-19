@@ -43,6 +43,7 @@ export const HelpCenterEditModal = ({
 
     useEffect(() => {
         setContainerZIndex(editModal.isOpened ? zIndexOpen : zIndexClosed)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editModal.isOpened])
 
     const isFullscreen =

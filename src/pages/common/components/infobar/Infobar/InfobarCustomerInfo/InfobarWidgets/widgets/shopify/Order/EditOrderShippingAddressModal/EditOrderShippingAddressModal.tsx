@@ -163,6 +163,7 @@ export function EditOrderShippingAddressModal({
             onClose()
             handleReset()
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [data, integrationId, onClose, data]
     )
 
@@ -171,6 +172,7 @@ export function EditOrderShippingAddressModal({
     const handleReset = useCallback(() => {
         onReset()
         shortcutManager.unpause()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const currentIntegration = useMemo(

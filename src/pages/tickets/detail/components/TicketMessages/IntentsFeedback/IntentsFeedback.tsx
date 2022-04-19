@@ -64,6 +64,8 @@ export const IntentsFeedbackContainer = ({
         )
     const messageIntentNames = useMemo(
         () => getIntentsFromMessage(intents),
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [intents]
     )
 
@@ -90,6 +92,7 @@ export const IntentsFeedbackContainer = ({
         const hasChanged = !_isEqual(previousIntentNames, activeIntentsNames)
 
         return isFirstCuration ? hasConfirmed || hasChanged : hasChanged
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [intents, activeIntentsNames, confirmableIntentsNames])
 
     const trackFeedbackSubmission = (nextState: string[]) => {

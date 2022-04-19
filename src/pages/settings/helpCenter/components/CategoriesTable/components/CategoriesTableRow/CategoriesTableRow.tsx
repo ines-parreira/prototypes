@@ -352,6 +352,7 @@ export const CategoriesTableRow = ({
         }
 
         void init()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -378,6 +379,7 @@ export const CategoriesTableRow = ({
         }
 
         void refetch()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [prevArticles, articles, categoryId, itemCount])
 
     useEffect(() => {
@@ -386,6 +388,7 @@ export const CategoriesTableRow = ({
         if (isOpen && hasArticles && articles.length === 0) {
             void fetchMore()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, hasArticles, articles])
 
     const id = `category-title-${categoryId ?? 'uncategorized'}`

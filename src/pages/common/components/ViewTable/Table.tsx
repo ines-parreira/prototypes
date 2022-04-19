@@ -84,6 +84,7 @@ const TableContainer = ({
             !!selectedItemsIds &&
             selectedItemsIds.size > 0 &&
             selectedItemsIds.size < items.size,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [selectedItemsIds]
     )
 
@@ -153,6 +154,7 @@ const TableContainer = ({
         return () => {
             shortcutManager.unbind('View')
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [moveCursor, movePage])
 
     useEffect(() => {
@@ -163,6 +165,7 @@ const TableContainer = ({
         ) {
             toggleViewSelection()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items.size, selectedItemsIds, viewSelected])
 
     useEffect(() => {
@@ -184,6 +187,7 @@ const TableContainer = ({
                 )
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items, prevItems])
 
     const toggleSelectAllPageItems = () => {

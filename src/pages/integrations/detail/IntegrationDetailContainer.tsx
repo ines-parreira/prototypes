@@ -149,6 +149,7 @@ export const IntegrationDetailContainer = ({
 
     const redirectUri = useMemo(
         () => getRedirectUri(integrationType),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [integrationType]
     )
 
@@ -196,6 +197,7 @@ export const IntegrationDetailContainer = ({
         if (integrationId && !['new', 'setup'].includes(integrationId)) {
             actions.fetchIntegration(integrationId, integrationType)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const dispatch = useAppDispatch()

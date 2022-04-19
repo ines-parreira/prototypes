@@ -188,6 +188,7 @@ export function MacrosSettingsFormContainer({
         if (macroId) {
             void handleMacroFetch()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [macroId])
     useEffect(() => {
         if (macroId && macros[macroId]) {

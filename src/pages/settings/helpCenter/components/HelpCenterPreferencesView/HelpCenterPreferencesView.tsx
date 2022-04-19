@@ -18,6 +18,7 @@ export const HelpCenterPreferencesView: React.FC = () => {
 
     useEffect(() => {
         void getHelpCenterCustomDomain()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

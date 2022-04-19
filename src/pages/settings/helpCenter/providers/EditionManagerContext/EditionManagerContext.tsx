@@ -74,10 +74,12 @@ export const EditionManagerContextProvider = (props: {
         if (isFullscreenEditModal) {
             setIsFullscreenEditModal(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [editModal])
 
     useEffect(() => {
         dispatch(changeViewLanguage(selectedArticleLanguage))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedArticleLanguage])
 
     // change the selected article locale whenever we change of selectedArticle

@@ -157,6 +157,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         if (isUpdate && !loading.get('integration')) {
             initState(integration)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [integration])
 
     const initState = (integration: Map<any, any>) => {

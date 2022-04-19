@@ -235,6 +235,7 @@ export const HelpCenterPreferencesSettings = ({
         if (!preferences.availableLanguages.includes(viewLanguage)) {
             dispatch(changeViewLanguage(helpCenter.default_locale))
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client, helpCenter, preferences, viewLanguage])
 
     const handleOnUpdate = useCallback(
@@ -267,18 +268,21 @@ export const HelpCenterPreferencesSettings = ({
 
     useEffect(() => {
         updatePreferencesFromData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [helpCenter, viewLanguage])
 
     useEffect(() => {
         if (!helpCenter.translations) {
             void fetchHelpCenterTranslations()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
         if (supportedLanguagesChanged) {
             void handleSupportedLocalesChange()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [supportedLanguagesChanged])
 
     return (

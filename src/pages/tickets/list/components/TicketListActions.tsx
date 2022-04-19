@@ -129,6 +129,7 @@ export const TicketListActionsContainer = ({
         return allViewItemsSelected
             ? getViewCount(activeView.get('id'))
             : selectedItemsIds.size
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [allViewItemsSelected, getViewCount, selectedItemsIds.size])
 
     const selectedTickets = useMemo<List<Map<any, any>>>(() => {
@@ -217,6 +218,7 @@ export const TicketListActionsContainer = ({
         })
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const queryTagsOnSearch = useCallback(
         _debounce(queryTags, searchTagsDebounceDelay),
         []

@@ -34,6 +34,7 @@ const MaxArticleBanner = ({
         } else if (isShowingBanner && !shouldDisplayWarning) {
             setIsShowingBanner(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [nbArticles, isLimitReached, shouldDisplayWarning])
 
     const message = isLimitReached

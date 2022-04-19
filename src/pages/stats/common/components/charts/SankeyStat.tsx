@@ -50,6 +50,7 @@ export function SankeyStat({data, config, legend}: Props) {
                 },
             ],
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, config])
 
     const options = config.get('options')

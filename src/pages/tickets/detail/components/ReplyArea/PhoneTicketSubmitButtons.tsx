@@ -64,18 +64,25 @@ function useSubmit(source: Map<any, any>, ticketId: number, agentId: number) {
     const [isValid, setIsValid] = useState(false)
 
     const onCall = useOutboundCall()
-    const options = {
+
+    const onSubmit = useCallback(() => {
+        onCall({
+            fromAddress,
+            toAddress,
+            integrationId,
+            customerName,
+            ticketId,
+            agentId,
+        })
+    }, [
+        onCall,
         fromAddress,
         toAddress,
         integrationId,
         customerName,
         ticketId,
         agentId,
-    }
-
-    const onSubmit = useCallback(() => {
-        onCall(options)
-    }, [onCall, options])
+    ])
 
     useEffect(() => {
         const newIntegrationId = source.getIn(['from', 'id'])

@@ -33,6 +33,7 @@ export const TicketSourceContainer = ({
                 actions.fetchCustomer(customer)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

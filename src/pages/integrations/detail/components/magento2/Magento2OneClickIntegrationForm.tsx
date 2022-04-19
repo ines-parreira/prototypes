@@ -68,6 +68,7 @@ export const Magento2OneClickIntegrationForm = ({
                 })
             )
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [integration]
     )
 

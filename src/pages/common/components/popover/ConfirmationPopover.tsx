@@ -41,6 +41,7 @@ export default function ConfirmationPopover({
     ...other
 }: Props) {
     const isMounted = useMountedState()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const uid = useMemo(() => id || `confirm-${Date.now()}`, [])
     const [isOpened, setIsOpened] = useState(false)
     const elementRef = useRef<HTMLElement | null>(null)
@@ -50,6 +51,7 @@ export default function ConfirmationPopover({
             buttonProps?.type === 'submit'
                 ? elementRef.current?.parentElement || undefined
                 : undefined,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [elementRef.current]
     )
 
@@ -73,6 +75,7 @@ export default function ConfirmationPopover({
         event.preventDefault()
         event.stopPropagation()
         setIsOpened(true)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleConfirmation = useCallback(() => {

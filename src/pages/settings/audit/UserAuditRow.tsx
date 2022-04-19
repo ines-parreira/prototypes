@@ -41,6 +41,7 @@ const UserAuditRow = ({eventItem}: Props) => {
                 </Link>
             </div>
         )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [eventItem])
 
     const renderObject = useCallback(() => {

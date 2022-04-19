@@ -181,6 +181,7 @@ export const HelpCenterCategoryEdit = ({
             setLocale(viewLanguage)
             setParentCategory(parentCategoryId)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, category, translation, viewLanguage])
 
     // Only set the auto-focus after the drawer animation is finished

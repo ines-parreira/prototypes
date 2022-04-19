@@ -188,6 +188,7 @@ const SelectFilter = ({
 
     useEffect(() => {
         onSearch?.(search)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search])
 
     const hasSelection = useMemo(() => !!value.length, [value])
@@ -213,6 +214,7 @@ const SelectFilter = ({
 
     const items = useMemo(
         () => (children ? getItems(children) : []),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [children]
     )
 
@@ -283,6 +285,7 @@ const SelectFilter = ({
             onChange(nextValue)
             updateGroupValue(nextValue)
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [isDisabled, isMultiple, isRequired, value, onChange]
     )
 
@@ -300,6 +303,7 @@ const SelectFilter = ({
             }
             setSelectedGroupIds(nextValue)
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [isDisabled, selectedGroupIds, onChange]
     )
 

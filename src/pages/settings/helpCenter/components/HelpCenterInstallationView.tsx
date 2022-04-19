@@ -44,6 +44,7 @@ export const HelpCenterInstallationView: React.FC = () => {
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const [deleteModalConfirmation, setDeleteModalConfirmation] = useState('')
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkSubdomainAvailability = useCallback(
         _debounce(async () => {
             if (

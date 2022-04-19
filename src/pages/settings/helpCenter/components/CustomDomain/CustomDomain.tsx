@@ -155,6 +155,7 @@ export const CustomDomain = () => {
 
     useEffect(() => {
         void getHelpCenterCustomDomain()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {

@@ -74,6 +74,7 @@ export const CategoriesViews = ({
         }
 
         void init()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     if (isLoading && categories.length === 1) {

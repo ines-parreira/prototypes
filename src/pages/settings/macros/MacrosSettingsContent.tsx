@@ -72,6 +72,7 @@ export function MacrosSettingsContentContainer({
     )
     useEffect(() => {
         void handleFetchMacros()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [options])
     useEffect(() => {
         const {page, nbPages} = pagination
@@ -84,6 +85,7 @@ export function MacrosSettingsContentContainer({
             setMacroIds(nextMacroIds)
             setOptions({...options, page: page === nbPages ? page - 1 : page})
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [macros])
 
     return (

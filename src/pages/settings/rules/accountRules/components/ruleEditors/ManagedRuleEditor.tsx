@@ -110,6 +110,7 @@ export const ManagedRuleEditor = ({
         ) {
             handleDirtyForm(true)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [settings, deactivatedDatetime])
 
     const handleChange = () => {

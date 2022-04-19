@@ -53,6 +53,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
             return
         }
         void getCategoryTranslation(category.id, category.translation.locale)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [category])
 
     const handleOnSave = async (

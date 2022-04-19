@@ -122,10 +122,12 @@ export const HelpCenterArticlesView: React.FC = () => {
         dispatch(resetCategories())
         dispatch(resetArticles())
         setIsReady(true)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
         void getHelpCenterCustomDomain()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -183,6 +185,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
 
         void updateSelectedArticleTranslations()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         client,
         helpCenter,

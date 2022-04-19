@@ -22,6 +22,7 @@ export const CustomerNavbarContainer = ({
 
     useEffect(() => {
         void fetchViews(viewId || (viewIdSearch as string))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [viewId, viewIdSearch])
 
     return (

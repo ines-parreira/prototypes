@@ -129,6 +129,7 @@ export function TicketNavbarContainer({
                 })
             }
         })()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -143,6 +144,7 @@ export function TicketNavbarContainer({
                 })
             }
         })()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const allViews = useMemo(
@@ -183,8 +185,10 @@ export function TicketNavbarContainer({
                 )}`
             )
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [activeViewId, allViews]
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const updateUrl = useCallback(
         _debounce((viewUrl: string) => history.push(viewUrl)),
         []
@@ -360,6 +364,7 @@ export function TicketNavbarContainer({
                 setMovingItem(false)
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [accountSetting, userSetting]
     )
 

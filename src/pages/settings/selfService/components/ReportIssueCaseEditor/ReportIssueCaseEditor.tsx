@@ -90,6 +90,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
         }
 
         return false
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLoadingConfig, configuration, caseIndex])
 
     useEffect(() => {
@@ -114,6 +115,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                 setConditionsLogicExpression(caseData.conditions)
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLoadingConfig, configuration])
 
     useEffect(() => {
@@ -132,6 +134,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
         }
 
         setErrors(newErrors)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [title, reasons, conditionsLogicExpession, configuration, isDirty])
 
     const handleTitleChange = (newTitle: string) => {

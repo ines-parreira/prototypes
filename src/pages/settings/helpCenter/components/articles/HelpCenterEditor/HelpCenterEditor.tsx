@@ -39,12 +39,14 @@ const HelpCenterEditor = ({
 
     useEffect(() => {
         setIsEditorCodeViewActive(false)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
         if (editorRef.current?.editorInitialized) {
             editorRef.current.editor.html.set(value)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [locale])
 
     const onModelChange = (newModel: string) => {

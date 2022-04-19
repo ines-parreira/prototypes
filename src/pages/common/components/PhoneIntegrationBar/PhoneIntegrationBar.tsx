@@ -78,6 +78,7 @@ function useDevice() {
                 dispatch(setDevice(null))
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 }
 

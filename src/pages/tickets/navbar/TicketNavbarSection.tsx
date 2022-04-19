@@ -56,6 +56,7 @@ export function TicketNavbarSectionContainer({
             sectionId: section.id,
             direction,
         }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     )
     const handleClick = () => onSectionClick(section.id)

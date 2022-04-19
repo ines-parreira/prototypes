@@ -57,6 +57,7 @@ const TimedeltaPicker = ({
                 ? TIMEDELTA_OPERATOR_DEFAULT_QUANTITY
                 : deducedQuantity
         )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useUpdateEffect(() => {

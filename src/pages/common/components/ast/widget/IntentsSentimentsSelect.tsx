@@ -37,6 +37,7 @@ export const IntentsSentimentsSelect = ({
                     value: option,
                     isDeprecated: deprecatedOptions.includes(option),
                 })),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [deprecatedOptions, options]
     )
 

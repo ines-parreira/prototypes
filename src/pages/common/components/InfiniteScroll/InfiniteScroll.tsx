@@ -50,6 +50,7 @@ const InfiniteScroll = ({
 
     useEffect(() => {
         void handleLoad()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldLoadMore, children, onLoad])
 
     return (

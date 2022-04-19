@@ -159,6 +159,7 @@ export const RuleFormEditor = ({rule}: Props) => {
             }
         }
         return rule.name
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [rule, ruleRecipes])
 
     useEffect(() => {
@@ -191,6 +192,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                 />
             )
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         []
     )
 

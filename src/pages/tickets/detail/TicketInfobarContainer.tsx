@@ -29,6 +29,7 @@ export const TicketInfobarContainer = ({
     useEffect(() => {
         actions.widgets.selectContext()
         actions.widgets.fetchWidgets()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const customer = useMemo(

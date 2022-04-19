@@ -67,6 +67,7 @@ export const AutomationStatsSelfServiceMetric = ({
         }
     }, [])
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => void getConfigurations(), [])
 
     const segmentEventToSend = {

@@ -114,6 +114,7 @@ function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
         if (isModalOpen) {
             logEvent(SegmentEvent.RuleLibraryItemShown, segmentEventProps)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isModalOpen])
 
     const handleCreateOrFetchSection = async (sectionName: string) => {
@@ -209,6 +210,7 @@ function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
             )
         }
         return <>{badges}</>
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipe_tag])
 
     const handleInstall = async (

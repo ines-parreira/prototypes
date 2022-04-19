@@ -64,6 +64,7 @@ export default function TicketDetailsStat({
                 filter.left !== periodFilterLeft &&
                 filter.left !== ASSIGNEE_FILTER_LEFT
         )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [statsViewFilters])
 
     const openTicketsFilters = useMemo<ViewFilter[]>(

@@ -26,6 +26,7 @@ export function IntegrationSelectContainer({
         if (integrations.isEmpty()) {
             void fetchIntegrations()
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const field = fromJS({name: 'integrations'})

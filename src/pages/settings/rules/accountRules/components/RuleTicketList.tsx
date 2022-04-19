@@ -56,6 +56,7 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
 
     useEffect(() => {
         void handleFetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleVisit = (ticketId: number, event: React.MouseEvent) => {

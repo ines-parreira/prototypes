@@ -55,6 +55,7 @@ export const IntegrationRow = ({
                 updateOrCreateIntegration(fromJS(selfServiceIntegrationData))
             )
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selfServiceIntegration])
 
     useEffect(() => {

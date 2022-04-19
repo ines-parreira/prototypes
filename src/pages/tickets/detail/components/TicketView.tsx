@@ -136,6 +136,7 @@ export const TicketViewContainer = ({
         if (shouldDisplayHistoryOnNextPage) {
             displayHistoryOnNextPage(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {

@@ -90,6 +90,7 @@ export const CurrentHelpCenter: React.FC = () => {
             }
         }
         void init()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client, helpCenterId])
 
     // ? If we access the help center via URL, set the current help center

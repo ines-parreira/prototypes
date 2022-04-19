@@ -29,7 +29,7 @@ const useCancellableRequest = <T extends FnReturningPromise>(
                 }
             }
         },
-        [fn]
+        [fn, cancel]
     )
     useEffect(() => cancel, [cancel])
 

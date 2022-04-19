@@ -35,6 +35,7 @@ export const HelpCenterSelfServiceView = (): JSX.Element | null => {
                 setIsLoadingIntegrations(false)
             }
         })()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const [{loading: updatingHelpCenter}, updateHelpCenter] = useAsyncFn(

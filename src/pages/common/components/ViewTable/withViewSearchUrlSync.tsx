@@ -54,6 +54,7 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
                     filters: string
                 ) => Map<any, any>
             )(urlQuery, urlFilters)
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [urlQuery, urlFilters])
 
         useUpdateEffect(() => {

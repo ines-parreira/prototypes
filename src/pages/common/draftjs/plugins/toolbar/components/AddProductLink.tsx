@@ -73,6 +73,7 @@ export function AddProductLink({
             channel: newMessageChannel,
             ticket: ticket?.get('id') || 'new',
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setOpen])
 
     const handlePopoverClose = useCallback(() => {
@@ -142,6 +143,7 @@ export function AddProductLink({
             })
             setOpen(false)
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             getEditorState,
             setEditorState,
@@ -166,6 +168,7 @@ export function AddProductLink({
         return function cleanup() {
             shortcutManager.unbind('AddProductLink')
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [handlePopoverClose])
 
     return (

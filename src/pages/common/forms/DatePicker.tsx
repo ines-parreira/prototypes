@@ -65,6 +65,7 @@ export const DatePicker = ({
     useEffect(() => {
         isOpen && triggerDateRangePickerClick()
         return endHandlingTooltipHover
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useUpdateEffect(() => {

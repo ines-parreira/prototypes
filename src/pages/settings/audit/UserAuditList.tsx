@@ -135,6 +135,7 @@ const UserAuditList = () => {
 
     useEffect(() => {
         void fetchUsersAudit()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useDebounce(

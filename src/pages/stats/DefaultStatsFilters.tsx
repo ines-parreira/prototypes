@@ -45,6 +45,7 @@ export default function DefaultStatsFilters({
         return () => {
             dispatch(resetStatsFilters())
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return <>{isReady ? children : notReadyFallback}</>
