@@ -69,9 +69,11 @@ export default class TicketAttachments extends Component<Props, State> {
     }
 
     isImage = (attachment?: Attachment) => {
+        const contentType = attachment?.get('content_type') as string
         return (
             !!attachment &&
-            (attachment.get('content_type') as string).startsWith('image/')
+            !['image/heic', 'image/heif'].includes(contentType) && // We cannot render heif/heic images in the browser CF https://caniuse.com/?search=heif.
+            contentType.startsWith('image/')
         )
     }
 
