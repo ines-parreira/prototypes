@@ -14,6 +14,7 @@ import {RootState} from 'state/types'
 import {toJS} from 'utils'
 import HomePageListGroupItem from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/components/HomePageListGroupItem'
 import css from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/SelfServicePreview.less'
+import quickResponseCss from '../../QuickResponseFlowItem.less'
 import {useChatIntegration} from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/hooks'
 import {SelfServicePreviewFooter} from '../../../QuickResponseFlowsPreferences/components/SelfServicePreview/components/SelfServicePreviewFooter'
 import QuickResponseReplies from '../QuickResponseReplies/QuickResponseReplies'
@@ -45,7 +46,7 @@ const QuickResponseSelfServicePreview = ({
         GORGIAS_CHAT_SSP_TEXTS[chatIntegration.meta.language || 'en-US']
 
     return (
-        <>
+        <div className={quickResponseCss.container}>
             <ButtonGroup className="mb-4">
                 <Button
                     type="button"
@@ -134,7 +135,7 @@ const QuickResponseSelfServicePreview = ({
                     </>
                 )}
             </ChatIntegrationPreview>
-        </>
+        </div>
     )
 }
 

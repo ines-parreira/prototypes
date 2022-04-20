@@ -72,6 +72,9 @@ describe('DEPRECATED_RichField', () => {
     })
 
     it('should render immutable variable', () => {
+        const div = document.createElement('div')
+        document.body.appendChild(div)
+
         const component = mount(
             <Provider store={store}>
                 <RichField
@@ -81,19 +84,24 @@ describe('DEPRECATED_RichField', () => {
                         html: 'html {{current_user.name}}',
                     }}
                 />
-            </Provider>
+            </Provider>,
+            {attachTo: div}
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should render mutable variable', () => {
+        const div = document.createElement('div')
+        document.body.appendChild(div)
+
         const component = mount(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
                     value={{text: 'text', html: 'html'}}
                 />
-            </Provider>
+            </Provider>,
+            {attachTo: div}
         )
 
         // simulate typed text
@@ -106,6 +114,9 @@ describe('DEPRECATED_RichField', () => {
     })
 
     it('should render default content state', () => {
+        const div = document.createElement('div')
+        document.body.appendChild(div)
+
         const contentState = ContentState.createFromText('foo')
         const component = mount(
             <Provider store={store}>
@@ -117,7 +128,8 @@ describe('DEPRECATED_RichField', () => {
                         html: convertToHTML(contentState),
                     }}
                 />
-            </Provider>
+            </Provider>,
+            {attachTo: div}
         )
         expect(component).toMatchSnapshot()
     })

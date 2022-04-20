@@ -5,6 +5,7 @@ import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import {connect, ConnectedProps} from 'react-redux'
 
+import Tooltip from 'pages/common/components/Tooltip'
 import {RootState} from '../../../../../state/types'
 import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
 import {humanize} from '../../../../../business/format'
@@ -299,7 +300,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                 <label
                     htmlFor="attachments-input"
                     className="m-0"
-                    title="Add attachment"
+                    id="attachment"
                 >
                     {attachmentLoading ? (
                         <i className="icon material-icons md-spin">refresh</i>
@@ -307,6 +308,14 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                         <i className="material-icons">attach_file</i>
                     )}
                 </label>
+                <Tooltip
+                    autohide={false}
+                    delay={100}
+                    target="attachment"
+                    placement="bottom"
+                >
+                    Add attachment
+                </Tooltip>
                 <input
                     id="attachments-input"
                     type="file"

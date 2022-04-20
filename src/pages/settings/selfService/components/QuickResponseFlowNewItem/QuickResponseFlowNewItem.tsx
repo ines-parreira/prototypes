@@ -54,7 +54,10 @@ const QuickResponseFlowNewItem = () => {
                 })
             }
         )
-        await updateQuickReplyPolicies(newQuickResponses)
+        await updateQuickReplyPolicies({
+            newQuickRepliesPolicy: newQuickResponses,
+            message: 'Flow successfully created',
+        })
         logEvent(SegmentEvent.QuickResponseFlowCreated, {
             buttonLabel,
             responseText,

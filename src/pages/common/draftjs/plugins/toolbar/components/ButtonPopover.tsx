@@ -13,6 +13,7 @@ type Props = {
     isOpen?: boolean
     onClose: () => void
     onOpen: () => void
+    id: string
 }
 
 export default function ButtonPopover({
@@ -25,6 +26,7 @@ export default function ButtonPopover({
     name,
     onClose,
     onOpen,
+    id,
 }: Props) {
     const popoverRef = useRef<HTMLSpanElement>(null)
     const handleDocumentPointer = useCallback(
@@ -76,6 +78,7 @@ export default function ButtonPopover({
                     isDisabled={isDisabled}
                     icon={icon}
                     onToggle={handleButtonToggle}
+                    id={id}
                 />
             }
             className={className}

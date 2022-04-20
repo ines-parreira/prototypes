@@ -15,7 +15,7 @@ exports[`TicketReplyEditor component should allow inline image 1`] = `
           <label
             className="m-0"
             htmlFor="attachments-input"
-            title="Add attachment"
+            id="attachment"
           >
             <i
               className="material-icons"
@@ -23,6 +23,14 @@ exports[`TicketReplyEditor component should allow inline image 1`] = `
               attach_file
             </i>
           </label>
+          <Tooltip
+            autohide={false}
+            delay={100}
+            placement="bottom"
+            target="attachment"
+          >
+            Add attachment
+          </Tooltip>
           <input
             id="attachments-input"
             multiple={true}
@@ -200,7 +208,7 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
           <label
             className="m-0"
             htmlFor="attachments-input"
-            title="Add attachment"
+            id="attachment"
           >
             <i
               className="material-icons"
@@ -208,6 +216,14 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
               attach_file
             </i>
           </label>
+          <Tooltip
+            autohide={false}
+            delay={100}
+            placement="bottom"
+            target="attachment"
+          >
+            Add attachment
+          </Tooltip>
           <input
             id="attachments-input"
             multiple={true}
@@ -305,7 +321,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
           <label
             className="m-0"
             htmlFor="attachments-input"
-            title="Add attachment"
+            id="attachment"
           >
             <i
               className="material-icons"
@@ -313,6 +329,14 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
               attach_file
             </i>
           </label>
+          <Tooltip
+            autohide={false}
+            delay={100}
+            placement="bottom"
+            target="attachment"
+          >
+            Add attachment
+          </Tooltip>
           <input
             id="attachments-input"
             multiple={true}

@@ -488,7 +488,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        title="Bold"
+                        id="format_bold"
                         type="button"
                       >
                         <i
@@ -499,7 +499,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        title="Italic"
+                        id="format_italic"
                         type="button"
                       >
                         <i
@@ -510,7 +510,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        title="Underline"
+                        id="format_underline"
                         type="button"
                       >
                         <i
@@ -524,7 +524,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          title="Insert image"
+                          id="insert_photo"
                           type="button"
                         >
                           <i
@@ -542,7 +542,7 @@ exports[`CampaignDetail component should display default value when it's a new c
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          title="Insert emoji"
+                          id="insert_emoticon"
                           type="button"
                         >
                           <i
@@ -1224,7 +1224,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        title="Bold"
+                        id="format_bold"
                         type="button"
                       >
                         <i
@@ -1235,7 +1235,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        title="Italic"
+                        id="format_italic"
                         type="button"
                       >
                         <i
@@ -1246,7 +1246,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        title="Underline"
+                        id="format_underline"
                         type="button"
                       >
                         <i
@@ -1260,7 +1260,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          title="Insert image"
+                          id="insert_photo"
                           type="button"
                         >
                           <i
@@ -1278,7 +1278,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          title="Insert emoji"
+                          id="insert_emoticon"
                           type="button"
                         >
                           <i
@@ -1981,7 +1981,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                     >
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        title="Bold"
+                        id="format_bold"
                         type="button"
                       >
                         <i
@@ -1992,7 +1992,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        title="Italic"
+                        id="format_italic"
                         type="button"
                       >
                         <i
@@ -2003,7 +2003,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       </button>
                       <button
                         class="wrapper button wrapper small fill secondary small"
-                        title="Underline"
+                        id="format_underline"
                         type="button"
                       >
                         <i
@@ -2017,7 +2017,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          title="Insert image"
+                          id="insert_photo"
                           type="button"
                         >
                           <i
@@ -2035,7 +2035,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          title="Insert emoji"
+                          id="insert_emoticon"
                           type="button"
                         >
                           <i

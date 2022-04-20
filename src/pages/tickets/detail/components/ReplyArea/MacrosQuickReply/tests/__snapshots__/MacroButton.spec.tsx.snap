@@ -90,7 +90,7 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                       >
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          title="Bold"
+                          id="format_bold"
                           type="button"
                         >
                           <i
@@ -101,7 +101,7 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                         </button>
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          title="Italic"
+                          id="format_italic"
                           type="button"
                         >
                           <i
@@ -112,7 +112,7 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                         </button>
                         <button
                           class="wrapper button wrapper small fill secondary small"
-                          title="Underline"
+                          id="format_underline"
                           type="button"
                         >
                           <i
@@ -126,7 +126,7 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                         >
                           <button
                             class="wrapper button wrapper small fill secondary small"
-                            title="Insert link"
+                            id="insert_link"
                             type="button"
                           >
                             <i
@@ -144,7 +144,7 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                         >
                           <button
                             class="wrapper button wrapper small fill secondary small"
-                            title="Insert image"
+                            id="insert_photo"
                             type="button"
                           >
                             <i
@@ -162,7 +162,7 @@ exports[`<MacroButton /> should open the popover on hover 1`] = `
                         >
                           <button
                             class="wrapper button wrapper small fill secondary small"
-                            title="Insert emoji"
+                            id="insert_emoticon"
                             type="button"
                           >
                             <i

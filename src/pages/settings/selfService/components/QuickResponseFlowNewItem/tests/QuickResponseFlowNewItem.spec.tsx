@@ -141,27 +141,30 @@ describe('<QuickResponseFlowNewItem />', () => {
 
         fireEvent.click(createFlowButton)
 
-        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith([
-            {
-                deactivated_datetime: null,
-                id: 'another-id',
-                title: 'title',
-                response_message_content: {
-                    html: '<div><br></div>',
-                    text: '',
-                    attachments: List(),
+        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith({
+            message: 'Flow successfully created',
+            newQuickRepliesPolicy: [
+                {
+                    deactivated_datetime: null,
+                    id: 'another-id',
+                    title: 'title',
+                    response_message_content: {
+                        html: '<div><br></div>',
+                        text: '',
+                        attachments: List(),
+                    },
                 },
-            },
-            {
-                deactivated_datetime: null,
-                response_message_content: {
-                    html: '<div><br></div>',
-                    text: '',
-                    attachments: List(),
+                {
+                    deactivated_datetime: null,
+                    response_message_content: {
+                        html: '<div><br></div>',
+                        text: '',
+                        attachments: List(),
+                    },
+                    title: 'label',
                 },
-                title: 'label',
-            },
-        ])
+            ],
+        })
         await waitFor(() =>
             expect(logEvent).toHaveBeenCalledWith(
                 SegmentEvent.QuickResponseFlowCreated,
@@ -227,26 +230,29 @@ describe('<QuickResponseFlowNewItem />', () => {
 
         fireEvent.click(saveChangesButton)
 
-        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith([
-            {
-                deactivated_datetime: null,
-                id: 'another-id',
-                title: 'title',
-                response_message_content: {
-                    html: '<div><br></div>',
-                    text: '',
-                    attachments: List(),
+        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith({
+            message: 'Flow successfully created',
+            newQuickRepliesPolicy: [
+                {
+                    deactivated_datetime: null,
+                    id: 'another-id',
+                    title: 'title',
+                    response_message_content: {
+                        html: '<div><br></div>',
+                        text: '',
+                        attachments: List(),
+                    },
                 },
-            },
-            {
-                deactivated_datetime: null,
-                response_message_content: {
-                    html: '<div><br></div>',
-                    text: '',
-                    attachments: List(),
+                {
+                    deactivated_datetime: null,
+                    response_message_content: {
+                        html: '<div><br></div>',
+                        text: '',
+                        attachments: List(),
+                    },
+                    title: 'another title',
                 },
-                title: 'another title',
-            },
-        ])
+            ],
+        })
     })
 })

@@ -172,7 +172,7 @@ Array [
 ]
 `;
 
-exports[`<QuickResponseFlowsPreferences /> should be able to remove quick response flow 1`] = `
+exports[`<QuickResponseFlowsPreferences /> should be able to remove quick response flow - in production 1`] = `
 Array [
   Array [
     Object {

@@ -62,6 +62,7 @@ const SelfServicePreview = () => {
             renderFooter={false}
             renderPoweredBy={false}
             position={chatIntegration.decoration?.position}
+            hideButton
         >
             <div className={css.content}>
                 {visibleQuickReplies.length > 0 && (

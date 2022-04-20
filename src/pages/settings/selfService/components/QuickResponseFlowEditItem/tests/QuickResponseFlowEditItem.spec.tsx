@@ -147,28 +147,31 @@ describe('<QuickResponseFlowEditItem />', () => {
 
         fireEvent.click(saveChangesButton)
 
-        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith([
-            {
-                deactivated_datetime: null,
-                response_message_content: {
-                    html: '<div><br></div>',
-                    text: '',
-                    attachments: List(),
+        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith({
+            message: 'Flow successfully updated',
+            newQuickRepliesPolicy: [
+                {
+                    deactivated_datetime: null,
+                    response_message_content: {
+                        html: '<div><br></div>',
+                        text: '',
+                        attachments: List(),
+                    },
+                    title: 'label',
+                    id: 'some-id',
                 },
-                title: 'label',
-                id: 'some-id',
-            },
-            {
-                deactivated_datetime: null,
-                id: 'another-id',
-                title: 'another title',
-                response_message_content: {
-                    html: '<div><br></div>',
-                    text: '',
-                    attachments: List(),
+                {
+                    deactivated_datetime: null,
+                    id: 'another-id',
+                    title: 'another title',
+                    response_message_content: {
+                        html: '<div><br></div>',
+                        text: '',
+                        attachments: List(),
+                    },
                 },
-            },
-        ])
+            ],
+        })
         await waitFor(() =>
             expect(logEvent).toHaveBeenCalledWith(
                 SegmentEvent.QuickResponseFlowEdited,
@@ -234,28 +237,31 @@ describe('<QuickResponseFlowEditItem />', () => {
 
         fireEvent.click(saveChangesButton)
 
-        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith([
-            {
-                deactivated_datetime: null,
-                title: 'title',
-                id: 'some-id',
-                response_message_content: {
-                    html: '<div><br></div>',
-                    text: '',
-                    attachments: List(),
+        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith({
+            message: 'Flow successfully updated',
+            newQuickRepliesPolicy: [
+                {
+                    deactivated_datetime: null,
+                    title: 'title',
+                    id: 'some-id',
+                    response_message_content: {
+                        html: '<div><br></div>',
+                        text: '',
+                        attachments: List(),
+                    },
                 },
-            },
-            {
-                deactivated_datetime: null,
-                response_message_content: {
-                    html: '<div><br></div>',
-                    text: '',
-                    attachments: List(),
+                {
+                    deactivated_datetime: null,
+                    response_message_content: {
+                        html: '<div><br></div>',
+                        text: '',
+                        attachments: List(),
+                    },
+                    title: 'another title',
+                    id: 'another-id',
                 },
-                title: 'another title',
-                id: 'another-id',
-            },
-        ])
+            ],
+        })
         await waitFor(() =>
             expect(logEvent).toHaveBeenCalledWith(
                 SegmentEvent.QuickResponseFlowEdited,
@@ -295,18 +301,21 @@ describe('<QuickResponseFlowEditItem />', () => {
         getByText('Are you sure you want to delete this quick response flow?')
         fireEvent.click(getByText('Confirm'))
 
-        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith([
-            {
-                deactivated_datetime: null,
-                response_message_content: {
-                    html: '<div><br></div>',
-                    text: '',
-                    attachments: List(),
+        expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith({
+            message: 'Flow successfully deleted',
+            newQuickRepliesPolicy: [
+                {
+                    deactivated_datetime: null,
+                    response_message_content: {
+                        html: '<div><br></div>',
+                        text: '',
+                        attachments: List(),
+                    },
+                    title: 'another title',
+                    id: 'another-id',
                 },
-                title: 'another title',
-                id: 'another-id',
-            },
-        ])
+            ],
+        })
 
         expect(history.push).toHaveBeenLastCalledWith(
             '/app/settings/self-service/shopify/mystore1/preferences/quick-response'

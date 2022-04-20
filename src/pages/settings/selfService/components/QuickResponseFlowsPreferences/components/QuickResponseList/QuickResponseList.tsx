@@ -101,7 +101,10 @@ const QuickResponseList = () => {
             )
         }
 
-        void updateQuickReplyPolicies(newQuickResponses)
+        void updateQuickReplyPolicies({
+            newQuickRepliesPolicy: newQuickResponses,
+            message: 'Flow successfully updated',
+        })
         setShouldShowModal(false)
     }
 
@@ -125,7 +128,10 @@ const QuickResponseList = () => {
             }
         )
 
-        await updateQuickReplyPolicies(newQuickResponses)
+        await updateQuickReplyPolicies({
+            newQuickRepliesPolicy: newQuickResponses,
+            message: 'Flow successfully deleted',
+        })
         logEvent(SegmentEvent.QuickResponseFlowDeleted, {
             id: quickResponses[position].id,
         })
@@ -146,7 +152,10 @@ const QuickResponseList = () => {
             }
         )
 
-        await updateQuickReplyPolicies(newQuickResponses)
+        await updateQuickReplyPolicies({
+            newQuickRepliesPolicy: newQuickResponses,
+            message: 'Flow successfully updated',
+        })
         logEvent(type, {
             id: quickResponses[position].id,
         })
@@ -160,7 +169,10 @@ const QuickResponseList = () => {
             return foundResponse
         }) as QuickReplyPolicy[]
 
-        void updateQuickReplyPolicies(sortedResponsePolicies)
+        void updateQuickReplyPolicies({
+            newQuickRepliesPolicy: sortedResponsePolicies,
+            message: 'Flow successfully updated',
+        })
     }
 
     const numberOfActiveFlows = useMemo(() => {

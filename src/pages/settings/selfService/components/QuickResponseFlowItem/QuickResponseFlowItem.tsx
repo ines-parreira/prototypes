@@ -8,6 +8,7 @@ import {
     Form,
     Label,
     FormGroup,
+    FormText,
 } from 'reactstrap'
 import {Link, useParams} from 'react-router-dom'
 import {EditorState} from 'draft-js'
@@ -36,9 +37,13 @@ import {convertToHTML} from 'utils/editor'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
 import {NEW_MESSAGE_QUICK_RESPONSE_FLOW} from 'state/newMessage/constants'
 import {QuickReplyPolicy} from 'models/selfServiceConfiguration/types'
+import {NotificationStatus} from 'state/notifications/types'
+import {notify} from 'state/notifications/actions'
 import {getNewMessageAttachments} from '../../../../../state/newMessage/selectors'
 import QuickResponseSelfServicePreview from './components/QuickResponseSelfServicePreview'
 import css from './QuickResponseFlowItem.less'
+
+const MAX_RESPONSE_LENGTH = 5000
 
 type Props = {
     handleSubmit: (args: {
@@ -55,8 +60,8 @@ const QuickResponseFlowItem = ({
     quickResponseBeingEdited,
     handleDelete,
 }: Props) => {
-    const configuration = useConfigurationData()
     const dispatch = useDispatch()
+    const configuration = useConfigurationData()
     const [buttonLabel, setButtonLabel] = useState(
         quickResponseBeingEdited?.title ?? ''
     )
@@ -66,6 +71,7 @@ const QuickResponseFlowItem = ({
         ),
     })
     const [error, setError] = useState('')
+    const [isResponseTooLong, setIsResponseTooLong] = useState(false)
 
     const baseURL = `/app/settings/self-service/shopify/${
         configuration.integration.getIn(['meta', 'shop_name']) as string
@@ -164,7 +170,7 @@ const QuickResponseFlowItem = ({
                             <DEPRECATED_InputField
                                 name="buttonLabel"
                                 label="Button label"
-                                placeholder="Ex. Product information"
+                                placeholder="Ex: Do you offer free shipping and returns?"
                                 required
                                 value={buttonLabel}
                                 onChange={handleButtonLabelChange}
@@ -227,9 +233,43 @@ const QuickResponseFlowItem = ({
                                                     content.getPlainText()
                                                 ),
                                         }))
+
+                                        if (
+                                            content.getPlainText().length >
+                                                MAX_RESPONSE_LENGTH &&
+                                            !isResponseTooLong
+                                        ) {
+                                            dispatch(
+                                                notify({
+                                                    status: NotificationStatus.Error,
+                                                    message:
+                                                        'Maximum number of characters exceeded. Please review your message',
+                                                })
+                                            )
+                                        }
+
+                                        setIsResponseTooLong(
+                                            content.getPlainText().length >
+                                                MAX_RESPONSE_LENGTH
+                                                ? true
+                                                : false
+                                        )
                                     }}
-                                    placeholder="Ex: Please more information about our product line in this article!"
+                                    placeholder="Ex: We offer free shipping on all U.S. orders $100+. Shipping rates vary based on weight and delivery destination and is chosen by the customer at checkout. Check out our Shipping & Returns page for more information about shipping rates."
                                 />
+                                <FormText
+                                    color={
+                                        isResponseTooLong ? 'danger' : 'muted'
+                                    }
+                                >
+                                    {`${
+                                        (
+                                            responseText.message.get('text') as
+                                                | string
+                                                | undefined
+                                        )?.length ?? 0
+                                    }/${MAX_RESPONSE_LENGTH} characters`}
+                                </FormText>
                                 <TicketAttachments
                                     removable
                                     attachments={newMessageAttachments}
@@ -248,7 +288,9 @@ const QuickResponseFlowItem = ({
                                     type="submit"
                                     form="quickResponseForm"
                                     isDisabled={
-                                        !!error || buttonLabel.length === 0
+                                        !!error ||
+                                        isResponseTooLong ||
+                                        buttonLabel.length === 0
                                     }
                                 >
                                     {quickResponseBeingEdited !== undefined
@@ -280,6 +322,7 @@ const QuickResponseFlowItem = ({
                                             handleDelete && handleDelete()
                                             history.push(baseURL)
                                         }}
+                                        placement="top"
                                     >
                                         Delete Flow
                                     </ConfirmButton>
@@ -288,12 +331,14 @@ const QuickResponseFlowItem = ({
                         </Form>
                     </Col>
 
-                    <Col data-testid="previewColumn" className={css.preview}>
-                        <QuickResponseSelfServicePreview
-                            quickResponseTitle={buttonLabel}
-                            quickResponseMessage={responseText.message}
-                            newMessageAttachments={newMessageAttachments}
-                        />
+                    <Col data-testid="previewColumn">
+                        <div className={css.preview}>
+                            <QuickResponseSelfServicePreview
+                                quickResponseTitle={buttonLabel || 'Title'}
+                                quickResponseMessage={responseText.message}
+                                newMessageAttachments={newMessageAttachments}
+                            />
+                        </div>
                     </Col>
                 </Row>
             </Container>

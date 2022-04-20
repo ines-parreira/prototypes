@@ -156,7 +156,7 @@ describe('<QuickResponseFlowsPreferences />', () => {
         const itemToChange = within(container).getByText('Second')
             .parentElement as HTMLElement
         const editButton = within(itemToChange).getByRole('button', {
-            name: 'edit',
+            name: 'chevron_right',
         })
         userEvent.click(editButton)
 
@@ -206,7 +206,8 @@ describe('<QuickResponseFlowsPreferences />', () => {
         )
     })
 
-    it('should be able to remove quick response flow', () => {
+    it('should be able to remove quick response flow - in production', () => {
+        jest.spyOn(utils, 'isProduction').mockReturnValue(true)
         render(
             <Provider store={mockStore(defaultState)}>
                 <QuickResponseFlowsPreferences />

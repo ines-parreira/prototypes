@@ -57,7 +57,10 @@ const QuickResponseFlowEditItem = () => {
                 : quickResponse
         )
 
-        await updateQuickReplyPolicies(newQuickResponses)
+        await updateQuickReplyPolicies({
+            newQuickRepliesPolicy: newQuickResponses,
+            message: 'Flow successfully updated',
+        })
         logEvent(SegmentEvent.QuickResponseFlowEdited, {
             id: quickResponseId,
             buttonLabel,
@@ -72,7 +75,10 @@ const QuickResponseFlowEditItem = () => {
             (quickResponse) => quickResponseId !== quickResponse.id
         )
 
-        await updateQuickReplyPolicies(newQuickResponses)
+        await updateQuickReplyPolicies({
+            newQuickRepliesPolicy: newQuickResponses,
+            message: 'Flow successfully deleted',
+        })
         logEvent(SegmentEvent.QuickResponseFlowDeleted, {
             id: quickResponseId,
         })

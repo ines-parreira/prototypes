@@ -100,6 +100,7 @@ export default class AddImage extends Component<Props, State> {
         return (
             <Popover
                 icon="insert_photo"
+                id="insert_photo"
                 name="Insert image"
                 isOpen={this.state.isOpen}
                 onOpen={this._onPopoverOpen}

@@ -2619,12 +2619,14 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                             <InlineStyle
                               getEditorState={[Function]}
                               icon="format_bold"
+                              id="format_bold"
                               name="Bold"
                               setEditorState={[Function]}
                               style="BOLD"
                             >
                               <Button
                                 icon="format_bold"
+                                id="format_bold"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Bold"
@@ -2632,25 +2634,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                               >
                                 <ForwardRef
                                   className="button"
+                                  id="format_bold"
                                   intent="secondary"
                                   onClick={[Function]}
                                   onMouseDown={[Function]}
                                   size="small"
-                                  title="Bold"
                                 >
                                   <ForwardRef
                                     className="button wrapper small"
+                                    id="format_bold"
                                     intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
                                     size="small"
-                                    title="Bold"
                                   >
                                     <button
                                       className="wrapper button wrapper small fill secondary small"
+                                      id="format_bold"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
-                                      title="Bold"
                                       type="button"
                                     >
                                       <i
@@ -2661,6 +2663,48 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                     </button>
                                   </ForwardRef>
                                 </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="format_bold"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="format_bold"
+                                  >
+                                    <Tooltip
+                                      autohide={false}
+                                      className="tooltip"
+                                      delay={100}
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      target="format_bold"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
+                                        placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
+                                        target="format_bold"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
+                                    </Tooltip>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </Button>
                             </InlineStyle>
                           </Decorated(InlineStyle)>
@@ -2671,12 +2715,14 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                             <InlineStyle
                               getEditorState={[Function]}
                               icon="format_italic"
+                              id="format_italic"
                               name="Italic"
                               setEditorState={[Function]}
                               style="ITALIC"
                             >
                               <Button
                                 icon="format_italic"
+                                id="format_italic"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Italic"
@@ -2684,25 +2730,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                               >
                                 <ForwardRef
                                   className="button"
+                                  id="format_italic"
                                   intent="secondary"
                                   onClick={[Function]}
                                   onMouseDown={[Function]}
                                   size="small"
-                                  title="Italic"
                                 >
                                   <ForwardRef
                                     className="button wrapper small"
+                                    id="format_italic"
                                     intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
                                     size="small"
-                                    title="Italic"
                                   >
                                     <button
                                       className="wrapper button wrapper small fill secondary small"
+                                      id="format_italic"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
-                                      title="Italic"
                                       type="button"
                                     >
                                       <i
@@ -2713,6 +2759,48 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                     </button>
                                   </ForwardRef>
                                 </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="format_italic"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="format_italic"
+                                  >
+                                    <Tooltip
+                                      autohide={false}
+                                      className="tooltip"
+                                      delay={100}
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      target="format_italic"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
+                                        placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
+                                        target="format_italic"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
+                                    </Tooltip>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </Button>
                             </InlineStyle>
                           </Decorated(InlineStyle)>
@@ -2723,12 +2811,14 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                             <InlineStyle
                               getEditorState={[Function]}
                               icon="format_underline"
+                              id="format_underline"
                               name="Underline"
                               setEditorState={[Function]}
                               style="UNDERLINE"
                             >
                               <Button
                                 icon="format_underline"
+                                id="format_underline"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Underline"
@@ -2736,25 +2826,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                               >
                                 <ForwardRef
                                   className="button"
+                                  id="format_underline"
                                   intent="secondary"
                                   onClick={[Function]}
                                   onMouseDown={[Function]}
                                   size="small"
-                                  title="Underline"
                                 >
                                   <ForwardRef
                                     className="button wrapper small"
+                                    id="format_underline"
                                     intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
                                     size="small"
-                                    title="Underline"
                                   >
                                     <button
                                       className="wrapper button wrapper small fill secondary small"
+                                      id="format_underline"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
-                                      title="Underline"
                                       type="button"
                                     >
                                       <i
@@ -2765,6 +2855,48 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                     </button>
                                   </ForwardRef>
                                 </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="format_underline"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="format_underline"
+                                  >
+                                    <Tooltip
+                                      autohide={false}
+                                      className="tooltip"
+                                      delay={100}
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      target="format_underline"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
+                                        placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
+                                        target="format_underline"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
+                                    </Tooltip>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </Button>
                             </InlineStyle>
                           </Decorated(InlineStyle)>
@@ -2804,6 +2936,7 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                             >
                               <ButtonPopover
                                 icon="link"
+                                id="insert_link"
                                 isActive={false}
                                 isOpen={false}
                                 name="Insert link"
@@ -2815,6 +2948,7 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                   trigger={
                                     <Button
                                       icon="link"
+                                      id="insert_link"
                                       isActive={false}
                                       isDisabled={false}
                                       name="Insert link"
@@ -2827,6 +2961,7 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                   >
                                     <Button
                                       icon="link"
+                                      id="insert_link"
                                       isActive={false}
                                       isDisabled={false}
                                       name="Insert link"
@@ -2834,25 +2969,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                     >
                                       <ForwardRef
                                         className="button"
+                                        id="insert_link"
                                         intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
                                         size="small"
-                                        title="Insert link"
                                       >
                                         <ForwardRef
                                           className="button wrapper small"
+                                          id="insert_link"
                                           intent="secondary"
                                           onClick={[Function]}
                                           onMouseDown={[Function]}
                                           size="small"
-                                          title="Insert link"
                                         >
                                           <button
                                             className="wrapper button wrapper small fill secondary small"
+                                            id="insert_link"
                                             onClick={[Function]}
                                             onMouseDown={[Function]}
-                                            title="Insert link"
                                             type="button"
                                           >
                                             <i
@@ -2863,6 +2998,48 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                           </button>
                                         </ForwardRef>
                                       </ForwardRef>
+                                      <Tooltip
+                                        autohide={false}
+                                        delay={100}
+                                        placement="bottom"
+                                        target="insert_link"
+                                      >
+                                        <UncontrolledTooltip
+                                          autohide={false}
+                                          className="tooltip"
+                                          delay={100}
+                                          placement="bottom"
+                                          target="insert_link"
+                                        >
+                                          <Tooltip
+                                            autohide={false}
+                                            className="tooltip"
+                                            delay={100}
+                                            isOpen={false}
+                                            placement="bottom"
+                                            placementPrefix="bs-tooltip"
+                                            target="insert_link"
+                                            toggle={[Function]}
+                                            trigger="hover focus"
+                                          >
+                                            <TooltipPopoverWrapper
+                                              autohide={false}
+                                              className="tooltip"
+                                              delay={100}
+                                              fade={true}
+                                              hideArrow={false}
+                                              innerClassName="tooltip-inner"
+                                              isOpen={false}
+                                              placement="bottom"
+                                              placementPrefix="bs-tooltip"
+                                              popperClassName="tooltip show"
+                                              target="insert_link"
+                                              toggle={[Function]}
+                                              trigger="hover focus"
+                                            />
+                                          </Tooltip>
+                                        </UncontrolledTooltip>
+                                      </Tooltip>
                                     </Button>
                                     <div
                                       className="popover top-left hidden"
@@ -2883,6 +3060,7 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                           >
                             <ButtonPopover
                               icon="insert_photo"
+                              id="insert_photo"
                               isOpen={false}
                               name="Insert image"
                               onClose={[Function]}
@@ -2893,6 +3071,7 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                 trigger={
                                   <Button
                                     icon="insert_photo"
+                                    id="insert_photo"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert image"
@@ -2905,6 +3084,7 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                 >
                                   <Button
                                     icon="insert_photo"
+                                    id="insert_photo"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert image"
@@ -2912,25 +3092,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                   >
                                     <ForwardRef
                                       className="button"
+                                      id="insert_photo"
                                       intent="secondary"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
                                       size="small"
-                                      title="Insert image"
                                     >
                                       <ForwardRef
                                         className="button wrapper small"
+                                        id="insert_photo"
                                         intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
                                         size="small"
-                                        title="Insert image"
                                       >
                                         <button
                                           className="wrapper button wrapper small fill secondary small"
+                                          id="insert_photo"
                                           onClick={[Function]}
                                           onMouseDown={[Function]}
-                                          title="Insert image"
                                           type="button"
                                         >
                                           <i
@@ -2941,6 +3121,48 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                         </button>
                                       </ForwardRef>
                                     </ForwardRef>
+                                    <Tooltip
+                                      autohide={false}
+                                      delay={100}
+                                      placement="bottom"
+                                      target="insert_photo"
+                                    >
+                                      <UncontrolledTooltip
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        placement="bottom"
+                                        target="insert_photo"
+                                      >
+                                        <Tooltip
+                                          autohide={false}
+                                          className="tooltip"
+                                          delay={100}
+                                          isOpen={false}
+                                          placement="bottom"
+                                          placementPrefix="bs-tooltip"
+                                          target="insert_photo"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        >
+                                          <TooltipPopoverWrapper
+                                            autohide={false}
+                                            className="tooltip"
+                                            delay={100}
+                                            fade={true}
+                                            hideArrow={false}
+                                            innerClassName="tooltip-inner"
+                                            isOpen={false}
+                                            placement="bottom"
+                                            placementPrefix="bs-tooltip"
+                                            popperClassName="tooltip show"
+                                            target="insert_photo"
+                                            toggle={[Function]}
+                                            trigger="hover focus"
+                                          />
+                                        </Tooltip>
+                                      </UncontrolledTooltip>
+                                    </Tooltip>
                                   </Button>
                                   <div
                                     className="popover top-left hidden"
@@ -2956,6 +3178,7 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                             <ButtonPopover
                               className="p-0 d-flex"
                               icon="insert_emoticon"
+                              id="insert_emoticon"
                               isOpen={false}
                               name="Insert emoji"
                               onClose={[Function]}
@@ -2967,6 +3190,7 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                 trigger={
                                   <Button
                                     icon="insert_emoticon"
+                                    id="insert_emoticon"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert emoji"
@@ -2979,6 +3203,7 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                 >
                                   <Button
                                     icon="insert_emoticon"
+                                    id="insert_emoticon"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert emoji"
@@ -2986,25 +3211,25 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                   >
                                     <ForwardRef
                                       className="button"
+                                      id="insert_emoticon"
                                       intent="secondary"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
                                       size="small"
-                                      title="Insert emoji"
                                     >
                                       <ForwardRef
                                         className="button wrapper small"
+                                        id="insert_emoticon"
                                         intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
                                         size="small"
-                                        title="Insert emoji"
                                       >
                                         <button
                                           className="wrapper button wrapper small fill secondary small"
+                                          id="insert_emoticon"
                                           onClick={[Function]}
                                           onMouseDown={[Function]}
-                                          title="Insert emoji"
                                           type="button"
                                         >
                                           <i
@@ -3015,6 +3240,48 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
                                         </button>
                                       </ForwardRef>
                                     </ForwardRef>
+                                    <Tooltip
+                                      autohide={false}
+                                      delay={100}
+                                      placement="bottom"
+                                      target="insert_emoticon"
+                                    >
+                                      <UncontrolledTooltip
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        placement="bottom"
+                                        target="insert_emoticon"
+                                      >
+                                        <Tooltip
+                                          autohide={false}
+                                          className="tooltip"
+                                          delay={100}
+                                          isOpen={false}
+                                          placement="bottom"
+                                          placementPrefix="bs-tooltip"
+                                          target="insert_emoticon"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        >
+                                          <TooltipPopoverWrapper
+                                            autohide={false}
+                                            className="tooltip"
+                                            delay={100}
+                                            fade={true}
+                                            hideArrow={false}
+                                            innerClassName="tooltip-inner"
+                                            isOpen={false}
+                                            placement="bottom"
+                                            placementPrefix="bs-tooltip"
+                                            popperClassName="tooltip show"
+                                            target="insert_emoticon"
+                                            toggle={[Function]}
+                                            trigger="hover focus"
+                                          />
+                                        </Tooltip>
+                                      </UncontrolledTooltip>
+                                    </Tooltip>
                                   </Button>
                                   <div
                                     className="p-0 d-flex popover top-left hidden"
@@ -8307,12 +8574,14 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                             <InlineStyle
                               getEditorState={[Function]}
                               icon="format_bold"
+                              id="format_bold"
                               name="Bold"
                               setEditorState={[Function]}
                               style="BOLD"
                             >
                               <Button
                                 icon="format_bold"
+                                id="format_bold"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Bold"
@@ -8320,25 +8589,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                               >
                                 <ForwardRef
                                   className="button"
+                                  id="format_bold"
                                   intent="secondary"
                                   onClick={[Function]}
                                   onMouseDown={[Function]}
                                   size="small"
-                                  title="Bold"
                                 >
                                   <ForwardRef
                                     className="button wrapper small"
+                                    id="format_bold"
                                     intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
                                     size="small"
-                                    title="Bold"
                                   >
                                     <button
                                       className="wrapper button wrapper small fill secondary small"
+                                      id="format_bold"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
-                                      title="Bold"
                                       type="button"
                                     >
                                       <i
@@ -8349,6 +8618,48 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                     </button>
                                   </ForwardRef>
                                 </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="format_bold"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="format_bold"
+                                  >
+                                    <Tooltip
+                                      autohide={false}
+                                      className="tooltip"
+                                      delay={100}
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      target="format_bold"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
+                                        placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
+                                        target="format_bold"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
+                                    </Tooltip>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </Button>
                             </InlineStyle>
                           </Decorated(InlineStyle)>
@@ -8359,12 +8670,14 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                             <InlineStyle
                               getEditorState={[Function]}
                               icon="format_italic"
+                              id="format_italic"
                               name="Italic"
                               setEditorState={[Function]}
                               style="ITALIC"
                             >
                               <Button
                                 icon="format_italic"
+                                id="format_italic"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Italic"
@@ -8372,25 +8685,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                               >
                                 <ForwardRef
                                   className="button"
+                                  id="format_italic"
                                   intent="secondary"
                                   onClick={[Function]}
                                   onMouseDown={[Function]}
                                   size="small"
-                                  title="Italic"
                                 >
                                   <ForwardRef
                                     className="button wrapper small"
+                                    id="format_italic"
                                     intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
                                     size="small"
-                                    title="Italic"
                                   >
                                     <button
                                       className="wrapper button wrapper small fill secondary small"
+                                      id="format_italic"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
-                                      title="Italic"
                                       type="button"
                                     >
                                       <i
@@ -8401,6 +8714,48 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                     </button>
                                   </ForwardRef>
                                 </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="format_italic"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="format_italic"
+                                  >
+                                    <Tooltip
+                                      autohide={false}
+                                      className="tooltip"
+                                      delay={100}
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      target="format_italic"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
+                                        placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
+                                        target="format_italic"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
+                                    </Tooltip>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </Button>
                             </InlineStyle>
                           </Decorated(InlineStyle)>
@@ -8411,12 +8766,14 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                             <InlineStyle
                               getEditorState={[Function]}
                               icon="format_underline"
+                              id="format_underline"
                               name="Underline"
                               setEditorState={[Function]}
                               style="UNDERLINE"
                             >
                               <Button
                                 icon="format_underline"
+                                id="format_underline"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Underline"
@@ -8424,25 +8781,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                               >
                                 <ForwardRef
                                   className="button"
+                                  id="format_underline"
                                   intent="secondary"
                                   onClick={[Function]}
                                   onMouseDown={[Function]}
                                   size="small"
-                                  title="Underline"
                                 >
                                   <ForwardRef
                                     className="button wrapper small"
+                                    id="format_underline"
                                     intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
                                     size="small"
-                                    title="Underline"
                                   >
                                     <button
                                       className="wrapper button wrapper small fill secondary small"
+                                      id="format_underline"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
-                                      title="Underline"
                                       type="button"
                                     >
                                       <i
@@ -8453,6 +8810,48 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                     </button>
                                   </ForwardRef>
                                 </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="format_underline"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="format_underline"
+                                  >
+                                    <Tooltip
+                                      autohide={false}
+                                      className="tooltip"
+                                      delay={100}
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      target="format_underline"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
+                                        placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
+                                        target="format_underline"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
+                                    </Tooltip>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </Button>
                             </InlineStyle>
                           </Decorated(InlineStyle)>
@@ -8492,6 +8891,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                             >
                               <ButtonPopover
                                 icon="link"
+                                id="insert_link"
                                 isActive={false}
                                 isOpen={false}
                                 name="Insert link"
@@ -8503,6 +8903,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                   trigger={
                                     <Button
                                       icon="link"
+                                      id="insert_link"
                                       isActive={false}
                                       isDisabled={false}
                                       name="Insert link"
@@ -8515,6 +8916,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                   >
                                     <Button
                                       icon="link"
+                                      id="insert_link"
                                       isActive={false}
                                       isDisabled={false}
                                       name="Insert link"
@@ -8522,25 +8924,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                     >
                                       <ForwardRef
                                         className="button"
+                                        id="insert_link"
                                         intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
                                         size="small"
-                                        title="Insert link"
                                       >
                                         <ForwardRef
                                           className="button wrapper small"
+                                          id="insert_link"
                                           intent="secondary"
                                           onClick={[Function]}
                                           onMouseDown={[Function]}
                                           size="small"
-                                          title="Insert link"
                                         >
                                           <button
                                             className="wrapper button wrapper small fill secondary small"
+                                            id="insert_link"
                                             onClick={[Function]}
                                             onMouseDown={[Function]}
-                                            title="Insert link"
                                             type="button"
                                           >
                                             <i
@@ -8551,6 +8953,48 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                           </button>
                                         </ForwardRef>
                                       </ForwardRef>
+                                      <Tooltip
+                                        autohide={false}
+                                        delay={100}
+                                        placement="bottom"
+                                        target="insert_link"
+                                      >
+                                        <UncontrolledTooltip
+                                          autohide={false}
+                                          className="tooltip"
+                                          delay={100}
+                                          placement="bottom"
+                                          target="insert_link"
+                                        >
+                                          <Tooltip
+                                            autohide={false}
+                                            className="tooltip"
+                                            delay={100}
+                                            isOpen={false}
+                                            placement="bottom"
+                                            placementPrefix="bs-tooltip"
+                                            target="insert_link"
+                                            toggle={[Function]}
+                                            trigger="hover focus"
+                                          >
+                                            <TooltipPopoverWrapper
+                                              autohide={false}
+                                              className="tooltip"
+                                              delay={100}
+                                              fade={true}
+                                              hideArrow={false}
+                                              innerClassName="tooltip-inner"
+                                              isOpen={false}
+                                              placement="bottom"
+                                              placementPrefix="bs-tooltip"
+                                              popperClassName="tooltip show"
+                                              target="insert_link"
+                                              toggle={[Function]}
+                                              trigger="hover focus"
+                                            />
+                                          </Tooltip>
+                                        </UncontrolledTooltip>
+                                      </Tooltip>
                                     </Button>
                                     <div
                                       className="popover top-left hidden"
@@ -8571,6 +9015,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                           >
                             <ButtonPopover
                               icon="insert_photo"
+                              id="insert_photo"
                               isOpen={false}
                               name="Insert image"
                               onClose={[Function]}
@@ -8581,6 +9026,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                 trigger={
                                   <Button
                                     icon="insert_photo"
+                                    id="insert_photo"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert image"
@@ -8593,6 +9039,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                 >
                                   <Button
                                     icon="insert_photo"
+                                    id="insert_photo"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert image"
@@ -8600,25 +9047,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                   >
                                     <ForwardRef
                                       className="button"
+                                      id="insert_photo"
                                       intent="secondary"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
                                       size="small"
-                                      title="Insert image"
                                     >
                                       <ForwardRef
                                         className="button wrapper small"
+                                        id="insert_photo"
                                         intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
                                         size="small"
-                                        title="Insert image"
                                       >
                                         <button
                                           className="wrapper button wrapper small fill secondary small"
+                                          id="insert_photo"
                                           onClick={[Function]}
                                           onMouseDown={[Function]}
-                                          title="Insert image"
                                           type="button"
                                         >
                                           <i
@@ -8629,6 +9076,48 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                         </button>
                                       </ForwardRef>
                                     </ForwardRef>
+                                    <Tooltip
+                                      autohide={false}
+                                      delay={100}
+                                      placement="bottom"
+                                      target="insert_photo"
+                                    >
+                                      <UncontrolledTooltip
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        placement="bottom"
+                                        target="insert_photo"
+                                      >
+                                        <Tooltip
+                                          autohide={false}
+                                          className="tooltip"
+                                          delay={100}
+                                          isOpen={false}
+                                          placement="bottom"
+                                          placementPrefix="bs-tooltip"
+                                          target="insert_photo"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        >
+                                          <TooltipPopoverWrapper
+                                            autohide={false}
+                                            className="tooltip"
+                                            delay={100}
+                                            fade={true}
+                                            hideArrow={false}
+                                            innerClassName="tooltip-inner"
+                                            isOpen={false}
+                                            placement="bottom"
+                                            placementPrefix="bs-tooltip"
+                                            popperClassName="tooltip show"
+                                            target="insert_photo"
+                                            toggle={[Function]}
+                                            trigger="hover focus"
+                                          />
+                                        </Tooltip>
+                                      </UncontrolledTooltip>
+                                    </Tooltip>
                                   </Button>
                                   <div
                                     className="popover top-left hidden"
@@ -8644,6 +9133,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                             <ButtonPopover
                               className="p-0 d-flex"
                               icon="insert_emoticon"
+                              id="insert_emoticon"
                               isOpen={false}
                               name="Insert emoji"
                               onClose={[Function]}
@@ -8655,6 +9145,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                 trigger={
                                   <Button
                                     icon="insert_emoticon"
+                                    id="insert_emoticon"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert emoji"
@@ -8667,6 +9158,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                 >
                                   <Button
                                     icon="insert_emoticon"
+                                    id="insert_emoticon"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert emoji"
@@ -8674,25 +9166,25 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                   >
                                     <ForwardRef
                                       className="button"
+                                      id="insert_emoticon"
                                       intent="secondary"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
                                       size="small"
-                                      title="Insert emoji"
                                     >
                                       <ForwardRef
                                         className="button wrapper small"
+                                        id="insert_emoticon"
                                         intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
                                         size="small"
-                                        title="Insert emoji"
                                       >
                                         <button
                                           className="wrapper button wrapper small fill secondary small"
+                                          id="insert_emoticon"
                                           onClick={[Function]}
                                           onMouseDown={[Function]}
-                                          title="Insert emoji"
                                           type="button"
                                         >
                                           <i
@@ -8703,6 +9195,48 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                         </button>
                                       </ForwardRef>
                                     </ForwardRef>
+                                    <Tooltip
+                                      autohide={false}
+                                      delay={100}
+                                      placement="bottom"
+                                      target="insert_emoticon"
+                                    >
+                                      <UncontrolledTooltip
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        placement="bottom"
+                                        target="insert_emoticon"
+                                      >
+                                        <Tooltip
+                                          autohide={false}
+                                          className="tooltip"
+                                          delay={100}
+                                          isOpen={false}
+                                          placement="bottom"
+                                          placementPrefix="bs-tooltip"
+                                          target="insert_emoticon"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        >
+                                          <TooltipPopoverWrapper
+                                            autohide={false}
+                                            className="tooltip"
+                                            delay={100}
+                                            fade={true}
+                                            hideArrow={false}
+                                            innerClassName="tooltip-inner"
+                                            isOpen={false}
+                                            placement="bottom"
+                                            placementPrefix="bs-tooltip"
+                                            popperClassName="tooltip show"
+                                            target="insert_emoticon"
+                                            toggle={[Function]}
+                                            trigger="hover focus"
+                                          />
+                                        </Tooltip>
+                                      </UncontrolledTooltip>
+                                    </Tooltip>
                                   </Button>
                                   <div
                                     className="p-0 d-flex popover top-left hidden"
@@ -11233,12 +11767,14 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                             <InlineStyle
                               getEditorState={[Function]}
                               icon="format_bold"
+                              id="format_bold"
                               name="Bold"
                               setEditorState={[Function]}
                               style="BOLD"
                             >
                               <Button
                                 icon="format_bold"
+                                id="format_bold"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Bold"
@@ -11246,25 +11782,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                               >
                                 <ForwardRef
                                   className="button"
+                                  id="format_bold"
                                   intent="secondary"
                                   onClick={[Function]}
                                   onMouseDown={[Function]}
                                   size="small"
-                                  title="Bold"
                                 >
                                   <ForwardRef
                                     className="button wrapper small"
+                                    id="format_bold"
                                     intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
                                     size="small"
-                                    title="Bold"
                                   >
                                     <button
                                       className="wrapper button wrapper small fill secondary small"
+                                      id="format_bold"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
-                                      title="Bold"
                                       type="button"
                                     >
                                       <i
@@ -11275,6 +11811,48 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                     </button>
                                   </ForwardRef>
                                 </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="format_bold"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="format_bold"
+                                  >
+                                    <Tooltip
+                                      autohide={false}
+                                      className="tooltip"
+                                      delay={100}
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      target="format_bold"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
+                                        placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
+                                        target="format_bold"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
+                                    </Tooltip>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </Button>
                             </InlineStyle>
                           </Decorated(InlineStyle)>
@@ -11285,12 +11863,14 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                             <InlineStyle
                               getEditorState={[Function]}
                               icon="format_italic"
+                              id="format_italic"
                               name="Italic"
                               setEditorState={[Function]}
                               style="ITALIC"
                             >
                               <Button
                                 icon="format_italic"
+                                id="format_italic"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Italic"
@@ -11298,25 +11878,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                               >
                                 <ForwardRef
                                   className="button"
+                                  id="format_italic"
                                   intent="secondary"
                                   onClick={[Function]}
                                   onMouseDown={[Function]}
                                   size="small"
-                                  title="Italic"
                                 >
                                   <ForwardRef
                                     className="button wrapper small"
+                                    id="format_italic"
                                     intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
                                     size="small"
-                                    title="Italic"
                                   >
                                     <button
                                       className="wrapper button wrapper small fill secondary small"
+                                      id="format_italic"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
-                                      title="Italic"
                                       type="button"
                                     >
                                       <i
@@ -11327,6 +11907,48 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                     </button>
                                   </ForwardRef>
                                 </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="format_italic"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="format_italic"
+                                  >
+                                    <Tooltip
+                                      autohide={false}
+                                      className="tooltip"
+                                      delay={100}
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      target="format_italic"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
+                                        placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
+                                        target="format_italic"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
+                                    </Tooltip>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </Button>
                             </InlineStyle>
                           </Decorated(InlineStyle)>
@@ -11337,12 +11959,14 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                             <InlineStyle
                               getEditorState={[Function]}
                               icon="format_underline"
+                              id="format_underline"
                               name="Underline"
                               setEditorState={[Function]}
                               style="UNDERLINE"
                             >
                               <Button
                                 icon="format_underline"
+                                id="format_underline"
                                 isActive={false}
                                 isDisabled={false}
                                 name="Underline"
@@ -11350,25 +11974,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                               >
                                 <ForwardRef
                                   className="button"
+                                  id="format_underline"
                                   intent="secondary"
                                   onClick={[Function]}
                                   onMouseDown={[Function]}
                                   size="small"
-                                  title="Underline"
                                 >
                                   <ForwardRef
                                     className="button wrapper small"
+                                    id="format_underline"
                                     intent="secondary"
                                     onClick={[Function]}
                                     onMouseDown={[Function]}
                                     size="small"
-                                    title="Underline"
                                   >
                                     <button
                                       className="wrapper button wrapper small fill secondary small"
+                                      id="format_underline"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
-                                      title="Underline"
                                       type="button"
                                     >
                                       <i
@@ -11379,6 +12003,48 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                     </button>
                                   </ForwardRef>
                                 </ForwardRef>
+                                <Tooltip
+                                  autohide={false}
+                                  delay={100}
+                                  placement="bottom"
+                                  target="format_underline"
+                                >
+                                  <UncontrolledTooltip
+                                    autohide={false}
+                                    className="tooltip"
+                                    delay={100}
+                                    placement="bottom"
+                                    target="format_underline"
+                                  >
+                                    <Tooltip
+                                      autohide={false}
+                                      className="tooltip"
+                                      delay={100}
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      target="format_underline"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    >
+                                      <TooltipPopoverWrapper
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        fade={true}
+                                        hideArrow={false}
+                                        innerClassName="tooltip-inner"
+                                        isOpen={false}
+                                        placement="bottom"
+                                        placementPrefix="bs-tooltip"
+                                        popperClassName="tooltip show"
+                                        target="format_underline"
+                                        toggle={[Function]}
+                                        trigger="hover focus"
+                                      />
+                                    </Tooltip>
+                                  </UncontrolledTooltip>
+                                </Tooltip>
                               </Button>
                             </InlineStyle>
                           </Decorated(InlineStyle)>
@@ -11418,6 +12084,7 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                             >
                               <ButtonPopover
                                 icon="link"
+                                id="insert_link"
                                 isActive={false}
                                 isOpen={false}
                                 name="Insert link"
@@ -11429,6 +12096,7 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                   trigger={
                                     <Button
                                       icon="link"
+                                      id="insert_link"
                                       isActive={false}
                                       isDisabled={false}
                                       name="Insert link"
@@ -11441,6 +12109,7 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                   >
                                     <Button
                                       icon="link"
+                                      id="insert_link"
                                       isActive={false}
                                       isDisabled={false}
                                       name="Insert link"
@@ -11448,25 +12117,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                     >
                                       <ForwardRef
                                         className="button"
+                                        id="insert_link"
                                         intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
                                         size="small"
-                                        title="Insert link"
                                       >
                                         <ForwardRef
                                           className="button wrapper small"
+                                          id="insert_link"
                                           intent="secondary"
                                           onClick={[Function]}
                                           onMouseDown={[Function]}
                                           size="small"
-                                          title="Insert link"
                                         >
                                           <button
                                             className="wrapper button wrapper small fill secondary small"
+                                            id="insert_link"
                                             onClick={[Function]}
                                             onMouseDown={[Function]}
-                                            title="Insert link"
                                             type="button"
                                           >
                                             <i
@@ -11477,6 +12146,48 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                           </button>
                                         </ForwardRef>
                                       </ForwardRef>
+                                      <Tooltip
+                                        autohide={false}
+                                        delay={100}
+                                        placement="bottom"
+                                        target="insert_link"
+                                      >
+                                        <UncontrolledTooltip
+                                          autohide={false}
+                                          className="tooltip"
+                                          delay={100}
+                                          placement="bottom"
+                                          target="insert_link"
+                                        >
+                                          <Tooltip
+                                            autohide={false}
+                                            className="tooltip"
+                                            delay={100}
+                                            isOpen={false}
+                                            placement="bottom"
+                                            placementPrefix="bs-tooltip"
+                                            target="insert_link"
+                                            toggle={[Function]}
+                                            trigger="hover focus"
+                                          >
+                                            <TooltipPopoverWrapper
+                                              autohide={false}
+                                              className="tooltip"
+                                              delay={100}
+                                              fade={true}
+                                              hideArrow={false}
+                                              innerClassName="tooltip-inner"
+                                              isOpen={false}
+                                              placement="bottom"
+                                              placementPrefix="bs-tooltip"
+                                              popperClassName="tooltip show"
+                                              target="insert_link"
+                                              toggle={[Function]}
+                                              trigger="hover focus"
+                                            />
+                                          </Tooltip>
+                                        </UncontrolledTooltip>
+                                      </Tooltip>
                                     </Button>
                                     <div
                                       className="popover top-left hidden"
@@ -11497,6 +12208,7 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                           >
                             <ButtonPopover
                               icon="insert_photo"
+                              id="insert_photo"
                               isOpen={false}
                               name="Insert image"
                               onClose={[Function]}
@@ -11507,6 +12219,7 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                 trigger={
                                   <Button
                                     icon="insert_photo"
+                                    id="insert_photo"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert image"
@@ -11519,6 +12232,7 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                 >
                                   <Button
                                     icon="insert_photo"
+                                    id="insert_photo"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert image"
@@ -11526,25 +12240,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                   >
                                     <ForwardRef
                                       className="button"
+                                      id="insert_photo"
                                       intent="secondary"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
                                       size="small"
-                                      title="Insert image"
                                     >
                                       <ForwardRef
                                         className="button wrapper small"
+                                        id="insert_photo"
                                         intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
                                         size="small"
-                                        title="Insert image"
                                       >
                                         <button
                                           className="wrapper button wrapper small fill secondary small"
+                                          id="insert_photo"
                                           onClick={[Function]}
                                           onMouseDown={[Function]}
-                                          title="Insert image"
                                           type="button"
                                         >
                                           <i
@@ -11555,6 +12269,48 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                         </button>
                                       </ForwardRef>
                                     </ForwardRef>
+                                    <Tooltip
+                                      autohide={false}
+                                      delay={100}
+                                      placement="bottom"
+                                      target="insert_photo"
+                                    >
+                                      <UncontrolledTooltip
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        placement="bottom"
+                                        target="insert_photo"
+                                      >
+                                        <Tooltip
+                                          autohide={false}
+                                          className="tooltip"
+                                          delay={100}
+                                          isOpen={false}
+                                          placement="bottom"
+                                          placementPrefix="bs-tooltip"
+                                          target="insert_photo"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        >
+                                          <TooltipPopoverWrapper
+                                            autohide={false}
+                                            className="tooltip"
+                                            delay={100}
+                                            fade={true}
+                                            hideArrow={false}
+                                            innerClassName="tooltip-inner"
+                                            isOpen={false}
+                                            placement="bottom"
+                                            placementPrefix="bs-tooltip"
+                                            popperClassName="tooltip show"
+                                            target="insert_photo"
+                                            toggle={[Function]}
+                                            trigger="hover focus"
+                                          />
+                                        </Tooltip>
+                                      </UncontrolledTooltip>
+                                    </Tooltip>
                                   </Button>
                                   <div
                                     className="popover top-left hidden"
@@ -11570,6 +12326,7 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                             <ButtonPopover
                               className="p-0 d-flex"
                               icon="insert_emoticon"
+                              id="insert_emoticon"
                               isOpen={false}
                               name="Insert emoji"
                               onClose={[Function]}
@@ -11581,6 +12338,7 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                 trigger={
                                   <Button
                                     icon="insert_emoticon"
+                                    id="insert_emoticon"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert emoji"
@@ -11593,6 +12351,7 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                 >
                                   <Button
                                     icon="insert_emoticon"
+                                    id="insert_emoticon"
                                     isActive={false}
                                     isDisabled={false}
                                     name="Insert emoji"
@@ -11600,25 +12359,25 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                   >
                                     <ForwardRef
                                       className="button"
+                                      id="insert_emoticon"
                                       intent="secondary"
                                       onClick={[Function]}
                                       onMouseDown={[Function]}
                                       size="small"
-                                      title="Insert emoji"
                                     >
                                       <ForwardRef
                                         className="button wrapper small"
+                                        id="insert_emoticon"
                                         intent="secondary"
                                         onClick={[Function]}
                                         onMouseDown={[Function]}
                                         size="small"
-                                        title="Insert emoji"
                                       >
                                         <button
                                           className="wrapper button wrapper small fill secondary small"
+                                          id="insert_emoticon"
                                           onClick={[Function]}
                                           onMouseDown={[Function]}
-                                          title="Insert emoji"
                                           type="button"
                                         >
                                           <i
@@ -11629,6 +12388,48 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
                                         </button>
                                       </ForwardRef>
                                     </ForwardRef>
+                                    <Tooltip
+                                      autohide={false}
+                                      delay={100}
+                                      placement="bottom"
+                                      target="insert_emoticon"
+                                    >
+                                      <UncontrolledTooltip
+                                        autohide={false}
+                                        className="tooltip"
+                                        delay={100}
+                                        placement="bottom"
+                                        target="insert_emoticon"
+                                      >
+                                        <Tooltip
+                                          autohide={false}
+                                          className="tooltip"
+                                          delay={100}
+                                          isOpen={false}
+                                          placement="bottom"
+                                          placementPrefix="bs-tooltip"
+                                          target="insert_emoticon"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        >
+                                          <TooltipPopoverWrapper
+                                            autohide={false}
+                                            className="tooltip"
+                                            delay={100}
+                                            fade={true}
+                                            hideArrow={false}
+                                            innerClassName="tooltip-inner"
+                                            isOpen={false}
+                                            placement="bottom"
+                                            placementPrefix="bs-tooltip"
+                                            popperClassName="tooltip show"
+                                            target="insert_emoticon"
+                                            toggle={[Function]}
+                                            trigger="hover focus"
+                                          />
+                                        </Tooltip>
+                                      </UncontrolledTooltip>
+                                    </Tooltip>
                                   </Button>
                                   <div
                                     className="p-0 d-flex popover top-left hidden"

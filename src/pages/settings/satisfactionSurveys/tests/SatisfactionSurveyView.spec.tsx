@@ -39,10 +39,13 @@ describe('SatisfactionSurveyView', () => {
 
     describe('render', () => {
         it('should render current survey settings form', () => {
+            const div = document.createElement('div')
+            document.body.appendChild(div)
             const component = mount(
                 <Provider store={store}>
                     <SatisfactionSurveyView />
-                </Provider>
+                </Provider>,
+                {attachTo: div}
             )
 
             expect(component).toMatchSnapshot()
@@ -51,10 +54,13 @@ describe('SatisfactionSurveyView', () => {
 
     describe('_onSubmit', () => {
         it('should submit user data', () => {
+            const div = document.createElement('div')
+            document.body.appendChild(div)
             const component = mount(
                 <Provider store={store}>
                     <SatisfactionSurveyView />
-                </Provider>
+                </Provider>,
+                {attachTo: div}
             )
 
             component.find('form').simulate('submit')

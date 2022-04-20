@@ -10,6 +10,7 @@ import SelfServicePreferencesNavbar from 'pages/settings/selfService/components/
 import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 
+import css from '../QuickResponseFlowItem/QuickResponseFlowItem.less'
 import SelfServicePreview from './components/SelfServicePreview'
 import QuickResponseList from './components/QuickResponseList'
 
@@ -45,13 +46,14 @@ const QuickResponseFlowsPreferences = () => {
                     <Col data-testid="configurationColumn">
                         <h4>Quick Response Flows</h4>
                         <p>
-                            Add up to 4 flows that create and send a pre-filled
-                            chat message when shoppers click on it. Reply by{' '}
+                            Display up to 4 quick response flows sending a
+                            prefilled chat message when shoppers click on it.
+                            <br /> You can then{' '}
                             <Link to="/app/settings/rules/new">
-                                creating rules
+                                create a rule
                             </Link>{' '}
-                            that will send an automated response to your
-                            customer.{' '}
+                            that will send additional automated responses to
+                            customers.{' '}
                             <a
                                 href="https://docs.gorgias.com/self-service/custom-self-service-flows"
                                 target="_blank"
@@ -65,7 +67,9 @@ const QuickResponseFlowsPreferences = () => {
                     </Col>
 
                     <Col data-testid="previewColumn">
-                        <SelfServicePreview />
+                        <div className={css.preview}>
+                            <SelfServicePreview />
+                        </div>
                     </Col>
                 </Row>
             </Container>

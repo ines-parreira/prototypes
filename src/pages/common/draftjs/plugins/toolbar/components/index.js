@@ -10,18 +10,21 @@ export {default as AddProductLink} from './AddProductLink.tsx'
 
 export const Bold = decorateComponentWithProps(InlineStyle, {
     icon: 'format_bold',
+    id: 'format_bold',
     style: 'BOLD',
     name: 'Bold',
 })
 
 export const Italic = decorateComponentWithProps(InlineStyle, {
     icon: 'format_italic',
+    id: 'format_italic',
     style: 'ITALIC',
     name: 'Italic',
 })
 
 export const Underline = decorateComponentWithProps(InlineStyle, {
     icon: 'format_underline',
+    id: 'format_underline',
     style: 'UNDERLINE',
     name: 'Underline',
 })

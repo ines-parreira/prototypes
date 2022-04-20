@@ -3,129 +3,133 @@
 exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
 <div>
   <div
-    class="mb-4 btn-group"
-    role="group"
-  >
-    <button
-      class="btn btn-info"
-      type="button"
-    >
-      Landing Page
-    </button>
-    <button
-      class="btn btn-secondary"
-      type="button"
-    >
-      Message Thread
-    </button>
-  </div>
-  <div
-    class="preview"
+    class="container"
   >
     <div
-      class="dialog"
+      class="mb-4 btn-group"
+      role="group"
+    >
+      <button
+        class="btn btn-info"
+        type="button"
+      >
+        Landing Page
+      </button>
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        Message Thread
+      </button>
+    </div>
+    <div
+      class="preview"
     >
       <div
-        class="header"
-        style="background-color: rgb(13, 135, 221);"
+        class="dialog"
       >
         <div
-          class="agents"
+          class="header"
+          style="background-color: rgb(13, 135, 221);"
         >
           <div
-            class="agent first"
-            style="border-color: #0d87dd;"
+            class="agents"
           >
-            <i
-              class="material-icons"
-            >
-              person
-            </i>
-          </div>
-          <div
-            class="agent middle"
-            style="border-color: #0d87dd;"
-          >
-            <i
-              class="material-icons"
-            >
-              person
-            </i>
             <div
-              class="onlineMarker"
-            />
-          </div>
-          <div
-            class="agent last"
-            style="border-color: #0d87dd;"
-          >
-            <i
-              class="material-icons"
+              class="agent first"
+              style="border-color: #0d87dd;"
             >
-              person
-            </i>
-          </div>
-        </div>
-        <div
-          class="details"
-        >
-          <div
-            class="appName"
-          >
-            Chat
-          </div>
-          <div
-            class="introductionText"
-          >
-            How can we help?
-          </div>
-        </div>
-      </div>
-      <div
-        class="content"
-      >
-        <div
-          class="listGroup"
-        >
-          <ul
-            class="buttons list-group"
-          >
-            <li
-              class="button header list-group-item"
-            >
-              Quick answers
-            </li>
-            <li
-              class="button list-group-item"
-            >
-              question
-              <span
-                class="material-icons-outlined chevronIcon"
+              <i
+                class="material-icons"
               >
-                chevron_right
-              </span>
-            </li>
-          </ul>
+                person
+              </i>
+            </div>
+            <div
+              class="agent middle"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+              <div
+                class="onlineMarker"
+              />
+            </div>
+            <div
+              class="agent last"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+            </div>
+          </div>
+          <div
+            class="details"
+          >
+            <div
+              class="appName"
+            >
+              Chat
+            </div>
+            <div
+              class="introductionText"
+            >
+              How can we help?
+            </div>
+          </div>
         </div>
         <div
-          class="footer"
+          class="content"
         >
-          <span
-            class="needHelpText"
+          <div
+            class="listGroup"
           >
-            Need more help?
-          </span>
-          <button
-            class="btn btn-primary"
-            style="background-color: rgb(13, 135, 221);"
+            <ul
+              class="buttons list-group"
+            >
+              <li
+                class="button header list-group-item"
+              >
+                Quick answers
+              </li>
+              <li
+                class="button list-group-item"
+              >
+                question
+                <span
+                  class="material-icons-outlined chevronIcon"
+                >
+                  chevron_right
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div
+            class="footer"
           >
-            <img
-              alt="send message icon"
-              class="sendMessageIcon"
-              src="test-file-stub"
-            />
-            Send us a message
-          </button>
+            <span
+              class="needHelpText"
+            >
+              Need more help?
+            </span>
+            <button
+              class="btn btn-primary"
+              style="background-color: rgb(13, 135, 221);"
+            >
+              <img
+                alt="send message icon"
+                class="sendMessageIcon"
+                src="test-file-stub"
+              />
+              Send us a message
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -136,170 +140,174 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
 exports[`<ChatIntegrationPreview/> render() displays thread page 1`] = `
 <div>
   <div
-    class="mb-4 btn-group"
-    role="group"
-  >
-    <button
-      class="btn btn-secondary"
-      type="button"
-    >
-      Landing Page
-    </button>
-    <button
-      class="btn btn-info"
-      type="button"
-    >
-      Message Thread
-    </button>
-  </div>
-  <div
-    class="preview"
+    class="container"
   >
     <div
-      class="dialog"
+      class="mb-4 btn-group"
+      role="group"
+    >
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        Landing Page
+      </button>
+      <button
+        class="btn btn-info"
+        type="button"
+      >
+        Message Thread
+      </button>
+    </div>
+    <div
+      class="preview"
     >
       <div
-        class="header"
-        style="background-color: rgb(13, 135, 221);"
+        class="dialog"
       >
         <div
-          class="agents"
+          class="header"
+          style="background-color: rgb(13, 135, 221);"
         >
           <div
-            class="agent first"
-            style="border-color: #0d87dd;"
-          >
-            <i
-              class="material-icons"
-            >
-              person
-            </i>
-          </div>
-          <div
-            class="agent middle"
-            style="border-color: #0d87dd;"
-          >
-            <i
-              class="material-icons"
-            >
-              person
-            </i>
-            <div
-              class="onlineMarker"
-            />
-          </div>
-          <div
-            class="agent last"
-            style="border-color: #0d87dd;"
-          >
-            <i
-              class="material-icons"
-            >
-              person
-            </i>
-          </div>
-        </div>
-        <div
-          class="details"
-        >
-          <div
-            class="appName"
-          >
-            Chat
-          </div>
-          <div
-            class="introductionText"
-          >
-            How can we help?
-          </div>
-        </div>
-      </div>
-      <div
-        class="content"
-      >
-        <div>
-          <div
-            class="conversationTimestamp"
-          >
-            January 24
-          </div>
-          <div
-            class="bubble primary firstMessageOfAppUser lastMessage"
-            style="background-color: rgb(13, 135, 221);"
-          >
-            question
-          </div>
-        </div>
-        <div
-          class="appMakerMessageWrapper"
-        >
-          <div
-            class="component avatar"
-            style="width: 35px; height: 35px;"
+            class="agents"
           >
             <div
-              class="initials"
-              style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+              class="agent first"
+              style="border-color: #0d87dd;"
             >
-              <span
-                style="line-height: 37px;"
+              <i
+                class="material-icons"
               >
-                AP
-              </span>
+                person
+              </i>
+            </div>
+            <div
+              class="agent middle"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+              <div
+                class="onlineMarker"
+              />
+            </div>
+            <div
+              class="agent last"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
             </div>
           </div>
+          <div
+            class="details"
+          >
+            <div
+              class="appName"
+            >
+              Chat
+            </div>
+            <div
+              class="introductionText"
+            >
+              How can we help?
+            </div>
+          </div>
+        </div>
+        <div
+          class="content"
+        >
           <div>
             <div
-              class="user"
+              class="conversationTimestamp"
             >
-              Alex Plugaru
+              January 24
             </div>
             <div
-              class="bubble firstMessageOfAppMaker"
+              class="bubble primary firstMessageOfAppUser lastMessage"
+              style="background-color: rgb(13, 135, 221);"
             >
-              <div>
-                response
+              question
+            </div>
+          </div>
+          <div
+            class="appMakerMessageWrapper"
+          >
+            <div
+              class="component avatar"
+              style="width: 35px; height: 35px;"
+            >
+              <div
+                class="initials"
+                style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+              >
+                <span
+                  style="line-height: 37px;"
+                >
+                  AP
+                </span>
               </div>
             </div>
-            <div
-              class="bubble firstMessageOfAppMaker"
-            >
-              Was this helpful?
+            <div>
+              <div
+                class="user"
+              >
+                Alex Plugaru
+              </div>
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                <div>
+                  response
+                </div>
+              </div>
+              <div
+                class="bubble firstMessageOfAppMaker"
+              >
+                Was this helpful?
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div
-        class="content quick-replies-content"
-      >
         <div
-          class="quick-replies-wrapper"
+          class="content quick-replies-content"
         >
-          <button
-            class="btn btn-reply-action reply"
-            style="color: rgb(13, 135, 221); border-color: #0d87dd;"
+          <div
+            class="quick-replies-wrapper"
           >
-            Yes, thank you
-          </button>
-          <button
-            class="btn btn-reply-action reply"
-            style="color: rgb(13, 135, 221); border-color: #0d87dd;"
-          >
-            No, I need more help
-          </button>
+            <button
+              class="btn btn-reply-action reply"
+              style="color: rgb(13, 135, 221); border-color: #0d87dd;"
+            >
+              Yes, thank you
+            </button>
+            <button
+              class="btn btn-reply-action reply"
+              style="color: rgb(13, 135, 221); border-color: #0d87dd;"
+            >
+              No, I need more help
+            </button>
+          </div>
         </div>
-      </div>
-      <div
-        class="poweredBy"
-      >
-        <div>
-          <span>
-            Powered by
-          </span>
-          <img
-            alt="powered-by"
-            src="test-file-stub"
-          />
+        <div
+          class="poweredBy"
+        >
+          <div>
+            <span>
+              Powered by
+            </span>
+            <img
+              alt="powered-by"
+              src="test-file-stub"
+            />
+          </div>
         </div>
       </div>
     </div>

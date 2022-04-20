@@ -44,6 +44,7 @@ export default class AddEmoji extends Component<Props, State> {
         return (
             <Popover
                 icon="insert_emoticon"
+                id="insert_emoticon"
                 name="Insert emoji"
                 className="p-0 d-flex"
                 isOpen={this.state.isOpen}

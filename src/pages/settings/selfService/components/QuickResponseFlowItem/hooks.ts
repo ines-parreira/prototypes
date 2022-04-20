@@ -10,9 +10,13 @@ export const useUpdateQuickReplyPolicies = () => {
     const configuration = useConfigurationData()
     const dispatch = useAppDispatch()
 
-    const updateQuickReplyPolicies = async (
+    const updateQuickReplyPolicies = async ({
+        message,
+        newQuickRepliesPolicy,
+    }: {
         newQuickRepliesPolicy: QuickReplyPolicy[]
-    ) => {
+        message: string
+    }) => {
         if (!configuration || !configuration.configuration?.id) {
             throw new Error('id is not present in self service configuration')
         }
@@ -28,7 +32,7 @@ export const useUpdateQuickReplyPolicies = () => {
             void (await dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message: 'Flow successfully updated',
+                    message,
                 })
             ))
         } catch (error) {

@@ -5,6 +5,7 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Tooltip from 'pages/common/components/Tooltip'
 
+import {isProduction} from 'utils/environment'
 import css from './QuickResponseListItem.less'
 
 interface QuickResponseListItemProps {
@@ -83,26 +84,44 @@ const QuickResponseListItem: React.FC<QuickResponseListItemProps> = ({
 
             <td>
                 <div className={css.actionButtonsWrapper}>
-                    <button className={css.actionButton} onClick={onEditClick}>
-                        <div className="material-icons edit">edit</div>
-                    </button>
-                    <ConfirmButton
-                        id={`confirm_button_${toggleId}`}
-                        confirmationContent={
-                            <span>
-                                Are you sure you want to delete this quick
-                                response flow?
-                            </span>
-                        }
-                        fillStyle="ghost"
-                        onConfirm={onDeleteConfirmation}
-                        placement="top"
-                        confirmationButtonIntent="destructive"
-                        intent="destructive"
-                        className={css.actionButton}
-                    >
-                        <div className="material-icons delete">delete</div>
-                    </ConfirmButton>
+                    {isProduction() ? (
+                        <>
+                            <button
+                                className={css.actionButton}
+                                onClick={onEditClick}
+                            >
+                                <div className="material-icons edit">edit</div>
+                            </button>
+                            <ConfirmButton
+                                id={`confirm_button_${toggleId}`}
+                                confirmationContent={
+                                    <span>
+                                        Are you sure you want to delete this
+                                        quick response flow?
+                                    </span>
+                                }
+                                fillStyle="ghost"
+                                onConfirm={onDeleteConfirmation}
+                                placement="top"
+                                confirmationButtonIntent="destructive"
+                                intent="destructive"
+                                className={css.actionButton}
+                            >
+                                <div className="material-icons delete">
+                                    delete
+                                </div>
+                            </ConfirmButton>
+                        </>
+                    ) : (
+                        <button
+                            className={css.actionButton}
+                            onClick={onEditClick}
+                        >
+                            <div className="material-icons chevron_right">
+                                chevron_right
+                            </div>
+                        </button>
+                    )}
                 </div>
             </td>
         </tr>
