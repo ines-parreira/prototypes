@@ -75,32 +75,37 @@ export default class MessageContent extends Component<Props> {
                     hideMessageTimestamp={hideMessageTimestamp}
                 />
 
-                <div className={css.appMakerMessageWrapper}>
-                    <Avatar
-                        email={currentUser.get('email')}
-                        name={currentUser.get('name')}
-                        url={currentUser.getIn(['meta', 'profile_picture_url'])}
-                        size={35}
-                        className={css.avatar}
-                    />
-                    <div>
-                        <div className={css.user}>
-                            {currentUser.get('name')}
-                        </div>
-
-                        {agentMessages.map((message) => (
-                            <div
-                                className={classnames(
-                                    css.bubble,
-                                    css.firstMessageOfAppMaker
-                                )}
-                                key={message.content}
-                            >
-                                {renderAgentMessage(message)}
+                {agentMessages.length > 0 && (
+                    <div className={css.appMakerMessageWrapper}>
+                        <Avatar
+                            email={currentUser.get('email')}
+                            name={currentUser.get('name')}
+                            url={currentUser.getIn([
+                                'meta',
+                                'profile_picture_url',
+                            ])}
+                            size={35}
+                            className={css.avatar}
+                        />
+                        <div>
+                            <div className={css.user}>
+                                {currentUser.get('name')}
                             </div>
-                        ))}
+
+                            {agentMessages.map((message) => (
+                                <div
+                                    className={classnames(
+                                        css.bubble,
+                                        css.firstMessageOfAppMaker
+                                    )}
+                                    key={message.content}
+                                >
+                                    {renderAgentMessage(message)}
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         )
     }

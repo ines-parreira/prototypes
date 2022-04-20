@@ -80,7 +80,9 @@ const QuickResponseListItem: React.FC<QuickResponseListItemProps> = ({
                 )}
             </td>
 
-            <td>{title}</td>
+            <td className={css.title} onClick={onEditClick}>
+                {title}
+            </td>
 
             <td>
                 <div className={css.actionButtonsWrapper}>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {useRouteMatch} from 'react-router'
 import {ListGroup, Button, ButtonGroup} from 'reactstrap'
 import {ConnectedProps, connect} from 'react-redux'
@@ -23,6 +23,8 @@ type Props = {
     quickResponseTitle: string
     quickResponseMessage: Map<any, any>
     newMessageAttachments: List<any>
+    isLandingPage: boolean
+    setIsLandingPage: (value: boolean) => void
 }
 
 const QuickResponseSelfServicePreview = ({
@@ -30,9 +32,9 @@ const QuickResponseSelfServicePreview = ({
     quickResponseMessage,
     currentUser,
     newMessageAttachments,
+    isLandingPage,
+    setIsLandingPage,
 }: Props & ConnectedProps<typeof connector>) => {
-    const [isLandingPage, setIsLandingPage] = useState(true)
-
     const integrations = useAppSelector(getIntegrations)
     const {
         params: {shopName},
@@ -44,6 +46,10 @@ const QuickResponseSelfServicePreview = ({
 
     const sspTexts =
         GORGIAS_CHAT_SSP_TEXTS[chatIntegration.meta.language || 'en-US']
+
+    const shouldDisplayRegularConversation =
+        quickResponseMessage.get('text') === '' &&
+        newMessageAttachments.size === 0
 
     return (
         <div className={quickResponseCss.container}>
@@ -74,7 +80,9 @@ const QuickResponseSelfServicePreview = ({
                 avatarType={chatIntegration.decoration?.avatar_type}
                 isOnline
                 language={chatIntegration.meta.language}
-                renderFooter={false}
+                renderFooter={
+                    !isLandingPage && shouldDisplayRegularConversation
+                }
                 renderPoweredBy={!isLandingPage}
                 position={chatIntegration.decoration?.position}
                 hideButton
@@ -107,31 +115,41 @@ const QuickResponseSelfServicePreview = ({
                             }
                             currentUser={currentUser}
                             customerInitialMessages={[quickResponseTitle]}
-                            agentMessages={[
-                                {
-                                    content:
-                                        quickResponseMessage.get('text') !== ''
-                                            ? quickResponseMessage.get('html')
-                                            : '',
-                                    isHtml: true,
-                                    attachments: toJS(newMessageAttachments),
-                                },
-                                {
-                                    content: 'Was this helpful?',
-                                    isHtml: false,
-                                    attachments: [],
-                                },
-                            ]}
+                            agentMessages={
+                                shouldDisplayRegularConversation
+                                    ? []
+                                    : [
+                                          {
+                                              content:
+                                                  quickResponseMessage.get(
+                                                      'html'
+                                                  ),
+                                              isHtml: true,
+                                              attachments: toJS(
+                                                  newMessageAttachments
+                                              ),
+                                          },
+                                          {
+                                              content: 'Was this helpful?',
+                                              isHtml: false,
+                                              attachments: [],
+                                          },
+                                      ]
+                            }
                             hideMessageTimestamp
                         />
 
-                        <QuickResponseReplies
-                            quickReplies={[
-                                'Yes, thank you',
-                                'No, I need more help',
-                            ]}
-                            mainColor={chatIntegration.decoration?.main_color}
-                        />
+                        {!shouldDisplayRegularConversation && (
+                            <QuickResponseReplies
+                                quickReplies={[
+                                    'Yes, thank you',
+                                    'No, I need more help',
+                                ]}
+                                mainColor={
+                                    chatIntegration.decoration?.main_color
+                                }
+                            />
+                        )}
                     </>
                 )}
             </ChatIntegrationPreview>

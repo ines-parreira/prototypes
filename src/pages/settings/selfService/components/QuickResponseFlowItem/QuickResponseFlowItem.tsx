@@ -60,6 +60,7 @@ const QuickResponseFlowItem = ({
     quickResponseBeingEdited,
     handleDelete,
 }: Props) => {
+    const [isLandingPage, setIsLandingPage] = useState(true)
     const dispatch = useDispatch()
     const configuration = useConfigurationData()
     const [buttonLabel, setButtonLabel] = useState(
@@ -103,6 +104,9 @@ const QuickResponseFlowItem = ({
     }
 
     const handleButtonLabelChange = (value: string) => {
+        if (!isLandingPage) {
+            setIsLandingPage(true)
+        }
         setButtonLabel(value)
         setError('')
     }
@@ -218,6 +222,9 @@ const QuickResponseFlowItem = ({
                                         html: responseText.message.get('html'),
                                     }}
                                     onChange={(value: EditorState) => {
+                                        if (isLandingPage) {
+                                            setIsLandingPage(false)
+                                        }
                                         const content =
                                             value.getCurrentContent()
 
@@ -337,6 +344,8 @@ const QuickResponseFlowItem = ({
                                 quickResponseTitle={buttonLabel || 'Title'}
                                 quickResponseMessage={responseText.message}
                                 newMessageAttachments={newMessageAttachments}
+                                isLandingPage={isLandingPage}
+                                setIsLandingPage={setIsLandingPage}
                             />
                         </div>
                     </Col>

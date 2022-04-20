@@ -1,5 +1,5 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS, List, Map} from 'immutable'
@@ -60,6 +60,8 @@ describe('<ChatIntegrationPreview/>', () => {
                         quickResponseMessage={quickResponseMessage}
                         quickResponseTitle="question"
                         newMessageAttachments={List()}
+                        isLandingPage={true}
+                        setIsLandingPage={jest.fn()}
                     />
                 </Provider>
             )
@@ -70,19 +72,40 @@ describe('<ChatIntegrationPreview/>', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('displays thread page', () => {
+        it('displays thread page with answer', () => {
             const {container, getByText} = render(
                 <Provider store={mockStore(state)}>
                     <QuickResponseSelfServicePreview
                         quickResponseMessage={quickResponseMessage}
                         quickResponseTitle="question"
                         newMessageAttachments={List()}
+                        isLandingPage={false}
+                        setIsLandingPage={jest.fn()}
                     />
                 </Provider>
             )
 
-            fireEvent.click(getByText('Message Thread'))
             getByText('response')
+
+            expect(container).toMatchSnapshot()
+        })
+
+        it('displays thread page without answer', () => {
+            const {container, getByText} = render(
+                <Provider store={mockStore(state)}>
+                    <QuickResponseSelfServicePreview
+                        quickResponseMessage={
+                            Map({text: '', html: ''}) as Map<any, any>
+                        }
+                        quickResponseTitle="question"
+                        newMessageAttachments={List()}
+                        isLandingPage={false}
+                        setIsLandingPage={jest.fn()}
+                    />
+                </Provider>
+            )
+
+            getByText('Type a message...')
 
             expect(container).toMatchSnapshot()
         })

@@ -137,7 +137,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
 </div>
 `;
 
-exports[`<ChatIntegrationPreview/> render() displays thread page 1`] = `
+exports[`<ChatIntegrationPreview/> render() displays thread page with answer 1`] = `
 <div>
   <div
     class="container"
@@ -308,6 +308,138 @@ exports[`<ChatIntegrationPreview/> render() displays thread page 1`] = `
               src="test-file-stub"
             />
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() displays thread page without answer 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="mb-4 btn-group"
+      role="group"
+    >
+      <button
+        class="btn btn-secondary"
+        type="button"
+      >
+        Landing Page
+      </button>
+      <button
+        class="btn btn-info"
+        type="button"
+      >
+        Message Thread
+      </button>
+    </div>
+    <div
+      class="preview"
+    >
+      <div
+        class="dialog"
+      >
+        <div
+          class="header"
+          style="background-color: rgb(13, 135, 221);"
+        >
+          <div
+            class="agents"
+          >
+            <div
+              class="agent first"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+            </div>
+            <div
+              class="agent middle"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+              <div
+                class="onlineMarker"
+              />
+            </div>
+            <div
+              class="agent last"
+              style="border-color: #0d87dd;"
+            >
+              <i
+                class="material-icons"
+              >
+                person
+              </i>
+            </div>
+          </div>
+          <div
+            class="details"
+          >
+            <div
+              class="appName"
+            >
+              Chat
+            </div>
+            <div
+              class="introductionText"
+            >
+              How can we help?
+            </div>
+          </div>
+        </div>
+        <div
+          class="content"
+        >
+          <div>
+            <div
+              class="conversationTimestamp"
+            >
+              January 24
+            </div>
+            <div
+              class="bubble primary firstMessageOfAppUser lastMessage"
+              style="background-color: rgb(13, 135, 221);"
+            >
+              question
+            </div>
+          </div>
+        </div>
+        <div
+          class="poweredBy"
+        >
+          <div>
+            <span>
+              Powered by
+            </span>
+            <img
+              alt="powered-by"
+              src="test-file-stub"
+            />
+          </div>
+        </div>
+        <div
+          class="footer"
+        >
+          <div
+            class="placeholder"
+          >
+            Type a message...
+          </div>
+          <i
+            class="icon camera"
+          />
         </div>
       </div>
     </div>
