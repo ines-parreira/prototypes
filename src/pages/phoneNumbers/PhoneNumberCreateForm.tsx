@@ -1,4 +1,5 @@
 import React, {useCallback, useState, useEffect} from 'react'
+import classnames from 'classnames'
 import {Col, Form, FormGroup, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {AxiosError} from 'axios'
@@ -145,6 +146,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                             type="submit"
                             isLoading={isLoading}
                             isDisabled={country === PhoneCountry.FR}
+                            className={classnames('mt-4', 'mb-4')}
                         >
                             Add phone number
                         </Button>

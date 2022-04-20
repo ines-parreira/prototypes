@@ -13,26 +13,17 @@ describe('<PhoneNumberAddressValidationAlert />', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
-        it.each([PhoneCountry.US, PhoneCountry.CA])(
-            'should not render for US and CA',
-            (country) => {
-                const {container} = render(
-                    <PhoneNumberAddressValidationAlert country={country} />
-                )
+        it.each([
+            PhoneCountry.US,
+            PhoneCountry.CA,
+            PhoneCountry.GB,
+            PhoneCountry.AU,
+        ])('should not render for any other country', (country) => {
+            const {container} = render(
+                <PhoneNumberAddressValidationAlert country={country} />
+            )
 
-                expect(container.firstChild).toMatchSnapshot()
-            }
-        )
-
-        it.each([PhoneCountry.GB, PhoneCountry.AU])(
-            'should not a warning for GB and AU',
-            (country) => {
-                const {container} = render(
-                    <PhoneNumberAddressValidationAlert country={country} />
-                )
-
-                expect(container.firstChild).toMatchSnapshot()
-            }
-        )
+            expect(container.firstChild).toMatchSnapshot()
+        })
     })
 })

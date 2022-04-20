@@ -187,7 +187,7 @@ function PhoneIntegrationCreate({selectedPhoneNumberId}: Props): JSX.Element {
                             <Button
                                 type="submit"
                                 isLoading={isLoading}
-                                className={classnames('mt-5', 'mb-5')}
+                                className={classnames('mt-4', 'mb-4')}
                             >
                                 Add voice integration
                             </Button>

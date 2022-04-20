@@ -16,11 +16,7 @@ const CAPABILITY_KEY: Record<
 }
 
 export function shouldValidateAddress(country: PhoneCountry): boolean {
-    return (
-        country === PhoneCountry.GB ||
-        country === PhoneCountry.AU ||
-        country === PhoneCountry.FR
-    )
+    return country === PhoneCountry.GB || country === PhoneCountry.AU
 }
 
 export function countryName(country: PhoneCountry): string {
