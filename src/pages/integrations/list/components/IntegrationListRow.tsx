@@ -2,8 +2,10 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {AppListItem, isAppListItem} from 'models/integration/types/app'
 import {IntegrationListItem} from 'state/integrations/types'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     logEvent,
     SegmentEvent,
@@ -19,6 +21,7 @@ type Props = {
 }
 
 const IntegrationListRow = ({integration}: Props) => {
+    const account = useAppSelector(getCurrentAccountState)
     const content = (
         <>
             <div
@@ -92,6 +95,8 @@ const IntegrationListRow = ({integration}: Props) => {
             onClick={() => {
                 logEvent(SegmentEvent.IntegrationClicked, {
                     integration: integration.title,
+                    is_openchannel_app: isAppListItem(integration),
+                    account_domain: account.get('domain'),
                 })
             }}
             to={

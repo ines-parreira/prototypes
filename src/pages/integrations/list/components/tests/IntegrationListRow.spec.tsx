@@ -1,8 +1,14 @@
 import {render} from '@testing-library/react'
 import React from 'react'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import thunk from 'redux-thunk'
 
 import IntegrationListRow from '../IntegrationListRow'
 import {IntegrationType} from '../../../../../models/integration/constants'
+
+const mockStore = configureMockStore([thunk])
+const store = mockStore({})
 
 describe('IntegrationListRow', () => {
     it('should display the integration row as a link', () => {
@@ -14,7 +20,9 @@ describe('IntegrationListRow', () => {
         }
 
         const {container} = render(
-            <IntegrationListRow integration={integration} />
+            <Provider store={store}>
+                <IntegrationListRow integration={integration} />
+            </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -29,7 +37,9 @@ describe('IntegrationListRow', () => {
         }
 
         const {container} = render(
-            <IntegrationListRow integration={integration} />
+            <Provider store={store}>
+                <IntegrationListRow integration={integration} />
+            </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -44,7 +54,9 @@ describe('IntegrationListRow', () => {
         }
 
         const {container} = render(
-            <IntegrationListRow integration={integration} />
+            <Provider store={store}>
+                <IntegrationListRow integration={integration} />
+            </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
     })

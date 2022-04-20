@@ -12,6 +12,7 @@ import {
     PricingPlan,
     TrialPeriod,
 } from 'models/integration/types/app'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -20,9 +21,19 @@ import css from './Detail.less'
 
 const SCREENSHOTS_MAX_NUMBER = 3
 
+const trackInstalls =
+    (integrationTitle: string, isApp: boolean, domain: string) => () => {
+        logEvent(SegmentEvent.IntegrationConnectClicked, {
+            integration: integrationTitle,
+            is_openchannel_app: isApp,
+            account_domain: domain,
+        })
+    }
+
 function ConnectLink({
     connectUrl,
     isExternal,
+    integrationTitle,
     isApp,
     domain,
     children,
@@ -30,6 +41,7 @@ function ConnectLink({
     connectUrl: string
     isApp: boolean
     isExternal?: boolean
+    integrationTitle: string
     domain: string
     children: ReactNode
 }) {
@@ -49,6 +61,7 @@ function ConnectLink({
         <a
             href={sanitizedConnectUrl}
             className={css.actionLink}
+            onClick={trackInstalls(integrationTitle, isApp, domain)}
             {...(isApp && {
                 target: '_blank',
                 rel: 'noopener noreferrer',
@@ -57,7 +70,11 @@ function ConnectLink({
             {children}
         </a>
     ) : (
-        <Link to={connectUrl} className={css.actionLink}>
+        <Link
+            to={connectUrl}
+            className={css.actionLink}
+            onClick={trackInstalls(integrationTitle, isApp, domain)}
+        >
             {children}
         </Link>
     )
@@ -83,7 +100,7 @@ export default function Detail(props: AppDetail | IntegrationConfig) {
     const [isModalOpen, setModalOpen] = useState(false)
     const [initialSlide, setInitialSlide] = useState(0)
     const sliderRef = useRef<HTMLDivElement>(null)
-    const currentAccount = useAppSelector(getCurrentAccountState)
+    const account = useAppSelector(getCurrentAccountState)
 
     const pricing =
         pricingPlan === PricingPlan.FREE
@@ -173,7 +190,8 @@ export default function Detail(props: AppDetail | IntegrationConfig) {
                                 (isAppDetail(props) && props.connectUrl) || ''
                             }
                             isApp={isAppDetail(props)}
-                            domain={currentAccount.get('domain')}
+                            integrationTitle={title}
+                            domain={account.get('domain')}
                             isExternal={
                                 !isAppDetail(props) &&
                                 props.isExternalConnectUrl
