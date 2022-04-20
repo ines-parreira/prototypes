@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
@@ -18,9 +18,10 @@ import {
     TWITTER_QUOTED_TWEET_SOURCE,
     TWITTER_MENTION_TWEET_SOURCE,
     YOTPO_REVIEW_SOURCE,
-} from '../../../../../../config/ticket.ts'
-import {ReplyMessageChannelContainer} from '../ReplyMessageChannel.tsx'
-import {TicketMessageSourceType} from '../../../../../../business/types/ticket.ts'
+} from 'config/ticket'
+import {TicketMessageSourceType} from 'business/types/ticket'
+
+import {ReplyMessageChannelContainer} from '../ReplyMessageChannel'
 
 const baseReply = {
     email: {answerable: true},
@@ -28,16 +29,15 @@ const baseReply = {
 }
 
 describe('ReplyMessageChannel component', () => {
-    const minProps = {
-        accountChannels: fromJS([]),
-        channel: '',
+    const minProps: ComponentProps<typeof ReplyMessageChannelContainer> = {
         hasRecipients: false,
-        hasPhoneIntegration: false,
         isForward: false,
         isNewMessagePublic: false,
-        messages: fromJS({}),
-        sourceType: 'email',
-        prepareNewMessage: () => {},
+        sourceType: TicketMessageSourceType.Email,
+        ticket: fromJS({}),
+        hasPhoneIntegration: false,
+        hasSmsIntegration: false,
+        prepareNewMessage: jest.fn(),
     }
 
     it('new ticket', () => {
@@ -65,7 +65,6 @@ describe('ReplyMessageChannel component', () => {
                     id: 12,
                     reply_options: {},
                 })}
-                messages={fromJS([])}
             />
         )
         expect(component).toMatchSnapshot()
@@ -115,14 +114,6 @@ describe('ReplyMessageChannel component', () => {
                         id: 12,
                         reply_options: replyOptions,
                     })}
-                    messages={fromJS([
-                        {
-                            id: 1,
-                            source: {
-                                type: type,
-                            },
-                        },
-                    ])}
                     sourceType={newMessageType}
                 />
             )
@@ -141,23 +132,7 @@ describe('ReplyMessageChannel component', () => {
                         chat: {answerable: true},
                     },
                 })}
-                messages={fromJS([
-                    {
-                        id: 2,
-                        source: {
-                            type: 'chat',
-                        },
-                        created_datetime: '2017-07-27T22:03:30.656613+00:00',
-                    },
-                    {
-                        id: 1,
-                        source: {
-                            type: 'email',
-                        },
-                        created_datetime: '2017-07-26T22:03:30.656613+00:00',
-                    },
-                ])}
-                sourceType={'chat'}
+                sourceType={TicketMessageSourceType.Chat}
             />
         )
         expect(component).toMatchSnapshot()
@@ -173,7 +148,6 @@ describe('ReplyMessageChannel component', () => {
                         [TicketMessageSourceType.Phone]: true,
                     },
                 })}
-                messages={fromJS([])}
                 hasPhoneIntegration
             />
         )
@@ -187,7 +161,6 @@ describe('ReplyMessageChannel component', () => {
                 ticket={fromJS({
                     reply_options: {},
                 })}
-                messages={fromJS([])}
                 hasPhoneIntegration
             />
         )

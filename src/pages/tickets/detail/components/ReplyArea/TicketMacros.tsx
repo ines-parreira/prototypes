@@ -30,7 +30,7 @@ import {notify} from '../../../../../state/notifications/actions'
 
 import css from './TicketMacros.less'
 
-type OwnProps = {
+type Props = {
     applyMacro: (macro: Map<any, any>) => void
     className?: string
     currentMacro: Map<any, any>
@@ -42,9 +42,7 @@ type OwnProps = {
     selectMacro: (macro: Map<any, any>) => void
     searchParams: fetchMacrosParamsTypes
     totalPages: number
-}
-
-type Props = OwnProps & ConnectedProps<typeof connector>
+} & ConnectedProps<typeof connector>
 
 type State = {
     isCreatingMacro: boolean

@@ -1,33 +1,46 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow, mount} from 'enzyme'
 
-import FacebookCarousel from '../FacebookCarousel.tsx'
+import Button from 'pages/common/components/button/Button'
 
-import Button from 'pages/common/components/button/Button.tsx'
+import FacebookCarousel from '../FacebookCarousel'
 
 describe('FacebookCarousel component', () => {
+    const defaultProps: ComponentProps<typeof FacebookCarousel> = {
+        data: [],
+    }
+
     it('default props', () => {
-        expect(shallow(<FacebookCarousel />)).toMatchSnapshot()
+        expect(
+            shallow(<FacebookCarousel {...defaultProps} />)
+        ).toMatchSnapshot()
     })
 
     it('should render empty with template_type=button', () => {
-        const data = [
+        const data: ComponentProps<typeof FacebookCarousel>['data'] = [
             {
                 type: 'template',
                 payload: {
-                    buttons: [
+                    template_type: 'button',
+                    elements: [
                         {
-                            type: 'postback',
-                            title: 'What?!😱',
-                            payload: 'ACT::3fb3ff8b9e10dcf67efbc0f7943c825f',
-                        },
-                        {
-                            type: 'postback',
-                            title: "I don't get scared🙄",
-                            payload: 'ACT::8d539d3ba2f4904acf5c54162f06f573',
+                            title: '',
+                            subtitle: '',
+                            image_url: '',
+                            buttons: [
+                                {
+                                    type: 'postback',
+                                    title: 'What?!😱',
+                                    url: 'ACT::3fb3ff8b9e10dcf67efbc0f7943c825f',
+                                },
+                                {
+                                    type: 'postback',
+                                    title: "I don't get scared🙄",
+                                    url: 'ACT::8d539d3ba2f4904acf5c54162f06f573',
+                                },
+                            ],
                         },
                     ],
-                    template_type: 'button',
                 },
             },
         ]
@@ -36,7 +49,7 @@ describe('FacebookCarousel component', () => {
     })
 
     it('render generic template', () => {
-        const data = [
+        const data: ComponentProps<typeof FacebookCarousel>['data'] = [
             {
                 type: 'template',
                 payload: {
@@ -45,13 +58,15 @@ describe('FacebookCarousel component', () => {
                             title: 'Leather saddle',
                             buttons: [
                                 {
-                                    url: 'https://sfbicycles.myshopify.com/',
                                     type: 'web_url',
                                     title: 'View details',
+                                    url: 'https://sfbicycles.myshopify.com/',
                                     webview_height_ratio: 'tall',
                                 },
                                 {
                                     type: 'element_share',
+                                    title: 'test',
+                                    url: 'https://sfbicycles.myshopify.com/test',
                                 },
                                 {
                                     url: 'https://messenger-commerce.shopifyapps.com/',
@@ -75,7 +90,7 @@ describe('FacebookCarousel component', () => {
     })
 
     it('should have two elements', () => {
-        const data = [
+        const data: ComponentProps<typeof FacebookCarousel>['data'] = [
             {
                 type: 'template',
                 payload: {
@@ -103,7 +118,7 @@ describe('FacebookCarousel component', () => {
     })
 
     it('should have two buttons', () => {
-        const data = [
+        const data: ComponentProps<typeof FacebookCarousel>['data'] = [
             {
                 type: 'template',
                 payload: {
@@ -121,6 +136,8 @@ describe('FacebookCarousel component', () => {
                                 },
                                 {
                                     type: 'element_share',
+                                    title: 'share',
+                                    url: "'https://sfbicycles.myshopify.com/share",
                                 },
                             ],
                         },

@@ -1,55 +1,56 @@
-import React from 'react'
-import {shallow} from 'enzyme'
-
+import React, {ComponentProps} from 'react'
+import {shallow, mount} from 'enzyme'
+import {Map, fromJS} from 'immutable'
+import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import _noop from 'lodash/noop'
-import {fromJS} from 'immutable'
 
 import TicketAssignee, {
     TicketAssigneeContainer,
 } from '../TicketAssignee/TicketAssignee'
 
-const teams = fromJS({
-    all: {
-        1: {id: 1, name: 'Team 1', decoration: {}},
-        2: {id: 2, name: 'Team 2', decoration: {}},
-    },
+const teams: Map<any, any> = fromJS({
+    all: [
+        {id: 1, name: 'Team 1', decoration: {}},
+        {id: 2, name: 'Team 2', decoration: {}},
+    ],
 })
 
-const users = fromJS({
+const users: Map<any, any> = fromJS({
     all: [
         {id: 1, name: 'User 1', email: 'email1@foo.com', meta: {}},
         {id: 2, name: 'User 2', email: 'email2@foo.com', meta: {}},
     ],
 })
 
+const minProps: Omit<
+    ComponentProps<typeof TicketAssigneeContainer>,
+    'handleTeams' | 'handleUsers'
+> = {
+    currentAssigneeUser: null,
+    currentAssigneeTeam: null,
+    direction: 'right',
+    setUser: jest.fn(),
+    setTeam: jest.fn(),
+    className: 'classname',
+    transparent: true,
+    dispatch: jest.fn(),
+    users: users.get('all'),
+    teams: teams.get('all'),
+    currentUser: fromJS({}),
+}
+
 describe('<TicketAssignee/>', () => {
     describe('render()', () => {
-        const defaultProps = {
-            users: users.get('all'),
-            teams: teams.get('all').valueSeq(),
-            currentUser: fromJS({}),
-            direction: 'right',
-            setUser: _noop,
-            setTeam: _noop,
-            className: 'classname',
-            transparent: true,
-            currentAssigneeUser: null,
-            currentAssigneeTeam: null,
-        }
-
         it('should not display any agent info because there is no assignee', () => {
-            const component = shallow(
-                <TicketAssigneeContainer {...defaultProps} />
-            )
+            const component = shallow(<TicketAssigneeContainer {...minProps} />)
             expect(component).toMatchSnapshot()
         })
 
         it('should display the info of the agent assigned', () => {
             const component = shallow(
                 <TicketAssigneeContainer
-                    {...defaultProps}
+                    {...minProps}
                     currentAssigneeUser={fromJS({id: 1, name: 'Steve Frizeli'})}
                     profilePictureUrl="profilePictureUrl"
                 />
@@ -61,7 +62,7 @@ describe('<TicketAssignee/>', () => {
         it('should display the email of the agent assigned as its name because it has no name', () => {
             const component = shallow(
                 <TicketAssigneeContainer
-                    {...defaultProps}
+                    {...minProps}
                     users={fromJS([
                         {id: 1, email: 'steve@acme.gorgias.io'},
                         users.getIn(['all', 1]),
@@ -79,7 +80,7 @@ describe('<TicketAssignee/>', () => {
         it('should display the info of the agent assigned even if a team is assigned too', () => {
             const component = shallow(
                 <TicketAssigneeContainer
-                    {...defaultProps}
+                    {...minProps}
                     currentAssigneeUser={fromJS({
                         id: 1,
                         email: 'steve@acme.gorgias.io',
@@ -94,7 +95,7 @@ describe('<TicketAssignee/>', () => {
         it('should display the name of the team assigned because there is no user assigned', () => {
             const component = shallow(
                 <TicketAssigneeContainer
-                    {...defaultProps}
+                    {...minProps}
                     currentAssigneeTeam={fromJS({id: 1, name: 'Team 1'})}
                 />
             )
@@ -104,10 +105,7 @@ describe('<TicketAssignee/>', () => {
 
         it('should display users only', () => {
             const component = shallow(
-                <TicketAssigneeContainer
-                    {...defaultProps}
-                    handleTeams={false}
-                />
+                <TicketAssigneeContainer {...minProps} handleTeams={false} />
             )
 
             expect(component).toMatchSnapshot()
@@ -115,10 +113,7 @@ describe('<TicketAssignee/>', () => {
 
         it('should display teams only', () => {
             const component = shallow(
-                <TicketAssigneeContainer
-                    {...defaultProps}
-                    handleUsers={false}
-                />
+                <TicketAssigneeContainer {...minProps} handleUsers={false} />
             )
 
             expect(component).toMatchSnapshot()
@@ -126,7 +121,7 @@ describe('<TicketAssignee/>', () => {
 
         it('should not display teams because object is empty', () => {
             const component = shallow(
-                <TicketAssigneeContainer {...defaultProps} teams={fromJS([])} />
+                <TicketAssigneeContainer {...minProps} teams={fromJS([])} />
             )
 
             expect(component).toMatchSnapshot()
@@ -134,14 +129,28 @@ describe('<TicketAssignee/>', () => {
     })
 
     it('should read data from the redux store correctly', () => {
-        const middlewares = [thunk]
-        const mockStore = configureMockStore(middlewares)
+        const mockStore = configureMockStore([thunk])
         const store = mockStore({
             agents: users,
             teams,
             currentUser: fromJS({id: 1, email: 'steve@acme.gorgias.io'}),
         })
-        const component = shallow(<TicketAssignee store={store} />)
+
+        const defaultProps: ComponentProps<typeof TicketAssignee> = {
+            currentAssigneeUser: null,
+            currentAssigneeTeam: null,
+            direction: 'right',
+            setUser: jest.fn(),
+            setTeam: jest.fn(),
+            className: 'classname',
+            transparent: false,
+        }
+
+        const component = mount(
+            <Provider store={store}>
+                <TicketAssignee {...defaultProps} />
+            </Provider>
+        )
         expect(component).toMatchSnapshot()
     })
 })

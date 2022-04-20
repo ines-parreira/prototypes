@@ -86,7 +86,7 @@ export class EventContainer extends React.Component<Props, State> {
         isLast: false,
     }
 
-    state = {
+    state: State = {
         showDetails: false,
     }
 

@@ -88,10 +88,11 @@ exports[`TicketReplyEditor component should allow inline image 1`] = `
       ]
     }
     emailExtraEnabled={true}
-    mentionSuggestions={Array []}
-    notify={[Function]}
+    mentionSuggestions={Immutable.List []}
+    notify={[MockFunction]}
     onChange={[Function]}
     placeholder="Click here to reply, or press r."
+    predictionContext={Immutable.Map {}}
     spellCheck={true}
     tabIndex={4}
     value={
@@ -170,6 +171,7 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
     notify={[MockFunction]}
     onChange={[Function]}
     placeholder="Click here to reply, or press r."
+    predictionContext={Immutable.Map {}}
     readOnly={false}
     spellCheck={true}
     tabIndex={4}
@@ -274,6 +276,7 @@ exports[`TicketReplyEditor component should not allow attachments for instagram 
     notify={[MockFunction]}
     onChange={[Function]}
     placeholder="Click here to reply, or press r."
+    predictionContext={Immutable.Map {}}
     readOnly={false}
     spellCheck={true}
     tabIndex={4}
@@ -372,6 +375,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     notify={[MockFunction]}
     onChange={[Function]}
     placeholder="Click here to reply, or press r."
+    predictionContext={Immutable.Map {}}
     readOnly={false}
     spellCheck={true}
     tabIndex={4}

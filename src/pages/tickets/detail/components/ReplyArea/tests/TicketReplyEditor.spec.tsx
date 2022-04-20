@@ -1,21 +1,20 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {EditorState, ContentState} from 'draft-js'
 import _noop from 'lodash/noop'
+//@ts-ignore
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
 
-import {TicketReplyEditorContainer} from '../TicketReplyEditor.tsx'
 import {
     convertFromHTML,
     convertToHTML,
     createDraftJSKeyGeneratorMock,
-} from '../../../../../../utils/editor.tsx'
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-} from '../../../../../../business/types/ticket.ts'
-import {sanitizeHtmlForFacebookMessenger} from '../../../../../../utils/html.ts'
+} from 'utils/editor'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
+
+import {TicketReplyEditorContainer} from '../TicketReplyEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () =>
     jest.fn().mockReturnValue('mock-key')
@@ -25,13 +24,30 @@ describe('TicketReplyEditor component', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         const generateKey = createDraftJSKeyGeneratorMock()
-        generateRandomKey.mockImplementation(generateKey)
+        const generateRandomKeyFunction = generateRandomKey as jest.SpyInstance
+        generateRandomKeyFunction.mockImplementation(generateKey)
     })
+
+    const minProps: ComponentProps<typeof TicketReplyEditorContainer> = {
+        applyMacro: jest.fn(),
+        macros: fromJS([]),
+        richAreaRef: jest.fn(),
+        shouldDisplayQuickReply: false,
+        ticket: fromJS({}),
+        agents: fromJS([]),
+        attachments: fromJS([]),
+        newMessage: fromJS({}),
+        newMessageType: fromJS({}),
+        predictionContext: fromJS({}),
+        addAttachments: jest.fn(),
+        notify: jest.fn(),
+        setResponseText: jest.fn(),
+    }
 
     it('should render empty ticket', () => {
         const component = shallow(
             <TicketReplyEditorContainer
-                ticket={fromJS({})}
+                {...minProps}
                 newMessage={fromJS({
                     state: {
                         contentState: ContentState.createFromText(''),
@@ -46,10 +62,7 @@ describe('TicketReplyEditor component', () => {
                         body_html: '',
                     },
                 })}
-                newMessageType={TicketChannel.Email}
-                agents={fromJS([])}
-                notify={jest.fn()}
-                macros={fromJS([])}
+                newMessageType={TicketMessageSourceType.Email}
             />
         )
         expect(component).toMatchSnapshot()
@@ -58,7 +71,7 @@ describe('TicketReplyEditor component', () => {
     it('should not allow attachments for instagram comments', () => {
         const component = shallow(
             <TicketReplyEditorContainer
-                ticket={fromJS({})}
+                {...minProps}
                 newMessage={fromJS({
                     state: {
                         contentState: ContentState.createFromText(''),
@@ -73,10 +86,7 @@ describe('TicketReplyEditor component', () => {
                         body_html: '',
                     },
                 })}
-                newMessageType={TicketChannel.InstagramComment}
-                agents={fromJS([])}
-                notify={jest.fn()}
-                macros={fromJS([])}
+                newMessageType={TicketMessageSourceType.InstagramComment}
             />
         )
         expect(component).toMatchSnapshot()
@@ -85,7 +95,7 @@ describe('TicketReplyEditor component', () => {
     it('should not allow attachments for instagram mentions', () => {
         const component = shallow(
             <TicketReplyEditorContainer
-                ticket={fromJS({})}
+                {...minProps}
                 newMessage={fromJS({
                     state: {
                         contentState: ContentState.createFromText(''),
@@ -100,10 +110,7 @@ describe('TicketReplyEditor component', () => {
                         body_html: '',
                     },
                 })}
-                newMessageType={TicketChannel.InstagramMention}
-                agents={fromJS([])}
-                notify={jest.fn()}
-                macros={fromJS([])}
+                newMessageType={TicketMessageSourceType.InstagramMention}
             />
         )
         expect(component).toMatchSnapshot()
@@ -119,9 +126,9 @@ describe('TicketReplyEditor component', () => {
         (existingAttachments, newAttachments) => {
             const notifyMock = jest.fn()
 
-            const component = shallow(
+            const component = shallow<TicketReplyEditorContainer>(
                 <TicketReplyEditorContainer
-                    ticket={fromJS({})}
+                    {...minProps}
                     addAttachments={_noop}
                     newMessage={fromJS({
                         state: {
@@ -139,14 +146,12 @@ describe('TicketReplyEditor component', () => {
                     })}
                     attachments={existingAttachments}
                     newMessageType={TicketMessageSourceType.TwitterTweet}
-                    agents={fromJS([])}
                     notify={notifyMock}
-                    macros={fromJS([])}
                 />
             )
 
             // Simulate adding new file
-            component.instance().handleFiles(newAttachments)
+            component.instance().handleFiles(newAttachments as File[])
 
             expect(notifyMock).toBeCalledWith({
                 type: 'error',
@@ -160,7 +165,7 @@ describe('TicketReplyEditor component', () => {
     // test for debouncer bug
     // https://github.com/gorgias/gorgias/issues/2510
     it('should not set newMessage value after component is unmounted', (done) => {
-        const ticket = fromJS({
+        const ticket: Map<any, any> = fromJS({
             id: 123,
             events: [],
             messages: [],
@@ -178,7 +183,7 @@ describe('TicketReplyEditor component', () => {
             trashed_datetime: null,
         })
 
-        const newMessage = fromJS({
+        const newMessage: Map<any, any> = fromJS({
             state: {
                 contentState: ContentState.createFromText(''),
                 selectionState: null,
@@ -189,24 +194,20 @@ describe('TicketReplyEditor component', () => {
                 body_html: '',
             },
         })
-        let newMessageText = ''
+        let newMessageText: string
 
-        let component = shallow(
+        const component = shallow<TicketReplyEditorContainer>(
             <TicketReplyEditorContainer
-                newMessageType="email"
+                {...minProps}
+                newMessageType={TicketMessageSourceType.Email}
                 newMessage={newMessage}
-                agents={[]}
                 ticket={ticket}
-                addAttachments={_noop}
-                notify={_noop}
-                setMacrosVisible={_noop}
-                prepareNewMessage={_noop}
                 setResponseText={(props) => {
-                    newMessageText = props.get('contentState').getPlainText()
+                    newMessageText = (
+                        props!.get('contentState') as ContentState
+                    ).getPlainText()
                 }}
-                macros={fromJS([])}
                 shouldDisplayQuickReply={false}
-                applyMacro={_noop}
             />
         )
 
@@ -230,7 +231,7 @@ describe('TicketReplyEditor component', () => {
     })
 
     it('should allow inline image', (done) => {
-        const ticket = fromJS({
+        const ticket: Map<any, any> = fromJS({
             id: 123,
             events: [],
             messages: [],
@@ -248,7 +249,7 @@ describe('TicketReplyEditor component', () => {
             trashed_datetime: null,
         })
 
-        const newMessage = fromJS({
+        const newMessage: Map<any, any> = fromJS({
             state: {
                 contentState: ContentState.createFromText(''),
                 selectionState: null,
@@ -260,17 +261,12 @@ describe('TicketReplyEditor component', () => {
             },
         })
 
-        let component = shallow(
+        const component = shallow(
             <TicketReplyEditorContainer
+                {...minProps}
                 newMessageType={TicketMessageSourceType.FacebookMessenger}
                 newMessage={newMessage}
-                agents={[]}
                 ticket={ticket}
-                addAttachments={_noop}
-                notify={_noop}
-                setMacrosVisible={_noop}
-                prepareNewMessage={_noop}
-                macros={fromJS([])}
             />
         )
 
@@ -284,7 +280,7 @@ describe('TicketReplyEditor component', () => {
     })
 
     it('should render message with inline image', (done) => {
-        const ticket = fromJS({
+        const ticket: Map<any, any> = fromJS({
             id: 123,
             events: [],
             messages: [],
@@ -302,7 +298,7 @@ describe('TicketReplyEditor component', () => {
             trashed_datetime: null,
         })
 
-        const newMessage = fromJS({
+        const newMessage: Map<any, any> = fromJS({
             state: {
                 contentState: null,
                 selectionState: null,
@@ -313,22 +309,17 @@ describe('TicketReplyEditor component', () => {
                 body_html: '',
             },
         })
-        let newEditorState = ''
+        let newEditorState: ContentState
 
-        let component = shallow(
+        const component = shallow<TicketReplyEditorContainer>(
             <TicketReplyEditorContainer
+                {...minProps}
                 newMessageType={TicketMessageSourceType.Aircall}
                 newMessage={newMessage}
-                agents={[]}
                 ticket={ticket}
-                addAttachments={_noop}
-                notify={_noop}
-                setMacrosVisible={_noop}
-                prepareNewMessage={_noop}
                 setResponseText={(props) => {
-                    newEditorState = props.get('contentState')
+                    newEditorState = props!.get('contentState')
                 }}
-                macros={fromJS([])}
             />
         )
 

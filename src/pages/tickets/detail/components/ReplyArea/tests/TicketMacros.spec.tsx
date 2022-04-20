@@ -1,11 +1,12 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import {fromJS, List, Map} from 'immutable'
 
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {user} from 'fixtures/users'
+import {UserRole} from 'config/types/user'
+
 import {TicketMacrosContainer} from '../TicketMacros'
-import {user} from '../../../../../../fixtures/users'
-import {TicketMessageSourceType} from '../../../../../../business/types/ticket'
-import {UserRole} from '../../../../../../config/types/user'
 
 jest.mock(
     '../../../../common/macros/components/MacroNoResults',
@@ -17,19 +18,21 @@ jest.mock(
 )
 
 describe('<TicketMacros />', () => {
-    const minProps = {
-        currentUser: fromJS(user) as Map<any, any>,
+    const minProps: ComponentProps<typeof TicketMacrosContainer> = {
+        applyMacro: jest.fn(),
         currentMacro: fromJS({}),
-        newMessageType: TicketMessageSourceType.Email,
+        currentTicket: fromJS({}),
         fetchMacros: jest.fn(),
         isInitialMacrosLoading: false,
+        macros: fromJS({}),
         page: 1,
-        totalPages: 1,
-        deleteMacro: jest.fn(),
-        applyMacro: jest.fn(),
-        notify: jest.fn(),
-        onClearMacro: jest.fn(),
         selectMacro: jest.fn(),
+        searchParams: {},
+        totalPages: 1,
+        currentUser: fromJS(user) as Map<any, any>,
+        newMessageType: TicketMessageSourceType.Email,
+        notify: jest.fn(),
+        deleteMacro: jest.fn(),
     }
 
     const macros: List<any> = fromJS([

@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import SatisfactionSurvey from '../SatisfactionSurvey.tsx'
+import SatisfactionSurvey from '../SatisfactionSurvey'
 
 describe('SatisfactionSurvey', () => {
     it('should display satisfaction survey', () => {
@@ -16,7 +16,6 @@ describe('SatisfactionSurvey', () => {
                 customer={fromJS({
                     name: 'test me',
                 })}
-                timezone={'UTC'}
                 isLast
             />
         )

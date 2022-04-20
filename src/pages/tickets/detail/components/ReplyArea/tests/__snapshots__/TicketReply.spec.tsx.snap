@@ -5,7 +5,10 @@ exports[`<TicketReply/> should render the editor 1`] = `
   className="component"
 >
   <Connect(TicketReplyEditorContainer)
+    applyMacro={[MockFunction]}
+    macros={Immutable.Map {}}
     richAreaRef={[MockFunction]}
+    shouldDisplayQuickReply={false}
     ticket={
       Immutable.Map {
         "id": 1,
@@ -38,7 +41,10 @@ exports[`<TicketReply/> should render the editor with the applied macro actions 
   className="component"
 >
   <Connect(TicketReplyEditorContainer)
+    applyMacro={[MockFunction]}
+    macros={Immutable.Map {}}
     richAreaRef={[MockFunction]}
+    shouldDisplayQuickReply={false}
     ticket={
       Immutable.Map {
         "id": 1,

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
-import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from '../../../../../config/actions'
-import {EventContainer} from '../Event.tsx'
+import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from 'config/actions'
+
+import {EventContainer} from '../Event'
 
 describe('Event component', () => {
     const rechargeIntegrationId = 2
@@ -79,13 +80,20 @@ describe('Event component', () => {
         },
     }
 
-    const getProps = (integrationId) => ({
+    const getProps = (integrationId: number) => ({
         integrationData: fromJS(integrationsData[integrationId]),
         integration: fromJS(integrations[integrationId]),
     })
 
+    const minProps: ComponentProps<typeof EventContainer> = {
+        event: fromJS({}),
+        isLast: false,
+        ...getProps(rechargeIntegrationId),
+        dispatch: jest.fn(),
+    }
+
     it('should display the correct label for an action', () => {
-        const event = fromJS({
+        const event: Map<any, any> = fromJS({
             ...baseEventFixture,
             data: {
                 action_name: INFOBAR_CUSTOM_BUTTON_ACTION_NAME,
@@ -98,17 +106,13 @@ describe('Event component', () => {
             },
         })
         const component = shallow(
-            <EventContainer
-                {...getProps(rechargeIntegrationId)}
-                event={event}
-                isLast={false}
-            />
+            <EventContainer {...minProps} event={event} />
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should display correctly a successful event for a Recharge Subscription action', () => {
-        const event = fromJS({
+        const event: Map<any, any> = fromJS({
             ...baseEventFixture,
             data: {
                 action_name: 'rechargeCancelSubscription',
@@ -121,18 +125,14 @@ describe('Event component', () => {
         })
 
         const component = shallow(
-            <EventContainer
-                {...getProps(rechargeIntegrationId)}
-                event={event}
-                isLast={false}
-            />
+            <EventContainer {...minProps} event={event} />
         )
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display correctly a failed event for a Recharge Subscription action', () => {
-        const event = fromJS({
+        const event: Map<any, any> = fromJS({
             ...baseEventFixture,
             data: {
                 action_name: 'rechargeCancelSubscription',
@@ -146,18 +146,14 @@ describe('Event component', () => {
         })
 
         const component = shallow(
-            <EventContainer
-                {...getProps(rechargeIntegrationId)}
-                event={event}
-                isLast={false}
-            />
+            <EventContainer {...minProps} event={event} />
         )
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display correctly a successful event for a Recharge Charge action', () => {
-        const event = fromJS({
+        const event: Map<any, any> = fromJS({
             ...baseEventFixture,
             data: {
                 action_name: 'rechargeSkipCharge',
@@ -171,18 +167,14 @@ describe('Event component', () => {
         })
 
         const component = shallow(
-            <EventContainer
-                {...getProps(rechargeIntegrationId)}
-                event={event}
-                isLast={false}
-            />
+            <EventContainer {...minProps} event={event} />
         )
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display correctly a failed event for a Recharge Charge action', () => {
-        const event = fromJS({
+        const event: Map<any, any> = fromJS({
             ...baseEventFixture,
             data: {
                 action_name: 'rechargeSkipCharge',
@@ -197,18 +189,14 @@ describe('Event component', () => {
         })
 
         const component = shallow(
-            <EventContainer
-                {...getProps(rechargeIntegrationId)}
-                event={event}
-                isLast={false}
-            />
+            <EventContainer {...minProps} event={event} />
         )
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display correctly a successful event for a Shopify Order action', () => {
-        const event = fromJS({
+        const event: Map<any, any> = fromJS({
             ...baseEventFixture,
             data: {
                 action_name: 'shopifyFullRefundOrder',
@@ -222,9 +210,9 @@ describe('Event component', () => {
 
         const component = shallow(
             <EventContainer
+                {...minProps}
                 {...getProps(shopifyIntegrationId)}
                 event={event}
-                isLast={false}
             />
         )
 
@@ -232,7 +220,7 @@ describe('Event component', () => {
     })
 
     it('should display correctly a successful event for a Shopify Order action with custom payload', () => {
-        const event = fromJS({
+        const event: Map<any, any> = fromJS({
             ...baseEventFixture,
             data: {
                 action_name: 'shopifyCancelOrder',
@@ -247,9 +235,9 @@ describe('Event component', () => {
 
         const component = shallow(
             <EventContainer
+                {...minProps}
                 {...getProps(shopifyIntegrationId)}
                 event={event}
-                isLast={false}
             />
         )
 
@@ -257,7 +245,7 @@ describe('Event component', () => {
     })
 
     it('should display correctly a failed event for a Shopify Order action', () => {
-        const event = fromJS({
+        const event: Map<any, any> = fromJS({
             ...baseEventFixture,
             data: {
                 action_name: 'shopifyFullRefundOrder',
@@ -272,9 +260,9 @@ describe('Event component', () => {
 
         const component = shallow(
             <EventContainer
+                {...minProps}
                 {...getProps(shopifyIntegrationId)}
                 event={event}
-                isLast={false}
             />
         )
 

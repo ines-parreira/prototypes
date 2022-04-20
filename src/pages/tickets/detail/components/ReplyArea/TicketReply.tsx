@@ -3,8 +3,9 @@ import {connect, ConnectedProps} from 'react-redux'
 import classNames from 'classnames'
 import {List, Map} from 'immutable'
 
-import {RootState} from '../../../../../state/types'
-import {canReply} from '../../../../../business/ticket'
+import {RootState} from 'state/types'
+import {canReply} from 'business/ticket'
+
 import {
     deleteActionOnApplied,
     updateActionArgsOnApplied,

@@ -152,6 +152,7 @@
         "@storybook/react": "6.3.12",
         "@testing-library/react": "11.0.4",
         "@testing-library/user-event": "12.1.7",
+        "@types/aphrodite": "2.0.0",
         "@types/classnames": "2.2.10",
         "@types/daterangepicker": "3.1.0",
         "@types/domhandler": "2.4.1",

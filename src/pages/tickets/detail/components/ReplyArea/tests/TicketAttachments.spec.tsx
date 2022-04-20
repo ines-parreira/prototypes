@@ -1,54 +1,54 @@
-import React from 'react'
-import {mount, shallow} from 'enzyme'
+import React, {ComponentProps} from 'react'
+import {fromJS} from 'immutable'
+import {mount, ReactWrapper, shallow, ShallowWrapper} from 'enzyme'
 import _noop from 'lodash/noop'
 // aphrodite is required by react-images
 import {StyleSheetTestUtils} from 'aphrodite'
 
-import {fromJS} from 'immutable'
-
-import TicketAttachments from '../TicketAttachments.tsx'
-import {proxifyURL} from '../../../../../../utils.ts'
+import TicketAttachments from '../TicketAttachments'
+import {proxifyURL} from '../../../../../../utils'
 
 describe('TicketAttachments component', () => {
     // attachments is an immutable list of pojos
-    const attachments = fromJS([
-        {
-            name: 'foo',
-            content_type: 'image/png',
-            url: 'http://gorgias.io/bar',
-        },
-        {
-            name: 'bar',
-            content_type: 'text/html',
-            url: 'foo',
-        },
-        {
-            name: 'qux',
-            content_type: 'application/productCard',
-            url: 'http://gorgias.io/bar',
-            extra: {
-                price: 2,
-                variant_name: 'quux',
-                product_link: 'http://gorgias.io/bar',
-                currency: 'USD',
+    const attachments: ComponentProps<typeof TicketAttachments>['attachments'] =
+        fromJS([
+            {
+                name: 'foo',
+                content_type: 'image/png',
+                url: 'http://gorgias.io/bar',
             },
-        },
-    ])
+            {
+                name: 'bar',
+                content_type: 'text/html',
+                url: 'foo',
+            },
+            {
+                name: 'qux',
+                content_type: 'application/productCard',
+                url: 'http://gorgias.io/bar',
+                extra: {
+                    price: 2,
+                    variant_name: 'quux',
+                    product_link: 'http://gorgias.io/bar',
+                    currency: 'USD',
+                },
+            },
+        ])
 
     window.IMAGE_PROXY_URL = 'http://proxy-url/'
     window.IMAGE_PROXY_PUBLIC_SIGN_KEY = 'test-key'
 
+    const minProps: ComponentProps<typeof TicketAttachments> = {
+        attachments: attachments,
+        removable: false,
+        deleteAttachment: jest.fn(),
+    }
+
     describe('read-only', () => {
-        let component
+        let component: ShallowWrapper
 
         beforeAll(() => {
-            component = shallow(
-                <TicketAttachments
-                    removable={false}
-                    attachments={attachments}
-                    deleteAttachment={_noop}
-                />
-            )
+            component = shallow(<TicketAttachments {...minProps} />)
         })
 
         it('should match snapshot', () => {
@@ -81,16 +81,10 @@ describe('TicketAttachments component', () => {
     })
 
     describe('removable', () => {
-        let component
+        let component: ShallowWrapper
 
         beforeAll(() => {
-            component = shallow(
-                <TicketAttachments
-                    removable
-                    attachments={attachments}
-                    deleteAttachment={_noop}
-                />
-            )
+            component = shallow(<TicketAttachments {...minProps} removable />)
         })
 
         it('should show the remove button', () => {
@@ -99,19 +93,22 @@ describe('TicketAttachments component', () => {
     })
 
     describe('lightbox', () => {
-        let component
+        let component: ReactWrapper<ComponentProps<typeof TicketAttachments>>
 
         beforeEach(() => {
-            component = mount(
-                <TicketAttachments
-                    removable={false}
-                    attachments={attachments}
-                    deleteAttachment={_noop}
-                />
+            component = mount<TicketAttachments>(
+                <TicketAttachments {...minProps} />
             )
 
             // aphrodite does not work in jsdom
             StyleSheetTestUtils.suppressStyleInjection()
+        })
+
+        afterEach(() => {
+            return new Promise((resolve) => {
+                StyleSheetTestUtils.clearBufferAndResumeStyleInjection()
+                return process.nextTick(resolve)
+            })
         })
 
         it('should list images in lightbox', () => {
@@ -127,7 +124,7 @@ describe('TicketAttachments component', () => {
                 isLightboxOpen: true,
             })
 
-            expect(document.body.querySelector('img').src).toBe(
+            expect(document.body.querySelector('img')!.src).toBe(
                 proxifyURL('http://gorgias.io/bar')
             )
         })
@@ -153,6 +150,7 @@ describe('TicketAttachments component', () => {
         it("should display an error message if there's private attachments", () => {
             const component = shallow(
                 <TicketAttachments
+                    {...minProps}
                     attachments={fromJS([
                         {
                             name: 'foo',
@@ -173,7 +171,6 @@ describe('TicketAttachments component', () => {
                             public: false,
                         },
                     ])}
-                    deleteAttachment={_noop}
                 />
             )
 
@@ -183,6 +180,7 @@ describe('TicketAttachments component', () => {
         it('should display both an error message and attachments', () => {
             const component = shallow(
                 <TicketAttachments
+                    {...minProps}
                     attachments={fromJS([
                         {
                             name: 'foo',
@@ -214,7 +212,6 @@ describe('TicketAttachments component', () => {
                             },
                         },
                     ])}
-                    deleteAttachment={_noop}
                 />
             )
 

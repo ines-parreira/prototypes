@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import pluralize from 'pluralize'
 import classnames from 'classnames'
 import {Map} from 'immutable'
@@ -9,13 +9,13 @@ import {DatetimeLabel} from '../../../common/utils/labels'
 
 import css from './SatisfactionSurvey.less'
 
-type PropTypes = {
+type Props = {
     satisfactionSurvey: Map<any, any>
     customer: Map<any, any>
     isLast: boolean
 }
 
-export default class SatisfactionSurvey extends React.Component<PropTypes> {
+export default class SatisfactionSurvey extends Component<Props> {
     _renderDatetime() {
         const {satisfactionSurvey} = this.props
         const scoredDatetime = satisfactionSurvey.get('scored_datetime')

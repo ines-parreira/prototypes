@@ -18,6 +18,7 @@ export enum TicketMessageSourceType {
     InstagramAdComment = 'instagram-ad-comment',
     InstagramAdMedia = 'instagram-ad-media',
     InstagramComment = 'instagram-comment',
+    InstagramMention = 'instagram-mention',
     InstagramMedia = 'instagram-media',
     InstagramMentionMedia = 'instagram-mention-media',
     InstagramMentionComment = 'instagram-mention-comment',

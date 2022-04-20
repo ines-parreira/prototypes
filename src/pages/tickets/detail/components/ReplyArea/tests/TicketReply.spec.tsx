@@ -1,24 +1,27 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {TicketMessageSourceTypes} from '../../../../../../business/ticket.ts'
-import {TicketReplyContainer} from '../TicketReply.tsx'
-import {MacroActionName} from '../../../../../../models/macroAction/types'
-import {ACTION_TEMPLATES} from '../../../../../../config'
+import {TicketMessageSourceTypes} from 'business/ticket'
+import {MacroActionName} from 'models/macroAction/types'
+import {ACTION_TEMPLATES} from 'config'
+import {TicketMessageSourceType} from 'business/types/ticket'
+
+import {TicketReplyContainer} from '../TicketReply'
 
 jest.unmock('../../../../../../business/ticket.ts')
 
-jest.mock('lodash/uniqueId', () => (id) => `${id}42`)
+jest.mock('lodash/uniqueId', () => (id: number) => `${id}42`)
 
 describe('<TicketReply/>', () => {
-    const answerableSourceType = 'email'
-    const nonAnswerableSourceType = 'chat'
+    const answerableSourceType = TicketMessageSourceType.Email
+    const nonAnswerableSourceType = TicketMessageSourceType.Chat
 
-    const minProps = {
-        deleteActionOnApplied: jest.fn(),
-        deleteAttachment: jest.fn(),
+    const minProps: ComponentProps<typeof TicketReplyContainer> = {
+        applyMacro: jest.fn(),
+        macros: fromJS({}),
         richAreaRef: jest.fn(),
+        shouldDisplayQuickReply: false,
         ticket: fromJS({
             id: 1,
             reply_options: {
@@ -32,18 +35,16 @@ describe('<TicketReply/>', () => {
                 },
             },
         }),
+        isNewMessagePublic: true,
+        newMessageAttachments: fromJS([]),
+        newMessageType: answerableSourceType,
+        deleteActionOnApplied: jest.fn(),
+        deleteAttachment: jest.fn(),
         updateActionArgsOnApplied: jest.fn(),
     }
 
     it('should render the editor', () => {
-        const component = shallow(
-            <TicketReplyContainer
-                {...minProps}
-                isNewMessagePublic={true}
-                newMessageType={answerableSourceType}
-                newMessageAttachments={fromJS([])}
-            />
-        )
+        const component = shallow(<TicketReplyContainer {...minProps} />)
 
         expect(component).toMatchSnapshot()
     })
@@ -60,9 +61,6 @@ describe('<TicketReply/>', () => {
                         ),
                     ],
                 })}
-                isNewMessagePublic={true}
-                newMessageType={answerableSourceType}
-                newMessageAttachments={fromJS([])}
             />
         )
 

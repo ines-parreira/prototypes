@@ -29,14 +29,16 @@ const changeReceiversAllowedSourceTypes = [
     TicketMessageSourceType.Sms,
 ]
 
-type OwnProps = {
+type Props = {
     className?: string
+} & ConnectedProps<typeof connector>
+
+type State = {
+    isReceiversAreaOpen: boolean
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
-
 export class ReplyMessageChannelContainer extends Component<Props> {
-    state = {
+    state: State = {
         isReceiversAreaOpen: false,
     }
 
