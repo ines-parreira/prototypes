@@ -123,9 +123,10 @@ export function PhoneIntegrationsList({type}: Props): JSX.Element | null {
                             }}
                         >
                             <BodyCell>
-                                <strong>
-                                    {meta.emoji} {name}
-                                </strong>
+                                {meta.emoji && (
+                                    <span className="mr-2">{meta.emoji}</span>
+                                )}
+                                <strong>{name}</strong>
                             </BodyCell>
                             <BodyCell className={css.phoneCell} size="small">
                                 {phoneNumber && (

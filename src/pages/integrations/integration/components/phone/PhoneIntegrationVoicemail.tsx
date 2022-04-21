@@ -1,23 +1,23 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {fromJS} from 'immutable'
-import {Button, Col, Container, Form, Row} from 'reactstrap'
-import classnames from 'classnames'
+import {Col, Container, Form, Row} from 'reactstrap'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
 import {
     PhoneIntegration,
     PhoneIntegrationVoicemailSettings,
     isPhoneIntegration,
 } from 'models/integration/types'
+import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
+import useAppDispatch from 'hooks/useAppDispatch'
 import PageHeader from 'pages/common/components/PageHeader'
+import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
-import settingsCss from 'pages/settings/settings.less'
+import {updatePhoneVoicemailConfiguration} from 'pages/integrations/integration/components/phone/actions'
+import PhoneIntegrationNavigation from 'pages/integrations/integration/components/phone/PhoneIntegrationNavigation'
+import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
+import VoiceMessageField from 'pages/integrations/integration/components/phone/VoiceMessageField'
 
-import {updatePhoneVoicemailConfiguration} from './actions'
-import PhoneIntegrationBreadcrumbs from './PhoneIntegrationBreadcrumbs'
-import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
-import VoiceMessageField from './VoiceMessageField'
+import settingsCss from 'pages/settings/settings.less'
 
 type Props = {
     integration: Maybe<PhoneIntegration>
@@ -106,14 +106,10 @@ export function PhoneIntegrationVoicemail({
                             >
                                 Allow caller to leave voicemail
                             </CheckBox>
-
                             <Button
+                                className="mt-5"
                                 type="submit"
-                                color="success"
-                                className={classnames('mt-5', {
-                                    'btn-loading': isLoading,
-                                })}
-                                disabled={isLoading}
+                                isLoading={isLoading}
                             >
                                 Save changes
                             </Button>

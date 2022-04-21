@@ -140,11 +140,13 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
       <div
         class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <h4>
+        <h4
+          class="mb-3"
+        >
           Connected integrations
         </h4>
         <div
-          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+          class="appRow border-bottom ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -349,11 +351,13 @@ exports[`<PhoneNumberDetails/> render() should not render the link to an SMS int
       <div
         class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <h4>
+        <h4
+          class="mb-3"
+        >
           Connected integrations
         </h4>
         <div
-          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+          class="appRow border-bottom ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -558,11 +562,13 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
       <div
         class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <h4>
+        <h4
+          class="mb-3"
+        >
           Connected integrations
         </h4>
         <div
-          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+          class="appRow border-bottom ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -767,11 +773,13 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
       <div
         class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <h4>
+        <h4
+          class="mb-3"
+        >
           Connected integrations
         </h4>
         <div
-          class="border-bottom py-3 ml-1 mr-1 row"
+          class="appRow border-bottom ml-1 mr-1 row"
         >
           <div
             class="col-lg-8"
@@ -796,7 +804,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
           </div>
         </div>
         <div
-          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -1001,11 +1009,13 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
       <div
         class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <h4>
+        <h4
+          class="mb-3"
+        >
           Connected integrations
         </h4>
         <div
-          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+          class="appRow border-bottom ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -1035,7 +1045,7 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
           </div>
         </div>
         <div
-          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -1258,11 +1268,13 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
       <div
         class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <h4>
+        <h4
+          class="mb-3"
+        >
           Connected integrations
         </h4>
         <div
-          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+          class="appRow border-bottom ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -1467,11 +1479,13 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
       <div
         class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <h4>
+        <h4
+          class="mb-3"
+        >
           Connected integrations
         </h4>
         <div
-          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+          class="appRow border-bottom ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -1676,11 +1690,13 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
       <div
         class="pr-lg-0 pr-md-3 col-lg-6"
       >
-        <h4>
+        <h4
+          class="mb-3"
+        >
           Connected integrations
         </h4>
         <div
-          class="border-bottom py-3 ml-1 mr-1 disabledApp row"
+          class="appRow border-bottom ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"

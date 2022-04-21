@@ -100,7 +100,6 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
                 🇺🇸
               </span>
             </div>
-             
             <strong>
               A Phone Number
             </strong>
@@ -172,7 +171,6 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
                 🇨🇦
               </span>
             </div>
-             
             <strong>
               Another Phone Number
             </strong>
@@ -244,7 +242,6 @@ exports[`<PhoneNumbersList/> render() should allow sorting by column header 1`] 
                 🇬🇧
               </span>
             </div>
-             
             <strong>
               Intl. Phone Number
             </strong>
@@ -398,7 +395,6 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
                 🇬🇧
               </span>
             </div>
-             
             <strong>
               Intl. Phone Number
             </strong>
@@ -470,7 +466,6 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
                 🇨🇦
               </span>
             </div>
-             
             <strong>
               Another Phone Number
             </strong>
@@ -542,7 +537,6 @@ exports[`<PhoneNumbersList/> render() should render 1`] = `
                 🇺🇸
               </span>
             </div>
-             
             <strong>
               A Phone Number
             </strong>

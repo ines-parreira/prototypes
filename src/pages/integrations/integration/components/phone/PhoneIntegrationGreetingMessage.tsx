@@ -1,22 +1,22 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {fromJS} from 'immutable'
-import {Button, Col, Container, Form, Row} from 'reactstrap'
-import classnames from 'classnames'
+import {Col, Container, Form, Row} from 'reactstrap'
 
-import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import PageHeader from '../../../../common/components/PageHeader'
-import settingsCss from '../../../../settings/settings.less'
 import {
     PhoneIntegration,
     VoiceMessage,
     isPhoneIntegration,
-} from '../../../../../models/integration/types'
-import {DEFAULT_VOICE_MESSAGE} from '../../../../../models/integration/constants'
+} from 'models/integration/types'
+import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
+import useAppDispatch from 'hooks/useAppDispatch'
+import Button from 'pages/common/components/button/Button'
+import PageHeader from 'pages/common/components/PageHeader'
+import {updatePhoneGreetingMessageConfiguration} from 'pages/integrations/integration/components/phone/actions'
+import PhoneIntegrationNavigation from 'pages/integrations/integration/components/phone/PhoneIntegrationNavigation'
+import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
+import VoiceMessageField from 'pages/integrations/integration/components/phone/VoiceMessageField'
 
-import {updatePhoneGreetingMessageConfiguration} from './actions'
-import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
-import PhoneIntegrationBreadcrumbs from './PhoneIntegrationBreadcrumbs'
-import VoiceMessageField from './VoiceMessageField'
+import settingsCss from 'pages/settings/settings.less'
 
 type Props = {
     integration: Maybe<PhoneIntegration>
@@ -80,24 +80,17 @@ export function PhoneIntegrationGreetingMessage({
                 <Row>
                     <Col lg={6} xl={7}>
                         <Form onSubmit={onSubmit}>
-                            <div className="mb-4">
-                                <VoiceMessageField
-                                    value={payload ?? DEFAULT_VOICE_MESSAGE}
-                                    onChange={setPayload}
-                                    maxRecordingDuration={
-                                        MAX_RECORDING_DURATION
-                                    }
-                                    allowNone
-                                />
-                            </div>
+                            <VoiceMessageField
+                                value={payload ?? DEFAULT_VOICE_MESSAGE}
+                                onChange={setPayload}
+                                maxRecordingDuration={MAX_RECORDING_DURATION}
+                                allowNone
+                            />
 
                             <Button
+                                className="mt-5"
                                 type="submit"
-                                color="success"
-                                className={classnames('mt-5', {
-                                    'btn-loading': isLoading,
-                                })}
-                                disabled={isLoading}
+                                isLoading={isLoading}
                             >
                                 Save changes
                             </Button>

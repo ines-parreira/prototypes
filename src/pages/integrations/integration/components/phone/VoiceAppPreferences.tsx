@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
+import classnames from 'classnames'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import {
@@ -136,9 +137,15 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
                             </FormGroup>
                             <Row className="mt-5 mb-5">
                                 <Col>
-                                    <h4>Phone number</h4>
-
-                                    <Row className="border-bottom py-2 ml-1 mr-1">
+                                    <h4 className="mb-3">Phone number</h4>
+                                    <Row
+                                        className={classnames(
+                                            css.appRow,
+                                            'border-bottom',
+                                            'ml-1',
+                                            'mr-1'
+                                        )}
+                                    >
                                         <Col lg={8} className="pl-0">
                                             {phoneNumber && (
                                                 <PhoneNumberTitle
@@ -156,7 +163,7 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
                                     </Row>
                                 </Col>
                             </Row>
-                            <Row className="mb-3">
+                            <Row>
                                 <Col>
                                     <h4 className="mb-3">Inbound calls</h4>
                                     <FormGroup>
@@ -178,6 +185,12 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
                                                 Start recording automatically
                                             </CheckBox>
                                         )}
+                                    </FormGroup>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <FormGroup>
                                         <CheckBox
                                             isChecked={
                                                 preferences.voicemail_outside_business_hours
