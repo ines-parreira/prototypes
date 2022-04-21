@@ -136,7 +136,7 @@ exports[`<UserAuditList/> should fetch events on mount and render a loading spin
                     name="checkbox-3"
                     type="checkbox"
                   />
-                  Select displayed
+                  Select all
                   <div
                     class="badge"
                   >
@@ -353,7 +353,7 @@ exports[`<UserAuditList/> should render a message to inform the user no events a
                     name="checkbox-7"
                     type="checkbox"
                   />
-                  Select displayed
+                  Select all
                   <div
                     class="badge"
                   >
@@ -570,7 +570,7 @@ exports[`<UserAuditList/> should render the fetched events and page navigation 1
                     name="checkbox-15"
                     type="checkbox"
                   />
-                  Select displayed
+                  Select all
                   <div
                     class="badge"
                   >

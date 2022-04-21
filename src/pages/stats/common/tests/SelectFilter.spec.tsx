@@ -2,9 +2,11 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+
 import SelectFilter from '../SelectFilter'
 
-describe('SelectFilter', () => {
+describe('<SelectFilter />', () => {
     const commonProps = {
         value: [],
         onChange: jest.fn(),
@@ -126,6 +128,52 @@ describe('SelectFilter', () => {
         expect(commonProps.onChange).not.toHaveBeenCalled()
     })
 
+    it('should select all items', () => {
+        const {getByText} = render(
+            <SelectFilter {...commonProps}>
+                {items.map((item) => (
+                    <SelectFilter.Item
+                        key={item.value}
+                        label={item.label}
+                        value={item.value}
+                    />
+                ))}
+            </SelectFilter>
+        )
+
+        userEvent.click(getByText(/Select all/i))
+
+        expect(commonProps.onChange).toHaveBeenNthCalledWith(1, [
+            items[0].value,
+            items[1].value,
+            items[2].value,
+        ])
+    })
+
+    it('should select displayed items', () => {
+        const {getByText} = render(
+            <SelectFilter {...commonProps}>
+                <InfiniteScroll onLoad={jest.fn()} shouldLoadMore={true}>
+                    {items.map((item) => (
+                        <SelectFilter.Item
+                            key={item.value}
+                            label={item.label}
+                            value={item.value}
+                        />
+                    ))}
+                </InfiniteScroll>
+            </SelectFilter>
+        )
+
+        userEvent.click(getByText(/Select all/i))
+
+        expect(commonProps.onChange).toHaveBeenNthCalledWith(1, [
+            items[0].value,
+            items[1].value,
+            items[2].value,
+        ])
+    })
+
     it('should deselect all items', () => {
         const {getByText} = render(
             <SelectFilter {...commonProps} value={['1', '2']}>
@@ -140,9 +188,6 @@ describe('SelectFilter', () => {
         )
 
         userEvent.click(getByText(/Deselect all/i))
-
-        expect(getByText(items[0].label)).not.toHaveProperty('checked')
-        expect(getByText(items[1].label)).not.toHaveProperty('checked')
         expect(commonProps.onChange).toHaveBeenNthCalledWith(1, [])
     })
 
@@ -215,6 +260,16 @@ describe('SelectFilter', () => {
             const indeterminateGroup = getByLabelText(groups[0].label)
 
             expect(indeterminateGroup).toHaveProperty('indeterminate')
+        })
+
+        it('should display expected label for partial data', () => {
+            const {getByText} = render(
+                <SelectFilter {...commonProps} isPartial>
+                    {children}
+                </SelectFilter>
+            )
+
+            expect(getByText(/Select displayed/i)).toBeTruthy()
         })
     })
 })

@@ -85,7 +85,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       name="checkbox-1"
                       type="checkbox"
                     />
-                    Select displayed
+                    Select all
                     <div
                       class="badge"
                     >

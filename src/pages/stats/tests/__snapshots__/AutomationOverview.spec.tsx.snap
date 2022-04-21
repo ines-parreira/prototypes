@@ -85,7 +85,7 @@ exports[`AutomationOverview should render the filters and stats when stats filte
                       name="checkbox-1"
                       type="checkbox"
                     />
-                    Select displayed
+                    Select all
                     <div
                       class="badge"
                     >

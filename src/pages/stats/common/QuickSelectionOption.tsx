@@ -8,6 +8,7 @@ import css from './QuickSelectionOption.less'
 
 type Props = {
     className?: string
+    isPartial?: boolean
     onClick: () => void
     selectedItemsCount: number
     totalItemsCount: number
@@ -15,6 +16,7 @@ type Props = {
 
 const QuickSelectionOption = ({
     className,
+    isPartial,
     onClick,
     selectedItemsCount,
     totalItemsCount,
@@ -30,7 +32,7 @@ const QuickSelectionOption = ({
             }
         >
             {selectedItemsCount === 0
-                ? 'Select displayed'
+                ? `Select ${isPartial ? 'displayed' : 'all'}`
                 : selectedItemsCount === 1
                 ? 'Deselect'
                 : 'Deselect all'}

@@ -32,4 +32,11 @@ describe('QuickSelectionOption', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it('should display label to select partial content', () => {
+        const {getByText} = render(
+            <QuickSelectionOption {...commonProps} isPartial />
+        )
+        expect(getByText(/Select displayed/i)).toBeTruthy()
+    })
 })

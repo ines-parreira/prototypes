@@ -64,7 +64,7 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                     name="checkbox-1"
                     type="checkbox"
                   />
-                  Select displayed
+                  Select all
                   <div
                     class="badge"
                   >

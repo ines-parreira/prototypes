@@ -75,4 +75,6 @@ const InfiniteScroll = ({
     )
 }
 
+InfiniteScroll.displayName = 'InfiniteScroll'
+
 export default InfiniteScroll

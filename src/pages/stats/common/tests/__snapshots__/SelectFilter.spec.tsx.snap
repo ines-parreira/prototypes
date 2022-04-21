@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SelectFilter should not render the component with quick selection option if multiple selection is disabled 1`] = `
+exports[`<SelectFilter /> should not render the component with quick selection option if multiple selection is disabled 1`] = `
 <div
   class="dropdown"
 >
@@ -91,7 +91,7 @@ exports[`SelectFilter should not render the component with quick selection optio
 </div>
 `;
 
-exports[`SelectFilter should render the component with items having icons 1`] = `
+exports[`<SelectFilter /> should render the component with items having icons 1`] = `
 <div
   class="dropdown"
 >
@@ -140,7 +140,7 @@ exports[`SelectFilter should render the component with items having icons 1`] = 
             name="checkbox-9"
             type="checkbox"
           />
-          Select displayed
+          Select all
           <div
             class="badge"
           >
@@ -224,7 +224,7 @@ exports[`SelectFilter should render the component with items having icons 1`] = 
 </div>
 `;
 
-exports[`SelectFilter should render the component with selectable items 1`] = `
+exports[`<SelectFilter /> should render the component with selectable items 1`] = `
 <div
   class="dropdown"
 >
@@ -273,7 +273,7 @@ exports[`SelectFilter should render the component with selectable items 1`] = `
             name="checkbox-2"
             type="checkbox"
           />
-          Select displayed
+          Select all
           <div
             class="badge"
           >
@@ -342,7 +342,7 @@ exports[`SelectFilter should render the component with selectable items 1`] = `
 </div>
 `;
 
-exports[`SelectFilter should render the component with selected items 1`] = `
+exports[`<SelectFilter /> should render the component with selected items 1`] = `
 <div
   class="dropdown"
 >
@@ -463,7 +463,7 @@ exports[`SelectFilter should render the component with selected items 1`] = `
 </div>
 `;
 
-exports[`SelectFilter should render the component without any item 1`] = `
+exports[`<SelectFilter /> should render the component without any item 1`] = `
 <div
   class="dropdown"
 >
@@ -512,7 +512,7 @@ exports[`SelectFilter should render the component without any item 1`] = `
             name="checkbox-1"
             type="checkbox"
           />
-          Select displayed
+          Select all
           <div
             class="badge"
           >
@@ -532,7 +532,7 @@ exports[`SelectFilter should render the component without any item 1`] = `
 </div>
 `;
 
-exports[`SelectFilter with groups should render the component with groups 1`] = `
+exports[`<SelectFilter /> with groups should render the component with groups 1`] = `
 <div
   class="dropdown"
 >
@@ -573,15 +573,15 @@ exports[`SelectFilter with groups should render the component with groups 1`] = 
       >
         <label
           class="label label quickSelectionOption"
-          for="checkbox-28"
+          for="checkbox-36"
         >
           <input
             class="input"
-            id="checkbox-28"
-            name="checkbox-28"
+            id="checkbox-36"
+            name="checkbox-36"
             type="checkbox"
           />
-          Select displayed
+          Select all
           <div
             class="badge"
           >
@@ -602,12 +602,12 @@ exports[`SelectFilter with groups should render the component with groups 1`] = 
       >
         <label
           class="label label labelItem"
-          for="checkbox-29"
+          for="checkbox-37"
         >
           <input
             class="input"
-            id="checkbox-29"
-            name="checkbox-29"
+            id="checkbox-37"
+            name="checkbox-37"
             type="checkbox"
           />
            Api
@@ -618,12 +618,12 @@ exports[`SelectFilter with groups should render the component with groups 1`] = 
       >
         <label
           class="label label labelItem"
-          for="checkbox-30"
+          for="checkbox-38"
         >
           <input
             class="input"
-            id="checkbox-30"
-            name="checkbox-30"
+            id="checkbox-38"
+            name="checkbox-38"
             type="checkbox"
           />
            Chat
@@ -634,12 +634,12 @@ exports[`SelectFilter with groups should render the component with groups 1`] = 
       >
         <label
           class="label label labelItem"
-          for="checkbox-31"
+          for="checkbox-39"
         >
           <input
             class="input"
-            id="checkbox-31"
-            name="checkbox-31"
+            id="checkbox-39"
+            name="checkbox-39"
             type="checkbox"
           />
            Email
@@ -650,12 +650,12 @@ exports[`SelectFilter with groups should render the component with groups 1`] = 
       >
         <label
           class="label label labelItem"
-          for="checkbox-32"
+          for="checkbox-40"
         >
           <input
             class="input"
-            id="checkbox-32"
-            name="checkbox-32"
+            id="checkbox-40"
+            name="checkbox-40"
             type="checkbox"
           />
           Group 1
@@ -666,12 +666,12 @@ exports[`SelectFilter with groups should render the component with groups 1`] = 
       >
         <label
           class="label label labelItem"
-          for="checkbox-33"
+          for="checkbox-41"
         >
           <input
             class="input"
-            id="checkbox-33"
-            name="checkbox-33"
+            id="checkbox-41"
+            name="checkbox-41"
             type="checkbox"
           />
           Group 2
@@ -682,12 +682,12 @@ exports[`SelectFilter with groups should render the component with groups 1`] = 
       >
         <label
           class="label label labelItem"
-          for="checkbox-34"
+          for="checkbox-42"
         >
           <input
             class="input"
-            id="checkbox-34"
-            name="checkbox-34"
+            id="checkbox-42"
+            name="checkbox-42"
             type="checkbox"
           />
           Group 3

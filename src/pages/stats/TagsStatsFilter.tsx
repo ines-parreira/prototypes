@@ -119,6 +119,7 @@ export default function TagsStatsFilter({value = []}: Props) {
             value={value}
             onSearch={handleTagsSearch}
             dropdownMenu={TagDropdownMenuWrapper}
+            isPartial
         >
             <InfiniteScroll
                 className={css.infiniteScroll}

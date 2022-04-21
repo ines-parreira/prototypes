@@ -4,6 +4,7 @@ import _union from 'lodash/union'
 import _without from 'lodash/without'
 import _xor from 'lodash/xor'
 import React, {
+    Children,
     Component,
     ComponentProps,
     ComponentType,
@@ -157,6 +158,7 @@ type Props = {
     dropdownMenu?: ComponentType<ComponentProps<typeof DropdownMenu>>
     isDisabled?: boolean
     isMultiple?: boolean
+    isPartial?: boolean
     isRequired?: boolean
     onChange: (value: Value[]) => void
     onSearch?: (query: string) => void
@@ -176,6 +178,7 @@ const SelectFilter = ({
     isDisabled = false,
     isRequired = false,
     isMultiple = true,
+    isPartial = false,
     onChange,
     onSearch,
     plural = 'items',
@@ -234,7 +237,7 @@ const SelectFilter = ({
         () =>
             children
                 ? (
-                      React.Children.toArray(children).filter(
+                      Children.toArray(children).filter(
                           (child) =>
                               (child as GroupElement).type.displayName ===
                               SelectFilter.Group.displayName
@@ -410,6 +413,7 @@ const SelectFilter = ({
                                         )
                                     }
                                 }}
+                                isPartial={isPartial}
                             />
                         )}
                         <DropdownItem divider className={css.dropdownDivider} />

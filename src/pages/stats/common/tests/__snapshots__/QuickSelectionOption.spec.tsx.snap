@@ -81,7 +81,7 @@ exports[`QuickSelectionOption should display label to select content 1`] = `
         name="checkbox-1"
         type="checkbox"
       />
-      Select displayed
+      Select all
       <div
         class="badge"
       >
