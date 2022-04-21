@@ -26,7 +26,6 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import Group from 'pages/common/components/layout/Group'
-import GroupItem from 'pages/common/components/layout/GroupItem'
 import {getConfigByName} from 'config/views'
 import {SYSTEM_VIEW_CATEGORY} from 'constants/view'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -340,56 +339,42 @@ export const FilterTopbar = ({
                                     }}
                                 >
                                     <Group>
-                                        <GroupItem>
-                                            {(appendPosition) => (
-                                                <ConfirmationPopover
-                                                    buttonProps={{
-                                                        type: 'submit',
-                                                    }}
-                                                    content={
-                                                        <>
-                                                            You are about to
-                                                            edit this view for{' '}
-                                                            <b>all users</b>.
-                                                        </>
+                                        <ConfirmationPopover
+                                            buttonProps={{
+                                                type: 'submit',
+                                            }}
+                                            content={
+                                                <>
+                                                    You are about to edit this
+                                                    view for <b>all users</b>.
+                                                </>
+                                            }
+                                            popperClassName={css.editPopover}
+                                            onConfirm={handleClickUpdate}
+                                        >
+                                            {({
+                                                uid,
+                                                onDisplayConfirmation,
+                                                elementRef,
+                                            }) => (
+                                                <Button
+                                                    id={uid}
+                                                    isLoading={isSubmitting}
+                                                    isDisabled={
+                                                        !areFiltersValid
                                                     }
-                                                    popperClassName={
-                                                        css.editPopover
+                                                    onClick={
+                                                        onDisplayConfirmation
                                                     }
-                                                    onConfirm={
-                                                        handleClickUpdate
+                                                    onClickCapture={
+                                                        handleClickValidation
                                                     }
+                                                    ref={elementRef}
                                                 >
-                                                    {({
-                                                        uid,
-                                                        onDisplayConfirmation,
-                                                        elementRef,
-                                                    }) => (
-                                                        <Button
-                                                            appendPosition={
-                                                                appendPosition
-                                                            }
-                                                            id={uid}
-                                                            isLoading={
-                                                                isSubmitting
-                                                            }
-                                                            isDisabled={
-                                                                !areFiltersValid
-                                                            }
-                                                            onClick={
-                                                                onDisplayConfirmation
-                                                            }
-                                                            onClickCapture={
-                                                                handleClickValidation
-                                                            }
-                                                            ref={elementRef}
-                                                        >
-                                                            Update View
-                                                        </Button>
-                                                    )}
-                                                </ConfirmationPopover>
+                                                    Update View
+                                                </Button>
                                             )}
-                                        </GroupItem>
+                                        </ConfirmationPopover>
                                         <IconButton
                                             onClick={() =>
                                                 toggleDropdownOpen(

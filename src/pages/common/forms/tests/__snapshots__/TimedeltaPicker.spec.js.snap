@@ -8,7 +8,6 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
     class="numberInput wrapper left isNested group horizontal"
   >
     <input
-      appendposition="left"
       class="input"
       max="Infinity"
       min="0"

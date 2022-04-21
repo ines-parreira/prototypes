@@ -35,7 +35,6 @@ import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
 import {hasRole} from 'utils'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 import Group from 'pages/common/components/layout/Group'
-import GroupItem from 'pages/common/components/layout/GroupItem'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -435,23 +434,15 @@ export const TicketListActionsContainer = ({
                         >
                             Close
                         </Button>
-                        <GroupItem>
-                            {(appendPosition) => (
-                                <DropdownToggle
-                                    tag="span"
-                                    disabled={isDisabled}
-                                >
-                                    <IconButton
-                                        appendPosition={appendPosition}
-                                        intent="secondary"
-                                        size="small"
-                                        isDisabled={isDisabled}
-                                    >
-                                        arrow_drop_down
-                                    </IconButton>
-                                </DropdownToggle>
-                            )}
-                        </GroupItem>
+                        <DropdownToggle tag="span" disabled={isDisabled}>
+                            <IconButton
+                                intent="secondary"
+                                size="small"
+                                isDisabled={isDisabled}
+                            >
+                                arrow_drop_down
+                            </IconButton>
+                        </DropdownToggle>
                     </Group>
                     <DropdownMenu right>
                         <DropdownItem header>SET STATUS</DropdownItem>
@@ -484,23 +475,15 @@ export const TicketListActionsContainer = ({
                         >
                             Assign to me
                         </Button>
-                        <GroupItem>
-                            {(appendPosition) => (
-                                <DropdownToggle
-                                    tag="span"
-                                    disabled={isDisabled}
-                                >
-                                    <IconButton
-                                        appendPosition={appendPosition}
-                                        intent="secondary"
-                                        size="small"
-                                        isDisabled={isDisabled}
-                                    >
-                                        arrow_drop_down
-                                    </IconButton>
-                                </DropdownToggle>
-                            )}
-                        </GroupItem>
+                        <DropdownToggle tag="span" disabled={isDisabled}>
+                            <IconButton
+                                intent="secondary"
+                                size="small"
+                                isDisabled={isDisabled}
+                            >
+                                arrow_drop_down
+                            </IconButton>
+                        </DropdownToggle>
                     </Group>
                     <DropdownMenu
                         right

@@ -14,8 +14,8 @@ import {useEvent} from 'react-use'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Group, {
-    AppendPosition,
     GroupContext,
+    GroupPositionContext,
 } from 'pages/common/components/layout/Group'
 
 import {InputGroupContext} from './InputGroup'
@@ -23,7 +23,6 @@ import {InputGroupContext} from './InputGroup'
 import css from './NumberInput.less'
 
 type Props = {
-    appendPosition?: AppendPosition
     className?: string
     hasError?: boolean
     hasControls?: boolean
@@ -49,7 +48,6 @@ type Props = {
 
 function NumberInput(
     {
-        appendPosition,
         autoFocus,
         className,
         hasError,
@@ -66,6 +64,7 @@ function NumberInput(
     }: Props,
     ref: ForwardedRef<HTMLInputElement>
 ) {
+    const appendPosition = useContext(GroupPositionContext) || ''
     const [inputElement, setInputElement] = useState<HTMLInputElement | null>(
         null
     )
@@ -119,17 +118,12 @@ function NumberInput(
 
     return (
         <Group
-            className={classnames(
-                className,
-                css.wrapper,
-                css[appendPosition || ''],
-                {
-                    [css.hasError]: hasError,
-                    [css.isDisabled]: isDisabledMemoized,
-                    [css.isFocused]: isFocused,
-                    [css.isNested]: !!inputGroupContext,
-                }
-            )}
+            className={classnames(className, css.wrapper, css[appendPosition], {
+                [css.hasError]: hasError,
+                [css.isDisabled]: isDisabledMemoized,
+                [css.isFocused]: isFocused,
+                [css.isNested]: !!inputGroupContext,
+            })}
         >
             {prefix && (
                 <span className={css.prefix} onClick={handleAffixClick}>

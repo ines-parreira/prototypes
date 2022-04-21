@@ -4,6 +4,7 @@ import {render, fireEvent} from '@testing-library/react'
 import Button from 'pages/common/components/button/Button'
 
 import ConfirmationPopover from '../ConfirmationPopover'
+import Group from '../../layout/Group'
 
 jest.spyOn(window, 'clearTimeout')
 
@@ -182,5 +183,27 @@ describe('<ConfirmationPopover />', () => {
         fireEvent.click(getByText(/Click me!/i))
         fireEvent.click(getByText(/Confirm/i))
         expect(mockHandleClick).not.toHaveBeenCalled()
+    })
+
+    it('should not apply positioning context to the confirmation button', () => {
+        const {getByText} = render(
+            <Group>
+                <Button>Foo</Button>
+                <ConfirmationPopover {...defaultProps}>
+                    {({uid, onDisplayConfirmation, elementRef}) => (
+                        <Button
+                            id={uid}
+                            onClick={onDisplayConfirmation}
+                            ref={elementRef}
+                        >
+                            Click Me!
+                        </Button>
+                    )}
+                </ConfirmationPopover>
+            </Group>
+        )
+
+        fireEvent.click(getByText(/Click me!/i))
+        expect(getByText(/Confirm/i).classList.contains('right')).toBeFalsy()
     })
 })

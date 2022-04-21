@@ -81,7 +81,6 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
                   class="wrapper"
                 >
                   <input
-                    appendposition="right"
                     class="input nested"
                     id="title"
                     name="title"
@@ -307,7 +306,6 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                   class="wrapper"
                 >
                   <input
-                    appendposition="right"
                     class="input nested"
                     id="title"
                     name="title"
@@ -522,7 +520,6 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
                   class="wrapper"
                 >
                   <input
-                    appendposition="right"
                     class="input nested"
                     id="title"
                     name="title"

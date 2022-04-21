@@ -22,7 +22,6 @@ import BaseButton from 'pages/common/components/button/Button'
 import {Action} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
-import {AppendPosition} from 'pages/common/components/layout/Group'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {mapActionToActionPayload} from './mapActionToActionPayload'
@@ -33,7 +32,6 @@ type Props = {
     action: Action
     openEditor: (index: number, callback: (action: Action) => void) => void
     isDropdown?: boolean
-    appendPosition?: AppendPosition
 }
 
 function Button({
@@ -43,7 +41,6 @@ function Button({
     isDropdown = false,
     openEditor,
     executeAction,
-    appendPosition,
 }: Props & ConnectedProps<typeof connector>) {
     // pending action management
     const getPendingActionCallback = useAppSelector(getPendingActionCallbacks)
@@ -107,7 +104,6 @@ function Button({
         <BaseButton
             intent="secondary"
             className={css.actionButton}
-            appendPosition={appendPosition}
             {...props}
         />
     )

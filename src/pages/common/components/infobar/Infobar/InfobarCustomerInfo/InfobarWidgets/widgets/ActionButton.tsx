@@ -15,7 +15,6 @@ import {Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {AppendPosition} from 'pages/common/components/layout/Group'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import {executeAction} from 'state/infobar/actions'
@@ -59,7 +58,6 @@ type Props = {
     customerId: CustomerContextType['customerId']
     integrationId: IntegrationContextType['integrationId']
     setModalOpen?: (param: boolean) => void
-    appendPosition?: AppendPosition
     className?: string
 } & ConnectedProps<typeof connector>
 
@@ -359,7 +357,6 @@ export class ActionButtonContainer extends Component<Props, State> {
                     intent="secondary"
                     isDisabled={isLoading || hasError}
                     onClick={this.toggleUi}
-                    appendPosition={this.props.appendPosition}
                     {...tagOptions}
                 >
                     <span id={tooltipTargetID} />

@@ -87,7 +87,6 @@ exports[`<SmsAppPreferences/> render() should render 1`] = `
                   class="wrapper"
                 >
                   <input
-                    appendposition="right"
                     class="input nested"
                     id="title"
                     name="title"
@@ -271,7 +270,6 @@ exports[`<SmsAppPreferences/> render() should submit a valid payload with the se
                   class="wrapper"
                 >
                   <input
-                    appendposition="right"
                     class="input nested"
                     id="title"
                     name="title"

@@ -1,7 +1,6 @@
 import classnames from 'classnames'
 import React, {
     Children,
-    cloneElement,
     createContext,
     isValidElement,
     ReactElement,
@@ -30,7 +29,11 @@ type GroupContextState = {
     isDisabled?: boolean
 }
 
-export const GroupContext = createContext<GroupContextState>({})
+type GroupPositionContextState = AppendPosition
+
+export const GroupContext = createContext<GroupContextState | null>(null)
+export const GroupPositionContext =
+    createContext<GroupPositionContextState | null>(null)
 
 export default function Group({
     children,
@@ -38,7 +41,7 @@ export default function Group({
     isDisabled,
     orientation = 'horizontal',
 }: Props) {
-    const appendPosition = useMemo(
+    const appendPosition: AppendPosition[] = useMemo(
         () =>
             orientation === 'vertical'
                 ? ['top', 'middle', 'bottom']
@@ -55,18 +58,22 @@ export default function Group({
             <span
                 className={classnames(className, css.group, css[orientation])}
             >
-                {validChildren.map((child, index) =>
-                    cloneElement(child, {
-                        appendPosition:
+                {validChildren.map((child, index) => (
+                    <GroupPositionContext.Provider
+                        key={index}
+                        value={
                             validChildren.length < 2
-                                ? undefined
+                                ? null
                                 : index > 0 && index < validChildren.length - 1
                                 ? appendPosition[1]
                                 : index === 0
                                 ? appendPosition[0]
-                                : appendPosition[2],
-                    })
-                )}
+                                : appendPosition[2]
+                        }
+                    >
+                        {child}
+                    </GroupPositionContext.Provider>
+                ))}
             </span>
         </GroupContext.Provider>
     )

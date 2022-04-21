@@ -1,12 +1,17 @@
 import classnames from 'classnames'
-import React, {createContext, ReactNode, useMemo, useState} from 'react'
+import React, {
+    createContext,
+    ReactNode,
+    useContext,
+    useMemo,
+    useState,
+} from 'react'
 
-import Group, {AppendPosition} from 'pages/common/components/layout/Group'
+import Group, {GroupPositionContext} from 'pages/common/components/layout/Group'
 
 import css from './InputGroup.less'
 
 type Props = {
-    appendPosition?: AppendPosition
     children?: ReactNode
     className?: string
     hasError?: boolean
@@ -23,12 +28,12 @@ export const InputGroupContext = createContext<InputGroupContextState | null>(
 )
 
 export default function InputGroup({
-    appendPosition,
     children,
     className,
     hasError,
     isDisabled,
 }: Props) {
+    const appendPosition = useContext(GroupPositionContext) || ''
     const [isFocused, setIsFocused] = useState(false)
     const contextValue = useMemo<InputGroupContextState>(
         () => ({
@@ -44,7 +49,7 @@ export default function InputGroup({
                 className={classnames(
                     className,
                     css.wrapper,
-                    css[appendPosition || ''],
+                    css[appendPosition],
                     {
                         [css.hasError]: hasError,
                         [css.isFocused]: isFocused,

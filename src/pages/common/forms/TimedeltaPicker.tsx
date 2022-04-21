@@ -14,7 +14,6 @@ import {
 } from 'config'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import GroupItem from 'pages/common/components/layout/GroupItem'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import {reportError} from 'utils/errors'
@@ -98,39 +97,29 @@ const TimedeltaPicker = ({
                 isRequired
                 {...otherProps}
             />
-            <GroupItem>
-                {(appendPosition) => (
-                    <UncontrolledDropdown>
-                        <DropdownToggle tag="span">
-                            <Button
-                                intent="secondary"
-                                className={css.button}
-                                appendPosition={appendPosition}
-                            >
-                                {unitLabel}
-                                <ButtonIconLabel
-                                    icon="arrow_drop_down"
-                                    position="right"
-                                />
-                            </Button>
-                        </DropdownToggle>
-                        <DropdownMenu>
-                            {units.map((unit) => (
-                                <DropdownItem
-                                    key={unit.value}
-                                    onClick={() =>
-                                        onChange(
-                                            `${quantity ?? ''}${unit.value}`
-                                        )
-                                    }
-                                >
-                                    {unit.label}
-                                </DropdownItem>
-                            ))}
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
-                )}
-            </GroupItem>
+            <UncontrolledDropdown>
+                <DropdownToggle tag="span">
+                    <Button intent="secondary" className={css.button}>
+                        {unitLabel}
+                        <ButtonIconLabel
+                            icon="arrow_drop_down"
+                            position="right"
+                        />
+                    </Button>
+                </DropdownToggle>
+                <DropdownMenu>
+                    {units.map((unit) => (
+                        <DropdownItem
+                            key={unit.value}
+                            onClick={() =>
+                                onChange(`${quantity ?? ''}${unit.value}`)
+                            }
+                        >
+                            {unit.label}
+                        </DropdownItem>
+                    ))}
+                </DropdownMenu>
+            </UncontrolledDropdown>
         </InputGroup>
     )
 }

@@ -7,9 +7,12 @@ exports[`<EmojiTextInput/> render() should render 1`] = `
   <InputGroup
     className="inputGroup"
   >
-    <GroupItem>
-      <Component />
-    </GroupItem>
+    <EmojiSelect
+      className="emojiPicker"
+      emoji="🍔"
+      onEmojiClear={[Function]}
+      onEmojiSelect={[Function]}
+    />
     <ForwardRef(TextInput)
       id="foo"
       isRequired={true}

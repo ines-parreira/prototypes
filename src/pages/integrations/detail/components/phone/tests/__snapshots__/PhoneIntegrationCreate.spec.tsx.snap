@@ -81,7 +81,6 @@ exports[`<PhoneIntegrationCreate/> render() should prefill the title field using
                   class="wrapper"
                 >
                   <input
-                    appendposition="right"
                     class="input nested"
                     id="title"
                     name="title"
@@ -388,7 +387,6 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                   class="wrapper"
                 >
                   <input
-                    appendposition="right"
                     class="input nested"
                     id="title"
                     name="title"
@@ -684,7 +682,6 @@ exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with t
                   class="wrapper"
                 >
                   <input
-                    appendposition="right"
                     class="input nested"
                     id="title"
                     name="title"

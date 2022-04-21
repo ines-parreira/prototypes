@@ -7,7 +7,6 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import Group from './Group'
-import GroupItem from './GroupItem'
 
 const storyConfig: Meta = {
     title: 'General/Layout/Group',
@@ -41,15 +40,9 @@ const WithDropdownTemplate: Story<ComponentProps<typeof Group>> = () => (
     <UncontrolledDropdown>
         <Group>
             <Button>Foo</Button>
-            <GroupItem>
-                {(appendPosition) => (
-                    <DropdownToggle tag="span">
-                        <IconButton appendPosition={appendPosition}>
-                            arrow_drop_down
-                        </IconButton>
-                    </DropdownToggle>
-                )}
-            </GroupItem>
+            <DropdownToggle tag="span">
+                <IconButton>arrow_drop_down</IconButton>
+            </DropdownToggle>
         </Group>
         <DropdownMenu>hello</DropdownMenu>
     </UncontrolledDropdown>

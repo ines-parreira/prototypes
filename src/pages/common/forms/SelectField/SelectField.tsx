@@ -22,7 +22,7 @@ import _min from 'lodash/min'
 import _noop from 'lodash/noop'
 import _isEqual from 'lodash/isEqual'
 
-import {AppendPosition} from 'pages/common/components/layout/Group'
+import {GroupPositionContext} from 'pages/common/components/layout/Group'
 
 import css from './SelectField.less'
 import {SelectableOption, Option, Value} from './types'
@@ -32,7 +32,6 @@ const ARROW_ICON_WIDTH = 10
 const MAXIMUM_MIN_WIDTH = 305
 
 type Props = {
-    appendPosition?: AppendPosition
     id: string | null
     allowCustomValue: boolean
     options: Option[]
@@ -355,7 +354,6 @@ export default class SelectField extends Component<Props, State> {
             focusedPlaceholder,
             fullWidth,
             dropdownMenuClassName,
-            appendPosition,
             positionFixed,
         } = this.props
         const {
@@ -418,51 +416,55 @@ export default class SelectField extends Component<Props, State> {
                         data-toggle="dropdown"
                         className={className}
                     >
-                        <div
-                            className={classnames(
-                                css.select,
-                                'dropdown-toggle',
-                                css[appendPosition || ''],
-                                {
-                                    [css.selectFullWidth]: fullWidth,
-                                }
+                        <GroupPositionContext.Consumer>
+                            {(appendPosition) => (
+                                <div
+                                    className={classnames(
+                                        css.select,
+                                        'dropdown-toggle',
+                                        css[appendPosition || ''],
+                                        {
+                                            [css.selectFullWidth]: fullWidth,
+                                        }
+                                    )}
+                                    onClick={this._toggleDropdown}
+                                >
+                                    <span
+                                        style={{
+                                            minWidth: selectMinWidth,
+                                            // hide the label when the input is filled
+                                            // to keep the current width of the select
+                                            opacity: input ? 0 : 1,
+                                        }}
+                                        className={classnames(css.label, {
+                                            [css.placeholder]: !label,
+                                        })}
+                                    >
+                                        {label ||
+                                            (isFocused && focusedPlaceholder
+                                                ? focusedPlaceholder
+                                                : placeholder)}
+                                    </span>
+                                    {/* eslint-disable-next-line jsx-a11y/autocomplete-valid */}
+                                    <input
+                                        style={{
+                                            minWidth: selectMinWidth,
+                                        }}
+                                        id={id!}
+                                        className={css.input}
+                                        ref={this.inputRef}
+                                        value={input}
+                                        required={required && !value}
+                                        onChange={this._onSearchChange}
+                                        onKeyDown={this._onSearchKeyDown}
+                                        onFocus={this._onFocus}
+                                        onBlur={this._onBlur}
+                                        type="text"
+                                        autoComplete="chrome-off"
+                                    />
+                                </div>
                             )}
-                            onClick={this._toggleDropdown}
-                        >
-                            <span
-                                style={{
-                                    minWidth: selectMinWidth,
-                                    // hide the label when the input is filled
-                                    // to keep the current width of the select
-                                    opacity: input ? 0 : 1,
-                                }}
-                                className={classnames(css.label, {
-                                    [css.placeholder]: !label,
-                                })}
-                            >
-                                {label ||
-                                    (isFocused && focusedPlaceholder
-                                        ? focusedPlaceholder
-                                        : placeholder)}
-                            </span>
-                            {/* eslint-disable-next-line jsx-a11y/autocomplete-valid */}
-                            <input
-                                style={{
-                                    minWidth: selectMinWidth,
-                                }}
-                                id={id!}
-                                className={css.input}
-                                ref={this.inputRef}
-                                value={input}
-                                required={required && !value}
-                                onChange={this._onSearchChange}
-                                onKeyDown={this._onSearchKeyDown}
-                                onFocus={this._onFocus}
-                                onBlur={this._onBlur}
-                                type="text"
-                                autoComplete="chrome-off"
-                            />
-                        </div>
+                        </GroupPositionContext.Consumer>
                     </DropdownToggle>
 
                     <DropdownMenu

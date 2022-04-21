@@ -8,7 +8,6 @@ import {
 
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
-import GroupItem from 'pages/common/components/layout/GroupItem'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import {Rating} from 'models/helpCenter/types'
@@ -69,15 +68,9 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                 </Button>
 
                 {canSave && (
-                    <GroupItem>
-                        {(appendPosition) => (
-                            <DropdownToggle tag="span">
-                                <IconButton appendPosition={appendPosition}>
-                                    arrow_drop_down
-                                </IconButton>
-                            </DropdownToggle>
-                        )}
-                    </GroupItem>
+                    <DropdownToggle tag="span">
+                        <IconButton>arrow_drop_down</IconButton>
+                    </DropdownToggle>
                 )}
             </Group>
             {requiredFields.length >= 1 && (
@@ -112,15 +105,9 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                     Create &amp; Publish
                 </Button>
                 {canSave && (
-                    <GroupItem>
-                        {(appendPosition) => (
-                            <DropdownToggle tag="span">
-                                <IconButton appendPosition={appendPosition}>
-                                    arrow_drop_down
-                                </IconButton>
-                            </DropdownToggle>
-                        )}
-                    </GroupItem>
+                    <DropdownToggle tag="span">
+                        <IconButton>arrow_drop_down</IconButton>
+                    </DropdownToggle>
                 )}
             </Group>
 

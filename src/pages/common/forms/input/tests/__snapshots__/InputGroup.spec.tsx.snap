@@ -14,7 +14,6 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
     class="wrapper center isNested group horizontal"
   >
     <input
-      appendposition="left"
       class="input"
       max="Infinity"
       min="-Infinity"

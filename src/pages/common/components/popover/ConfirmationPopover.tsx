@@ -14,6 +14,7 @@ import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import _get from 'lodash/get'
 
 import Button from 'pages/common/components/button/Button'
+import {GroupPositionContext} from 'pages/common/components/layout/Group'
 
 type Props = {
     buttonProps?: ComponentProps<typeof Button>
@@ -111,10 +112,14 @@ export default function ConfirmationPopover({
 
                     <PopoverBody>
                         <p>{content}</p>
-
-                        <Button {...buttonProps} onClick={handleConfirmation}>
-                            Confirm
-                        </Button>
+                        <GroupPositionContext.Provider value={null}>
+                            <Button
+                                {...buttonProps}
+                                onClick={handleConfirmation}
+                            >
+                                Confirm
+                            </Button>
+                        </GroupPositionContext.Provider>
                     </PopoverBody>
                 </Popover>
             )}

@@ -18,7 +18,6 @@ import {useDebounce} from 'react-use'
 
 import classnames from 'classnames'
 import Group from 'pages/common/components/layout/Group'
-import GroupItem from 'pages/common/components/layout/GroupItem'
 import IconButton from 'pages/common/components/button/IconButton'
 import {renderTemplate} from 'pages/common/utils/template'
 import {getTicket} from 'state/ticket/selectors'
@@ -135,35 +134,28 @@ function ButtonsGroup({buttons, source}: Props) {
                     )
                 })}
                 {dropdownButtons.length > 0 && (
-                    <GroupItem>
-                        {(appendPosition) => (
-                            <UncontrolledDropdown>
-                                <DropdownToggle tag={'span'}>
-                                    <IconButton
-                                        appendPosition={appendPosition}
-                                        intent="secondary"
-                                    >
-                                        more_horiz
-                                    </IconButton>
-                                </DropdownToggle>
-                                <DropdownMenu right>
-                                    {dropdownButtons.map((button, index) => (
-                                        <Button
-                                            key={index}
-                                            index={index + nbButtonDisplayed}
-                                            label={renderTemplate(
-                                                button.label,
-                                                templateContext
-                                            )}
-                                            openEditor={openEditor}
-                                            action={button.action}
-                                            isDropdown
-                                        />
-                                    ))}
-                                </DropdownMenu>
-                            </UncontrolledDropdown>
-                        )}
-                    </GroupItem>
+                    <UncontrolledDropdown>
+                        <DropdownToggle tag={'span'}>
+                            <IconButton intent="secondary">
+                                more_horiz
+                            </IconButton>
+                        </DropdownToggle>
+                        <DropdownMenu right>
+                            {dropdownButtons.map((button, index) => (
+                                <Button
+                                    key={index}
+                                    index={index + nbButtonDisplayed}
+                                    label={renderTemplate(
+                                        button.label,
+                                        templateContext
+                                    )}
+                                    openEditor={openEditor}
+                                    action={button.action}
+                                    isDropdown
+                                />
+                            ))}
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
                 )}
             </Group>
             <Modal

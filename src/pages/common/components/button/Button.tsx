@@ -9,7 +9,7 @@ import classnames from 'classnames'
 import {Spinner} from 'reactstrap'
 
 import {
-    AppendPosition,
+    GroupPositionContext,
     GroupContext,
 } from 'pages/common/components/layout/Group'
 import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
@@ -19,7 +19,6 @@ import css from './Button.less'
 type ButtonSize = 'medium' | 'small'
 
 type Props = {
-    appendPosition?: AppendPosition
     fillStyle?: 'fill' | 'ghost'
     intent?: 'primary' | 'secondary' | 'destructive'
     isDisabled?: boolean
@@ -37,7 +36,6 @@ export const ButtonContext = createContext<ButtonContextState>({
 
 const Button = forwardRef(function (
     {
-        appendPosition,
         children,
         className,
         fillStyle = 'fill',
@@ -51,6 +49,7 @@ const Button = forwardRef(function (
     ref: Ref<HTMLButtonElement> | null | undefined
 ) {
     const context = useContext(GroupContext)
+    const appendPosition = useContext(GroupPositionContext) || ''
     const isInsideInputGroup = !!useContext(InputGroupContext)
 
     return (
@@ -63,7 +62,7 @@ const Button = forwardRef(function (
                     css[fillStyle],
                     css[intent],
                     css[size],
-                    css[appendPosition || ''],
+                    css[appendPosition],
                     {
                         [css.isDisabled]:
                             context?.isDisabled || isDisabled || isLoading,

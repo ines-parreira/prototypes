@@ -555,7 +555,6 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
           class="input wrapper group horizontal"
         >
           <input
-            appendposition="left"
             class="input"
             max="Infinity"
             min="-Infinity"

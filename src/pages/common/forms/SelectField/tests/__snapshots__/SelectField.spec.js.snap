@@ -222,39 +222,9 @@ exports[`SelectField should render a select input with custom props 1`] = `
       data-toggle="dropdown"
       tag="div"
     >
-      <div
-        className="select dropdown-toggle"
-        onClick={[Function]}
-      >
-        <span
-          className="label"
-          style={
-            Object {
-              "minWidth": 10,
-              "opacity": 1,
-            }
-          }
-        >
-          First
-        </span>
-        <input
-          autoComplete="chrome-off"
-          className="input"
-          id={null}
-          onBlur={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          required={false}
-          style={
-            Object {
-              "minWidth": 10,
-            }
-          }
-          type="text"
-          value=""
-        />
-      </div>
+      <ContextConsumer>
+        <Component />
+      </ContextConsumer>
     </DropdownToggle>
     <DropdownMenu
       className="options"
@@ -292,39 +262,9 @@ exports[`SelectField should render a select input with default props 1`] = `
       data-toggle="dropdown"
       tag="div"
     >
-      <div
-        className="select dropdown-toggle"
-        onClick={[Function]}
-      >
-        <span
-          className="label placeholder"
-          style={
-            Object {
-              "minWidth": 10,
-              "opacity": 1,
-            }
-          }
-        >
-          Select an option
-        </span>
-        <input
-          autoComplete="chrome-off"
-          className="input"
-          id={null}
-          onBlur={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          required={false}
-          style={
-            Object {
-              "minWidth": 10,
-            }
-          }
-          type="text"
-          value=""
-        />
-      </div>
+      <ContextConsumer>
+        <Component />
+      </ContextConsumer>
     </DropdownToggle>
     <DropdownMenu
       className="options"
@@ -377,39 +317,9 @@ exports[`SelectField should set the minWidth of the input according to the lengt
       data-toggle="dropdown"
       tag="div"
     >
-      <div
-        className="select dropdown-toggle"
-        onClick={[Function]}
-      >
-        <span
-          className="label"
-          style={
-            Object {
-              "minWidth": 58,
-              "opacity": 1,
-            }
-          }
-        >
-          First
-        </span>
-        <input
-          autoComplete="chrome-off"
-          className="input"
-          id={null}
-          onBlur={[Function]}
-          onChange={[Function]}
-          onFocus={[Function]}
-          onKeyDown={[Function]}
-          required={false}
-          style={
-            Object {
-              "minWidth": 58,
-            }
-          }
-          type="text"
-          value=""
-        />
-      </div>
+      <ContextConsumer>
+        <Component />
+      </ContextConsumer>
     </DropdownToggle>
     <DropdownMenu
       className="options"

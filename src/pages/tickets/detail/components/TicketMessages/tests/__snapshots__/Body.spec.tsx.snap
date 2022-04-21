@@ -379,7 +379,6 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
                                   className="buttons group vertical"
                                 >
                                   <ForwardRef
-                                    appendPosition="top"
                                     intent="secondary"
                                     key=".$0"
                                     onClick={[Function]}
@@ -395,7 +394,6 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
                                     </button>
                                   </ForwardRef>
                                   <ForwardRef
-                                    appendPosition="middle"
                                     isDisabled={true}
                                     key=".$1"
                                   >
@@ -408,7 +406,6 @@ exports[`Body should display the Facebook carousel if there's matching metadata 
                                     </button>
                                   </ForwardRef>
                                   <ForwardRef
-                                    appendPosition="bottom"
                                     intent="secondary"
                                     key=".$2"
                                     onClick={[Function]}

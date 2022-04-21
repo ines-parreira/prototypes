@@ -145,8 +145,63 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
       Option 1
     </div>
   </Connect(Component)>
-  <GroupItem>
-    <Component />
-  </GroupItem>
+  <Dropdown
+    a11y={true}
+    active={false}
+    addonType={false}
+    direction="down"
+    inNavbar={false}
+    isOpen={false}
+    nav={false}
+    setActiveFromChild={false}
+    toggle={[Function]}
+  >
+    <DropdownToggle
+      aria-haspopup={true}
+      color="secondary"
+      tag="span"
+    >
+      <ForwardRef
+        intent="secondary"
+      >
+        arrow_drop_down
+      </ForwardRef>
+    </DropdownToggle>
+    <DropdownMenu
+      flip={true}
+      right={true}
+      tag="div"
+    >
+      <Connect(Component)
+        key="action4"
+        options={
+          Array [
+            Object {
+              "label": "Option 1",
+              "value": "option1",
+            },
+          ]
+        }
+        payload={Object {}}
+        setModalOpen={[Function]}
+        tag={[Function]}
+        tagOptions={
+          Object {
+            "className": "buttonFlex",
+            "toggle": false,
+          }
+        }
+        title={
+          <div>
+            Option 1
+          </div>
+        }
+      >
+        <div>
+          Option 1
+        </div>
+      </Connect(Component)>
+    </DropdownMenu>
+  </Dropdown>
 </Group>
 `;
