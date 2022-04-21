@@ -9,7 +9,7 @@ import {
     useReorderDnD,
     Callbacks,
 } from '../../../../../settings/helpCenter/hooks/useReorderDnD'
-import ForwardIcon from '../../../../../integrations/detail/components/ForwardIcon'
+import ForwardIcon from '../../../../../integrations/common/components/ForwardIcon'
 
 import bodyCellCss from '../../../../../common/components/table/cells/BodyCell.less'
 import BodyCellContent from '../../../../../common/components/table/cells/BodyCellContent'

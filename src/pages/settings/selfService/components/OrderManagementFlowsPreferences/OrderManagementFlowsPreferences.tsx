@@ -20,7 +20,7 @@ import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import {PolicyEnum} from 'models/selfServiceConfiguration/types'
 import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
-import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import {openChat} from 'utils'
 import settingsCss from 'pages/settings/settings.less'
 import SelfServicePreferencesNavbar from 'pages/settings/selfService/components/SelfServicePreferencesNavbar'
@@ -159,9 +159,9 @@ export const OrderManagementFlowsPreferences = () => {
                                                     PolicyEnum.TRACK_ORDER_POLICY
                                                 }
                                                 policyName="Track"
-                                                policyDescription="Let customers track 
-                                                        orders directly from the 
-                                                        Self-service Portal in chat 
+                                                policyDescription="Let customers track
+                                                        orders directly from the
+                                                        Self-service Portal in chat
                                                         and help center"
                                                 configuration={configuration}
                                             />
@@ -181,8 +181,8 @@ export const OrderManagementFlowsPreferences = () => {
                                                 }
                                                 integration={integration}
                                                 policyName="Return"
-                                                policyDescription="Let customers request returns directly 
-                                                        from the Self-service Portal in chat 
+                                                policyDescription="Let customers request returns directly
+                                                        from the Self-service Portal in chat
                                                         and help center"
                                                 configuration={configuration}
                                             />
@@ -192,8 +192,8 @@ export const OrderManagementFlowsPreferences = () => {
                                                 }
                                                 integration={integration}
                                                 policyName="Cancel"
-                                                policyDescription="Let customers request order cancellations 
-                                                        directly from the Self-service Portal in chat 
+                                                policyDescription="Let customers request order cancellations
+                                                        directly from the Self-service Portal in chat
                                                         and help center"
                                                 configuration={configuration}
                                             />

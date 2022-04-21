@@ -5,7 +5,7 @@ import {fromJS, Map} from 'immutable'
 import ToggleInput from '../../../common/forms/ToggleInput'
 import {getIconFromType} from '../../../../state/integrations/helpers'
 import {generateConfiguration} from '../utils/generateConfiguration'
-import ForwardIcon from '../../../integrations/detail/components/ForwardIcon'
+import ForwardIcon from '../../../integrations/common/components/ForwardIcon'
 import {
     SelfServiceConfiguration,
     ShopType,
@@ -131,7 +131,7 @@ export const IntegrationRow = ({
                             alt="Shopify logo"
                             role="presentation"
                             className={css.logo}
-                            src={getIconFromType('shopify')}
+                            src={getIconFromType(IntegrationType.Shopify)}
                         />
 
                         <b>{shopName}</b>

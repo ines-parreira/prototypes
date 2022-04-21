@@ -1,0 +1,2 @@
+import InstallOnIntegrationsCard from './InstallOnIntegrationsCard'
+export default InstallOnIntegrationsCard

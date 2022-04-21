@@ -1,0 +1,513 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Recharge/> Detail should render a detail view 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Recharge
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/recharge/"
+    >
+      App Details
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/recharge/connections"
+    >
+      Connections
+    </a>
+  </nav>
+  <header
+    class="hero"
+  >
+    <img
+      alt="Recharge's logo"
+      class="heroImage"
+      src="/static/private/js/assets/img/integrations/recharge.svg"
+    />
+    <div>
+      <h1
+        class="heroHeading"
+      >
+        Recharge
+      </h1>
+      <p
+        class="heroDescription"
+      >
+        Display subscription info. Refund charges & skip monthly payments.
+      </p>
+      <div
+        class="heroMeta"
+      >
+        <span
+          class="badge badge badge-secondary badge-pill"
+        >
+          PAYMENT, BILLING & SUBSCRIPTION
+        </span>
+        <span
+          class="by"
+        >
+          by
+           
+          <a
+            href="https://www.gorgias.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Gorgias
+          </a>
+        </span>
+      </div>
+    </div>
+  </header>
+  <main
+    class="main"
+  >
+    <section
+      class="longDescription"
+    >
+      <h2
+        class="categoryTitle"
+      >
+        About
+      </h2>
+      <div>
+        <p>
+          Recharge connects the world through seamless payments and empowers thousands of merchants to grow their subscription business. Connect Gorgias and Recharge for a simple way to manage customer subscriptions and customer service from one convenient location. 
+        </p>
+        <p>
+          <strong>
+            With this integration, you’ll be able to: 
+          </strong>
+        </p>
+        <ul
+          role="list"
+        >
+          <li>
+            Display Recharge subscriptions next to support tickets in Gorgias, to gather full customer context before replying to questions
+          </li>
+          <li>
+            Cancel subscriptions, re-activate subscriptions, or refund a charge (either partially or totally) right from the Gorgias helpdesk
+          </li>
+          <li>
+            Embed Recharge data in your Macro replies to automate the most common support questions
+          </li>
+        </ul>
+      </div>
+      <ul
+        class="screenshotList"
+      >
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 1 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="/static/private/js/assets/img/integrations/screenshots/recharge-1.jpeg"
+          />
+        </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 2 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="/static/private/js/assets/img/integrations/screenshots/recharge-2.jpeg"
+          />
+        </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 3 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="/static/private/js/assets/img/integrations/screenshots/recharge-3.jpeg"
+          />
+        </li>
+      </ul>
+    </section>
+    <div
+      class="infoCard card"
+    >
+      <div
+        class="card-body"
+      >
+        <div
+          class="connectWrapper"
+        >
+          <a
+            class="connectButtonWrapper"
+            to="/app/settings/integrations/recharge/new"
+          >
+            <button
+              class="wrapper connectButton fill primary medium"
+              type="button"
+            >
+              Connect App
+            </button>
+          </a>
+        </div>
+        <h2
+          class="categoryTitle cardTitle"
+        >
+          Pricing
+        </h2>
+        <div>
+          Starting at 1% + 10¢ per transaction. Get started for free
+        </div>
+        <h2
+          class="categoryTitle cardTitle"
+        >
+          Resources
+        </h2>
+        <ul
+          class="cardList"
+        >
+          <li>
+            <a
+              class="actionLink"
+              href="https://docs.gorgias.com/subscription-integrations/recharge"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                description
+              </i>
+              Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              class="actionLink"
+              href="https://rechargepayments.com/privacy-policy/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                privacy_tip
+              </i>
+              Privacy Policy
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+`;
+
+exports[`<Recharge/> Integration should render 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/recharge/connections"
+          >
+            Recharge
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        />
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-8"
+      >
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Shopify store name
+          </label>
+          <div
+            class="input-group"
+          >
+            <input
+              class="field form-control"
+              disabled=""
+              id="id-name"
+              type="text"
+              value=""
+            />
+            <span
+              class="input-group-append"
+            >
+              <span
+                class="input-group-text"
+              >
+                .myshopify.com
+              </span>
+            </span>
+          </div>
+        </div>
+        <div>
+          <button
+            class="wrapper float-right fill destructive medium"
+            id="confirm-button-delete"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete integration
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Recharge/> Integration should render shopify integrations list 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/recharge/connections"
+          >
+            Recharge
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Add integration
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-8"
+      >
+        <div
+          class="shopifyIntegrationsList"
+        >
+          <label
+            class="control-label"
+          >
+            Select an existing Shopify integration
+          </label>
+          <button
+            class="wrapper installButton mb-2 fill secondary medium"
+            type="button"
+          >
+            <img
+              alt="shopify logo"
+              class="shopifyLogo"
+              src="test-file-stub"
+            />
+            Install Recharge for
+             
+            myShop2
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Recharge/> List should render 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Recharge
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/recharge/"
+    >
+      App Details
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/recharge/connections"
+    >
+      Connections
+    </a>
+  </nav>
+  <ul
+    class="list"
+  >
+    <li
+      class="listItem"
+    >
+      <a
+        class="link"
+        to="/app/settings/integrations/recharge/1"
+      >
+        <span>
+          myShop1
+        </span>
+        <i
+          class="material-icons md-3"
+        >
+          keyboard_arrow_right
+        </i>
+      </a>
+    </li>
+  </ul>
+  <div
+    class="wrapper"
+  >
+    <a
+      class="connectButtonWrapper"
+      to="/app/settings/integrations/recharge/new"
+    >
+      <button
+        class="wrapper actionButton fill primary medium"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            add
+          </i>
+          Connect Recharge
+        </span>
+      </button>
+    </a>
+  </div>
+</div>
+`;

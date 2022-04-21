@@ -1,6 +1,7 @@
 import React from 'react'
 import {Map} from 'immutable'
 
+import {IntegrationType} from 'models/integration/constants'
 import {getIconFromType} from 'state/integrations/helpers'
 import {getActionTemplate} from 'utils'
 
@@ -14,14 +15,14 @@ class IntegrationAction extends React.Component<Props> {
         const {action} = this.props
 
         const template = getActionTemplate(action.get('name'))
-        const integrationType = template!.integrationType
+        const integrationType = template!.integrationType as IntegrationType
 
         return (
             <div className="d-flex align-items-center">
                 <img
-                    alt={`${integrationType!} logo`}
+                    alt={`${integrationType} logo`}
                     role="presentation"
-                    src={getIconFromType(integrationType!)}
+                    src={getIconFromType(integrationType)}
                     style={{maxWidth: '30px'}}
                     className="mr-2"
                 />
