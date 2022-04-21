@@ -1,0 +1,299 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App should render 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="inner"
+    style="min-height: 300px;"
+  >
+    <i
+      class="icon-custom icon-circle-o-notch md-spin"
+      style="font-size: 40px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`App should render 2`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          My test app
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <header
+    class="hero"
+  >
+    <img
+      alt="My test app's logo"
+      class="heroImage"
+      src="https://ok.com/1.png"
+    />
+    <div>
+      <h1
+        class="heroHeading"
+      >
+        My test app
+      </h1>
+      <p
+        class="heroDescription"
+      >
+        Some tagline here
+      </p>
+      <div
+        class="heroMeta"
+      >
+        <span
+          class="badge badge badge-secondary badge-pill"
+        >
+          ECOMM PLATFORMS
+        </span>
+        <span
+          class="badge badge badge-secondary badge-pill"
+        >
+          REVIEWS & UGC
+        </span>
+        <span
+          class="badge badge badge-success badge-pill"
+        >
+          14 DAYS FREE TRIAL
+        </span>
+        <span
+          class="by"
+        >
+          by
+           
+          <a
+            href="https://www.gomycompany.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            myCompany
+          </a>
+        </span>
+      </div>
+    </div>
+  </header>
+  <main
+    class="main"
+  >
+    <section
+      class="longDescription"
+    >
+      <h2
+        class="categoryTitle"
+      >
+        About
+      </h2>
+      <div>
+        <p>
+          My company is an interactive video platform, helping users create meaningful and personal conversations at scale.
+        </p>
+        
+
+        <p>
+          With the my company app, users can sync their videos and monitor every viewer interaction, while managing leads and audience choices through easy-to-view columns.
+        </p>
+        
+
+        <p>
+          With all of your audience interactions in one place, collecting your insights is a breeze.
+        </p>
+        
+
+        <p>
+          It also has a list:
+        </p>
+        
+
+        <ul>
+          
+
+          <li>
+            In which noting that really matters is said but at least you see it!
+          </li>
+          
+
+          <li>
+            Isn’t it nice?
+          </li>
+          
+
+        </ul>
+      </div>
+      <ul
+        class="screenshotList"
+      >
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 1 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="https://screen.com/my1.png"
+          />
+        </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 2 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="https://screen.com/my2.png"
+          />
+        </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 3 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="https://screen.com/my3.png"
+          />
+        </li>
+      </ul>
+    </section>
+    <div
+      class="infoCard card"
+    >
+      <div
+        class="card-body"
+      >
+        <div
+          class="connectWrapper"
+        >
+          <a
+            class="connectButtonWrapper"
+            href="https://ok.com/?account=20-1+rpz"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <button
+              class="wrapper connectButton fill primary medium"
+              type="button"
+            >
+              Connect App
+            </button>
+          </a>
+        </div>
+        <h2
+          class="categoryTitle cardTitle"
+        >
+          Pricing
+        </h2>
+        <div>
+          <p>
+            They are several options: 
+          </p>
+          
+
+          <ul>
+            
+
+            <li>
+              Pay once
+            </li>
+            
+
+            <li>
+              Pay on ticket
+            </li>
+            
+
+          </ul>
+        </div>
+        <h2
+          class="categoryTitle cardTitle"
+        >
+          Resources
+        </h2>
+        <ul
+          class="cardList"
+        >
+          
+          <li>
+            <a
+              class="actionLink"
+              href="https://www.mycompany.com/privacy-policy"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                privacy_tip
+              </i>
+              Privacy Policy
+            </a>
+          </li>
+        </ul>
+        <h2
+          class="categoryTitle cardTitle"
+        >
+          Support
+        </h2>
+        <ul
+          class="cardList"
+        >
+          <li>
+            <a
+              class="actionLink"
+              href="mailto:support@gotolstoy.com"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons actionIcon"
+              >
+                mail
+              </i>
+              support@gotolstoy.com
+            </a>
+          </li>
+          <li>
+            <a
+              class="actionLink"
+              href="tel:+33620033659"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons actionIcon"
+              >
+                phone
+              </i>
+              +33620033659
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+`;

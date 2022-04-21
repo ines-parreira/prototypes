@@ -21,9 +21,9 @@ import {
     paywallConfigs as defaultPaywallConfigs,
 } from '../config/paywalls'
 import App from './App'
-import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
-import AppDetail from './integrations/detail/AppDetail'
-import IntegrationList from './integrations/list/IntegrationList'
+import IntegrationDetail from './integrations/integration/Integration'
+import AppDetail from './integrations/App'
+import IntegrationsList from './integrations/List'
 import PhoneNumbersListContainer from './phoneNumbers/PhoneNumbersListContainer'
 import PhoneNumberCreateContainer from './phoneNumbers/PhoneNumberCreateContainer'
 import PhoneNumberDetailContainer from './phoneNumbers/PhoneNumberDetailContainer'
@@ -670,7 +670,7 @@ export function IntegrationsSettingsRoutes({
                 exact
                 render={appRender({
                     content: withUserRoleRequired(
-                        IntegrationList,
+                        IntegrationsList,
                         ADMIN_ROLE,
                         PageSection.Integrations
                     ),
@@ -690,7 +690,7 @@ export function IntegrationsSettingsRoutes({
                 exact
                 render={appRender({
                     content: withUserRoleRequired(
-                        IntegrationDetailContainer,
+                        IntegrationDetail,
                         ADMIN_ROLE,
                         PageSection.Integrations
                     ),

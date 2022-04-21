@@ -1,0 +1,37 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .table {
+        .header {
+            height: 56px;
+        }
+
+        tr {
+            height: 68px;
+            td {
+                width: auto;
+
+                &:last-child {
+                    width: 70px !important;
+                    max-width: 70px !important;
+
+                    a {
+                        color: @classic-neutral-grey-4;
+                    }
+                }
+            }
+
+            &:hover {
+                a {
+                    color: @classic-main-primary !important;
+                }
+            }
+        }
+    }
+
+    .phoneCell {
+        strong {
+            font-weight: normal;
+        }
+    }
+}

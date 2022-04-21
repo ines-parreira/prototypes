@@ -10,5 +10,5 @@ export const getActionIconUrl = (type: string): string => {
 }
 
 export const getIconFromActionType = (type: string): string => {
-    return getIconFromUrl(getActionIconUrl(type))
+    return getIconFromUrl(`integrations/${getActionIconUrl(type)}`)
 }

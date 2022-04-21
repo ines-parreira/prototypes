@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {generateConfiguration} from 'pages/settings/selfService/utils/generateConfiguration'
-import ForwardIcon from 'pages/integrations/detail/components/ForwardIcon'
+import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import {
     PolicyEnum,
     PolicyKey,

@@ -1,7 +1,8 @@
 import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 
-import {IntegrationConfig, INTEGRATION_TYPE_CONFIG} from '../../config'
+import {IntegrationConfig, INTEGRATION_TYPE_CONFIG} from 'config'
+import {IntegrationType} from 'models/integration/constants'
 import {getIconFromUrl} from '../../utils'
 
 export const getIntegrationsByTypes = (
@@ -13,20 +14,18 @@ export const getIntegrationsByTypes = (
     ) as List<any>
 
 export const getIntegrationConfig = (
-    type: string
+    type: IntegrationType
 ): IntegrationConfig | undefined => {
-    return _find(INTEGRATION_TYPE_CONFIG, {type}) as
-        | IntegrationConfig
-        | undefined
+    return _find(INTEGRATION_TYPE_CONFIG, {type})
 }
 
-export const getIconUrl = (type: string): string => {
+export const getIconUrl = (type: IntegrationType): string => {
     const config = getIntegrationConfig(type)
     return config && typeof config === 'object' && config.image
         ? config.image
         : ''
 }
 
-export const getIconFromType = (type: string): string => {
-    return getIconFromUrl(getIconUrl(type))
+export const getIconFromType = (type: IntegrationType): string => {
+    return getIconFromUrl(`integrations/${getIconUrl(type)}`)
 }

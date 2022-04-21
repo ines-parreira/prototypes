@@ -220,11 +220,11 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
             </Row>
             <Row className="mt-4">
                 <Col lg={6} className="pr-lg-0 pr-md-3">
-                    <h4>Connected integrations</h4>
+                    <h4 className="mb-3">Connected integrations</h4>
                     <Row
                         className={classnames(
+                            css.appRow,
                             'border-bottom',
-                            'py-3',
                             'ml-1',
                             'mr-1',
                             {
@@ -273,6 +273,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                         hasCapability(phoneNumber, IntegrationType.Sms) && (
                             <Row
                                 className={classnames(
+                                    css.appRow,
                                     'border-bottom',
                                     'py-3',
                                     'ml-1',

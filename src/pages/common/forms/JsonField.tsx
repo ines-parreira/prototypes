@@ -2,7 +2,7 @@ import React, {ChangeEvent} from 'react'
 import {Input, FormGroup} from 'reactstrap'
 import _omit from 'lodash/omit'
 
-import {HTTPForm} from 'pages/integrations/detail/components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
+import {HTTPForm} from 'pages/integrations/integration/components/http/HTTPIntegrationOverview/HTTPIntegrationOverview'
 import {JSONValue} from '../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import Errors from './Errors'

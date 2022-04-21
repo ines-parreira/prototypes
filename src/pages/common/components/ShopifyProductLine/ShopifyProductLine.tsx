@@ -6,6 +6,7 @@ import {Map} from 'immutable'
 
 import classnames from 'classnames'
 
+import {IntegrationType} from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
@@ -241,7 +242,7 @@ export default function ShopifyProductLine({
                 </div>
                 <div>
                     <img
-                        src={getIconFromType('shopify')}
+                        src={getIconFromType(IntegrationType.Shopify)}
                         alt="Shopify logo"
                         className={css.shopifyLogo}
                     />
