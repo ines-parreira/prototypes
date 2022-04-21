@@ -105,7 +105,7 @@ exports[`<Action/> should render with a Body component 1`] = `
     <label
       class="control-label"
     >
-      Parameters
+      Query Parameters
     </label>
     <div>
       <button
@@ -302,7 +302,7 @@ exports[`<Action/> should render without a Body component 1`] = `
     <label
       class="control-label"
     >
-      Parameters
+      Query Parameters
     </label>
     <div>
       <button

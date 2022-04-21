@@ -154,7 +154,7 @@ exports[`<Form/> should render with preloaded data 1`] = `
           <label
             class="control-label"
           >
-            Parameters
+            Query Parameters
           </label>
           <div>
             <button
@@ -345,7 +345,7 @@ exports[`<Form/> should render without any data 1`] = `
           <label
             class="control-label"
           >
-            Parameters
+            Query Parameters
           </label>
           <div>
             <button

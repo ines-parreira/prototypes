@@ -63,7 +63,7 @@ export default function Action({action, onChange}: Props) {
                 />
             </FormGroup>
             <FormGroup className="mt-3">
-                <Label className="control-label">Parameters</Label>
+                <Label className="control-label">Query Parameters</Label>
                 <Parameters
                     path={`params`}
                     value={action.params}
