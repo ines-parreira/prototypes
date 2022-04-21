@@ -22,6 +22,7 @@ export default function PhoneNumberTitle({
                 countryCode={phoneNumber.meta.country}
                 withRoundFlag={withRoundFlag}
             />
+            &nbsp;
             <strong>
                 {phoneNumber.name}
                 {withCountryCode && ` - ${phoneNumber.meta.country}`}

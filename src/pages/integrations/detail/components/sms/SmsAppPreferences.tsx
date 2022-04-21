@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
-import classnames from 'classnames'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import {SmsIntegration, isSmsIntegration} from 'models/integration/types'
@@ -98,39 +97,28 @@ export default function SmsAppPreferences({
                 <Row>
                     <Col lg={6} xl={7}>
                         <Form onSubmit={handleSubmit}>
-                            <Row>
+                            <FormGroup>
+                                <Label
+                                    htmlFor="title"
+                                    className="control-label"
+                                >
+                                    Integration title
+                                </Label>
+                                <EmojiTextInput
+                                    id="title"
+                                    value={title}
+                                    emoji={emoji}
+                                    placeholder="Ex: Company Support Line"
+                                    required
+                                    onChange={setTitle}
+                                    onEmojiChange={setEmoji}
+                                />
+                            </FormGroup>
+                            <Row className="mt-5 mb-5">
                                 <Col>
-                                    <FormGroup>
-                                        <Label
-                                            htmlFor="title"
-                                            className="control-label"
-                                        >
-                                            Integration title
-                                        </Label>
-                                        <EmojiTextInput
-                                            id="title"
-                                            value={title}
-                                            emoji={emoji}
-                                            placeholder="Ex: Company Support Line"
-                                            required
-                                            onChange={setTitle}
-                                            onEmojiChange={setEmoji}
-                                        />
-                                    </FormGroup>
-                                </Col>
-                            </Row>
-                            <Row className="mt-4 mb-5">
-                                <Col>
-                                    <h4 className="mb-3">Phone number</h4>
+                                    <h4>Phone number</h4>
 
-                                    <Row
-                                        className={classnames(
-                                            css.appRow,
-                                            'border-bottom',
-                                            'ml-1',
-                                            'mr-1'
-                                        )}
-                                    >
+                                    <Row className="border-bottom py-2 ml-1 mr-1">
                                         <Col lg={8} className="pl-0">
                                             {phoneNumber && (
                                                 <PhoneNumberTitle

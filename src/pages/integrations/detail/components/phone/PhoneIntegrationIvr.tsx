@@ -1,23 +1,24 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import {fromJS} from 'immutable'
-import {Col, Container, Form, Row} from 'reactstrap'
 
+import {Button, Col, Container, Form, Row} from 'reactstrap'
+import classnames from 'classnames'
+
+import useAppDispatch from '../../../../../hooks/useAppDispatch'
+import PageHeader from '../../../../common/components/PageHeader'
 import {
     PhoneIntegration,
     PhoneIntegrationIvrSettings,
     isPhoneIntegration,
-} from 'models/integration/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import PageHeader from 'pages/common/components/PageHeader'
-import Button from 'pages/common/components/button/Button'
-import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
-import {updatePhoneIvrConfiguration} from 'pages/integrations/integration/components/phone/actions'
-import PhoneIntegrationNavigation from 'pages/integrations/integration/components/phone/PhoneIntegrationNavigation'
-import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
-import VoiceMessageField from 'pages/integrations/integration/components/phone/VoiceMessageField'
-import IvrMenuActionsFieldArray from 'pages/integrations/integration/components/phone/IvrMenuActionsFieldArray'
+} from '../../../../../models/integration/types'
+import {DEFAULT_VOICE_MESSAGE} from '../../../../../models/integration/constants'
+import settingsCss from '../../../../settings/settings.less'
 
-import settingsCss from 'pages/settings/settings.less'
+import {updatePhoneIvrConfiguration} from './actions'
+import PhoneIntegrationBreadcrumbs from './PhoneIntegrationBreadcrumbs'
+import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
+import IvrMenuActionsFieldArray from './IvrMenuActionsFieldArray'
+import VoiceMessageField from './VoiceMessageField'
 
 type Props = {
     integration: Maybe<PhoneIntegration>
@@ -105,9 +106,12 @@ const PhoneIntegrationIvr = (props: Props): JSX.Element | null => {
                             />
 
                             <Button
-                                className="mt-5"
                                 type="submit"
-                                isDisabled={isLoading}
+                                color="success"
+                                className={classnames('mt-5', {
+                                    'btn-loading': isLoading,
+                                })}
+                                disabled={isLoading}
                             >
                                 Save changes
                             </Button>

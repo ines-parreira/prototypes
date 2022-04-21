@@ -60,67 +60,57 @@ exports[`<SmsAppPreferences/> render() should render 1`] = `
           class=""
         >
           <div
-            class="row"
+            class="form-group"
           >
-            <div
-              class="col"
+            <label
+              class="control-label"
+              for="title"
             >
-              <div
-                class="form-group"
+              Integration title
+            </label>
+            <div
+              class="container"
+            >
+              <span
+                class="inputGroup wrapper group horizontal"
               >
-                <label
-                  class="control-label"
-                  for="title"
-                >
-                  Integration title
-                </label>
                 <div
-                  class="container"
+                  class="picker emojiPicker"
                 >
                   <span
-                    class="inputGroup wrapper group horizontal"
+                    class="material-icons empty icon"
                   >
-                    <div
-                      class="picker emojiPicker"
-                    >
-                      <span
-                        class="material-icons empty icon"
-                      >
-                        insert_emoticon
-                      </span>
-                    </div>
-                    <div
-                      class="wrapper"
-                    >
-                      <input
-                        class="input nested"
-                        id="title"
-                        name="title"
-                        placeholder="Ex: Company Support Line"
-                        required=""
-                        tabindex="0"
-                        type="text"
-                        value="My new SMS Integration"
-                      />
-                    </div>
+                    insert_emoticon
                   </span>
                 </div>
-              </div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input nested"
+                    id="title"
+                    name="title"
+                    placeholder="Ex: Company Support Line"
+                    required=""
+                    tabindex="0"
+                    type="text"
+                    value="My new SMS Integration"
+                  />
+                </div>
+              </span>
             </div>
           </div>
           <div
-            class="mt-4 mb-5 row"
+            class="mt-5 mb-5 row"
           >
             <div
               class="col"
             >
-              <h4
-                class="mb-3"
-              >
+              <h4>
                 Phone number
               </h4>
               <div
-                class="appRow border-bottom ml-1 mr-1 row"
+                class="border-bottom py-2 ml-1 mr-1 row"
               >
                 <div
                   class="pl-0 col-lg-8"
@@ -138,6 +128,7 @@ exports[`<SmsAppPreferences/> render() should render 1`] = `
                         🇺🇸
                       </span>
                     </div>
+                     
                     <strong>
                       A Phone Number
                     </strong>
@@ -252,67 +243,57 @@ exports[`<SmsAppPreferences/> render() should submit a valid payload with the se
           class=""
         >
           <div
-            class="row"
+            class="form-group"
           >
-            <div
-              class="col"
+            <label
+              class="control-label"
+              for="title"
             >
-              <div
-                class="form-group"
+              Integration title
+            </label>
+            <div
+              class="container"
+            >
+              <span
+                class="inputGroup wrapper group horizontal"
               >
-                <label
-                  class="control-label"
-                  for="title"
-                >
-                  Integration title
-                </label>
                 <div
-                  class="container"
+                  class="picker emojiPicker"
                 >
                   <span
-                    class="inputGroup wrapper group horizontal"
+                    class="material-icons empty icon"
                   >
-                    <div
-                      class="picker emojiPicker"
-                    >
-                      <span
-                        class="material-icons empty icon"
-                      >
-                        insert_emoticon
-                      </span>
-                    </div>
-                    <div
-                      class="wrapper"
-                    >
-                      <input
-                        class="input nested"
-                        id="title"
-                        name="title"
-                        placeholder="Ex: Company Support Line"
-                        required=""
-                        tabindex="0"
-                        type="text"
-                        value="My updated SMS integration"
-                      />
-                    </div>
+                    insert_emoticon
                   </span>
                 </div>
-              </div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input nested"
+                    id="title"
+                    name="title"
+                    placeholder="Ex: Company Support Line"
+                    required=""
+                    tabindex="0"
+                    type="text"
+                    value="My updated SMS integration"
+                  />
+                </div>
+              </span>
             </div>
           </div>
           <div
-            class="mt-4 mb-5 row"
+            class="mt-5 mb-5 row"
           >
             <div
               class="col"
             >
-              <h4
-                class="mb-3"
-              >
+              <h4>
                 Phone number
               </h4>
               <div
-                class="appRow border-bottom ml-1 mr-1 row"
+                class="border-bottom py-2 ml-1 mr-1 row"
               >
                 <div
                   class="pl-0 col-lg-8"
@@ -330,6 +311,7 @@ exports[`<SmsAppPreferences/> render() should submit a valid payload with the se
                         🇺🇸
                       </span>
                     </div>
+                     
                     <strong>
                       A Phone Number
                     </strong>
