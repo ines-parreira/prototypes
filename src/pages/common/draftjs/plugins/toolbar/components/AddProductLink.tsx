@@ -175,7 +175,7 @@ export function AddProductLink({
     return (
         <Popover
             icon="shopify"
-            id="shopify"
+            id="insert_shopify_product"
             name="Insert Shopify Product"
             className={classnames(css.productLinkToolTip, 'p-0', 'd-flex')}
             isOpen={isOpen}
