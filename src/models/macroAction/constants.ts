@@ -1,6 +1,5 @@
 //TsFixMe fallback value, use MacroActionName enum instead
-import _find from 'lodash/find'
-import {INTEGRATION_TYPE_CONFIG} from '../../config'
+import {MacroActionName} from './types'
 
 export const MACRO_ACTION_NAME = Object.freeze({
     ADD_ATTACHMENTS: 'addAttachments',
@@ -33,14 +32,9 @@ export const MACRO_ACTION_TYPE = Object.freeze({
     USER: 'user',
 })
 
-export const ACTION_TYPE_DESCRIPTIONS = [
-    _find(INTEGRATION_TYPE_CONFIG, {type: 'http'}),
-    _find(INTEGRATION_TYPE_CONFIG, {type: 'shopify'}),
-    _find(INTEGRATION_TYPE_CONFIG, {type: 'recharge'}),
-    {
-        type: 'addInternalNote',
-        title: 'Add Internal Note',
-        description: 'Add an internal note.',
-        image: 'icons/gorgias-icon-logo-black.png',
-    },
-]
+export const TYPE_TO_IMAGE_PATH: Record<string, string> = {
+    http: 'integrations/http.png',
+    shopify: 'integrations/shopify.png',
+    recharge: 'integrations/recharge.svg',
+    [MacroActionName.AddInternalNote]: 'icons/gorgias-icon-logo-black.png',
+}

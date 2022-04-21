@@ -186,14 +186,6 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         longDescription: '',
     } as IntegrationConfig,
     {
-        type: IntegrationType.Klaviyo,
-        title: 'Klaviyo - 🗄 DEPRECATED',
-        description:
-            'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
-        image: 'klaviyo.png',
-        longDescription: '',
-    } as IntegrationConfig,
-    {
         type: IntegrationType.Email,
         subTypes: [
             IntegrationType.Email,
@@ -224,31 +216,6 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         title: 'Chat',
         description: 'Add a chat on your website.',
         longDescription: '',
-    } as IntegrationConfig,
-    {
-        type: IntegrationType.Http,
-        title: 'HTTP',
-        description: 'Connect any application to Gorgias',
-        image: 'http.png',
-        longDescription: '',
-    } as IntegrationConfig,
-    {
-        type: IntegrationType.Smooch,
-        title: 'Smooch',
-        description: 'Connect your own Smooch to Gorgias',
-        image: 'smooch.png',
-        categories: [],
-        longDescription: '',
-        screenshots: ['facebook-1.png', 'facebook-2.png', 'facebook-3.png'],
-        pricingPlan: PricingPlan.FREE,
-        pricingDetails: '',
-        pricingLink: '',
-        company: 'Gorgias',
-        companyUrl: 'https://www.gorgias.com/',
-        privacyPolicy: '',
-        setupGuide: '',
-        hasFreeTrial: false,
-        freeTrialPeriod: null,
     } as IntegrationConfig,
     {
         type: IntegrationType.Facebook,
@@ -291,6 +258,13 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         hasFreeTrial: false,
         freeTrialPeriod: null,
     },
+    {
+        type: IntegrationType.Http,
+        title: 'HTTP',
+        description: 'Connect any application to Gorgias',
+        image: 'http.png',
+        longDescription: '',
+    } as IntegrationConfig,
     {
         type: IntegrationType.Shopify,
         title: 'Shopify',
@@ -423,6 +397,32 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         hasFreeTrial: true,
         freeTrialPeriod: TrialPeriod.CUSTOM,
     },
+    {
+        type: IntegrationType.Smooch,
+        title: 'Smooch',
+        description: 'Connect your own Smooch to Gorgias',
+        image: 'smooch.png',
+        categories: [],
+        longDescription: '',
+        screenshots: ['facebook-1.png', 'facebook-2.png', 'facebook-3.png'],
+        pricingPlan: PricingPlan.FREE,
+        pricingDetails: '',
+        pricingLink: '',
+        company: 'Gorgias',
+        companyUrl: 'https://www.gorgias.com/',
+        privacyPolicy: '',
+        setupGuide: '',
+        hasFreeTrial: false,
+        freeTrialPeriod: null,
+    } as IntegrationConfig,
+    {
+        type: IntegrationType.Klaviyo,
+        title: 'Klaviyo - 🗄 DEPRECATED',
+        description:
+            'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
+        image: 'klaviyo.png',
+        longDescription: '',
+    } as IntegrationConfig,
 ]
 
 // Import period for tickets

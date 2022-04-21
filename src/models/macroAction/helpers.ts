@@ -1,14 +1,7 @@
-import _find from 'lodash/find'
 import {getIconFromUrl} from '../../utils'
-import {ACTION_TYPE_DESCRIPTIONS} from './constants'
-
-export const getActionIconUrl = (type: string): string => {
-    const config = _find(ACTION_TYPE_DESCRIPTIONS, {type})
-    return config && typeof config === 'object' && config.image
-        ? config.image
-        : ''
-}
+import {TYPE_TO_IMAGE_PATH} from './constants'
 
 export const getIconFromActionType = (type: string): string => {
-    return getIconFromUrl(`integrations/${getActionIconUrl(type)}`)
+    const url = TYPE_TO_IMAGE_PATH[type] || ''
+    return getIconFromUrl(url)
 }
