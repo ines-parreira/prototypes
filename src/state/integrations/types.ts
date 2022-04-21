@@ -26,9 +26,9 @@ export type IntegrationsState = {
     }
 }
 
-export type IntegrationListItem = Pick<
+export type IntegrationListItem = Omit<
     IntegrationConfig,
-    'type' | 'description' | 'title' | 'requiredFeature' | 'image'
+    'longDescription' | 'isExternalConnectUrl'
 > & {
     count: number
     requiredPlanName?: string

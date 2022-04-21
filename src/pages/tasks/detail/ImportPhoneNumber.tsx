@@ -11,7 +11,7 @@ import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInp
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Option} from 'pages/common/forms/SelectField/types'
 import {getCountryFromPhoneNumber} from 'pages/common/forms/PhoneNumberInput/utils'
-import rawTypeOptions from 'pages/integrations/integration/components/phone/options/types.json'
+import rawTypeOptions from 'pages/integrations/detail/components/phone/options/types.json'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 

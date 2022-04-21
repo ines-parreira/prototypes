@@ -13,7 +13,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
+import ForwardIcon from 'pages/integrations/detail/components/ForwardIcon'
 import {TagLabel} from 'pages/common/utils/labels'
 import useAppSelector from 'hooks/useAppSelector'
 

@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 import {useRouteMatch} from 'react-router'
 import classNames from 'classnames'
 
-import ChatIntegrationPreview from 'pages/integrations/integration/components/chat/ChatIntegrationPreview'
+import ChatIntegrationPreview from 'pages/integrations/detail/components/chat/ChatIntegrationPreview'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import {
     Integration,

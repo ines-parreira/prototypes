@@ -7,7 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import SelfServicePreferencesNavbar from 'pages/settings/selfService/components/SelfServicePreferencesNavbar'
-import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
+import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/detail/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 
 import css from '../QuickResponseFlowItem/QuickResponseFlowItem.less'

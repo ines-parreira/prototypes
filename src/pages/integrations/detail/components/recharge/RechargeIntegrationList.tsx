@@ -1,0 +1,127 @@
+import React, {Component} from 'react'
+import {List, Map} from 'immutable'
+import {Link} from 'react-router-dom'
+import {connect, ConnectedProps} from 'react-redux'
+
+import Button from 'pages/common/components/button/Button'
+import {getRedirectUri} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/types'
+import {RootState} from 'state/types'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+
+import css from '../../../../settings/settings.less'
+
+import history from '../../../../history'
+import IntegrationList from '../IntegrationList'
+import ForwardIcon from '../ForwardIcon'
+
+type Props = {
+    integrations: List<Map<any, any>>
+    shopifyIntegrations: List<any>
+    loading: Map<any, any>
+} & ConnectedProps<typeof connector>
+
+export class RechargeIntegrationList extends Component<Props> {
+    _shouldHideCreateButton = () => {
+        return !this.props.shopifyIntegrations.size
+    }
+
+    render() {
+        const {integrations, loading, redirectUri} = this.props
+        const rechargeIntegrations = integrations.filter(
+            (v) => v!.get('type') === IntegrationType.Recharge
+        ) as List<Map<any, any>>
+
+        const longTypeDescription = (
+            <div>
+                {this._shouldHideCreateButton() &&
+                    (!rechargeIntegrations.size ? (
+                        <Alert type={AlertType.Error} className={css.mb16}>
+                            You need to have at least one Shopify integration to
+                            add Recharge integrations.
+                        </Alert>
+                    ) : (
+                        <Alert className={css.mb16}>
+                            All your Shopify integrations have a Recharge
+                            integration connected.
+                        </Alert>
+                    ))}
+
+                <p>Recharge is a recurring payment app for Shopify.</p>
+
+                <p>How Gorgias works with Recharge:</p>
+                <ul>
+                    <li>
+                        Display Recharge subscriptions next to support tickets
+                    </li>
+                    <li>Edit subscriptions in one click</li>
+                    <li>
+                        When a customer asks to edit their subscription, send
+                        them an auto-response with the link to manage the
+                        subscription
+                    </li>
+                </ul>
+
+                <h4 className="mt-5">Your Recharge stores</h4>
+            </div>
+        )
+
+        const integrationToItemDisplay = (int: Map<any, any>) => {
+            const editLink = `/app/settings/integrations/recharge/${
+                int.get('id') as number
+            }`
+            const shopifyShopName = int.getIn(['meta', 'store_name'])
+            const reactivateUrl = redirectUri
+                .concat('?store_name=')
+                .concat(shopifyShopName)
+            const isDisabled = int.get('deactivated_datetime')
+            const isSubmitting = loading.get('updateIntegration')
+            return (
+                <tr key={int.get('id')}>
+                    <td className="link-full-td">
+                        <Link to={editLink}>
+                            <div>
+                                <b>{int.get('name')}</b>
+                            </div>
+                        </Link>
+                    </td>
+                    {isDisabled ? (
+                        <td className="smallest align-middle">
+                            <Link to={isSubmitting ? '#' : reactivateUrl}>
+                                <Button type="button" isDisabled={isSubmitting}>
+                                    Reconnect
+                                </Button>
+                            </Link>
+                        </td>
+                    ) : null}
+                    <td className="smallest align-middle">
+                        <ForwardIcon href={editLink} />
+                    </td>
+                </tr>
+            )
+        }
+
+        return (
+            <IntegrationList
+                longTypeDescription={longTypeDescription}
+                integrationType={IntegrationType.Recharge}
+                integrations={rechargeIntegrations}
+                createIntegration={() =>
+                    history.push('/app/settings/integrations/recharge/new')
+                }
+                createIntegrationButtonContent="Add Recharge"
+                integrationToItemDisplay={integrationToItemDisplay}
+                loading={loading}
+                createIntegrationButtonHidden={this._shouldHideCreateButton()}
+            />
+        )
+    }
+}
+
+const connector = connect((state: RootState) => {
+    return {
+        redirectUri: getRedirectUri(IntegrationType.Recharge)(state),
+    }
+})
+
+export default connector(RechargeIntegrationList)

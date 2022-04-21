@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React from 'react'
 import classNames from 'classnames'
 
 import infoIcon from 'assets/img/icons/info.svg'
@@ -21,14 +21,13 @@ const bannerIcon = {
     [NotificationStatus.Error]: errorIcon,
 }
 
-export type Props = {
-    hide?: (value: string | number | undefined) => void
-    id?: string | number
-    actionHTML?: ReactNode | string
+type Props = {
+    hide?: (value: string | number) => void
+    id: string | number
+    actionHTML?: string
     onClose?: () => void
     message: string
     status?: Exclude<NotificationStatus, NotificationStatus.Loading>
-    borderless?: boolean
 } & Pick<
     Notification,
     'allowHTML' | 'closable' | 'dismissible' | 'onClick' | 'showIcon'
@@ -38,7 +37,6 @@ const BannerNotification = ({
     allowHTML = true,
     closable = false,
     dismissible = true,
-    borderless = false,
     hide,
     id,
     message,
@@ -65,7 +63,6 @@ const BannerNotification = ({
         <div
             className={classNames(css.bannerNotification, css[status], {
                 [css.clickable]: onClick || dismissible,
-                [css.borderless]: borderless,
             })}
         >
             <div className={css.messageContainer} onClick={handleClick}>
@@ -86,19 +83,16 @@ const BannerNotification = ({
                     ) : (
                         <span>{message}</span>
                     )}
-                    {actionHTML &&
-                        (typeof actionHTML === 'string' ? (
-                            <>
-                                <span
-                                    dangerouslySetInnerHTML={{
-                                        __html: actionHTML,
-                                    }}
-                                    className={css.messageAction}
-                                />
-                            </>
-                        ) : (
-                            actionHTML
-                        ))}
+                    {actionHTML && (
+                        <>
+                            <span
+                                dangerouslySetInnerHTML={{
+                                    __html: actionHTML,
+                                }}
+                                className={css.messageAction}
+                            />
+                        </>
+                    )}
                 </span>
             </div>
             {closable && (

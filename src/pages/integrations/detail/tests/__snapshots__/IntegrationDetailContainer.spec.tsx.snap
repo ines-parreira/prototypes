@@ -1,0 +1,581 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<IntegrationDetailContainer /> email should render the custom creation page 1`] = `
+<div>
+  EmailIntegrationCreateCustom
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> email should render the forwarding page for a specific integration 1`] = `
+<div>
+  EmailIntegrationCreateForwarding
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> email should render the verification page for a specific integration 1`] = `
+<div>
+  EmailIntegrationCreateVerification
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> facebook should render the ads tab for a specific integration 1`] = `
+<div>
+  FacebookIntegrationInstagramAds
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> facebook should render the customer chat tab for a specific integration 1`] = `
+<div>
+  FacebookIntegrationCustomerChat
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> gorgias_chat should render the self service tab of a specific integration 1`] = `
+<div>
+  GorgiasChatIntegrationSelfService
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> http should render the list of events page for a specific integration 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/http"
+          >
+            HTTP
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        />
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/http/1"
+    >
+      Settings
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/http/1/events"
+    >
+      Logs
+    </a>
+  </nav>
+  <div>
+    HTTPIntegrationEvents
+  </div>
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> http should render the page of an event for a specific integration 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/http"
+          >
+            HTTP
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        />
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          #
+          1
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/http/1"
+    >
+      Settings
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/http/1/events"
+    >
+      Logs
+    </a>
+  </nav>
+  <div>
+    HTTPIntegrationEvent
+  </div>
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> phone should render the voicemail tab of a specific integration 1`] = `
+<div>
+  PhoneIntegrationVoicemail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> smooch_inside should render the migration tab of a specific integrations 1`] = `
+<div>
+  ChatIntegrationMigration
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the campaign tab of a specific integration for gorgias_chat 1`] = `
+<div>
+  GorgiasChatCampaignDetail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the campaign tab of a specific integration for smooch_inside 1`] = `
+<div>
+  CampaignDetail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the creation page for aircall 1`] = `
+<div>
+  AircallIntegrationCreate
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the creation page for email 1`] = `
+<div>
+  EmailIntegrationCreate
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the creation page for facebook 1`] = `
+<div>
+  FacebookIntegrationDetail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the creation page for phone 1`] = `
+<div>
+  PhoneIntegrationCreate
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the creation page for sms 1`] = `
+<div>
+  SmsIntegrationCreate
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the installation tab of a specific integration for gorgias_chat 1`] = `
+<div>
+  GorgiasChatIntegrationInstall
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the installation tab of a specific integration for smooch_inside 1`] = `
+<div>
+  ChatIntegrationInstall
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of campaigns of a specific integration for gorgias_chat 1`] = `
+<div>
+  GorgiasChatIntegrationCampaigns
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of campaigns of a specific integration for smooch_inside 1`] = `
+<div>
+  ChatIntegrationCampaigns
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for aircall 1`] = `
+<div>
+  AircallIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for email 1`] = `
+<div>
+  EmailIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for facebook 1`] = `
+<div>
+  FacebookIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for gorgias_chat 1`] = `
+<div>
+  GorgiasChatIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for http 1`] = `
+<div>
+  HTTPIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for klaviyo 1`] = `
+<div>
+  KlaviyoIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for magento2 1`] = `
+<div>
+  Magento2IntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for phone 1`] = `
+<div>
+  PhoneIntegrationsList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for recharge 1`] = `
+<div>
+  RechargeIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for shopify 1`] = `
+<div>
+  ShopifyIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for smile 1`] = `
+<div>
+  SmileIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for smooch 1`] = `
+<div>
+  SmoochIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for smooch_inside 1`] = `
+<div>
+  ChatIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for sms 1`] = `
+<div>
+  SmsIntegrationsList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the list of integrations for yotpo 1`] = `
+<div>
+  YotpoIntegrationList
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for email 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/email"
+          >
+            Email
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+           
+          <span
+            class="text-faded align-top"
+          />
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/email/1"
+    >
+      Preferences
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/email/1/dns"
+    >
+      Domain Verification
+    </a>
+  </nav>
+  <div>
+    EmailIntegrationUpdate
+  </div>
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for facebook 1`] = `
+<div>
+  FacebookIntegrationDetail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for gorgias_chat 1`] = `
+<div>
+  GorgiasChatIntegrationAppearance
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for http 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/http"
+          >
+            HTTP
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        />
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/http/1"
+    >
+      Settings
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/http/1/events"
+    >
+      Logs
+    </a>
+  </nav>
+  <div>
+    HTTPIntegrationOverview
+  </div>
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for klaviyo 1`] = `
+<div>
+  KlaviyoIntegrationDetail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for magento2 1`] = `
+<div>
+  Magento2IntegrationDetail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for recharge 1`] = `
+<div>
+  RechargeIntegrationDetail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for shopify 1`] = `
+<div>
+  ShopifyIntegrationDetail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for smile 1`] = `
+<div>
+  SmileIntegrationDetail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for smooch 1`] = `
+<div>
+  SmoochIntegrationDetail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for smooch_inside 1`] = `
+<div>
+  ChatIntegrationAppearance
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the page of a specific integration for yotpo 1`] = `
+<div>
+  YotpoIntegrationDetail
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the preferences tab of a specific integrations for facebook 1`] = `
+<div>
+  FacebookIntegrationPreferences
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the preferences tab of a specific integrations for gorgias_chat 1`] = `
+<div>
+  GorgiasChatIntegrationPreferences
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the preferences tab of a specific integrations for phone 1`] = `
+<div>
+  VoiceAppPreferences
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the preferences tab of a specific integrations for smooch 1`] = `
+<div>
+  SmoochIntegrationPreferences
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the preferences tab of a specific integrations for sms 1`] = `
+<div>
+  SmsAppPreferences
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the quick replies tab of a specific integration for gorgias_chat 1`] = `
+<div>
+  GorgiasChatIntegrationQuickReplies
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the quick replies tab of a specific integration for smooch_inside 1`] = `
+<div>
+  ChatIntegrationQuickReplies
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the setup page for email 1`] = `
+<div>
+  OutlookIntegrationSetup
+</div>
+`;
+
+exports[`<IntegrationDetailContainer /> should render the setup page for facebook 1`] = `
+<div>
+  FacebookIntegrationSetup
+</div>
+`;

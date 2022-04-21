@@ -1,0 +1,533 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EmailIntegrationList/> render() should render the page when there are no integrations 1`] = `
+<div>
+  <div
+    class="w-100"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Email
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <button
+          class="wrapper fill primary medium"
+          type="submit"
+        >
+          Add email address
+        </button>
+      </div>
+    </div>
+    <div
+      class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-container"
+    >
+      <div
+        class="mb-3"
+      >
+        <span>
+          Connect your support email addresses and respond to your customers from Gorgias.
+        </span>
+      </div>
+      <div
+        class="mt-3"
+      >
+        <div>
+          You have no integration of this type at the moment.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<EmailIntegrationList/> render() should render the page with a warning when a GMail integration has sending disabled 1`] = `
+<div>
+  <div
+    class="w-100"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Email
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <button
+          class="wrapper fill primary medium"
+          type="submit"
+        >
+          Add email address
+        </button>
+      </div>
+    </div>
+    <div
+      class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-container"
+    >
+      <div
+        class="mb-3"
+      >
+        <span>
+          Connect your support email addresses and respond to your customers from Gorgias.
+        </span>
+      </div>
+    </div>
+    <table
+      class="table-integrations mt-3 table table-hover"
+    >
+      <tbody>
+        <tr>
+          <td
+            class="smallest align-middle"
+          >
+            <img
+              alt="gmail logo"
+              src="test-file-stub"
+              width="22"
+            />
+          </td>
+          <td
+            class="link-full-td"
+          >
+            <a
+              to="/app/settings/integrations/email/1"
+            >
+              <div>
+                <b
+                  class="mr-2"
+                >
+                  My GMail Integration 1
+                </b>
+                <span
+                  class="text-faded"
+                >
+                  email@gmail.com
+                </span>
+              </div>
+            </a>
+          </td>
+          <td
+            class="smallest align-middle text-right p-0"
+          >
+            <div>
+              <span
+                id="integration-tooltip-1"
+              >
+                <i
+                  class="material-icons align-middle orange md-2"
+                >
+                  warning
+                </i>
+              </span>
+            </div>
+          </td>
+          <td
+            class="smallest align-middle"
+          >
+            <a
+              to="/app/settings/integrations/email/1"
+            >
+              <i
+                class="material-icons md-2 align-middle icon-go-forward"
+              >
+                keyboard_arrow_right
+              </i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`<EmailIntegrationList/> render() should render the page with a warning when the domain is not verified 1`] = `
+<div>
+  <div
+    class="w-100"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Email
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <button
+          class="wrapper fill primary medium"
+          type="submit"
+        >
+          Add email address
+        </button>
+      </div>
+    </div>
+    <div
+      class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-container"
+    >
+      <div
+        class="mb-3"
+      >
+        <span>
+          Connect your support email addresses and respond to your customers from Gorgias.
+        </span>
+      </div>
+    </div>
+    <table
+      class="table-integrations mt-3 table table-hover"
+    >
+      <tbody>
+        <tr>
+          <td
+            class="smallest align-middle"
+          >
+            <i
+              class="icon material-icons align-bottom"
+            >
+              email
+            </i>
+          </td>
+          <td
+            class="link-full-td"
+          >
+            <a
+              to="/app/settings/integrations/email/1"
+            >
+              <div>
+                <b
+                  class="mr-2"
+                >
+                  My Email Integration 1
+                </b>
+                <span
+                  class="text-faded"
+                >
+                  email@gorgias-test.com
+                </span>
+              </div>
+            </a>
+          </td>
+          <td
+            class="smallest align-middle text-right p-0"
+          >
+            <div>
+              <span
+                id="integration-tooltip-1"
+              >
+                <i
+                  class="material-icons align-middle orange md-2"
+                >
+                  warning
+                </i>
+              </span>
+            </div>
+          </td>
+          <td
+            class="smallest align-middle"
+          >
+            <a
+              to="/app/settings/integrations/email/1"
+            >
+              <i
+                class="material-icons md-2 align-middle icon-go-forward"
+              >
+                keyboard_arrow_right
+              </i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`<EmailIntegrationList/> render() should render the page without warning when a GMail integration has sending enabled 1`] = `
+<div>
+  <div
+    class="w-100"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Email
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <button
+          class="wrapper fill primary medium"
+          type="submit"
+        >
+          Add email address
+        </button>
+      </div>
+    </div>
+    <div
+      class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-container"
+    >
+      <div
+        class="mb-3"
+      >
+        <span>
+          Connect your support email addresses and respond to your customers from Gorgias.
+        </span>
+      </div>
+    </div>
+    <table
+      class="table-integrations mt-3 table table-hover"
+    >
+      <tbody>
+        <tr>
+          <td
+            class="smallest align-middle"
+          >
+            <img
+              alt="gmail logo"
+              src="test-file-stub"
+              width="22"
+            />
+          </td>
+          <td
+            class="link-full-td"
+          >
+            <a
+              to="/app/settings/integrations/email/1"
+            >
+              <div>
+                <b
+                  class="mr-2"
+                >
+                  My GMail Integration 1
+                </b>
+                <span
+                  class="text-faded"
+                >
+                  email@gmail.com
+                </span>
+              </div>
+            </a>
+          </td>
+          <td
+            class="smallest align-middle text-right p-0"
+          >
+            <div />
+          </td>
+          <td
+            class="smallest align-middle"
+          >
+            <a
+              to="/app/settings/integrations/email/1"
+            >
+              <i
+                class="material-icons md-2 align-middle icon-go-forward"
+              >
+                keyboard_arrow_right
+              </i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`<EmailIntegrationList/> render() should render the page without warning when the email is verified 1`] = `
+<div>
+  <div
+    class="w-100"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            aria-current="page"
+            class="active breadcrumb-item"
+          >
+            Email
+          </li>
+        </ol>
+      </nav>
+      <div>
+        <button
+          class="wrapper fill primary medium"
+          type="submit"
+        >
+          Add email address
+        </button>
+      </div>
+    </div>
+    <div
+      class="pageContainer pb0 container-fluid"
+      data-candu-id="integration-container"
+    >
+      <div
+        class="mb-3"
+      >
+        <span>
+          Connect your support email addresses and respond to your customers from Gorgias.
+        </span>
+      </div>
+    </div>
+    <table
+      class="table-integrations mt-3 table table-hover"
+    >
+      <tbody>
+        <tr>
+          <td
+            class="smallest align-middle"
+          >
+            <i
+              class="icon material-icons align-bottom"
+            >
+              email
+            </i>
+          </td>
+          <td
+            class="link-full-td"
+          >
+            <a
+              to="/app/settings/integrations/email/1"
+            >
+              <div>
+                <b
+                  class="mr-2"
+                >
+                  My Email Integration 1
+                </b>
+                <span
+                  class="text-faded"
+                >
+                  email@gorgias-test.com
+                </span>
+              </div>
+            </a>
+          </td>
+          <td
+            class="smallest align-middle text-right p-0"
+          >
+            <div />
+          </td>
+          <td
+            class="smallest align-middle"
+          >
+            <a
+              to="/app/settings/integrations/email/1"
+            >
+              <i
+                class="material-icons md-2 align-middle icon-go-forward"
+              >
+                keyboard_arrow_right
+              </i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

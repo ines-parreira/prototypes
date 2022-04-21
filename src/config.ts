@@ -161,38 +161,26 @@ export type IntegrationConfig = {
     type: IntegrationType
     subTypes?: IntegrationType[]
     requiredFeature?: AccountFeature
-    image: string
+    image?: string
     longDescription: string
-    company: string
-    companyUrl: string
-    categories: Category[]
-    screenshots: string[]
-    privacyPolicy: string
-    setupGuide: string
-    pricingPlan: PricingPlan | null
-    pricingLink: string
-    pricingDetails: string
-    hasFreeTrial: boolean
-    freeTrialPeriod: TrialPeriod | null
+    company?: string
+    companyUrl?: string
+    categories?: Category[]
+    screenshots?: string[]
+    privacyPolicy?: string
+    setupGuide?: string
+    pricingPlan?: PricingPlan | null
+    pricingLink?: string
+    pricingDetails?: string
+    hasFreeTrial?: boolean
+    freeTrialPeriod?: TrialPeriod
+    // Whether the "Connect App" button is a path to a more detailed install page (internal)
+    // or linking to an external url (e.g OAuth link)
+    isExternalConnectUrl: boolean
 }
 
 // A list of integration types along with descriptions that will be displayed in the integrations summary
 export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
-    {
-        type: IntegrationType.SmoochInside,
-        title: 'Chat - 🗄 DEPRECATED',
-        description:
-            'Please migrate to the new chat integration as this one will soon be removed.',
-        longDescription: '',
-    } as IntegrationConfig,
-    {
-        type: IntegrationType.Klaviyo,
-        title: 'Klaviyo - 🗄 DEPRECATED',
-        description:
-            'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
-        image: 'klaviyo.png',
-        longDescription: '',
-    } as IntegrationConfig,
     {
         type: IntegrationType.Email,
         subTypes: [
@@ -204,224 +192,138 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         description:
             'Connect your support email addresses and respond to your customers from Gorgias',
         longDescription: '',
-    } as IntegrationConfig,
+        isExternalConnectUrl: false,
+    },
     {
         type: IntegrationType.Phone,
         title: 'Voice',
         description: 'Chat with your customers over the phone from Gorgias.',
         requiredFeature: AccountFeature.PhoneNumber,
         longDescription: '',
-    } as IntegrationConfig,
+        isExternalConnectUrl: false,
+    },
     {
         type: IntegrationType.Sms,
         title: 'SMS',
         description: 'Chat with your customers via SMS from Gorgias.',
         requiredFeature: AccountFeature.PhoneNumber,
         longDescription: '',
-    } as IntegrationConfig,
+        isExternalConnectUrl: false,
+    },
     {
         type: IntegrationType.GorgiasChat,
         title: 'Chat',
         description: 'Add a chat on your website.',
         longDescription: '',
-    } as IntegrationConfig,
+        isExternalConnectUrl: false,
+    },
     {
-        type: IntegrationType.Http,
-        title: 'HTTP',
-        description: 'Connect any application to Gorgias',
-        image: 'http.png',
+        type: IntegrationType.SmoochInside,
+        title: 'Chat - 🗄 DEPRECATED',
+        description:
+            'Please migrate to the new chat integration as this one will soon be removed.',
         longDescription: '',
-    } as IntegrationConfig,
-    {
-        type: IntegrationType.Smooch,
-        title: 'Smooch',
-        description: 'Connect your own Smooch to Gorgias',
-        image: 'smooch.png',
-        categories: [],
-        longDescription: '',
-        screenshots: ['facebook-1.png', 'facebook-2.png', 'facebook-3.png'],
-        pricingPlan: PricingPlan.FREE,
-        pricingDetails: '',
-        pricingLink: '',
-        company: 'Gorgias',
-        companyUrl: 'https://www.gorgias.com/',
-        privacyPolicy: '',
-        setupGuide: '',
-        hasFreeTrial: false,
-        freeTrialPeriod: null,
-    } as IntegrationConfig,
+        isExternalConnectUrl: false,
+    },
     {
         type: IntegrationType.Facebook,
         title: 'Facebook, Messenger & Instagram',
         description:
             'Create tickets from Facebook posts, comments and recommendations, Instagram comments and mentions and Messenger conversations',
-        image: 'facebook.png',
-        categories: [Category.SOCIAL],
-        longDescription:
-            '<p><strong>The most efficient way to provide personalized Facebook support for your shoppers.</strong></p><p>Gorgias makes it easy to engage with messages, comments, mentions, or ad comments directly from your helpdesk, with detailed ecommerce information and powerful automation tools.</p><p><strong>When you integrate your Facebook page with Gorgias, you’ll be able to:&nbsp;</strong></p><ul role="list"><li>Automatically create tickets based on page comments, ad comments, mentions, and Messenger notifications</li><li>Reply to all Facebook tickets with a public comment or private message</li><li>React to Facebook comments</li><li>Answer questions quickly, thanks to contextual customer information next to every ticket</li><li>Automate answers to common questions with Gorgias’ powerful automation tools<br></li></ul>',
-        screenshots: ['facebook-1.png', 'facebook-2.png', 'facebook-3.png'],
-        pricingPlan: PricingPlan.FREE,
-        pricingDetails: '',
-        pricingLink: '',
-        company: 'Gorgias',
-        companyUrl: 'https://www.gorgias.com/',
-        privacyPolicy: 'https://www.facebook.com/about/privacy',
-        setupGuide:
-            'https://docs.gorgias.com/facebook-messenger/connect-your-social-channels-facebook-instagram',
-        hasFreeTrial: false,
-        freeTrialPeriod: null,
+        image: 'integrations/facebook.png',
+        longDescription: '',
+        isExternalConnectUrl: true,
     },
     {
         type: IntegrationType.Aircall,
         title: 'Aircall',
         description:
             'Provide phone support & create tickets when customers call you.',
-        image: 'aircall.png',
-        categories: [Category.PHONE],
-        longDescription:
-            '<p>Aircall allows you to receive and place phone calls. In a few clicks, the <a href="http://aircall.io">Aircall</a> +&nbsp;Gorgias integration ensures all relevant call information will be fully synced to a Gorgias ticket. This includes customer information, a link to voice recordings and voicemails, and the agent assigned to the call.<br></p><p><strong>This integration allows you to:&nbsp;</strong></p><ul role="list"><li>Sync call logs to Gorgias</li><li>Automatically assign calls to agents</li><li>See a customer’s Shopify and BigCommerce information when receiving a call</li></ul>',
-        screenshots: ['aircall-1.png', 'aircall-2.png', 'aircall-3.png'],
-        pricingPlan: PricingPlan.RECURRING,
-        pricingDetails: 'Pricing starting at $30/user/month, billed annually.',
-        pricingLink: '',
-        company: 'Aircall',
-        companyUrl: 'https://aircall.io/',
-        privacyPolicy: 'https://aircall.io/privacy-faqs/',
-        setupGuide: 'https://docs.gorgias.com/voice-and-phone/aircall',
-        hasFreeTrial: false,
-        freeTrialPeriod: null,
+        image: 'integrations/aircall.png',
+        longDescription: '',
+        isExternalConnectUrl: false,
+    },
+    {
+        type: IntegrationType.Http,
+        title: 'HTTP',
+        description: 'Connect any application to Gorgias',
+        image: 'integrations/http.png',
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Shopify,
         title: 'Shopify',
         description:
             'Display customer profiles & orders next to tickets. Edit orders with macros',
-        image: 'shopify.png',
-        categories: [Category.ECOM],
-        longDescription:
-            '<p>Instantly connect to Shopify in under a minute to have customer and order history at your agents’ fingertips.</p><p><br></p><p>Here are the things you can do with Shopify integration:&nbsp;</p><ul><li>Stop asking for information you already have<ul><li>View your customer’s order history as you close out their ticket to ensure speed and accuracy. No more switching between tabs or cutting and pasting</li></ul></li><li>Actual personalization at scale<ul><li>We make it easy to insert customer data provided by Shopify. From first name to shipping address, directly into each customer interaction. It’s an automatic and accurate way to get a more personal customer experience.</li></ul></li><li>Update Shopify orders directly from your helpdesk<ul><li>Update a shipping address or even issue a partial refund from directly within Gorgias. You can even create and send a draft order without opening a new tab or window.</li></ul></li><li>Automate your most common tasks<ul><li>From looking up the most recent orders to sending out an update to some of your most common questions, we make it easy to automate up to 20% of your customer support tasks.</li></ul></li><li>Detect the intent of what your customers are asking<ul><li>Gorgias uses advanced machine learning to detect the intents and sentiments of each message. By learning about tracking updates, return policies, and urgency, we help you set priorities and categorize tickets based on what they’re about.</li></ul></li></ul>',
-        screenshots: ['shopify-1.png', 'shopify-2.png', 'shopify-3.png'],
-        pricingPlan: PricingPlan.RECURRING,
-        pricingDetails: '',
-        pricingLink: 'https://www.shopify.com/pricing',
-        company: 'Gorgias',
-        companyUrl: 'https://www.gorgias.com/',
-        privacyPolicy: 'https://www.shopify.com/legal/privacy',
-        setupGuide: 'https://docs.gorgias.com/ecommerce-integrations/shopify',
-        hasFreeTrial: true,
-        freeTrialPeriod: TrialPeriod.FOURTEEN,
+        image: 'integrations/shopify.png',
+        longDescription: '',
+        isExternalConnectUrl: true,
     },
     {
         type: IntegrationType.Twitter,
         title: 'Twitter',
         description:
             'Create tickets when customers interact with you via replies or mentions on Twitter',
-        image: 'twitter.png',
+        image: 'integrations/twitter.png',
         requiredFeature: AccountFeature.TwitterIntegration,
-        categories: [Category.SOCIAL],
-        longDescription:
-            '<p>Give your support team the power to interact with shoppers on Twitter, without having to log into another platform or share credentials with your social media manager. View past Twitter conversations, gain cross-channel message context, and customize your replies to provide exceptional customer support. </p><p><strong>Features of this integration:&nbsp;</strong></p><ul role="list"><li>Create tickets in Gorgias when someone <strong>replies to a tweet</strong> from your brand.</li><li>Create tickets in Gorgias when someone <strong>mentions your brand</strong> in a tweet.</li><li>Tweet back right from the ticket in Gorgias.</li><li>View media attached to tweets, including images, videos, and gifs.</li><li>Open the tweet in Twitter with a single click.</li></ul><p>This integration is currently only available for Advanced and Enterprise plans.</p>',
-        screenshots: ['twitter-1.png', 'twitter-2.png', 'twitter-3.png'],
-        pricingPlan: PricingPlan.FREE,
-        pricingDetails: '',
-        pricingLink: 'https://www.gorgias.com/pricing',
-        company: 'Gorgias',
-        companyUrl: 'https://www.gorgias.com/',
-        privacyPolicy: 'https://twitter.com/privacy',
-        setupGuide:
-            'https://updates.gorgias.com/publications/twitter-replies-mentions-and-quote-tweets-1',
-        hasFreeTrial: false,
-        freeTrialPeriod: null,
+        longDescription: '',
+        isExternalConnectUrl: true,
     },
     {
         type: IntegrationType.Magento2,
         title: 'Magento 2',
         description:
             'Display customer profiles & orders next to tickets. Edit orders with macros',
-        image: 'magento.png',
+        image: 'integrations/magento.png',
         requiredFeature: AccountFeature.MagentoIntegration,
-        categories: [Category.ECOM],
-        longDescription:
-            '<p>Securely connect with Magento to have your customers’ order history at your agents’ fingertips.</p><p><br></p><p>Magento is an ecommerce platform built on open source technology which provides online merchants with a flexible shopping cart system, as well as control over the look, content and functionality of their online store.</p><p><br></p><p>The Gorgias plugin for Magento is currently compatible with Magento 2.2, 2.3 and 2.4 for all Magento versions: Open Source (CE), Commerce using on prem (EE), Commerce on Cloud (ECE).</p><p><br></p><p><span style="text-decoration: underline;" data-mce-style="text-decoration: underline;"><strong>Integration benefits</strong></span></p><ul><li>Display customer profiles next to tickets</li><li>Display orders, shipments and credit memos</li><li>Insert Magento 2 variables in macros</li><li>Use Magento 2 variables as filters in rules</li></ul>',
-        screenshots: ['magento-1.png', 'magento-2.png', 'magento-3.png'],
-        pricingPlan: PricingPlan.FREE,
-        pricingDetails: '',
-        pricingLink: 'https://business.adobe.com/products/magento/pricing.html',
-        company: 'Gorgias',
-        companyUrl: 'https://www.gorgias.com/',
-        privacyPolicy: 'https://magento.com/',
-        setupGuide: 'https://docs.gorgias.com/ecommerce-integrations/magento-2',
-        hasFreeTrial: false,
-        freeTrialPeriod: null,
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Recharge,
         title: 'Recharge',
         description:
             'Display subscription info. Refund charges & skip monthly payments.',
-        image: 'recharge.svg',
-        categories: [Category.PAYMENT],
-        longDescription:
-            '<p>Recharge connects the world through seamless payments and empowers thousands of merchants to grow their subscription business. Connect Gorgias and Recharge for a simple way to manage customer subscriptions and customer service from one convenient location. </p><p><strong>With this integration, you’ll be able to:&nbsp;</strong></p><ul role="list"><li>Display Recharge subscriptions next to support tickets in Gorgias, to gather full customer context before replying to questions</li><li>Cancel subscriptions, re-activate subscriptions, or refund a charge (either partially or totally)&nbsp;right from the Gorgias helpdesk</li><li>Embed Recharge data in your Macro replies to automate the most common support questions</li></ul>',
-        screenshots: ['recharge-1.jpeg', 'recharge-2.jpeg', 'recharge-3.jpeg'],
-        pricingPlan: PricingPlan.RECURRING,
-        pricingDetails:
-            'Starting at 1% + 10¢ per transaction. Get started for free',
-        pricingLink: 'https://rechargepayments.com/products/',
-        company: 'Gorgias',
-        companyUrl: 'https://www.gorgias.com/',
-        privacyPolicy: 'https://rechargepayments.com/privacy-policy/',
-        setupGuide:
-            'https://docs.gorgias.com/subscription-integrations/recharge',
-        hasFreeTrial: false,
-        freeTrialPeriod: null,
+        image: 'integrations/recharge.svg',
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Smile,
         title: 'Smile',
         description:
             'Display customer points and activity. Insert point balance or referral url in macros.',
-        image: 'smile.svg',
-        categories: [Category.LOYALTY],
-        longDescription:
-            '<p>Smile.io creates and manages reward programs (loyalty points, referrals and VIP programs) to build a fruitful relationship with both your new customers and the most loyal ones.</p><p>&zwj;</p><p>Here’s what you can do with the Smile integration:</p><ul role="list"><li>Display Smile customer profile next to Gorgias tickets</li><li>Insert point balance of referral URL in Macros</li><li>Triage tickets based on VIP tier</li></ul><p>For each customer, the following Smile data is available in Gorgias: point balance, referral URL, VIP tier, state.<br></p>',
-        screenshots: ['smile-1.jpeg', 'smile-2.jpeg', 'smile-3.png'],
-        pricingPlan: PricingPlan.RECURRING,
-        pricingDetails: 'Starting at $49/month',
-        pricingLink: 'https://smile.io/pricing',
-        company: 'Smile',
-        companyUrl: 'https://smile.io/',
-        privacyPolicy: 'https://smile.io/privacy-policy',
-        setupGuide: 'https://docs.gorgias.com/reward-and-loyalty/smile',
-        hasFreeTrial: true,
-        freeTrialPeriod: TrialPeriod.CUSTOM,
+        image: 'integrations/smile.svg',
+        longDescription: '',
+        isExternalConnectUrl: true,
+    },
+    {
+        type: IntegrationType.Klaviyo,
+        title: 'Klaviyo - 🗄 DEPRECATED',
+        description:
+            'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
+        image: 'integrations/klaviyo.png',
+        longDescription: '',
+        isExternalConnectUrl: false,
     },
     {
         type: IntegrationType.Yotpo,
         title: 'Yotpo',
         description:
             'Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.',
-        image: 'yotpo.png',
+        image: 'integrations/yotpo.png',
         requiredFeature: AccountFeature.YotpoIntegration,
-        categories: [Category.SMS_EMAIL, Category.LOYALTY, Category.REVIEWS],
-        longDescription:
-            '<p>Yotpo is an eCommerce marketing platform with the most advanced solutions for customer reviews, visual marketing, loyalty, referrals, and SMS marketing.</p><p>From approving a product review to updating reward points of a specific customer, allow your support agents to manage product reviews, questions, loyalty plans, and referrals without leaving Gorgias. </p><p><strong>Connect Yotpo with Gorgias to:</strong></p><ul role="list"><li>Display customer’s Yotpo data in Gorgias customer Activity Sidebar such as loyalty points, provided ratings, latest reviews, etc.</li><li>Manage customer loyalty plans (change point balance, assign VIP tier, honor redemptions, and send rewards) from the Gorgias sidebar.</li><li>Respond to a question with an answer either publicly or privately as new tickets.</li><li>Moderate customer reviews (product and site) and questions from within Gorgias as new tickets.</li><li>Request reviews from a customer. </li></ul>',
-        screenshots: [
-            'yotpo-1.png',
-            'yotpo-2.png',
-            'yotpo-3.png',
-            'yotpo-4.png',
-        ],
-        pricingPlan: PricingPlan.RECURRING,
-        pricingDetails: 'Free and premium plans available.',
-        pricingLink: 'https://www.yotpo.com/pricing/',
-        company: 'Gorgias',
-        companyUrl: 'https://www.gorgias.com/',
-        privacyPolicy: 'https://www.yotpo.com/privacy-policy/',
-        setupGuide:
-            'https://docs.gorgias.com/reward-and-loyalty/yotpo-customer-data',
-        hasFreeTrial: true,
-        freeTrialPeriod: TrialPeriod.CUSTOM,
+        longDescription: '',
+        isExternalConnectUrl: true,
+    },
+    {
+        type: IntegrationType.Smooch,
+        title: 'Smooch',
+        description: 'Connect your own Smooch to Gorgias',
+        image: 'integrations/smooch.png',
+        longDescription: '',
+        isExternalConnectUrl: true,
     },
 ]
 

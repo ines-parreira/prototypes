@@ -8,7 +8,6 @@ import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
 import {fromJS, Map, List} from 'immutable'
 
-import {IntegrationType} from 'models/integration/constants'
 import ShopifyProductLine from '../../../../components/ShopifyProductLine/ShopifyProductLine'
 
 import {RootState} from '../../../../../../state/types'
@@ -204,9 +203,7 @@ export function AddProductLink({
                                             <img
                                                 className={css.shopifyLogo}
                                                 alt="Shopify logo"
-                                                src={getIconFromType(
-                                                    IntegrationType.Shopify
-                                                )}
+                                                src={getIconFromType('shopify')}
                                             />
                                             <span>
                                                 {integration.get('name')}
