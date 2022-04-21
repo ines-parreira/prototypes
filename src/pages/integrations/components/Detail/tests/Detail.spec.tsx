@@ -55,7 +55,7 @@ describe(`Detail`, () => {
         expect(screen.getByText('Connect App').parentElement).toMatchSnapshot()
     })
 
-    it('should display correct information in princing', () => {
+    it('should display correct information in pricing', () => {
         const {rerender} = render(
             <Provider store={store}>
                 <Detail
