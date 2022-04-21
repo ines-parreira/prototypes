@@ -95,7 +95,7 @@ class RecentChats extends Component<Props> {
                     )}
                 >
                     <h4 className={navbarCss['category-title']}>
-                        <span id="active-chats-title">Chats</span>
+                        <span id="active-chats-title">Chat & messaging</span>
                     </h4>
                     <Tooltip
                         placement="left"
