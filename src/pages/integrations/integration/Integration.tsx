@@ -402,6 +402,7 @@ export const IntegrationDetail = ({
                         <GorgiasChatIntegrationInstall
                             actions={actions}
                             integration={integration}
+                            isUpdate={isUpdate}
                         />
                     )
                 }

@@ -4,6 +4,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
 <Connect(GorgiasChatIntegrationInstall)
   actions={
     Object {
+      "deleteIntegration": [MockFunction],
       "updateOrCreateIntegration": [MockFunction],
     }
   }
@@ -22,6 +23,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
       },
     }
   }
+  isUpdate={false}
   loading={Immutable.Map {}}
   notify={[MockFunction]}
   store={
@@ -37,6 +39,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
   <GorgiasChatIntegrationInstall
     actions={
       Object {
+        "deleteIntegration": [MockFunction],
         "updateOrCreateIntegration": [MockFunction],
       }
     }
@@ -59,6 +62,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
         },
       }
     }
+    isUpdate={false}
     loading={Immutable.Map {}}
     notify={[Function]}
     store={
@@ -1908,6 +1912,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
 <Connect(GorgiasChatIntegrationInstall)
   actions={
     Object {
+      "deleteIntegration": [MockFunction],
       "updateOrCreateIntegration": [MockFunction],
     }
   }
@@ -1922,6 +1927,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
       },
     }
   }
+  isUpdate={false}
   loading={Immutable.Map {}}
   notify={[MockFunction]}
   store={
@@ -1937,6 +1943,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
   <GorgiasChatIntegrationInstall
     actions={
       Object {
+        "deleteIntegration": [MockFunction],
         "updateOrCreateIntegration": [MockFunction],
       }
     }
@@ -1955,6 +1962,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
         },
       }
     }
+    isUpdate={false}
     loading={Immutable.Map {}}
     notify={[Function]}
     store={
@@ -2843,6 +2851,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
 <Connect(GorgiasChatIntegrationInstall)
   actions={
     Object {
+      "deleteIntegration": [MockFunction],
       "updateOrCreateIntegration": [MockFunction],
     }
   }
@@ -2861,6 +2870,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
       },
     }
   }
+  isUpdate={false}
   loading={Immutable.Map {}}
   notify={[MockFunction]}
   store={
@@ -2876,6 +2886,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
   <GorgiasChatIntegrationInstall
     actions={
       Object {
+        "deleteIntegration": [MockFunction],
         "updateOrCreateIntegration": [MockFunction],
       }
     }
@@ -2898,6 +2909,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
         },
       }
     }
+    isUpdate={false}
     loading={Immutable.Map {}}
     notify={[Function]}
     store={

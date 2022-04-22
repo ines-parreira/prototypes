@@ -45,8 +45,6 @@ import ColorField from 'pages/common/forms/ColorField'
 import FileField from 'pages/common/forms/FileField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import GorgiasChatIntegrationNavigation from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import MessageContentPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
@@ -835,24 +833,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             >
                                 {isUpdate ? 'Save changes' : 'Add new chat'}
                             </Button>
-
-                            {isUpdate && (
-                                <ConfirmButton
-                                    className="float-right"
-                                    onConfirm={() =>
-                                        actions.deleteIntegration(
-                                            integration
-                                        ) as unknown as Promise<any>
-                                    }
-                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                    intent="destructive"
-                                    isDisabled={isSubmitting}
-                                >
-                                    <ButtonIconLabel icon="delete">
-                                        Delete chat
-                                    </ButtonIconLabel>
-                                </ConfirmButton>
-                            )}
                         </div>
                     </div>
                 </Form>

@@ -67,6 +67,7 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
         store: configureStore(minStore as InitialRootState),
         actions: {
             updateOrCreateIntegration: jest.fn(() => Promise.resolve()),
+            deleteIntegration: jest.fn(),
         },
         loading: fromJS({}),
         notify: jest.fn(),
@@ -89,6 +90,7 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
                         script_url: 'config.gorgias.io/foo/chat/bar',
                     },
                 })}
+                isUpdate={false}
             />,
             {attachTo: div}
         )
@@ -111,6 +113,7 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
                         script_url: 'config.gorgias.io/foo/chat/bar',
                     },
                 })}
+                isUpdate={false}
             />,
             {attachTo: div}
         )
@@ -133,6 +136,7 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
                         script_url: 'config.gorgias.io/foo/chat/bar',
                     },
                 })}
+                isUpdate={false}
             />,
             {attachTo: div}
         )

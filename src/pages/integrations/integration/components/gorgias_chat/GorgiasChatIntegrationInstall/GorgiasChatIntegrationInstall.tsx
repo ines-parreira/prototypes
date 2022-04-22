@@ -5,6 +5,9 @@ import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 
 import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {deleteIntegration} from 'state/integrations/actions'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -27,7 +30,9 @@ type OwnProps = {
     integration: Map<any, any>
     actions: {
         updateOrCreateIntegration: any
+        deleteIntegration: typeof deleteIntegration
     }
+    isUpdate: boolean
 }
 
 const mapStateToProps = (state: RootState) => {
@@ -53,6 +58,7 @@ function GorgiasChatIntegrationInstall({
     actions,
     gorgiasChatExtraState,
     hasAutomationAddOn,
+    isUpdate,
 }: OwnProps & ReturnType<typeof mapStateToProps>) {
     // During the chat creation, the user associated this chat to a shopify store.
     // This chat can only be installed on this specific store
@@ -141,6 +147,22 @@ function GorgiasChatIntegrationInstall({
                             })}
                             integrationId={integration.get('id')}
                         />
+                        {isUpdate && (
+                            <ConfirmButton
+                                className="float-right"
+                                onConfirm={() =>
+                                    actions.deleteIntegration(
+                                        integration
+                                    ) as unknown as Promise<any>
+                                }
+                                confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                intent="destructive"
+                            >
+                                <ButtonIconLabel icon="delete">
+                                    Delete chat
+                                </ButtonIconLabel>
+                            </ConfirmButton>
+                        )}
                     </Col>
                 </Row>
             </Container>
