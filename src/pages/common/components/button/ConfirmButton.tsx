@@ -11,6 +11,7 @@ type Props = {
     confirmationTitle?: string
     onConfirm?: () => void
     placement?: ComponentProps<typeof Popover>['placement']
+    confirmLabel?: ComponentProps<typeof Popover>['confirmLabel']
 } & ComponentProps<typeof Button>
 
 export default function ConfirmButton({
@@ -22,6 +23,7 @@ export default function ConfirmButton({
     onConfirm,
     placement = 'bottom',
     type = 'button',
+    confirmLabel = 'Confirm',
     ...other
 }: Props) {
     return (
@@ -35,6 +37,7 @@ export default function ConfirmButton({
             onConfirm={onConfirm}
             placement={placement}
             title={confirmationTitle}
+            confirmLabel={confirmLabel}
         >
             {({uid, onDisplayConfirmation, elementRef}) => (
                 <Button

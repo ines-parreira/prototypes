@@ -28,6 +28,7 @@ type Props = {
     onConfirm?: () => void
     placement?: ComponentProps<typeof Popover>['placement']
     title?: ReactNode
+    confirmLabel?: string
 } & Omit<ComponentProps<typeof Popover>, 'target'>
 
 export default function ConfirmationPopover({
@@ -39,6 +40,7 @@ export default function ConfirmationPopover({
     onConfirm,
     placement = 'bottom',
     title = 'Are you sure?',
+    confirmLabel = 'Confirm',
     ...other
 }: Props) {
     const isMounted = useMountedState()
@@ -117,7 +119,7 @@ export default function ConfirmationPopover({
                                 {...buttonProps}
                                 onClick={handleConfirmation}
                             >
-                                Confirm
+                                {confirmLabel}
                             </Button>
                         </GroupPositionContext.Provider>
                     </PopoverBody>

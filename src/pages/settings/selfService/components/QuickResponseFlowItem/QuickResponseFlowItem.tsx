@@ -330,6 +330,7 @@ const QuickResponseFlowItem = ({
                                             history.push(baseURL)
                                         }}
                                         placement="top"
+                                        confirmLabel="Delete"
                                     >
                                         Delete Flow
                                     </ConfirmButton>

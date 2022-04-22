@@ -299,7 +299,7 @@ describe('<QuickResponseFlowEditItem />', () => {
 
         fireEvent.click(getByText('Delete Flow'))
         getByText('Are you sure you want to delete this quick response flow?')
-        fireEvent.click(getByText('Confirm'))
+        fireEvent.click(getByText('Delete'))
 
         expect(updateQuickReplyPoliciesSpy).toHaveBeenCalledWith({
             message: 'Flow successfully deleted',

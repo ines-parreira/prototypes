@@ -516,6 +516,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           "type": "button",
                                         }
                                       }
+                                      confirmLabel="Confirm"
                                       content={
                                         <React.Fragment>
                                           <p>
@@ -717,6 +718,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           "type": "button",
                                         }
                                       }
+                                      confirmLabel="Confirm"
                                       content={
                                         <React.Fragment>
                                           <p>
@@ -910,6 +912,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           "type": "button",
                                         }
                                       }
+                                      confirmLabel="Confirm"
                                       content={
                                         <React.Fragment>
                                           <p>
@@ -1103,6 +1106,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                                           "type": "button",
                                         }
                                       }
+                                      confirmLabel="Confirm"
                                       content={
                                         <React.Fragment>
                                           <p>
@@ -3333,6 +3337,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                                           "type": "button",
                                         }
                                       }
+                                      confirmLabel="Confirm"
                                       content={
                                         <React.Fragment>
                                           <p>
