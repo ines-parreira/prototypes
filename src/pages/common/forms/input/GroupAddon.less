@@ -1,0 +1,44 @@
+@import '~css/new/colors';
+@import (reference) '~css/typography';
+
+:local {
+    .groupAddon {
+        .body-regular();
+        box-sizing: border-box;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        align-self: stretch;
+        padding: 0 12px;
+        color: @classic-neutral-grey-5;
+        font-size: 14px;
+        font-weight: 500;
+        vertical-align: bottom;
+        line-height: 20px;
+        white-space: nowrap;
+        background-color: @classic-neutral-grey-1;
+        border-radius: 4px;
+        z-index: 1;
+
+        &.right,
+        &.center {
+            padding-left: 8px;
+            border-left: 1px solid @classic-neutral-grey-3;
+            border-bottom-left-radius: 0;
+            border-top-left-radius: 0;
+        }
+
+        &.left,
+        &.center {
+            padding-right: 8px;
+            border-right: 1px solid @classic-neutral-grey-3;
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        &.isDisabled {
+            background-color: @classic-neutral-grey-2;
+            color: @modern-neutral-neutral-4;
+        }
+    }
+}
