@@ -238,8 +238,9 @@ export function isWidgetEmpty(
             const subPath = widget.get('path')
                 ? [...path, widget.get('path')]
                 : path
-            const data = source.getIn(subPath, []) as List<any>
+            const data = source.getIn(subPath, fromJS([])) as List<any>
 
+            if (!List.isList(data)) return true
             return data.every((value, index) =>
                 (widget.get('widgets', []) as List<any>).every(
                     (subWidget: Map<any, any>) =>
