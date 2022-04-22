@@ -78,6 +78,7 @@ module.exports = {
                 'import/namespace': ['off'],
                 'import/no-named-as-default-member': ['off'],
                 'import/no-named-as-default': ['error'],
+                'react/prop-types': 'off',
                 '@typescript-eslint/no-unsafe-assignment': ['off'],
                 '@typescript-eslint/no-unsafe-argument': ['off'],
                 '@typescript-eslint/no-floating-promises': [
