@@ -2,6 +2,8 @@ import React, {ReactNode, ComponentProps} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import {render, fireEvent, waitFor} from '@testing-library/react'
 
+import {initDraftOrderPayload} from 'business/shopify/draftOrder'
+import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {
     integrationDataItemProductFixture,
     shopifyCustomerFixture,
@@ -10,27 +12,26 @@ import {
     shopifyOrderFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
-} from '../../../../../../../../../../../../fixtures/shopify'
-import {getDuplicateOrderPayload} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
-import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
-import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/draftOrder'
-import ProductSearchInput from '../../../../../../../../../../forms/ProductSearchInput/ProductSearchInput'
-import {CustomerContext} from '../../../../../../../../../infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
-import {IntegrationContext} from '../../../../IntegrationContext'
-import {ShopifyActionType} from '../../../types'
-import {DraftOrderModalContainer} from '../DraftOrderModal'
+} from 'fixtures/shopify'
+import {CustomerContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import {getDuplicateOrderPayload} from 'state/infobarActions/shopify/createOrder/actions'
+
 import AddCustomItemPopover from '../AddCustomItemPopover/AddCustomItemPopover'
+import {DraftOrderModalContainer} from '../DraftOrderModal'
 import EmailInvoicePopover from '../EmailInvoicePopover/EmailInvoicePopover'
 import OrderFooter from '../OrderFooter/OrderFooter'
 
-jest.mock('../../../../../../../../../../utils/labels', () => ({
+jest.mock('pages/common/utils/labels', () => ({
     DatetimeLabel: ({dateTime}: {dateTime: string}) => (
         <div data-testid="DatetimeLabel">{dateTime}</div>
     ),
 }))
 
 jest.mock(
-    '../../../../../../../../../Modal',
+    'pages/common/components/DEPRECATED_Modal',
     () =>
         ({
             isOpen,

@@ -1,0 +1,27 @@
+@import '~css/new/colorTokens';
+@import '~css/typography';
+
+:local {
+    .actions {
+        display: flex;
+    }
+
+    .extra {
+        color: @classic-neutral-grey-4;
+        .caption-regular();
+    }
+
+    .wrapper {
+        justify-content: end;
+        padding: 12px 16px;
+
+        .childWrapper:not(:last-child) {
+            margin-right: 8px;
+        }
+    }
+
+    .hasExtraInfo {
+        align-items: center;
+        justify-content: space-between;
+    }
+}

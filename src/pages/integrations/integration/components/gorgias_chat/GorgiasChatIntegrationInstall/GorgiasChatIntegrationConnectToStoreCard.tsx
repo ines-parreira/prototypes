@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import {Card, CardBody, Button} from 'reactstrap'
 import {Link} from 'react-router-dom'
 
-import Modal from '../../../../../common/components/Modal'
+import DEPRECATED_Modal from '../../../../../common/components/DEPRECATED_Modal'
 import {StoreNameDropdown} from '../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 
@@ -80,7 +80,7 @@ export const GorgiasChatIntegrationConnectToStoreCard = ({
                     </div>
                 </CardBody>
             </Card>
-            <Modal
+            <DEPRECATED_Modal
                 isOpen={isModalOpen}
                 header="Connect a Shopify store"
                 onClose={onClose}
@@ -127,7 +127,7 @@ export const GorgiasChatIntegrationConnectToStoreCard = ({
                         setSelectedShopifyIntegration(shopifyIntegration)
                     }}
                 />
-            </Modal>
+            </DEPRECATED_Modal>
         </>
     )
 }

@@ -1,0 +1,87 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .dialog {
+        align-items: center;
+        display: flex;
+        left: 45vw;
+        margin: 5vh 5vw;
+        min-height: 90vh;
+        max-width: 600px;
+        position: relative;
+        transform: translateX(-50%);
+    }
+
+    .small {
+        max-width: 400px;
+    }
+
+    .large {
+        max-width: 800px;
+    }
+
+    .huge {
+        max-width: 1000px;
+    }
+
+    .modal {
+        background-color: fade(black, 50%);
+        height: 100%;
+        left: 0;
+        opacity: 0;
+        outline: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: fixed;
+        top: 0;
+        pointer-events: none;
+        width: 100%;
+        z-index: 2;
+    }
+
+    .enterDone {
+        opacity: 1;
+        pointer-events: visible;
+
+        .modalContent {
+            transform: translateY(0);
+        }
+    }
+
+    .exit {
+        opacity: 0;
+
+        .modalContent {
+            transform: translateY(-50px);
+        }
+    }
+
+    .modalContent {
+        background-color: @classic-neutral-grey-0;
+        border-radius: 4px;
+        box-shadow: 0px 4px 16px fade(@modern-neutral-neutral-6, 24%);
+        display: flex;
+        flex-direction: column;
+        transform: translateY(-50px);
+        width: 100%;
+    }
+
+    .scrollableContent {
+        max-height: 100%;
+        overflow: hidden;
+    }
+
+    .scrollableDialog {
+        height: 90vh;
+    }
+
+    .default {
+        transition: all 0.2s ease-out;
+    }
+
+    .modal {
+        .bounceModal {
+            transform: scale(1.02);
+        }
+    }
+}

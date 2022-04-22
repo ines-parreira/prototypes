@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import Draggable from 'react-draggable'
-import Modal from 'pages/common/components/Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Button from 'pages/common/components/button/Button'
 
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -39,7 +39,7 @@ export const ImageRepositioningModal = ({
     }
 
     return (
-        <Modal
+        <DEPRECATED_Modal
             isOpen={localImage !== undefined}
             className={css['modal-centered']}
             bodyClassName={css['modalBody']}
@@ -124,6 +124,6 @@ export const ImageRepositioningModal = ({
                     Apply image to all languages
                 </CheckBox>
             </div>
-        </Modal>
+        </DEPRECATED_Modal>
     )
 }

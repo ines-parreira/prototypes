@@ -19,7 +19,7 @@ type Props = {
     bodyClassName?: string
 } & RemoveIndex<ModalProps>
 
-export default class Modal extends Component<Props> {
+export default class DEPRECATED_Modal extends Component<Props> {
     static defaultProps: Pick<Props, 'dismissible'> = {
         dismissible: true,
     }

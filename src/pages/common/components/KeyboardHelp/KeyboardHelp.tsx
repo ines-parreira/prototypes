@@ -3,7 +3,7 @@ import _isUndefined from 'lodash/isUndefined'
 import classnames from 'classnames'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Modal from 'pages/common/components/Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 
 import shortcutManager from 'services/shortcutManager/index'
 import keymap from 'config/shortcuts'
@@ -52,7 +52,7 @@ export default class KeyboardHelp extends Component<
 
     render() {
         return (
-            <Modal
+            <DEPRECATED_Modal
                 isOpen={this.state.isOpen}
                 onClose={() => this._toggle(false)}
                 header="Keyboard shortcuts"
@@ -101,7 +101,7 @@ export default class KeyboardHelp extends Component<
                         )
                     })}
                 </div>
-            </Modal>
+            </DEPRECATED_Modal>
         )
     }
 }

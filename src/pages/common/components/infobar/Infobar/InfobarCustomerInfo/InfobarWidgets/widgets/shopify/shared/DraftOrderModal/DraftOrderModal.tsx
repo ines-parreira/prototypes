@@ -32,7 +32,7 @@ import ProductSearchInput from '../../../../../../../../../forms/ProductSearchIn
 import {DatetimeLabel} from '../../../../../../../../../utils/labels'
 import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
-import Modal from '../../../../../../../../Modal'
+import DEPRECATED_Modal from '../../../../../../../../DEPRECATED_Modal'
 import {CustomerContext} from '../../../../../InfobarCustomerInfo'
 import {IntegrationContext} from '../../../IntegrationContext'
 import {ShopifyActionType} from '../../types'
@@ -230,7 +230,7 @@ export function DraftOrderModalContainer({
 
     if (!hasScope) {
         return (
-            <Modal
+            <DEPRECATED_Modal
                 header={header}
                 isOpen={isOpen}
                 onClose={() => {
@@ -248,11 +248,11 @@ export function DraftOrderModalContainer({
                     </Link>{' '}
                     and click on "Update app permissions".
                 </Alert>
-            </Modal>
+            </DEPRECATED_Modal>
         )
     }
     return (
-        <Modal
+        <DEPRECATED_Modal
             header={header}
             isOpen={isOpen}
             onClose={handleCancel('header')}
@@ -398,7 +398,7 @@ export function DraftOrderModalContainer({
                     Create order as pending
                 </Button>
             </ModalFooter>
-        </Modal>
+        </DEPRECATED_Modal>
     )
 }
 

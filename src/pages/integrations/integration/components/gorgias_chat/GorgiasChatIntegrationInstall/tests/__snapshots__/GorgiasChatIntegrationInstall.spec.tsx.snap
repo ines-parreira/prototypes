@@ -2305,7 +2305,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                         </CardBody>
                       </div>
                     </Card>
-                    <Modal
+                    <DEPRECATED_Modal
                       bodyClassName="modal-body"
                       dismissible={true}
                       footer={
@@ -2373,7 +2373,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                         unmountOnClose={true}
                         zIndex={1050}
                       />
-                    </Modal>
+                    </DEPRECATED_Modal>
                   </GorgiasChatIntegrationConnectToStoreCard>
                   <GorgiasChatIntegrationCustomInstallationCard
                     code="<!--Gorgias Chat Widget Start--><script id=\\"gorgias-chat-widget-install-v2\\" src=\\"https:///gorgias-chat-bundle-loader.js?applicationId=undefined\\"></script><!--Gorgias Chat Widget End-->"

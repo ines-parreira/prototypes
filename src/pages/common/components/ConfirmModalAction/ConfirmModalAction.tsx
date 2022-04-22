@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Modal from '../Modal'
+import DEPRECATED_Modal from '../DEPRECATED_Modal'
 
 import css from './ConfirmModalAction.less'
 
@@ -30,7 +30,7 @@ export const ConfirmModalAction = ({
     return (
         <>
             {children(handleOnOpen)}
-            <Modal
+            <DEPRECATED_Modal
                 isOpen={isOpen}
                 className={css['modal-centered']}
                 header={title}
@@ -39,7 +39,7 @@ export const ConfirmModalAction = ({
                 onClose={handleOnClose}
             >
                 {content}
-            </Modal>
+            </DEPRECATED_Modal>
         </>
     )
 }

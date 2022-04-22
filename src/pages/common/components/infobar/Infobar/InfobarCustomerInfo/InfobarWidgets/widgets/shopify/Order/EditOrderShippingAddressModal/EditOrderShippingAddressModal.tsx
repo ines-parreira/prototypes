@@ -42,7 +42,7 @@ import {states} from '../../../../../../../../../../../fixtures/states'
 import SelectField from '../../../../../../../../../forms/SelectField/SelectField'
 import DEPRECATED_InputField from '../../../../../../../../../forms/DEPRECATED_InputField'
 import Loader from '../../../../../../../../Loader/Loader'
-import Modal from '../../../../../../../../Modal'
+import DEPRECATED_Modal from '../../../../../../../../DEPRECATED_Modal'
 import {IntegrationContext} from '../../../IntegrationContext'
 import {InfobarModalProps} from '../../../types'
 import {ShopifyActionType} from '../../types'
@@ -272,7 +272,7 @@ export function EditOrderShippingAddressModal({
     ])
 
     return (
-        <Modal
+        <DEPRECATED_Modal
             header={header}
             isOpen={isOpen}
             onClose={handleCancel()}
@@ -569,7 +569,7 @@ export function EditOrderShippingAddressModal({
                     </Button>
                 </ModalFooter>
             </Form>
-        </Modal>
+        </DEPRECATED_Modal>
     )
 }
 

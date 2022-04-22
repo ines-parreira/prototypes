@@ -6,7 +6,7 @@ import {Form} from 'reactstrap'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Modal from '../Modal'
+import DEPRECATED_Modal from '../DEPRECATED_Modal'
 import {mergeTickets} from '../../../../state/mergeTickets/actions'
 import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
 import {
@@ -132,7 +132,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         }
 
         return (
-            <Modal
+            <DEPRECATED_Modal
                 isOpen={isOpen}
                 onClose={() => this.props.toggleModal()}
                 onClosed={() => this.setState({targetTicket: null})}
@@ -184,7 +184,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                 }
             >
                 {content}
-            </Modal>
+            </DEPRECATED_Modal>
         )
     }
 }

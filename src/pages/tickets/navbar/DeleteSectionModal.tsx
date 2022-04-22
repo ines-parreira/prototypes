@@ -3,7 +3,7 @@ import React from 'react'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Section} from '../../../models/section/types'
-import Modal from '../../common/components/Modal'
+import DEPRECATED_Modal from '../../common/components/DEPRECATED_Modal'
 
 import css from './DeleteSectionModal.less'
 
@@ -28,7 +28,7 @@ export default function DeleteSectionModal({
     const emoji = section.decoration?.emoji
 
     return (
-        <Modal
+        <DEPRECATED_Modal
             className={css.modal}
             centered
             header="Delete section"
@@ -58,6 +58,6 @@ export default function DeleteSectionModal({
                     Cancel
                 </Button>
             </div>
-        </Modal>
+        </DEPRECATED_Modal>
     )
 }

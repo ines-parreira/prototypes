@@ -7,7 +7,7 @@ import shopify from 'assets/img/integrations/shopify.png'
 
 import Button from 'pages/common/components/button/Button'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
-import Modal from 'pages/common/components/Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {IntegrationType} from 'models/integration/types'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
@@ -195,7 +195,7 @@ export const ConnectToShopSection = ({
                 </Button>
             )}
 
-            <Modal
+            <DEPRECATED_Modal
                 isOpen={connectModalOpen}
                 className={css['modal-centered']}
                 header="Connect a Shopify store"
@@ -250,7 +250,7 @@ export const ConnectToShopSection = ({
                         options={shopsOptions}
                     />
                 </>
-            </Modal>
+            </DEPRECATED_Modal>
         </section>
     )
 }

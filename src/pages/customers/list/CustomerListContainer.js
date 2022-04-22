@@ -15,7 +15,7 @@ import * as viewsSelectors from '../../../state/views/selectors.ts'
 import ViewTable from '../../common/components/ViewTable/ViewTable.tsx'
 
 import CustomerForm from '../common/components/CustomerForm'
-import Modal from '../../common/components/Modal.tsx'
+import DEPRECATED_Modal from '../../common/components/DEPRECATED_Modal.tsx'
 import Button from '../../common/components/button/Button.tsx'
 
 import CustomerListActions from './components/CustomerListActions.tsx'
@@ -104,7 +104,7 @@ class CustomerListContainer extends React.Component {
                                     Add customer
                                 </Button>
 
-                                <Modal
+                                <DEPRECATED_Modal
                                     isOpen={this.state.isCustomerFormOpen}
                                     onClose={this._closeModal}
                                     header="Add customer"
@@ -113,7 +113,7 @@ class CustomerListContainer extends React.Component {
                                         closeModal={this._closeModal}
                                         onSuccess={() => fetchViewItems()}
                                     />
-                                </Modal>
+                                </DEPRECATED_Modal>
                             </div>
                         }
                     />

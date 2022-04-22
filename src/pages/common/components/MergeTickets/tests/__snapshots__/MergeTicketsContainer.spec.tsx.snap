@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MergeTicketsContainer component should render a closed modal because isOpen==false 1`] = `
-<Modal
+<DEPRECATED_Modal
   className="modal"
   dismissible={true}
   footer={null}
@@ -29,11 +29,11 @@ exports[`MergeTicketsContainer component should render a closed modal because is
     }
     updateTargetTicket={[Function]}
   />
-</Modal>
+</DEPRECATED_Modal>
 `;
 
 exports[`MergeTicketsContainer component should render the build component if there is a selected ticket in the state 1`] = `
-<Modal
+<DEPRECATED_Modal
   className="modal"
   dismissible={true}
   footer={
@@ -119,11 +119,11 @@ exports[`MergeTicketsContainer component should render the build component if th
     }
     updateFinalTicket={[Function]}
   />
-</Modal>
+</DEPRECATED_Modal>
 `;
 
 exports[`MergeTicketsContainer component should render the selection component if there is no selected ticket in the state 1`] = `
-<Modal
+<DEPRECATED_Modal
   className="modal"
   dismissible={true}
   footer={null}
@@ -151,5 +151,5 @@ exports[`MergeTicketsContainer component should render the selection component i
     }
     updateTargetTicket={[Function]}
   />
-</Modal>
+</DEPRECATED_Modal>
 `;

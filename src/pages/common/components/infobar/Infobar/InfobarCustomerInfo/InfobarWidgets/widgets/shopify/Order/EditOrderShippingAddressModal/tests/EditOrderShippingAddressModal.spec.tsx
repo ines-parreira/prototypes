@@ -1,22 +1,21 @@
 import React, {ReactNode} from 'react'
 import {fromJS, Map, List} from 'immutable'
-
 import {render, fireEvent} from '@testing-library/react'
 
-import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
-import {CustomerContext} from '../../../../../../../../../infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
-import {shopifyCustomerFixture} from '../../../../../../../../../../../../fixtures/shopify'
-import {IntegrationContext} from '../../../../IntegrationContext'
+import {integrationsStateWithShopify} from 'fixtures/integrations'
+import {shopifyCustomerFixture} from 'fixtures/shopify'
+import {CustomerContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import {EditOrderShippingAddressModal} from '../EditOrderShippingAddressModal'
 
-jest.mock('../../../../../../../../../../utils/labels', () => ({
+jest.mock('pages/common/utils/labels', () => ({
     DatetimeLabel: ({dateTime}: {dateTime: string}) => (
         <div data-testid="DatetimeLabel">{dateTime}</div>
     ),
 }))
 
 jest.mock(
-    '../../../../../../../../../Modal',
+    'pages/common/components/DEPRECATED_Modal',
     () =>
         ({
             isOpen,

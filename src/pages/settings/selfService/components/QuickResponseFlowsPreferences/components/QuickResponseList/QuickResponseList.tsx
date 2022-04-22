@@ -6,7 +6,7 @@ import {List} from 'immutable'
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import Button from 'pages/common/components/button/Button'
-import Modal from 'pages/common/components/Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import ReactSortable from 'pages/common/components/dragging/ReactSortable'
 import history from 'pages/history'
 import {isProduction} from 'utils/environment'
@@ -225,7 +225,7 @@ const QuickResponseList = () => {
                 Add flow
             </Button>
 
-            <Modal
+            <DEPRECATED_Modal
                 autoFocus={false}
                 centered
                 header={quickResponseIndex !== null ? `Edit flow` : `Add flow`}
@@ -273,7 +273,7 @@ const QuickResponseList = () => {
                         )}
                     </FormGroup>
                 </Form>
-            </Modal>
+            </DEPRECATED_Modal>
         </>
     )
 }

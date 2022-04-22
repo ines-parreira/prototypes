@@ -14,7 +14,7 @@ import {
 } from '../../../../store/middlewares/segmentTracker'
 
 import SourceIcon from '../SourceIcon'
-import Modal from '../Modal'
+import DEPRECATED_Modal from '../DEPRECATED_Modal'
 import Tooltip from '../Tooltip'
 import {JSONTree} from '../JSONTree'
 import BinaryChoiceField from '../BinaryChoiceField'
@@ -191,7 +191,7 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
         )
 
         return (
-            <Modal
+            <DEPRECATED_Modal
                 isOpen={this.props.isOpen}
                 onClose={this._toggle}
                 size="lg"
@@ -397,7 +397,7 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                         </ConfirmButton>
                     </div>
                 </Form>
-            </Modal>
+            </DEPRECATED_Modal>
         )
     }
 }

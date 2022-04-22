@@ -20,7 +20,7 @@ import shortcutManager from '../../../../../../../../../../../services/shortcutM
 import {getFinalRefundOrderPayload} from '../../../../../../../../../../../business/shopify/order'
 import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
 import Loader from '../../../../../../../../Loader/Loader'
-import Modal from '../../../../../../../../Modal'
+import DEPRECATED_Modal from '../../../../../../../../DEPRECATED_Modal'
 import {InfobarModalProps} from '../../../types'
 import {IntegrationContext} from '../../../IntegrationContext'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
@@ -128,7 +128,7 @@ export const RefundOrderModalContainer = ({
     )
 
     return integration ? (
-        <Modal
+        <DEPRECATED_Modal
             header={header}
             isOpen={isOpen}
             onClose={() => {
@@ -191,7 +191,7 @@ export const RefundOrderModalContainer = ({
                     </Button>
                 </ModalFooter>
             </Form>
-        </Modal>
+        </DEPRECATED_Modal>
     ) : null
 }
 

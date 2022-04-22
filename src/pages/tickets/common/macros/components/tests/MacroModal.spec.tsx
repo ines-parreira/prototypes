@@ -14,7 +14,7 @@ jest.mock('../MacroModalList', () => () => <div>MacroModalList</div>)
 jest.mock('../MacroEdit', () => () => <div>MacroEdit</div>)
 
 jest.mock(
-    'pages/common/components/Modal',
+    'pages/common/components/DEPRECATED_Modal',
     () =>
         ({children}: {children: ReactNode}) =>
             <div>{children}</div>

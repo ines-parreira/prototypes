@@ -2,7 +2,7 @@ import React, {ReactNode, useCallback, useState} from 'react'
 import {AxiosError} from 'axios'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {User} from 'config/types/user'
-import Modal from 'pages/common/components/Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import css from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal.less'
 import {deleteTwoFASecret} from 'models/twoFactorAuthentication/resources'
 import Button from 'pages/common/components/button/Button'
@@ -67,7 +67,7 @@ export default function TwoFactorAuthenticationDisableModal({
     }, [dispatch, onSuccess, user])
 
     return (
-        <Modal
+        <DEPRECATED_Modal
             isOpen={isOpen}
             header={title}
             onClose={onClose}
@@ -99,6 +99,6 @@ export default function TwoFactorAuthenticationDisableModal({
                 </Alert>
             )}
             {children}
-        </Modal>
+        </DEPRECATED_Modal>
     )
 }

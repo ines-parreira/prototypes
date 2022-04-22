@@ -31,7 +31,7 @@ import {
 import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput'
 import Loader from '../../../../../../../../Loader/Loader'
 import Alert, {AlertType} from '../../../../../../../../Alert/Alert'
-import Modal from '../../../../../../../../Modal'
+import DEPRECATED_Modal from '../../../../../../../../DEPRECATED_Modal'
 import {InfobarModalProps} from '../../../types'
 import {IntegrationContext} from '../../../IntegrationContext'
 import {ShopifyActionType} from '../../types'
@@ -197,7 +197,7 @@ export function EditOrderModalContainer({
     ])
     if (!hasScope) {
         return (
-            <Modal
+            <DEPRECATED_Modal
                 header={header}
                 isOpen={isOpen}
                 onClose={() => {
@@ -215,11 +215,11 @@ export function EditOrderModalContainer({
                     </Link>
                     and click on "Update app permissions".
                 </Alert>
-            </Modal>
+            </DEPRECATED_Modal>
         )
     }
     return (
-        <Modal
+        <DEPRECATED_Modal
             header={header}
             isOpen={isOpen}
             onClose={handleCancel('header')}
@@ -324,7 +324,7 @@ export function EditOrderModalContainer({
                     Edit order
                 </Button>
             </ModalFooter>
-        </Modal>
+        </DEPRECATED_Modal>
     )
 }
 

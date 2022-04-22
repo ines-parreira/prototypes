@@ -28,7 +28,7 @@ exports[`Video component should render with default videoPreviewIndex 1`] = `
       foo
     </div>
   </div>
-  <Modal
+  <DEPRECATED_Modal
     bodyClassName="modalBody"
     className="modal"
     dismissible={true}
@@ -43,7 +43,7 @@ exports[`Video component should render with default videoPreviewIndex 1`] = `
       src="https://www.youtube.com/embed/8fDF546?autoplay=1"
       title="rule-video"
     />
-  </Modal>
+  </DEPRECATED_Modal>
 </div>
 `;
 
@@ -75,7 +75,7 @@ exports[`Video component should render with passed videoPreviewIndex 1`] = `
       foo
     </div>
   </div>
-  <Modal
+  <DEPRECATED_Modal
     bodyClassName="modalBody"
     className="modal"
     dismissible={true}
@@ -90,6 +90,6 @@ exports[`Video component should render with passed videoPreviewIndex 1`] = `
       src="https://www.youtube.com/embed/8fDF546?autoplay=1"
       title="rule-video"
     />
-  </Modal>
+  </DEPRECATED_Modal>
 </div>
 `;

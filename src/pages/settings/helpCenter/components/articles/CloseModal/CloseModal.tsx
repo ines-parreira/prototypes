@@ -3,7 +3,7 @@ import classNames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 
-import Modal from 'pages/common/components/Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 
 import css from './CloseModal.less'
 
@@ -33,7 +33,7 @@ export const CloseModal = ({
     onSave,
 }: ConfirmationModalProps): JSX.Element => {
     return (
-        <Modal
+        <DEPRECATED_Modal
             className={css.centered}
             isOpen={isOpen}
             header={title}
@@ -63,6 +63,6 @@ export const CloseModal = ({
             onClose={onContinueEditing}
         >
             {children}
-        </Modal>
+        </DEPRECATED_Modal>
     )
 }

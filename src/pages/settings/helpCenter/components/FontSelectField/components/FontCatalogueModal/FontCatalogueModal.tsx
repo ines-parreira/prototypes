@@ -4,7 +4,7 @@ import ReactList from 'react-list'
 import _isEqual from 'lodash/isEqual'
 import classNames from 'classnames'
 
-import Modal from 'pages/common/components/Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Button from 'pages/common/components/button/Button'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import Search from 'pages/common/components/Search'
@@ -132,7 +132,7 @@ export const FontCatalogueModal = ({
     }, [recentlyAddedFonts, selectedFonts])
 
     return (
-        <Modal
+        <DEPRECATED_Modal
             isOpen={isModalOpen}
             className={css['modal-centered']}
             bodyClassName={css['modalBody']}
@@ -330,6 +330,6 @@ export const FontCatalogueModal = ({
                     </div>
                 </div>
             </div>
-        </Modal>
+        </DEPRECATED_Modal>
     )
 }

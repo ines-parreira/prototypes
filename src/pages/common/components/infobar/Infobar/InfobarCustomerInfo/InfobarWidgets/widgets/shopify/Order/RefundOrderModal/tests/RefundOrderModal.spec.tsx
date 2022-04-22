@@ -3,29 +3,30 @@ import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS, List, Map} from 'immutable'
 
 import {
+    getFinalRefundOrderPayload,
+    initRefundOrderLineItems,
+    initRefundOrderPayload,
+} from 'business/shopify/order'
+import {integrationsStateWithShopify} from 'fixtures/integrations'
+import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../fixtures/shopify'
-import {
-    getFinalRefundOrderPayload,
-    initRefundOrderLineItems,
-    initRefundOrderPayload,
-} from '../../../../../../../../../../../../business/shopify/order'
-import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
-import {IntegrationContext} from '../../../../IntegrationContext'
-import {ShopifyActionType} from '../../../types'
+} from 'fixtures/shopify'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+
 import {RefundOrderModalContainer} from '../RefundOrderModal'
 
-jest.mock('../../../../../../../../../../utils/labels', () => ({
+jest.mock('pages/common/utils/labels', () => ({
     DatetimeLabel: ({dateTime}: {dateTime: string}) => (
         <div data-testid="DatetimeLabel">{dateTime}</div>
     ),
 }))
 
 jest.mock(
-    '../../../../../../../../../Modal',
+    'pages/common/components/DEPRECATED_Modal',
     () =>
         ({
             isOpen,

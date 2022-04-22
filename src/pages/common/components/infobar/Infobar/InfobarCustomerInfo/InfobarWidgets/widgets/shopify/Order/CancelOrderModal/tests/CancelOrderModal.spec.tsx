@@ -2,30 +2,30 @@ import React, {ReactNode} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {fromJS, List, Map} from 'immutable'
 
-import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
+import {
+    getFinalCancelOrderPayload,
+    initRefundOrderLineItems,
+    initCancelOrderPayload,
+} from 'business/shopify/order'
+import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyCancelOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../fixtures/shopify'
-import {
-    getFinalCancelOrderPayload,
-    initRefundOrderLineItems,
-    initCancelOrderPayload,
-} from '../../../../../../../../../../../../business/shopify/order'
-import {IntegrationContext} from '../../../../IntegrationContext'
-import {ShopifyActionType} from '../../../types'
+} from 'fixtures/shopify'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import {CancelOrderModalContainer} from '../CancelOrderModal'
 
-jest.mock('../../../../../../../../../../utils/labels', () => ({
+jest.mock('pages/common/utils/labels', () => ({
     DatetimeLabel: ({dateTime}: {dateTime: string}) => (
         <div data-testid="DatetimeLabel">{dateTime}</div>
     ),
 }))
 
 jest.mock(
-    '../../../../../../../../../Modal',
+    'pages/common/components/DEPRECATED_Modal',
     () =>
         ({
             isOpen,

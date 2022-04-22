@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MergeCustomersModal/> render() should render 1`] = `
-<Modal
+<DEPRECATED_Modal
   dismissible={true}
   header="Merge customers"
   isOpen={true}
@@ -271,5 +271,5 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
       </ConfirmButton>
     </div>
   </Form>
-</Modal>
+</DEPRECATED_Modal>
 `;

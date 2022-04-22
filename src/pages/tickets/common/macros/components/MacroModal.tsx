@@ -17,7 +17,7 @@ import {
 } from 'state/macro/actions'
 import {MacroActionName} from 'models/macroAction/types'
 import Loader from '../../../../common/components/Loader/Loader'
-import Modal from '../../../../common/components/Modal'
+import DEPRECATED_Modal from '../../../../common/components/DEPRECATED_Modal'
 import {DEFAULT_ACTIONS} from '../../../../../config'
 import {
     logEvent,
@@ -321,7 +321,7 @@ export class MacroModalContainer extends Component<Props, State> {
             : selectedItemsIds.size
 
         return (
-            <Modal
+            <DEPRECATED_Modal
                 isOpen
                 onClose={closeModal}
                 className={css.component}
@@ -500,7 +500,7 @@ export class MacroModalContainer extends Component<Props, State> {
                         </Col>
                     </Row>
                 </Container>
-            </Modal>
+            </DEPRECATED_Modal>
         )
     }
 }

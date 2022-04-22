@@ -6,7 +6,7 @@ import React, {
     useEffect,
 } from 'react'
 import {AxiosError} from 'axios'
-import Modal from 'pages/common/components/Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import {
     saveTwoFASecret as saveTwoFASecretResource,
     validateVerificationCode as validateVerificationCodeResource,
@@ -226,7 +226,7 @@ export default function TwoFactorAuthenticationModal({
     }, [has2FaEnabled, resetModalState])
 
     return (
-        <Modal
+        <DEPRECATED_Modal
             isOpen={isOpen}
             header="Setup 2FA"
             headerClassName={isEnforced ? css.hideCloseButton : ''}
@@ -284,6 +284,6 @@ export default function TwoFactorAuthenticationModal({
                 isRecoveryCodesSaved={isRecoveryCodesSaved}
                 setIsRecoveryCodesSaved={setIsRecoveryCodesSaved}
             />
-        </Modal>
+        </DEPRECATED_Modal>
     )
 }

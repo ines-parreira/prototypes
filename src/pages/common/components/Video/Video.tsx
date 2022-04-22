@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import Modal from '../Modal'
+import DEPRECATED_Modal from '../DEPRECATED_Modal'
 
 import css from './Video.less'
 
@@ -12,21 +12,23 @@ type Props = {
 }
 
 type State = {
-    modalIsOpen: boolean
+    isOpen: boolean
 }
 
 export default class Video extends React.Component<Props, State> {
     state = {
-        modalIsOpen: false,
+        isOpen: false,
     }
 
     _toggleModal = () => {
-        this.setState({modalIsOpen: !this.state.modalIsOpen})
+        this.setState({
+            isOpen: !this.state.isOpen,
+        })
     }
 
     render() {
         const {videoId, videoPreviewIndex, legend} = this.props
-        const {modalIsOpen} = this.state
+        const {isOpen} = this.state
 
         const previewIndex = videoPreviewIndex || 0
 
@@ -50,8 +52,8 @@ export default class Video extends React.Component<Props, State> {
                     </div>
                     <div className={css.title}>{legend}</div>
                 </div>
-                <Modal
-                    isOpen={modalIsOpen}
+                <DEPRECATED_Modal
+                    isOpen={isOpen}
                     onClose={this._toggleModal}
                     className={css.modal}
                     bodyClassName={css.modalBody}
@@ -65,7 +67,7 @@ export default class Video extends React.Component<Props, State> {
                         frameBorder="0"
                         allowFullScreen
                     />
-                </Modal>
+                </DEPRECATED_Modal>
             </div>
         )
     }

@@ -2,7 +2,7 @@ import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
-import Modal from '../../../../../common/components/Modal'
+import DEPRECATED_Modal from '../../../../../common/components/DEPRECATED_Modal'
 
 import css from './DiscardChangesModal.less'
 
@@ -21,7 +21,7 @@ export const DiscardChangesModal = ({
     onContinueEditing,
 }: ConfirmationModalProps): JSX.Element => {
     return (
-        <Modal
+        <DEPRECATED_Modal
             className={css.centered}
             isOpen={true}
             header={<span>{title}</span>}
@@ -44,6 +44,6 @@ export const DiscardChangesModal = ({
             onClose={onContinueEditing}
         >
             <span>{children}</span>
-        </Modal>
+        </DEPRECATED_Modal>
     )
 }

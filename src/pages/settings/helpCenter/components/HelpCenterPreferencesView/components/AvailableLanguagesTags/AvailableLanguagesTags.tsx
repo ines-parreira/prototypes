@@ -6,7 +6,7 @@ import Button from 'pages/common/components/button/Button'
 
 import {Locale} from 'models/helpCenter/types'
 import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
-import Modal from '../../../../../../common/components/Modal'
+import DEPRECATED_Modal from '../../../../../../common/components/DEPRECATED_Modal'
 import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
 import {localeToSelectOption} from '../../../../utils/localeSelectOptions'
 import {BadgeItemProps, DynamicBadgeList} from '../BadgeList'
@@ -115,7 +115,7 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
                 onSelectItem={handleOnAddLocale}
                 onRemoveItem={handleOnAttemptRemoveLocale}
             />
-            <Modal
+            <DEPRECATED_Modal
                 isOpen={!!pendingLocale}
                 header="Are you sure you want to delete this language?"
                 className={css['modal-centered']}
@@ -150,7 +150,7 @@ export const AvailableLanguagesTags: React.FC<Props> = ({
                         language back again.
                     </p>
                 )}
-            </Modal>
+            </DEPRECATED_Modal>
         </div>
     )
 }

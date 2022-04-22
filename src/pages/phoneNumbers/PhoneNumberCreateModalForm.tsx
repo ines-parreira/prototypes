@@ -16,7 +16,7 @@ import {GorgiasApiError} from 'models/api/types'
 import {phoneNumberCreated} from 'state/entities/phoneNumbers/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
-import Modal from 'pages/common/components/Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -113,7 +113,7 @@ export default function PhoneNumberCreateModalForm({
 
     return (
         <Form onSubmit={onSubmit}>
-            <Modal
+            <DEPRECATED_Modal
                 centered
                 isOpen={isOpen}
                 header="Create Phone Number"
@@ -222,7 +222,7 @@ export default function PhoneNumberCreateModalForm({
                             )}
                     </Col>
                 </Row>
-            </Modal>
+            </DEPRECATED_Modal>
         </Form>
     )
 }

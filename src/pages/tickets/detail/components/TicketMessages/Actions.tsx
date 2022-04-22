@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import {getActionTemplate} from 'utils'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Modal from 'pages/common/components/Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import {JSONTree} from 'pages/common/components/JSONTree'
 import {ContentType} from 'models/api/types'
 import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
@@ -189,7 +189,7 @@ export default class Actions extends Component<Props, State> {
                                 </ButtonIconLabel>
                             </Button>
                             {isShopifyAction ? (
-                                <Modal
+                                <DEPRECATED_Modal
                                     isOpen={this.state.isModalOpen[index]}
                                     onClose={this._closeModal(index)}
                                     header="Options"
@@ -199,10 +199,10 @@ export default class Actions extends Component<Props, State> {
                                         index,
                                         action
                                     )}
-                                </Modal>
+                                </DEPRECATED_Modal>
                             ) : null}
                             {isHttpAction ? (
-                                <Modal
+                                <DEPRECATED_Modal
                                     isOpen={this.state.isModalOpen[index]}
                                     onClose={this._closeModal(index)}
                                     header="Request"
@@ -213,7 +213,7 @@ export default class Actions extends Component<Props, State> {
                                         action,
                                         contentType
                                     )}
-                                </Modal>
+                                </DEPRECATED_Modal>
                             ) : null}
                         </div>
                     )

@@ -4,7 +4,7 @@ import {Form} from 'reactstrap'
 
 import {SectionDraft} from 'models/section/types'
 import Button from 'pages/common/components/button/Button'
-import Modal from 'pages/common/components/Modal'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import InputField from 'pages/common/forms/input/InputField'
 import InputGroup from 'pages/common/forms/input/InputGroup'
@@ -37,7 +37,7 @@ export default function SectionFormModal({
         return null
     }
     return (
-        <Modal
+        <DEPRECATED_Modal
             autoFocus={false}
             className={css.modal}
             centered
@@ -120,6 +120,6 @@ export default function SectionFormModal({
                     </Button>
                 </div>
             </Form>
-        </Modal>
+        </DEPRECATED_Modal>
     )
 }

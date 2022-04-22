@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ModalActionsFooter /> should render a modal footer 1`] = `
+<div
+  class="wrapper wrapper custom-class"
+>
+  <div
+    class="actions"
+  >
+    <div
+      class="childWrapper"
+    >
+      <button>
+        Cancel
+      </button>
+    </div>
+    <div
+      class="childWrapper"
+    >
+      <button>
+        OK
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ModalActionsFooter /> should render with extra info on footer 1`] = `
+<div
+  class="wrapper wrapper hasExtraInfo custom-class"
+>
+  <div
+    class="extra"
+  >
+    Ares is the Greek god of courage and war. He is one of the Twelve Olympians, and the son of Zeus and Hera
+  </div>
+  <div
+    class="actions"
+  >
+    <div
+      class="childWrapper"
+    >
+      <button>
+        Cancel
+      </button>
+    </div>
+    <div
+      class="childWrapper"
+    >
+      <button>
+        OK
+      </button>
+    </div>
+  </div>
+</div>
+`;
