@@ -5,7 +5,7 @@ exports[`TimedeltaPicker component should render correct passed data 1`] = `
   class="wrapper group horizontal"
 >
   <span
-    class="numberInput wrapper left isNested group horizontal"
+    class="wrapper left isNested group horizontal"
   >
     <input
       class="input"

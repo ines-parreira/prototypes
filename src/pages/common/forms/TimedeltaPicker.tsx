@@ -91,7 +91,6 @@ const TimedeltaPicker = ({
             <NumberInput
                 value={quantity}
                 onChange={(value) => onChange(`${value!}${unit}`)}
-                className={css.numberInput}
                 hasControls={true}
                 min={min}
                 isRequired
