@@ -110,6 +110,13 @@ exports[`CreditCard component should display credit card form 1`] = `
     </div>
     <BillingPlanCard
       className="plan"
+      featuresPlan={
+        Object {
+          "amount": 1000,
+          "currencySign": "$",
+          "name": "basic",
+        }
+      }
       footer={false}
       isCurrentPlan={true}
       plan={Object {}}
@@ -348,6 +355,14 @@ exports[`CreditCard component should render billing plan card with automation fo
     </div>
     <BillingPlanCard
       className="plan"
+      featuresPlan={
+        Object {
+          "amount": 1000,
+          "automation_addon_included": true,
+          "currencySign": "$",
+          "name": "basic-automation",
+        }
+      }
       footer={
         <React.Fragment>
           <AutomationAmount
@@ -356,7 +371,7 @@ exports[`CreditCard component should render billing plan card with automation fo
             plan={
               Object {
                 "amount": 800,
-                "automation_addon_included": true,
+                "automation_addon_included": false,
                 "currencySign": "$",
                 "name": "basic",
               }
@@ -368,7 +383,7 @@ exports[`CreditCard component should render billing plan card with automation fo
             plan={
               Object {
                 "amount": 800,
-                "automation_addon_included": true,
+                "automation_addon_included": false,
                 "currencySign": "$",
                 "name": "basic",
               }
@@ -380,7 +395,7 @@ exports[`CreditCard component should render billing plan card with automation fo
       plan={
         Object {
           "amount": 800,
-          "automation_addon_included": true,
+          "automation_addon_included": false,
           "currencySign": "$",
           "name": "basic",
         }

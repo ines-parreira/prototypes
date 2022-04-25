@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelpCenterChangePlanModal should render the automation plan card when current plan has automation enabled 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal fade"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog modal modal-dialog-centered"
+          role="document"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Review your change
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="p-0 modal-body"
+            >
+              <div
+                class="m-3"
+              >
+                <span>
+                  It seems like you are currently in a legacy plan. To be able to create a Help Center you need to update to a more recent version and you can do it directly from here! Any questions?
+                   
+                  <button
+                    class="button"
+                  >
+                    Get in touch!
+                  </button>
+                </span>
+              </div>
+              <div
+                class="m-3 flex justify-content-center"
+              >
+                <div>
+                  BillingPlanCard mock,
+                  <div>
+                    theme: 
+                  </div>
+                  <div>
+                    className: 
+                    plan isSinglePlan
+                  </div>
+                  <div>
+                    plan: 
+                    basic-monthly-usd-2
+                  </div>
+                  <div>
+                    features plan: 
+                    basic-automation-monthly-usd-2
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="footer modal-footer"
+            >
+              <button
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="wrapper fill primary medium"
+                type="button"
+              >
+                Confirm Upgrade
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop fade"
+      />
+    </div>
+  </div>
+</body>
+`;

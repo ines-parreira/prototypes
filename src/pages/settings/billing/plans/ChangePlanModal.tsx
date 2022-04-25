@@ -80,6 +80,7 @@ export const ChangePlanModal = ({
                                     isCurrentPlan
                                     theme={PlanCardTheme.Grey}
                                     plan={plan.toJS()}
+                                    featuresPlan={currentPlan.toJS()}
                                     renderBody={(features) => (
                                         <SynchronizedScrollTopContainer
                                             height={280}

@@ -23,6 +23,7 @@ Immutable.Map {
     "min": 200,
   },
   "amount": 120,
+  "id": "pro-automation-monthly-usd-2",
   "integrations": 10,
 }
 `;
@@ -46,6 +47,7 @@ Immutable.Map {
     "min": 200,
   },
   "amount": 120,
+  "id": "pro-automation-monthly-usd-2",
   "integrations": 10,
 }
 `;
@@ -69,6 +71,7 @@ Immutable.Map {
     "min": 200,
   },
   "amount": 100,
+  "id": "pro-monthly-usd-2",
   "integrations": 10,
 }
 `;
@@ -92,6 +95,31 @@ Immutable.Map {
     "min": 200,
   },
   "amount": 100,
+  "id": "pro-monthly-usd-2",
   "integrations": 10,
+}
+`;
+
+exports[`billing selectors getPlan should return the plan from the state 1`] = `
+Object {
+  "amount": 500,
+  "automation_addon_equivalent_plan": "growth-automation-usd-1",
+  "automation_addon_included": false,
+  "cost_per_ticket": 0.045,
+  "currency": "usd",
+  "currencySign": "$",
+  "free_tickets": 10000,
+  "id": "growth-usd-1",
+  "integrations": 15,
+  "interval": "month",
+  "limits": Object {
+    "default": 300,
+    "max": 400,
+    "min": 200,
+  },
+  "name": "Growth Plan",
+  "order": 3,
+  "public": false,
+  "trial_period_days": 14,
 }
 `;

@@ -15,7 +15,11 @@ import {useAsyncFn} from 'react-use'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchCurrentUsage} from 'state/billing/actions'
 import {openChat} from 'utils'
-import {getCurrentUsage, getPlan, hasLegacyPlan} from 'state/billing/selectors'
+import {
+    getCurrentUsage,
+    DEPRECATED_getPlan,
+    hasLegacyPlan,
+} from 'state/billing/selectors'
 import {getCurrentSubscription} from 'state/currentAccount/selectors'
 import {getActiveIntegrations} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
@@ -39,7 +43,9 @@ const BillingUsage = () => {
     const accountHasLegacyPlan = useAppSelector(hasLegacyPlan)
     const activeIntegrations = useAppSelector(getActiveIntegrations)
     const currentSubscription = useAppSelector(getCurrentSubscription)
-    const currentPlan = useAppSelector(getPlan(currentSubscription.get('plan')))
+    const currentPlan = useAppSelector(
+        DEPRECATED_getPlan(currentSubscription.get('plan'))
+    )
     const currentUsage = useAppSelector(getCurrentUsage)
 
     const [{loading: isLoading}, handleCurrentUsageFetch] =

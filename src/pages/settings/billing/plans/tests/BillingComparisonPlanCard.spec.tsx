@@ -314,4 +314,21 @@ describe('<BillingComparisonPlanCard />', () => {
             expect(getByText('Switch to our updated plans')).toBeTruthy()
         }
     )
+
+    it('should render the automation plan features when the automation checkbox is checked', () => {
+        getCurrentPlanSpy.mockImplementation(
+            () => fromJS(proPlan) as Map<any, any>
+        )
+        const {baseElement} = render(
+            <Provider store={mockStore(defaultState)}>
+                <BillingComparisonPlanCard
+                    {...minProps}
+                    isAutomationChecked
+                    defaultIsPlanChangeModalOpen
+                />
+            </Provider>
+        )
+
+        expect(baseElement).toMatchSnapshot()
+    })
 })

@@ -554,6 +554,7 @@ export class CreditCardContainer extends Component<Props, State> {
                         <BillingPlanCard
                             className={css.plan}
                             plan={regularCurrentPlan.toJS()}
+                            featuresPlan={currentPlan.toJS()}
                             isCurrentPlan
                             renderBody={(features) => (
                                 <div className={css.planCardBody}>

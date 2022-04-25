@@ -11,7 +11,11 @@ import {getCurrentAccountState} from '../currentAccount/selectors'
 import {getActiveIntegrations} from '../integrations/selectors'
 import {RootState} from '../types'
 
-import {BillingState, BillingImmutableState} from './types'
+import {
+    BillingState,
+    BillingImmutableState,
+    PlanWithCurrencySign,
+} from './types'
 
 export const DEFAULT_PLAN = 'standard-usd-1'
 
@@ -53,16 +57,21 @@ export const DEPRECATED_getPlans = createSelector<
     }) as Map<any, any>
 })
 
-export const getPlans = createSelector<RootState, Plan[], BillingState>(
-    getBillingState,
-    (state) =>
-        Object.values(state.plans)
-            .map((plan) => ({
-                ...plan,
-                amount: (plan.amount || 0) / 100, // stripe amount are in cents
-                currencySign: '$', // we only have USD today, change this when we add more currencies
-            }))
-            .sort(({order: orderA}, {order: orderB}) => orderA - orderB)
+export const getPlans = createSelector<
+    RootState,
+    PlanWithCurrencySign[],
+    BillingState
+>(getBillingState, (state) =>
+    Object.values(state.plans)
+        .map(
+            (plan) =>
+                ({
+                    ...plan,
+                    amount: (plan.amount || 0) / 100, // stripe amount are in cents
+                    currencySign: '$', // we only have USD today, change this when we add more currencies
+                } as PlanWithCurrencySign)
+        )
+        .sort(({order: orderA}, {order: orderB}) => orderA - orderB)
 )
 
 export const DEPRECATED_getCurrentPlan = createSelector<
@@ -83,10 +92,15 @@ export const getCurrentPlan = createSelector<
     string | undefined
 >(getPlans, currentPlanId, (plans, id) => plans.find((plan) => plan.id === id))
 
-export const getPlan = (planId: string) =>
+export const DEPRECATED_getPlan = (planId: string) =>
     createSelector<RootState, Map<any, any>, Map<any, any>>(
         DEPRECATED_getPlans,
         (p) => (p.get(planId) || fromJS({})) as Map<any, any>
+    )
+
+export const getPlan = (planId: string) =>
+    createSelector(getPlans, (plans) =>
+        plans.find((plan) => plan.id === planId)
     )
 
 export const getHasAutomationAddOn = createSelector<
@@ -224,7 +238,7 @@ export const isAllowedToCreateIntegration = createSelector<
 
 export const isAllowedToChangePlan = (planId: string) =>
     createSelector<RootState, boolean, Map<any, any>, List<any>>(
-        getPlan(planId),
+        DEPRECATED_getPlan(planId),
         getActiveIntegrations,
         (plan, activeIntegrations) => {
             return plan.get('integrations', 0) >= activeIntegrations.size

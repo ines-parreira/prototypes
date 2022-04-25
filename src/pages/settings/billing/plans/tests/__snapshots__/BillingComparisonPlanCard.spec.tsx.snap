@@ -2015,3 +2015,1155 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
   </div>
 </div>
 `;
+
+exports[`<BillingComparisonPlanCard /> should render the automation plan features when the automation checkbox is checked 1`] = `
+<body
+  class="modal-open"
+>
+  <div>
+    <div
+      class="plan blueTheme card"
+    >
+      <div
+        class="planHeader card-header"
+      >
+        <div
+          class="headerText"
+        >
+          <div
+            class="planName"
+            title="Basic"
+          >
+            Basic
+          </div>
+          <span
+            class="headerPrice"
+          >
+            <div
+              class="amountWrapper"
+            >
+              <span>
+                $60
+                 
+                / 
+                month
+              </span>
+            </div>
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          class="automationRow"
+        >
+          <div
+            class="checkbox"
+          >
+            <label
+              class="label label"
+              for="basic-monthly-usd-242"
+            >
+              <input
+                checked=""
+                class="input"
+                id="basic-monthly-usd-242"
+                name="basic-monthly-usd-242"
+                type="checkbox"
+              />
+              <div
+                class="align-middle checkboxLabel"
+              >
+                <span
+                  id="automation-text-basic-monthly-usd-242"
+                >
+                  Automation
+                </span>
+              </div>
+            </label>
+          </div>
+          <div
+            class="amountContainer"
+          >
+            <div
+              class="amountWrapper amount"
+            >
+              <span
+                class="amount"
+                id="subscription-amount-tooltip-target-42"
+              >
+                <span
+                  class="discountedAmount"
+                >
+                  $40
+                </span>
+                <wbr />
+                <b>
+                  $20
+                </b>
+                 
+                / 
+                mo
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="cardBody card-body"
+      >
+        <ul
+          class="featureList"
+        >
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                playlist_add_check
+              </i>
+            </span>
+            <span>
+              <span
+                class="billableTickets"
+                id="billable-ticket-label-42"
+              >
+                400
+                 
+                billable tickets
+              </span>
+               
+              included
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                thumb_up
+              </i>
+            </span>
+            <span>
+              Facebook, Messenger, Instagram & DMs
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                forum
+              </i>
+            </span>
+            <span>
+              Live chat
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                phone
+              </i>
+            </span>
+            <span>
+              <b>
+                1
+              </b>
+               Phone number
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                auto_awesome
+              </i>
+            </span>
+            <span>
+              Macros and rules
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                insert_emoticon
+              </i>
+            </span>
+            <span>
+              Satisfaction surveys
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                web_asset
+              </i>
+            </span>
+            <span>
+              <div>
+                Unlimited
+                 
+                <span
+                  class="underline"
+                  id="help-center-label-42"
+                >
+                  Help centers
+                </span>
+              </div>
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                directions_walk
+              </i>
+            </span>
+            <span>
+              <b>
+                Self
+              </b>
+               onboarding
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                attach_money
+              </i>
+            </span>
+            <span>
+              Revenue statistics
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon"
+                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+              />
+            </span>
+            <span>
+              Magento integration
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                person_pin
+              </i>
+            </span>
+            <span>
+              Dedicated success manager
+            </span>
+          </li>
+          <li
+            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+          >
+            <span
+              class="featureIcon mr-3"
+            >
+              <i
+                class="icon material-icons"
+              >
+                blur_on
+              </i>
+            </span>
+            <span>
+              Custom services
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="cardFooter card-footer"
+      >
+        <div
+          class="row"
+        >
+          <div>
+            Total
+          </div>
+          <div
+            class="amountContainer"
+          >
+            <div
+              class="amountWrapper amount"
+            >
+              <span>
+                <b>
+                  $80
+                </b>
+                 
+                / 
+                month
+              </span>
+            </div>
+          </div>
+        </div>
+        <button
+          aria-label="Downgrade to Basic Plan"
+          class="wrapper footerButton ghost primary medium"
+          type="button"
+        >
+          Downgrade to Basic Plan
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal fade"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog modal modal-dialog-centered"
+          role="document"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Are you sure you want to switch plans?
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="p-0 modal-body"
+            >
+              <div
+                class="m-3"
+              >
+                Note that your number of tickets will decrease from
+                 
+                <b>
+                  2000
+                </b>
+                 to
+                 
+                <b>
+                  350
+                </b>
+                 and the extra ticket price will change to
+                 
+                <b>
+                  $
+                  25.00
+                   per extra 
+                  100
+                   tickets
+                </b>
+                .
+              </div>
+              <div
+                class="m-3 flex justify-content-between"
+              >
+                <div
+                  class="plan greyTheme plan card"
+                >
+                  <div
+                    class="planHeader card-header"
+                  >
+                    <div>
+                      <div
+                        class="badge"
+                      >
+                        CURRENT PLAN
+                      </div>
+                    </div>
+                    <div
+                      class="headerText"
+                    >
+                      <div
+                        class="planName"
+                        title="Pro"
+                      >
+                        Pro
+                      </div>
+                      <span
+                        class="headerPrice"
+                      >
+                        <div
+                          class="amountWrapper"
+                        >
+                          <span>
+                            $300
+                             
+                            / 
+                            month
+                          </span>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    class="cardBody card-body"
+                  >
+                    <div
+                      class="container"
+                      style="height: 280px;"
+                    >
+                      <div
+                        style="height: auto;"
+                      >
+                        <ul
+                          class="featureList"
+                        >
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                playlist_add_check
+                              </i>
+                            </span>
+                            <span>
+                              <span
+                                class="billableTickets"
+                                id="billable-ticket-label-42"
+                              >
+                                2,000
+                                 
+                                billable tickets
+                              </span>
+                               
+                              included
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                thumb_up
+                              </i>
+                            </span>
+                            <span>
+                              Facebook, Messenger, Instagram & DMs
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                forum
+                              </i>
+                            </span>
+                            <span>
+                              Live chat
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                phone
+                              </i>
+                            </span>
+                            <span>
+                              <b>
+                                3
+                              </b>
+                               Phone number
+                              s
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                auto_awesome
+                              </i>
+                            </span>
+                            <span>
+                              Macros and rules
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                insert_emoticon
+                              </i>
+                            </span>
+                            <span>
+                              Satisfaction surveys
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                web_asset
+                              </i>
+                            </span>
+                            <span>
+                              <div>
+                                Unlimited
+                                 
+                                <span
+                                  class="underline"
+                                  id="help-center-label-42"
+                                >
+                                  Help centers
+                                </span>
+                              </div>
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                directions_bike
+                              </i>
+                            </span>
+                            <span>
+                              <b>
+                                Lite
+                              </b>
+                               onboarding
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                attach_money
+                              </i>
+                            </span>
+                            <span>
+                              Revenue statistics
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon"
+                                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+                              />
+                            </span>
+                            <span>
+                              Magento integration
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                person_pin
+                              </i>
+                            </span>
+                            <span>
+                              Dedicated success manager
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                blur_on
+                              </i>
+                            </span>
+                            <span>
+                              Custom services
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cardFooter card-footer"
+                  >
+                    <div
+                      class="automationRow"
+                    >
+                      <div
+                        class="checkbox"
+                      >
+                        <label
+                          class="label label"
+                          for="pro-monthly-usd-242"
+                        >
+                          <input
+                            class="input"
+                            id="pro-monthly-usd-242"
+                            name="pro-monthly-usd-242"
+                            readonly=""
+                            type="checkbox"
+                          />
+                          <div
+                            class="align-middle checkboxLabel"
+                          >
+                            <span
+                              id="automation-text-pro-monthly-usd-242"
+                            >
+                              Automation
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                      <div
+                        class="amountContainer"
+                      >
+                        <div
+                          class="amountWrapper amount amountDisabled"
+                        >
+                          <span
+                            class="amount"
+                            id="subscription-amount-tooltip-target-42"
+                          >
+                            <span
+                              class="discountedAmount"
+                            >
+                              $200
+                            </span>
+                            <wbr />
+                            <b>
+                              $100
+                            </b>
+                             
+                            / 
+                            month
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="row"
+                    >
+                      <div>
+                        Total
+                      </div>
+                      <div
+                        class="amountContainer"
+                      >
+                        <div
+                          class="amountWrapper amount"
+                        >
+                          <span>
+                            <b>
+                              $300
+                            </b>
+                             
+                            / 
+                            month
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <img
+                  alt="arrow-icon"
+                  src="test-file-stub"
+                />
+                <div
+                  class="plan blueTheme plan card"
+                >
+                  <div
+                    class="planHeader card-header"
+                  >
+                    <div
+                      class="headerText"
+                    >
+                      <div
+                        class="planName"
+                        title="Basic"
+                      >
+                        Basic
+                      </div>
+                      <span
+                        class="headerPrice"
+                      >
+                        <div
+                          class="amountWrapper"
+                        >
+                          <span>
+                            $60
+                             
+                            / 
+                            month
+                          </span>
+                        </div>
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    class="cardBody card-body"
+                  >
+                    <div
+                      class="container"
+                      style="height: 280px;"
+                    >
+                      <div
+                        style="height: auto;"
+                      >
+                        <ul
+                          class="featureList"
+                        >
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                playlist_add_check
+                              </i>
+                            </span>
+                            <span>
+                              <span
+                                class="billableTickets"
+                                id="billable-ticket-label-42"
+                              >
+                                400
+                                 
+                                billable tickets
+                              </span>
+                               
+                              included
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                thumb_up
+                              </i>
+                            </span>
+                            <span>
+                              Facebook, Messenger, Instagram & DMs
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                forum
+                              </i>
+                            </span>
+                            <span>
+                              Live chat
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                phone
+                              </i>
+                            </span>
+                            <span>
+                              <b>
+                                1
+                              </b>
+                               Phone number
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                auto_awesome
+                              </i>
+                            </span>
+                            <span>
+                              Macros and rules
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                insert_emoticon
+                              </i>
+                            </span>
+                            <span>
+                              Satisfaction surveys
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                web_asset
+                              </i>
+                            </span>
+                            <span>
+                              <div>
+                                Unlimited
+                                 
+                                <span
+                                  class="underline"
+                                  id="help-center-label-42"
+                                >
+                                  Help centers
+                                </span>
+                              </div>
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                directions_walk
+                              </i>
+                            </span>
+                            <span>
+                              <b>
+                                Self
+                              </b>
+                               onboarding
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                attach_money
+                              </i>
+                            </span>
+                            <span>
+                              Revenue statistics
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon"
+                                style="mask: url(test-file-stub) 0 0/var(--feature-icon-size) no-repeat;"
+                              />
+                            </span>
+                            <span>
+                              Magento integration
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                person_pin
+                              </i>
+                            </span>
+                            <span>
+                              Dedicated success manager
+                            </span>
+                          </li>
+                          <li
+                            class="d-flex align-items-center featureListItem disabledFeatureListItem"
+                          >
+                            <span
+                              class="featureIcon mr-3"
+                            >
+                              <i
+                                class="icon material-icons"
+                              >
+                                blur_on
+                              </i>
+                            </span>
+                            <span>
+                              Custom services
+                            </span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="cardFooter card-footer"
+                  >
+                    <div
+                      class="automationRow"
+                    >
+                      <div
+                        class="checkbox"
+                      >
+                        <label
+                          class="label label"
+                          for="basic-monthly-usd-242"
+                        >
+                          <input
+                            checked=""
+                            class="input"
+                            id="basic-monthly-usd-242"
+                            name="basic-monthly-usd-242"
+                            type="checkbox"
+                          />
+                          <div
+                            class="align-middle checkboxLabel"
+                          >
+                            <span
+                              id="automation-text-basic-monthly-usd-242"
+                            >
+                              Automation
+                            </span>
+                          </div>
+                        </label>
+                      </div>
+                      <div
+                        class="amountContainer"
+                      >
+                        <div
+                          class="amountWrapper amount"
+                        >
+                          <span
+                            class="amount"
+                            id="subscription-amount-tooltip-target-42"
+                          >
+                            <span
+                              class="discountedAmount"
+                            >
+                              $40
+                            </span>
+                            <wbr />
+                            <b>
+                              $20
+                            </b>
+                             
+                            / 
+                            month
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="row"
+                    >
+                      <div>
+                        Total
+                      </div>
+                      <div
+                        class="amountContainer"
+                      >
+                        <div
+                          class="amountWrapper amount"
+                        >
+                          <span>
+                            <b>
+                              $80
+                            </b>
+                             
+                            / 
+                            month
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="footer modal-footer"
+            >
+              <button
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                class="wrapper fill primary medium"
+                type="button"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop fade"
+      />
+    </div>
+  </div>
+</body>
+`;

@@ -19,11 +19,13 @@ const PLAN_THEMES: Partial<Record<string, PlanCardTheme>> = {
 
 type Props = {
     plan: PlanWithCurrencySign
+    featuresPlan: PlanWithCurrencySign
     isCurrentPlan?: boolean
 } & Omit<ComponentProps<typeof PlanCard>, 'planName' | 'features' | 'price'>
 
 export default function BillingPlanCard({
     plan,
+    featuresPlan,
     theme,
     isCurrentPlan = false,
     headerBadge,
@@ -43,7 +45,7 @@ export default function BillingPlanCard({
             planName={plan.name}
             headerBadge={badge}
             features={getPlanCardFeaturesForPlan({
-                plan,
+                plan: featuresPlan,
                 enableHardCodedFeatures: !(
                     isCurrentPlan && accountHasLegacyPlan
                 ),

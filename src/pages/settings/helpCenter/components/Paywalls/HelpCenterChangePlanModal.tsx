@@ -41,9 +41,9 @@ const HelpCenterChangePlanModal = ({
             suitablePlanWithoutAutomationAddOn.automation_addon_equivalent_plan!
         )
     )
-    const addOnAmount = suitablePlanWithAutomationAddOn.get('amount')
+    const addOnAmount = suitablePlanWithAutomationAddOn
         ? Math.abs(
-              suitablePlanWithAutomationAddOn.get('amount') -
+              suitablePlanWithAutomationAddOn.amount -
                   suitablePlanWithoutAutomationAddOn.amount
           )
         : '?'
@@ -87,6 +87,12 @@ const HelpCenterChangePlanModal = ({
             renderComparedPlan={({className, renderBody}) => (
                 <BillingPlanCard
                     plan={suitablePlanWithoutAutomationAddOn}
+                    featuresPlan={
+                        isModalAutomationChecked &&
+                        suitablePlanWithAutomationAddOn
+                            ? suitablePlanWithAutomationAddOn
+                            : suitablePlanWithoutAutomationAddOn
+                    }
                     className={className}
                     renderBody={renderBody}
                     footer={
@@ -112,9 +118,9 @@ const HelpCenterChangePlanModal = ({
             )}
             onConfirm={() => {
                 handleSubscriptionUpdate?.(
-                    isModalAutomationChecked
-                        ? suitablePlanWithAutomationAddOn.get('id')
-                        : suitablePlanWithoutAutomationAddOn.id
+                    (isModalAutomationChecked && suitablePlanWithAutomationAddOn
+                        ? suitablePlanWithAutomationAddOn.id
+                        : suitablePlanWithoutAutomationAddOn.id) as SubscriptionPlan
                 )
                 onClose()
             }}

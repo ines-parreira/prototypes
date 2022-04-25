@@ -2,6 +2,7 @@ export const billingState = {
     paymentMethod: 'stripe',
     plans: {
         free: {
+            id: 'free',
             amount: 0,
             cost_per_ticket: 0,
             currency: 'usd',
@@ -17,6 +18,7 @@ export const billingState = {
             automation_addon_equivalent_plan: null,
         },
         'growth-usd-1': {
+            id: 'growth-usd-1',
             cost_per_ticket: 0.045,
             interval: 'month',
             public: false,
@@ -36,6 +38,7 @@ export const billingState = {
             automation_addon_included: false,
         },
         'helpdesk-monthly-beta': {
+            id: 'helpdesk-monthly-beta',
             amount: 0,
             cost_per_ticket: 0,
             currency: 'usd',
@@ -52,6 +55,7 @@ export const billingState = {
             automation_addon_included: false,
         },
         'standard-1': {
+            id: 'standard-1',
             amount: 0,
             cost_per_ticket: 0.05,
             currency: 'usd',
@@ -69,6 +73,7 @@ export const billingState = {
             automation_addon_included: false,
         },
         'standard-usd-1': {
+            id: 'standard-usd-1',
             cost_per_ticket: 0.06,
             interval: 'month',
             public: false,
@@ -88,6 +93,7 @@ export const billingState = {
             automation_addon_included: false,
         },
         'team-usd-1': {
+            id: 'team-usd-1',
             cost_per_ticket: 0.05,
             interval: 'month',
             public: false,
@@ -107,6 +113,7 @@ export const billingState = {
             automation_addon_included: false,
         },
         'pro-monthly-usd-2': {
+            id: 'pro-monthly-usd-2',
             cost_per_ticket: 0.05,
             interval: 'month',
             public: true,
@@ -126,6 +133,7 @@ export const billingState = {
             automation_addon_included: false,
         },
         'pro-automation-monthly-usd-2': {
+            id: 'pro-automation-monthly-usd-2',
             cost_per_ticket: 0.05,
             interval: 'month',
             public: true,

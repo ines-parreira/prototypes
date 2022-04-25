@@ -1,23 +1,25 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fireEvent, render} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 
-import {RootState, StoreDispatch} from '../../../../../../state/types'
+import {RootState, StoreDispatch} from 'state/types'
 import {
     basicLegacyPlan,
     basicPlan,
     basicAutomationPlan,
-} from '../../../../../../fixtures/subscriptionPlan'
-import {PlanWithCurrencySign} from '../../../../../../state/billing/types'
+} from 'fixtures/subscriptionPlan'
+import {PlanWithCurrencySign} from 'state/billing/types'
+import BillingPlanCard from 'pages/settings/billing/plans/BillingPlanCard'
+
 import HelpCenterChangePlanModal from '../HelpCenterChangePlanModal'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const mockedDispatch = jest.fn()
-jest.mock('../../../../../../hooks/useAppDispatch', () => () => mockedDispatch)
+jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 const mockedHandleSubscriptionUpdate = jest.fn()
 jest.mock('react-use', () => {
@@ -26,6 +28,26 @@ jest.mock('react-use', () => {
         useAsyncFn: () => [{loading: false}, mockedHandleSubscriptionUpdate],
     } as Record<string, unknown>
 })
+
+jest.mock(
+    'pages/settings/billing/plans/BillingPlanCard',
+    () =>
+        ({
+            plan,
+            featuresPlan,
+            theme,
+            className,
+        }: ComponentProps<typeof BillingPlanCard>) =>
+            (
+                <div>
+                    BillingPlanCard mock,
+                    <div>theme: {theme}</div>
+                    <div>className: {className}</div>
+                    <div>plan: {plan.id}</div>
+                    <div>features plan: {featuresPlan.id}</div>
+                </div>
+            )
+)
 
 describe('HelpCenterChangePlanModal', () => {
     const props = {
@@ -68,5 +90,26 @@ describe('HelpCenterChangePlanModal', () => {
         expect(mockedHandleSubscriptionUpdate).toHaveBeenCalledWith(
             'basic-monthly-usd-2'
         )
+    })
+
+    it('should render the automation plan card when current plan has automation enabled', () => {
+        const state: Partial<RootState> = {
+            billing: fromJS({
+                plans: fromJS({
+                    [basicPlan.id]: basicPlan,
+                    [basicAutomationPlan.id]: basicAutomationPlan,
+                }),
+            }),
+        }
+        const {baseElement} = render(
+            <Provider store={mockStore(state)}>
+                <HelpCenterChangePlanModal
+                    {...props}
+                    currentPlan={fromJS(basicAutomationPlan)}
+                />
+            </Provider>
+        )
+
+        expect(baseElement).toMatchSnapshot()
     })
 })

@@ -90,7 +90,7 @@ describe('CreditCard component', () => {
                     name: 'basic',
                     currencySign: '$',
                     amount: 800,
-                    automation_addon_included: true,
+                    automation_addon_included: false,
                 })}
                 hasAutomationAddOn={true}
                 automationAddOnAmount={200}

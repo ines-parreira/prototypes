@@ -6,16 +6,17 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {RootState, StoreDispatch} from '../../../../../state/types'
+import {RootState, StoreDispatch} from 'state/types'
 import {
     basicPlan,
     proPlan,
     advancedPlan,
-} from '../../../../../fixtures/subscriptionPlan'
-import {account} from '../../../../../fixtures/account'
-import {billingState} from '../../../../../fixtures/billing'
-import {PlanInterval} from '../../../../../models/billing/types'
-import SynchronizedScrollTopContainer from '../../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
+    basicAutomationPlan,
+} from 'fixtures/subscriptionPlan'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {PlanInterval} from 'models/billing/types'
+import SynchronizedScrollTopContainer from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
 
 import ChangePlanModal from '../ChangePlanModal'
 import BillingPlanCard from '../BillingPlanCard'
@@ -26,6 +27,8 @@ jest.mock(
     '../BillingPlanCard',
     () =>
         ({
+            plan,
+            featuresPlan,
             theme,
             renderBody,
             className,
@@ -38,12 +41,14 @@ jest.mock(
                         renderBody: {renderBody?.(<span>features mock</span>)}
                     </div>
                     <div>className: {className}</div>
+                    <div>plan: {plan.id}</div>
+                    <div>features plan: {featuresPlan.id}</div>
                 </div>
             )
 )
 
 jest.mock(
-    '../../../../common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer',
+    'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer',
     () =>
         ({height}: ComponentProps<typeof SynchronizedScrollTopContainer>) =>
             (
@@ -72,6 +77,7 @@ describe('<ChangePlanModal />', () => {
     }
     const plans = {
         [basicPlan.id]: basicPlan,
+        [basicAutomationPlan.id]: basicAutomationPlan,
         [proPlan.id]: proPlan,
         [advancedPlan.id]: advancedPlan,
     }
@@ -101,6 +107,27 @@ describe('<ChangePlanModal />', () => {
     it('should render', () => {
         const {baseElement} = render(
             <Provider store={mockStore(defaultState)}>
+                <ChangePlanModal {...minProps} />
+            </Provider>
+        )
+
+        expect(baseElement).toMatchSnapshot()
+    })
+
+    it('should render the automation plan features for the current automation plan', () => {
+        const {baseElement} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            plan: basicAutomationPlan.id,
+                        },
+                    }),
+                })}
+            >
                 <ChangePlanModal {...minProps} />
             </Provider>
         )

@@ -112,17 +112,40 @@ describe('billing selectors', () => {
         expect(plan?.id).toBe(statePlan.id)
     })
 
-    it('getPlan', () => {
-        expect(selectors.getPlan('')({} as RootState)).toEqualImmutable(
+    it('DEPRECATED_getPlan', () => {
+        expect(
+            selectors.DEPRECATED_getPlan('')({} as RootState)
+        ).toEqualImmutable(fromJS({}))
+        expect(selectors.DEPRECATED_getPlan('')(state)).toEqualImmutable(
             fromJS({})
         )
-        expect(selectors.getPlan('')(state)).toEqualImmutable(fromJS({}))
-        expect(selectors.getPlan('growth-usd-1')(state).get('name')).toBe(
-            state.billing.getIn(['plans', 'growth-usd-1', 'name'])
-        )
-        expect(selectors.getPlan('standard-1')(state).get('name')).toBe(
-            state.billing.getIn(['plans', 'standard-1', 'name'])
-        )
+        expect(
+            selectors.DEPRECATED_getPlan('growth-usd-1')(state).get('name')
+        ).toBe(state.billing.getIn(['plans', 'growth-usd-1', 'name']))
+        expect(
+            selectors.DEPRECATED_getPlan('standard-1')(state).get('name')
+        ).toBe(state.billing.getIn(['plans', 'standard-1', 'name']))
+    })
+
+    describe('getPlan', () => {
+        it('should return undefined when state has no plans', () => {
+            expect(
+                selectors.getPlan('')({
+                    ...state,
+                    billing: fromJS({
+                        plans: {},
+                    }),
+                })
+            ).toBe(undefined)
+        })
+
+        it('should return undefined when plan is not found in the state plans', () => {
+            expect(selectors.getPlan('')(state)).toBe(undefined)
+        })
+
+        it('should return the plan from the state', () => {
+            expect(selectors.getPlan('growth-usd-1')(state)).toMatchSnapshot()
+        })
     })
 
     it('invoices', () => {

@@ -5,8 +5,8 @@ import {
     DEPRECATED_getCurrentPlan,
     getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
-    getPlan,
     hasLegacyPlan,
+    getPlan,
 } from 'state/billing/selectors'
 import {AccountFeatures} from 'state/currentAccount/types'
 import {isFeatureEnabled} from 'utils/account'
@@ -19,7 +19,6 @@ import CurrentPlanBadge from './CurrentPlanBadge'
 import {PlanCardTheme} from './PlanCard'
 import AutomationAmount from './AutomationAmount'
 import TotalAmount from './TotalAmount'
-
 import css from './BillingComparisonPlanCard.less'
 
 const countFeatures = (features: AccountFeatures) =>
@@ -33,7 +32,7 @@ type Props = {
     onAutomationChange: () => void
 } & Omit<
     ComponentProps<typeof BillingPlanCard>,
-    'footer' | 'headerBadge' | 'theme'
+    'footer' | 'headerBadge' | 'theme' | 'featuresPlan'
 >
 
 export default function BillingComparisonPlanCard({
@@ -53,12 +52,12 @@ export default function BillingComparisonPlanCard({
     const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
     const regularCurrentPlan = useAppSelector(getEquivalentRegularCurrentPlan)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
-
-    const equivalentAutomationPlan = useAppSelector(
+    const automationPlan = useAppSelector(
         getPlan(plan.automation_addon_equivalent_plan!)
     )
-    const addOnAmount = equivalentAutomationPlan.get('amount')
-        ? Math.abs(equivalentAutomationPlan.get('amount') - plan.amount)
+
+    const addOnAmount = automationPlan
+        ? Math.abs(automationPlan.amount - plan.amount)
         : '?'
 
     const [isModalAutomationChecked, setModalIsAutomationChecked] =
@@ -173,6 +172,9 @@ export default function BillingComparisonPlanCard({
         <BillingPlanCard
             {...billingCardProps}
             plan={plan}
+            featuresPlan={
+                isAutomationChecked && automationPlan ? automationPlan : plan
+            }
             isCurrentPlan={isCurrentPlan}
             theme={isCurrentPlan ? PlanCardTheme.Grey : undefined}
             headerBadge={
@@ -231,6 +233,11 @@ export default function BillingComparisonPlanCard({
                         renderComparedPlan={({className, renderBody}) => (
                             <BillingPlanCard
                                 plan={plan}
+                                featuresPlan={
+                                    isModalAutomationChecked && automationPlan
+                                        ? automationPlan
+                                        : plan
+                                }
                                 className={className}
                                 renderBody={renderBody}
                                 footer={
