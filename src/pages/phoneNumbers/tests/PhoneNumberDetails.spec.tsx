@@ -50,11 +50,8 @@ describe('<PhoneNumberDetails/>', () => {
             expect(container).toMatchSnapshot()
         })
 
-        it('should render the link to an SMS integration for preview accounts', () => {
+        it('should render the link to an SMS integration', () => {
             const store = mockStore({
-                currentAccount: fromJS({
-                    domain: 'acme',
-                }),
                 entities: {
                     phoneNumbers: phoneNumbers.reduce(
                         (acc, number) => ({...acc, [number.id]: number}),
@@ -69,28 +66,6 @@ describe('<PhoneNumberDetails/>', () => {
                 </Provider>
             )
             expect(queryByText('SMS')).toBeTruthy()
-            expect(container).toMatchSnapshot()
-        })
-
-        it('should not render the link to an SMS integration for non-preview accounts', () => {
-            const store = mockStore({
-                currentAccount: fromJS({
-                    domain: 'some-helpdesk',
-                }),
-                entities: {
-                    phoneNumbers: phoneNumbers.reduce(
-                        (acc, number) => ({...acc, [number.id]: number}),
-                        {}
-                    ),
-                },
-            } as RootState)
-
-            const {container, queryByText} = render(
-                <Provider store={store}>
-                    <PhoneNumberDetails phoneNumber={phoneNumbers[1]} />
-                </Provider>
-            )
-            expect(queryByText('SMS')).toBeFalsy()
             expect(container).toMatchSnapshot()
         })
 
@@ -147,7 +122,7 @@ describe('<PhoneNumberDetails/>', () => {
             )
 
             expect(queryAllByText('Manage Integration').length).toBe(0)
-            expect(queryAllByText('Add Integration').length).toBe(1)
+            expect(queryAllByText('Add Integration').length).toBe(2)
             expect(container).toMatchSnapshot()
         })
 

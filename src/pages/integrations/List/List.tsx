@@ -2,13 +2,11 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Col, Container, Row} from 'reactstrap'
 
-import {SMS_INTEGRATION_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 import {isSmoochInsideIntegration} from 'models/integration/types/smoochInside'
 import {fetchApps} from 'models/integration/resources'
 import {RootState} from 'state/types'
 import {fetchIntegrations} from 'state/integrations/actions'
 import {IntegrationListItem} from 'state/integrations/types'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     getBillingState,
@@ -35,7 +33,6 @@ import IntegrationListRow from './Row'
 
 export const List = ({
     currentPlan,
-    currentAccount,
     plans,
     integrations,
     integrationsList,
@@ -180,15 +177,6 @@ export const List = ({
                 return false
             }
 
-            if (
-                integration.type === IntegrationType.Sms &&
-                !SMS_INTEGRATION_PREVIEW_ACCOUNTS.includes(
-                    currentAccount.get('domain')
-                )
-            ) {
-                return false
-            }
-
             return true
         })
         .map((integration) => {
@@ -264,7 +252,6 @@ const connector = connect((state: RootState) => ({
     activeIntegrations: getActiveIntegrations(state).size,
     allowedIntegrations: planIntegrations(state),
     currentPlan: getCurrentPlan(state),
-    currentAccount: getCurrentAccountState(state),
     integrations: getIntegrations(state),
     integrationsList: getIntegrationsList(state),
     plans: getBillingState(state).plans,

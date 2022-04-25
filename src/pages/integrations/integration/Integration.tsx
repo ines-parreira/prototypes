@@ -6,7 +6,6 @@ import {fromJS, List, Map} from 'immutable'
 import {useUpdateEffect, useAsyncFn} from 'react-use'
 
 import useSearch from 'hooks/useSearch'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -20,7 +19,6 @@ import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
 import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {compare} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {SMS_INTEGRATION_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList.js'
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate.js'
@@ -126,7 +124,6 @@ export const IntegrationDetail = ({
     actions,
     currentUser,
     getRedirectUri,
-    currentAccount,
     integrations,
 }: ConnectedProps<typeof connector>) => {
     const {extra, integrationId, integrationType, subId} = useParams<{
@@ -509,14 +506,6 @@ export const IntegrationDetail = ({
             return <PhoneIntegrationsListContainer />
 
         case IntegrationType.Sms: {
-            if (
-                !SMS_INTEGRATION_PREVIEW_ACCOUNTS.includes(
-                    currentAccount.get('domain')
-                )
-            ) {
-                return null
-            }
-
             if (!!integrationId) {
                 if (extra === Tab.Preferences) {
                     return (
@@ -758,7 +747,6 @@ const connector = connect(
         getEligibleShopifyIntegrationsFor:
             getEligibleShopifyIntegrationsFor(state),
         getRedirectUri: makeGetRedirectUri(state),
-        currentAccount: getCurrentAccountState(state),
         currentUser: state.currentUser,
     }),
     (dispatch) => ({

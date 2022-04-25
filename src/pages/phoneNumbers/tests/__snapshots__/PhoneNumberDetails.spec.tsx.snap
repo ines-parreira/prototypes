@@ -211,7 +211,7 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
 </div>
 `;
 
-exports[`<PhoneNumberDetails/> render() should not render the link to an SMS integration for non-preview accounts 1`] = `
+exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link if no existing attached integration 1`] = `
 <div>
   <form
     class=""
@@ -386,189 +386,8 @@ exports[`<PhoneNumberDetails/> render() should not render the link to an SMS int
             </a>
           </div>
         </div>
-      </div>
-    </div>
-    <div
-      class="mt-4 row"
-    >
-      <div
-        class="mt-4 col-lg-6"
-      >
-        <button
-          class="wrapper fill primary medium"
-          type="submit"
-        >
-          Save changes
-        </button>
-        <button
-          class="wrapper float-right fill destructive medium"
-          id="delete-number"
-          type="button"
-        >
-          <span
-            class="wrapper"
-          >
-            <i
-              class="material-icons icon isLeft medium"
-            >
-              delete
-            </i>
-            Delete number
-          </span>
-        </button>
-      </div>
-    </div>
-  </form>
-</div>
-`;
-
-exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link if no existing attached integration 1`] = `
-<div>
-  <form
-    class=""
-  >
-    <div
-      class="row"
-    >
-      <div
-        class="pr-lg-0 pr-md-3 col-lg-6"
-      >
         <div
-          class="form-group"
-        >
-          <label
-            class="control-label"
-            for="name"
-          >
-            Title
-          </label>
-          <input
-            class="form-control"
-            id="name"
-            placeholder="Ex: Company Support Line"
-            required=""
-            type="text"
-            value="Another Phone Number"
-          />
-        </div>
-        <div
-          class="form-group"
-        >
-          <label
-            class="control-label"
-            for="phone-number"
-          >
-            Phone number
-          </label>
-          <div
-            class="input-group"
-          >
-            <input
-              class="form-control"
-              id="phone-number"
-              readonly=""
-              type="text"
-              value="+1 813 111 2223"
-            />
-            <div
-              class="input-group-append"
-            >
-              <button
-                class="copy-phone-number-button btn btn-secondary"
-                data-clipboard-target="#phone-number"
-                type="button"
-              >
-                <i
-                  class="material-icons mr-2"
-                >
-                  file_copy
-                </i>
-                Copy
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div
-      class="row"
-    >
-      <div
-        class="pr-lg-0 pr-md-3 col-lg-3"
-      >
-        <div
-          class="form-group"
-        >
-          <label
-            class="control-label"
-          >
-            Country
-          </label>
-          <input
-            class="form-control"
-            readonly=""
-            type="text"
-            value="Canada"
-          />
-        </div>
-      </div>
-      <div
-        class="pr-lg-0 pr-md-3 col-lg-3"
-      >
-        <div
-          class="form-group"
-        >
-          <label
-            class="control-label"
-          >
-            Type
-          </label>
-          <input
-            class="form-control"
-            readonly=""
-            type="text"
-            value="TollFree"
-          />
-        </div>
-      </div>
-    </div>
-    <div
-      class="row"
-    >
-      
-      <div
-        class="pr-lg-0 pr-md-3 col-lg-3"
-      >
-        <div
-          class="form-group"
-        >
-          <label
-            class="control-label"
-          >
-            Area Code
-          </label>
-          <input
-            class="form-control"
-            readonly=""
-            type="text"
-            value="813"
-          />
-        </div>
-      </div>
-    </div>
-    <div
-      class="mt-4 row"
-    >
-      <div
-        class="pr-lg-0 pr-md-3 col-lg-6"
-      >
-        <h4
-          class="mb-3"
-        >
-          Connected integrations
-        </h4>
-        <div
-          class="appRow border-bottom ml-1 mr-1 disabledApp row"
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
         >
           <div
             class="col-lg-8"
@@ -576,17 +395,17 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
             <i
               class="material-icons md-2 align-middle mr-2"
             >
-              phone
+              sms
             </i>
             <strong>
-              Voice
+              SMS
             </strong>
           </div>
           <div
             class="appLink col-lg-4"
           >
             <a
-              to="/app/settings/integrations/phone/new?phoneNumberId=2"
+              to="/app/settings/integrations/sms/new?phoneNumberId=2"
             >
               <i
                 class="material-icons md-2 align-middle mr-2"
@@ -869,7 +688,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
 </div>
 `;
 
-exports[`<PhoneNumberDetails/> render() should render the link to an SMS integration for preview accounts 1`] = `
+exports[`<PhoneNumberDetails/> render() should render the link to an SMS integration 1`] = `
 <div>
   <form
     class=""
@@ -1303,6 +1122,36 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
             </a>
           </div>
         </div>
+        <div
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
+          >
+            <i
+              class="material-icons md-2 align-middle mr-2"
+            >
+              sms
+            </i>
+            <strong>
+              SMS
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              to="/app/settings/integrations/sms/new?phoneNumberId=1"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -1715,6 +1564,36 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
           >
             <a
               to="/app/settings/integrations/phone/new?phoneNumberId=2"
+            >
+              <i
+                class="material-icons md-2 align-middle mr-2"
+              >
+                add
+              </i>
+              Add Integration
+            </a>
+          </div>
+        </div>
+        <div
+          class="appRow border-bottom py-3 ml-1 mr-1 disabledApp row"
+        >
+          <div
+            class="col-lg-8"
+          >
+            <i
+              class="material-icons md-2 align-middle mr-2"
+            >
+              sms
+            </i>
+            <strong>
+              SMS
+            </strong>
+          </div>
+          <div
+            class="appLink col-lg-4"
+          >
+            <a
+              to="/app/settings/integrations/sms/new?phoneNumberId=2"
             >
               <i
                 class="material-icons md-2 align-middle mr-2"

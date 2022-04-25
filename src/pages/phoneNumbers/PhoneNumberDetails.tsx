@@ -25,7 +25,6 @@ import {
     phoneNumberUpdated,
     phoneNumberDeleted,
 } from 'state/entities/phoneNumbers/actions'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType} from 'models/integration/types'
@@ -33,12 +32,10 @@ import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
-import {SMS_INTEGRATION_PREVIEW_ACCOUNTS} from 'models/phoneNumber/constants'
 import {hasCapability} from 'pages/phoneNumbers/utils'
 import history from 'pages/history'
 import {errorToChildren} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 
 import css from './PhoneNumberDetails.less'
 
@@ -58,7 +55,6 @@ const states: States = rawStates
 
 export function PhoneNumberDetails({phoneNumber}: Props) {
     const dispatch = useAppDispatch()
-    const currentAccount = useAppSelector(getCurrentAccountState)
     const [name, setName] = useState(phoneNumber.name)
     const state =
         phoneNumber.meta?.country === PhoneCountry.US
@@ -267,53 +263,50 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                 )}
                         </Col>
                     </Row>
-                    {SMS_INTEGRATION_PREVIEW_ACCOUNTS.includes(
-                        currentAccount.get('domain')
-                    ) &&
-                        hasCapability(phoneNumber, IntegrationType.Sms) && (
-                            <Row
-                                className={classnames(
-                                    css.appRow,
-                                    'border-bottom',
-                                    'py-3',
-                                    'ml-1',
-                                    'mr-1',
-                                    {
-                                        [css.disabledApp]:
-                                            !smsApp ||
-                                            !hasCapability(
-                                                phoneNumber,
-                                                IntegrationType.Sms
-                                            ),
-                                    }
+                    {hasCapability(phoneNumber, IntegrationType.Sms) && (
+                        <Row
+                            className={classnames(
+                                css.appRow,
+                                'border-bottom',
+                                'py-3',
+                                'ml-1',
+                                'mr-1',
+                                {
+                                    [css.disabledApp]:
+                                        !smsApp ||
+                                        !hasCapability(
+                                            phoneNumber,
+                                            IntegrationType.Sms
+                                        ),
+                                }
+                            )}
+                        >
+                            <Col lg={8}>
+                                <i className="material-icons md-2 align-middle mr-2">
+                                    sms
+                                </i>
+                                <strong>SMS</strong>
+                            </Col>
+                            <Col lg={4} className={css.appLink}>
+                                {smsApp ? (
+                                    <Link
+                                        to={`/app/settings/integrations/sms/${smsApp.id}/preferences`}
+                                    >
+                                        Manage Integration
+                                    </Link>
+                                ) : (
+                                    <Link
+                                        to={`/app/settings/integrations/sms/new?phoneNumberId=${phoneNumber.id}`}
+                                    >
+                                        <i className="material-icons md-2 align-middle mr-2">
+                                            add
+                                        </i>
+                                        Add Integration
+                                    </Link>
                                 )}
-                            >
-                                <Col lg={8}>
-                                    <i className="material-icons md-2 align-middle mr-2">
-                                        sms
-                                    </i>
-                                    <strong>SMS</strong>
-                                </Col>
-                                <Col lg={4} className={css.appLink}>
-                                    {smsApp ? (
-                                        <Link
-                                            to={`/app/settings/integrations/sms/${smsApp.id}/preferences`}
-                                        >
-                                            Manage Integration
-                                        </Link>
-                                    ) : (
-                                        <Link
-                                            to={`/app/settings/integrations/sms/new?phoneNumberId=${phoneNumber.id}`}
-                                        >
-                                            <i className="material-icons md-2 align-middle mr-2">
-                                                add
-                                            </i>
-                                            Add Integration
-                                        </Link>
-                                    )}
-                                </Col>
-                            </Row>
-                        )}
+                            </Col>
+                        </Row>
+                    )}
                 </Col>
             </Row>
             <Row className="mt-4">
