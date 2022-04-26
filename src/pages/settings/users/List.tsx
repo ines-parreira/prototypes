@@ -12,6 +12,9 @@ import {fetchPagination} from 'state/agents/actions'
 import {getPaginatedAgents, getPagination} from 'state/agents/selectors'
 import PageHeader from 'pages/common/components/PageHeader'
 import {RootState} from 'state/types'
+import LinkAlert from 'pages/common/components/Alert/LinkAlert'
+import {getAccessSettings} from 'state/currentAccount/selectors'
+import {AccountSettingAccessSignupMode as SignupMode} from 'state/currentAccount/types'
 import settingsCss from '../settings.less'
 
 import Row from './Row'
@@ -67,6 +70,20 @@ export class UserListContainer extends Component<Props, State> {
                         You can <strong>add as many users as you want</strong>,
                         at no additional cost.
                     </p>
+                    {this.props.accessSettings.getIn([
+                        'data',
+                        'signup_mode',
+                    ]) === SignupMode.Invite && (
+                        <LinkAlert
+                            className={css.mb16}
+                            icon
+                            actionLabel="Setup Your Email Domain"
+                            actionHref="/app/settings/access"
+                        >
+                            You can also allow members to sign up using your
+                            company's email domain.
+                        </LinkAlert>
+                    )}
                     <div className={css.list}>
                         <span
                             className={classnames(
@@ -122,6 +139,7 @@ const connector = connect(
         agents: getPaginatedAgents(state),
         pagination: getPagination(state),
         accountOwnerId: state.currentAccount.get('user_id'),
+        accessSettings: getAccessSettings(state),
     }),
     {
         fetchAgents: fetchPagination,
