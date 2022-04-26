@@ -48,7 +48,7 @@ const QuickResponseFlowsPreferences = () => {
                         <p>
                             Display up to 4 quick response flows sending a
                             prefilled chat message when shoppers click on it.
-                            <br /> You can then{' '}
+                            You can then{' '}
                             <Link to="/app/settings/rules/new">
                                 create a rule
                             </Link>{' '}
