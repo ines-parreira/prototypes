@@ -2,6 +2,7 @@ import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {MACRO_PARAMS_UPDATED} from 'state/macro/constants'
 import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
 
 import * as agentsActions from '../state/agents/actions'
@@ -30,6 +31,7 @@ import {
     CustomerUpdatedEvent,
     EmailIntegrationVerifiedEvent,
     FacebookIntegrationsReconnected,
+    MacroParamsUpdatedEvent,
     OutboundPhoneCallInitiated,
     ServerMessage,
     SocketEventType,
@@ -683,6 +685,18 @@ export const receivedEvents: ReceivedEvent[] = [
             if (window.location.pathname === originalPath) {
                 history.push(`/app/ticket/${phoneTicketId}`)
             }
+        },
+    },
+    {
+        name: SocketEventType.MacroParamsUpdated,
+        onReceive: function (json) {
+            reduxStore.dispatch({
+                type: MACRO_PARAMS_UPDATED,
+                payload: fromJS(
+                    (json as unknown as MacroParamsUpdatedEvent).event
+                        .parameters_options
+                ),
+            })
         },
     },
 ]

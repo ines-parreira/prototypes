@@ -60,6 +60,11 @@ jest.mock('../MacrosCreateDropdown', () => ({
     MacrosCreateDropdown: () => <div />,
 }))
 
+jest.mock(
+    'pages/common/components/MacroFilters/MacroFilters',
+    () => 'MacroFilters'
+)
+
 const mockToken = axios.CancelToken.source().token
 
 describe('<MacrosSettingsContent/>', () => {

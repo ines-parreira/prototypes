@@ -1,12 +1,10 @@
-import React, {useEffect, useState} from 'react'
-import {notify} from 'reapop'
-import {isEqual, intersection} from 'lodash'
+import React from 'react'
 import {ISO639English} from 'constants/languages'
-import {fetchMacrosProperties} from 'models/macro/resources'
-import {MacroPropertiesOptions, MacrosProperties} from 'models/macro/types'
+import {MacrosProperties} from 'models/macro/types'
 import SelectFilter from 'pages/stats/common/SelectFilter'
-import {NotificationStatus} from 'state/notifications/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import useAppSelector from 'hooks/useAppSelector'
+import {getMacroParametersOptions} from 'state/macro/selectors'
 
 type Props = {
     selectedProperties: MacrosProperties
@@ -14,35 +12,9 @@ type Props = {
 }
 
 const MacroFilters = ({selectedProperties, onChange}: Props) => {
-    const [properties, setProperties] =
-        useState<MacrosProperties>(selectedProperties)
-    const handleFetchMacrosProperties = async () => {
-        try {
-            const res = await fetchMacrosProperties(
-                Object.values(MacroPropertiesOptions)
-            )
-            if (res) setProperties(res)
-        } catch (error) {
-            void notify({
-                message: 'Failed to fetch macro properties',
-                status: NotificationStatus.Error,
-            })
-        }
-    }
-
-    useEffect(() => {
-        void handleFetchMacrosProperties()
-    }, [])
-
-    useEffect(() => {
-        //If ticket language is not in the list of macro languages, remove language filter.
-        const languages = selectedProperties.languages?.filter(Boolean)
-        if (
-            languages &&
-            !isEqual(languages, intersection(languages, properties.languages))
-        )
-            onChange({...selectedProperties, languages: []})
-    }, [onChange, properties, selectedProperties])
+    const properties: MacrosProperties = useAppSelector(
+        getMacroParametersOptions
+    ).toJS()
 
     const handleChange = (properties: MacrosProperties) => {
         logEvent(SegmentEvent.MacrosFilterChanged, {...properties})

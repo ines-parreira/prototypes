@@ -46,12 +46,12 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
         >
           <label
             class="label label labelItem"
-            for="checkbox-5"
+            for="checkbox-1"
           >
             <input
               class="input"
-              id="checkbox-5"
-              name="checkbox-5"
+              id="checkbox-1"
+              name="checkbox-1"
               type="checkbox"
             />
              English
@@ -62,13 +62,13 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
         >
           <label
             class="label label labelItem"
-            for="checkbox-1"
+            for="checkbox-2"
           >
             <input
               checked=""
               class="input"
-              id="checkbox-1"
-              name="checkbox-1"
+              id="checkbox-2"
+              name="checkbox-2"
               type="checkbox"
             />
              French
@@ -117,13 +117,13 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
         >
           <label
             class="label label quickSelectionOption"
-            for="checkbox-2"
+            for="checkbox-3"
           >
             <input
               checked=""
               class="input"
-              id="checkbox-2"
-              name="checkbox-2"
+              id="checkbox-3"
+              name="checkbox-3"
               type="checkbox"
             />
             Deselect all
@@ -147,13 +147,13 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
         >
           <label
             class="label label labelItem"
-            for="checkbox-3"
+            for="checkbox-4"
           >
             <input
               checked=""
               class="input"
-              id="checkbox-3"
-              name="checkbox-3"
+              id="checkbox-4"
+              name="checkbox-4"
               type="checkbox"
             />
              tag1
@@ -164,13 +164,13 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
         >
           <label
             class="label label labelItem"
-            for="checkbox-4"
+            for="checkbox-5"
           >
             <input
               checked=""
               class="input"
-              id="checkbox-4"
-              name="checkbox-4"
+              id="checkbox-5"
+              name="checkbox-5"
               type="checkbox"
             />
              tag2

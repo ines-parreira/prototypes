@@ -156,5 +156,12 @@ describe('macro actions', () => {
             const res = await store.dispatch(actions.getMacro('1'))
             expect(res).toBeFalsy()
         })
+
+        it('should not make API call', async () => {
+            let spy = jest.spyOn(client, 'get')
+            const res = await store.dispatch(actions.getMacro(''))
+            expect(res).toBeUndefined()
+            expect(spy).toHaveBeenCalledTimes(0)
+        })
     })
 })

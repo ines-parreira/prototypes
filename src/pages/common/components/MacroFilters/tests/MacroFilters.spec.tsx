@@ -1,19 +1,23 @@
 import React from 'react'
 import {screen, render, waitFor, fireEvent} from '@testing-library/react'
-import {fetchMacrosProperties} from 'models/macro/resources'
-
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
+import {RootState} from 'state/types'
 import MacroFilters from '../MacroFilters'
 
-jest.mock('models/macro/resources', () => {
-    return {
-        fetchMacrosProperties: jest.fn(() => ({
-            languages: ['en', 'fr'],
-            tags: ['tag1', 'tag2'],
-        })),
-    }
-})
+const mockStore = configureMockStore([thunk])
 
 describe('<MacroFilters />', () => {
+    const defaultStore: Partial<RootState> = {
+        macros: fromJS({
+            parameters_options: {
+                languages: ['en', 'fr'],
+                tags: ['tag1', 'tag2'],
+            },
+        }),
+    }
     beforeEach(() => {
         jest.resetAllMocks
     })
@@ -24,20 +28,21 @@ describe('<MacroFilters />', () => {
         },
         onChange: jest.fn(),
     }
-    it('should render MacroFilters', async () => {
-        const {container} = render(<MacroFilters {...minProps} />)
-        await waitFor(() => {
-            expect(fetchMacrosProperties).toHaveBeenCalled()
-        })
+    it('should render MacroFilters', () => {
+        const {container} = render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroFilters {...minProps} />
+            </Provider>
+        )
         expect(container.firstChild).toMatchSnapshot()
-        expect(fetchMacrosProperties).toHaveBeenCalledWith([
-            'languages',
-            'tags',
-        ])
     })
 
     it('should render correctly set filters after click language', async () => {
-        const {getByText} = render(<MacroFilters {...minProps} />)
+        const {getByText} = render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroFilters {...minProps} />
+            </Provider>
+        )
         await waitFor(() => {
             screen.getByText('English')
         })
@@ -50,7 +55,11 @@ describe('<MacroFilters />', () => {
     })
 
     it('should render correctly set filters after click tags', async () => {
-        const {getByText} = render(<MacroFilters {...minProps} />)
+        const {getByText} = render(
+            <Provider store={mockStore(defaultStore)}>
+                <MacroFilters {...minProps} />
+            </Provider>
+        )
         await waitFor(() => {
             screen.getByText('English')
         })

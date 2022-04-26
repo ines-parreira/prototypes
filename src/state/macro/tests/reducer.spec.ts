@@ -1,6 +1,11 @@
 import {fromJS, Map, List} from 'immutable'
 
-import {UPSERT_MACRO, DELETE_MACRO, UPSERT_MACROS} from '../constants'
+import {
+    UPSERT_MACRO,
+    DELETE_MACRO,
+    UPSERT_MACROS,
+    MACRO_PARAMS_UPDATED,
+} from '../constants'
 import reducer from '../reducer'
 
 describe('macro reducer', () => {
@@ -12,20 +17,20 @@ describe('macro reducer', () => {
                 type: UPSERT_MACRO,
                 payload: macro,
             })
-            expect(newState).toEqual(state.set(1, macro))
+            expect(newState).toEqual(state.setIn(['items', 1], macro))
         })
 
         it('should update existing macro', () => {
             const macro = fromJS({id: 1, name: 'bar'})
-            const state = (fromJS({}) as Map<any, any>).set(
-                1,
+            const state = (fromJS({}) as Map<any, any>).setIn(
+                ['items', 1],
                 fromJS({id: 1, name: 'foo'})
             )
             const newState = reducer(state, {
                 type: UPSERT_MACRO,
                 payload: macro,
             })
-            expect(newState).toEqual(state.set(1, macro))
+            expect(newState).toEqual(state.setIn(['items', 1], macro))
         })
     })
 
@@ -41,8 +46,8 @@ describe('macro reducer', () => {
                     name: 'baz',
                 },
             ])
-            const state = (fromJS({}) as Map<any, any>).set(
-                2,
+            const state = (fromJS({}) as Map<any, any>).setIn(
+                ['items', 2],
                 fromJS({
                     is: 2,
                     name: 'bar',
@@ -53,20 +58,40 @@ describe('macro reducer', () => {
                 payload: macros,
             })
             const expectedState = state
-                .set(2, macros.get(1))
-                .set(1, macros.get(0))
+                .setIn(['items', 2], macros.get(1))
+                .setIn(['items', 1], macros.get(0))
             expect(newState).toEqual(expectedState)
         })
     })
 
     describe('DELETE_MACRO', () => {
         it('should delete the macro', () => {
-            const state = (fromJS({}) as Map<any, any>).set(1, fromJS({id: 1}))
+            const state = (fromJS({}) as Map<any, any>).setIn(
+                ['items', 1],
+                fromJS({id: 1})
+            )
             const newState = reducer(state, {
                 type: DELETE_MACRO,
                 payload: 1,
             })
-            expect(newState).toEqual(fromJS({}))
+            expect(newState).toEqual(fromJS({items: fromJS({})}))
+        })
+    })
+
+    describe('MACRO_PARAMS_UPDATED', () => {
+        it('should update the macro parameters', () => {
+            const state = (fromJS({}) as Map<any, any>).set(
+                'parameters_options',
+                fromJS({languages: ['en', 'fr'], tags: ['foo', 'bar']})
+            )
+
+            const result = {languages: ['en', 'fr', 'de'], tags: ['foo']}
+
+            const newState = reducer(state, {
+                type: MACRO_PARAMS_UPDATED,
+                payload: fromJS(result),
+            })
+            expect(newState).toEqual(fromJS({parameters_options: result}))
         })
     })
 })

@@ -1,5 +1,6 @@
 import {Map} from 'immutable'
 
+import {MacrosProperties} from 'models/macro/types'
 import {RecentChatTicket} from '../../business/types/recentChats'
 import {Ticket} from '../../models/ticket/types'
 import {View} from '../../models/view/types'
@@ -38,6 +39,7 @@ export enum SocketEventType {
     FacebookIntegrationsReconnected = 'facebook-integrations-reconnected',
     ViewsDeactivated = 'views-deactivated',
     OutboundPhoneCallInitiated = 'outbound-phone-call-initiated',
+    MacroParamsUpdated = 'macro-params-updated',
 }
 
 export enum JoinEventType {
@@ -230,6 +232,13 @@ export type OutboundPhoneCallInitiated = {
     }
 }
 
+export type MacroParamsUpdatedEvent = {
+    event: {
+        type: SocketEventType.MacroParamsUpdated
+        parameters_options: MacrosProperties
+    }
+}
+
 export type ServerMessage =
     | CustomerUpdatedEvent
     | SelfServiceConfigurationsUpdatedEvent
@@ -256,3 +265,4 @@ export type ServerMessage =
     | FacebookIntegrationsReconnected
     | ViewsDeactivated
     | OutboundPhoneCallInitiated
+    | MacroParamsUpdatedEvent

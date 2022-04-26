@@ -3,12 +3,12 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List, Map} from 'immutable'
 import {CancelToken} from 'axios'
 
-import {getActionTemplate} from '../../../../../utils'
-import {RootState} from '../../../../../state/types'
-import {fetchMacros, getMacro} from '../../../../../state/macro/actions'
-import useCancellableRequest from '../../../../../hooks/useCancellableRequest'
-import {Macro} from '../../../../../state/macro/types'
-import {MacroActionName} from '../../../../../models/macroAction/types'
+import {getActionTemplate} from 'utils'
+import {RootState} from 'state/types'
+import {fetchMacros, getMacro} from 'state/macro/actions'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import {Macro} from 'state/macro/types'
+import {MacroActionName} from 'models/macroAction/types'
 
 import Select from './ReactSelect'
 import {useOptions} from './hooks'
@@ -31,7 +31,7 @@ const MacroSelect = ({
     const [searchResults, setSearchResults] = useState(fromJS([]))
     const [search, setSearch] = useState('')
     const selectedMacro: Maybe<Macro> = value
-        ? macros.get(parseInt(value))
+        ? macros?.get(parseInt(value))
         : null
     const macroOptions = useOptions(
         selectedMacro,
@@ -113,7 +113,7 @@ const MacroSelect = ({
 
 const connector = connect(
     (state: RootState) => ({
-        macros: state.macros,
+        macros: state.macros?.get('items') as Map<number, any>,
     }),
     {
         fetchMacros,

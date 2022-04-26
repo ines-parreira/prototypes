@@ -26,6 +26,8 @@ import {notify} from 'state/notifications/actions'
 import {applyMacro} from 'state/ticket/actions'
 import {DEPRECATED_getTicket} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
+import {getMacroParametersOptions} from 'state/macro/selectors'
+import {MacrosProperties} from 'models/macro/types'
 
 import TicketMacros from './TicketMacros'
 import TicketReply from './TicketReply'
@@ -62,9 +64,14 @@ export class TicketReplyArea extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
 
-        const languages = this.props.ticket.get('language')
-            ? [this.props.ticket.get('language'), null]
-            : []
+        const hasLanguage = (
+            this.props.macroParametersOptions?.toJS() as MacrosProperties
+        )?.languages?.includes(this.props.ticket.get('language'))
+
+        const languages =
+            this.props.ticket.get('language') && hasLanguage
+                ? [this.props.ticket.get('language'), null]
+                : []
 
         this.state = {
             searchParams: {
@@ -460,6 +467,7 @@ const connector = connect(
         newMessage: state.newMessage,
         newMessageType: getNewMessageType(state),
         preferences: getPreferences(state),
+        macroParametersOptions: getMacroParametersOptions(state),
     }),
     {
         applyMacro,

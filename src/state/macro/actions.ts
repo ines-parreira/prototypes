@@ -150,6 +150,7 @@ export const fetchMacros =
 export const getMacro =
     (id: string, cancelToken?: CancelToken) =>
     async (dispatch: StoreDispatch) => {
+        if (!id) return
         try {
             const {data} = await client.get<Macro>(
                 `/api/macros/${id}`,
