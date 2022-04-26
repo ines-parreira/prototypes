@@ -2,10 +2,8 @@ import React, {useState, useEffect, useMemo} from 'react'
 import classNames from 'classnames'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Tooltip from 'pages/common/components/Tooltip'
 
-import {isProduction} from 'utils/environment'
 import css from './QuickResponseListItem.less'
 
 interface QuickResponseListItemProps {
@@ -14,7 +12,6 @@ interface QuickResponseListItemProps {
     isLimitReached: boolean
     position: number
     onEditClick: () => void
-    onDeleteConfirmation: () => void
     onToggle: () => void
 }
 
@@ -23,7 +20,6 @@ const QuickResponseListItem: React.FC<QuickResponseListItemProps> = ({
     enabled,
     isLimitReached,
     onEditClick,
-    onDeleteConfirmation,
     onToggle,
 }) => {
     const [isLoading, setIsLoading] = useState(false)
@@ -86,44 +82,11 @@ const QuickResponseListItem: React.FC<QuickResponseListItemProps> = ({
 
             <td>
                 <div className={css.actionButtonsWrapper}>
-                    {isProduction() ? (
-                        <>
-                            <button
-                                className={css.actionButton}
-                                onClick={onEditClick}
-                            >
-                                <div className="material-icons edit">edit</div>
-                            </button>
-                            <ConfirmButton
-                                id={`confirm_button_${toggleId}`}
-                                confirmationContent={
-                                    <span>
-                                        Are you sure you want to delete this
-                                        quick response flow?
-                                    </span>
-                                }
-                                fillStyle="ghost"
-                                onConfirm={onDeleteConfirmation}
-                                placement="top"
-                                confirmationButtonIntent="destructive"
-                                intent="destructive"
-                                className={css.actionButton}
-                            >
-                                <div className="material-icons delete">
-                                    delete
-                                </div>
-                            </ConfirmButton>
-                        </>
-                    ) : (
-                        <button
-                            className={css.actionButton}
-                            onClick={onEditClick}
-                        >
-                            <div className="material-icons chevron_right">
-                                chevron_right
-                            </div>
-                        </button>
-                    )}
+                    <button className={css.actionButton} onClick={onEditClick}>
+                        <div className="material-icons chevron_right">
+                            chevron_right
+                        </div>
+                    </button>
                 </div>
             </td>
         </tr>
