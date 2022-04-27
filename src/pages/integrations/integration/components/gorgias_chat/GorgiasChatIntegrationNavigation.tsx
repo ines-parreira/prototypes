@@ -22,9 +22,7 @@ export default class GorgiasChatIntegrationNavigation extends Component<Props> {
 
         return (
             <SecondaryNavbar>
-                <NavLink to={`${baseURL}/campaigns`} exact>
-                    Campaigns
-                </NavLink>
+                <NavLink to={`${baseURL}/campaigns`}>Campaigns</NavLink>
                 <NavLink to={`${baseURL}/quick_replies`} exact>
                     Quick replies
                 </NavLink>
