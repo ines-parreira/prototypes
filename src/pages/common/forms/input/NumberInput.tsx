@@ -142,7 +142,11 @@ function NumberInput(
                 onChange={(e) => {
                     const parsedValue = Number(e.target.value)
 
-                    onChange(isNaN(parsedValue) ? undefined : parsedValue)
+                    onChange(
+                        isNaN(parsedValue) || e.target.value === ''
+                            ? undefined
+                            : parsedValue
+                    )
                 }}
                 ref={(element) => setInputElement(element)}
                 required={isRequired}

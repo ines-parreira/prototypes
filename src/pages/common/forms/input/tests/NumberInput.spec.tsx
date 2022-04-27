@@ -1,5 +1,5 @@
 import {render, fireEvent} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, {ComponentProps, useState} from 'react'
 
 import NumberInput from '../NumberInput'
 
@@ -31,5 +31,25 @@ describe('<NumberInput />', () => {
 
         fireEvent.click(getByText('arrow_drop_up'))
         expect(defaultProps.onChange).not.toHaveBeenCalled()
+    })
+
+    it('should accept empty values', () => {
+        const ControlledNumberInput = () => {
+            const [value, setValue] = useState<number | undefined>(6)
+
+            return (
+                <NumberInput
+                    onChange={setValue}
+                    placeholder="foo"
+                    value={value}
+                />
+            )
+        }
+        const {getByPlaceholderText} = render(<ControlledNumberInput />)
+        const input = getByPlaceholderText(/foo/) as HTMLInputElement
+
+        expect(input.value).toBe('6')
+        fireEvent.change(input, {target: {value: ''}})
+        expect(input.value).toBe('')
     })
 })
