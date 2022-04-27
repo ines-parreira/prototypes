@@ -20,8 +20,6 @@ import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {compare} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 
-import history from '../../history'
-
 import AircallIntegrationList from './components/aircall/AircallIntegrationList.js'
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate.js'
 
@@ -116,7 +114,6 @@ export enum Tab {
     QuickReplies = 'quick_replies',
     ChatSelfService = 'self_service',
     Campaigns = 'campaigns',
-    Appearance = 'appearance',
     PhoneVoicemail = 'voicemail',
     PhoneGreetingMessage = 'greeting-message',
     PhoneIvr = 'ivr',
@@ -190,14 +187,7 @@ export const IntegrationDetail = ({
         [integrations]
     )
 
-    const editLinkDefaultTab = `/app/settings/integrations/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Campaigns}`
-
-    const goToDefaultTab = () => history.replace(editLinkDefaultTab)
-
     useEffect(() => {
-        if (!extra && integrationId) {
-            goToDefaultTab()
-        }
         actions.fetchIntegrations()
         void handleFetchPhoneNumbers()
         // We need this to allow the user to refresh the settings page.
@@ -438,7 +428,7 @@ export const IntegrationDetail = ({
                     )
                 }
 
-                if (extra === Tab.Campaigns || !extra) {
+                if (extra === Tab.Campaigns) {
                     if (subId) {
                         return (
                             <GorgiasChatCampaignDetail
@@ -455,17 +445,15 @@ export const IntegrationDetail = ({
                     )
                 }
 
-                if (extra === Tab.Appearance) {
-                    return (
-                        <GorgiasChatIntegrationAppearance
-                            actions={actions}
-                            integration={integration}
-                            isUpdate={isUpdate}
-                            loading={loading}
-                            currentUser={currentUser}
-                        />
-                    )
-                }
+                return (
+                    <GorgiasChatIntegrationAppearance
+                        actions={actions}
+                        integration={integration}
+                        isUpdate={isUpdate}
+                        loading={loading}
+                        currentUser={currentUser}
+                    />
+                )
             }
 
             return (

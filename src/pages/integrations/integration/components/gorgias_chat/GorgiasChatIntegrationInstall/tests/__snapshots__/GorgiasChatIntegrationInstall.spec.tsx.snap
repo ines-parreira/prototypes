@@ -203,12 +203,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
               <NavLink
                 activeClassName="active"
                 className="link"
+                exact={true}
                 key=".0"
                 to="/app/settings/integrations/gorgias_chat/2/campaigns"
               >
                 <a
                   activeClassName="active"
                   className="link"
+                  exact={true}
                   to="/app/settings/integrations/gorgias_chat/2/campaigns"
                 >
                   Campaigns
@@ -2101,12 +2103,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
               <NavLink
                 activeClassName="active"
                 className="link"
+                exact={true}
                 key=".0"
                 to="/app/settings/integrations/gorgias_chat/2/campaigns"
               >
                 <a
                   activeClassName="active"
                   className="link"
+                  exact={true}
                   to="/app/settings/integrations/gorgias_chat/2/campaigns"
                 >
                   Campaigns
@@ -3050,12 +3054,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
               <NavLink
                 activeClassName="active"
                 className="link"
+                exact={true}
                 key=".0"
                 to="/app/settings/integrations/gorgias_chat/2/campaigns"
               >
                 <a
                   activeClassName="active"
                   className="link"
+                  exact={true}
                   to="/app/settings/integrations/gorgias_chat/2/campaigns"
                 >
                   Campaigns

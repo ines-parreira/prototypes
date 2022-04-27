@@ -168,7 +168,7 @@ function GorgiasChatIntegrationList({
                     color="success"
                     onClick={() =>
                         history.push(
-                            `/app/settings/integrations/${IntegrationType.GorgiasChat}/new/appearance`
+                            `/app/settings/integrations/${IntegrationType.GorgiasChat}/new`
                         )
                     }
                 >

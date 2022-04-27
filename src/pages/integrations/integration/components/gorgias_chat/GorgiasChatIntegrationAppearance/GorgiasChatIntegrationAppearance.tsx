@@ -38,6 +38,7 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import {RootState} from 'state/types'
+import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import Tooltip from 'pages/common/components/Tooltip'
 import ColorField from 'pages/common/forms/ColorField'
@@ -350,6 +351,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             isSelected: !Boolean(state.showSelectStoreField),
         },
     ]
+
+    if (loading.get('integration')) {
+        return <Loader />
+    }
 
     const autoResponderEnabled = integration.getIn([
         'meta',

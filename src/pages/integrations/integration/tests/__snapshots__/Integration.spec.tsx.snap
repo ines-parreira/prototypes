@@ -405,7 +405,7 @@ exports[`<IntegrationDetail /> should render the page of a specific integration 
 
 exports[`<IntegrationDetail /> should render the page of a specific integration for gorgias_chat 1`] = `
 <div>
-  GorgiasChatIntegrationCampaigns
+  GorgiasChatIntegrationAppearance
 </div>
 `;
 
