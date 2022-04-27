@@ -1,26 +1,19 @@
 import {
-    ADVERTISE_ROLE,
     canEnableMetaSetting,
+    FacebookRole,
+    FACEBOOK_USER_TYPES,
+    getFacebookUserTypeByRoles,
     hasFacebookRole,
-    MODERATE_ROLE,
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
-} from '../utils.tsx'
-
-const {FACEBOOK_USER_TYPES} = require('../utils')
-const {getFacebookUserTypeByRoles} = require('../utils')
+} from '../utils'
 
 describe('facebook roles and permissions utils', () => {
     describe('getFacebookUserTypeByRoles', () => {
-        it('should return nothing because no userRoles', () => {
-            const userType = getFacebookUserTypeByRoles(undefined)
-
-            expect(userType).toBeUndefined()
-        })
         it.each([
             ...FACEBOOK_USER_TYPES,
             {
                 name: 'Custom/Unknown',
-                roles: [ADVERTISE_ROLE],
+                roles: [FacebookRole.Advertise],
             },
         ])(
             'should return the correct user type based on roles',
@@ -35,36 +28,27 @@ describe('facebook roles and permissions utils', () => {
     })
 
     describe('hasFacebookRole', () => {
-        it('should return nothing because no userRoles', () => {
-            const hasRole = getFacebookUserTypeByRoles(undefined)
-
-            expect(hasRole).toBeUndefined()
-        })
-
         it('should return true because it has role', () => {
-            const userRoles = [ADVERTISE_ROLE, MODERATE_ROLE]
+            const userRoles: FacebookRole[] = [
+                FacebookRole.Advertise,
+                FacebookRole.Moderate,
+            ]
 
-            const hasRole = hasFacebookRole(userRoles, MODERATE_ROLE)
+            const hasRole = hasFacebookRole(userRoles, FacebookRole.Moderate)
 
             expect(hasRole).toBeTruthy()
         })
 
         it('should return false because it does not have the role', () => {
-            const userRoles = [ADVERTISE_ROLE]
+            const userRoles = [FacebookRole.Advertise]
 
-            const hasRole = hasFacebookRole(userRoles, MODERATE_ROLE)
+            const hasRole = hasFacebookRole(userRoles, FacebookRole.Moderate)
 
             expect(hasRole).toBeFalsy()
         })
     })
 
     describe('canEnableMetaSetting', () => {
-        it('should return false because no userPermissions', () => {
-            const canEnable = canEnableMetaSetting(undefined)
-
-            expect(canEnable).toBe(false)
-        })
-
         it('should return false because no meta setting property', () => {
             const canEnable = canEnableMetaSetting([], 'foo')
 

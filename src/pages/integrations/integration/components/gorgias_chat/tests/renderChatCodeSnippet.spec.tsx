@@ -19,7 +19,10 @@ describe('renderChatCodeSnippet()', () => {
     it('should render the snippet for staging', () => {
         window.STAGING = true
 
-        const res = renderChatCodeSnippet({chatAppId: '1'})
+        const res = renderChatCodeSnippet({
+            chatAppId: '1',
+            gorgiasChatExtraState: fromJS({}),
+        })
         expect(res).toMatchSnapshot()
 
         window.STAGING = false
@@ -28,7 +31,10 @@ describe('renderChatCodeSnippet()', () => {
     it('should render the snippet for production', () => {
         window.PRODUCTION = true
 
-        const res = renderChatCodeSnippet({chatAppId: '1'})
+        const res = renderChatCodeSnippet({
+            chatAppId: '1',
+            gorgiasChatExtraState: fromJS({}),
+        })
         expect(res).toMatchSnapshot()
 
         window.PRODUCTION = false

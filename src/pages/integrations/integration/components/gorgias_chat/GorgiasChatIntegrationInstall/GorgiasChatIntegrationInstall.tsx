@@ -18,7 +18,7 @@ import {RootState} from '../../../../../../state/types'
 import {IntegrationType} from '../../../../../../models/integration/types'
 import PageHeader from '../../../../../common/components/PageHeader'
 
-import {renderChatCodeSnippet} from '../renderChatCodeSnippet.js'
+import {renderChatCodeSnippet} from '../renderChatCodeSnippet'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'

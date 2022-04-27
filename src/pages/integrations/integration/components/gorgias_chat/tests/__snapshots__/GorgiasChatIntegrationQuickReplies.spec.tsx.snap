@@ -1,0 +1,1855 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults because there is no quick replies in the integration 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(GorgiasChatIntegrationQuickRepliesComponent)
+    currentUser={Immutable.Map {}}
+    integration={
+      Immutable.Map {
+        "id": 7,
+        "name": "my chat integration",
+        "meta": Immutable.Map {},
+        "decoration": Immutable.Map {
+          "introduction_text": "this is an intro",
+          "input_placeholder": "type something please",
+          "main_color": "#123456",
+        },
+      }
+    }
+    updateOrCreateIntegration={[MockFunction]}
+  >
+    <GorgiasChatIntegrationQuickRepliesComponent
+      integration={
+        Immutable.Map {
+          "id": 7,
+          "name": "my chat integration",
+          "meta": Immutable.Map {},
+          "decoration": Immutable.Map {
+            "introduction_text": "this is an intro",
+            "input_placeholder": "type something please",
+            "main_color": "#123456",
+          },
+        }
+      }
+      updateOrCreateIntegration={[Function]}
+    >
+      <div
+        className="full-width"
+      >
+        <PageHeader
+          title={
+            <Breadcrumb
+              aria-label="breadcrumb"
+              listTag="ol"
+              tag="nav"
+            >
+              <BreadcrumbItem
+                tag="li"
+              >
+                <Link
+                  to="/app/settings/integrations"
+                >
+                  Integrations
+                </Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <Link
+                  to="/app/settings/integrations/undefined"
+                >
+                  Chat
+                </Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                my chat integration
+              </BreadcrumbItem>
+            </Breadcrumb>
+          }
+        >
+          <div
+            className="page-header pageHeader"
+          >
+            <Breadcrumb
+              aria-label="breadcrumb"
+              listTag="ol"
+              tag="nav"
+            >
+              <nav
+                aria-label="breadcrumb"
+                className=""
+              >
+                <ol
+                  className="breadcrumb"
+                >
+                  <BreadcrumbItem
+                    tag="li"
+                  >
+                    <li
+                      className="breadcrumb-item"
+                    >
+                      <Link
+                        to="/app/settings/integrations"
+                      >
+                        <a
+                          to="/app/settings/integrations"
+                        >
+                          Integrations
+                        </a>
+                      </Link>
+                    </li>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem
+                    tag="li"
+                  >
+                    <li
+                      className="breadcrumb-item"
+                    >
+                      <Link
+                        to="/app/settings/integrations/undefined"
+                      >
+                        <a
+                          to="/app/settings/integrations/undefined"
+                        >
+                          Chat
+                        </a>
+                      </Link>
+                    </li>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem
+                    tag="li"
+                  >
+                    <li
+                      className="breadcrumb-item"
+                    >
+                      my chat integration
+                    </li>
+                  </BreadcrumbItem>
+                </ol>
+              </nav>
+            </Breadcrumb>
+          </div>
+        </PageHeader>
+        <GorgiasChatIntegrationNavigation
+          integration={
+            Immutable.Map {
+              "id": 7,
+              "name": "my chat integration",
+              "meta": Immutable.Map {},
+              "decoration": Immutable.Map {
+                "introduction_text": "this is an intro",
+                "input_placeholder": "type something please",
+                "main_color": "#123456",
+              },
+            }
+          }
+        >
+          <SecondaryNavbar>
+            <Navbar
+              className="navbar"
+              expand={false}
+              tag="nav"
+            >
+              <nav
+                className="navbar navbar"
+              >
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".0"
+                  to="/app/settings/integrations/gorgias_chat/7/campaigns"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/gorgias_chat/7/campaigns"
+                  >
+                    Campaigns
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".1"
+                  to="/app/settings/integrations/gorgias_chat/7/quick_replies"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/gorgias_chat/7/quick_replies"
+                  >
+                    Quick replies
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".2"
+                  to="/app/settings/integrations/gorgias_chat/7/appearance"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/gorgias_chat/7/appearance"
+                  >
+                    Appearance
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".3"
+                  to="/app/settings/integrations/gorgias_chat/7/preferences"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/gorgias_chat/7/preferences"
+                  >
+                    Preferences
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".5"
+                  to="/app/settings/integrations/gorgias_chat/7/installation"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/gorgias_chat/7/installation"
+                  >
+                    Installation
+                  </a>
+                </NavLink>
+              </nav>
+            </Navbar>
+          </SecondaryNavbar>
+        </GorgiasChatIntegrationNavigation>
+        <GorgiasChatIntegrationPreviewContainer
+          preview={
+            <ChatIntegrationPreview
+              introductionText="this is an intro"
+              isOnline={true}
+              mainColor="#123456"
+              name="my chat integration"
+              position={
+                Object {
+                  "alignment": "bottom-right",
+                  "offsetX": 0,
+                  "offsetY": 0,
+                }
+              }
+            >
+              <div
+                className="content"
+              />
+              <QuickReplies
+                mainColor="#123456"
+                quickReplies={
+                  Array [
+                    "Get order status",
+                    "Apply promo code",
+                  ]
+                }
+              />
+            </ChatIntegrationPreview>
+          }
+        >
+          <Container
+            className="pageContainer"
+            fluid={true}
+            tag="div"
+          >
+            <div
+              className="pageContainer container-fluid"
+            >
+              <Row
+                className="row"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="row row"
+                >
+                  <Col
+                    className="content"
+                    tag="div"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    <div
+                      className="content col"
+                    >
+                      <Form
+                        onSubmit={[Function]}
+                        tag="form"
+                      >
+                        <form
+                          className=""
+                          onSubmit={[Function]}
+                        >
+                          <div
+                            className="mb-4"
+                          >
+                            <h4>
+                              Quick replies
+                            </h4>
+                            <p
+                              className="mb16"
+                            >
+                              When a customer opens the chat, select the quick replies the customer can click on.
+                            </p>
+                            <div
+                              className="d-flex align-items-center mb16"
+                            >
+                              <ToggleInput
+                                aria-label="Enable quick replies"
+                                isToggled={false}
+                                onClick={[Function]}
+                              >
+                                <div>
+                                  <Label
+                                    aria-checked={false}
+                                    aria-label="Enable quick replies"
+                                    className="label"
+                                    htmlFor="toggle-button-1"
+                                    isDisabled={false}
+                                    onClick={[Function]}
+                                    role="switch"
+                                  >
+                                    <label
+                                      aria-checked={false}
+                                      aria-label="Enable quick replies"
+                                      className="label label"
+                                      htmlFor="toggle-button-1"
+                                      onClick={[Function]}
+                                      role="switch"
+                                    >
+                                      <input
+                                        aria-label="Enable quick replies"
+                                        checked={false}
+                                        className="input"
+                                        disabled={true}
+                                        id="toggle-button-1"
+                                        name="toggle-button-1"
+                                        type="checkbox"
+                                      />
+                                      <div
+                                        className="slider"
+                                      />
+                                    </label>
+                                  </Label>
+                                </div>
+                              </ToggleInput>
+                              <div
+                                className="ml-2"
+                              >
+                                <b>
+                                  Enable quick replies
+                                </b>
+                              </div>
+                            </div>
+                          </div>
+                          <ListField
+                            addLabel="Add Quick Reply"
+                            className="container"
+                            disabled={true}
+                            items={
+                              Immutable.List [
+                                "Get order status",
+                                "Apply promo code",
+                              ]
+                            }
+                            maxItems={3}
+                            maxLength={20}
+                            onChange={[Function]}
+                          >
+                            <div
+                              className="container"
+                            >
+                              <Row
+                                className="row"
+                                key="0"
+                                tag="div"
+                                widths={
+                                  Array [
+                                    "xs",
+                                    "sm",
+                                    "md",
+                                    "lg",
+                                    "xl",
+                                  ]
+                                }
+                              >
+                                <div
+                                  className="row row"
+                                >
+                                  <Col
+                                    className="flex-grow pr-0"
+                                    tag="div"
+                                    widths={
+                                      Array [
+                                        "xs",
+                                        "sm",
+                                        "md",
+                                        "lg",
+                                        "xl",
+                                      ]
+                                    }
+                                  >
+                                    <div
+                                      className="flex-grow pr-0 col"
+                                    >
+                                      <ForwardRef(TextInput)
+                                        className="my-0"
+                                        isDisabled={true}
+                                        isRequired={true}
+                                        maxLength={20}
+                                        name="item-0"
+                                        onChange={[Function]}
+                                        placeholder="Type something (limited to 20 characters)"
+                                        size={300}
+                                        value="Get order status"
+                                      >
+                                        <div
+                                          className="wrapper isDisabled my-0"
+                                        >
+                                          <input
+                                            className="input"
+                                            disabled={true}
+                                            id="input-text-2"
+                                            maxLength={20}
+                                            name="item-0"
+                                            onChange={[Function]}
+                                            placeholder="Type something (limited to 20 characters)"
+                                            required={true}
+                                            size={300}
+                                            type="text"
+                                            value="Get order status"
+                                          />
+                                        </div>
+                                      </ForwardRef(TextInput)>
+                                    </div>
+                                  </Col>
+                                  <Col
+                                    className="d-flex col-sm-auto delete"
+                                    onClick={[Function]}
+                                    tag="div"
+                                    widths={
+                                      Array [
+                                        "xs",
+                                        "sm",
+                                        "md",
+                                        "lg",
+                                        "xl",
+                                      ]
+                                    }
+                                  >
+                                    <div
+                                      className="d-flex col-sm-auto delete col"
+                                      onClick={[Function]}
+                                    >
+                                      <i
+                                        className="material-icons md-2 text-muted"
+                                      >
+                                        clear
+                                      </i>
+                                    </div>
+                                  </Col>
+                                </div>
+                              </Row>
+                              <Row
+                                className="row"
+                                key="1"
+                                tag="div"
+                                widths={
+                                  Array [
+                                    "xs",
+                                    "sm",
+                                    "md",
+                                    "lg",
+                                    "xl",
+                                  ]
+                                }
+                              >
+                                <div
+                                  className="row row"
+                                >
+                                  <Col
+                                    className="flex-grow pr-0"
+                                    tag="div"
+                                    widths={
+                                      Array [
+                                        "xs",
+                                        "sm",
+                                        "md",
+                                        "lg",
+                                        "xl",
+                                      ]
+                                    }
+                                  >
+                                    <div
+                                      className="flex-grow pr-0 col"
+                                    >
+                                      <ForwardRef(TextInput)
+                                        className="my-0"
+                                        isDisabled={true}
+                                        isRequired={true}
+                                        maxLength={20}
+                                        name="item-1"
+                                        onChange={[Function]}
+                                        placeholder="Type something (limited to 20 characters)"
+                                        size={300}
+                                        value="Apply promo code"
+                                      >
+                                        <div
+                                          className="wrapper isDisabled my-0"
+                                        >
+                                          <input
+                                            className="input"
+                                            disabled={true}
+                                            id="input-text-3"
+                                            maxLength={20}
+                                            name="item-1"
+                                            onChange={[Function]}
+                                            placeholder="Type something (limited to 20 characters)"
+                                            required={true}
+                                            size={300}
+                                            type="text"
+                                            value="Apply promo code"
+                                          />
+                                        </div>
+                                      </ForwardRef(TextInput)>
+                                    </div>
+                                  </Col>
+                                  <Col
+                                    className="d-flex col-sm-auto delete"
+                                    onClick={[Function]}
+                                    tag="div"
+                                    widths={
+                                      Array [
+                                        "xs",
+                                        "sm",
+                                        "md",
+                                        "lg",
+                                        "xl",
+                                      ]
+                                    }
+                                  >
+                                    <div
+                                      className="d-flex col-sm-auto delete col"
+                                      onClick={[Function]}
+                                    >
+                                      <i
+                                        className="material-icons md-2 text-muted"
+                                      >
+                                        clear
+                                      </i>
+                                    </div>
+                                  </Col>
+                                </div>
+                              </Row>
+                              <Button
+                                className="d-flex align-items-center"
+                                color="secondary"
+                                disabled={true}
+                                onClick={[Function]}
+                                size="sm"
+                                tag="button"
+                              >
+                                <button
+                                  aria-label={null}
+                                  className="d-flex align-items-center btn btn-secondary btn-sm disabled"
+                                  disabled={true}
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <i
+                                    className="material-icons md-2"
+                                  >
+                                    add
+                                  </i>
+                                  <span
+                                    className="ml-2"
+                                  >
+                                    Add Quick Reply
+                                  </span>
+                                </button>
+                              </Button>
+                            </div>
+                          </ListField>
+                          <div>
+                            <Button
+                              className=""
+                              color="success"
+                              disabled={false}
+                              tag="button"
+                              type="submit"
+                            >
+                              <button
+                                aria-label={null}
+                                className="btn btn-success"
+                                disabled={false}
+                                onClick={[Function]}
+                                type="submit"
+                              >
+                                Save changes
+                              </button>
+                            </Button>
+                          </div>
+                        </form>
+                      </Form>
+                    </div>
+                  </Col>
+                  <Col
+                    className="column preview"
+                    tag="div"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    <div
+                      className="column preview col"
+                    >
+                      <ChatIntegrationPreview
+                        introductionText="this is an intro"
+                        isOnline={true}
+                        mainColor="#123456"
+                        name="my chat integration"
+                        position={
+                          Object {
+                            "alignment": "bottom-right",
+                            "offsetX": 0,
+                            "offsetY": 0,
+                          }
+                        }
+                      >
+                        <div
+                          className="preview"
+                          style={Object {}}
+                        >
+                          <div
+                            className="dialog"
+                          >
+                            <div
+                              className="header"
+                              style={
+                                Object {
+                                  "backgroundColor": "#123456",
+                                }
+                              }
+                            >
+                              <ChatIntegrationAvatar
+                                isOnline={true}
+                                mainColor="#123456"
+                                offlineColor="#A1A9B6"
+                              >
+                                <div
+                                  className="agents"
+                                >
+                                  <div
+                                    className="agent first"
+                                    key="first"
+                                    style={
+                                      Object {
+                                        "borderColor": "#123456",
+                                      }
+                                    }
+                                  >
+                                    <i
+                                      className="material-icons"
+                                    >
+                                      person
+                                    </i>
+                                  </div>
+                                  <div
+                                    className="agent middle"
+                                    key="middle"
+                                    style={
+                                      Object {
+                                        "borderColor": "#123456",
+                                      }
+                                    }
+                                  >
+                                    <i
+                                      className="material-icons"
+                                    >
+                                      person
+                                    </i>
+                                    <div
+                                      className="onlineMarker"
+                                    />
+                                  </div>
+                                  <div
+                                    className="agent last"
+                                    key="last"
+                                    style={
+                                      Object {
+                                        "borderColor": "#123456",
+                                      }
+                                    }
+                                  >
+                                    <i
+                                      className="material-icons"
+                                    >
+                                      person
+                                    </i>
+                                  </div>
+                                </div>
+                              </ChatIntegrationAvatar>
+                              <div
+                                className="details"
+                              >
+                                <div
+                                  className="appName"
+                                >
+                                  my chat integration
+                                </div>
+                                <div
+                                  className="introductionText"
+                                >
+                                  this is an intro
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              className="content"
+                            />
+                            <QuickReplies
+                              mainColor="#123456"
+                              quickReplies={
+                                Array [
+                                  "Get order status",
+                                  "Apply promo code",
+                                ]
+                              }
+                            >
+                              <div
+                                className="content quick-replies-content"
+                              >
+                                <div
+                                  className="quick-replies-wrapper"
+                                >
+                                  <button
+                                    className="btn btn-reply-action reply"
+                                    key="Get order status-0"
+                                    style={
+                                      Object {
+                                        "borderColor": "#123456",
+                                        "color": "#123456",
+                                      }
+                                    }
+                                  >
+                                    Get order status
+                                  </button>
+                                  <button
+                                    className="btn btn-reply-action reply"
+                                    key="Apply promo code-1"
+                                    style={
+                                      Object {
+                                        "borderColor": "#123456",
+                                        "color": "#123456",
+                                      }
+                                    }
+                                  >
+                                    Apply promo code
+                                  </button>
+                                </div>
+                              </div>
+                            </QuickReplies>
+                            <PoweredByGorgias
+                              translatedTexts={
+                                Object {
+                                  "actionPostbackError": "An error occurred while processing your action. Please try again.",
+                                  "backLabelBackAt": "Back online at {time}",
+                                  "backLabelBackInAMinute": "Back in 1 minute",
+                                  "backLabelBackInAnHour": "Back in 1 hour",
+                                  "backLabelBackInDays": "Back in {value} days",
+                                  "backLabelBackInHours": "Back in {value} hours",
+                                  "backLabelBackInMinutes": "Back in {value} minutes",
+                                  "backLabelBackTomorrow": "Back tomorrow",
+                                  "campaignClickToReply": "Click to reply",
+                                  "clickToRetry": "Message not delivered. Click to retry.",
+                                  "conversationTimestampHeaderFormat": "MMMM D",
+                                  "emailCaptureInputLabel": "Get notified by email",
+                                  "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+                                  "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+                                  "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+                                  "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
+                                  "emailCapturePlaceholder": "your@email.com",
+                                  "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+                                  "emailCaptureRequiredMessagePlaceholder": "Write your message",
+                                  "fetchHistory": "Load more",
+                                  "fetchingHistory": "Retrieving history...",
+                                  "headerText": "Gorgias Team",
+                                  "inputPlaceholder": "Type a message...",
+                                  "introductionText": "How can we help?",
+                                  "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+                                  "messageDelivered": "Delivered",
+                                  "messageError": "An error occurred while sending your message. Please try again.",
+                                  "messageIndicatorTitlePlural": "({count}) New messages",
+                                  "messageIndicatorTitleSingular": "({count}) New message",
+                                  "messageRelativeTimeDay": "{value}d ago",
+                                  "messageRelativeTimeHour": "{value}h ago",
+                                  "messageRelativeTimeJustNow": "Just now",
+                                  "messageRelativeTimeMinute": "{value}m ago",
+                                  "messageSending": "Sending...",
+                                  "messageTimestampFormat": "h:mm A",
+                                  "offlineIntroductionText": "We'll be back tomorrow",
+                                  "poweredBy": "Powered by",
+                                  "poweredByGorgias": "Powered by Gorgias",
+                                  "send": "Send",
+                                  "tapToRetry": "Message not delivered. Tap to retry.",
+                                  "unsupportedActionType": "Unsupported action type.",
+                                  "unsupportedMessageType": "Unsupported message type.",
+                                  "usualReplyTimeDay": "Typically replies within a day",
+                                  "usualReplyTimeHours": "Typically replies in a few hours",
+                                  "usualReplyTimeMinutes": "Typically replies in a few minutes",
+                                }
+                              }
+                            >
+                              <div
+                                className="poweredBy"
+                              >
+                                <div>
+                                  <span>
+                                    Powered by
+                                  </span>
+                                  <img
+                                    alt="powered-by"
+                                    src="test-file-stub"
+                                  />
+                                </div>
+                              </div>
+                            </PoweredByGorgias>
+                            <div
+                              className="footer"
+                            >
+                              <div
+                                className="placeholder"
+                              >
+                                Type a message...
+                              </div>
+                              <i
+                                className="icon camera"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            className="button bottom-right"
+                            style={
+                              Object {
+                                "backgroundColor": "#123456",
+                              }
+                            }
+                          >
+                            <div
+                              className="iconWrapper"
+                            >
+                              <i
+                                className="icon"
+                              />
+                              <div
+                                className="shadow"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </ChatIntegrationPreview>
+                    </div>
+                  </Col>
+                </div>
+              </Row>
+            </div>
+          </Container>
+        </GorgiasChatIntegrationPreviewContainer>
+      </div>
+    </GorgiasChatIntegrationQuickRepliesComponent>
+  </Connect(GorgiasChatIntegrationQuickRepliesComponent)>
+</Provider>
+`;
+
+exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick replies from the integration 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(GorgiasChatIntegrationQuickRepliesComponent)
+    currentUser={Immutable.Map {}}
+    integration={
+      Immutable.Map {
+        "id": 7,
+        "name": "my chat integration",
+        "meta": Immutable.Map {
+          "quick_replies": Immutable.Map {
+            "enabled": true,
+            "replies": Immutable.List [
+              "foo",
+              "bar",
+            ],
+          },
+        },
+        "decoration": Immutable.Map {
+          "introduction_text": "this is an intro",
+          "input_placeholder": "type something please",
+          "main_color": "#123456",
+        },
+      }
+    }
+    updateOrCreateIntegration={[MockFunction]}
+  >
+    <GorgiasChatIntegrationQuickRepliesComponent
+      integration={
+        Immutable.Map {
+          "id": 7,
+          "name": "my chat integration",
+          "meta": Immutable.Map {
+            "quick_replies": Immutable.Map {
+              "enabled": true,
+              "replies": Immutable.List [
+                "foo",
+                "bar",
+              ],
+            },
+          },
+          "decoration": Immutable.Map {
+            "introduction_text": "this is an intro",
+            "input_placeholder": "type something please",
+            "main_color": "#123456",
+          },
+        }
+      }
+      updateOrCreateIntegration={[Function]}
+    >
+      <div
+        className="full-width"
+      >
+        <PageHeader
+          title={
+            <Breadcrumb
+              aria-label="breadcrumb"
+              listTag="ol"
+              tag="nav"
+            >
+              <BreadcrumbItem
+                tag="li"
+              >
+                <Link
+                  to="/app/settings/integrations"
+                >
+                  Integrations
+                </Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                <Link
+                  to="/app/settings/integrations/undefined"
+                >
+                  Chat
+                </Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem
+                tag="li"
+              >
+                my chat integration
+              </BreadcrumbItem>
+            </Breadcrumb>
+          }
+        >
+          <div
+            className="page-header pageHeader"
+          >
+            <Breadcrumb
+              aria-label="breadcrumb"
+              listTag="ol"
+              tag="nav"
+            >
+              <nav
+                aria-label="breadcrumb"
+                className=""
+              >
+                <ol
+                  className="breadcrumb"
+                >
+                  <BreadcrumbItem
+                    tag="li"
+                  >
+                    <li
+                      className="breadcrumb-item"
+                    >
+                      <Link
+                        to="/app/settings/integrations"
+                      >
+                        <a
+                          to="/app/settings/integrations"
+                        >
+                          Integrations
+                        </a>
+                      </Link>
+                    </li>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem
+                    tag="li"
+                  >
+                    <li
+                      className="breadcrumb-item"
+                    >
+                      <Link
+                        to="/app/settings/integrations/undefined"
+                      >
+                        <a
+                          to="/app/settings/integrations/undefined"
+                        >
+                          Chat
+                        </a>
+                      </Link>
+                    </li>
+                  </BreadcrumbItem>
+                  <BreadcrumbItem
+                    tag="li"
+                  >
+                    <li
+                      className="breadcrumb-item"
+                    >
+                      my chat integration
+                    </li>
+                  </BreadcrumbItem>
+                </ol>
+              </nav>
+            </Breadcrumb>
+          </div>
+        </PageHeader>
+        <GorgiasChatIntegrationNavigation
+          integration={
+            Immutable.Map {
+              "id": 7,
+              "name": "my chat integration",
+              "meta": Immutable.Map {
+                "quick_replies": Immutable.Map {
+                  "enabled": true,
+                  "replies": Immutable.List [
+                    "foo",
+                    "bar",
+                  ],
+                },
+              },
+              "decoration": Immutable.Map {
+                "introduction_text": "this is an intro",
+                "input_placeholder": "type something please",
+                "main_color": "#123456",
+              },
+            }
+          }
+        >
+          <SecondaryNavbar>
+            <Navbar
+              className="navbar"
+              expand={false}
+              tag="nav"
+            >
+              <nav
+                className="navbar navbar"
+              >
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".0"
+                  to="/app/settings/integrations/gorgias_chat/7/campaigns"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/gorgias_chat/7/campaigns"
+                  >
+                    Campaigns
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".1"
+                  to="/app/settings/integrations/gorgias_chat/7/quick_replies"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/gorgias_chat/7/quick_replies"
+                  >
+                    Quick replies
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".2"
+                  to="/app/settings/integrations/gorgias_chat/7/appearance"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/gorgias_chat/7/appearance"
+                  >
+                    Appearance
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".3"
+                  to="/app/settings/integrations/gorgias_chat/7/preferences"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/gorgias_chat/7/preferences"
+                  >
+                    Preferences
+                  </a>
+                </NavLink>
+                <NavLink
+                  activeClassName="active"
+                  className="link"
+                  exact={true}
+                  key=".5"
+                  to="/app/settings/integrations/gorgias_chat/7/installation"
+                >
+                  <a
+                    activeClassName="active"
+                    className="link"
+                    exact={true}
+                    to="/app/settings/integrations/gorgias_chat/7/installation"
+                  >
+                    Installation
+                  </a>
+                </NavLink>
+              </nav>
+            </Navbar>
+          </SecondaryNavbar>
+        </GorgiasChatIntegrationNavigation>
+        <GorgiasChatIntegrationPreviewContainer
+          preview={
+            <ChatIntegrationPreview
+              introductionText="this is an intro"
+              isOnline={true}
+              mainColor="#123456"
+              name="my chat integration"
+              position={
+                Object {
+                  "alignment": "bottom-right",
+                  "offsetX": 0,
+                  "offsetY": 0,
+                }
+              }
+            >
+              <div
+                className="content"
+              />
+              <QuickReplies
+                mainColor="#123456"
+                quickReplies={
+                  Array [
+                    "foo",
+                    "bar",
+                  ]
+                }
+              />
+            </ChatIntegrationPreview>
+          }
+        >
+          <Container
+            className="pageContainer"
+            fluid={true}
+            tag="div"
+          >
+            <div
+              className="pageContainer container-fluid"
+            >
+              <Row
+                className="row"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <div
+                  className="row row"
+                >
+                  <Col
+                    className="content"
+                    tag="div"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    <div
+                      className="content col"
+                    >
+                      <Form
+                        onSubmit={[Function]}
+                        tag="form"
+                      >
+                        <form
+                          className=""
+                          onSubmit={[Function]}
+                        >
+                          <div
+                            className="mb-4"
+                          >
+                            <h4>
+                              Quick replies
+                            </h4>
+                            <p
+                              className="mb16"
+                            >
+                              When a customer opens the chat, select the quick replies the customer can click on.
+                            </p>
+                            <div
+                              className="d-flex align-items-center mb16"
+                            >
+                              <ToggleInput
+                                aria-label="Enable quick replies"
+                                isToggled={true}
+                                onClick={[Function]}
+                              >
+                                <div>
+                                  <Label
+                                    aria-checked={true}
+                                    aria-label="Enable quick replies"
+                                    className="label"
+                                    htmlFor="toggle-button-4"
+                                    isDisabled={false}
+                                    onClick={[Function]}
+                                    role="switch"
+                                  >
+                                    <label
+                                      aria-checked={true}
+                                      aria-label="Enable quick replies"
+                                      className="label label"
+                                      htmlFor="toggle-button-4"
+                                      onClick={[Function]}
+                                      role="switch"
+                                    >
+                                      <input
+                                        aria-label="Enable quick replies"
+                                        checked={true}
+                                        className="input"
+                                        disabled={true}
+                                        id="toggle-button-4"
+                                        name="toggle-button-4"
+                                        type="checkbox"
+                                      />
+                                      <div
+                                        className="slider"
+                                      />
+                                    </label>
+                                  </Label>
+                                </div>
+                              </ToggleInput>
+                              <div
+                                className="ml-2"
+                              >
+                                <b>
+                                  Enable quick replies
+                                </b>
+                              </div>
+                            </div>
+                          </div>
+                          <ListField
+                            addLabel="Add Quick Reply"
+                            className="container"
+                            disabled={false}
+                            items={
+                              Immutable.List [
+                                "foo",
+                                "bar",
+                              ]
+                            }
+                            maxItems={3}
+                            maxLength={20}
+                            onChange={[Function]}
+                          >
+                            <div
+                              className="container"
+                            >
+                              <Row
+                                className="row"
+                                key="0"
+                                tag="div"
+                                widths={
+                                  Array [
+                                    "xs",
+                                    "sm",
+                                    "md",
+                                    "lg",
+                                    "xl",
+                                  ]
+                                }
+                              >
+                                <div
+                                  className="row row"
+                                >
+                                  <Col
+                                    className="flex-grow pr-0"
+                                    tag="div"
+                                    widths={
+                                      Array [
+                                        "xs",
+                                        "sm",
+                                        "md",
+                                        "lg",
+                                        "xl",
+                                      ]
+                                    }
+                                  >
+                                    <div
+                                      className="flex-grow pr-0 col"
+                                    >
+                                      <ForwardRef(TextInput)
+                                        className="my-0"
+                                        isDisabled={false}
+                                        isRequired={true}
+                                        maxLength={20}
+                                        name="item-0"
+                                        onChange={[Function]}
+                                        placeholder="Type something (limited to 20 characters)"
+                                        size={300}
+                                        value="foo"
+                                      >
+                                        <div
+                                          className="wrapper my-0"
+                                        >
+                                          <input
+                                            className="input"
+                                            disabled={false}
+                                            id="input-text-5"
+                                            maxLength={20}
+                                            name="item-0"
+                                            onChange={[Function]}
+                                            placeholder="Type something (limited to 20 characters)"
+                                            required={true}
+                                            size={300}
+                                            type="text"
+                                            value="foo"
+                                          />
+                                        </div>
+                                      </ForwardRef(TextInput)>
+                                    </div>
+                                  </Col>
+                                  <Col
+                                    className="d-flex col-sm-auto delete"
+                                    onClick={[Function]}
+                                    tag="div"
+                                    widths={
+                                      Array [
+                                        "xs",
+                                        "sm",
+                                        "md",
+                                        "lg",
+                                        "xl",
+                                      ]
+                                    }
+                                  >
+                                    <div
+                                      className="d-flex col-sm-auto delete col"
+                                      onClick={[Function]}
+                                    >
+                                      <i
+                                        className="material-icons md-2 text-danger"
+                                      >
+                                        clear
+                                      </i>
+                                    </div>
+                                  </Col>
+                                </div>
+                              </Row>
+                              <Row
+                                className="row"
+                                key="1"
+                                tag="div"
+                                widths={
+                                  Array [
+                                    "xs",
+                                    "sm",
+                                    "md",
+                                    "lg",
+                                    "xl",
+                                  ]
+                                }
+                              >
+                                <div
+                                  className="row row"
+                                >
+                                  <Col
+                                    className="flex-grow pr-0"
+                                    tag="div"
+                                    widths={
+                                      Array [
+                                        "xs",
+                                        "sm",
+                                        "md",
+                                        "lg",
+                                        "xl",
+                                      ]
+                                    }
+                                  >
+                                    <div
+                                      className="flex-grow pr-0 col"
+                                    >
+                                      <ForwardRef(TextInput)
+                                        className="my-0"
+                                        isDisabled={false}
+                                        isRequired={true}
+                                        maxLength={20}
+                                        name="item-1"
+                                        onChange={[Function]}
+                                        placeholder="Type something (limited to 20 characters)"
+                                        size={300}
+                                        value="bar"
+                                      >
+                                        <div
+                                          className="wrapper my-0"
+                                        >
+                                          <input
+                                            className="input"
+                                            disabled={false}
+                                            id="input-text-6"
+                                            maxLength={20}
+                                            name="item-1"
+                                            onChange={[Function]}
+                                            placeholder="Type something (limited to 20 characters)"
+                                            required={true}
+                                            size={300}
+                                            type="text"
+                                            value="bar"
+                                          />
+                                        </div>
+                                      </ForwardRef(TextInput)>
+                                    </div>
+                                  </Col>
+                                  <Col
+                                    className="d-flex col-sm-auto delete"
+                                    onClick={[Function]}
+                                    tag="div"
+                                    widths={
+                                      Array [
+                                        "xs",
+                                        "sm",
+                                        "md",
+                                        "lg",
+                                        "xl",
+                                      ]
+                                    }
+                                  >
+                                    <div
+                                      className="d-flex col-sm-auto delete col"
+                                      onClick={[Function]}
+                                    >
+                                      <i
+                                        className="material-icons md-2 text-danger"
+                                      >
+                                        clear
+                                      </i>
+                                    </div>
+                                  </Col>
+                                </div>
+                              </Row>
+                              <Button
+                                className="d-flex align-items-center"
+                                color="secondary"
+                                disabled={false}
+                                onClick={[Function]}
+                                size="sm"
+                                tag="button"
+                              >
+                                <button
+                                  aria-label={null}
+                                  className="d-flex align-items-center btn btn-secondary btn-sm"
+                                  disabled={false}
+                                  onClick={[Function]}
+                                  type="button"
+                                >
+                                  <i
+                                    className="material-icons md-2"
+                                  >
+                                    add
+                                  </i>
+                                  <span
+                                    className="ml-2"
+                                  >
+                                    Add Quick Reply
+                                  </span>
+                                </button>
+                              </Button>
+                            </div>
+                          </ListField>
+                          <div>
+                            <Button
+                              className=""
+                              color="success"
+                              disabled={false}
+                              tag="button"
+                              type="submit"
+                            >
+                              <button
+                                aria-label={null}
+                                className="btn btn-success"
+                                disabled={false}
+                                onClick={[Function]}
+                                type="submit"
+                              >
+                                Save changes
+                              </button>
+                            </Button>
+                          </div>
+                        </form>
+                      </Form>
+                    </div>
+                  </Col>
+                  <Col
+                    className="column preview"
+                    tag="div"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    <div
+                      className="column preview col"
+                    >
+                      <ChatIntegrationPreview
+                        introductionText="this is an intro"
+                        isOnline={true}
+                        mainColor="#123456"
+                        name="my chat integration"
+                        position={
+                          Object {
+                            "alignment": "bottom-right",
+                            "offsetX": 0,
+                            "offsetY": 0,
+                          }
+                        }
+                      >
+                        <div
+                          className="preview"
+                          style={Object {}}
+                        >
+                          <div
+                            className="dialog"
+                          >
+                            <div
+                              className="header"
+                              style={
+                                Object {
+                                  "backgroundColor": "#123456",
+                                }
+                              }
+                            >
+                              <ChatIntegrationAvatar
+                                isOnline={true}
+                                mainColor="#123456"
+                                offlineColor="#A1A9B6"
+                              >
+                                <div
+                                  className="agents"
+                                >
+                                  <div
+                                    className="agent first"
+                                    key="first"
+                                    style={
+                                      Object {
+                                        "borderColor": "#123456",
+                                      }
+                                    }
+                                  >
+                                    <i
+                                      className="material-icons"
+                                    >
+                                      person
+                                    </i>
+                                  </div>
+                                  <div
+                                    className="agent middle"
+                                    key="middle"
+                                    style={
+                                      Object {
+                                        "borderColor": "#123456",
+                                      }
+                                    }
+                                  >
+                                    <i
+                                      className="material-icons"
+                                    >
+                                      person
+                                    </i>
+                                    <div
+                                      className="onlineMarker"
+                                    />
+                                  </div>
+                                  <div
+                                    className="agent last"
+                                    key="last"
+                                    style={
+                                      Object {
+                                        "borderColor": "#123456",
+                                      }
+                                    }
+                                  >
+                                    <i
+                                      className="material-icons"
+                                    >
+                                      person
+                                    </i>
+                                  </div>
+                                </div>
+                              </ChatIntegrationAvatar>
+                              <div
+                                className="details"
+                              >
+                                <div
+                                  className="appName"
+                                >
+                                  my chat integration
+                                </div>
+                                <div
+                                  className="introductionText"
+                                >
+                                  this is an intro
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              className="content"
+                            />
+                            <QuickReplies
+                              mainColor="#123456"
+                              quickReplies={
+                                Array [
+                                  "foo",
+                                  "bar",
+                                ]
+                              }
+                            >
+                              <div
+                                className="content quick-replies-content"
+                              >
+                                <div
+                                  className="quick-replies-wrapper"
+                                >
+                                  <button
+                                    className="btn btn-reply-action reply"
+                                    key="foo-0"
+                                    style={
+                                      Object {
+                                        "borderColor": "#123456",
+                                        "color": "#123456",
+                                      }
+                                    }
+                                  >
+                                    foo
+                                  </button>
+                                  <button
+                                    className="btn btn-reply-action reply"
+                                    key="bar-1"
+                                    style={
+                                      Object {
+                                        "borderColor": "#123456",
+                                        "color": "#123456",
+                                      }
+                                    }
+                                  >
+                                    bar
+                                  </button>
+                                </div>
+                              </div>
+                            </QuickReplies>
+                            <PoweredByGorgias
+                              translatedTexts={
+                                Object {
+                                  "actionPostbackError": "An error occurred while processing your action. Please try again.",
+                                  "backLabelBackAt": "Back online at {time}",
+                                  "backLabelBackInAMinute": "Back in 1 minute",
+                                  "backLabelBackInAnHour": "Back in 1 hour",
+                                  "backLabelBackInDays": "Back in {value} days",
+                                  "backLabelBackInHours": "Back in {value} hours",
+                                  "backLabelBackInMinutes": "Back in {value} minutes",
+                                  "backLabelBackTomorrow": "Back tomorrow",
+                                  "campaignClickToReply": "Click to reply",
+                                  "clickToRetry": "Message not delivered. Click to retry.",
+                                  "conversationTimestampHeaderFormat": "MMMM D",
+                                  "emailCaptureInputLabel": "Get notified by email",
+                                  "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+                                  "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+                                  "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+                                  "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
+                                  "emailCapturePlaceholder": "your@email.com",
+                                  "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+                                  "emailCaptureRequiredMessagePlaceholder": "Write your message",
+                                  "fetchHistory": "Load more",
+                                  "fetchingHistory": "Retrieving history...",
+                                  "headerText": "Gorgias Team",
+                                  "inputPlaceholder": "Type a message...",
+                                  "introductionText": "How can we help?",
+                                  "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+                                  "messageDelivered": "Delivered",
+                                  "messageError": "An error occurred while sending your message. Please try again.",
+                                  "messageIndicatorTitlePlural": "({count}) New messages",
+                                  "messageIndicatorTitleSingular": "({count}) New message",
+                                  "messageRelativeTimeDay": "{value}d ago",
+                                  "messageRelativeTimeHour": "{value}h ago",
+                                  "messageRelativeTimeJustNow": "Just now",
+                                  "messageRelativeTimeMinute": "{value}m ago",
+                                  "messageSending": "Sending...",
+                                  "messageTimestampFormat": "h:mm A",
+                                  "offlineIntroductionText": "We'll be back tomorrow",
+                                  "poweredBy": "Powered by",
+                                  "poweredByGorgias": "Powered by Gorgias",
+                                  "send": "Send",
+                                  "tapToRetry": "Message not delivered. Tap to retry.",
+                                  "unsupportedActionType": "Unsupported action type.",
+                                  "unsupportedMessageType": "Unsupported message type.",
+                                  "usualReplyTimeDay": "Typically replies within a day",
+                                  "usualReplyTimeHours": "Typically replies in a few hours",
+                                  "usualReplyTimeMinutes": "Typically replies in a few minutes",
+                                }
+                              }
+                            >
+                              <div
+                                className="poweredBy"
+                              >
+                                <div>
+                                  <span>
+                                    Powered by
+                                  </span>
+                                  <img
+                                    alt="powered-by"
+                                    src="test-file-stub"
+                                  />
+                                </div>
+                              </div>
+                            </PoweredByGorgias>
+                            <div
+                              className="footer"
+                            >
+                              <div
+                                className="placeholder"
+                              >
+                                Type a message...
+                              </div>
+                              <i
+                                className="icon camera"
+                              />
+                            </div>
+                          </div>
+                          <div
+                            className="button bottom-right"
+                            style={
+                              Object {
+                                "backgroundColor": "#123456",
+                              }
+                            }
+                          >
+                            <div
+                              className="iconWrapper"
+                            >
+                              <i
+                                className="icon"
+                              />
+                              <div
+                                className="shadow"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </ChatIntegrationPreview>
+                    </div>
+                  </Col>
+                </div>
+              </Row>
+            </div>
+          </Container>
+        </GorgiasChatIntegrationPreviewContainer>
+      </div>
+    </GorgiasChatIntegrationQuickRepliesComponent>
+  </Connect(GorgiasChatIntegrationQuickRepliesComponent)>
+</Provider>
+`;

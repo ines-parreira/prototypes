@@ -84,7 +84,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         emailIntegrations: fromJS([]),
     }
 
-    state = {
+    state: State = {
         autoResponderEnabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
         autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
         emailCaptureEnforcement: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,

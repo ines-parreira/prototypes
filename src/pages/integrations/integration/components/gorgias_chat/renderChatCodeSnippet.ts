@@ -16,9 +16,9 @@ Simple HTML template
 
  */
 
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
-import {getEnvironment} from '../../../../../utils/environment.ts'
+import {getEnvironment} from '../../../../../utils/environment'
 
 const startComment = '<!--Gorgias Chat Widget Start-->'
 const endComment = '<!--Gorgias Chat Widget End-->'
@@ -48,16 +48,19 @@ const chatInstallationScript =
 export function renderChatCodeSnippet({
     chatAppId,
     gorgiasChatExtraState = fromJS({}),
+}: {
+    chatAppId: string
+    gorgiasChatExtraState: Map<any, any>
 }) {
     const chatApiUrls = {
-        development: gorgiasChatExtraState
-            .get('chatUrl', '')
-            .replace('https://', ''),
+        development: (
+            gorgiasChatExtraState.get('chatUrl', '') as string
+        ).replace('https://', ''),
         staging: 'config.gorgias-staging.chat',
         production: 'config.gorgias.chat',
     }
 
-    let environment = getEnvironment()
+    const environment = getEnvironment()
 
     const generatedChatSnippet = chatInstallationScript
         .replace(/__CHAT_APP_ID__/g, chatAppId)

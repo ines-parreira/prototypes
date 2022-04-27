@@ -1,18 +1,20 @@
-import React from 'react'
+import React, {ComponentProps, FormEvent} from 'react'
 import {mount, shallow} from 'enzyme'
 
-import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import {fromJS, Map} from 'immutable'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
+import {RootState, StoreDispatch} from 'state/types'
 
 import GorgiasChatIntegrationQuickReplies, {
     GorgiasChatIntegrationQuickRepliesComponent,
 } from '../GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies'
 
-const mockStore = configureMockStore([thunk])
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<GorgiasChatIntegrationQuickReplies/>', () => {
-    let integration = fromJS({
+    const integration: Map<any, any> = fromJS({
         id: 7,
         name: 'my chat integration',
         meta: {},
@@ -23,14 +25,26 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
         },
     })
 
+    const minProps: ComponentProps<
+        typeof GorgiasChatIntegrationQuickRepliesComponent
+    > = {
+        integration: integration,
+        currentUser: fromJS({}),
+        updateOrCreateIntegration: jest.fn(),
+    }
+
+    let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
+
+    beforeEach(() => {
+        store = mockStore({})
+    })
+
     describe('render()', () => {
         it('should render defaults because there is no quick replies in the integration', () => {
             const component = mount(
-                <GorgiasChatIntegrationQuickReplies
-                    store={mockStore({})}
-                    integration={integration}
-                    updateOrCreateIntegration={() => {}}
-                />
+                <Provider store={store}>
+                    <GorgiasChatIntegrationQuickReplies {...minProps} />
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()
@@ -43,14 +57,15 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             })
 
             const component = mount(
-                <GorgiasChatIntegrationQuickReplies
-                    store={mockStore({})}
-                    integration={integration.setIn(
-                        ['meta', 'quick_replies'],
-                        quickRepliesState
-                    )}
-                    updateOrCreateIntegration={() => {}}
-                />
+                <Provider store={store}>
+                    <GorgiasChatIntegrationQuickReplies
+                        {...minProps}
+                        integration={integration.setIn(
+                            ['meta', 'quick_replies'],
+                            quickRepliesState
+                        )}
+                    />
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()
@@ -62,7 +77,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
             const updateOrCreateIntegrationSpy = jest.fn(() =>
                 Promise.resolve()
             )
-            const expectedPayload = fromJS({
+            const expectedPayload: Map<any, any> = fromJS({
                 id: 7,
                 meta: {
                     quick_replies: {
@@ -72,23 +87,25 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 },
             })
 
-            const quickRepliesState = fromJS({
+            const quickRepliesState: Map<any, any> = fromJS({
                 enabled: true,
                 replies: [' foo ', 'bar  '],
             })
 
-            const component = shallow(
-                <GorgiasChatIntegrationQuickRepliesComponent
-                    integration={integration.setIn(
-                        ['meta', 'quick_replies'],
-                        quickRepliesState
-                    )}
-                    updateOrCreateIntegration={updateOrCreateIntegrationSpy}
-                />
-            )
+            const component =
+                shallow<GorgiasChatIntegrationQuickRepliesComponent>(
+                    <GorgiasChatIntegrationQuickRepliesComponent
+                        {...minProps}
+                        integration={integration.setIn(
+                            ['meta', 'quick_replies'],
+                            quickRepliesState
+                        )}
+                        updateOrCreateIntegration={updateOrCreateIntegrationSpy}
+                    />
+                )
 
             const fakeEvent = {preventDefault: jest.fn()}
-            component.instance()._submit(fakeEvent)
+            void component.instance()._submit(fakeEvent as unknown as FormEvent)
 
             expect(updateOrCreateIntegrationSpy).toHaveBeenCalledWith(
                 expectedPayload

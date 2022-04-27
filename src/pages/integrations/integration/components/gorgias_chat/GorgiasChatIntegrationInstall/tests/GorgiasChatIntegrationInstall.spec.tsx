@@ -8,7 +8,7 @@ import {
 } from '../../../../../../../constants/integration'
 import configureStore from '../../../../../../../store/configureStore'
 import GorgiasChatIntegrationInstall from '../GorgiasChatIntegrationInstall'
-import {renderChatCodeSnippet} from '../../renderChatCodeSnippet.js'
+import {renderChatCodeSnippet} from '../../renderChatCodeSnippet'
 import {InitialRootState} from '../../../../../../../types'
 
 describe('renderChatCodeSnippet()', () => {

@@ -158,12 +158,22 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
       </div>
     </div>
     <MessageContent
+      agentMessages={
+        Array [
+          Object {
+            "attachments": Array [],
+            "content": "test",
+            "isHtml": false,
+          },
+        ]
+      }
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
           "name": "Charles",
         }
       }
+      customerInitialMessages={Array []}
     />
     <PoweredByGorgias
       translatedTexts={
@@ -294,12 +304,22 @@ exports[`<ChatIntegrationPreview/> render() should display display the offsets w
       </div>
     </div>
     <MessageContent
+      agentMessages={
+        Array [
+          Object {
+            "attachments": Array [],
+            "content": "test",
+            "isHtml": false,
+          },
+        ]
+      }
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
           "name": "Charles",
         }
       }
+      customerInitialMessages={Array []}
     />
     <PoweredByGorgias
       translatedTexts={
@@ -667,12 +687,22 @@ exports[`<ChatIntegrationPreview/> render() should display the avatar team pictu
       </div>
     </div>
     <MessageContent
+      agentMessages={
+        Array [
+          Object {
+            "attachments": Array [],
+            "content": "test",
+            "isHtml": false,
+          },
+        ]
+      }
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
           "name": "Charles",
         }
       }
+      customerInitialMessages={Array []}
     />
     <PoweredByGorgias
       translatedTexts={
@@ -806,12 +836,22 @@ exports[`<ChatIntegrationPreview/> render() should display the offline status be
       </div>
     </div>
     <MessageContent
+      agentMessages={
+        Array [
+          Object {
+            "attachments": Array [],
+            "content": "test",
+            "isHtml": false,
+          },
+        ]
+      }
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
           "name": "Charles",
         }
       }
+      customerInitialMessages={Array []}
     />
     <PoweredByGorgias
       translatedTexts={
@@ -936,12 +976,22 @@ exports[`<ChatIntegrationPreview/> render() should display the online status bec
       </div>
     </div>
     <MessageContent
+      agentMessages={
+        Array [
+          Object {
+            "attachments": Array [],
+            "content": "test",
+            "isHtml": false,
+          },
+        ]
+      }
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
           "name": "Charles",
         }
       }
+      customerInitialMessages={Array []}
     />
     <PoweredByGorgias
       translatedTexts={
@@ -1066,12 +1116,22 @@ exports[`<ChatIntegrationPreview/> render() should display the sliders when edit
       </div>
     </div>
     <MessageContent
+      agentMessages={
+        Array [
+          Object {
+            "attachments": Array [],
+            "content": "test",
+            "isHtml": false,
+          },
+        ]
+      }
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
           "name": "Charles",
         }
       }
+      customerInitialMessages={Array []}
     />
     <PoweredByGorgias
       translatedTexts={
@@ -1205,12 +1265,22 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       </div>
     </div>
     <MessageContent
+      agentMessages={
+        Array [
+          Object {
+            "attachments": Array [],
+            "content": "test",
+            "isHtml": false,
+          },
+        ]
+      }
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
           "name": "Charles",
         }
       }
+      customerInitialMessages={Array []}
     />
     <PoweredByGorgias
       translatedTexts={
@@ -1344,12 +1414,22 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       </div>
     </div>
     <MessageContent
+      agentMessages={
+        Array [
+          Object {
+            "attachments": Array [],
+            "content": "test",
+            "isHtml": false,
+          },
+        ]
+      }
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
           "name": "Charles",
         }
       }
+      customerInitialMessages={Array []}
     />
     <PoweredByGorgias
       translatedTexts={
@@ -1483,12 +1563,22 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       </div>
     </div>
     <MessageContent
+      agentMessages={
+        Array [
+          Object {
+            "attachments": Array [],
+            "content": "test",
+            "isHtml": false,
+          },
+        ]
+      }
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
           "name": "Charles",
         }
       }
+      customerInitialMessages={Array []}
     />
     <PoweredByGorgias
       translatedTexts={
@@ -1622,12 +1712,22 @@ exports[`<ChatIntegrationPreview/> render() should display typical response time
       </div>
     </div>
     <MessageContent
+      agentMessages={
+        Array [
+          Object {
+            "attachments": Array [],
+            "content": "test",
+            "isHtml": false,
+          },
+        ]
+      }
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
           "name": "Charles",
         }
       }
+      customerInitialMessages={Array []}
     />
     <PoweredByGorgias
       translatedTexts={
@@ -1752,12 +1852,22 @@ exports[`<ChatIntegrationPreview/> render() should not display button if hideBut
       </div>
     </div>
     <MessageContent
+      agentMessages={
+        Array [
+          Object {
+            "attachments": Array [],
+            "content": "test",
+            "isHtml": false,
+          },
+        ]
+      }
       conversationColor="#456789"
       currentUser={
         Immutable.Map {
           "name": "Charles",
         }
       }
+      customerInitialMessages={Array []}
     />
     <PoweredByGorgias
       translatedTexts={

@@ -1,38 +1,44 @@
-import React from 'react'
+import React, {ComponentProps, SyntheticEvent} from 'react'
 import {mount, shallow} from 'enzyme'
-import {fromJS} from 'immutable'
-
-import {
-    GorgiasChatIntegrationPreferencesComponent,
-    PREVIEW_AUTO_RESPONDER,
-    PREVIEW_EMAIL_CAPTURE,
-} from '../GorgiasChatIntegrationPreferences.tsx'
-
-import {
-    CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
-    CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
-} from '../../../../../../../config/integrations/index.ts'
+import {fromJS, Map} from 'immutable'
+import _noop from 'lodash/noop'
 
 import {
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-} from '../../../../../../../config/integrations/gorgias_chat.ts'
+} from 'config/integrations/gorgias_chat'
+import {
+    CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
+    CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
+} from 'config/integrations/index'
+import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
+import {SPANISH_LANGUAGE} from 'constants/languages'
 
-import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
-
-import {SPANISH_LANGUAGE} from '../../../../../../../constants/languages.ts'
+import {
+    GorgiasChatIntegrationPreferencesComponent,
+    PREVIEW_AUTO_RESPONDER,
+    PREVIEW_EMAIL_CAPTURE,
+} from '../GorgiasChatIntegrationPreferences'
 
 describe('<GorgiasChatIntegrationPreferences/>', () => {
+    const minProps: ComponentProps<
+        typeof GorgiasChatIntegrationPreferencesComponent
+    > = {
+        integration: fromJS({}),
+        emailIntegrations: fromJS([]),
+        updateOrCreateIntegration: jest.fn(),
+    }
+
     describe('componentDidMount()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={jest.fn()}
-                    integration={fromJS({})}
-                />,
-                {disableLifecycleMethods: true}
-            )
+            const component =
+                shallow<GorgiasChatIntegrationPreferencesComponent>(
+                    <GorgiasChatIntegrationPreferencesComponent
+                        {...minProps}
+                    />,
+                    {disableLifecycleMethods: true}
+                )
 
             const prevState = component.state()
             component.instance().componentDidMount()
@@ -40,7 +46,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         })
 
         it('should initialize the state using the integration passed', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: GORGIAS_CHAT_INTEGRATION_TYPE,
                 meta: {
@@ -58,7 +64,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
 
             const component = shallow(
                 <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={jest.fn()}
+                    {...minProps}
                     integration={integration}
                 />
             )
@@ -72,7 +78,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             'should initialize the state using the integration passed because the state was not initialized yet and ' +
                 'the integration passed is not empty',
             () => {
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: GORGIAS_CHAT_INTEGRATION_TYPE,
                     meta: {
@@ -89,10 +95,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 })
 
                 const component = shallow(
-                    <GorgiasChatIntegrationPreferencesComponent
-                        updateOrCreateIntegration={jest.fn()}
-                        integration={fromJS({})}
-                    />
+                    <GorgiasChatIntegrationPreferencesComponent {...minProps} />
                 )
 
                 component.setProps({integration})
@@ -102,7 +105,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         )
 
         it('should not initialize the state because it was already initialized', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: GORGIAS_CHAT_INTEGRATION_TYPE,
                 meta: {
@@ -119,10 +122,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             })
 
             const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={jest.fn()}
-                    integration={fromJS({})}
-                />
+                <GorgiasChatIntegrationPreferencesComponent {...minProps} />
             )
 
             component.setState({isInitialized: true})
@@ -135,10 +135,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
 
         it('should not initialize the state because the passed integration is empty', () => {
             const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={jest.fn()}
-                    integration={fromJS({})}
-                />
+                <GorgiasChatIntegrationPreferencesComponent {...minProps} />
             )
 
             const prevState = component.state()
@@ -151,7 +148,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
 
     describe('_setEmailCaptureEnforcement()', () => {
         it('should set passed value in the state and set the preview to "email capture"', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: GORGIAS_CHAT_INTEGRATION_TYPE,
                 meta: {
@@ -167,12 +164,13 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 },
             })
 
-            const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={jest.fn()}
-                    integration={integration}
-                />
-            )
+            const component =
+                shallow<GorgiasChatIntegrationPreferencesComponent>(
+                    <GorgiasChatIntegrationPreferencesComponent
+                        {...minProps}
+                        integration={integration}
+                    />
+                )
 
             component.setState({preview: PREVIEW_AUTO_RESPONDER})
 
@@ -182,7 +180,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             )
             expect(prevState.preview).toEqual(PREVIEW_AUTO_RESPONDER)
 
-            const expectedState = fromJS(prevState)
+            const expectedState = (fromJS(prevState) as Map<any, any>)
                 .set(
                     'emailCaptureEnforcement',
                     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED
@@ -206,7 +204,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 'was enabled',
             () => {
                 const autoResponderEnabled = false
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: GORGIAS_CHAT_INTEGRATION_TYPE,
                     meta: {
@@ -222,12 +220,13 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                     },
                 })
 
-                const component = shallow(
-                    <GorgiasChatIntegrationPreferencesComponent
-                        updateOrCreateIntegration={jest.fn()}
-                        integration={integration}
-                    />
-                )
+                const component =
+                    shallow<GorgiasChatIntegrationPreferencesComponent>(
+                        <GorgiasChatIntegrationPreferencesComponent
+                            updateOrCreateIntegration={jest.fn()}
+                            integration={integration}
+                        />
+                    )
 
                 const prevState = component.state()
                 expect(prevState.autoResponderEnabled).toEqual(
@@ -235,7 +234,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 )
                 expect(prevState.preview).toEqual(PREVIEW_EMAIL_CAPTURE)
 
-                const expectedState = fromJS(prevState)
+                const expectedState = (fromJS(prevState) as Map<any, any>)
                     .set('autoResponderEnabled', !autoResponderEnabled)
                     .set('preview', PREVIEW_AUTO_RESPONDER)
                     .toJS()
@@ -253,7 +252,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 'was disabled',
             () => {
                 const autoResponderEnabled = true
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: GORGIAS_CHAT_INTEGRATION_TYPE,
                     meta: {
@@ -269,12 +268,13 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                     },
                 })
 
-                const component = shallow(
-                    <GorgiasChatIntegrationPreferencesComponent
-                        updateOrCreateIntegration={jest.fn()}
-                        integration={integration}
-                    />
-                )
+                const component =
+                    shallow<GorgiasChatIntegrationPreferencesComponent>(
+                        <GorgiasChatIntegrationPreferencesComponent
+                            {...minProps}
+                            integration={integration}
+                        />
+                    )
 
                 component.setState({preview: PREVIEW_AUTO_RESPONDER})
 
@@ -284,7 +284,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 )
                 expect(prevState.preview).toEqual(PREVIEW_AUTO_RESPONDER)
 
-                const expectedState = fromJS(prevState)
+                const expectedState = (fromJS(prevState) as Map<any, any>)
                     .set('autoResponderEnabled', !autoResponderEnabled)
                     .set('preview', PREVIEW_EMAIL_CAPTURE)
                     .toJS()
@@ -300,7 +300,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
 
     describe('_setAutoResponderReply()', () => {
         it('should set passed value in the state and set the preview to "auto responder"', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: GORGIAS_CHAT_INTEGRATION_TYPE,
                 meta: {
@@ -316,12 +316,13 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 },
             })
 
-            const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={jest.fn()}
-                    integration={integration}
-                />
-            )
+            const component =
+                shallow<GorgiasChatIntegrationPreferencesComponent>(
+                    <GorgiasChatIntegrationPreferencesComponent
+                        {...minProps}
+                        integration={integration}
+                    />
+                )
 
             const prevState = component.state()
             expect(prevState.autoResponderReply).toEqual(
@@ -329,7 +330,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
             )
             expect(prevState.preview).toEqual(PREVIEW_EMAIL_CAPTURE)
 
-            const expectedState = fromJS(prevState)
+            const expectedState = (fromJS(prevState) as Map<any, any>)
                 .set('autoResponderReply', CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES)
                 .set('preview', PREVIEW_AUTO_RESPONDER)
                 .toJS()
@@ -344,12 +345,10 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
 
     describe('_setLinkedEmailIntegration()', () => {
         it('should update the linked email integration in the state.', () => {
-            const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
-            )
+            const component =
+                shallow<GorgiasChatIntegrationPreferencesComponent>(
+                    <GorgiasChatIntegrationPreferencesComponent {...minProps} />
+                )
 
             expect(component.state()).toMatchSnapshot()
             component.instance()._setLinkedEmailIntegration(234)
@@ -367,11 +366,8 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 }
             )
 
-            const component = mount(
-                <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+            const component = mount<GorgiasChatIntegrationPreferencesComponent>(
+                <GorgiasChatIntegrationPreferencesComponent {...minProps} />
             )
 
             const submitPreferencesSpy = jest.spyOn(
@@ -387,21 +383,23 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         it('should submit the form with defaults', async () => {
             const updateOrCreateIntegration = jest.fn()
 
-            const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={updateOrCreateIntegration}
-                    integration={fromJS({
-                        type: GORGIAS_CHAT_INTEGRATION_TYPE,
-                        meta: {
-                            language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-                        },
-                    })}
-                />
-            )
+            const component =
+                shallow<GorgiasChatIntegrationPreferencesComponent>(
+                    <GorgiasChatIntegrationPreferencesComponent
+                        {...minProps}
+                        updateOrCreateIntegration={updateOrCreateIntegration}
+                        integration={fromJS({
+                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                            meta: {
+                                language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+                            },
+                        })}
+                    />
+                )
 
-            await component
-                .instance()
-                ._submitPreferences({preventDefault: jest.fn()})
+            await component.instance()._submitPreferences({
+                preventDefault: _noop,
+            } as unknown as SyntheticEvent)
 
             expect(updateOrCreateIntegration).toMatchSnapshot()
         })
@@ -409,7 +407,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         it('should submit the form with loaded values', async () => {
             const updateOrCreateIntegration = jest.fn()
 
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: GORGIAS_CHAT_INTEGRATION_TYPE,
                 meta: {
@@ -425,12 +423,14 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 },
             })
 
-            const component = shallow(
-                <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={updateOrCreateIntegration}
-                    integration={integration}
-                />
-            )
+            const component =
+                shallow<GorgiasChatIntegrationPreferencesComponent>(
+                    <GorgiasChatIntegrationPreferencesComponent
+                        {...minProps}
+                        updateOrCreateIntegration={updateOrCreateIntegration}
+                        integration={integration}
+                    />
+                )
 
             const newAutoResponder = {
                 enabled: false,
@@ -442,9 +442,9 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                 autoResponderReply: newAutoResponder.reply,
             })
 
-            await component
-                .instance()
-                ._submitPreferences({preventDefault: jest.fn()})
+            await component.instance()._submitPreferences({
+                preventDefault: _noop,
+            } as unknown as SyntheticEvent)
 
             expect(updateOrCreateIntegration).toMatchSnapshot()
         })
@@ -454,7 +454,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         it('should render the Chat preferences', () => {
             const component = shallow(
                 <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={jest.fn()}
+                    {...minProps}
                     integration={fromJS({
                         id: 2,
                         type: GORGIAS_CHAT_INTEGRATION_TYPE,
@@ -474,7 +474,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
         it('should render buttons in loading state because preferences are being submitted', () => {
             const component = shallow(
                 <GorgiasChatIntegrationPreferencesComponent
-                    updateOrCreateIntegration={jest.fn()}
+                    {...minProps}
                     integration={fromJS({
                         id: 2,
                         type: GORGIAS_CHAT_INTEGRATION_TYPE,

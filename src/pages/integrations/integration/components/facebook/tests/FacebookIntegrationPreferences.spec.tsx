@@ -1,25 +1,28 @@
-import React from 'react'
+import React, {ComponentProps, SyntheticEvent} from 'react'
 import {mount, shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
+import _noop from 'lodash/noop'
 
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-} from '../../../../../../config/integrations/index.ts'
-import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook.ts'
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
-import {FacebookIntegrationPreferences} from '../FacebookIntegrationPreferences.tsx'
+} from '../../../../../../config/integrations/index'
+import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook'
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+import {FacebookIntegrationPreferences} from '../FacebookIntegrationPreferences'
 
 describe('<FacebookIntegrationPreferences/>', () => {
+    const minProps: ComponentProps<typeof FacebookIntegrationPreferences> = {
+        updateOrCreateIntegration: jest.fn(),
+        integration: fromJS({}),
+    }
+
     describe('componentWillMount()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const component = shallow(
-                <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />,
+            const component = shallow<FacebookIntegrationPreferences>(
+                <FacebookIntegrationPreferences {...minProps} />,
                 {disableLifecycleMethods: true}
             )
 
@@ -29,7 +32,9 @@ describe('<FacebookIntegrationPreferences/>', () => {
         })
 
         it('should initialize the state because the passed integration is not empty', () => {
-            const integration = fromJS({
+            const integration: ComponentProps<
+                typeof FacebookIntegrationPreferences
+            >['integration'] = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 meta: {
@@ -45,7 +50,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
             const component = shallow(
                 <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
+                    {...minProps}
                     integration={integration}
                 />
             )
@@ -57,10 +62,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
     describe('componentDidUpdate()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
             const component = shallow(
-                <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+                <FacebookIntegrationPreferences {...minProps} />
             )
 
             const prevState = component.instance()
@@ -71,7 +73,9 @@ describe('<FacebookIntegrationPreferences/>', () => {
         })
 
         it('should not initialize the state because it was already initialized', () => {
-            const integration = fromJS({
+            const integration: ComponentProps<
+                typeof FacebookIntegrationPreferences
+            >['integration'] = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 meta: {
@@ -86,10 +90,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
             })
 
             const component = shallow(
-                <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+                <FacebookIntegrationPreferences {...minProps} />
             )
 
             component.setState({isInitialized: true})
@@ -101,7 +102,9 @@ describe('<FacebookIntegrationPreferences/>', () => {
         })
 
         it('should initialize the state because the passed integration is not empty', () => {
-            const integration = fromJS({
+            const integration: ComponentProps<
+                typeof FacebookIntegrationPreferences
+            >['integration'] = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 meta: {
@@ -116,10 +119,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
             })
 
             const component = shallow(
-                <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+                <FacebookIntegrationPreferences {...minProps} />
             )
 
             component.setProps({integration})
@@ -130,11 +130,8 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('_setAutoResponderEnabled()', () => {
         it('should set passed value in the state', () => {
-            const component = shallow(
-                <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+            const component = shallow<FacebookIntegrationPreferences>(
+                <FacebookIntegrationPreferences {...minProps} />
             )
 
             expect(component.state('autoResponderEnabled')).toEqual(
@@ -153,11 +150,8 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('_setAutoResponderReply()', () => {
         it('should set passed value in the state', () => {
-            const component = shallow(
-                <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+            const component = shallow<FacebookIntegrationPreferences>(
+                <FacebookIntegrationPreferences {...minProps} />
             )
 
             expect(component.state('autoResponderReply')).toEqual(
@@ -176,11 +170,8 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('_submitPreferences()', () => {
         it('should be called when the form is submitted', () => {
-            const component = mount(
-                <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
-                    integration={fromJS({})}
-                />
+            const component = mount<FacebookIntegrationPreferences>(
+                <FacebookIntegrationPreferences {...minProps} />
             )
 
             const submitPreferencesSpy = jest.spyOn(
@@ -196,16 +187,16 @@ describe('<FacebookIntegrationPreferences/>', () => {
         it('should submit the form with defaults', async () => {
             const updateOrCreateIntegration = jest.fn()
 
-            const component = shallow(
+            const component = shallow<FacebookIntegrationPreferences>(
                 <FacebookIntegrationPreferences
                     updateOrCreateIntegration={updateOrCreateIntegration}
                     integration={fromJS({type: FACEBOOK_INTEGRATION_TYPE})}
                 />
             )
 
-            await component
-                .instance()
-                ._submitPreferences({preventDefault: () => {}})
+            await component.instance()._submitPreferences({
+                preventDefault: _noop,
+            } as unknown as SyntheticEvent)
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(
                 fromJS({
@@ -225,7 +216,9 @@ describe('<FacebookIntegrationPreferences/>', () => {
         it('should submit the form with loaded values', async () => {
             const updateOrCreateIntegration = jest.fn()
 
-            const integration = fromJS({
+            const integration: ComponentProps<
+                typeof FacebookIntegrationPreferences
+            >['integration'] = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 meta: {
@@ -239,7 +232,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
                 },
             })
 
-            const component = shallow(
+            const component = shallow<FacebookIntegrationPreferences>(
                 <FacebookIntegrationPreferences
                     updateOrCreateIntegration={updateOrCreateIntegration}
                     integration={fromJS(integration)}
@@ -250,19 +243,17 @@ describe('<FacebookIntegrationPreferences/>', () => {
                 autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
             })
 
-            await component
-                .instance()
-                ._submitPreferences({preventDefault: () => {}})
+            await component.instance()._submitPreferences({
+                preventDefault: _noop,
+            } as unknown as SyntheticEvent)
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(
                 fromJS({
                     id: integration.get('id'),
-                    meta: integration
-                        .get('meta')
-                        .setIn(
-                            ['preferences', 'auto_responder', 'reply'],
-                            CHAT_AUTO_RESPONDER_REPLY_IN_DAY
-                        ),
+                    meta: (integration.get('meta') as Map<any, any>).setIn(
+                        ['preferences', 'auto_responder', 'reply'],
+                        CHAT_AUTO_RESPONDER_REPLY_IN_DAY
+                    ),
                 })
             )
         })
@@ -272,7 +263,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
         it('should render the Facebook preferences', () => {
             const component = shallow(
                 <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
+                    {...minProps}
                     integration={fromJS({
                         id: 2,
                         type: FACEBOOK_INTEGRATION_TYPE,
@@ -287,7 +278,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
         it('should render loading buttons because the integration is being updated', () => {
             const component = shallow(
                 <FacebookIntegrationPreferences
-                    updateOrCreateIntegration={() => {}}
+                    {...minProps}
                     integration={fromJS({
                         id: 2,
                         type: FACEBOOK_INTEGRATION_TYPE,

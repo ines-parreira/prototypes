@@ -5,6 +5,8 @@ import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {RootState} from 'state/types'
 
+import PageHeader from 'pages/common/components/PageHeader'
+
 import {
     updateCampaign,
     createCampaign,
@@ -12,7 +14,7 @@ import {
 } from '../../../../../../../state/campaigns/actions'
 import * as integrationsSelectors from '../../../../../../../state/integrations/selectors'
 import * as agentSelectors from '../../../../../../../state/agents/selectors'
-import PageHeader from '../../../../../../common/components/PageHeader'
+
 import GorgiasChatIntegrationNavigation from '../../GorgiasChatIntegrationNavigation'
 
 import {GorgiasChatCampaignDetailForm} from './GorgiasChatCampaignDetailForm'

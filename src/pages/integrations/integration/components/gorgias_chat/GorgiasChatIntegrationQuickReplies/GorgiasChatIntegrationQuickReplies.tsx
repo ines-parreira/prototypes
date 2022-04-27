@@ -6,16 +6,17 @@ import {Breadcrumb, BreadcrumbItem, Button, Form} from 'reactstrap'
 import classnames from 'classnames'
 import {RootState} from 'state/types'
 
-import PageHeader from '../../../../../common/components/PageHeader'
-import ListField from '../../../../../common/forms/ListField'
-import ToggleInput from '../../../../../common/forms/ToggleInput'
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
+import PageHeader from 'pages/common/components/PageHeader'
+import ListField from 'pages/common/forms/ListField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 import {
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
-} from '../../../../../../config/integrations/gorgias_chat'
+} from 'config/integrations/gorgias_chat'
+
+import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
 
 import ChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
