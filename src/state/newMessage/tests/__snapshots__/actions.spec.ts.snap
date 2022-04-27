@@ -44,7 +44,7 @@ Array [
                         <li>You can only send images or videos.</li>
                     </ul>
                 ",
-      "position": "top-right",
+      "position": "top-center",
       "status": "error",
       "style": "alert",
       "title": "We could not add all of your attachments !",
@@ -92,7 +92,7 @@ Array [
                         <li>You can only send images or videos.</li>
                     </ul>
                 ",
-      "position": "top-right",
+      "position": "top-center",
       "status": "error",
       "style": "alert",
       "title": "We could not add all of your attachments !",

@@ -30,7 +30,7 @@ export const AUTHORIZED_NOTIFICATION_TYPES = [
 ]
 
 export const INITIAL_MESSAGE = {
-    position: POSITIONS.topRight,
+    position: POSITIONS.topCenter,
     dismissAfter: 0,
     dismissible: true,
     buttons: [],

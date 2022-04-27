@@ -132,7 +132,7 @@ Array [
       "dismissible": true,
       "id": 1,
       "message": "foo",
-      "position": "top-right",
+      "position": "top-center",
       "status": "error",
       "style": "alert",
     },

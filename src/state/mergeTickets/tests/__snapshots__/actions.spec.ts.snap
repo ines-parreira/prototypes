@@ -11,7 +11,7 @@ Array [
       "dismissible": true,
       "id": "4fzzz",
       "message": "Tickets merged successfully",
-      "position": "top-right",
+      "position": "top-center",
       "status": "success",
       "style": "alert",
     },
