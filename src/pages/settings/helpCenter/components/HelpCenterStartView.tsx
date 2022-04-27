@@ -12,7 +12,7 @@ import {Locale} from 'models/helpCenter/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {helpCentersFetched} from 'state/entities/helpCenter/helpCenters/actions'
-import {getHelpCenterSortedList} from 'state/entities/helpCenter/helpCenters/selectors'
+import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters/selectors'
 import {changeHelpCenterId, changeViewLanguage} from 'state/ui/helpCenter'
 import PageHeader from 'pages/common/components/PageHeader'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -37,7 +37,7 @@ export const HelpCenterStartView: React.FC = () => {
     const history = useHistory()
     const {client} = useHelpCenterApi()
     const localeOptions = useSupportedLocales()
-    const helpCenterList = useAppSelector(getHelpCenterSortedList)
+    const helpCenterList = useAppSelector(getHelpCenterList)
     const localesByCode = useMemo(
         () => _keyBy<Locale>(localeOptions, 'code'),
         [localeOptions]

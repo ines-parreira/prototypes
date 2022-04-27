@@ -9,7 +9,7 @@ import {initialState as articlesState} from 'state/entities/helpCenter/articles/
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 
-import {getCurrentHelpCenter, getHelpCenterSortedList} from '../selectors'
+import {getCurrentHelpCenter, getHelpCenterList} from '../selectors'
 
 describe('Entities/Help Center', () => {
     describe('getCurrentHelpCenter', () => {
@@ -51,8 +51,8 @@ describe('Entities/Help Center', () => {
         })
     })
 
-    describe('getHelpCenterSortedList', () => {
-        it('returns the list sorted by alphabetical order', () => {
+    describe('getHelpCenterList', () => {
+        it('returns the list', () => {
             const dataStore: Partial<StoreState> = {
                 entities: {
                     helpCenter: {
@@ -65,12 +65,9 @@ describe('Entities/Help Center', () => {
                     },
                 } as any,
             }
-            const sortedFixture = getHelpCentersResponseFixture.data.sort(
-                ({name: nameA}, {name: nameB}) => nameA.localeCompare(nameB)
-            )
 
-            expect(getHelpCenterSortedList(dataStore as StoreState)).toEqual(
-                sortedFixture
+            expect(getHelpCenterList(dataStore as StoreState)).toEqual(
+                getHelpCentersResponseFixture.data
             )
         })
     })

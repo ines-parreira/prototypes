@@ -19,10 +19,6 @@ export const getCurrentHelpCenter = createSelector(
     }
 )
 
-export const getHelpCenterSortedList = createSelector(
-    getHelpCenters,
-    (helpCenters) =>
-        Object.values(helpCenters).sort(({name: nameA}, {name: nameB}) =>
-            nameA.localeCompare(nameB)
-        )
+export const getHelpCenterList = createSelector(getHelpCenters, (helpCenters) =>
+    Object.values(helpCenters)
 )
