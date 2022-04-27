@@ -48,19 +48,6 @@ const QuickResponseFlowsPreferences = () => {
                         <p>
                             Display up to 4 quick response flows sending a
                             prefilled chat message when shoppers click on it.
-                            You can then{' '}
-                            <Link to="/app/settings/rules/new">
-                                create a rule
-                            </Link>{' '}
-                            that will send additional automated responses to
-                            customers.{' '}
-                            <a
-                                href="https://docs.gorgias.com/self-service/custom-self-service-flows"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                Read more
-                            </a>
                         </p>
 
                         <QuickResponseList />
