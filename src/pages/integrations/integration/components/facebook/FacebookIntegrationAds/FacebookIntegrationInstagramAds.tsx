@@ -92,7 +92,7 @@ class FacebookIntegrationInstagramAds extends Component<Props> {
                             Instagram ad was not active on Gorgias will not be
                             fetched. Learn more about{' '}
                             <a
-                                href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
+                                href="https://docs.gorgias.com/instagram/instagram-ads-comments"
                                 rel="noopener noreferrer"
                                 target="_blank"
                             >

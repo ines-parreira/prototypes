@@ -252,7 +252,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                 It can take up to 2 hours to synchronize new Instagram ads on Gorgias. Instagram ads comments are fetched every 20 minutes. Comments sent while an Instagram ad was not active on Gorgias will not be fetched. Learn more about
                  
                 <a
-                  href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
+                  href="https://docs.gorgias.com/instagram/instagram-ads-comments"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -581,7 +581,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                 It can take up to 2 hours to synchronize new Instagram ads on Gorgias. Instagram ads comments are fetched every 20 minutes. Comments sent while an Instagram ad was not active on Gorgias will not be fetched. Learn more about
                  
                 <a
-                  href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
+                  href="https://docs.gorgias.com/instagram/instagram-ads-comments"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1572,7 +1572,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                 It can take up to 2 hours to synchronize new Instagram ads on Gorgias. Instagram ads comments are fetched every 20 minutes. Comments sent while an Instagram ad was not active on Gorgias will not be fetched. Learn more about
                  
                 <a
-                  href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
+                  href="https://docs.gorgias.com/instagram/instagram-ads-comments"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2053,7 +2053,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                 It can take up to 2 hours to synchronize new Instagram ads on Gorgias. Instagram ads comments are fetched every 20 minutes. Comments sent while an Instagram ad was not active on Gorgias will not be fetched. Learn more about
                  
                 <a
-                  href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
+                  href="https://docs.gorgias.com/instagram/instagram-ads-comments"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2679,7 +2679,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                 It can take up to 2 hours to synchronize new Instagram ads on Gorgias. Instagram ads comments are fetched every 20 minutes. Comments sent while an Instagram ad was not active on Gorgias will not be fetched. Learn more about
                  
                 <a
-                  href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
+                  href="https://docs.gorgias.com/instagram/instagram-ads-comments"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
