@@ -72,6 +72,7 @@ export const INTEGRATION_COMPONENTS_TYPES: {
           zlsstk1s8j12: IntegrationType.Facebook,
           x95q6p88z8hd: IntegrationType.Facebook, // Instagram comments
           fzmbzjs3p9qd: IntegrationType.Facebook, // Messenger
+          '3n3zfvt8ndb4': IntegrationType.Facebook, // Instagram DM
           '2pr7qbc9c17s': IntegrationType.Shopify,
           '212dg2c2png1': IntegrationType.Shopify, // Shopify API & Mobile,
           bsprtz3l874l: IntegrationType.Sms,
