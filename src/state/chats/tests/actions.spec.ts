@@ -22,7 +22,7 @@ jest.mock('../../notifications/actions', () => {
 
 jest.mock('../../../services/browserNotification', () => {
     return {
-        newMessage: jest.fn(),
+        newMessageThrottled: jest.fn(),
     }
 })
 
@@ -93,21 +93,22 @@ describe('actions', () => {
             it('should add chat with notifications', () => {
                 store.dispatch(actions.addChat(chat, true))
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserNotification.newMessage).toHaveBeenNthCalledWith(
-                    1,
-                    {
-                        body: 'Hi',
-                        playSoundNotification: true,
-                        ticketId: 1,
-                        title: 'Mark Frizeli',
-                    }
-                )
+                expect(
+                    browserNotification.newMessageThrottled
+                ).toHaveBeenNthCalledWith(1, {
+                    body: 'Hi',
+                    playSoundNotification: true,
+                    ticketId: 1,
+                    title: 'Mark Frizeli',
+                })
             })
 
             it('should add chat without notifications', () => {
                 store.dispatch(actions.addChat(chat, false))
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserNotification.newMessage).not.toHaveBeenCalled()
+                expect(
+                    browserNotification.newMessageThrottled
+                ).not.toHaveBeenCalled()
             })
         })
 

@@ -40,7 +40,7 @@ export const addChat =
             ticket,
         })
         if (notify) {
-            browserNotification.newMessage({
+            browserNotification.newMessageThrottled({
                 title: ticket.customer.name,
                 body: ticket.last_message_body_text || '',
                 ticketId: ticket.id,

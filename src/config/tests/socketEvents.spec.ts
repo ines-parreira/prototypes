@@ -4,6 +4,8 @@ import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 import {EnhancedStore} from '@reduxjs/toolkit'
 
+import {TicketChannel} from 'business/types/ticket'
+import browserNotification from 'services/browserNotification'
 import {TicketStatuses} from '../../business/ticket'
 import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats'
 
@@ -46,6 +48,7 @@ import history from '../../pages/history'
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
 
+jest.spyOn(browserNotification, 'newMessage')
 jest.mock('../../state/chats/actions')
 jest.mock('../../state/views/actions')
 jest.mock('../../state/entities/viewsCount/actions')
@@ -804,6 +807,33 @@ describe('Config: socketEvents', () => {
                 expect(chatActions.markChatAsUnread).toHaveBeenNthCalledWith(
                     1,
                     1
+                )
+            })
+        })
+
+        describe('ticket-assigned', () => {
+            const handler = _find(receivedEvents, {
+                name: 'ticket-assigned',
+            }) as socketEvents.ReceivedEvent
+
+            it('should send a browser notification', () => {
+                handler.onReceive({
+                    event: {
+                        type: 'ticket-assigned',
+                    },
+                    ticket: {
+                        id: 1,
+                        channel: TicketChannel.Email,
+                        subject: 'Foo bar',
+                    },
+                })
+
+                expect(browserNotification.newMessage).toHaveBeenNthCalledWith(
+                    1,
+                    {
+                        body: `New assigned ticket [${TicketChannel.Email}]: Foo bar`,
+                        ticketId: 1,
+                    }
                 )
             })
         })

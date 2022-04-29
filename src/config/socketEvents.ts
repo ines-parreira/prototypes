@@ -1,6 +1,7 @@
 import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 
+import browserNotification from 'services/browserNotification'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {MACRO_PARAMS_UPDATED} from 'state/macro/constants'
 import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
@@ -35,6 +36,7 @@ import {
     OutboundPhoneCallInitiated,
     ServerMessage,
     SocketEventType,
+    TicketAssignedEvent,
     TicketChatUpdatedEvent,
     TicketMessageActionFailedEvent,
     TicketMessageChatCreatedEvent,
@@ -265,6 +267,17 @@ export const receivedEvents: ReceivedEvent[] = [
                 reduxStore.dispatch(chatsActions.markChatAsUnread(ticket.id))
             }
             reduxStore.dispatch(ticketActions.mergeTicket(ticket) as any)
+        },
+    },
+    {
+        name: 'ticket-assigned',
+        onReceive: function (json) {
+            const {ticket} = json as TicketAssignedEvent
+
+            browserNotification.newMessage({
+                body: `New assigned ticket [${ticket.channel}]: ${ticket.subject}`,
+                ticketId: ticket.id,
+            })
         },
     },
     {

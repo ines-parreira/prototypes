@@ -60,7 +60,38 @@ Array [
 ]
 `;
 
+exports[`services browserNotification newMessage() should display several notifications but play sound once 1`] = `
+Array [
+  Object {
+    "body": "body",
+    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "onClick": [Function],
+    "timeout": 5000,
+    "title": "title",
+  },
+  Object {
+    "body": "body",
+    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "onClick": [Function],
+    "timeout": 5000,
+    "title": "title",
+  },
+]
+`;
+
 exports[`services browserNotification newMessage() should not throw unhandled promise rejection when the audio playing fails 1`] = `
+Array [
+  Object {
+    "body": "body",
+    "icon": "/static/private/js/assets/img/icons/logo.png",
+    "onClick": [Function],
+    "timeout": 5000,
+    "title": "title",
+  },
+]
+`;
+
+exports[`services browserNotification newMessageThrottled() should display a single notification when called several times 1`] = `
 Array [
   Object {
     "body": "body",

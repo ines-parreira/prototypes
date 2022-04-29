@@ -4,12 +4,13 @@ import browserNotification from '../browserNotification.ts'
 
 describe('services', () => {
     describe('browserNotification', () => {
-        describe('newMessage()', () => {
-            beforeEach(() => {
-                PushJS.clear()
-                browserNotification.newMessage.cancel()
-            })
+        beforeEach(() => {
+            jest.clearAllMocks()
+            PushJS.clear()
+            browserNotification.playSound.cancel()
+        })
 
+        describe('newMessage()', () => {
             it('should not play the sound notification', () => {
                 const spy = jest.spyOn(
                     global.HTMLMediaElement.prototype,
@@ -124,6 +125,50 @@ describe('services', () => {
                     done()
                 })
                 expect(spy).toHaveBeenCalled()
+            })
+
+            it('should display several notifications but play sound once', () => {
+                const spy = jest.spyOn(
+                    global.HTMLMediaElement.prototype,
+                    'play'
+                )
+
+                browserNotification.newMessage({
+                    title: 'title',
+                    body: 'body',
+                    ticketId: 12,
+                })
+                browserNotification.newMessage({
+                    title: 'title',
+                    body: 'body',
+                    ticketId: 123,
+                })
+
+                expect(PushJS.getAll()).toMatchSnapshot()
+                expect(spy).toHaveBeenCalledTimes(1)
+            })
+        })
+
+        describe('newMessageThrottled()', () => {
+            it('should display a single notification when called several times', () => {
+                const spy = jest.spyOn(
+                    global.HTMLMediaElement.prototype,
+                    'play'
+                )
+
+                browserNotification.newMessageThrottled({
+                    title: 'title',
+                    body: 'body',
+                    ticketId: 12,
+                })
+                browserNotification.newMessageThrottled({
+                    title: 'title',
+                    body: 'body',
+                    ticketId: 123,
+                })
+
+                expect(PushJS.getAll()).toMatchSnapshot()
+                expect(spy).toHaveBeenCalledTimes(1)
             })
         })
     })

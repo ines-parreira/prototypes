@@ -14,49 +14,53 @@ const sound = new Audio(require('assets/audio/notification.mp3'))
 sound.load()
 
 class BrowserNotification {
-    newMessage = _throttle(
-        ({
-            title,
-            body,
-            ticketId,
-            playSoundNotification,
-        }: {
-            title?: unknown
-            body?: unknown
-            ticketId?: number | string
-            playSoundNotification?: boolean
-        } = {}) => {
-            if (
-                playSoundNotification === null ||
-                playSoundNotification === undefined ||
-                !!playSoundNotification
-            ) {
-                sound.play().catch(_noop)
-            }
-
-            void notification.create(
-                _isString(title) && title ? title : 'Gorgias',
-                {
-                    body:
-                        _isString(body) && body
-                            ? body
-                            : 'You received an answer',
-                    icon,
-                    timeout: 5000,
-                    onClick: function () {
-                        // go to the ticket
-                        if (ticketId) {
-                            history.push(`/app/ticket/${ticketId}`)
-                        }
-                        window.focus()
-                        ;(this as PushNotification).close()
-                    },
-                }
-            )
+    playSound = _throttle(
+        () => {
+            sound.play().catch(_noop)
         },
         10000,
         {trailing: false}
     )
+
+    newMessage = ({
+        title,
+        body,
+        ticketId,
+        playSoundNotification,
+    }: {
+        title?: unknown
+        body?: unknown
+        ticketId?: number | string
+        playSoundNotification?: boolean
+    } = {}) => {
+        if (
+            playSoundNotification === null ||
+            playSoundNotification === undefined ||
+            !!playSoundNotification
+        ) {
+            this.playSound()
+        }
+
+        void notification.create(
+            _isString(title) && title ? title : 'Gorgias',
+            {
+                body: _isString(body) && body ? body : 'You received an answer',
+                icon,
+                timeout: 5000,
+                onClick: function () {
+                    // go to the ticket
+                    if (ticketId) {
+                        history.push(`/app/ticket/${ticketId}`)
+                    }
+                    window.focus()
+                    ;(this as PushNotification).close()
+                },
+            }
+        )
+    }
+
+    // FIXME: remove once PLTCO-2134 is done
+    newMessageThrottled = _throttle(this.newMessage, 10000, {trailing: false})
 }
 
 export default new BrowserNotification()

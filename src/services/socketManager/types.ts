@@ -1,5 +1,6 @@
 import {Map} from 'immutable'
 
+import {TicketChannel} from 'business/types/ticket'
 import {MacrosProperties} from 'models/macro/types'
 import {RecentChatTicket} from '../../business/types/recentChats'
 import {Ticket} from '../../models/ticket/types'
@@ -89,6 +90,17 @@ export type TicketUpdatedEvent = {
         type: 'ticket-updated'
     }
     ticket: Ticket
+}
+
+export type TicketAssignedEvent = {
+    event: {
+        type: 'ticket-assigned'
+    }
+    ticket: {
+        channel: TicketChannel
+        id: number
+        subject: string
+    }
 }
 
 export type TicketMessageCreatedEvent = {
@@ -246,6 +258,7 @@ export type ServerMessage =
     | UserLocationUpdatedEvent
     | UserTypingStatusUpdatedEvent
     | TicketUpdatedEvent
+    | TicketAssignedEvent
     | TicketMessageCreatedEvent
     | TicketMessageActionFailedEvent
     | TicketMessageFailedEvent
