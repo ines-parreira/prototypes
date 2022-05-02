@@ -76,7 +76,7 @@ exports[`TicketTags component should display current tags 1`] = `
         tabindex="-1"
       >
         <div
-          class="wrapper"
+          class="wrapper isFocused"
         >
           <input
             class="input"

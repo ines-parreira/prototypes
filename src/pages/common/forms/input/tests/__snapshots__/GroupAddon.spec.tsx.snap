@@ -5,10 +5,10 @@ exports[`<GroupAddon /> should render an GroupAddon inside a group input wrapper
   class="wrapper group horizontal"
 >
   <div
-    class="wrapper"
+    class="wrapper left isNested"
   >
     <input
-      class="input nested"
+      class="input"
       id="input-text-1"
       name="input-text-1"
       type="text"

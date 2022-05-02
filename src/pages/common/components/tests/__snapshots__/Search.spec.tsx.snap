@@ -15,31 +15,35 @@ exports[`Search component handle change function 1`] = `
     <ForwardRef(TextInput)
       className="input"
       disabled={false}
-      leftIcon={
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Search..."
+      prefix={
         <IconInput
           icon="search"
         />
       }
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="Search..."
       value=""
     >
       <div
         className="wrapper input"
       >
-        <IconInput
-          icon="search"
-          position="left"
+        <span
+          className="prefix"
+          onClick={[Function]}
         >
-          <i
-            className="material-icons icon iconLeft"
+          <IconInput
+            icon="search"
           >
-            search
-          </i>
-        </IconInput>
+            <i
+              className="material-icons icon"
+            >
+              search
+            </i>
+          </IconInput>
+        </span>
         <input
-          className="input hasLeftIcon"
+          className="input"
           disabled={false}
           id="input-text-42"
           name="input-text-42"
@@ -71,31 +75,35 @@ exports[`Search component reset function 1`] = `
     <ForwardRef(TextInput)
       className="input"
       disabled={false}
-      leftIcon={
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Search..."
+      prefix={
         <IconInput
           icon="search"
         />
       }
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="Search..."
       value=""
     >
       <div
         className="wrapper input"
       >
-        <IconInput
-          icon="search"
-          position="left"
+        <span
+          className="prefix"
+          onClick={[Function]}
         >
-          <i
-            className="material-icons icon iconLeft"
+          <IconInput
+            icon="search"
           >
-            search
-          </i>
-        </IconInput>
+            <i
+              className="material-icons icon"
+            >
+              search
+            </i>
+          </IconInput>
+        </span>
         <input
-          className="input hasLeftIcon"
+          className="input"
           disabled={false}
           id="input-text-42"
           name="input-text-42"
@@ -127,31 +135,35 @@ exports[`Search component reset function 2`] = `
     <ForwardRef(TextInput)
       className="input"
       disabled={false}
-      leftIcon={
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Search..."
+      prefix={
         <IconInput
           icon="search"
         />
       }
-      onChange={[Function]}
-      onKeyDown={[Function]}
-      placeholder="Search..."
       value=""
     >
       <div
         className="wrapper input"
       >
-        <IconInput
-          icon="search"
-          position="left"
+        <span
+          className="prefix"
+          onClick={[Function]}
         >
-          <i
-            className="material-icons icon iconLeft"
+          <IconInput
+            icon="search"
           >
-            search
-          </i>
-        </IconInput>
+            <i
+              className="material-icons icon"
+            >
+              search
+            </i>
+          </IconInput>
+        </span>
         <input
-          className="input hasLeftIcon"
+          className="input"
           disabled={false}
           id="input-text-42"
           name="input-text-42"

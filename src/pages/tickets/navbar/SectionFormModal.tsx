@@ -1,13 +1,12 @@
-import classnames from 'classnames'
-import React from 'react'
+import React, {useRef} from 'react'
 import {Form} from 'reactstrap'
 
 import {SectionDraft} from 'models/section/types'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
-import InputField from 'pages/common/forms/input/InputField'
 import InputGroup from 'pages/common/forms/input/InputGroup'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from './SectionFormModal.less'
 
@@ -33,6 +32,7 @@ export default function SectionFormModal({
     onSubmit,
     sectionForm,
 }: Props) {
+    const inputElement = useRef<HTMLInputElement>(null)
     if (!sectionForm) {
         return null
     }
@@ -52,20 +52,28 @@ export default function SectionFormModal({
                 }}
             >
                 <InputGroup className={css.inputGroup}>
-                    <EmojiSelect
-                        className={css.emojiSelect}
-                        emoji={sectionForm.decoration?.emoji || null}
-                        onEmojiSelect={(emoji: string) =>
-                            onChange('decoration', {emoji})
-                        }
-                        onEmojiClear={() => onChange('decoration', null)}
-                    />
-                    <InputField
+                    <TextInput
+                        ref={inputElement}
                         id="name"
-                        className={classnames('flex-grow', css.nameInput)}
+                        className={css.inputWrapper}
+                        inputClassName={css.input}
                         value={sectionForm.name}
                         placeholder="Choose a helpful name"
                         onChange={(name: string) => onChange('name', name)}
+                        prefix={
+                            <EmojiSelect
+                                className={css.emojiSelect}
+                                emoji={sectionForm.decoration?.emoji || null}
+                                onEmojiSelect={(emoji: string) => {
+                                    onChange('decoration', {emoji})
+                                    inputElement.current?.focus()
+                                }}
+                                onEmojiClear={() => {
+                                    onChange('decoration', null)
+                                    inputElement.current?.focus()
+                                }}
+                            />
+                        }
                         autoFocus
                         isRequired
                     />

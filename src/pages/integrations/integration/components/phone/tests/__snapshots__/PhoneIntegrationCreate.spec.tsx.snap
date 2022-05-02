@@ -78,10 +78,10 @@ exports[`<PhoneIntegrationCreate/> render() should prefill the title field using
                   </span>
                 </div>
                 <div
-                  class="wrapper"
+                  class="wrapper right isNested"
                 >
                   <input
-                    class="input nested"
+                    class="input"
                     id="title"
                     name="title"
                     placeholder="Ex: Company Support Line"
@@ -384,10 +384,10 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                   </span>
                 </div>
                 <div
-                  class="wrapper"
+                  class="wrapper right isNested"
                 >
                   <input
-                    class="input nested"
+                    class="input"
                     id="title"
                     name="title"
                     placeholder="Ex: Company Support Line"
@@ -679,10 +679,10 @@ exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with t
                   </span>
                 </div>
                 <div
-                  class="wrapper"
+                  class="wrapper right isNested"
                 >
                   <input
-                    class="input nested"
+                    class="input"
                     id="title"
                     name="title"
                     placeholder="Ex: Company Support Line"
