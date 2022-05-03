@@ -25,6 +25,10 @@ const storyConfig: Meta = {
     },
 }
 
+const DefaultTemplate: Story<ComponentProps<typeof PreviewRadioButton>> = (
+    props
+) => <PreviewRadioButton {...props} />
+
 const Template: Story<ComponentProps<typeof PreviewRadioButton>> = (props) => {
     const [selectedValue, setSelectedValue] = useState<string | null>(null)
 
@@ -82,6 +86,11 @@ const templateParameters = {
     controls: {
         include: [],
     },
+}
+
+export const Default = DefaultTemplate.bind({})
+Default.args = {
+    label: 'Foo bar',
 }
 
 export const WithPreview = Template.bind({})
