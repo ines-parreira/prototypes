@@ -185,6 +185,7 @@ Array [
           "id": "advanced-monthly-usd-2",
           "integrations": 200,
           "interval": "month",
+          "is_legacy": false,
           "legacy_automation_addon_features": Object {
             "auto_assignment": Object {
               "enabled": true,
@@ -453,6 +454,7 @@ Array [
           "id": "basic-monthly-usd-2",
           "integrations": 200,
           "interval": "month",
+          "is_legacy": false,
           "legacy_automation_addon_features": Object {
             "auto_assignment": Object {
               "enabled": true,
@@ -721,6 +723,7 @@ Array [
           "id": "custom-monthly-usd-2",
           "integrations": 200,
           "interval": "month",
+          "is_legacy": false,
           "legacy_automation_addon_features": Object {
             "auto_assignment": Object {
               "enabled": true,
@@ -1085,6 +1088,7 @@ Array [
           "id": "pro-monthly-usd-2",
           "integrations": 200,
           "interval": "month",
+          "is_legacy": false,
           "legacy_automation_addon_features": Object {
             "auto_assignment": Object {
               "enabled": true,
@@ -1353,6 +1357,7 @@ Array [
           "id": "basic-monthly-usd-2",
           "integrations": 200,
           "interval": "month",
+          "is_legacy": false,
           "legacy_automation_addon_features": Object {
             "auto_assignment": Object {
               "enabled": true,
@@ -1620,6 +1625,7 @@ Array [
           "id": "basic-monthly-usd-2",
           "integrations": 200,
           "interval": "month",
+          "is_legacy": false,
           "legacy_automation_addon_features": Object {
             "auto_assignment": Object {
               "enabled": true,

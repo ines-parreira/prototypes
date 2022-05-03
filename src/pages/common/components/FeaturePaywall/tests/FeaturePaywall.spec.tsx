@@ -134,7 +134,11 @@ describe('<FeaturePaywall />', () => {
                         plans: {
                             [basicPlan.id]: basicPlan,
                             [proPlan.id]: proPlan,
-                            [advancedPlan.id]: {...advancedPlan, public: false},
+                            [advancedPlan.id]: {
+                                ...advancedPlan,
+                                is_legacy: true,
+                                public: false,
+                            },
                         },
                     }),
                 } as Partial<RootState>)}

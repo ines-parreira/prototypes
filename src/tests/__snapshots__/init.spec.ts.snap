@@ -183,6 +183,7 @@ Object {
             "enabled": false,
           },
         },
+        "is_legacy": false,
         "integrations": 150,
       },
     },

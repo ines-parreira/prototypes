@@ -67,7 +67,9 @@ export default function BillingPlansComparison({
               (plan: Map<any, any>) =>
                   (plan.get('interval') as string) === selectedInterval &&
                   !(plan.get('automation_addon_included') as boolean) &&
-                  (plan.get('public') as boolean) &&
+                  ((plan.get('public') as boolean) ||
+                      (plan.get('id') === displayedCurrentPlan.get('id') &&
+                          !accountHasLegacyPlan)) &&
                   !(plan.get('custom') as boolean)
           ) as Map<any, any>)
 

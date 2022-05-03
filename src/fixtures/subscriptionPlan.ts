@@ -27,6 +27,7 @@ export const basicPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: true,
+    is_legacy: false,
     automation_addon_included: false,
     automation_addon_equivalent_plan: 'basic-automation-monthly-usd-2',
     features: {
@@ -92,6 +93,7 @@ export const proPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: true,
+    is_legacy: false,
     automation_addon_included: false,
     automation_addon_equivalent_plan: 'pro-automation-monthly-usd-2',
     features: {
@@ -157,6 +159,7 @@ export const advancedPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: true,
+    is_legacy: false,
     automation_addon_included: false,
     automation_addon_equivalent_plan: 'advanced-automation-monthly-usd-2',
     features: {
@@ -222,6 +225,7 @@ export const enterprisePlan: Plan = {
     limits: ticketLimits,
     integrations: 500,
     public: false,
+    is_legacy: true,
     automation_addon_equivalent_plan: null,
     automation_addon_included: false,
     features: {
@@ -264,6 +268,7 @@ export const customPlan: Plan = {
     integrations: 200,
     public: true,
     custom: true,
+    is_legacy: false,
     automation_addon_included: false,
     automation_addon_equivalent_plan: 'custom-automation-monthly-usd-2',
     features: {
@@ -329,6 +334,7 @@ export const legacyPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: false,
+    is_legacy: true,
     automation_addon_included: false,
     automation_addon_equivalent_plan: 'standard-automation-usd-1',
     features: {
@@ -370,6 +376,7 @@ export const legacyAutomationPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: false,
+    is_legacy: true,
     automation_addon_included: true,
     automation_addon_equivalent_plan: 'standard-usd-1',
     features: {
@@ -411,6 +418,7 @@ export const basicLegacyPlan: Plan = {
     limits: ticketLimits,
     integrations: 7,
     public: false,
+    is_legacy: true,
     automation_addon_equivalent_plan: null,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
@@ -451,6 +459,7 @@ export const proLegacyPlan: Plan = {
     limits: ticketLimits,
     integrations: 15,
     public: false,
+    is_legacy: true,
     automation_addon_equivalent_plan: null,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
@@ -491,6 +500,7 @@ export const advancedLegacyPlan: Plan = {
     limits: ticketLimits,
     integrations: 30,
     public: false,
+    is_legacy: true,
     automation_addon_equivalent_plan: null,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
@@ -532,6 +542,7 @@ export const customLegacyPlan: Plan = {
     integrations: 200,
     public: false,
     custom: true,
+    is_legacy: true,
     automation_addon_included: false,
     automation_addon_equivalent_plan: null,
     features: {
@@ -573,6 +584,7 @@ export const basicAutomationPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: true,
+    is_legacy: false,
     automation_addon_included: true,
     automation_addon_equivalent_plan: 'basic-monthly-usd-2',
     features: {
@@ -613,6 +625,7 @@ export const proAutomationPlan: Plan = {
     limits: ticketLimits,
     integrations: 200,
     public: true,
+    is_legacy: false,
     automation_addon_included: true,
     automation_addon_equivalent_plan: 'pro-monthly-usd-2',
     features: {
@@ -664,6 +677,7 @@ export const advancedAutomationPlan: Plan = {
     },
     order: 3,
     public: true,
+    is_legacy: false,
     trial_period_days: 7,
     automation_addon_included: true,
     automation_addon_equivalent_plan: 'advanced-monthly-usd-2',

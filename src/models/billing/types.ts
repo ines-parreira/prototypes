@@ -20,6 +20,7 @@ export type Plan = {
     interval: PlanInterval
     public: boolean
     custom?: boolean
+    is_legacy: boolean
     name: string
     trial_period_days: number
     order: number

@@ -24,6 +24,7 @@ Immutable.Map {
   },
   "amount": 120,
   "id": "pro-automation-monthly-usd-2",
+  "is_legacy": false,
   "integrations": 10,
 }
 `;
@@ -48,6 +49,7 @@ Immutable.Map {
   },
   "amount": 120,
   "id": "pro-automation-monthly-usd-2",
+  "is_legacy": false,
   "integrations": 10,
 }
 `;
@@ -72,6 +74,7 @@ Immutable.Map {
   },
   "amount": 100,
   "id": "pro-monthly-usd-2",
+  "is_legacy": false,
   "integrations": 10,
 }
 `;
@@ -96,6 +99,7 @@ Immutable.Map {
   },
   "amount": 100,
   "id": "pro-monthly-usd-2",
+  "is_legacy": false,
   "integrations": 10,
 }
 `;
@@ -112,6 +116,7 @@ Object {
   "id": "growth-usd-1",
   "integrations": 15,
   "interval": "month",
+  "is_legacy": true,
   "limits": Object {
     "default": 300,
     "max": 400,

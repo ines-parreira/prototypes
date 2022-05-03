@@ -6,6 +6,7 @@ const planFixture: Plan = {
     cost_per_ticket: 0.23,
     interval: PlanInterval.Year,
     public: true,
+    is_legacy: false,
     name: 'Pro',
     trial_period_days: 7,
     order: 2,

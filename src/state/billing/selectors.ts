@@ -251,5 +251,5 @@ export const makeIsAllowedToChangePlan =
 
 export const hasLegacyPlan = createSelector<RootState, boolean, Map<any, any>>(
     DEPRECATED_getCurrentPlan,
-    (plan) => !plan.isEmpty() && !plan.get('public')
+    (plan) => !plan.isEmpty() && (plan.get('is_legacy') as boolean)
 )
