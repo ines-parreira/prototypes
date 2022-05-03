@@ -39,7 +39,7 @@ describe('team actions', () => {
             return store
                 .dispatch(actions.fetchTeamsPagination())
                 .then((resp) => {
-                    expect(resp).toEqualImmutable(fromJS(data))
+                    expect(resp).toEqual(data)
                 })
         })
 
@@ -199,6 +199,8 @@ describe('team actions', () => {
     describe('createTeam()', () => {
         const team = fromJS({
             name: 'My Team',
+            decoration: {},
+            members: [],
         }) as Map<any, any>
         const respTeam = team.set('id', 1)
 

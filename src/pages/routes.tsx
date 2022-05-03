@@ -1035,18 +1035,6 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 })}
             />
             <Route
-                path={`${path}/create`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        TeamsForm,
-                        ADMIN_ROLE,
-                        PageSection.Teams
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
                 path={`${path}/:id`}
                 exact
                 render={appRender({

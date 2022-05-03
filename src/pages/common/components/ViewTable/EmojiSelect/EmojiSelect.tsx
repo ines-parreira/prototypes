@@ -1,26 +1,32 @@
-import React, {useRef, useState, RefObject} from 'react'
+import React, {ComponentProps, RefObject, useRef, useState} from 'react'
 import {Popover} from 'reactstrap'
 import {EmojiData, BaseEmoji} from 'emoji-mart'
 import classNames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import EmojiPicker from '../../EmojiPicker/EmojiPicker'
+import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
 
 import css from './EmojiSelect.less'
 
 type Props = {
-    emoji: Maybe<string>
     className?: string
-    onEmojiSelect: (emoji: BaseEmoji['native']) => void
+    emoji: Maybe<string>
     onEmojiClear: () => void
-}
+    onEmojiSelect: (emoji: BaseEmoji['native']) => void
+} & Pick<ComponentProps<typeof Popover>, 'container'>
 
-const EmojiSelect = (props: Props) => {
-    const {emoji, className, onEmojiSelect, onEmojiClear} = props
+const EmojiSelect = ({
+    className,
+    container,
+    emoji,
+    onEmojiClear,
+    onEmojiSelect,
+}: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const iconRef: RefObject<HTMLSpanElement> = useRef(null)
     const toggle = () => setIsOpen(!isOpen)
+
     return (
         <div className={classNames(css.picker, className)}>
             <span
@@ -44,6 +50,7 @@ const EmojiSelect = (props: Props) => {
                     toggle={toggle}
                     fade={false}
                     trigger="legacy"
+                    container={container}
                 >
                     <div className={css.popover}>
                         <EmojiPicker

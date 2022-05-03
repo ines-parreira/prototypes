@@ -28,12 +28,7 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import InputField from 'pages/common/forms/input/InputField'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
-import {
-    createTeam,
-    deleteTeam,
-    fetchTeam,
-    updateTeam,
-} from 'state/teams/actions'
+import {deleteTeam, fetchTeam, updateTeam} from 'state/teams/actions'
 
 import css from './Form.less'
 
@@ -57,13 +52,7 @@ export class FormContainer extends Component<Props, State> {
     }
 
     componentDidMount() {
-        if (this._isUpdate()) {
-            void this._fetchTeam(this.props.teamId)
-        }
-    }
-
-    _isUpdate = () => {
-        return !!this.props.teamId
+        void this._fetchTeam(this.props.teamId)
     }
 
     _fetchTeam = (id: number) => {
@@ -80,18 +69,9 @@ export class FormContainer extends Component<Props, State> {
         e.preventDefault()
         this.setState({isSubmitting: true})
         const team = this.state.team
-        const promise = this._isUpdate()
-            ? this.props.updateTeam(team)
-            : this.props.createTeam(team)
-        return promise.then((resp) => {
+
+        return this.props.updateTeam(team).then(() => {
             this.setState({isSubmitting: false})
-            if (!this._isUpdate()) {
-                history.push(
-                    `/app/settings/teams/${
-                        (resp as Map<any, any>).get('id') as number
-                    }/members`
-                )
-            }
         })
     }
 
@@ -116,7 +96,6 @@ export class FormContainer extends Component<Props, State> {
             return <Loader />
         }
 
-        const isUpdate = this._isUpdate()
         const team = this.state.team || fromJS({})
         const emoji = team.getIn(['decoration', 'emoji']) as Map<any, any>
 
@@ -131,34 +110,28 @@ export class FormContainer extends Component<Props, State> {
                                 </NavLink>
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
-                                {isUpdate
-                                    ? `Edit ${team.get('name') as string}`
-                                    : 'Create team'}
+                                Edit {team.get('name') as string}
                             </BreadcrumbItem>
                         </Breadcrumb>
                     }
                 />
 
-                {isUpdate && (
-                    <SecondaryNavbar>
-                        <NavLink
-                            to={`/app/settings/teams/${
-                                team.get('id') as number
-                            }/members`}
-                            exact
-                        >
-                            Team members
-                        </NavLink>
-                        <NavLink
-                            to={`/app/settings/teams/${
-                                team.get('id') as number
-                            }`}
-                            exact
-                        >
-                            Settings
-                        </NavLink>
-                    </SecondaryNavbar>
-                )}
+                <SecondaryNavbar>
+                    <NavLink
+                        to={`/app/settings/teams/${
+                            team.get('id') as number
+                        }/members`}
+                        exact
+                    >
+                        Team members
+                    </NavLink>
+                    <NavLink
+                        to={`/app/settings/teams/${team.get('id') as number}`}
+                        exact
+                    >
+                        Settings
+                    </NavLink>
+                </SecondaryNavbar>
                 <Container fluid className={settingsCss.pageContainer}>
                     <BootstrapForm onSubmit={this._onSubmit}>
                         <Row>
@@ -299,28 +272,24 @@ export class FormContainer extends Component<Props, State> {
                                     >
                                         Save team
                                     </Button>
-                                    {isUpdate && (
-                                        <ConfirmButton
-                                            confirmationContent={
-                                                <span>
-                                                    You are about to{' '}
-                                                    <b>delete</b> this team.
-                                                    This action is{' '}
-                                                    <b>irreversible</b>. This
-                                                    will unassign this team from
-                                                    all their tickets, open or
-                                                    closed.
-                                                </span>
-                                            }
-                                            intent="destructive"
-                                            onConfirm={this._delete}
-                                            className="float-right"
-                                        >
-                                            <ButtonIconLabel icon="delete">
-                                                Delete team
-                                            </ButtonIconLabel>
-                                        </ConfirmButton>
-                                    )}
+                                    <ConfirmButton
+                                        confirmationContent={
+                                            <span>
+                                                You are about to <b>delete</b>{' '}
+                                                this team. This action is{' '}
+                                                <b>irreversible</b>. This will
+                                                unassign this team from all
+                                                their tickets, open or closed.
+                                            </span>
+                                        }
+                                        intent="destructive"
+                                        onConfirm={this._delete}
+                                        className="float-right"
+                                    >
+                                        <ButtonIconLabel icon="delete">
+                                            Delete team
+                                        </ButtonIconLabel>
+                                    </ConfirmButton>
                                 </FormGroup>
                             </Col>
                         </Row>
@@ -338,7 +307,6 @@ const connector = connect(
         }
     },
     {
-        createTeam,
         deleteTeam,
         fetchTeam,
         updateTeam,

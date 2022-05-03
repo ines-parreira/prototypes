@@ -60,16 +60,6 @@ export type Attachment = {
 
 export type Schemas = Map<any, any>
 
-export type Emoji = {
-    colons: string
-    emoticons: string[]
-    id: string
-    name: string
-    native: string
-    skin: Maybe<string>
-    unified: string
-}
-
 export type GorgiasInitialStateRecentChatTicket = Omit<
     RecentChatTicket,
     | 'status'

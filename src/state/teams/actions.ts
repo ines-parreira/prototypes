@@ -25,9 +25,7 @@ export const fetchTeamsPagination =
             })
             .then((json) => json?.data)
             .then(
-                (resp) => {
-                    return toImmutable<Map<any, any>>(resp)
-                },
+                (resp) => resp,
                 (error: AxiosError) => {
                     dispatch({
                         type: constants.FETCH_TEAMS_PAGINATION_ERROR,

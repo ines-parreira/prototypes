@@ -24,7 +24,9 @@ exports[`team actions createTeam() works 1`] = `
 Array [
   Object {
     "payload": Object {
+      "decoration": Object {},
       "id": 1,
+      "members": Array [],
       "name": "My Team",
     },
     "type": "CREATE_TEAM_SUCCESS",

@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TeamCreationModal /> should not render anything when the modal is closed 1`] = `<div />`;
+
+exports[`<TeamCreationModal /> should render the opened modal 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-2-desc"
+    aria-labelledby="modal-2-title"
+    aria-modal="true"
+    class="modal default"
+    role="dialog"
+  >
+    <div
+      class="dialog"
+    >
+      <div
+        class="modalContent default"
+      >
+        <div>
+          <form>
+            <div
+              class="wrapper"
+            >
+              <div>
+                <div
+                  class="title"
+                  id="modal-2-title"
+                >
+                  Create team
+                </div>
+                <div
+                  class="subtitle"
+                />
+              </div>
+              <i
+                class="material-icons icon"
+              >
+                close
+              </i>
+            </div>
+            <div
+              class="wrapper"
+              id="modal-2-desc"
+            >
+              <label
+                class="label label"
+                for="name"
+              >
+                Team name
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
+              </label>
+              <span
+                class="inputGroup wrapper group horizontal"
+              >
+                <div
+                  class="picker emojiSelect"
+                >
+                  <span
+                    class="material-icons empty icon"
+                  >
+                    insert_emoticon
+                  </span>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input nested"
+                    id="name"
+                    name="name"
+                    placeholder="Team name"
+                    required=""
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </span>
+              <div
+                class="inputGroup"
+              >
+                <label
+                  class="label label"
+                  for="description"
+                >
+                  Description
+                </label>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="description"
+                    name="description"
+                    placeholder="Works on making things awesome!"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper wrapper"
+            >
+              <div
+                class="actions"
+              >
+                <div
+                  class="childWrapper"
+                >
+                  <button
+                    class="wrapper fill secondary medium"
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <div
+                  class="childWrapper"
+                >
+                  <button
+                    class="wrapper fill primary medium isDisabled"
+                    disabled=""
+                    type="submit"
+                  >
+                    Create team
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

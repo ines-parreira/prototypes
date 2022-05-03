@@ -148,6 +148,7 @@ export enum SegmentEvent {
     ShopifyRefundOrderOpen = 'shopify/refund-order/open',
     ShowMoreFieldsClicked = 'show-more-fields-clicked',
     SubscribedToDevNewsletter = 'subscribed-to-dev-newsletter',
+    TeamCreation = 'team-created',
     TicketMergeClicked = 'ticket-merge-clicked',
     TicketMessageCreated = 'ticket-message-created',
     UserHistoryToggled = 'user-history-toggled',

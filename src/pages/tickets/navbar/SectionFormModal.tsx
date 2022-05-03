@@ -55,8 +55,8 @@ export default function SectionFormModal({
                     <EmojiSelect
                         className={css.emojiSelect}
                         emoji={sectionForm.decoration?.emoji || null}
-                        onEmojiSelect={(emoji: string) =>
-                            onChange('decoration', {emoji})
+                        onEmojiSelect={(emoji) =>
+                            onChange('decoration', {emoji: emoji})
                         }
                         onEmojiClear={() => onChange('decoration', null)}
                     />
