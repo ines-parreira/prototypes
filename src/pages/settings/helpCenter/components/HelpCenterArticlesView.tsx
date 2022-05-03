@@ -560,6 +560,9 @@ export const HelpCenterArticlesView: React.FC = () => {
                         ) || getNewArticleTranslation(localeCode)
                     onArticleLanguageSelect(localeCode, translation)
                     setSelectedArticleTranslations(translations)
+                } else {
+                    const translation = getNewArticleTranslation(localeCode)
+                    onArticleLanguageSelect(localeCode, translation)
                 }
             }
         } else {
