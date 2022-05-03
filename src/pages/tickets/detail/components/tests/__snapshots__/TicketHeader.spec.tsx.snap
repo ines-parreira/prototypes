@@ -211,7 +211,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
               tabindex="-1"
             >
               <div
-                class="wrapper isFocused"
+                class="wrapper"
               >
                 <input
                   class="input"
@@ -357,7 +357,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
     class="d-flex justify-content-between mb-2"
   >
     <div
-      class="wrapper isFocused component"
+      class="wrapper component"
     >
       <input
         class="input mr-2 input"
@@ -425,7 +425,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
               tabindex="-1"
             >
               <div
-                class="wrapper isFocused"
+                class="wrapper"
               >
                 <input
                   class="input"
@@ -783,7 +783,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
               tabindex="-1"
             >
               <div
-                class="wrapper isFocused"
+                class="wrapper"
               >
                 <input
                   class="input"
@@ -1137,7 +1137,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
               tabindex="-1"
             >
               <div
-                class="wrapper isFocused"
+                class="wrapper"
               >
                 <input
                   class="input"

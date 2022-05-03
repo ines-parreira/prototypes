@@ -79,8 +79,8 @@ const InputWithIconsTemplate: Story<ComponentProps<typeof InputField>> = (
             {...props}
             value={value}
             onChange={setValue}
-            prefix={<IconInput icon="search" />}
-            suffix={
+            leftIcon={<IconInput icon="search" />}
+            rightIcon={
                 <IconInput
                     style={iconStyle}
                     icon="block"

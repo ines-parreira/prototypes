@@ -90,10 +90,10 @@ exports[`<SmsAppPreferences/> render() should render 1`] = `
                       </span>
                     </div>
                     <div
-                      class="wrapper right isNested"
+                      class="wrapper"
                     >
                       <input
-                        class="input"
+                        class="input nested"
                         id="title"
                         name="title"
                         placeholder="Ex: Company Support Line"
@@ -282,10 +282,10 @@ exports[`<SmsAppPreferences/> render() should submit a valid payload with the se
                       </span>
                     </div>
                     <div
-                      class="wrapper right isNested"
+                      class="wrapper"
                     >
                       <input
-                        class="input"
+                        class="input nested"
                         id="title"
                         name="title"
                         placeholder="Ex: Company Support Line"

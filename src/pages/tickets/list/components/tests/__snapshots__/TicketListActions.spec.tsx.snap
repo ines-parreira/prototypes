@@ -126,7 +126,7 @@ exports[`TicketListActions component should not render export tickets button for
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -210,7 +210,7 @@ exports[`TicketListActions component should not render export tickets button for
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -296,7 +296,7 @@ exports[`TicketListActions component should not render export tickets button for
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -475,7 +475,7 @@ exports[`TicketListActions component should not render the delete button for bas
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -559,7 +559,7 @@ exports[`TicketListActions component should not render the delete button for bas
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -645,7 +645,7 @@ exports[`TicketListActions component should not render the delete button for bas
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -818,7 +818,7 @@ exports[`TicketListActions component should render agents options in assign agen
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -991,7 +991,7 @@ exports[`TicketListActions component should render agents options in assign agen
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -1074,7 +1074,7 @@ exports[`TicketListActions component should render agents options in assign agen
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -1265,7 +1265,7 @@ exports[`TicketListActions component should render enabled buttons when some tic
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -1347,7 +1347,7 @@ exports[`TicketListActions component should render enabled buttons when some tic
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -1430,7 +1430,7 @@ exports[`TicketListActions component should render enabled buttons when some tic
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -1627,7 +1627,7 @@ exports[`TicketListActions component should render export tickets button for age
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -1711,7 +1711,7 @@ exports[`TicketListActions component should render export tickets button for age
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -1797,7 +1797,7 @@ exports[`TicketListActions component should render export tickets button for age
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -1990,7 +1990,7 @@ exports[`TicketListActions component should render teams in assign team dropdown
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -2072,7 +2072,7 @@ exports[`TicketListActions component should render teams in assign team dropdown
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -2246,7 +2246,7 @@ exports[`TicketListActions component should render teams in assign team dropdown
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -2443,7 +2443,7 @@ exports[`TicketListActions component should render the delete action for lead an
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -2527,7 +2527,7 @@ exports[`TicketListActions component should render the delete action for lead an
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -2613,7 +2613,7 @@ exports[`TicketListActions component should render the delete action for lead an
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -2812,7 +2812,7 @@ exports[`TicketListActions component should render the special actions for lead 
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -2896,7 +2896,7 @@ exports[`TicketListActions component should render the special actions for lead 
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"
@@ -2982,7 +2982,7 @@ exports[`TicketListActions component should render the special actions for lead 
           tabindex="0"
         >
           <div
-            class="wrapper isFocused"
+            class="wrapper"
           >
             <input
               class="input"

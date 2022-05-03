@@ -86,7 +86,7 @@ export class AddMemberContainer extends Component<Props, State> {
                                         autoFocus
                                         value={this.state.search}
                                         onChange={this._onSearch}
-                                        suffix={<IconInput icon="search" />}
+                                        rightIcon={<IconInput icon="search" />}
                                     />
                                 </div>
                             )

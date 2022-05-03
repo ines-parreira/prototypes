@@ -46,10 +46,10 @@ exports[`<TextInput /> should render an enabled input 1`] = `
 
 exports[`<TextInput /> should render an input with error state 1`] = `
 <div
-  class="wrapper hasError class-for-wrapper"
+  class="wrapper class-for-wrapper"
 >
   <input
-    class="input"
+    class="input error"
     id="input-text-42"
     name="input-text-42"
     type="text"

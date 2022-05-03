@@ -10,7 +10,7 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {useEffectOnce, useEvent} from 'react-use'
+import {useEvent} from 'react-use'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Group, {
@@ -95,10 +95,6 @@ function NumberInput(
     useEvent('focus', handleFocus, inputElement)
     useEvent('blur', handleBlur, inputElement)
 
-    useEffectOnce(() => {
-        autoFocus && inputElement?.focus()
-    })
-
     const handleAffixClick = useCallback(() => {
         if (inputElement) {
             inputElement.focus()
@@ -152,7 +148,7 @@ function NumberInput(
                             : parsedValue
                     )
                 }}
-                ref={setInputElement}
+                ref={(element) => setInputElement(element)}
                 required={isRequired}
                 type="number"
                 value={value ?? ''}

@@ -8,8 +8,7 @@ import React, {
 } from 'react'
 import CountryFlag from 'react-country-flag'
 import {getCountryCallingCode, CountryCode} from 'libphonenumber-js'
-import {useUpdateEffect} from 'react-use'
-import classnames from 'classnames'
+import {usePrevious, useUpdateEffect} from 'react-use'
 
 import countries from 'config/countries.json'
 import Button from 'pages/common/components/button/Button'
@@ -34,32 +33,34 @@ import css from './PhoneNumberInput.less'
 const typedCountries = countries as {value: CountryCode; label: string}[]
 
 type Props = {
+    label?: string
+    value: string
     allowedCountries?: CountryCode[]
     defaultCountry?: CountryCode
     disabled?: boolean
-    label?: string
-    value: string
 } & ComponentProps<typeof TextInput>
 
 const PhoneNumberInput = ({
+    label,
+    value,
+    onChange,
     allowedCountries,
-    autoFocus = false,
-    className,
     defaultCountry = 'US',
     disabled = false,
-    label,
-    onChange,
-    value,
+    className,
+    autoFocus = false,
     ...other
 }: Props) => {
     const containerRef = useRef<HTMLDivElement>(null)
-    const inputRef = useRef<HTMLInputElement>(null)
+
     const [isPhoneNumberTooLong, setIsPhoneNumberTooLong] = useState(false)
     const [currentCountry, setCurrentCountry] = useState<CountryCode>(
         getCountryFromPhoneNumber(value) ?? defaultCountry
     )
     const [isCountrySelectVisible, setCountrySelectVisible] =
         useState<boolean>(false)
+
+    const previousIsCountrySelectVisible = usePrevious(isCountrySelectVisible)
 
     useEffect(() => {
         const isDefaultCountryNotAllowed =
@@ -109,10 +110,27 @@ const PhoneNumberInput = ({
         setCountrySelectVisible(false)
     })
 
+    const callbackRef = useCallback(
+        (inputElement: HTMLInputElement | null) => {
+            if (
+                inputElement &&
+                previousIsCountrySelectVisible &&
+                !isCountrySelectVisible
+            ) {
+                inputElement.focus()
+            }
+        },
+        [isCountrySelectVisible, previousIsCountrySelectVisible]
+    )
+
     return (
         <div ref={containerRef} className={className}>
             {label && <Label className={css.label}>{label}</Label>}
-            <InputGroup hasError={isPhoneNumberTooLong} isDisabled={disabled}>
+            <InputGroup
+                className={css.group}
+                hasError={isPhoneNumberTooLong}
+                isDisabled={disabled}
+            >
                 <InputGroupContext.Consumer>
                     {(inputGroupContext) => (
                         <Button
@@ -135,42 +153,54 @@ const PhoneNumberInput = ({
                         </Button>
                     )}
                 </InputGroupContext.Consumer>
-                {isCountrySelectVisible && (
+                {isCountrySelectVisible ? (
                     <div className={css.selectContainer}>
                         <SelectField
                             value={currentCountry}
                             options={options}
-                            onChange={(nextCountry) => {
+                            onChange={(nextCountry) =>
                                 handleChange(
                                     formatAsNationalNumber(value),
                                     nextCountry as CountryCode
                                 )
-                                inputRef.current?.focus()
-                            }}
+                            }
                             style={{width: '100%'}}
                             fullWidth
                             shouldFocus
                         />
                     </div>
+                ) : (
+                    <InputGroupContext.Consumer>
+                        {(inputGroupContext) => {
+                            return (
+                                <TextInput
+                                    {...other}
+                                    ref={callbackRef}
+                                    value={formatAsNationalNumber(value)}
+                                    onFocus={() => {
+                                        inputGroupContext?.setIsFocused(true)
+                                    }}
+                                    onBlur={() => {
+                                        inputGroupContext?.setIsFocused(false)
+                                    }}
+                                    onChange={(value) => {
+                                        const numberOfDigits = value.replace(
+                                            /\s+/g,
+                                            ''
+                                        ).length
+                                        if (numberOfDigits > 15) {
+                                            setIsPhoneNumberTooLong(true)
+                                            return
+                                        }
+                                        setIsPhoneNumberTooLong(false)
+                                        handleChange(value, currentCountry)
+                                    }}
+                                    autoFocus={autoFocus}
+                                />
+                            )
+                        }}
+                    </InputGroupContext.Consumer>
                 )}
-                <TextInput
-                    {...other}
-                    ref={inputRef}
-                    className={classnames({
-                        [css.hiddenInput]: isCountrySelectVisible,
-                    })}
-                    value={formatAsNationalNumber(value)}
-                    onChange={(value) => {
-                        const numberOfDigits = value.replace(/\s+/g, '').length
-                        if (numberOfDigits > 15) {
-                            setIsPhoneNumberTooLong(true)
-                            return
-                        }
-                        setIsPhoneNumberTooLong(false)
-                        handleChange(value, currentCountry)
-                    }}
-                    autoFocus={autoFocus}
-                />
             </InputGroup>
             {isPhoneNumberTooLong && (
                 <Caption

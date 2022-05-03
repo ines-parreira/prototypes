@@ -15,22 +15,18 @@ exports[`<ProductSearchInput/> render() should render 1`] = `
         class="wrapper"
       >
         <input
-          class="input"
+          class="input hasRightIcon"
           id="input-text-1"
           name="input-text-1"
           placeholder="Search products..."
           type="text"
           value=""
         />
-        <span
-          class="suffix"
+        <i
+          class="material-icons icon iconRight"
         >
-          <i
-            class="material-icons icon"
-          >
-            search
-          </i>
-        </span>
+          search
+        </i>
       </div>
     </div>
     <div

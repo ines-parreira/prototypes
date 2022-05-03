@@ -1,24 +1,21 @@
 import React, {
+    cloneElement,
+    ComponentProps,
     forwardRef,
     InputHTMLAttributes,
-    ReactNode,
+    isValidElement,
+    ReactElement,
     Ref,
-    useCallback,
     useContext,
-    useImperativeHandle,
     useMemo,
-    useState,
 } from 'react'
 import _uniqueId from 'lodash/uniqueId'
 import classnames from 'classnames'
-import {useEffectOnce, useEvent} from 'react-use'
 
-import {
-    GroupContext,
-    GroupPositionContext,
-} from 'pages/common/components/layout/Group'
+import {GroupContext} from 'pages/common/components/layout/Group'
 import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
 
+import IconInput from './IconInput'
 import css from './TextInput.less'
 
 type Props = {
@@ -26,102 +23,70 @@ type Props = {
     inputClassName?: string
     isDisabled?: boolean
     isRequired?: boolean
+    leftIcon?: ReactElement<ComponentProps<typeof IconInput>, typeof IconInput>
+    rightIcon?: ReactElement<ComponentProps<typeof IconInput>, typeof IconInput>
     onChange?: (nextValue: string) => void
-    prefix?: ReactNode
-    suffix?: ReactNode
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
-    'disabled' | 'onChange' | 'prefix' | 'required'
+    'disabled' | 'onChange' | 'required'
 >
 
 function TextInput(
     {
-        autoFocus,
         className,
         hasError = false,
         inputClassName,
         isDisabled = false,
         isRequired = false,
         id,
+        leftIcon,
+        rightIcon,
         onChange,
-        prefix,
-        suffix,
         type,
         value,
         ...props
     }: Props,
     ref: Ref<HTMLInputElement> | null | undefined
 ) {
-    const [inputElement, setInputElement] = useState<HTMLInputElement | null>(
-        null
-    )
-    useImperativeHandle(ref, () => inputElement!)
     const inputId = useMemo(() => id || _uniqueId('input-text-'), [id])
     const context = useContext(GroupContext)
-    const inputGroupContext = useContext(InputGroupContext)
-    const appendPosition = useContext(GroupPositionContext) || ''
-    const [isFocused, setIsFocused] = useState(!!autoFocus)
-
-    const handleFocus = useCallback(() => {
-        inputGroupContext?.setIsFocused(true)
-        setIsFocused(true)
-    }, [inputGroupContext])
-
-    const handleBlur = useCallback(() => {
-        inputGroupContext?.setIsFocused(false)
-        setIsFocused(false)
-    }, [inputGroupContext])
-
-    useEffectOnce(() => {
-        autoFocus && inputElement?.focus()
-    })
-
-    useEvent('focus', handleFocus, inputElement)
-    useEvent('blur', handleBlur, inputElement)
-
-    const handleAffixClick = useCallback(() => {
-        if (inputElement) {
-            inputElement.focus()
-        }
-    }, [inputElement])
+    const isInsideInputGroup = !!useContext(InputGroupContext)
 
     return (
         <div
             className={classnames(
                 css.wrapper,
-                css[appendPosition],
-                {
-                    [css.hasError]: hasError,
-                    [css.isDisabled]: context?.isDisabled || isDisabled,
-                    [css.isFocused]: isFocused,
-                    [css.isNested]: !!inputGroupContext,
-                },
+                {[css.isDisabled]: context?.isDisabled || isDisabled},
                 className
             )}
         >
-            {prefix && (
-                <span className={css.prefix} onClick={handleAffixClick}>
-                    {prefix}
-                </span>
-            )}
+            {leftIcon &&
+                isValidElement(leftIcon) &&
+                cloneElement(leftIcon, {position: 'left'})}
             <input
-                ref={setInputElement}
                 type={type || 'text'}
-                className={classnames(css.input, inputClassName)}
+                className={classnames(
+                    css.input,
+                    {
+                        [css.error]: hasError,
+                        [css.hasLeftIcon]: !!leftIcon,
+                        [css.hasRightIcon]: !!rightIcon,
+                        [css.nested]: isInsideInputGroup,
+                    },
+                    inputClassName
+                )}
                 value={value}
                 id={inputId}
                 name={inputId}
                 onChange={(event) => onChange?.(event.target.value)}
                 required={isRequired}
                 disabled={context?.isDisabled || isDisabled}
-                autoFocus={autoFocus}
+                ref={ref}
                 {...props}
             />
-            {suffix && (
-                <span className={css.suffix} onClick={handleAffixClick}>
-                    {suffix}
-                </span>
-            )}
+            {rightIcon &&
+                isValidElement(rightIcon) &&
+                cloneElement(rightIcon, {position: 'right'})}
         </div>
     )
 }

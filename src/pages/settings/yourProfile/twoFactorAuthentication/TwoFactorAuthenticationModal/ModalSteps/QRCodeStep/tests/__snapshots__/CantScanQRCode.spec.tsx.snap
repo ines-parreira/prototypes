@@ -49,10 +49,10 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
           class="full-width"
         >
           <div
-            class="wrapper left isNested"
+            class="wrapper"
           >
             <input
-              class="input"
+              class="input nested"
               id="authenticatorField0"
               name="authenticatorField0"
               readonly=""
@@ -93,10 +93,10 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
           class="full-width"
         >
           <div
-            class="wrapper left isNested"
+            class="wrapper"
           >
             <input
-              class="input"
+              class="input nested"
               id="authenticatorField1"
               name="authenticatorField1"
               readonly=""
@@ -137,10 +137,10 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
           class="full-width"
         >
           <div
-            class="wrapper left isNested"
+            class="wrapper"
           >
             <input
-              class="input"
+              class="input nested"
               id="authenticatorField2"
               name="authenticatorField2"
               readonly=""

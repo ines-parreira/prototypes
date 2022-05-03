@@ -121,17 +121,13 @@ exports[`<RulesView/> should render the rule library view 1`] = `
           <div
             class="wrapper input"
           >
-            <span
-              class="prefix"
+            <i
+              class="material-icons icon iconLeft"
             >
-              <i
-                class="material-icons icon"
-              >
-                search
-              </i>
-            </span>
+              search
+            </i>
             <input
-              class="input"
+              class="input hasLeftIcon"
               id="input-text-4"
               name="input-text-4"
               placeholder="Search rule library..."
