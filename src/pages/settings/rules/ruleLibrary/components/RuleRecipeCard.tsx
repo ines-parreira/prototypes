@@ -53,6 +53,7 @@ import css from './RuleRecipeCard.less'
 type Props = {
     recipe: RuleRecipe
     onInstall: (rule: Rule) => void
+    isModalOpenOnLoad?: boolean
 }
 
 const tagColors: {[key: string]: string} = {
@@ -60,7 +61,11 @@ const tagColors: {[key: string]: string} = {
     [RuleRecipeTag.AUTO_CLOSE]: '#D6384D',
 }
 
-function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
+function RuleRecipeCard({
+    recipe,
+    isModalOpenOnLoad = false,
+    onInstall = _noop,
+}: Props) {
     const dispatch = useAppDispatch()
 
     const existingViews = useAppSelector(getTicketViews)
@@ -68,7 +73,7 @@ function RuleRecipeCard({recipe, onInstall = _noop}: Props) {
     const limitStatus = useAppSelector(getRulesLimitStatus)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const rules = useAppSelector(getSortedRules)
-    const [isModalOpen, setModalOpen] = useState(false)
+    const [isModalOpen, setModalOpen] = useState(isModalOpenOnLoad)
     const {rule, tags, recipe_tag, views_per_section} = recipe
 
     const handleCodeAst = (

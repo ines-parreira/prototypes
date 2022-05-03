@@ -93,13 +93,17 @@ export function RulesViewContainer({
     const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('')
     const [selectedTags, setSelectedTags] = useState<string[]>([])
     const [hasUnseenRules, setHasUnseenRules] = useState(false)
+    const [slug, setSlug] = useState('')
 
     const segmentEventProps = {account_id: currentAccount.get('domain')}
 
     useEffect(() => {
-        const hash = location.hash.substring(1) as RuleTabs
-        if (Object.values(RuleTabs).includes(hash)) {
-            setActiveTab(hash)
+        const [tab, ...splitSlug] = location.hash.substring(1).split('?')
+        if (Object.values(RuleTabs).includes(tab as RuleTabs)) {
+            setActiveTab(tab as RuleTabs)
+        }
+        if (tab === RuleTabs.RuleLibrary && splitSlug.length) {
+            setSlug(splitSlug.join('?'))
         }
     }, [location])
 
@@ -319,6 +323,7 @@ export function RulesViewContainer({
                             searchTerm={debouncedSearchTerm}
                             selectedTags={selectedTags}
                             onInstall={(rule) => setHasUnseenRules(!!rule)}
+                            activeSlug={slug}
                         />
                     )}
                 </>

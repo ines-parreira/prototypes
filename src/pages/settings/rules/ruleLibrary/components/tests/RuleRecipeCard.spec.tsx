@@ -62,6 +62,7 @@ describe('<RuleRecipeCard/>', () => {
     const minProps = {
         recipe: emptyRuleRecipeFixture,
         onInstall: _noop,
+        isModalOpenOnLoad: false,
     }
 
     beforeEach(() => {
@@ -82,6 +83,17 @@ describe('<RuleRecipeCard/>', () => {
                 </Provider>
             )
             expect(container.firstChild).toMatchSnapshot()
+        })
+        it('should render open the modal on load when specified', async () => {
+            const {getByRole} = render(
+                <Provider store={defaultStore}>
+                    <RuleRecipeCard {...minProps} isModalOpenOnLoad={true} />
+                </Provider>
+            )
+            await waitFor(() => {
+                const modal = getByRole('dialog')
+                expect(modal.className).toBe('modal show')
+            })
         })
         it('should open modal on click', async () => {
             const {container, getByText, findByRole} = render(

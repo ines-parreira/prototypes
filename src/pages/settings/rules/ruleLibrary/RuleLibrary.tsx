@@ -13,6 +13,7 @@ export type Props = {
     recipes: RuleRecipe[]
     searchTerm: string
     selectedTags: string[]
+    activeSlug?: string
     onInstall: (rule: Rule) => void
 }
 
@@ -20,6 +21,7 @@ export function RuleLibrary({
     recipes,
     selectedTags,
     searchTerm,
+    activeSlug = '',
     onInstall = _noop,
 }: Props) {
     const [filteredRecipes, setFilteredRecipes] = useState(recipes)
@@ -59,6 +61,7 @@ export function RuleLibrary({
                             recipe={recipe}
                             key={recipe.slug}
                             onInstall={onInstall}
+                            isModalOpenOnLoad={activeSlug === recipe.slug}
                         />
                     ))
                 ) : (
