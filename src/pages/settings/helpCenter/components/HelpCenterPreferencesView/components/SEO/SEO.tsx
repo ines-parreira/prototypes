@@ -63,11 +63,10 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
                 className={settingsCss.mb16}
                 name="seoDescription"
                 label="Meta Description"
+                value={seoMeta.description ?? ''}
                 onChange={onEditSeoMeta('description')}
                 caption="Help center description is displayed in search engines to help people find it."
-            >
-                {seoMeta.description ?? ''}
-            </TextArea>
+            />
             <SearchEnginePreview
                 baseUrl={getAbsoluteUrl({domain}, false)}
                 title={seoMeta.title || `${helpCenter.name} Help Center`}
