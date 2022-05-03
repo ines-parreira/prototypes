@@ -1,5 +1,5 @@
 import React from 'react'
-import {act, fireEvent, waitFor} from '@testing-library/react'
+import {act, screen, fireEvent, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -91,6 +91,23 @@ describe('<HelpCenterNewView />', () => {
                 name: /add new help center/i,
             })
             expect(submitButton.className).not.toMatch(/disabled/i)
+        })
+
+        it('should have an error message if brand name is one character long', async () => {
+            const {findByRole, findByTestId} = renderWithRouter(
+                <Provider store={store}>
+                    <HelpCenterNewView {...props} />
+                </Provider>
+            )
+
+            const brandInput = (await findByTestId('name')) as HTMLInputElement
+            fireEvent.change(brandInput, {target: {value: 'M'}})
+            const submitButton = await findByRole('button', {
+                name: /add new help center/i,
+            })
+            expect(brandInput.value).toEqual('M')
+            screen.getByText(/Name should be at least 2 characters long/i)
+            expect(submitButton.className).toMatch(/disabled/i)
         })
 
         it('should call helpcenter API on submit a new help center', async () => {

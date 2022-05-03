@@ -33,6 +33,7 @@ import {HelpCenterTheme} from '../types'
 import {slugify} from '../utils/helpCenter.utils'
 import {localeToSelectOption} from '../utils/localeSelectOptions'
 import {
+    getNameValidationError,
     getSubdomainValidationError,
     isValidSubdomain,
 } from '../utils/validations'
@@ -86,6 +87,14 @@ export const HelpCenterNewView = ({
                 : null,
         [newHelpCenter.subdomain, isSubdomainAvailable]
     )
+
+    const nameError = useMemo(
+        () =>
+            newHelpCenter?.name
+                ? getNameValidationError(newHelpCenter.name)
+                : undefined,
+        [newHelpCenter.name]
+    )!
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const checkSubdomainAvailability = useCallback(
@@ -197,8 +206,8 @@ export const HelpCenterNewView = ({
     }
 
     const canSubmit = useMemo(
-        () => newHelpCenter.name && !subdomainError,
-        [newHelpCenter, subdomainError]
+        () => newHelpCenter.name && !subdomainError && !nameError,
+        [newHelpCenter, subdomainError, nameError]
     )
 
     useEffect(() => {
@@ -249,6 +258,7 @@ export const HelpCenterNewView = ({
                                 isRequired
                                 value={newHelpCenter.name}
                                 onChange={handleChangeName}
+                                error={nameError}
                             />
                         </div>
                         <SubdomainInput

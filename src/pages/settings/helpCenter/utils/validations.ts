@@ -23,3 +23,7 @@ export const getSubdomainValidationError = (
 
     return null
 }
+
+export const getNameValidationError = (name: string): string | null => {
+    return name.length < 2 ? 'Name should be at least 2 characters long' : null
+}
