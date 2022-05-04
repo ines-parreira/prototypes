@@ -421,11 +421,11 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
             text: 'order management flow',
             value: 'message.self_service_flow.order_management_flow',
         },
-        // {
-        //     label: 'Quick response flow',
-        //     text: 'quick response flow',
-        //     value: 'message.self_service_flow.quick_response_flow',
-        // },
+        {
+            label: 'Quick response flow',
+            text: 'quick response flow',
+            value: 'message.self_service_flow.quick_response_flow',
+        },
     ],
 }
 

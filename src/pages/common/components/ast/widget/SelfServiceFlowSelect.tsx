@@ -108,7 +108,7 @@ export function SelfServiceFlowSelect({
                 if (!availableFlows.has(flow.title)) {
                     availableFlows.add(flow.title)
                     options = options.push({
-                        value: flow.title,
+                        value: flow.id,
                         label: flow.title,
                     })
                 }
