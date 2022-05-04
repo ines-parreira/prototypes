@@ -26,7 +26,9 @@ const QuickResponseListItem: React.FC<QuickResponseListItemProps> = ({
     const isDisabled = !enabled && isLimitReached
 
     const toggleId = useMemo(() => {
-        return title.replace(/\W/g, '_')
+        const titleWithoutSpecialCharacters = title.replace(/\W/g, '_')
+        // add _ in the beginning to generate a valid CSS selector, title could start with a number
+        return `_${titleWithoutSpecialCharacters}`
     }, [title])
 
     const handleToggle = () => {
