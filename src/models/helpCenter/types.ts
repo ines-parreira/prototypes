@@ -2,8 +2,8 @@ import {Components} from 'rest_api/help_center_api/client.generated'
 
 // GENERAL
 
-export type Locale = Components.Schemas.LocaleEntity
-export type LocaleCode = Components.Schemas.LocaleEntity['code']
+export type Locale = Components.Schemas.LocaleDto
+export type LocaleCode = Components.Schemas.LocaleDto['code']
 
 // HELP CENTER
 
@@ -15,12 +15,11 @@ export type UpdateHelpCenterTranslationDto =
     Components.Schemas.UpdateHelpCenterTranslationDto
 
 export type HelpCentersListPage = Components.Schemas.HelpCentersListPageDto
-export type HelpCenterTranslation =
-    Components.Schemas.HelpCenterTranslationEntity
+export type HelpCenterTranslation = Components.Schemas.HelpCenterTranslationDto
 export type HelpCenterTranslationSeoMeta =
     Components.Schemas.HelpCenterTranslationSeoMeta
 
-export type HelpCenter = Components.Schemas.HelpCenterEntity & {
+export type HelpCenter = Components.Schemas.HelpCenterDto & {
     customDomain?: CustomDomain
     translations?: HelpCenterTranslation[]
 }
@@ -93,13 +92,12 @@ export type UpdateNavigationLinkDto = Components.Schemas.UpdateNavigationLinkDto
 
 export type NavigationLinksListPage =
     Components.Schemas.NavigationLinksListPageDto
-export type NavigationLink = Components.Schemas.NavigationLinkEntity
+export type NavigationLink = Components.Schemas.NavigationLinkDto
 export type NavigationLinkMeta = Components.Schemas.NavigationLinkMeta
-export type NavigationLinkGroup =
-    Components.Schemas.NavigationLinkEntity['group']
+export type NavigationLinkGroup = Components.Schemas.NavigationLinkDto['group']
 
 export type LocalNavigationLink = Pick<
-    Components.Schemas.NavigationLinkEntity,
+    Components.Schemas.NavigationLinkDto,
     | 'id'
     | 'label'
     | 'value'
@@ -111,7 +109,7 @@ export type LocalNavigationLink = Pick<
     key: string
 }
 export type LocalSocialNavigationLink = Pick<
-    Components.Schemas.NavigationLinkEntity,
+    Components.Schemas.NavigationLinkDto,
     | 'id'
     | 'label'
     | 'value'

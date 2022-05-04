@@ -74,7 +74,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
     },
 }
 
-export const getSingleHelpCenterResponseFixture: Components.Schemas.HelpCenterEntity =
+export const getSingleHelpCenterResponseFixture: Components.Schemas.HelpCenterDto =
     {
         id: 1,
         subdomain: 'acme',

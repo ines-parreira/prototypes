@@ -144,7 +144,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         batchApply,
     }: {
         callback: () => Promise<{
-            updatedTranslation: Components.Schemas.HelpCenterTranslationEntity
+            updatedTranslation: Components.Schemas.HelpCenterTranslationDto
         }>
         batchApply: boolean
     }) => {
