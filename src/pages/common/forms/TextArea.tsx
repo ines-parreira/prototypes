@@ -1,13 +1,7 @@
-import React, {
-    forwardRef,
-    TextareaHTMLAttributes,
-    ReactNode,
-    Ref,
-    useMemo,
-} from 'react'
-import _uniqueId from 'lodash/uniqueId'
+import React, {forwardRef, TextareaHTMLAttributes, ReactNode, Ref} from 'react'
 import classnames from 'classnames'
 
+import useId from 'hooks/useId'
 import Caption from 'pages/common/forms/Caption/Caption'
 import Label from 'pages/common/forms/Label/Label'
 import css from './TextArea.less'
@@ -38,8 +32,9 @@ function TextArea(
     }: Props,
     ref: Ref<HTMLTextAreaElement> | null | undefined
 ) {
-    const textareaId = useMemo(() => id || _uniqueId('textarea-'), [id])
-    const captionId = useMemo(() => `${textareaId}-caption`, [textareaId])
+    const randomId = useId()
+    const textareaId = id || 'textarea-' + randomId
+    const captionId = `${textareaId}-caption`
 
     return (
         <div className={className}>

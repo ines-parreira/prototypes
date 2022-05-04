@@ -1,9 +1,8 @@
-import React, {useRef} from 'react'
-import _uniqueId from 'lodash/uniqueId'
+import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-
-import Tooltip from '../../../../../../../common/components/Tooltip'
+import Tooltip from 'pages/common/components/Tooltip'
+import useId from 'hooks/useId'
 
 export type ActionButtonVariant = 'danger' | 'neutral'
 
@@ -21,12 +20,13 @@ export const ActionButton = ({
     children,
     ...rest
 }: ActionButtonProps): JSX.Element => {
-    const id = useRef(_uniqueId('action-button-'))
+    const id = useId()
+    const tooltipId = 'action-button-' + id
     return (
         <>
             <Button
                 {...rest}
-                id={id.current}
+                id={tooltipId}
                 fillStyle="ghost"
                 intent={
                     variant === 'danger'
@@ -39,7 +39,7 @@ export const ActionButton = ({
                 {children}
             </Button>
             {help && (
-                <Tooltip target={id.current} placement="top-start">
+                <Tooltip target={tooltipId} placement="top-start">
                     {help}
                 </Tooltip>
             )}

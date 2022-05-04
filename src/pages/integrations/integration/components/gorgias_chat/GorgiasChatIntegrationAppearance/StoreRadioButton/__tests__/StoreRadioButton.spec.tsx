@@ -5,7 +5,7 @@ import {StoreRadioButton} from '../StoreRadioButton'
 
 const onClickFn = jest.fn()
 
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => () => '42')
 
 const baseProps = {
     label: 'Shopify Store',

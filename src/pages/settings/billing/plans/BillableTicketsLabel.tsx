@@ -1,8 +1,8 @@
 import React from 'react'
-import _uniqueId from 'lodash/uniqueId'
 
-import Tooltip from '../../../common/components/Tooltip'
-import {PlanWithCurrencySign} from '../../../../state/billing/types'
+import useId from 'hooks/useId'
+import Tooltip from 'pages/common/components/Tooltip'
+import {PlanWithCurrencySign} from 'state/billing/types'
 
 import css from './BillableTicketsLabel.less'
 
@@ -13,21 +13,22 @@ type Props = {
 }
 
 export default function BillableTicketsLabel({
-    id = _uniqueId('billable-ticket-label-'),
     costMultiplier = 100,
     plan,
 }: Props) {
+    const id = useId()
+    const tooltipId = 'billable-ticket-label-' + id
     const costPerTicket = plan.cost_per_ticket * costMultiplier
 
     return (
         <>
-            <span id={id} className={css.billableTickets}>
+            <span id={tooltipId} className={css.billableTickets}>
                 {new Intl.NumberFormat('en-US').format(plan.free_tickets)}{' '}
                 billable tickets
             </span>{' '}
             included
             <Tooltip
-                target={id}
+                target={tooltipId}
                 placement="top-start"
                 innerClassName={css.tooltip}
             >

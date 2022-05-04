@@ -422,7 +422,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                       <input
                                         className="input"
                                         disabled={false}
-                                        id="input-text-1"
+                                        id="input-text-2"
                                         maxLength={20}
                                         name="item-0"
                                         onChange={[Function]}
@@ -512,7 +512,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                       <input
                                         className="input"
                                         disabled={false}
-                                        id="input-text-2"
+                                        id="input-text-3"
                                         maxLength={20}
                                         name="item-1"
                                         onChange={[Function]}
@@ -1257,7 +1257,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                       <input
                                         className="input"
                                         disabled={false}
-                                        id="input-text-3"
+                                        id="input-text-5"
                                         maxLength={20}
                                         name="item-0"
                                         onChange={[Function]}
@@ -1347,7 +1347,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                       <input
                                         className="input"
                                         disabled={false}
-                                        id="input-text-4"
+                                        id="input-text-6"
                                         maxLength={20}
                                         name="item-1"
                                         onChange={[Function]}

@@ -1,11 +1,11 @@
-import React, {useMemo} from 'react'
+import React from 'react'
 import classnames from 'classnames'
-import _uniqueId from 'lodash/uniqueId'
 
+import useId from 'hooks/useId'
 import {Plan} from 'models/billing/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import CheckBox from 'pages/common/forms/CheckBox'
-import SubscriptionAmount from '../../common/SubscriptionAmount'
+import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 
 import css from './AutomationAmount.less'
 
@@ -32,8 +32,8 @@ const AutomationAmount = ({
     editable = true,
     isIntervalAbbreviated = false,
 }: Props) => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const id = useMemo(() => _uniqueId(plan.id), [])
+    const id = useId()
+    const checkboxId = (plan.id || '') + id
 
     return (
         <>
@@ -42,16 +42,16 @@ const AutomationAmount = ({
                     {typeof addOnAmount === 'number' ? (
                         <CheckBox
                             className={css.checkbox}
-                            name={id}
+                            name={checkboxId}
                             isChecked={isAutomationChecked}
                             {...(!!onAutomationChange
                                 ? {onChange: onAutomationChange}
                                 : {readOnly: true})}
                         >
-                            <AutomationLabel id={id} />
+                            <AutomationLabel id={checkboxId} />
                         </CheckBox>
                     ) : (
-                        <AutomationLabel id={id} />
+                        <AutomationLabel id={checkboxId} />
                     )}
                     <div className={css.amountContainer}>
                         {typeof addOnAmount === 'number' &&
@@ -80,7 +80,7 @@ const AutomationAmount = ({
                         )}
                     </div>
                     <Tooltip
-                        target={`automation-text-${id}`}
+                        target={`automation-text-${checkboxId}`}
                         placement="top-start"
                         innerClassName={css.tooltip}
                         fade={false}

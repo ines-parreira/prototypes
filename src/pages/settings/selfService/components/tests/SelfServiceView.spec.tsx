@@ -28,7 +28,7 @@ const updateSelfServiceConfigurationMock =
         typeof updateSelfServiceConfiguration
     >
 
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 jest.mock('models/selfServiceConfiguration/resources')
 
 const createShopifyIntegrationFixtures = (length: number) => {

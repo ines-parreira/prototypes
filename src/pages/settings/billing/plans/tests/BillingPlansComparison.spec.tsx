@@ -31,7 +31,7 @@ const notifyMock = notify as jest.MockedFunction<typeof notify>
 jest.mock('popper.js')
 jest.mock('../../../../../state/currentAccount/actions')
 jest.mock('../../../../../state/notifications/actions')
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => () => '42')
 
 describe('<BillingPlansComparison />', () => {
     const defaultPlans = [

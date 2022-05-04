@@ -5,11 +5,11 @@ import React, {
     Ref,
     useEffect,
     useImperativeHandle,
-    useMemo,
     useRef,
 } from 'react'
 import classnames from 'classnames'
-import _uniqueId from 'lodash/uniqueId'
+
+import useId from 'hooks/useId'
 
 import Caption from './Caption/Caption'
 import Label from './Label/Label'
@@ -48,7 +48,8 @@ function CheckBox(
     const inputRef = useRef<HTMLInputElement>(null)
     useImperativeHandle(ref, () => inputRef.current!, [inputRef])
 
-    const id = useMemo(() => name || _uniqueId('checkbox-'), [name])
+    const id = useId()
+    const labelId = name || 'checkbox-' + id
 
     useEffect(() => {
         if (inputRef.current) {
@@ -61,12 +62,12 @@ function CheckBox(
             <Label
                 className={classnames(css.label, labelClassName)}
                 isDisabled={isDisabled}
-                htmlFor={id}
+                htmlFor={labelId}
             >
                 <input
                     type="checkbox"
-                    id={id}
-                    name={id}
+                    id={labelId}
+                    name={labelId}
                     className={css.input}
                     checked={isChecked}
                     disabled={isDisabled}

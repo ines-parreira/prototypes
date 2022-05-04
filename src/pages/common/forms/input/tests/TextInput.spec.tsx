@@ -3,7 +3,7 @@ import {fireEvent, render} from '@testing-library/react'
 
 import TextInput from '../TextInput'
 
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => () => '42')
 
 describe('<TextInput />', () => {
     const minProps: ComponentProps<typeof TextInput> = {

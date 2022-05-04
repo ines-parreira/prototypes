@@ -1,6 +1,6 @@
-import React, {useMemo, ReactNode} from 'react'
-import _uniqueId from 'lodash/uniqueId'
+import React, {ReactNode} from 'react'
 
+import useId from 'hooks/useId'
 import RadioButton from '../components/RadioButton'
 
 import css from './RadioFieldSet.less'
@@ -30,10 +30,8 @@ const RadioFieldSet = ({
     options,
     selectedValue,
 }: Props) => {
-    const fieldsetName = useMemo(
-        () => name || _uniqueId('radio-field-'),
-        [name]
-    )
+    const id = useId()
+    const fieldsetName = name || 'radio-field-' + id
 
     return (
         <fieldset

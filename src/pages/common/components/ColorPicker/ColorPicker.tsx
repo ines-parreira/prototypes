@@ -1,7 +1,7 @@
-import React, {RefObject, useCallback, useRef, useMemo, useState} from 'react'
-import _uniqueId from 'lodash/uniqueId'
+import React, {RefObject, useCallback, useRef, useState} from 'react'
 import {Popover, PopoverBody, Input} from 'reactstrap'
 
+import useId from 'hooks/useId'
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import Button from 'pages/common/components/button/Button'
 
@@ -42,7 +42,8 @@ export default function ColorPicker({
     const [isPopupVisible, setPopupVisible] = useState(false)
     const popupContentEl = useRef<HTMLDivElement>(null)
     const buttonEl = useRef<HTMLButtonElement>(null)
-    const uniqueId = useMemo(() => _uniqueId('color-picker-'), [])
+    const id = useId()
+    const popoverId = 'color-picker-' + id
     useOnClickOutside<HTMLDivElement>(popupContentEl, (evt) => {
         if (
             evt.target !== buttonEl.current &&
@@ -62,7 +63,7 @@ export default function ColorPicker({
     return (
         <div className="d-inline-block">
             <Button
-                id={uniqueId}
+                id={popoverId}
                 intent="secondary"
                 onClick={() => setPopupVisible(!isPopupVisible)}
                 ref={buttonEl}
@@ -81,7 +82,7 @@ export default function ColorPicker({
             <Popover
                 placement="right"
                 isOpen={isPopupVisible}
-                target={uniqueId}
+                target={popoverId}
                 container={popupContainer}
             >
                 <PopoverBody className={css['popover-content']}>

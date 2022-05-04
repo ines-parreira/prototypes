@@ -92,7 +92,7 @@ exports[`<BillingAddressInputs /> should render the billing address inputs 1`] =
   >
     <label
       class="label label"
-      for="input-text-2"
+      for="input-text-7"
     >
       Street address
       <abbr
@@ -108,7 +108,7 @@ exports[`<BillingAddressInputs /> should render the billing address inputs 1`] =
     >
       <input
         class="input"
-        id="input-text-2"
+        id="input-text-7"
         name="line1"
         placeholder="Gorgias Street"
         required=""

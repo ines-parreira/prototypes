@@ -23,7 +23,7 @@ import * as billingSelectors from 'state/billing/selectors'
 import BillingPlanCard from '../BillingPlanCard'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => () => '42')
 
 describe('<BillingPlanCard />', () => {
     const defaultState: Partial<RootState> = {

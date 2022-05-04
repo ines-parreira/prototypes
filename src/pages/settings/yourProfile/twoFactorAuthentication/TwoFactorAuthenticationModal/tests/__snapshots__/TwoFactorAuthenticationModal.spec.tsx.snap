@@ -352,7 +352,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-3"
+                    id="input-text-5"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"
@@ -455,7 +455,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-3"
+                    id="input-text-5"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"
@@ -572,7 +572,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-2"
+                    id="input-text-3"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"
@@ -675,7 +675,7 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-2"
+                    id="input-text-3"
                     name="verificationCode"
                     placeholder="Enter 6-digit verification code from app"
                     type="text"

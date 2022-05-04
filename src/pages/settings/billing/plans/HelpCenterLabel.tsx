@@ -1,8 +1,8 @@
 import React from 'react'
-import _uniqueId from 'lodash/uniqueId'
 
-import Tooltip from '../../../common/components/Tooltip'
-import {HELP_CENTER_MAX_ARTICLES} from '../../helpCenter/constants'
+import useId from 'hooks/useId'
+import Tooltip from 'pages/common/components/Tooltip'
+import {HELP_CENTER_MAX_ARTICLES} from 'pages/settings/helpCenter/constants'
 
 import css from './HelpCenterLabel.less'
 
@@ -11,11 +11,13 @@ type Props = {
 }
 
 export default function HelpCenterLabel({disabled}: Props) {
+    const id = useId()
+
     if (disabled) {
         return <span>No Help center</span>
     }
 
-    const id = _uniqueId('help-center-label-')
+    const tooltipId = 'help-center-label-' + id
     const labels = [
         {
             key: 'max-articles',
@@ -43,18 +45,18 @@ export default function HelpCenterLabel({disabled}: Props) {
         <>
             <div>
                 Unlimited{' '}
-                <span id={id} className={css.underline}>
+                <span id={tooltipId} className={css.underline}>
                     Help centers
                 </span>
             </div>
             <Tooltip
-                target={id}
+                target={tooltipId}
                 placement="top-start"
                 innerClassName={css.tooltip}
             >
                 <div>
                     {labels.map(({key, label}) => (
-                        <li key={`${key}-${id}`}>{label}</li>
+                        <li key={`${key}-${tooltipId}`}>{label}</li>
                     ))}
                 </div>
             </Tooltip>

@@ -6,7 +6,7 @@ import PhoneNumberInput from '../PhoneNumberInput'
 
 jest.mock('utils/errors')
 
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => (id: string) => `${id || ''}42`)
 
 describe('<PhoneNumberInput/>', () => {
     const onChange: jest.MockedFunction<(value: string) => void> = jest.fn()

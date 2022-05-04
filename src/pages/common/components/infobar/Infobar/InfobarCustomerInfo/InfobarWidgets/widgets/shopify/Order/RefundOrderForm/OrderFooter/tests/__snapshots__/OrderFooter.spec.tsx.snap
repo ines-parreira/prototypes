@@ -408,13 +408,13 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
           >
             <label
               class="label label"
-              for="checkbox-2"
+              for="checkbox-3"
             >
               <input
                 checked=""
                 class="input"
-                id="checkbox-2"
-                name="checkbox-2"
+                id="checkbox-3"
+                name="checkbox-3"
                 type="checkbox"
               />
               Restock items

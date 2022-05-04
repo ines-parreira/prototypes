@@ -1,6 +1,6 @@
-import React, {ComponentProps, createContext, ReactNode, useMemo} from 'react'
-import _uniqueId from 'lodash/uniqueId'
+import React, {ComponentProps, createContext, ReactNode} from 'react'
 
+import useId from 'hooks/useId'
 import Caption from 'pages/common/forms/Caption/Caption'
 import Label from 'pages/common/forms/Label/Label'
 
@@ -31,8 +31,9 @@ const InputField = ({
     isRequired = false,
     ...props
 }: Props) => {
-    const inputId = useMemo(() => id || _uniqueId('input-text-'), [id])
-    const captionId = useMemo(() => `${inputId}-caption`, [inputId])
+    const randomId = useId()
+    const inputId = id || 'input-text-' + randomId
+    const captionId = `${inputId}-caption`
 
     return (
         <InputFieldContext.Provider value={{id: inputId}}>

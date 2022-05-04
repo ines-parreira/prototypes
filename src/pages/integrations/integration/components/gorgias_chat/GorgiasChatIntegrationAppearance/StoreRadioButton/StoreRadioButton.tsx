@@ -1,6 +1,6 @@
-import React, {MouseEvent, CSSProperties, useMemo} from 'react'
-import _uniqueId from 'lodash/uniqueId'
+import React, {MouseEvent, CSSProperties} from 'react'
 
+import useId from 'hooks/useId'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -21,7 +21,8 @@ export const StoreRadioButton = ({
     value,
     onClick,
 }: Props) => {
-    const tooltipTargetId = useMemo(() => _uniqueId('store-radio-button-'), [])
+    const id = useId()
+    const tooltipTargetId = 'store-radio-button-' + id
 
     return (
         <>

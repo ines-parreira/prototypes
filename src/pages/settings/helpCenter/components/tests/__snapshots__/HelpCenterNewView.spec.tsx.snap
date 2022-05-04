@@ -463,7 +463,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
           >
             <label
               class="control-label"
-              for="id-input-3"
+              for="id-input-4"
             >
               Primary Color
             </label>
@@ -475,7 +475,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
               >
                 <button
                   class="wrapper fill secondary medium"
-                  id="color-picker-4"
+                  id="color-picker-5"
                   type="button"
                 >
                   <div

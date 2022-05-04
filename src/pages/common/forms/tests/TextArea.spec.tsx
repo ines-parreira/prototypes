@@ -3,7 +3,7 @@ import {render} from '@testing-library/react'
 
 import TextArea from '../TextArea'
 
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => () => '42')
 
 describe('TextArea', () => {
     const minProps = {

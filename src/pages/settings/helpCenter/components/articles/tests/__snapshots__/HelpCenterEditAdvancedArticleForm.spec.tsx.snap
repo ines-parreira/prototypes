@@ -157,21 +157,21 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
     >
       <label
         class="label label"
-        for="textarea-2"
+        for="textarea-3"
       >
         Excerpt
       </label>
       <textarea
-        aria-describedby="textarea-2-caption"
+        aria-describedby="textarea-3-caption"
         class="textarea"
-        id="textarea-2"
+        id="textarea-3"
         maxlength="250"
         name="excerpt"
         rows="2"
       />
       <div
         class="caption"
-        id="textarea-2-caption"
+        id="textarea-3-caption"
       >
         A short summary displayed below the title of your article.
       </div>
@@ -210,13 +210,13 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       <div>
         <label
           class="label label"
-          for="checkbox-3"
+          for="checkbox-4"
         >
           <input
             checked=""
             class="input"
-            id="checkbox-3"
-            name="checkbox-3"
+            id="checkbox-4"
+            name="checkbox-4"
             type="checkbox"
           />
           Use the same as Title
@@ -256,13 +256,13 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       <div>
         <label
           class="label label"
-          for="checkbox-4"
+          for="checkbox-5"
         >
           <input
             checked=""
             class="input"
-            id="checkbox-4"
-            name="checkbox-4"
+            id="checkbox-5"
+            name="checkbox-5"
             type="checkbox"
           />
           Use the same as Excerpt

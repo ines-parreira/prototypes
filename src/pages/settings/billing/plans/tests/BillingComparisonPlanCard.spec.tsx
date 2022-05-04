@@ -25,7 +25,7 @@ import * as billingSelectors from '../../../../../state/billing/selectors'
 import BillingComparisonPlanCard from '../BillingComparisonPlanCard'
 
 jest.mock('popper.js')
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => () => '42')
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

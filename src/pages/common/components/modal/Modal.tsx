@@ -9,8 +9,9 @@ import React, {
 import {createPortal} from 'react-dom'
 import {CSSTransition} from 'react-transition-group'
 import classnames from 'classnames'
-import _uniqueId from 'lodash/uniqueId'
 import {useClickAway, useKey} from 'react-use'
+
+import useId from 'hooks/useId'
 
 import css from './Modal.less'
 
@@ -51,9 +52,10 @@ const Modal = ({
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [bounceModal, setBounceModal] = useState(false)
-    const modalId = useMemo(() => id || _uniqueId('modal-'), [id])
-    const bodyId = useMemo(() => `${modalId}-desc`, [modalId])
-    const labelId = useMemo(() => `${modalId}-title`, [modalId])
+    const randomId = useId()
+    const modalId = id || 'modal-' + randomId
+    const bodyId = `${modalId}-desc`
+    const labelId = `${modalId}-title`
 
     const handleCloseRequest = useCallback(() => {
         if (isClosable) {

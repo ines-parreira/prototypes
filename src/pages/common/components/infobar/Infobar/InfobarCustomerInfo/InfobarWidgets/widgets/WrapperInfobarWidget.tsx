@@ -1,11 +1,11 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {Map, fromJS} from 'immutable'
 import _last from 'lodash/last'
-import _uniqueId from 'lodash/uniqueId'
 import classnames from 'classnames'
 import {Card, CardBody, Popover, PopoverBody} from 'reactstrap'
 
 import {IntegrationType} from 'models/integration/types'
+import useId from 'hooks/useId'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -39,7 +39,8 @@ export default function WrapperInfobarWidget({
     editing,
 }: Props) {
     const dispatch = useAppDispatch()
-    const uniqueId = useMemo(() => _uniqueId('card-wrapper-'), [])
+    const id = useId()
+    const uniqueId = 'card-wrapper-' + id
     const [isPopupOpen, setPopupOpen] = useState(false)
 
     const handleClosePopover = useCallback(() => {

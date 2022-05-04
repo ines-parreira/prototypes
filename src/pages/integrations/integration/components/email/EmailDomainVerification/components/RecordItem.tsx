@@ -1,11 +1,11 @@
 import React from 'react'
-import _uniqueId from 'lodash/uniqueId'
 import classnames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
 
-import BodyCell from '../../../../../../common/components/table/cells/BodyCell'
-import {DomainDNSRecord} from '../../../../../../../models/integration/types'
-import TableBodyRow from '../../../../../../common/components/table/TableBodyRow'
+import useId from 'hooks/useId'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import {DomainDNSRecord} from 'models/integration/types'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
 import css from '../EmailDomainVerification.less'
 
@@ -17,8 +17,9 @@ type Props = {
 }
 
 const RecordItem = ({record}: Props) => {
-    const hostID = _uniqueId('record-host-')
-    const valueID = _uniqueId('record-value-')
+    const id = useId()
+    const hostID = 'record-host-' + id
+    const valueID = 'record-value-' + id
 
     return (
         <TableBodyRow className={css.row}>

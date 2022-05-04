@@ -1,9 +1,9 @@
-import React, {useRef, useState} from 'react'
-import _uniqueId from 'lodash/uniqueId'
+import React, {useState} from 'react'
 import classnames from 'classnames'
 
+import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from '../../components/button/ButtonIconLabel'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import Tooltip from '../Tooltip'
 
@@ -20,14 +20,13 @@ type Props = ACEProps & {
 }
 
 function CodeEditor({title, tooltip, disabled, ...props}: Props) {
-    const idRef = useRef(_uniqueId('code-editor-'))
-    const [tooltipId] = useState(_uniqueId('code-editor-tooltip-'))
+    const id = useId()
     const [editor, setEditor] = useState<any | null>(null)
     const [isHover, setIsHover] = useState(false)
     const [isCopied, setIsCopied] = useState(false)
-    const [tooltipWrapperId] = useState(
-        _uniqueId('code-editor-wrapper-tooltip-')
-    )
+    const editorId = 'code-editor-' + id
+    const tooltipId = 'code-editor-tooltip-' + id
+    const tooltipWrapperId = 'code-editor-wrapper-tooltip-' + id
 
     const onCopy = async () => {
         if (!editor) {
@@ -86,7 +85,7 @@ function CodeEditor({title, tooltip, disabled, ...props}: Props) {
                 >
                     <ReactACE
                         {...props}
-                        name={idRef.current}
+                        name={editorId}
                         editor={editor}
                         setEditor={(editor: any) => setEditor(editor)}
                     />

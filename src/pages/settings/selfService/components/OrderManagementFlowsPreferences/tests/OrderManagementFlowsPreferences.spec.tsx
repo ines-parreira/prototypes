@@ -29,7 +29,7 @@ const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 
 jest.mock('react-router')
 jest.mock('models/selfServiceConfiguration/resources')
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
 const createShopifyIntegrationFixtures = (length: number) => {
     return Array.from({length}, (_, i) => ({

@@ -14,7 +14,7 @@ exports[`<CodeEditor /> should render the component 1`] = `
     </h4>
     <div>
       <span
-        id="code-editor-tooltip-2"
+        id="code-editor-tooltip-1"
       >
         <i
           class="material-icons"
@@ -25,7 +25,7 @@ exports[`<CodeEditor /> should render the component 1`] = `
     </div>
   </div>
   <div
-    id="code-editor-wrapper-tooltip-3"
+    id="code-editor-wrapper-tooltip-1"
   >
     <div
       class="codeWrapper"

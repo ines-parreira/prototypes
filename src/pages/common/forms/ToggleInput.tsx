@@ -4,10 +4,10 @@ import React, {
     MouseEvent,
     ReactNode,
     useCallback,
-    useMemo,
 } from 'react'
-import _uniqueId from 'lodash/uniqueId'
 import classnames from 'classnames'
+
+import useId from 'hooks/useId'
 
 import Caption from './Caption/Caption'
 import Label from './Label/Label'
@@ -39,7 +39,8 @@ const ToggleInput = ({
     onClick,
     ...props
 }: Props) => {
-    const id = useMemo(() => name || _uniqueId('toggle-button-'), [name])
+    const randomId = useId()
+    const id = name || 'toggle-button-' + randomId
 
     const handleClick = useCallback(
         (event: MouseEvent<HTMLLabelElement>) => {

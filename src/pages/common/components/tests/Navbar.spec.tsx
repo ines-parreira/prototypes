@@ -8,7 +8,7 @@ import {proPlan, advancedPlan} from '../../../../fixtures/subscriptionPlan'
 import {user} from '../../../../fixtures/users'
 import {Navbar} from '../Navbar'
 
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
 describe('<Navbar />', () => {
     const minProps = {

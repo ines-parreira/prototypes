@@ -1,6 +1,5 @@
 import React, {useContext, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import _uniqueId from 'lodash/uniqueId'
 
 import {reportError} from 'utils/errors'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
@@ -22,6 +21,7 @@ import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/Infobar
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
 import {getLoggerOnTagSelectionEvent} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/logEventData'
+import useId from 'hooks/useId'
 
 type OwnProps = {
     selectedOptions: string
@@ -47,10 +47,8 @@ export function EditableListWidget({
     const {integrationId} = useContext(IntegrationContext)
     const {data_source, widget_resource_ids} = useContext(WidgetContext)
 
-    const tooltipTargetID = useMemo(
-        () => _uniqueId('editable-list-') + '-tooltip-target',
-        []
-    )
+    const id = useId()
+    const tooltipTargetID = 'editable-list-' + id + '-tooltip-target'
 
     const _updateState = (selectedOptions: string) => {
         let formatedValues: SelectedValues[] = []

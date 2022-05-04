@@ -3,7 +3,7 @@ import {fireEvent, render, waitFor} from '@testing-library/react'
 
 import IconTooltip from '../IconTooltip'
 
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => () => '42')
 
 describe('<IconTooltip />', () => {
     it('should render an Icon', () => {

@@ -6,7 +6,7 @@ import TextInput from 'pages/common/forms/input/TextInput'
 
 import Search from '../Search'
 
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
 describe('Search component', () => {
     beforeEach(() => {

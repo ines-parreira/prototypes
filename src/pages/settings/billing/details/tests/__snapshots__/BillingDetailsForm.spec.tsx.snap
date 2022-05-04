@@ -358,13 +358,13 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                           >
                             <Label
                               className="label"
-                              htmlFor="input-text-3"
+                              htmlFor="input-text-15"
                               isDisabled={false}
                               isRequired={true}
                             >
                               <label
                                 className="label label"
-                                htmlFor="input-text-3"
+                                htmlFor="input-text-15"
                               >
                                 Email
                                 <abbr
@@ -377,9 +377,9 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                               </label>
                             </Label>
                             <ForwardRef(TextInput)
-                              aria-describedby="input-text-3-caption"
+                              aria-describedby="input-text-15-caption"
                               hasError={false}
-                              id="input-text-3"
+                              id="input-text-15"
                               isDisabled={false}
                               isRequired={true}
                               name="email"
@@ -392,10 +392,10 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                                 className="wrapper"
                               >
                                 <input
-                                  aria-describedby="input-text-3-caption"
+                                  aria-describedby="input-text-15-caption"
                                   className="input"
                                   disabled={false}
-                                  id="input-text-3"
+                                  id="input-text-15"
                                   name="email"
                                   onChange={[Function]}
                                   placeholder="your@email.com"
@@ -406,11 +406,11 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                               </div>
                             </ForwardRef(TextInput)>
                             <Caption
-                              id="input-text-3-caption"
+                              id="input-text-15-caption"
                             >
                               <div
                                 className="caption"
-                                id="input-text-3-caption"
+                                id="input-text-15-caption"
                               >
                                 Invoices are sent to this email address.
                               </div>
@@ -540,13 +540,13 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                           >
                             <Label
                               className="label"
-                              htmlFor="input-text-4"
+                              htmlFor="input-text-21"
                               isDisabled={false}
                               isRequired={true}
                             >
                               <label
                                 className="label label"
-                                htmlFor="input-text-4"
+                                htmlFor="input-text-21"
                               >
                                 Street address
                                 <abbr
@@ -560,7 +560,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                             </Label>
                             <ForwardRef(TextInput)
                               hasError={false}
-                              id="input-text-4"
+                              id="input-text-21"
                               isDisabled={false}
                               isRequired={true}
                               name="line1"
@@ -575,7 +575,7 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
                                 <input
                                   className="input"
                                   disabled={false}
-                                  id="input-text-4"
+                                  id="input-text-21"
                                   name="line1"
                                   onChange={[Function]}
                                   placeholder="Gorgias Street"
@@ -1071,13 +1071,13 @@ exports[`BillingDetailsForm component should display the form with billing conta
                           >
                             <Label
                               className="label"
-                              htmlFor="input-text-5"
+                              htmlFor="input-text-29"
                               isDisabled={false}
                               isRequired={true}
                             >
                               <label
                                 className="label label"
-                                htmlFor="input-text-5"
+                                htmlFor="input-text-29"
                               >
                                 Email
                                 <abbr
@@ -1090,9 +1090,9 @@ exports[`BillingDetailsForm component should display the form with billing conta
                               </label>
                             </Label>
                             <ForwardRef(TextInput)
-                              aria-describedby="input-text-5-caption"
+                              aria-describedby="input-text-29-caption"
                               hasError={false}
-                              id="input-text-5"
+                              id="input-text-29"
                               isDisabled={false}
                               isRequired={true}
                               name="email"
@@ -1105,10 +1105,10 @@ exports[`BillingDetailsForm component should display the form with billing conta
                                 className="wrapper"
                               >
                                 <input
-                                  aria-describedby="input-text-5-caption"
+                                  aria-describedby="input-text-29-caption"
                                   className="input"
                                   disabled={false}
-                                  id="input-text-5"
+                                  id="input-text-29"
                                   name="email"
                                   onChange={[Function]}
                                   placeholder="your@email.com"
@@ -1119,11 +1119,11 @@ exports[`BillingDetailsForm component should display the form with billing conta
                               </div>
                             </ForwardRef(TextInput)>
                             <Caption
-                              id="input-text-5-caption"
+                              id="input-text-29-caption"
                             >
                               <div
                                 className="caption"
-                                id="input-text-5-caption"
+                                id="input-text-29-caption"
                               >
                                 Invoices are sent to this email address.
                               </div>
@@ -1253,13 +1253,13 @@ exports[`BillingDetailsForm component should display the form with billing conta
                           >
                             <Label
                               className="label"
-                              htmlFor="input-text-6"
+                              htmlFor="input-text-35"
                               isDisabled={false}
                               isRequired={true}
                             >
                               <label
                                 className="label label"
-                                htmlFor="input-text-6"
+                                htmlFor="input-text-35"
                               >
                                 Street address
                                 <abbr
@@ -1273,7 +1273,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                             </Label>
                             <ForwardRef(TextInput)
                               hasError={false}
-                              id="input-text-6"
+                              id="input-text-35"
                               isDisabled={false}
                               isRequired={true}
                               name="line1"
@@ -1288,7 +1288,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                                 <input
                                   className="input"
                                   disabled={false}
-                                  id="input-text-6"
+                                  id="input-text-35"
                                   name="line1"
                                   onChange={[Function]}
                                   placeholder="Gorgias Street"

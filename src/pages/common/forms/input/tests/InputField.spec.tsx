@@ -3,7 +3,7 @@ import React from 'react'
 
 import InputField from '../InputField'
 
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => () => '42')
 
 describe('<InputField />', () => {
     const defaultProps = {

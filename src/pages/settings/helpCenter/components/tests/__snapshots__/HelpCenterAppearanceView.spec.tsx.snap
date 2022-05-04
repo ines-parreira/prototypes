@@ -845,14 +845,14 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             <label
               aria-checked="false"
               class="label label"
-              for="toggle-button-4"
+              for="toggle-button-5"
               role="switch"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-4"
-                name="toggle-button-4"
+                id="toggle-button-5"
+                name="toggle-button-5"
                 type="checkbox"
               />
               <div
@@ -872,15 +872,15 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             <label
               aria-checked="true"
               class="label label"
-              for="toggle-button-5"
+              for="toggle-button-6"
               role="switch"
             >
               <input
                 checked=""
                 class="input"
                 disabled=""
-                id="toggle-button-5"
-                name="toggle-button-5"
+                id="toggle-button-6"
+                name="toggle-button-6"
                 type="checkbox"
               />
               <div

@@ -1,9 +1,10 @@
 import React, {ReactNode, useCallback, useMemo} from 'react'
 import classnames from 'classnames'
 
-import _uniqueId from 'lodash/uniqueId'
-import Tooltip from '../../common/components/Tooltip'
-import {PlanInterval} from '../../../models/billing/types'
+import Tooltip from 'pages/common/components/Tooltip'
+import {PlanInterval} from 'models/billing/types'
+import useId from 'hooks/useId'
+
 import css from './SubscriptionAmount.less'
 
 type Props = {
@@ -27,10 +28,8 @@ const SubscriptionAmount = ({
     renderAmount = (amount) => amount,
     tooltipContent,
 }: Props) => {
-    const tootltipTargetID = useMemo(
-        () => _uniqueId('subscription-amount-tooltip-target-'),
-        []
-    )
+    const id = useId()
+    const tootltipTargetID = 'subscription-amount-tooltip-target-' + id
 
     const formatAmount = useCallback(
         (amount: number) => {

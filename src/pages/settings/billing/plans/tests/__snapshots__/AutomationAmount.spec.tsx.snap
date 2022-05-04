@@ -62,7 +62,7 @@ exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
       >
         <span
           class="amount"
-          id="subscription-amount-tooltip-target-3"
+          id="subscription-amount-tooltip-target-4"
         >
           <span
             class="discountedAmount"
@@ -101,7 +101,7 @@ exports[`<AutomationAmount /> should render not editable variant 1`] = `
       >
         <span
           class="amount"
-          id="subscription-amount-tooltip-target-8"
+          id="subscription-amount-tooltip-target-11"
         >
           <span
             class="discountedAmount"
@@ -132,19 +132,19 @@ exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] =
     >
       <label
         class="label label"
-        for="planId4"
+        for="planId5"
       >
         <input
           class="input"
-          id="planId4"
-          name="planId4"
+          id="planId5"
+          name="planId5"
           type="checkbox"
         />
         <div
           class="align-middle checkboxLabel"
         >
           <span
-            id="automation-text-planId4"
+            id="automation-text-planId5"
           >
             Automation
           </span>
@@ -159,7 +159,7 @@ exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] =
       >
         <span
           class="amount"
-          id="subscription-amount-tooltip-target-5"
+          id="subscription-amount-tooltip-target-7"
         >
           <span
             class="discountedAmount"

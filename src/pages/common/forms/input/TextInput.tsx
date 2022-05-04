@@ -7,13 +7,12 @@ import React, {
     ReactElement,
     Ref,
     useContext,
-    useMemo,
 } from 'react'
-import _uniqueId from 'lodash/uniqueId'
 import classnames from 'classnames'
 
 import {GroupContext} from 'pages/common/components/layout/Group'
 import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
+import useId from 'hooks/useId'
 
 import IconInput from './IconInput'
 import css from './TextInput.less'
@@ -48,7 +47,8 @@ function TextInput(
     }: Props,
     ref: Ref<HTMLInputElement> | null | undefined
 ) {
-    const inputId = useMemo(() => id || _uniqueId('input-text-'), [id])
+    const randomId = useId()
+    const inputId = id || 'input-text-' + randomId
     const context = useContext(GroupContext)
     const isInsideInputGroup = !!useContext(InputGroupContext)
 

@@ -13,7 +13,7 @@ import {
 } from 'state/currentAccount/types'
 import {AccessContainer} from '../Access'
 
-jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
+jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
 const accessSettings = fromJS({
     id: 1,
