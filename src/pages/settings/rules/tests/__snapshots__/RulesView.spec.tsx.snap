@@ -2,167 +2,171 @@
 
 exports[`<RulesView/> should render the rule library view 1`] = `
 <div
-  class="full-width"
+  class="full-width overflow-auto"
 >
   <div
-    class="page-header pageHeader"
+    class="pageHeaderContainer"
   >
-    <h1
-      class="d-flex align-items-center"
+    <div
+      class="page-header pageHeader"
     >
-      Rules
-    </h1>
-    <div>
-      <div
-        class="headerContainer"
+      <h1
+        class="d-flex align-items-center"
       >
+        Rules
+      </h1>
+      <div>
         <div
-          class="dropdown"
+          class="headerContainer"
         >
-          <button
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
-            type="button"
-          >
-            <span>
-              All rule types
-            </span>
-          </button>
           <div
-            aria-hidden="true"
-            class="dropdown dropdown-menu dropdown-menu-right"
-            role="menu"
-            tabindex="-1"
+            class="dropdown"
           >
-            <h6
-              class="dropdown-item-input dropdownItemInput dropdown-header"
-              tabindex="-1"
-            >
-              <input
-                class="form-control"
-                placeholder="Search rule types..."
-                type="text"
-                value=""
-              />
-            </h6>
             <button
-              class="component dropdown-item"
-              role="menuitem"
-              tabindex="0"
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="mr-2 dropdownToggle dropdown-toggle btn btn-secondary"
+              type="button"
             >
-              <div
-                class="checkbox"
-              >
-                <label
-                  class="label label quickSelectionOption"
-                  for="checkbox-1"
-                >
-                  <input
-                    class="input"
-                    id="checkbox-1"
-                    name="checkbox-1"
-                    type="checkbox"
-                  />
-                  Select all
-                  <div
-                    class="badge"
-                  >
-                    2
-                  </div>
-                </label>
-              </div>
+              <span>
+                All rule types
+              </span>
             </button>
             <div
-              class="dropdownDivider dropdown-divider"
+              aria-hidden="true"
+              class="dropdown dropdown-menu dropdown-menu-right"
+              role="menu"
               tabindex="-1"
-            />
-            <div
-              class="content"
             >
-              <div
-                class="wrapperItem"
+              <h6
+                class="dropdown-item-input dropdownItemInput dropdown-header"
+                tabindex="-1"
               >
-                <label
-                  class="label label labelItem"
-                  for="checkbox-2"
-                >
-                  <input
-                    class="input"
-                    id="checkbox-2"
-                    name="checkbox-2"
-                    type="checkbox"
-                  />
-                   Auto Close
-                </label>
-              </div>
-              <div
-                class="wrapperItem"
+                <input
+                  class="form-control"
+                  placeholder="Search rule types..."
+                  type="text"
+                  value=""
+                />
+              </h6>
+              <button
+                class="component dropdown-item"
+                role="menuitem"
+                tabindex="0"
               >
-                <label
-                  class="label label labelItem"
-                  for="checkbox-3"
+                <div
+                  class="checkbox"
                 >
-                  <input
-                    class="input"
-                    id="checkbox-3"
-                    name="checkbox-3"
-                    type="checkbox"
-                  />
-                   Auto Tag
-                </label>
+                  <label
+                    class="label label quickSelectionOption"
+                    for="checkbox-1"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-1"
+                      name="checkbox-1"
+                      type="checkbox"
+                    />
+                    Select all
+                    <div
+                      class="badge"
+                    >
+                      2
+                    </div>
+                  </label>
+                </div>
+              </button>
+              <div
+                class="dropdownDivider dropdown-divider"
+                tabindex="-1"
+              />
+              <div
+                class="content"
+              >
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-2"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-2"
+                      name="checkbox-2"
+                      type="checkbox"
+                    />
+                     Auto Close
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-3"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-3"
+                      name="checkbox-3"
+                      type="checkbox"
+                    />
+                     Auto Tag
+                  </label>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          class="component mr-2"
-        >
           <div
-            class="wrapper input"
+            class="component mr-2"
           >
-            <i
-              class="material-icons icon iconLeft"
+            <div
+              class="wrapper input"
             >
-              search
-            </i>
-            <input
-              class="input hasLeftIcon"
-              id="input-text-4"
-              name="input-text-4"
-              placeholder="Search rule library..."
-              type="text"
-              value=""
-            />
+              <i
+                class="material-icons icon iconLeft"
+              >
+                search
+              </i>
+              <input
+                class="input hasLeftIcon"
+                id="input-text-4"
+                name="input-text-4"
+                placeholder="Search rule library..."
+                type="text"
+                value=""
+              />
+            </div>
           </div>
-        </div>
-        <a
-          to="/app/settings/rules/new"
-        >
-          <button
-            class="wrapper float-right fill primary medium"
-            type="button"
+          <a
+            to="/app/settings/rules/new"
           >
-            Create rule
-          </button>
-        </a>
+            <button
+              class="wrapper float-right fill primary medium"
+              type="button"
+            >
+              Create rule
+            </button>
+          </a>
+        </div>
       </div>
     </div>
+    <nav
+      class="navbar navbar"
+    >
+      <ul
+        class="item nav"
+      >
+        My rules
+      </ul>
+      <ul
+        class="item active nav"
+      >
+        Rule library
+      </ul>
+    </nav>
   </div>
-  <nav
-    class="navbar navbar"
-  >
-    <ul
-      class="item nav"
-    >
-      My rules
-    </ul>
-    <ul
-      class="item active nav"
-    >
-      Rule library
-    </ul>
-  </nav>
   <div
     class="description pageContainer container-fluid"
   >
@@ -208,47 +212,51 @@ exports[`<RulesView/> should render the rule library view 1`] = `
 
 exports[`<RulesView/> should render the rule views 1`] = `
 <div
-  class="full-width"
+  class="full-width overflow-auto"
 >
   <div
-    class="page-header pageHeader"
+    class="pageHeaderContainer"
   >
-    <h1
-      class="d-flex align-items-center"
+    <div
+      class="page-header pageHeader"
     >
-      Rules
-    </h1>
-    <div>
-      <div
-        class="headerContainer"
+      <h1
+        class="d-flex align-items-center"
       >
-        <a
-          to="/app/settings/rules/new"
+        Rules
+      </h1>
+      <div>
+        <div
+          class="headerContainer"
         >
-          <button
-            class="wrapper float-right fill primary medium"
-            type="button"
+          <a
+            to="/app/settings/rules/new"
           >
-            Create rule
-          </button>
-        </a>
+            <button
+              class="wrapper float-right fill primary medium"
+              type="button"
+            >
+              Create rule
+            </button>
+          </a>
+        </div>
       </div>
     </div>
+    <nav
+      class="navbar navbar"
+    >
+      <ul
+        class="item active nav"
+      >
+        My rules
+      </ul>
+      <ul
+        class="item nav"
+      >
+        Rule library
+      </ul>
+    </nav>
   </div>
-  <nav
-    class="navbar navbar"
-  >
-    <ul
-      class="item active nav"
-    >
-      My rules
-    </ul>
-    <ul
-      class="item nav"
-    >
-      Rule library
-    </ul>
-  </nav>
   <div
     class="description pageContainer container-fluid"
   >

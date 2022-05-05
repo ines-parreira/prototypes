@@ -136,50 +136,53 @@ export function RulesViewContainer({
     }, [activeTab, hasUnseenRules, setHasUnseenRules])
 
     return (
-        <div className="full-width">
-            <PageHeader title="Rules">
-                <div className={css.headerContainer}>
-                    {activeTab === RuleTabs.RuleLibrary && (
-                        <>
-                            <SelectFilter
-                                plural="rule types"
-                                singular="rule type"
-                                onChange={(values) =>
-                                    setSelectedTags(values as string[])
+        <div className="full-width overflow-auto">
+            <div className={css.pageHeaderContainer}>
+                <PageHeader title="Rules">
+                    <div className={css.headerContainer}>
+                        {activeTab === RuleTabs.RuleLibrary && (
+                            <>
+                                <SelectFilter
+                                    plural="rule types"
+                                    singular="rule type"
+                                    onChange={(values) =>
+                                        setSelectedTags(values as string[])
+                                    }
+                                    value={selectedTags}
+                                >
+                                    {recipeTags.map((tag) => (
+                                        <SelectFilter.Item
+                                            key={tag}
+                                            value={tag}
+                                            label={tag}
+                                        />
+                                    ))}
+                                </SelectFilter>
+                                <Search
+                                    placeholder="Search rule library..."
+                                    className="mr-2"
+                                    onChange={(query) => setSearchTerm(query)}
+                                />
+                            </>
+                        )}
+                        <Link to="/app/settings/rules/new">
+                            <Button
+                                className="float-right"
+                                isDisabled={
+                                    limitStatus === RuleLimitStatus.Reached
                                 }
-                                value={selectedTags}
                             >
-                                {recipeTags.map((tag) => (
-                                    <SelectFilter.Item
-                                        key={tag}
-                                        value={tag}
-                                        label={tag}
-                                    />
-                                ))}
-                            </SelectFilter>
-                            <Search
-                                placeholder="Search rule library..."
-                                className="mr-2"
-                                onChange={(query) => setSearchTerm(query)}
-                            />
-                        </>
-                    )}
-                    <Link to="/app/settings/rules/new">
-                        <Button
-                            className="float-right"
-                            isDisabled={limitStatus === RuleLimitStatus.Reached}
-                        >
-                            Create rule
-                        </Button>
-                    </Link>
-                </div>
-            </PageHeader>
-            <RuleTabSelect
-                handleTabChange={handleTabChange}
-                activeTab={activeTab}
-                hasUnseenRules={hasUnseenRules}
-            />
-
+                                Create rule
+                            </Button>
+                        </Link>
+                    </div>
+                </PageHeader>
+                <RuleTabSelect
+                    handleTabChange={handleTabChange}
+                    activeTab={activeTab}
+                    hasUnseenRules={hasUnseenRules}
+                />
+            </div>
             <Container
                 fluid
                 className={classnames(
