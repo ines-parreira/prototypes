@@ -243,12 +243,6 @@ export function RuleRow({
                         <span className={classnames('mr-2', css.name)}>
                             {ruleName}
                         </span>
-                        {rule.type === 'system' && (
-                            <Badge className="ml-2" type={ColorType.Error}>
-                                <i className="material-icons mr-2">warning</i>
-                                SYSTEM
-                            </Badge>
-                        )}
                         {isFromLibrary && (
                             <Badge
                                 className={classnames(
