@@ -3,6 +3,7 @@ import {
     LocalSocialNavigationLink,
 } from '../../../models/helpCenter/types'
 import {isProduction, isStaging} from '../../../utils/environment'
+import {emojiRegex} from './utils/emojiRegex'
 
 import {HelpCenterTheme} from './types'
 
@@ -134,3 +135,5 @@ export const CATEGORY_ROW_ACTIONS = [
 export const DRAWER_TRANSITION_DURATION_MS = 300
 
 export const EDITOR_MODAL_CONTAINER_ID = 'editor-modal-container-id'
+
+export const EMOJI_REGEX = emojiRegex

@@ -8,6 +8,7 @@ import {
     getNewArticleTranslation,
     getNewHelpCenterTranslation,
     removeAccents,
+    removeEmojis,
     slugify,
 } from '../helpCenter.utils'
 
@@ -71,8 +72,8 @@ describe('slugify()', () => {
         )
     })
 
-    describe('it encodes emojis as UTF-8', () => {
-        expect(slugify('Clown 🤡')).toEqual('clown-%F0%9F%A4%A1')
+    describe('it deletes emojis', () => {
+        expect(slugify('Clown 🤡')).toEqual('clown')
     })
 })
 
@@ -162,5 +163,19 @@ describe('removeAccents()', () => {
 
     it('returns a string without accents for specials characters', () => {
         expect(removeAccents('æŒß')).toEqual('aeoess')
+    })
+})
+
+describe('removeEmojis()', () => {
+    it(`returns a string without emojis when it's composed only by emojis`, () => {
+        expect(removeEmojis('👿👹👺🤡💩👻💀')).toEqual('')
+    })
+
+    it(`returns a string without emojis when it's composed by letters and emojis`, () => {
+        expect(removeEmojis('😴t🤤e😪s😵t')).toEqual('test')
+    })
+
+    it(`returns a string without emojis when it's composed by special characters and emojis`, () => {
+        expect(removeEmojis('🫑%¨$🫓🫖')).toEqual('%¨$')
     })
 })

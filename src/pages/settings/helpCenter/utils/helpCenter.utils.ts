@@ -8,7 +8,7 @@ import {
     HelpCenter,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {HELP_CENTER_DOMAIN} from '../constants'
+import {HELP_CENTER_DOMAIN, EMOJI_REGEX} from '../constants'
 
 export const articleRequiredFields: Partial<
     keyof CreateArticleTranslationDto
@@ -72,11 +72,17 @@ export function removeAccents(value: string): string {
         .toLowerCase()
 }
 
+// Remove all the emojis from a string value (source: https://mths.be/emoji)
+export function removeEmojis(value: string): string {
+    return value.replace(EMOJI_REGEX, '').trim()
+}
+
 export function slugify(value: string): string {
     if (value) {
-        const valueWithoutAccents = removeAccents(value)
+        const valueWithoutAccentsAndEmojis = removeEmojis(removeAccents(value))
+
         return encodeURI(
-            valueWithoutAccents
+            valueWithoutAccentsAndEmojis
                 .replace(/[/;:.',*?!#]/g, '')
                 .replace(/\$/g, 'dollar') // for SEO
                 .trim()
