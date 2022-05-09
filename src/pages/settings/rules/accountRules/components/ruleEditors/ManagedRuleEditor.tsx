@@ -18,6 +18,7 @@ import {ManagedRuleSettings, ManagedRulesSlugs} from 'state/rules/types'
 
 import type {ManagedRuleEditorProps} from '../RuleFormEditor'
 import AutoCloseSpamEditor from './AutoCloseSpamEditor'
+import AutoReplyWismoEditor from './AutoReplyWismoEditor'
 
 import css from './RuleEditor.less'
 
@@ -39,6 +40,7 @@ export const ManagedRuleEditor = ({
 }: Props) => {
     const componentTypes = {
         [ManagedRulesSlugs.AutoCloseSpam]: AutoCloseSpamEditor,
+        [ManagedRulesSlugs.AutoReplyWismo]: AutoReplyWismoEditor,
     }
     const Editor = componentTypes[slug]
     type SettingsType = ComponentProps<typeof Editor>['settings']

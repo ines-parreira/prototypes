@@ -13,7 +13,7 @@ import LinkToRecipeView from './LinkToRecipeView'
 
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
 
-import css from './AutoCloseSpamEditor.less'
+import css from './ManagedRuleEditor.less'
 
 export const AutoCloseSpamEditor = ({
     settings,

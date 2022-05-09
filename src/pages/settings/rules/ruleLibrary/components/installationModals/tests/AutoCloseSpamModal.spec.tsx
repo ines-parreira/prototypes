@@ -10,6 +10,7 @@ describe('<AutoCloseSpamModal/>', () => {
         triggeredCount: 10,
         isBehindPaywall: false,
         renderTags: () => <></>,
+        viewCreationCheckbox: () => <></>,
     }
     it('should render the autoclose spam body when automation add-on is subscribed', () => {
         const {container} = render(<AutoCloseSpamModal {...minProps} />)

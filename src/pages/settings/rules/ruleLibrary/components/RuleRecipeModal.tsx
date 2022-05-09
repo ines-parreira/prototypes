@@ -82,9 +82,22 @@ export const RuleRecipeModal = ({
                 }}
                 disabled={!shouldInstall}
             >
-                Add rule
+                Install rule
             </Button>
         )
+
+    const ViewsCreationCheckbox = () => {
+        if (!views_per_section) return <></>
+        return (
+            <CheckBox
+                className="mb-1 mt-3"
+                isChecked={shouldCreateviews}
+                onChange={(newValue: boolean) => setShouldCreateViews(newValue)}
+            >
+                Create the views related to this rule.
+            </CheckBox>
+        )
+    }
 
     return !showAutomationModal ? (
         <Modal
@@ -137,18 +150,8 @@ export const RuleRecipeModal = ({
                         rule={rule}
                         isBehindPaywall={isBehindPaywall}
                         renderTags={renderTags}
+                        viewCreationCheckbox={ViewsCreationCheckbox}
                     />
-                    {!!views_per_section && (
-                        <CheckBox
-                            className="mb-1 mt-3"
-                            isChecked={shouldCreateviews}
-                            onChange={(newValue: boolean) =>
-                                setShouldCreateViews(newValue)
-                            }
-                        >
-                            Create the views related to this rule.
-                        </CheckBox>
-                    )}
                 </ModalBody>
             )}
             <ModalFooter className={css.modalFooter}>

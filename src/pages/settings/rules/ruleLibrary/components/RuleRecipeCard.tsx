@@ -59,6 +59,7 @@ type Props = {
 const tagColors: {[key: string]: string} = {
     [RuleRecipeTag.AUTO_TAG]: '#20C08C',
     [RuleRecipeTag.AUTO_CLOSE]: '#D6384D',
+    [RuleRecipeTag.AUTO_REPLY]: '#3373DB',
 }
 
 function RuleRecipeCard({

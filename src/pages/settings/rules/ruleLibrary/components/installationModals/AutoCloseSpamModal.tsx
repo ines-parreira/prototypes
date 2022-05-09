@@ -6,7 +6,7 @@ import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {ManagedRuleModalProps} from '../InstallRuleModalBody'
 import defaultModalCss from '../RuleRecipeModal.less'
 
-import css from './AutoCloseSpamModal.less'
+import css from './ManagedRuleModal.less'
 
 export const AutoCloseSpamModal = ({
     rule,
@@ -60,7 +60,7 @@ export const AutoCloseSpamModal = ({
 
     return (
         <div
-            className={classnames(css.wrapper, {
+            className={classnames(css.managedRule, css.autoCloseSpam, {
                 [css.bordered]: isBehindPaywall,
             })}
         >

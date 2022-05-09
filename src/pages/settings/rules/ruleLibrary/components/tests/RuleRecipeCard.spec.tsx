@@ -120,7 +120,7 @@ describe('<RuleRecipeCard/>', () => {
             })
             await waitFor(() => findByRole('dialog'))
             act(() => {
-                fireEvent.click(getByText('Add rule'))
+                fireEvent.click(getByText('Install rule'))
             })
             await waitFor(() => {
                 expect(createRuleMock).toHaveBeenCalled()
@@ -145,7 +145,7 @@ describe('<RuleRecipeCard/>', () => {
             })
             await waitFor(() => findByRole('dialog'))
             act(() => {
-                fireEvent.click(getByText('Add rule'))
+                fireEvent.click(getByText('Install rule'))
             })
             await waitFor(() => {
                 expect(createSectionMock).toHaveBeenCalled()

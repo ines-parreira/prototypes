@@ -9,6 +9,7 @@ import {
 import {RuleItemActions} from '../../types'
 import {DefaultModal} from './installationModals/DefaultModal'
 import {AutoCloseSpamModal} from './installationModals/AutoCloseSpamModal'
+import {AutoReplyWismoModal} from './installationModals/AutoReplyWismoModal'
 
 type Props = {
     handleRule: RuleItemActions
@@ -16,6 +17,7 @@ type Props = {
     rule: RuleDraft | ManagedRule
     isBehindPaywall: boolean
     renderTags: () => React.ReactNode
+    viewCreationCheckbox: () => React.ReactNode
 }
 
 export type DefaultModalProps = Omit<Props, 'isBehindPaywall' & 'renderTags'>
@@ -26,8 +28,10 @@ export const InstallRuleModalBody = (props: Props) => {
     const {rule} = props
     const installationModals: {
         [ManagedRulesSlugs.AutoCloseSpam]: typeof AutoCloseSpamModal
+        [ManagedRulesSlugs.AutoReplyWismo]: typeof AutoReplyWismoModal
     } = {
         [ManagedRulesSlugs.AutoCloseSpam]: AutoCloseSpamModal,
+        [ManagedRulesSlugs.AutoReplyWismo]: AutoReplyWismoModal,
     }
 
     const Component =

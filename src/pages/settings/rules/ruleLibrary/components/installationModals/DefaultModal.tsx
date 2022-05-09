@@ -9,6 +9,7 @@ export const DefaultModal = ({
     triggeredCount,
     handleRule,
     rule,
+    viewCreationCheckbox,
 }: DefaultModalProps) => {
     return (
         <>
@@ -35,6 +36,7 @@ export const DefaultModal = ({
                     className={css.ruleEditor}
                 />
             </div>
+            {viewCreationCheckbox()}
         </>
     )
 }

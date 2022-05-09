@@ -12,6 +12,7 @@ import {emptyManagedRule} from 'fixtures/rule'
 
 import ManagedRuleEditor from '../ManagedRuleEditor'
 
+jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 describe('<ManagedRuleEditor/>', () => {
     const minProps: ComponentProps<typeof ManagedRuleEditor> = {
         slug: ManagedRulesSlugs.AutoCloseSpam,

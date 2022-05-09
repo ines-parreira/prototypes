@@ -2,7 +2,7 @@
 
 exports[`<AutoCloseSpamModal/> should render the autoclose spam body when automation add-on is not subscribed 1`] = `
 <div
-  class="wrapper bordered"
+  class="managedRule autoCloseSpam bordered"
 >
   <div
     class="titleWrapper"
@@ -144,7 +144,7 @@ exports[`<AutoCloseSpamModal/> should render the autoclose spam body when automa
 
 exports[`<AutoCloseSpamModal/> should render the autoclose spam body when automation add-on is subscribed 1`] = `
 <div
-  class="wrapper"
+  class="managedRule autoCloseSpam"
 >
   <div
     class="container"

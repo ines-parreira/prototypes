@@ -22,6 +22,7 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 type Props = {
     action: Map<string, any>
     index: number
+    ignoredVariables?: string[]
     updateActionArgs: (index: number, args: Map<string, any>) => void
 } & ConnectedProps<typeof connector>
 
@@ -59,54 +60,62 @@ export class SetResponseTextAction extends Component<Props> {
 
         const variables = getVariables(null)
 
-        return variables.map((category, index) => {
-            if (
-                category.integration &&
-                !hasIntegrationOfTypes(category.type as IntegrationType)
-            ) {
-                return null
-            }
+        return variables
+            .filter(
+                (category) =>
+                    !this.props.ignoredVariables ||
+                    !this.props.ignoredVariables?.includes(category.type)
+            )
+            .map((category, index) => {
+                if (
+                    category.integration &&
+                    !hasIntegrationOfTypes(category.type as IntegrationType)
+                ) {
+                    return null
+                }
 
-            return category.children ? (
-                <UncontrolledButtonDropdown key={index}>
-                    <DropdownToggle
-                        color="secondary"
-                        caret
+                return category.children ? (
+                    <UncontrolledButtonDropdown key={index}>
+                        <DropdownToggle
+                            color="secondary"
+                            caret
+                            type="button"
+                            className="dropdown-toggle btn-sm mr-2"
+                        >
+                            {category.name}
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            {category.children.map(
+                                (variable, indexVariable) => {
+                                    return (
+                                        <DropdownItem
+                                            key={indexVariable}
+                                            type="button"
+                                            onClick={() => {
+                                                this._insertText(variable.value)
+                                            }}
+                                        >
+                                            {variable.name}
+                                        </DropdownItem>
+                                    )
+                                }
+                            )}
+                        </DropdownMenu>
+                    </UncontrolledButtonDropdown>
+                ) : (
+                    <Button
+                        fillStyle="ghost"
+                        intent="secondary"
+                        style={{color: 'inherit'}}
+                        onClick={() => {
+                            this._insertText(category.value!)
+                        }}
                         type="button"
-                        className="dropdown-toggle btn-sm mr-2"
                     >
                         {category.name}
-                    </DropdownToggle>
-                    <DropdownMenu>
-                        {category.children.map((variable, indexVariable) => {
-                            return (
-                                <DropdownItem
-                                    key={indexVariable}
-                                    type="button"
-                                    onClick={() => {
-                                        this._insertText(variable.value)
-                                    }}
-                                >
-                                    {variable.name}
-                                </DropdownItem>
-                            )
-                        })}
-                    </DropdownMenu>
-                </UncontrolledButtonDropdown>
-            ) : (
-                <Button
-                    fillStyle="ghost"
-                    intent="secondary"
-                    style={{color: 'inherit'}}
-                    onClick={() => {
-                        this._insertText(category.value!)
-                    }}
-                    type="button"
-                >
-                    {category.name}
-                </Button>
-            )
-        })
+                    </Button>
+                )
+            })
     }
 
     render() {

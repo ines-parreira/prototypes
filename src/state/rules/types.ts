@@ -117,6 +117,7 @@ export enum RuleLimitStatus {
 // Managed Rule Typing
 export enum ManagedRulesSlugs {
     AutoCloseSpam = 'non-support-related-emails',
+    AutoReplyWismo = 'auto-reply-wismo',
 }
 export type ManagedRuleEmptySettings = {
     slug: ManagedRulesSlugs
@@ -128,6 +129,14 @@ export type ManagedRuleSettings<T = ManagedRuleEmptySettings> =
 export type AutoCloseSpamSettings = {
     allow_list?: string[]
     block_list?: string[]
+}
+
+export type AutoReplyWismoSettings = {
+    block_list?: string[]
+    body_text?: string
+    body_html?: string
+    signature_text?: string
+    signature_html?: string
 }
 
 export type ManagedRule<T = ManagedRuleEmptySettings> = Rule & {

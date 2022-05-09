@@ -71,7 +71,7 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                     <div
                       class="badge"
                     >
-                      2
+                      3
                     </div>
                   </label>
                 </div>
@@ -115,6 +115,22 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                      Auto Tag
                   </label>
                 </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-4"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-4"
+                      name="checkbox-4"
+                      type="checkbox"
+                    />
+                     Auto Reply
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -135,8 +151,8 @@ exports[`<RulesView/> should render the rule library view 1`] = `
               </span>
               <input
                 class="input"
-                id="input-text-4"
-                name="input-text-4"
+                id="input-text-5"
+                name="input-text-5"
                 placeholder="Search rule library..."
                 type="text"
                 value=""
