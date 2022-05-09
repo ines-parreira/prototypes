@@ -100,7 +100,11 @@ export default class EditableTitle extends Component<Props, State> {
 
         return (
             <TextInput
-                className={css.component}
+                className={classnames(css.component, {
+                    [css['edit-mode']]:
+                        this.state.editMode || this.props.forceEditMode,
+                    [css.isDisabled]: this.props.disabled,
+                })}
                 ref={this.ref}
                 tabIndex={1}
                 isDisabled={this.props.disabled}

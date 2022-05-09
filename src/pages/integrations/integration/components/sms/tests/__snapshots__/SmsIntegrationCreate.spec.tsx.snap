@@ -78,10 +78,10 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
                   </span>
                 </div>
                 <div
-                  class="wrapper"
+                  class="wrapper right isNested"
                 >
                   <input
-                    class="input nested"
+                    class="input"
                     id="title"
                     name="title"
                     placeholder="Ex: Company Support Line"
@@ -303,10 +303,10 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                   </span>
                 </div>
                 <div
-                  class="wrapper"
+                  class="wrapper right isNested"
                 >
                   <input
-                    class="input nested"
+                    class="input"
                     id="title"
                     name="title"
                     placeholder="Ex: Company Support Line"
@@ -517,10 +517,10 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
                   </span>
                 </div>
                 <div
-                  class="wrapper"
+                  class="wrapper right isNested"
                 >
                   <input
-                    class="input nested"
+                    class="input"
                     id="title"
                     name="title"
                     placeholder="Ex: Company Support Line"

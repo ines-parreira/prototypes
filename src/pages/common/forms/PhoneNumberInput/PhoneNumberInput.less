@@ -1,16 +1,16 @@
 @import '~css/new/colorTokens';
 
 :local {
+    .wrapper {
+        position: relative;
+    }
+
     .button {
         border-bottom: none;
         border-left: none;
         border-top: none;
         height: 30px;
         margin-left: inherit !important;
-    }
-
-    .group {
-        overflow: inherit !important;
     }
 
     .selectContainer {
@@ -20,5 +20,10 @@
 
     .label {
         margin-bottom: 8px;
+    }
+
+    .hiddenInput {
+        opacity: 0;
+        width: 0;
     }
 }

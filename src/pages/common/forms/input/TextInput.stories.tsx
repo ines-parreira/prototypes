@@ -51,8 +51,8 @@ const TemplateWithIcons: Story<ComponentProps<typeof TextInput>> = (props) => {
             {...props}
             value={value}
             onChange={setValue}
-            leftIcon={<IconInput icon="search" />}
-            rightIcon={<IconInput icon="block" onClick={() => setValue('')} />}
+            prefix={<IconInput icon="search" />}
+            suffix={<IconInput icon="block" onClick={() => setValue('')} />}
         />
     )
 }

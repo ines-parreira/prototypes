@@ -70,10 +70,10 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
                   </span>
                 </div>
                 <div
-                  class="wrapper"
+                  class="wrapper right isFocused isNested"
                 >
                   <input
-                    class="input nested"
+                    class="input"
                     id="name"
                     name="name"
                     placeholder="Team name"

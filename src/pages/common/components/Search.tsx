@@ -151,7 +151,7 @@ export default class Search extends Component<Props> {
                     className={css.input}
                     value={this.state.search}
                     onChange={(value) => this._handleChange(value)}
-                    leftIcon={<IconInput icon="search" />}
+                    prefix={<IconInput icon="search" />}
                     {...rest}
                     onKeyDown={this.handleKeyDown}
                 />

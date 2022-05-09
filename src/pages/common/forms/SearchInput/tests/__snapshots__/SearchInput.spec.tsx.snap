@@ -25,7 +25,7 @@ exports[`<SearchInput/> render() should render a closed dropdown because input i
       onFocus={[Function]}
       onKeyDown={[Function]}
       placeholder="Search..."
-      rightIcon={
+      suffix={
         <IconInput
           icon="search"
         />
@@ -75,7 +75,7 @@ exports[`<SearchInput/> render() should render a closed dropdown because input i
       onFocus={[Function]}
       onKeyDown={[Function]}
       placeholder="Search..."
-      rightIcon={
+      suffix={
         <IconInput
           icon="search"
         />
@@ -125,7 +125,7 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
       onFocus={[Function]}
       onKeyDown={[Function]}
       placeholder="Search..."
-      rightIcon={
+      suffix={
         <IconInput
           icon="search"
         />
@@ -226,7 +226,7 @@ exports[`<SearchInput/> render() should render sub results 1`] = `
       onFocus={[Function]}
       onKeyDown={[Function]}
       placeholder="Search..."
-      rightIcon={
+      suffix={
         <IconInput
           icon="search"
         />

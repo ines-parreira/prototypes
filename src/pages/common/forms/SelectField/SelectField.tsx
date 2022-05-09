@@ -1,5 +1,6 @@
 import React, {
     Component,
+    ComponentProps,
     CSSProperties,
     ChangeEvent,
     SyntheticEvent,
@@ -51,6 +52,7 @@ type Props = {
     fullWidth?: boolean
     shouldFocus?: boolean
     positionFixed?: boolean
+    container?: ComponentProps<typeof DropdownMenu>['container']
 }
 
 type State = {
@@ -355,6 +357,7 @@ export default class SelectField extends Component<Props, State> {
             fullWidth,
             dropdownMenuClassName,
             positionFixed,
+            container,
         } = this.props
         const {
             filteredOptions,
@@ -475,6 +478,7 @@ export default class SelectField extends Component<Props, State> {
                                 [css.optionsFullWidth]: fullWidth,
                             }
                         )}
+                        container={container}
                         positionFixed={positionFixed}
                     >
                         {hasNoFilteredOptions && !allowCustomValue ? (

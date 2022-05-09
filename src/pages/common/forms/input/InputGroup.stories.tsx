@@ -5,6 +5,7 @@ import Button from 'pages/common/components/button/Button'
 
 import InputGroup from './InputGroup'
 import NumberInput from './NumberInput'
+import TextInput from './TextInput'
 
 const storyConfig: Meta = {
     title: 'Data Entry/Input/InputGroup',
@@ -39,6 +40,24 @@ const WithNumberInputTemplate: Story<ComponentProps<typeof InputGroup>> = (
     )
 }
 
+const WithTextInputTemplate: Story<ComponentProps<typeof InputGroup>> = (
+    props
+) => {
+    const [firstTextInput, setFirstTextInput] = useState<string>('')
+    const [secondTextInput, setSecondTextInput] = useState<string>('')
+
+    return (
+        <InputGroup {...props}>
+            <Button intent="secondary">Foo</Button>
+            <TextInput onChange={setFirstTextInput} value={firstTextInput} />
+            <Button intent="secondary">Bar</Button>
+            <TextInput onChange={setSecondTextInput} value={secondTextInput} />
+            <Button intent="secondary">Baz</Button>
+        </InputGroup>
+    )
+}
+
 export const WithNumberInput = WithNumberInputTemplate.bind({})
+export const WithTextInput = WithTextInputTemplate.bind({})
 
 export default storyConfig

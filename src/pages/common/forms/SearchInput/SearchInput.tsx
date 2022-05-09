@@ -366,7 +366,7 @@ export default class SearchInput<
                         onFocus={this._onFocus}
                         placeholder={placeholder}
                         ref={this._saveInputRef}
-                        rightIcon={
+                        suffix={
                             <IconInput
                                 icon={isLoading ? 'more_horiz' : 'search'}
                             />

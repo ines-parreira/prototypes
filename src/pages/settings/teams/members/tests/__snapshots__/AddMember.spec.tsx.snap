@@ -88,21 +88,25 @@ exports[`<AddMember /> should render the dropdown on click 1`] = `
         search
       </i>
       <div
-        class="wrapper"
+        class="wrapper isFocused"
       >
         <input
-          class="input hasRightIcon"
+          class="input"
           id="input-text-1"
           name="input-text-1"
           placeholder="Search user..."
           type="text"
           value=""
         />
-        <i
-          class="material-icons icon iconRight"
+        <span
+          class="suffix"
         >
-          search
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            search
+          </i>
+        </span>
       </div>
     </div>
   </h6>
@@ -170,21 +174,25 @@ exports[`<AddMember /> should render user with empty name 1`] = `
         search
       </i>
       <div
-        class="wrapper"
+        class="wrapper isFocused"
       >
         <input
-          class="input hasRightIcon"
+          class="input"
           id="input-text-2"
           name="input-text-2"
           placeholder="Search user..."
           type="text"
           value=""
         />
-        <i
-          class="material-icons icon iconRight"
+        <span
+          class="suffix"
         >
-          search
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            search
+          </i>
+        </span>
       </div>
     </div>
   </h6>

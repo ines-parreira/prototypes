@@ -2,7 +2,18 @@
 @import '~css/new/colorTokens';
 
 :local .component {
+    height: 34px;
     width: 100%;
+
+    .not-editable {
+        border-color: transparent;
+        padding-left: 0;
+    }
+
+    &:not(:hover):not(:focus):not(.edit-mode),
+    &.isDisabled {
+        .not-editable;
+    }
 
     .input {
         color: @classic-neutral-grey-6;
@@ -10,11 +21,6 @@
         font-weight: 500;
         height: 34px;
         transition: all 0.2s linear;
-
-        .not-editable {
-            border-color: transparent;
-            padding-left: 0;
-        }
 
         &:not(:hover):not(:focus):not(.edit-mode) {
             .not-editable;
