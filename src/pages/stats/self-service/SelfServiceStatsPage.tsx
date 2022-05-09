@@ -5,10 +5,11 @@ import {fromJS, Map} from 'immutable'
 import {
     SELF_SERVICE_OVERVIEW,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES,
-    SELF_SERVICE_FLOWS_DISTRIBUTION,
     SELF_SERVICE_TOP_REPORTED_ISSUES,
     stats as statsConfig,
     SELF_SERVICE_MOST_RETURNED_PRODUCTS,
+    SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION,
+    SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION,
 } from 'config/stats'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {
@@ -122,10 +123,17 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         return fromJS(overview || {}) as Map<any, any>
     }, [overview])
 
-    const [flowsDistribution, isFetchingFlowsDistribution] =
+    const [chatFlowsDistribution, isFetchingChatFlowsDistribution] =
         useStatResource<TwoDimensionalChart>({
             statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
-            resourceName: SELF_SERVICE_FLOWS_DISTRIBUTION,
+            resourceName: SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION,
+            statsFilters: pageStatsFilters,
+        })
+
+    const [helpCenterFlowsDistribution, isFetchingHelpCenterFlowsDistribution] =
+        useStatResource<TwoDimensionalChart>({
+            statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
+            resourceName: SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION,
             statsFilters: pageStatsFilters,
         })
 
@@ -229,9 +237,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                         />
                     </KeyMetricStatWrapper>
                     <StatWrapper
-                        stat={flowsDistribution}
-                        isFetchingStat={isFetchingFlowsDistribution}
-                        resourceName={SELF_SERVICE_FLOWS_DISTRIBUTION}
+                        stat={chatFlowsDistribution}
+                        isFetchingStat={isFetchingChatFlowsDistribution}
+                        resourceName={SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION}
                         statsFilters={pageStatsFilters}
                         isDownloadable
                     >
@@ -240,7 +248,26 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                 data={stat.getIn(['data', 'data'])}
                                 legend={stat.getIn(['data', 'legend'], null)}
                                 config={statsConfig.get(
-                                    SELF_SERVICE_FLOWS_DISTRIBUTION
+                                    SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION
+                                )}
+                            />
+                        )}
+                    </StatWrapper>
+                    <StatWrapper
+                        stat={helpCenterFlowsDistribution}
+                        isFetchingStat={isFetchingHelpCenterFlowsDistribution}
+                        resourceName={
+                            SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION
+                        }
+                        statsFilters={pageStatsFilters}
+                        isDownloadable
+                    >
+                        {(stat) => (
+                            <NormalizedBarStat
+                                data={stat.getIn(['data', 'data'])}
+                                legend={stat.getIn(['data', 'legend'], null)}
+                                config={statsConfig.get(
+                                    SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION
                                 )}
                             />
                         )}

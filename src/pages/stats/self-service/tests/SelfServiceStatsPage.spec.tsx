@@ -12,7 +12,8 @@ import {flushPromises, renderWithRouter} from 'utils/testing'
 import {AccountFeature} from 'state/currentAccount/types'
 import {integrationsState} from 'fixtures/integrations'
 import {
-    SELF_SERVICE_FLOWS_DISTRIBUTION,
+    SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION,
+    SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION,
     SELF_SERVICE_OVERVIEW,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES,
     SELF_SERVICE_TOP_REPORTED_ISSUES,
@@ -139,7 +140,11 @@ describe('<SelfServiceStatsPage />', () => {
         useStatResourceMock.mockImplementation(({resourceName}) => {
             if (resourceName === SELF_SERVICE_OVERVIEW) {
                 return [selfServiceOverview, false, _noop]
-            } else if (resourceName === SELF_SERVICE_FLOWS_DISTRIBUTION) {
+            } else if (resourceName === SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION) {
+                return [selfServiceFlowsDistribution, false, _noop]
+            } else if (
+                resourceName === SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION
+            ) {
                 return [selfServiceFlowsDistribution, false, _noop]
             } else if (
                 resourceName === SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES

@@ -65,7 +65,10 @@ export const AUTOMATION_OVERVIEW = 'automation-overview'
 export const AUTOMATION_FLOW = 'automation-flow'
 export const AUTOMATION_PER_CHANNEL = 'automation-per-channel'
 export const SELF_SERVICE_OVERVIEW = 'self-service-overview'
-export const SELF_SERVICE_FLOWS_DISTRIBUTION = 'self-service-flows-distribution'
+export const SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION =
+    'self-service-chat-flows-distribution'
+export const SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION =
+    'self-service-help-center-flows-distribution'
 export const SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES =
     'self-service-product-with-most-issues'
 export const SELF_SERVICE_TOP_REPORTED_ISSUES =
@@ -1370,43 +1373,43 @@ export const stats = toImmutable<
         api_resource_name: SELF_SERVICE_OVERVIEW,
         metrics: [
             {
-                name: 'self-service_usage',
-                label: 'Self-service usage over chat',
+                name: 'chat_self_service_interaction_count',
+                label: 'Self-service interactions via chat',
                 tooltip:
-                    'Percentage of self-service interactions (including automated ones) compared to the total number of chat tickets (live chats and self-service interactions) within the selected stores.',
+                    'Number of self-service interactions sent by shopper from your chat widget',
             },
             {
-                name: 'total_interactions',
-                label: 'Self-service interactions',
+                name: 'chat_self_service_interaction_ratio',
+                label: 'Self-service interactions (% of chat tickets)',
                 tooltip:
-                    'Number of times customers complete a self-service interaction using Track, Return, Cancel or Report an Issue flows. An interaction is counted when a customer completes a full flow until the end.',
+                    'Number of self-service interactions sent by shopper from your chat widget divided by total number of chat interactions you receive',
             },
             {
-                name: 'tickets_deflected',
+                name: 'help_center_self_service_interaction_count',
+                label: 'Self-service interactions via help center',
+                tooltip:
+                    'Number of self-service interactions sent by shopper from your help center (you can install self-service on your help center from your help center settings)',
+            },
+            {
+                name: 'automated_interaction_count',
                 label: 'Automated interactions',
                 tooltip:
-                    "Percentage of self-service interactions automated by using the Track flow. Automated interactions don't create any tickets.",
+                    'Number of automated self-service interactions. Automated interactions do not create tickets.',
             },
             {
-                name: 'tickets_created',
-                label: 'Tickets created',
+                name: 'automated_interaction_ratio',
+                label: 'Automated interactions (% of total)',
                 tooltip:
-                    'Number of self-service interactions made by Return, Cancel and Report Issue flows. These interactions create auto-generated chat tickets that are easier to handle by agents.',
-            },
-            {
-                name: 'total_unique_customers',
-                label: 'Unique customers',
-                tooltip:
-                    'Number of unique customers who completed at least one self-service interaction.',
+                    'Number of automated self-service interactions divided by the total number of self-service interactions across chat and help center.',
             },
         ],
     },
-    [SELF_SERVICE_FLOWS_DISTRIBUTION]: {
+    [SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION]: {
         style: 'normalized-bar',
         padding: '0px 30px 30px 30px',
         downloadable: true,
         totalOptions: {
-            label: 'Total interactions',
+            label: 'Total chat interactions',
             tooltip: 'Average distribution of the different self-service flows',
         },
         lines: {
@@ -1438,6 +1441,84 @@ export const stats = toImmutable<
             other_tickets: {
                 label: 'Live chat tickets',
                 color: '#D2D7DE',
+            },
+        },
+        options: (legend: Map<any, any>) => ({
+            scales: {
+                x: {
+                    stacked: true,
+                    grid: defaultXAxeGridLines,
+                    ticks: _merge({}, defaultTicks, {
+                        callback: formatDateAxeCb,
+                    }),
+                },
+
+                y: {
+                    title: _merge({}, defaultScaleLabel, {
+                        text: legend.getIn(['axes', 'y']),
+                        display: !!legend.getIn(['axes', 'y']),
+                    }),
+                    ticks: _merge({}, defaultTicks, {
+                        callback: (value: string) => `${value}%`,
+                    }),
+                    min: 0,
+                    max: 100,
+                    grid: defaultYAxeGridLines,
+                    stacked: true,
+                },
+            },
+            plugins: {
+                tooltip: {
+                    intersect: true,
+                    position: 'nearest',
+                    callbacks: {
+                        label: ({
+                            dataset,
+                            dataIndex,
+                        }: {
+                            dataset: {
+                                label: string
+                                dataRaw: number[]
+                                data: number[]
+                            }
+                            dataIndex: number
+                        }) =>
+                            ` ${dataset.label}: ${
+                                dataset.dataRaw[dataIndex]
+                            } (${dataset.data[dataIndex].toFixed(0)}%)`,
+                    },
+                },
+            },
+        }),
+    },
+    [SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION]: {
+        style: 'normalized-bar',
+        padding: '0px 30px 30px 30px',
+        downloadable: true,
+        totalOptions: {
+            label: 'Total help center interactions',
+            tooltip: 'Average distribution of the different self-service flows',
+        },
+        lines: {
+            track: {
+                label: 'Track (automated)',
+                color: '#4A8DF9',
+                disabledLink: '/app/settings/self-service',
+            },
+            report_issues: {
+                label: 'Report issue',
+                color: '#24D69D',
+                disabledLink: '/app/settings/self-service',
+            },
+            returns: {
+                label: 'Return',
+                color: '#8088D6',
+                disabledLink: '/app/settings/self-service',
+            },
+            cancellations: {
+                label: 'Cancel',
+                color: '#FD9B5A',
+                disabledLink: '/app/settings/self-service',
             },
         },
         options: (legend: Map<any, any>) => ({

@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import NormalizedBarStat from '../NormalizedBarStat'
 import {
     stats as statsConfig,
-    SELF_SERVICE_FLOWS_DISTRIBUTION,
+    SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION,
 } from '../../../../../../config/stats'
 
 const barStatData = {
@@ -52,7 +52,7 @@ const barStatNoData = {
 describe('NormalizedBarStat', () => {
     it('should render a bar with total chart and disabled labels', () => {
         const config = statsConfig.find(
-            (config, key) => key === SELF_SERVICE_FLOWS_DISTRIBUTION
+            (config, key) => key === SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION
         )
         const component = shallow(
             <NormalizedBarStat
@@ -66,7 +66,7 @@ describe('NormalizedBarStat', () => {
 
     it('should render a bar chart with "no data" message', () => {
         const config = statsConfig.find(
-            (config, key) => key === SELF_SERVICE_FLOWS_DISTRIBUTION
+            (config, key) => key === SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION
         )
         const component = shallow(
             <NormalizedBarStat

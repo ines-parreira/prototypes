@@ -274,7 +274,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
           className="bar-total-title-wrapper"
         >
           <h5>
-            Total interactions
+            Total chat interactions
           </h5>
           <span>
             <StatsHelpIcon
