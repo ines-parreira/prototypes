@@ -255,3 +255,32 @@ window.location = JSON.parse(windowLocation)
 window.location.reload = jest.fn()
 
 window.EMAIL_FORWARDING_DOMAIN = 'emails.gorgias.com'
+
+// Mock analytics
+window.SEGMENT_ANALYTICS_USER_ID = '1_1'
+globalThis.analytics = {
+    addIntegration: jest.fn(),
+    alias: jest.fn(),
+    debug: jest.fn(),
+    group: jest.fn(),
+    identify: jest.fn(),
+    init: jest.fn(),
+    load: jest.fn(),
+    on: jest.fn(),
+    page: jest.fn(),
+    ready: jest.fn(),
+    reset: jest.fn(),
+    setAnonymousId: jest.fn(),
+    timeout: jest.fn(),
+    track: jest.fn(),
+    trackForm: jest.fn(),
+    trackLink: jest.fn(),
+    use: jest.fn(),
+    user: jest.fn(),
+}
+
+// Mock Notification API
+globalThis.Notification = {
+    requestPermission: jest.fn().mockResolvedValue('granted'),
+    permission: 'granted',
+} as unknown as jest.Mocked<typeof Notification>

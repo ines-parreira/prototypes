@@ -81,7 +81,7 @@ class App extends React.Component<Props> {
                 action: () => pendingMessageManager.undoMessage(),
             },
         })
-        identifyUser(this.props.currentUser.toJS())
+        void identifyUser(this.props.currentUser.toJS())
     }
 
     componentWillUnmount() {
