@@ -8,8 +8,11 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import TextArea from 'pages/common/forms/TextArea'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import {localeTimeFormatConfigs} from 'config/locales'
 
 import settingsCss from 'pages/settings/settings.less'
+import {getViewLanguage, HelpCenterState} from 'state/ui/helpCenter'
+import {LanguageTimeFormat} from 'constants/languages'
 
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 import ContactCard from '../ContactCard'
@@ -37,6 +40,24 @@ const convertDaysToName = (daysString: string) => {
     return `${from} - ${to}`
 }
 
+const formatBusinessHoursByLocale = (
+    time: string,
+    helpCenterLanguage: HelpCenterState['currentLanguage']
+) => {
+    const momentTime = moment(time, 'HH:mm')
+
+    if (!helpCenterLanguage) {
+        return momentTime.format('hh:mm A')
+    }
+    const timeFormatValue = localeTimeFormatConfigs[helpCenterLanguage]
+
+    if (timeFormatValue === LanguageTimeFormat.twentyFourHours) {
+        return momentTime.format('HH:mm')
+    }
+
+    return momentTime.format('hh:mm A')
+}
+
 const ChatContactInfoSection: React.FC = () => {
     const [isDescriptionTooLong, setIsDescriptionTooLong] = useState(false)
     const {
@@ -44,7 +65,7 @@ const ChatContactInfoSection: React.FC = () => {
         updateTranslation,
     } = useHelpCenterTranslation()
     const businessHours = useAppSelector(getBusinessHoursSettings)
-
+    const currentHelpCenterLanguage = useAppSelector(getViewLanguage)
     const {description, enabled} = contactInfo.chat
 
     if (!chatApplicationId) {
@@ -71,8 +92,16 @@ const ChatContactInfoSection: React.FC = () => {
         return business_hours.map(({days, from_time, to_time}) => (
             <span key={days}>
                 <b>{convertDaysToName(days)}</b>&nbsp;
-                {moment(from_time, 'HH:mm').format('LT')} -&nbsp;
-                {moment(to_time, 'HH:mm').format('LT')}&nbsp;
+                {formatBusinessHoursByLocale(
+                    from_time,
+                    currentHelpCenterLanguage
+                )}{' '}
+                -&nbsp;
+                {formatBusinessHoursByLocale(
+                    to_time,
+                    currentHelpCenterLanguage
+                )}
+                &nbsp;
                 {timezoneAbbreviation}
             </span>
         ))

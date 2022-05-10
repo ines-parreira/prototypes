@@ -13,6 +13,11 @@ export enum Language {
     Czech = 'cz',
 }
 
+export enum LanguageTimeFormat {
+    twelveHours,
+    twentyFourHours,
+}
+
 //$TsFixMe fallback values, use Language enum instead
 export const ENGLISH_US_LANGUAGE = Language.EnglishUs
 export const FRENCH_LANGUAGE = Language.French

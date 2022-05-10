@@ -46,6 +46,34 @@ const defaultState: Partial<RootState> = {
             },
         ],
     }),
+    ui: {
+        helpCenter: {
+            currentLanguage: 'en-US',
+            currentId: 1,
+        },
+        editor: {
+            isEditingLink: false,
+        },
+        stats: {
+            fetchingMap: {},
+        },
+        ticketNavbar: {
+            optimisticAccountSettings: {
+                views: {},
+                view_sections: {},
+            },
+            optimisticUserSettings: {
+                views: {},
+                view_sections: {},
+            },
+        },
+        views: {
+            activeViewId: 1,
+        },
+        selfServiceConfigurations: {
+            loading: false,
+        },
+    },
 }
 
 describe('<ChatContactInfoSection />', () => {
