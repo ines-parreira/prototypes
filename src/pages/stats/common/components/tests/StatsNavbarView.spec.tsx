@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import StatsNavbarView from '../StatsNavbarView.tsx'
+import StatsNavbarView from '../StatsNavbarView'
 
 describe('StatsNavbarView', () => {
     it('should render', () => {

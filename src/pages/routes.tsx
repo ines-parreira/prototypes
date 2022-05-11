@@ -39,7 +39,7 @@ import CustomerDetailContainer from './customers/detail/CustomerDetailContainer'
 import CustomerSourceContainer from './customers/detail/CustomerSourceContainer'
 import CustomerInfobarContainer from './customers/detail/CustomerInfobarContainer'
 
-import YourProfileContainer from './settings/yourProfile/YourProfileContainer.js'
+import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
 import PasswordAnd2FA from './settings/yourProfile/PasswordAnd2FA'
 import APIView from './settings/api/APIView'
 

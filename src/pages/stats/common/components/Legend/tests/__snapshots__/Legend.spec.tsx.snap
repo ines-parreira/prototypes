@@ -1,13 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Legend should not render a legend (no labels, invalid labels) 1`] = `""`;
-
-exports[`Legend should not render a legend (no labels, invalid labels) 2`] = `""`;
-
-exports[`Legend should not render a legend (no labels, invalid labels) 3`] = `""`;
-
-exports[`Legend should not render a legend (no labels, invalid labels) 4`] = `""`;
-
 exports[`Legend should render a legend 1`] = `
 <div
   className="legends"

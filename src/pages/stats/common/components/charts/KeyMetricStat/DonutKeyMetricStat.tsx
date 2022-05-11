@@ -8,13 +8,13 @@ type Props = {
     fill: string
     formattedValue: string
     label: string
-    width: number
-    height: number
-    innerRadius: number
-    outerRadius: number
+    width?: number
+    height?: number
+    innerRadius?: number
+    outerRadius?: number
     differenceComponent: ReactNode
-    total: number | null
-    startAngle: number
+    total?: number | null
+    startAngle?: number
 }
 
 export default class DonutKeyMetricStat extends Component<Props> {
@@ -40,7 +40,10 @@ export default class DonutKeyMetricStat extends Component<Props> {
 
         return (
             <div className={css.container}>
-                <svg className={css.donut} viewBox={`0 0 ${width} ${height}`}>
+                <svg
+                    className={css.donut}
+                    viewBox={`0 0 ${width as number} ${height as number}`}
+                >
                     {this._renderPaths()}
                 </svg>
                 <div className={css.difference}>
@@ -114,9 +117,9 @@ export default class DonutKeyMetricStat extends Component<Props> {
             value,
             total,
             startAngle,
-            this.props.width,
-            this.props.innerRadius,
-            this.props.outerRadius,
+            this.props.width!,
+            this.props.innerRadius!,
+            this.props.outerRadius!,
             fillType === 'empty',
             single
         )

@@ -1,18 +1,11 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 
-import Legend from '../Legend.tsx'
+import Legend from '../Legend'
 
 describe('Legend', () => {
-    it('should not render a legend (no labels, invalid labels)', () => {
-        expect(shallow(<Legend />)).toMatchSnapshot()
-        expect(shallow(<Legend labels={[]} />)).toMatchSnapshot()
-        expect(shallow(<Legend labels={{}} />)).toMatchSnapshot()
-        expect(shallow(<Legend labels={''} />)).toMatchSnapshot()
-    })
-
-    it('should render a legend', () => {
-        const labels = [
+    const minProps: ComponentProps<typeof Legend> = {
+        labels: [
             {
                 name: 'line 1',
                 background: '#000',
@@ -33,7 +26,10 @@ describe('Legend', () => {
                 background: 'red',
                 shape: 'rectangle',
             },
-        ]
-        expect(shallow(<Legend labels={labels} />)).toMatchSnapshot()
+        ],
+    }
+
+    it('should render a legend', () => {
+        expect(shallow(<Legend {...minProps} />)).toMatchSnapshot()
     })
 })

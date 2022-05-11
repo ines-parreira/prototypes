@@ -1,5 +1,5 @@
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {fromJS, Map} from 'immutable'
 import {render} from '@testing-library/react'
 
 import {
@@ -7,17 +7,20 @@ import {
     REVENUE_OVERVIEW,
     SATISFACTION_SURVEYS,
     stats as statsConfig,
-} from '../../../../../../config/stats.tsx'
+} from 'config/stats'
 import KeyMetricStat from '../KeyMetricStat'
 
 describe('KeyMetricStat', () => {
-    const minProps = {
+    const minProps: ComponentProps<typeof KeyMetricStat> = {
+        data: fromJS([]),
+        config: fromJS({}),
+        meta: fromJS({}),
         loading: false,
     }
 
     it('should render a key metrics chart (splitted key metrics)', () => {
         const config = statsConfig.find((config, key) => key === OVERVIEW)
-        const splittedKeyMetricsStat = fromJS({
+        const splittedKeyMetricsStat: Map<any, any> = fromJS({
             data: [
                 {
                     api_resource_name: 'median-resolution-time',
@@ -56,7 +59,7 @@ describe('KeyMetricStat', () => {
         const config = statsConfig.find(
             (config, key) => key === REVENUE_OVERVIEW
         )
-        const groupedKeyMetricsStat = fromJS({
+        const groupedKeyMetricsStat: Map<any, any> = fromJS({
             data: [
                 {
                     name: 'tickets_created',
@@ -109,7 +112,7 @@ describe('KeyMetricStat', () => {
         const config = statsConfig.find(
             (config, key) => key === SATISFACTION_SURVEYS
         )
-        const satisfactionSurveyStat = fromJS({
+        const satisfactionSurveyStat: Map<any, any> = fromJS({
             data: [
                 {
                     delta: 10,

@@ -1,13 +1,16 @@
-import {fromJS} from 'immutable'
-import React from 'react'
+import React, {ComponentProps, SyntheticEvent} from 'react'
+import {fromJS, Map} from 'immutable'
 import {shallow} from 'enzyme'
+import _noop from 'lodash/noop'
 
-import {TicketChannels} from '../../../../business/ticket.ts'
-import * as currentAccountConstants from '../../../../state/currentAccount/constants.ts'
+import {TicketChannel} from 'business/types/ticket'
+import {TicketChannels} from 'business/ticket'
 
-import {TicketAssignmentContainer} from '../TicketAssignment.tsx'
+import * as currentAccountConstants from '../../../../state/currentAccount/constants'
 
-const unassignOnReplyEnabledSetting = fromJS({
+import {TicketAssignmentContainer} from '../TicketAssignment'
+
+const unassignOnReplyEnabledSetting: Map<any, any> = fromJS({
     id: 1,
     type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
     data: {
@@ -25,7 +28,7 @@ const unassignOnReplyDisabledSetting = unassignOnReplyEnabledSetting.setIn(
     false
 )
 
-const autoAssignToTeamsEnabledSetting = fromJS({
+const autoAssignToTeamsEnabledSetting: Map<any, any> = fromJS({
     id: 1,
     type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
     data: {
@@ -44,6 +47,22 @@ const autoAssignToTeamsDisabledSetting = autoAssignToTeamsEnabledSetting.setIn(
 )
 
 describe('<TicketAssignment/>', () => {
+    const minProps: ComponentProps<typeof TicketAssignmentContainer> = {
+        ticketAssignmentSettings: fromJS({}),
+        submitSetting: jest.fn(),
+        fetchChats: jest.fn(),
+    }
+
+    const defaultState = {
+        isLoading: false,
+        unassignOnReply: true,
+        autoAssignToTeams: false,
+        assignmentChannels: [
+            TicketChannel.Chat,
+            TicketChannel.FacebookMessenger,
+        ],
+    }
+
     describe('_onSubmit()', () => {
         beforeEach(() => {
             jest.resetAllMocks()
@@ -52,33 +71,31 @@ describe('<TicketAssignment/>', () => {
         it('should call `submitSetting` and call `fetchChats` because the account has no `ticket-assignment` setting', (done) => {
             const submitSetting = jest.fn(() => Promise.resolve())
             const fetchChats = jest.fn()
-            const component = shallow(
+            const component = shallow<TicketAssignmentContainer>(
                 <TicketAssignmentContainer
-                    ticketAssignmentSettings={fromJS({})}
+                    {...minProps}
                     submitSetting={submitSetting}
                     fetchChats={fetchChats}
                 />
             )
 
             const state = {
+                ...defaultState,
                 unassignOnReply: false,
-                assignmentChannels: [
-                    TicketChannels.CHAT,
-                    TicketChannels.FACEBOOK_MESSENGER,
-                ],
                 autoAssignToTeams: true,
             }
 
-            component.setState(state, async () => {
+            const mockCallback = async () => {
                 await component.instance()._onSubmit({
-                    preventDefault: () => {},
-                })
+                    preventDefault: _noop,
+                } as unknown as SyntheticEvent)
 
                 expect(submitSetting.mock.calls).toMatchSnapshot()
                 expect(fetchChats).toBeCalledWith()
 
                 done()
-            })
+            }
+            component.setState(state, mockCallback as unknown as () => void)
         })
 
         it(
@@ -87,8 +104,9 @@ describe('<TicketAssignment/>', () => {
             (done) => {
                 const submitSetting = jest.fn(() => Promise.resolve())
                 const fetchChats = jest.fn()
-                const component = shallow(
+                const component = shallow<TicketAssignmentContainer>(
                     <TicketAssignmentContainer
+                        {...minProps}
                         ticketAssignmentSettings={
                             autoAssignToTeamsEnabledSetting
                         }
@@ -98,32 +116,32 @@ describe('<TicketAssignment/>', () => {
                 )
 
                 const state = {
+                    ...defaultState,
                     unassignOnReply: false,
-                    assignmentChannels: [
-                        TicketChannels.CHAT,
-                        TicketChannels.FACEBOOK_MESSENGER,
-                    ],
                     autoAssignToTeams: true,
                 }
 
-                component.setState(state, async () => {
+                const mockCallback = async () => {
                     await component.instance()._onSubmit({
-                        preventDefault: () => {},
-                    })
+                        preventDefault: _noop,
+                    } as unknown as SyntheticEvent)
 
                     expect(submitSetting.mock.calls).toMatchSnapshot()
                     expect(fetchChats).not.toHaveBeenCalled()
 
                     done()
-                })
+                }
+
+                component.setState(state, mockCallback as unknown as () => void)
             }
         )
 
         it('should call `fetchChats` because the `auto_assign_to_teams` setting has changed', (done) => {
             const submitSetting = jest.fn(() => Promise.resolve())
             const fetchChats = jest.fn()
-            const component = shallow(
+            const component = shallow<TicketAssignmentContainer>(
                 <TicketAssignmentContainer
+                    {...minProps}
                     ticketAssignmentSettings={autoAssignToTeamsEnabledSetting}
                     submitSetting={submitSetting}
                     fetchChats={fetchChats}
@@ -131,24 +149,22 @@ describe('<TicketAssignment/>', () => {
             )
 
             const state = {
+                ...defaultState,
                 unassignOnReply: false,
-                assignmentChannels: [
-                    TicketChannels.CHAT,
-                    TicketChannels.FACEBOOK_MESSENGER,
-                ],
-                autoAssignToTeams: false,
             }
 
-            component.setState(state, async () => {
+            const mockCallback = async () => {
                 await component.instance()._onSubmit({
-                    preventDefault: () => {},
-                })
+                    preventDefault: _noop,
+                } as unknown as SyntheticEvent)
 
                 expect(submitSetting.mock.calls).toMatchSnapshot()
                 expect(fetchChats).toHaveBeenCalled()
 
                 done()
-            })
+            }
+
+            component.setState(state, mockCallback as unknown as () => void)
         })
 
         it(
@@ -157,8 +173,9 @@ describe('<TicketAssignment/>', () => {
             (done) => {
                 const submitSetting = jest.fn(() => Promise.resolve())
                 const fetchChats = jest.fn()
-                const component = shallow(
+                const component = shallow<TicketAssignmentContainer>(
                     <TicketAssignmentContainer
+                        {...minProps}
                         ticketAssignmentSettings={
                             autoAssignToTeamsEnabledSetting
                         }
@@ -168,21 +185,24 @@ describe('<TicketAssignment/>', () => {
                 )
 
                 const state = {
+                    ...defaultState,
                     unassignOnReply: false,
-                    assignmentChannels: [TicketChannels.CHAT],
                     autoAssignToTeams: true,
+                    assignmentChannels: [TicketChannel.Chat],
                 }
 
-                component.setState(state, async () => {
+                const mockCallback = async () => {
                     await component.instance()._onSubmit({
-                        preventDefault: () => {},
-                    })
+                        preventDefault: _noop,
+                    } as unknown as SyntheticEvent)
 
                     expect(submitSetting.mock.calls).toMatchSnapshot()
                     expect(fetchChats).toHaveBeenCalled()
 
                     done()
-                })
+                }
+
+                component.setState(state, mockCallback as unknown as () => void)
             }
         )
 
@@ -192,8 +212,9 @@ describe('<TicketAssignment/>', () => {
             (done) => {
                 const submitSetting = jest.fn(() => Promise.resolve())
                 const fetchChats = jest.fn()
-                const component = shallow(
+                const component = shallow<TicketAssignmentContainer>(
                     <TicketAssignmentContainer
+                        {...minProps}
                         ticketAssignmentSettings={
                             autoAssignToTeamsDisabledSetting
                         }
@@ -203,21 +224,23 @@ describe('<TicketAssignment/>', () => {
                 )
 
                 const state = {
+                    ...defaultState,
                     unassignOnReply: false,
-                    assignmentChannels: [TicketChannels.CHAT],
-                    autoAssignToTeams: false,
+                    assignmentChannels: [TicketChannel.Chat],
                 }
 
-                component.setState(state, async () => {
+                const mockCallback = async () => {
                     await component.instance()._onSubmit({
-                        preventDefault: () => {},
-                    })
+                        preventDefault: _noop,
+                    } as unknown as SyntheticEvent)
 
                     expect(submitSetting.mock.calls).toMatchSnapshot()
                     expect(fetchChats).not.toHaveBeenCalled()
 
                     done()
-                })
+                }
+
+                component.setState(state, mockCallback as unknown as () => void)
             }
         )
     })
@@ -228,9 +251,7 @@ describe('<TicketAssignment/>', () => {
                 'unchecked by default, because there is no account setting for assignment',
             () => {
                 const component = shallow(
-                    <TicketAssignmentContainer
-                        ticketAssignmentSettings={fromJS({})}
-                    />
+                    <TicketAssignmentContainer {...minProps} />
                 )
 
                 expect(component).toMatchSnapshot()
@@ -240,6 +261,7 @@ describe('<TicketAssignment/>', () => {
         it('should render the "Unassign on replies" checkbox checked because the setting Unassign replies is enabled', () => {
             const component = shallow(
                 <TicketAssignmentContainer
+                    {...minProps}
                     ticketAssignmentSettings={unassignOnReplyEnabledSetting}
                 />
             )
@@ -253,6 +275,7 @@ describe('<TicketAssignment/>', () => {
             () => {
                 const component = shallow(
                     <TicketAssignmentContainer
+                        {...minProps}
                         ticketAssignmentSettings={
                             unassignOnReplyDisabledSetting
                         }
@@ -266,6 +289,7 @@ describe('<TicketAssignment/>', () => {
         it('should render the "Auto assign" checkbox checked because the setting "Auto assign" is enabled', () => {
             const component = shallow(
                 <TicketAssignmentContainer
+                    {...minProps}
                     ticketAssignmentSettings={autoAssignToTeamsEnabledSetting}
                 />
             )
@@ -276,6 +300,7 @@ describe('<TicketAssignment/>', () => {
         it('should render the "Auto assign" checkbox unchecked because the setting "Auto assign" is disabled', () => {
             const component = shallow(
                 <TicketAssignmentContainer
+                    {...minProps}
                     ticketAssignmentSettings={autoAssignToTeamsDisabledSetting}
                 />
             )
@@ -286,6 +311,7 @@ describe('<TicketAssignment/>', () => {
         it('should render the "Save changes" button loading and disabled because the setting are being saved', (done) => {
             const component = shallow(
                 <TicketAssignmentContainer
+                    {...minProps}
                     ticketAssignmentSettings={unassignOnReplyDisabledSetting}
                 />
             )
@@ -304,6 +330,7 @@ describe('<TicketAssignment/>', () => {
 
             const component = shallow(
                 <TicketAssignmentContainer
+                    {...minProps}
                     ticketAssignmentSettings={settings}
                 />
             )

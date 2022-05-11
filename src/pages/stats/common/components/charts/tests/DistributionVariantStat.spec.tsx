@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import DistributionVariantStat from '../DistributionVariantStat.tsx'
+import DistributionVariantStat from '../DistributionVariantStat'
 
 describe('DistributionVariantStat', () => {
     it('should render a distribution chart', () => {

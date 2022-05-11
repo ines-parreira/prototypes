@@ -2,7 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import DistributionKeyMetricStat from '../KeyMetricStat/DistributionKeyMetricStat.tsx'
+import DistributionKeyMetricStat from '../KeyMetricStat/DistributionKeyMetricStat'
 
 describe('DistributionKeyMetricStat', () => {
     it('should render a distribution chart', () => {

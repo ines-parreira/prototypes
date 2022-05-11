@@ -29,7 +29,7 @@ type State = {
 }
 
 export class TicketAssignmentContainer extends Component<Props, State> {
-    state = {
+    state: State = {
         isLoading: false,
         unassignOnReply: true,
         autoAssignToTeams: false,
