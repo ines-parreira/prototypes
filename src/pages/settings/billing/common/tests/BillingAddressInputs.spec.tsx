@@ -2,12 +2,23 @@ import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import produce from 'immer'
 
+import {countriesRequiringState} from 'config/countries'
+
 import BillingAddressInputs from '../BillingAddressInputs'
 
-jest.mock('../../../../../config/countries.json', () => [
-    {label: 'France', value: 'FR'},
-    {label: 'United States', value: 'US'},
-])
+jest.mock('config/countries', () => {
+    const countryConfig = jest.requireActual('config/countries')
+    return {
+        ...countryConfig,
+        countries: [
+            {label: 'France', value: 'FR'},
+            {
+                label: 'United States',
+                value: 'US',
+            },
+        ],
+    } as unknown
+})
 
 describe('<BillingAddressInputs />', () => {
     const minProps: ComponentProps<typeof BillingAddressInputs> = {
@@ -39,18 +50,21 @@ describe('<BillingAddressInputs />', () => {
         expect(container).toMatchSnapshot()
     })
 
-    it('should render the state input when the selected country is US', () => {
-        const {getByPlaceholderText} = render(
-            <BillingAddressInputs
-                {...minProps}
-                value={produce(minProps.value, (nextValue) => {
-                    nextValue.shipping.address.country = 'US'
-                })}
-            />
-        )
+    it.each(countriesRequiringState)(
+        'should render the state input when the selected country is %s',
+        (country) => {
+            const {getByPlaceholderText} = render(
+                <BillingAddressInputs
+                    {...minProps}
+                    value={produce(minProps.value, (nextValue) => {
+                        nextValue.shipping.address.country = country
+                    })}
+                />
+            )
 
-        expect(getByPlaceholderText('CA')).toBeTruthy()
-    })
+            expect(getByPlaceholderText('CA')).toBeTruthy()
+        }
+    )
 
     it('should call onChange when updating a value', () => {
         const {getByPlaceholderText} = render(

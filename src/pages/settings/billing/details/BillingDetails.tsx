@@ -8,9 +8,9 @@ import {fetchContact} from 'state/billing/actions'
 import {getContact} from 'state/billing/selectors'
 import Loader from 'pages/common/components/Loader/Loader'
 import {RootState} from 'state/types'
+import {countries} from 'config/countries'
 
 import BillingHeader from '../common/BillingHeader'
-import countries from '../../../../config/countries.json'
 
 import css from './BillingDetails.less'
 

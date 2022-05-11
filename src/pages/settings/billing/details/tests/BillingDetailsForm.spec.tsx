@@ -8,10 +8,19 @@ import {RootState} from 'state/types'
 
 import {BillingDetailsFormContainer} from '../BillingDetailsForm'
 
-jest.mock('../../../../../config/countries.json', () => [
-    {label: 'France', value: 'FR'},
-    {label: 'United States', value: 'US'},
-])
+jest.mock('config/countries', () => {
+    const countryConfig = jest.requireActual('config/countries')
+    return {
+        ...countryConfig,
+        countries: [
+            {label: 'France', value: 'FR'},
+            {
+                label: 'United States',
+                value: 'US',
+            },
+        ],
+    } as unknown
+})
 
 describe('BillingDetailsForm component', () => {
     const mockStore = configureMockStore([thunk])

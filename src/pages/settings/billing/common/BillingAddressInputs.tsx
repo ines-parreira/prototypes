@@ -2,7 +2,10 @@ import React, {useMemo} from 'react'
 import produce from 'immer'
 import classnames from 'classnames'
 
-import untypedCountries from 'config/countries.json'
+import {
+    countriesRequiringState,
+    countries as untypedCountries,
+} from 'config/countries'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import InputField from 'pages/common/forms/input/InputField'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
@@ -19,8 +22,8 @@ type Props = {
 }
 
 export default function BillingAddressInputs({onChange, value}: Props) {
-    const isCountryUnitedStates = useMemo(
-        () => value.shipping.address.country === 'US',
+    const isStateRequired = useMemo(
+        () => countriesRequiringState.includes(value.shipping.address.country),
         [value]
     )
     const handleFormChange = (cb: (nextForm: BillingContact) => void) => {
@@ -151,7 +154,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
                     isRequired
                     value={value.shipping.address.city}
                 />
-                {isCountryUnitedStates && (
+                {isStateRequired && (
                     <InputField
                         className={css.inputRow}
                         label="State"

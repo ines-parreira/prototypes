@@ -11,7 +11,7 @@ import {getCountryCallingCode, CountryCode} from 'libphonenumber-js'
 import {useUpdateEffect} from 'react-use'
 import classnames from 'classnames'
 
-import countries from 'config/countries.json'
+import {countries} from 'config/countries'
 import Button from 'pages/common/components/button/Button'
 import InputGroup, {
     InputGroupContext,
