@@ -28,7 +28,7 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/self-service/shopify/myStore1/preferences"
+              to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
             >
               myStore1
             </a>
@@ -207,7 +207,7 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/self-service/shopify/myStore1/preferences"
+              to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
             >
               myStore1
             </a>

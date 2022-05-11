@@ -28,7 +28,7 @@ exports[`<ReturnsPolicyView /> render() should render the select field 1`] = `
             class="breadcrumb-item"
           >
             <a
-              to="/app/settings/self-service/shopify/myStore1/preferences"
+              to="/app/settings/self-service/shopify/myStore1/preferences/order-management"
             >
               myStore1
             </a>

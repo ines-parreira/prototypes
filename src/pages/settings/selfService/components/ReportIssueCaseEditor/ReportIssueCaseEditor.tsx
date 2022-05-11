@@ -266,7 +266,7 @@ const ReportIssueCaseEditor: ComponentType = () => {
                         </BreadcrumbItem>
                         <BreadcrumbItem>
                             <Link
-                                to={`/app/settings/self-service/${integrationType}/${shopName}/preferences`}
+                                to={`/app/settings/self-service/${integrationType}/${shopName}/preferences/order-management`}
                             >
                                 {shopName}
                             </Link>
