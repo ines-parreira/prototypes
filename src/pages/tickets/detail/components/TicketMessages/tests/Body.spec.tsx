@@ -61,7 +61,7 @@ describe('Body', () => {
     })
     it("should display the Twitter quoted tweet card if there's matching metadata", () => {
         window.IMAGE_PROXY_URL = 'http://proxy-url/'
-        window.IMAGE_PROXY_PUBLIC_SIGN_KEY = 'test-key'
+        window.IMAGE_PROXY_SIGN_KEY = 'test-key'
 
         const quotedTweetTicketMessage = {
             ...defaultMessage,

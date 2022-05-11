@@ -26,7 +26,7 @@ declare global {
         DEVELOPMENT: boolean
         PRODUCTION: boolean
         STAGING: boolean
-        IMAGE_PROXY_PUBLIC_SIGN_KEY: Maybe<string>
+        IMAGE_PROXY_SIGN_KEY: Maybe<string>
         IMAGE_PROXY_URL: string
         // https://github.com/zendesk/sunshine-conversations-core-js/issues/81
         Smooch?: {

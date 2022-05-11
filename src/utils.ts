@@ -378,8 +378,8 @@ export function stripHTML(text: string): Maybe<string> {
 }
 
 const _proxyImageSignedURL = (url: string): string => {
-    if (!window.IMAGE_PROXY_PUBLIC_SIGN_KEY) {
-        throw new Error('window.IMAGE_PROXY_PUBLIC_SIGN_KEY is not defined')
+    if (!window.IMAGE_PROXY_SIGN_KEY) {
+        throw new Error('window.IMAGE_PROXY_SIGN_KEY is not defined')
     }
     //  The "s{signature}" option specifies an optional base64 encoded HMAC used to sign the remote URL in the request.
     // The HMAC key used to verify signatures is provided to the imageproxy server on startup.
@@ -388,7 +388,7 @@ const _proxyImageSignedURL = (url: string): string => {
         's' +
         URLSafeBase64.encode(
             crypto
-                .createHmac('sha256', window.IMAGE_PROXY_PUBLIC_SIGN_KEY)
+                .createHmac('sha256', window.IMAGE_PROXY_SIGN_KEY)
                 .update(url)
                 .digest()
         )

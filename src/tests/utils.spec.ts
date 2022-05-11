@@ -453,7 +453,7 @@ describe('global utils', () => {
     describe('proxifyImages', () => {
         beforeEach(() => {
             window.IMAGE_PROXY_URL = 'http://proxy-url/'
-            window.IMAGE_PROXY_PUBLIC_SIGN_KEY = 'test-key'
+            window.IMAGE_PROXY_SIGN_KEY = 'test-key'
         })
 
         it('should not touch html with not img', () => {
