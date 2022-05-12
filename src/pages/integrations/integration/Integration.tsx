@@ -5,8 +5,12 @@ import {bindActionCreators} from 'redux'
 import {fromJS, List, Map} from 'immutable'
 import {useUpdateEffect, useAsyncFn} from 'react-use'
 
+import {Container} from 'reactstrap'
+import classNames from 'classnames'
+
 import useSearch from 'hooks/useSearch'
 import * as IntegrationsActions from 'state/integrations/actions'
+import {getCurrentPlan} from 'state/billing/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {IntegrationType} from 'models/integration/types'
@@ -17,7 +21,9 @@ import {
 } from 'state/integrations/selectors'
 import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
 import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
+import {AccountFeature} from 'state/currentAccount/types'
 import {compare} from 'utils'
+import {isFeatureEnabled} from 'utils/account'
 import useAppDispatch from 'hooks/useAppDispatch'
 
 import history from '../../history'
@@ -128,6 +134,7 @@ export const IntegrationDetail = ({
     currentUser,
     getRedirectUri,
     integrations,
+    currentPlan,
 }: ConnectedProps<typeof connector>) => {
     const {extra, integrationId, integrationType, subId} = useParams<{
         extra: string
@@ -644,6 +651,22 @@ export const IntegrationDetail = ({
             )
 
         case IntegrationType.Twitter:
+            if (
+                !currentPlan ||
+                !isFeatureEnabled(
+                    currentPlan.features[AccountFeature.TwitterIntegration]
+                )
+            ) {
+                // TODO: This should be replaced with a Paywall component when design available
+                return (
+                    <Container fluid>
+                        <h3 className={classNames('text-center', 'mt-5')}>
+                            Feature not available on your current plan.
+                        </h3>
+                    </Container>
+                )
+            }
+
             if (!!integrationId) {
                 return (
                     <TwitterIntegrationDetail
@@ -733,6 +756,22 @@ export const IntegrationDetail = ({
             )
 
         case IntegrationType.Magento2:
+            if (
+                !currentPlan ||
+                !isFeatureEnabled(
+                    currentPlan.features[AccountFeature.MagentoIntegration]
+                )
+            ) {
+                // TODO: This should be replaced with a Paywall component when design available
+                return (
+                    <Container fluid>
+                        <h3 className={classNames('text-center', 'mt-5')}>
+                            Feature not available on your current plan.
+                        </h3>
+                    </Container>
+                )
+            }
+
             if (!!integrationId) {
                 return (
                     <Magento2IntegrationDetail
@@ -764,6 +803,7 @@ const connector = connect(
             getEligibleShopifyIntegrationsFor(state),
         getRedirectUri: makeGetRedirectUri(state),
         currentUser: state.currentUser,
+        currentPlan: getCurrentPlan(state),
     }),
     (dispatch) => ({
         actions: bindActionCreators(IntegrationsActions, dispatch),

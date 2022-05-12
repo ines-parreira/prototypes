@@ -179,6 +179,30 @@ exports[`<IntegrationDetail /> smooch_inside should render the migration tab of
 </div>
 `;
 
+exports[`<IntegrationDetail /> should display not available message if magento2 integration not included in plan 1`] = `
+<div
+  class="container-fluid"
+>
+  <h3
+    class="text-center mt-5"
+  >
+    Feature not available on your current plan.
+  </h3>
+</div>
+`;
+
+exports[`<IntegrationDetail /> should display not available message if twitter integration not included in plan 1`] = `
+<div
+  class="container-fluid"
+>
+  <h3
+    class="text-center mt-5"
+  >
+    Feature not available on your current plan.
+  </h3>
+</div>
+`;
+
 exports[`<IntegrationDetail /> should render the campaign tab of a specific integration for gorgias_chat 1`] = `
 <div>
   GorgiasChatCampaignDetail
