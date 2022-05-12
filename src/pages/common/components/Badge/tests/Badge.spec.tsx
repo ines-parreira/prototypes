@@ -3,7 +3,7 @@ import {render} from '@testing-library/react'
 
 import Badge, {ColorType} from '../Badge'
 
-describe('<CheckBox />', () => {
+describe('<Badge />', () => {
     it('should render a badge', () => {
         const {container} = render(<Badge>Shopify</Badge>)
 

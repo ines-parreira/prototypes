@@ -8,6 +8,7 @@ import React, {
 import classnames from 'classnames'
 
 import useId from 'hooks/useId'
+import Spinner from 'pages/common/components/Spinner'
 
 import Caption from './Caption/Caption'
 import Label from './Label/Label'
@@ -74,29 +75,11 @@ const ToggleInput = ({
                 />
                 <div className={css.slider} />
                 {isLoading && (
-                    <svg
+                    <Spinner
                         className={classnames(css.spinner, {
-                            [css.left]: isToggled,
+                            [css.spinnerLeft]: isToggled,
                         })}
-                        viewBox="0 0 20 20"
-                    >
-                        <circle
-                            className={css.dot}
-                            cx="10"
-                            cy="10"
-                            r="6"
-                            fill="none"
-                            strokeWidth="2"
-                        />
-                        <circle
-                            className={css.circle}
-                            cx="10"
-                            cy="10"
-                            r="6"
-                            fill="none"
-                            strokeWidth="2"
-                        />
-                    </svg>
+                    />
                 )}
                 {children}
             </Label>

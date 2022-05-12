@@ -1,0 +1,56 @@
+@import '~css/new/colors';
+@import '~css/typography';
+
+:local {
+    .spinner {
+        :global {
+            @keyframes rotate {
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            @keyframes dash {
+                0% {
+                    stroke-dasharray: 0, 60;
+                    stroke-dashoffset: 0;
+                }
+                50% {
+                    stroke-dasharray: 33, 60;
+                    stroke-dashoffset: -13;
+                }
+                100% {
+                    stroke-dasharray: 50, 60;
+                    stroke-dashoffset: -37;
+                }
+            }
+            animation: rotate 1.4s linear infinite;
+        }
+
+        &.dark {
+            color: @modern-neutral-neutral-5;
+        }
+
+        &.gloom {
+            color: @modern-neutral-neutral-4;
+        }
+
+        &.light {
+            color: @modern-neutral-neutral-0;
+        }
+
+        .dot {
+            stroke: currentColor;
+            stroke-linecap: round;
+            opacity: 0.9;
+            :global {
+                animation: dash 2.5s ease-in-out infinite;
+            }
+        }
+
+        .circle {
+            stroke: currentColor;
+            opacity: 0.4;
+        }
+    }
+}

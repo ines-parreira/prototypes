@@ -6,8 +6,8 @@ import React, {
     useContext,
 } from 'react'
 import classnames from 'classnames'
-import {Spinner} from 'reactstrap'
 
+import Spinner from 'pages/common/components/Spinner'
 import {
     GroupPositionContext,
     GroupContext,
@@ -73,7 +73,7 @@ const Button = forwardRef(function (
                 type={type}
                 ref={ref}
             >
-                {isLoading && <Spinner className={css.spinner} />}
+                {isLoading && <Spinner color="gloom" className={css.spinner} />}
                 {children}
             </button>
         </ButtonContext.Provider>

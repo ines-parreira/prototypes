@@ -6,16 +6,35 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
   disabled=""
   type="button"
 >
-  <div
-    class="spinner spinner-border"
+  <svg
+    class="spinner gloom spinner"
+    preserveAspectRatio="xMidYMid meet"
     role="status"
+    viewBox="0 0 20 20"
+    width="100%"
   >
+    <circle
+      class="dot"
+      cx="10"
+      cy="10"
+      fill="none"
+      r="6"
+      stroke-width="2"
+    />
+    <circle
+      class="circle"
+      cx="10"
+      cy="10"
+      fill="none"
+      r="6"
+      stroke-width="2"
+    />
     <span
       class="sr-only"
     >
       Loading...
     </span>
-  </div>
+  </svg>
   Continue
 </button>
 `;
@@ -26,16 +45,35 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
   disabled=""
   type="button"
 >
-  <div
-    class="spinner spinner-border"
+  <svg
+    class="spinner gloom spinner"
+    preserveAspectRatio="xMidYMid meet"
     role="status"
+    viewBox="0 0 20 20"
+    width="100%"
   >
+    <circle
+      class="dot"
+      cx="10"
+      cy="10"
+      fill="none"
+      r="6"
+      stroke-width="2"
+    />
+    <circle
+      class="circle"
+      cx="10"
+      cy="10"
+      fill="none"
+      r="6"
+      stroke-width="2"
+    />
     <span
       class="sr-only"
     >
       Loading...
     </span>
-  </div>
+  </svg>
   Continue
 </button>
 `;
@@ -46,16 +84,35 @@ exports[`<ModalContinueButton /> render() should render the Continue button as l
   disabled=""
   type="button"
 >
-  <div
-    class="spinner spinner-border"
+  <svg
+    class="spinner gloom spinner"
+    preserveAspectRatio="xMidYMid meet"
     role="status"
+    viewBox="0 0 20 20"
+    width="100%"
   >
+    <circle
+      class="dot"
+      cx="10"
+      cy="10"
+      fill="none"
+      r="6"
+      stroke-width="2"
+    />
+    <circle
+      class="circle"
+      cx="10"
+      cy="10"
+      fill="none"
+      r="6"
+      stroke-width="2"
+    />
     <span
       class="sr-only"
     >
       Loading...
     </span>
-  </div>
+  </svg>
   <span
     class="full-width"
   >

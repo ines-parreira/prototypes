@@ -287,16 +287,35 @@ exports[`<PhoneIntegrationCreate/> render() should prefill the title field using
             disabled=""
             type="submit"
           >
-            <div
-              class="spinner spinner-border"
+            <svg
+              class="spinner gloom spinner"
+              preserveAspectRatio="xMidYMid meet"
               role="status"
+              viewBox="0 0 20 20"
+              width="100%"
             >
+              <circle
+                class="dot"
+                cx="10"
+                cy="10"
+                fill="none"
+                r="6"
+                stroke-width="2"
+              />
+              <circle
+                class="circle"
+                cx="10"
+                cy="10"
+                fill="none"
+                r="6"
+                stroke-width="2"
+              />
               <span
                 class="sr-only"
               >
                 Loading...
               </span>
-            </div>
+            </svg>
             Add voice integration
           </button>
         </form>
@@ -888,16 +907,35 @@ exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with t
             disabled=""
             type="submit"
           >
-            <div
-              class="spinner spinner-border"
+            <svg
+              class="spinner gloom spinner"
+              preserveAspectRatio="xMidYMid meet"
               role="status"
+              viewBox="0 0 20 20"
+              width="100%"
             >
+              <circle
+                class="dot"
+                cx="10"
+                cy="10"
+                fill="none"
+                r="6"
+                stroke-width="2"
+              />
+              <circle
+                class="circle"
+                cx="10"
+                cy="10"
+                fill="none"
+                r="6"
+                stroke-width="2"
+              />
               <span
                 class="sr-only"
               >
                 Loading...
               </span>
-            </div>
+            </svg>
             Add voice integration
           </button>
         </form>
