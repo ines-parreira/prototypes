@@ -12,6 +12,7 @@ exports[`<AutoCloseSpamModal/> should render the autoclose spam body when automa
     >
       my rule
     </span>
+    tags
   </div>
   <div
     class="container"
@@ -68,6 +69,11 @@ exports[`<AutoCloseSpamModal/> should render the autoclose spam body when automa
         <p>
           All the auto closed tickets are tagged with an "auto-close" and "non-support-related" tags. This will allow you to find them easily in case you want to monitor which tickets the rule is closing.
         </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        view creation checkbox
       </div>
     </div>
     <div
@@ -201,6 +207,11 @@ exports[`<AutoCloseSpamModal/> should render the autoclose spam body when automa
         <p>
           All the auto closed tickets are tagged with an "auto-close" and "non-support-related" tags. This will allow you to find them easily in case you want to monitor which tickets the rule is closing.
         </p>
+      </div>
+      <div
+        class="descriptionBlock"
+      >
+        view creation checkbox
       </div>
     </div>
     <div

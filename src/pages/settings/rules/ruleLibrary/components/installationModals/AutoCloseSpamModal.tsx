@@ -13,6 +13,7 @@ export const AutoCloseSpamModal = ({
     triggeredCount,
     isBehindPaywall,
     renderTags,
+    viewCreationCheckbox,
 }: ManagedRuleModalProps) => {
     type FakeTicketProps = {
         title: string
@@ -109,6 +110,9 @@ export const AutoCloseSpamModal = ({
                             will allow you to find them easily in case you want
                             to monitor which tickets the rule is closing.
                         </p>
+                    </div>
+                    <div className={css.descriptionBlock}>
+                        {viewCreationCheckbox()}
                     </div>
                 </div>
                 <div className={classnames(css.example, css.bordered)}>
