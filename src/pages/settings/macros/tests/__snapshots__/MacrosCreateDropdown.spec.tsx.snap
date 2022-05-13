@@ -2,7 +2,7 @@
 
 exports[`<MacrosCreateDropdown/> should render 1`] = `
 <div
-  class="mr-2 btn-group"
+  class="mr-2 h-100 btn-group"
 >
   <button
     class="btn btn-primary"

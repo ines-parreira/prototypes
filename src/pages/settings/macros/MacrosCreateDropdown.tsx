@@ -55,7 +55,7 @@ export function MacrosCreateDropdown(): JSX.Element {
 
     return (
         <>
-            <UncontrolledButtonDropdown className="mr-2">
+            <UncontrolledButtonDropdown className="mr-2 h-100">
                 <Button
                     color="primary"
                     onClick={() => {
