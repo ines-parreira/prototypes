@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automation add-on is subscribed 1`] = `
+<div
+  class="managedRule autoReplyFAQ"
+>
+  <div
+    class="container"
+  >
+    <div
+      class="description"
+    >
+      <div
+        class="count"
+      >
+        <div
+          class="targetTitle"
+        >
+          target up to
+        </div>
+        <div
+          class="targetValue"
+        >
+          <span
+            class="bold"
+          >
+            10
+          </span>
+           
+          tickets/month
+        </div>
+      </div>
+      <div
+        class="descriptionBlock"
+      />
+      <div
+        class="descriptionBlock"
+      >
+        checkbox
+      </div>
+      <div
+        class="example"
+      >
+        <div
+          class="exampleContainer bordered"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<AutoReplyFAQModal/> should render the autoclose spam body when automation add-on is subscribed 2`] = `
+<div
+  class="managedRule autoReplyFAQ bordered"
+>
+  <div
+    class="titleWrapper"
+  >
+    <span
+      class="title"
+    >
+      my rule
+    </span>
+    tags
+  </div>
+  <div
+    class="container"
+  >
+    <div
+      class="description"
+    >
+      <div
+        class="count"
+      >
+        <div
+          class="targetTitle"
+        >
+          target up to
+        </div>
+        <div
+          class="targetValue"
+        >
+          <span
+            class="bold"
+          >
+            10
+          </span>
+           
+          tickets/month
+        </div>
+      </div>
+      <div
+        class="descriptionBlock"
+      />
+      <div
+        class="descriptionBlock"
+      >
+        checkbox
+      </div>
+      <div
+        class="example"
+      >
+        <div
+          class="exampleContainer bordered"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

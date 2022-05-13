@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
+<div
+  class="container autoReplyWismo"
+>
+  <div
+    class="descriptionWrapper"
+  >
+    <h3>
+      Rule description
+    </h3>
+    <p>
+      <p>
+        Link to view
+      </p>
+    </p>
+    <div
+      class="listWrapper"
+    >
+      <h4>
+        Exclusion email list
+      </h4>
+      <p>
+        Emails in the following list will never be replied to by this auto reply rule.
+      </p>
+      <div
+        class="MultiSelectField blockList"
+      >
+        <div
+          class="container"
+        >
+          <div
+            class="inputContainer multiSelectOptionField-dropdown"
+          >
+            <div
+              class="dropdown"
+            >
+              <div
+                aria-expanded="false"
+                aria-haspopup="true"
+                class=""
+                data-toggle="dropdown"
+              >
+                <input
+                  class="input"
+                  placeholder="Add items..."
+                  value=""
+                />
+              </div>
+              <div
+                aria-hidden="true"
+                class="options dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                <h6
+                  class="dropdown-header"
+                  tabindex="-1"
+                >
+                  No result
+                </h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="demo"
+    />
+  </div>
+</div>
+`;

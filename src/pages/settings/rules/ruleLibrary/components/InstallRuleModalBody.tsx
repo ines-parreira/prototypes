@@ -10,6 +10,7 @@ import {RuleItemActions} from '../../types'
 import {DefaultModal} from './installationModals/DefaultModal'
 import {AutoCloseSpamModal} from './installationModals/AutoCloseSpamModal'
 import {AutoReplyWismoModal} from './installationModals/AutoReplyWismoModal'
+import {AutoReplyFAQModal} from './installationModals/AutoReplyFAQModal'
 
 type Props = {
     handleRule: RuleItemActions
@@ -29,9 +30,11 @@ export const InstallRuleModalBody = (props: Props) => {
     const installationModals: {
         [ManagedRulesSlugs.AutoCloseSpam]: typeof AutoCloseSpamModal
         [ManagedRulesSlugs.AutoReplyWismo]: typeof AutoReplyWismoModal
+        [ManagedRulesSlugs.AutoReplyFAQ]: typeof AutoReplyFAQModal
     } = {
         [ManagedRulesSlugs.AutoCloseSpam]: AutoCloseSpamModal,
         [ManagedRulesSlugs.AutoReplyWismo]: AutoReplyWismoModal,
+        [ManagedRulesSlugs.AutoReplyFAQ]: AutoReplyFAQModal,
     }
 
     const Component =
