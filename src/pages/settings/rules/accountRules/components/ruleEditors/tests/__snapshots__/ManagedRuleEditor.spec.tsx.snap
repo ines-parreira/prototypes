@@ -11,7 +11,9 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
       <h3>
         Rule description
       </h3>
-      <p />
+      <p>
+        Link
+      </p>
       <div
         class="listWrapper"
       >
