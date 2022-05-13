@@ -1,120 +1,182 @@
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {bindActionCreators} from 'redux'
+import React, {useMemo, useState} from 'react'
 import _isString from 'lodash/isString'
-import {List} from 'immutable'
 
-import MultiSelectField from '../../../forms/MultiSelectField'
+import {useDebounce} from 'react-use'
+import {CancelToken} from 'axios'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {TagDraft} from 'state/tags/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {createTag, fetchTags} from 'models/tag/resources'
+import {tagsFetched, tagCreated} from 'state/entities/tags/actions'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import type {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import useCancellableRequest from 'hooks/useCancellableRequest'
 import SelectField from '../../../forms/SelectField/SelectField'
-import * as TagsActions from '../../../../../state/tags/actions'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
-import {RootState} from '../../../../../state/types'
-
-type OwnProps = {
-    value: string[] | string
+type Props = {
+    value?: string[] | string | Option[]
     onChange: (value: string[] | string) => any
-    multiple: boolean
+    multiple?: boolean
     className?: string
     caseInsensitive: boolean
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
-
-export class TagsSelectContainer extends Component<Props> {
-    static defaultProps: Pick<Props, 'value' | 'multiple'> = {
-        value: '',
-        multiple: false,
+export const TagsSelectContainer = ({
+    onChange,
+    caseInsensitive,
+    className,
+    value = '',
+    multiple = false,
+}: Props) => {
+    const tags = useAppSelector((state) =>
+        Object.values(state.entities.tags).filter(
+            (tag) => !tag.deleted_datetime
+        )
+    )
+    const dispatch = useAppDispatch()
+    const [searchTerm, setSearchTerm] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const style = {
+        display: 'inline-block',
     }
+    const options = useMemo(
+        () =>
+            tags
+                .map((tag) => {
+                    return {
+                        label: tag.name,
+                        value: tag.name,
+                    }
+                })
+                .filter((tag) =>
+                    searchTerm !== '' ? tag.value.includes(searchTerm) : true
+                )
+                .slice(0, 30),
+        [tags, searchTerm]
+    )
 
-    _onChange = (newTag: string) => {
-        const {onChange, tags, actions} = this.props
-
-        const existingTagNames = tags
-            .map((tag) => tag!.get('name') as string)
-            .toJS() as string[]
-        if (!existingTagNames.includes(newTag)) {
-            actions.create({name: newTag})
+    const handleCreateTag = async (tag: TagDraft) => {
+        try {
+            const newTag = await createTag(tag)
+            void dispatch(tagCreated(newTag))
+        } catch (err) {
+            void dispatch(
+                notify({
+                    message: 'Could not create tag',
+                    status: NotificationStatus.Error,
+                })
+            )
         }
-
-        onChange(newTag)
     }
 
-    _onMultiChange = (val: string[]) => {
-        const {value, tags, actions, onChange} = this.props
+    const [handleSearchTags] = useCancellableRequest(
+        (cancelToken: CancelToken) => async (val: string) => {
+            setIsLoading(true)
+            try {
+                const searchResults = await fetchTags(
+                    {search: val},
+                    cancelToken
+                )
+                if (searchResults.data.length)
+                    dispatch(tagsFetched(searchResults.data))
+            } catch (err) {
+                void dispatch(
+                    notify({
+                        message: 'Could not create tag',
+                        status: NotificationStatus.Error,
+                    })
+                )
+            } finally {
+                setIsLoading(false)
+            }
+        }
+    )
 
-        const existingTagNames = tags
-            .map((tag) => tag!.get('name') as string)
-            .toJS() as string[]
+    const existingTagNames = useMemo(() => tags.map((tag) => tag.name), [tags])
 
-        val.forEach((newTag) => {
+    const onMultiChange = (tags: Option[] | string[]) => {
+        const formattedTags = tags.map((tag) =>
+            typeof tag === 'string' ? tag : tag.label
+        )
+        formattedTags.forEach((newTag) => {
             if (!existingTagNames.includes(newTag)) {
-                actions.create({name: newTag})
+                void handleCreateTag({name: newTag})
             }
         })
 
-        onChange(_isString(value) ? val.join(',') : val)
+        setSearchTerm('')
+        onChange(_isString(value) ? formattedTags.join(',') : formattedTags)
+    }
+    const _onChange = (newTag: string) => {
+        if (!existingTagNames.includes(newTag)) {
+            void handleCreateTag({name: newTag})
+        }
+
+        setSearchTerm('')
+        onChange(newTag)
     }
 
-    render() {
-        const {multiple, tags, value, className} = this.props
-        const style = {
-            display: 'inline-block',
-        }
-        const options = tags
-            .map((tag) => {
-                return {
-                    label: tag!.get('name'),
-                    value: tag!.get('name'),
-                }
-            })
-            .toJS()
-        let values: string | string[] = value
-
-        if (multiple) {
-            // this component is used to select tags for `add tags` and `set tags` actions
-            // in this case, these functions have a (comma separated) list of tags as a string
-            if (_isString(value)) {
-                values = value.split(',').filter((value) => value !== '')
-            }
-
-            return (
-                <MultiSelectField
-                    allowCustomValues
-                    onChange={this._onMultiChange}
-                    options={options}
-                    plural="tags"
-                    singular="tag"
-                    style={style}
-                    values={values as string[]}
-                    caseInsensitive={this.props.caseInsensitive}
-                    className={className}
-                    dropdownMenu={TagDropdownMenu}
-                />
+    useDebounce(
+        () => {
+            if (!searchTerm) return
+            const matchingTags = existingTagNames.filter(
+                (tag) => tag === searchTerm
             )
-        }
+            if (matchingTags.length === 0) {
+                void handleSearchTags(searchTerm)
+            }
+        },
+        200,
+        [searchTerm]
+    )
 
-        return (
-            <SelectField
-                allowCustomValue
-                options={options}
-                onChange={(value) => this._onChange(value.toString())}
-                placeholder="Add a tag"
-                singular="tag"
-                style={style}
-                value={values as string}
-                className={className}
-            />
-        )
-    }
+    const values = useMemo(() => {
+        if (!multiple) return value as string
+        if (_isString(value)) {
+            return value
+                .split(',')
+                .filter((val) => val !== '')
+                .map(
+                    (value) =>
+                        ({
+                            label: value,
+                            value,
+                        } as Option)
+                )
+        }
+        return value.map((val) => ({label: val, value: val}))
+    }, [multiple, value])
+
+    return multiple ? (
+        <MultiSelectOptionsField
+            allowCustomOptions
+            onChange={onMultiChange}
+            options={options}
+            singular="tag"
+            plural="tags"
+            style={style}
+            selectedOptions={values as Option[]}
+            className={className}
+            dropdownMenu={TagDropdownMenu}
+            onInputChange={setSearchTerm}
+            caseInsensitive={caseInsensitive}
+            loading={isLoading}
+        />
+    ) : (
+        <SelectField
+            allowCustomValue
+            options={options}
+            onChange={(value) => _onChange(value.toString())}
+            placeholder="Add a tag"
+            singular="tag"
+            style={style}
+            value={values as string}
+            className={className}
+            onSearchChange={setSearchTerm}
+        />
+    )
 }
 
-const connector = connect(
-    (state: RootState) => ({
-        tags: state.tags.get('items') as List<Map<any, any>>,
-    }),
-    (dispatch) => ({
-        actions: bindActionCreators(TagsActions, dispatch),
-    })
-)
-
-export default connector(TagsSelectContainer)
+export default TagsSelectContainer

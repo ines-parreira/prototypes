@@ -2,12 +2,11 @@
 
 exports[`<TagsSelect /> should create a new tag 1`] = `
 Array [
-  Object {
-    "tag": Object {
+  Array [
+    Object {
       "name": "new",
     },
-    "type": "CREATE_TAG_START",
-  },
+  ],
 ]
 `;
 
@@ -45,12 +44,11 @@ exports[`<TagsSelect /> should render a single value 1`] = `
 
 exports[`<TagsSelect /> when multiple is set to true should create new tags 1`] = `
 Array [
-  Object {
-    "tag": Object {
+  Array [
+    Object {
       "name": "new",
     },
-    "type": "CREATE_TAG_START",
-  },
+  ],
 ]
 `;
 
@@ -58,7 +56,7 @@ exports[`<TagsSelect /> when multiple is set to true should render array as valu
 <div>
   MultiSelectField Mock
   {
-  "allowCustomValues": true,
+  "allowCustomOptions": true,
   "options": [
     {
       "label": "billing",
@@ -73,16 +71,23 @@ exports[`<TagsSelect /> when multiple is set to true should render array as valu
       "value": "question"
     }
   ],
-  "plural": "tags",
   "singular": "tag",
+  "plural": "tags",
   "style": {
     "display": "inline-block"
   },
-  "values": [
-    "billing",
-    "bugs"
+  "selectedOptions": [
+    {
+      "label": "billing",
+      "value": "billing"
+    },
+    {
+      "label": "bugs",
+      "value": "bugs"
+    }
   ],
-  "caseInsensitive": false
+  "caseInsensitive": false,
+  "loading": false
 }
   <input
     data-testid="on-change-input"
@@ -94,7 +99,7 @@ exports[`<TagsSelect /> when multiple is set to true should render string as val
 <div>
   MultiSelectField Mock
   {
-  "allowCustomValues": true,
+  "allowCustomOptions": true,
   "options": [
     {
       "label": "billing",
@@ -109,16 +114,23 @@ exports[`<TagsSelect /> when multiple is set to true should render string as val
       "value": "question"
     }
   ],
-  "plural": "tags",
   "singular": "tag",
+  "plural": "tags",
   "style": {
     "display": "inline-block"
   },
-  "values": [
-    "billing",
-    "bugs"
+  "selectedOptions": [
+    {
+      "label": "billing",
+      "value": "billing"
+    },
+    {
+      "label": "bugs",
+      "value": "bugs"
+    }
   ],
-  "caseInsensitive": false
+  "caseInsensitive": false,
+  "loading": false
 }
   <input
     data-testid="on-change-input"
