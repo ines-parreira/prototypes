@@ -21,7 +21,7 @@ import RuleRecipeCard from '../RuleRecipeCard'
 
 jest.mock('models/view/resources')
 jest.mock('models/tag/resources', () => {
-    const resource = jest.requireActual('models/section/resources')
+    const resource = jest.requireActual('models/tag/resources')
     return {
         ...resource,
         createTag: jest.fn(),

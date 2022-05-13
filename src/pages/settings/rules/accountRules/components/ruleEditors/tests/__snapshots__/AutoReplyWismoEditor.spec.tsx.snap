@@ -43,11 +43,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
        email with tracking links for the shopper's last 3 orders.
     </p>
     <p>
-      <a
-        to="[object Object]"
-      >
-        You can see tickets closed by this rule anytime using this link
-      </a>
+      Link
     </p>
     <div
       class="listWrapper"

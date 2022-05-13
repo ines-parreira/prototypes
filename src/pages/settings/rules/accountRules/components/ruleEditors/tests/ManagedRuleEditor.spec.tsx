@@ -13,6 +13,10 @@ import {emptyManagedRule} from 'fixtures/rule'
 import ManagedRuleEditor from '../ManagedRuleEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
+jest.mock(
+    'pages/settings/rules/accountRules/components/ruleEditors/LinkToRecipeView',
+    () => () => <>Link</>
+)
 describe('<ManagedRuleEditor/>', () => {
     const minProps: ComponentProps<typeof ManagedRuleEditor> = {
         slug: ManagedRulesSlugs.AutoCloseSpam,

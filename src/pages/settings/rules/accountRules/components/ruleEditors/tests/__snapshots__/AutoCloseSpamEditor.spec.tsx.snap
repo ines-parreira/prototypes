@@ -14,11 +14,7 @@ exports[`<AutoCloseSpamEditor/> should render correctly 1`] = `
     For best results, make sure that this rule is triggering before all other rules by putting it at the top of your rule list.
   </p>
   <p>
-    <a
-      to="[object Object]"
-    >
-      You can see tickets closed by this rule anytime using this link
-    </a>
+    Link
   </p>
   <div
     class="listWrapper"

@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AutoCloseSpamEditor/> should render correctly 1`] = `
+exports[`<LinkToRecipeView/> should render correctly 1`] = `
 <a
-  to="[object Object]"
+  class="link"
+  href="#"
 >
   <p>
     test
