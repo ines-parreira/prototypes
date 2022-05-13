@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<WizardProgress /> should render 1`] = `
+<div
+  class="wrapper"
+>
+  2 out of 3
+</div>
+`;
