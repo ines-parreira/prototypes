@@ -1,5 +1,6 @@
 /// <reference types="@types/segment-analytics" />
 import _isUndefined from 'lodash/isUndefined'
+import notification from 'push.js'
 
 import {devLog} from '../../utils'
 import {isDevelopment} from '../../utils/environment'
@@ -19,12 +20,11 @@ export const logEvent = (event: SegmentEvent, props = {}) => {
     window.analytics.track(event, props)
 }
 
-export const identifyUser = async (user: User) => {
+export const identifyUser = (user: User) => {
     if (window.USER_IMPERSONATED || _isUndefined(window.analytics)) {
         return
     }
     const domain = window.location.hostname.split('.')[0]
-    const notificationPermission = await Notification.requestPermission()
 
     window.analytics.identify(window.SEGMENT_ANALYTICS_USER_ID, {
         gorgias_subdomain: domain,
@@ -33,7 +33,7 @@ export const identifyUser = async (user: User) => {
         country: user.country,
         role: user.roles[0].name,
         created_at: user.created_datetime,
-        notification_permission: notificationPermission,
+        notification_permission: notification.Permission.get(),
     })
 }
 

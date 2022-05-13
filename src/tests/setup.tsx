@@ -93,6 +93,10 @@ history.push = jest.fn()
 
 // Mock of the PushJS API (browser notification)
 class mockPushJS {
+    Permission = {
+        get: () => 'granted',
+    }
+
     notifications: Record<string, unknown>[]
 
     constructor() {
@@ -278,9 +282,3 @@ globalThis.analytics = {
     use: jest.fn(),
     user: jest.fn(),
 }
-
-// Mock Notification API
-globalThis.Notification = {
-    requestPermission: jest.fn().mockResolvedValue('granted'),
-    permission: 'granted',
-} as unknown as jest.Mocked<typeof Notification>
