@@ -5,10 +5,9 @@ import {billingState} from 'fixtures/billing'
 import {basicPlan} from 'fixtures/subscriptionPlan'
 import {account} from 'fixtures/account'
 
-import {getEquivalentAutomationPlanId} from 'models/billing/utils'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 
-const automationPlanId = getEquivalentAutomationPlanId(basicPlan.id)
+const automationPlanId = basicPlan.automation_addon_equivalent_plan!
 
 export const defaultState = {
     currentAccount: fromJS({

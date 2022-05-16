@@ -8,7 +8,6 @@ import configureMockStore from 'redux-mock-store'
 import {account} from '../../../../../fixtures/account'
 import {billingState} from '../../../../../fixtures/billing'
 import {basicPlan} from '../../../../../fixtures/subscriptionPlan'
-import {getEquivalentAutomationPlanId} from '../../../../../models/billing/utils'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 
 import AutomationSubscriptionModal from '../AutomationSubscriptionModal'
@@ -16,7 +15,7 @@ import AutomationSubscriptionModal from '../AutomationSubscriptionModal'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<AutomationSubscriptionModal />', () => {
-    const automationPlanId = getEquivalentAutomationPlanId(basicPlan.id)
+    const automationPlanId = basicPlan.automation_addon_equivalent_plan!
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS({
             ...account,

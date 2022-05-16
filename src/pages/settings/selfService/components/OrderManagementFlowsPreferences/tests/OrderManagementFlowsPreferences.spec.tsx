@@ -17,7 +17,6 @@ import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
 import {basicPlan} from 'fixtures/subscriptionPlan'
-import {getEquivalentAutomationPlanId} from 'models/billing/utils'
 import {OrderManagementFlowsPreferences} from '../OrderManagementFlowsPreferences'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -76,7 +75,7 @@ const createSelfServiceConfigurationFixtures = (
 }
 
 describe('<OrderManagementFlowsPreferences/>', () => {
-    const automationPlanId = getEquivalentAutomationPlanId(basicPlan.id)
+    const automationPlanId = basicPlan.automation_addon_equivalent_plan!
     const shopifyIntegrations = createShopifyIntegrationFixtures(4)
     const selfServiceConfigurations = createSelfServiceConfigurationFixtures(4)
 

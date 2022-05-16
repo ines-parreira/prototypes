@@ -1,10 +1,6 @@
 import {createSelector} from 'reselect'
 import {fromJS, Map, List} from 'immutable'
 
-import {
-    getEquivalentAutomationPlanId,
-    getEquivalentRegularPlanId,
-} from '../../models/billing/utils'
 import {Plan} from '../../models/billing/types'
 import {CurrentAccountState} from '../currentAccount/types'
 import {getCurrentAccountState} from '../currentAccount/selectors'
@@ -111,30 +107,34 @@ export const getHasAutomationAddOn = createSelector<
 
 export const getEquivalentAutomationCurrentPlan = createSelector<
     RootState,
-    Map<any, any> | undefined,
-    Map<any, any>,
-    string | undefined
->(
-    DEPRECATED_getPlans,
-    currentPlanId,
-    (plans, id) =>
-        (id != null &&
-            (plans.get(getEquivalentAutomationPlanId(id)) as Map<any, any>)) ||
-        undefined
-)
+    Plan | undefined,
+    Plan[],
+    Plan | undefined
+>(getPlans, getCurrentPlan, (plans, currentPlan) => {
+    return currentPlan
+        ? !currentPlan.automation_addon_included
+            ? plans.find(
+                  (plan) =>
+                      plan.id ===
+                      currentPlan['automation_addon_equivalent_plan']
+              )
+            : currentPlan
+        : undefined
+})
 
 export const getEquivalentRegularCurrentPlan = createSelector<
     RootState,
     Map<any, any> | undefined,
     Map<any, any>,
-    string | undefined
->(
-    DEPRECATED_getPlans,
-    currentPlanId,
-    (plans, id) =>
-        (id != null &&
-            (plans.get(getEquivalentRegularPlanId(id)) as Map<any, any>)) ||
-        undefined
+    Plan | undefined
+>(DEPRECATED_getPlans, getCurrentPlan, (plans, currentPlan) =>
+    currentPlan
+        ? currentPlan.automation_addon_included
+            ? (plans.get(
+                  currentPlan['automation_addon_equivalent_plan']
+              ) as Map<any, any>)
+            : (fromJS(currentPlan) as Map<any, any>)
+        : undefined
 )
 
 export const getAddOnAutomationAmountCurrentPlan = createSelector<

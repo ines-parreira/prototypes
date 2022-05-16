@@ -4,11 +4,10 @@ import classnames from 'classnames'
 import {useAsyncFn} from 'react-use'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {getEquivalentRegularPlanId} from 'models/billing/utils'
 import {setFutureSubscriptionPlan} from 'state/billing/actions'
 import {
-    DEPRECATED_getCurrentPlan,
     getEquivalentAutomationCurrentPlan,
+    getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
 } from 'state/billing/selectors'
 import {updateSubscription} from 'state/currentAccount/actions'
@@ -63,7 +62,7 @@ const AutomationSubscriptionModal = ({
     fade = true,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
+    const regularCurrentPlan = useAppSelector(getEquivalentRegularCurrentPlan)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const automationPlan = useAppSelector(getEquivalentAutomationCurrentPlan)
     const isSelfServeLegacy = useAppSelector(hasAutomationLegacyFeatures)
@@ -98,15 +97,16 @@ const AutomationSubscriptionModal = ({
 
     const onConfirm = () => {
         automationPlan &&
-            handleSubscriptionUpdate(automationPlan.get('id')).then(
+            handleSubscriptionUpdate(automationPlan.id).then(
                 () => onSubscribe && onSubscribe()
             )
     }
 
     const handleUnsubscribeClick = () => {
-        void handleSubscriptionUpdate(
-            getEquivalentRegularPlanId(currentPlan.get('id') as string)
-        )
+        regularCurrentPlan &&
+            void handleSubscriptionUpdate(
+                regularCurrentPlan.get('id') as string
+            )
     }
 
     return (

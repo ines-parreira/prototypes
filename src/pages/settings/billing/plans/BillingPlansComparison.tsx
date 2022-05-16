@@ -15,7 +15,6 @@ import {
     DEPRECATED_getPlans,
 } from 'state/billing/selectors'
 import {PlanInterval} from 'models/billing/types'
-import {getEquivalentAutomationPlanId} from 'models/billing/utils'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {Subscription} from 'state/billing/types'
@@ -107,10 +106,15 @@ export default function BillingPlansComparison({
             [onSubscriptionChanged]
         )
 
-    const onPlanChange = (planId: string, isAutomationChecked: boolean) => {
-        const id = isAutomationChecked
-            ? getEquivalentAutomationPlanId(planId)
-            : planId
+    const onPlanChange = (
+        planId: string,
+        automationAddonEquivalentPlan: string | null,
+        isAutomationChecked: boolean
+    ) => {
+        const id =
+            isAutomationChecked && automationAddonEquivalentPlan
+                ? automationAddonEquivalentPlan
+                : planId
         void handleSubscriptionUpdate(id)
     }
 
@@ -173,6 +177,9 @@ export default function BillingPlansComparison({
                                 onPlanChange={(isAutomationChecked) =>
                                     onPlanChange(
                                         displayedCurrentPlan.get('id'),
+                                        displayedCurrentPlan.get(
+                                            'automation_addon_equivalent_plan'
+                                        ),
                                         isAutomationChecked
                                     )
                                 }
@@ -210,6 +217,9 @@ export default function BillingPlansComparison({
                                         onPlanChange={(isAutomationChecked) =>
                                             onPlanChange(
                                                 planId,
+                                                plan.get(
+                                                    'automation_addon_equivalent_plan'
+                                                ),
                                                 isAutomationChecked
                                             )
                                         }
