@@ -1,10 +1,10 @@
 import {fromJS, List, Map} from 'immutable'
 import {createSelector} from 'reselect'
 
+import {DEFAULT_PREFERENCES} from 'config'
+import {UserSetting, UserSettingType} from 'config/types/user'
+import {createImmutableSelector} from 'utils'
 import {RootState} from '../types'
-import {DEFAULT_PREFERENCES} from '../../config'
-import {UserSetting, UserSettingType} from '../../config/types/user'
-import {createImmutableSelector} from '../../utils'
 
 import {CurrentUserState} from './types'
 

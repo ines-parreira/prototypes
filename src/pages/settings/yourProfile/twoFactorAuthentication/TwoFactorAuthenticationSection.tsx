@@ -1,21 +1,41 @@
-import React, {useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import classnames from 'classnames'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import css from 'pages/settings/settings.less'
-import {is2FAEnforcedSelector} from 'state/currentAccount/selectors'
-import {has2FaEnabled as has2FaEnabledSelector} from '../../../../state/currentUser/selectors'
+import {
+    getTwoFAEnforcedDatetime,
+    is2FAEnforcedSelector,
+} from 'state/currentAccount/selectors'
+import TwoFactorAuthenticationModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
+import {has2FaEnabled as has2FaEnabledSelector} from 'state/currentUser/selectors'
+import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
+import useSearch from 'hooks/useSearch'
 import TwoFactorAuthenticationDisableModal from './TwoFactorAuthenticationDisableModal'
-import TwoFactorAuthenticationModal from './TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 
 export default function TwoFactorAuthenticationSection() {
-    const [isEnableModalOpen, setIsEnableModalOpen] = useState(false)
+    const [is2FASetupModalOpen, setIs2FASetupModalOpen] = useState(false)
     const [isDisableModalOpen, setIsDisableModalOpen] = useState(false)
 
-    const is2FaEnforced = useAppSelector(is2FAEnforcedSelector)
-    const has2FaEnabled = useAppSelector(has2FaEnabledSelector)
+    const shouldEnforce2FASetupModal =
+        useSearch<{
+            enforce_2fa_setup_modal?: string
+        }>().enforce_2fa_setup_modal?.toLowerCase() === 'true'
+
+    const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
+    const is2FAEnforced = useAppSelector(is2FAEnforcedSelector)
+    const has2FAEnabled = useAppSelector(has2FaEnabledSelector)
+    const is2FARequired = useMemo(() => {
+        return check2FARequired(twoFAEnforcedDatetime, has2FAEnabled)
+    }, [twoFAEnforcedDatetime, has2FAEnabled])
+
+    useEffect(() => {
+        if (shouldEnforce2FASetupModal && !has2FAEnabled) {
+            setIs2FASetupModalOpen(true)
+        }
+    }, [shouldEnforce2FASetupModal, has2FAEnabled])
 
     return (
         <>
@@ -25,9 +45,9 @@ export default function TwoFactorAuthenticationSection() {
                 Two-Factor Authentication (2FA)
                 <Badge
                     className="ml-3 "
-                    type={has2FaEnabled ? ColorType.Success : ColorType.Error}
+                    type={has2FAEnabled ? ColorType.Success : ColorType.Error}
                 >
-                    {has2FaEnabled ? 'Enabled' : 'Disabled'}
+                    {has2FAEnabled ? 'Enabled' : 'Disabled'}
                 </Badge>
             </div>
             <div className={classnames('body-regular', css.mb16)}>
@@ -38,13 +58,15 @@ export default function TwoFactorAuthenticationSection() {
             <Button
                 type="button"
                 className="mr-2"
-                intent={has2FaEnabled ? 'secondary' : 'primary'}
-                onClick={() => setIsEnableModalOpen(true)}
+                intent={has2FAEnabled ? 'secondary' : 'primary'}
+                onClick={() => {
+                    setIs2FASetupModalOpen(true)
+                }}
             >
-                {has2FaEnabled ? 'Update 2FA' : 'Enable 2FA'}
+                {has2FAEnabled ? 'Update 2FA' : 'Enable 2FA'}
             </Button>
 
-            {has2FaEnabled && !is2FaEnforced && (
+            {has2FAEnabled && !is2FAEnforced && (
                 <Button
                     onClick={() => setIsDisableModalOpen(true)}
                     intent="destructive"
@@ -53,17 +75,24 @@ export default function TwoFactorAuthenticationSection() {
                 </Button>
             )}
 
-            {isEnableModalOpen && (
+            {is2FASetupModalOpen && (
                 <TwoFactorAuthenticationModal
-                    isOpen={isEnableModalOpen}
-                    setIsOpen={setIsEnableModalOpen}
-                    initialBannerInfoText={
-                        is2FaEnforced
+                    isOpen={is2FASetupModalOpen}
+                    initialBannerText={
+                        is2FAEnforced
                             ? 'For security reasons, your admin requires you to setup two-factor authentication in order to access your account.'
                             : undefined
                     }
+                    initialBannerType={is2FARequired ? 'error' : 'info'}
+                    onCancel={() => {
+                        setIs2FASetupModalOpen(false)
+                    }}
+                    onFinish={() => {
+                        setIs2FASetupModalOpen(false)
+                    }}
                 />
             )}
+
             {isDisableModalOpen && (
                 <TwoFactorAuthenticationDisableModal
                     title="Disable Two-Factor Authentication (2FA)?"

@@ -30,10 +30,13 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
     >
       Disable 2FA
     </button>
-    <div
-      class="Open"
-    >
+    <div>
       TwoFactorAuthenticationModal mocked
+      <button
+        type="button"
+      >
+        Finish action mocked
+      </button>
     </div>
   </div>
 </body>
@@ -63,10 +66,13 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
     >
       Enable 2FA
     </button>
-    <div
-      class="Open"
-    >
+    <div>
       TwoFactorAuthenticationModal mocked
+      <button
+        type="button"
+      >
+        Finish action mocked
+      </button>
     </div>
   </div>
 </body>

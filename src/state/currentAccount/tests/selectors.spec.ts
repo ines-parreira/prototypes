@@ -402,4 +402,54 @@ describe('current account selectors', () => {
             ).toBeTruthy()
         })
     })
+
+    describe('getTwoFAEnforcedDatetime()', () => {
+        it('should return the datetime when 2fa was enforced', () => {
+            expect(
+                selectors.getTwoFAEnforcedDatetime(
+                    setStateWith(
+                        defaultState,
+                        ['settings'],
+                        [
+                            fromJS({
+                                type: 'access',
+                                data: {
+                                    two_fa_enforced_datetime:
+                                        '2022-03-24T14:17:05',
+                                },
+                            }),
+                        ]
+                    )
+                )
+            ).toBe('2022-03-24T14:17:05')
+        })
+    })
+
+    describe('is2FAEnforcedSelector()', () => {
+        it.each([
+            ['2022-03-24T14:17:05', true],
+            [null, false],
+        ])(
+            'should return if the 2fa is enforced or not',
+            (twoFAEnforcedDatetime, expectedValue) => {
+                expect(
+                    selectors.is2FAEnforcedSelector(
+                        setStateWith(
+                            defaultState,
+                            ['settings'],
+                            [
+                                fromJS({
+                                    type: 'access',
+                                    data: {
+                                        two_fa_enforced_datetime:
+                                            twoFAEnforcedDatetime,
+                                    },
+                                }),
+                            ]
+                        )
+                    )
+                ).toBe(expectedValue)
+            }
+        )
+    })
 })

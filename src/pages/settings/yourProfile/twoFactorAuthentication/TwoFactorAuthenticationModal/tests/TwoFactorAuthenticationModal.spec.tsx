@@ -51,7 +51,7 @@ const logEventMock = logEvent as jest.Mock
 describe('<TwoFactorAuthenticationModal />', () => {
     const minProps: ComponentProps<typeof TwoFactorAuthenticationModal> = {
         isOpen: true,
-        setIsOpen: jest.fn(),
+        initialBannerText: 'Default initialBannerText',
     }
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
@@ -277,8 +277,8 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 expect(baseElement).toMatchSnapshot('Recovery codes step')
             })
 
-            it('should call setIsOpen with false value which closes the modal because the process has been finished', async () => {
-                const setIsOpenMock = jest.fn()
+            it('should call onFinish() because the process has been finished', async () => {
+                const onFinishMock = jest.fn()
                 validateVerificationCodeMock.mockResolvedValue()
                 saveTwoFASecretMock.mockResolvedValue()
                 createRecoveryCodesMock.mockResolvedValue(recoveryCodesFixture)
@@ -287,7 +287,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     <Provider store={mockStore()}>
                         <TwoFactorAuthenticationModal
                             {...minProps}
-                            setIsOpen={setIsOpenMock}
+                            onFinish={onFinishMock}
                         />
                     </Provider>
                 )
@@ -308,7 +308,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 const continueButton = screen.getByText(/Continue/)
                 fireEvent.click(continueButton)
 
-                expect(setIsOpenMock).toHaveBeenCalledWith(false)
+                expect(onFinishMock).toHaveBeenCalled()
             })
 
             it('should call onFinish() if modal is dismissed on last step', async () => {
@@ -375,16 +375,16 @@ describe('<TwoFactorAuthenticationModal />', () => {
             )
         })
 
-        it('should call setIsOpen with false value which closes the modal on cancel', async () => {
+        it('should call onCancel() when the modal is dismissed', async () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
-            const setIsOpenMock = jest.fn()
+            const onCancelMock = jest.fn()
 
             const {baseElement} = render(
                 <Provider store={mockStore()}>
                     <TwoFactorAuthenticationModal
                         {...minProps}
                         isOpen
-                        setIsOpen={setIsOpenMock}
+                        onCancel={onCancelMock}
                     />
                 </Provider>
             )
@@ -394,10 +394,39 @@ describe('<TwoFactorAuthenticationModal />', () => {
             const cancelButton = await screen.findByText(/Cancel/)
             fireEvent.click(cancelButton)
 
-            expect(setIsOpenMock).toHaveBeenCalledWith(false)
+            expect(onCancelMock).toHaveBeenCalled()
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.TwoFaModalCancelled
             )
+        })
+
+        it('should render modal as open without being able to dismiss it because 2fa is required', async () => {
+            fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
+            const store = mockStore({
+                currentUser: fromJS({
+                    has_2fa_enabled: false,
+                }),
+                currentAccount: fromJS({
+                    settings: [
+                        {
+                            type: 'access',
+                            data: {
+                                two_fa_enforced_datetime: '2022-03-24T14:17:05',
+                            },
+                        },
+                    ],
+                }),
+            })
+
+            const {baseElement} = render(
+                <Provider store={store}>
+                    <TwoFactorAuthenticationModal {...minProps} />
+                </Provider>
+            )
+
+            await renderInitialModal(baseElement)
+
+            expect(screen.queryByText(/Cancel/)).toBeNull()
         })
     })
 })

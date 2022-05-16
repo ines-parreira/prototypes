@@ -12,20 +12,22 @@ import {RouteComponentProps} from 'react-router-dom'
 import {Map} from 'immutable'
 
 import 'assets/css/main.less'
-import pendingMessageManager from '../services/pendingMessageManager/pendingMessageManager'
-import pollingManager from '../services/pollingManager'
-import shortcutManager from '../services/shortcutManager'
-import userActivityManager from '../services/userActivityManager'
-import statusPageManager from '../services/statusPageManager/statusPageManager'
-import * as layoutActions from '../state/layout/actions'
-import * as layoutSelectors from '../state/layout/selectors'
-import {RootState} from '../state/types'
-import * as viewsActions from '../state/views/actions'
-import {identifyUser} from '../store/middlewares/segmentTracker'
-import {handleUsageBanner} from '../state/notifications/actions'
-import {hasIntegrationOfTypes} from '../state/integrations/selectors'
-import {IntegrationType} from '../models/integration/types'
+import {getAccessSettings} from 'state/currentAccount/selectors'
+import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
+import pollingManager from 'services/pollingManager'
+import shortcutManager from 'services/shortcutManager'
+import userActivityManager from 'services/userActivityManager'
+import statusPageManager from 'services/statusPageManager/statusPageManager'
+import * as layoutActions from 'state/layout/actions'
+import * as layoutSelectors from 'state/layout/selectors'
+import {RootState} from 'state/types'
+import * as viewsActions from 'state/views/actions'
+import {identifyUser} from 'store/middlewares/segmentTracker'
+import {handleUsageBanner} from 'state/notifications/actions'
+import {hasIntegrationOfTypes} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/types'
 
+import {handle2FAEnforced} from 'state/currentUser/actions'
 import css from './App.less'
 import BannerNotifications from './common/components/BannerNotifications/BannerNotifications'
 import FullPage from './common/components/FullPage'
@@ -58,6 +60,7 @@ class App extends React.Component<Props> {
             'status',
             'notification',
         ])
+
         this.props.handleUsageBanner({
             newAccountStatus,
             notification: notification ? notification.toJS() : null,
@@ -82,6 +85,8 @@ class App extends React.Component<Props> {
             },
         })
         identifyUser(this.props.currentUser.toJS())
+
+        this.props.handle2FAEnforced()
     }
 
     componentWillUnmount() {
@@ -237,6 +242,7 @@ const connector = connect(
     (state: RootState) => ({
         currentUser: state.currentUser,
         currentAccount: state.currentAccount,
+        currentAccountAccessSettings: getAccessSettings(state),
         notifications: state.notifications,
         openedPanel: layoutSelectors.getCurrentOpenedPanel(state),
         hasPhoneIntegration: hasIntegrationOfTypes(IntegrationType.Phone)(
@@ -250,6 +256,7 @@ const connector = connect(
         gotoActiveView: viewsActions.gotoActiveView,
         handleUsageBanner: handleUsageBanner,
         dismissNotification: dismissNotification,
+        handle2FAEnforced: handle2FAEnforced,
     }
 )
 

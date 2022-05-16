@@ -2,13 +2,13 @@ import {Map, List} from 'immutable'
 import {AnyAction} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
 
-import {TicketMessageSourceType, TicketVia} from '../business/types/ticket'
+import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
 import {
     EmailDomain,
     Integration,
     IntegrationType,
-} from '../models/integration/types'
-import {PaginationMeta, OrderDirection} from '../models/api/types'
+} from 'models/integration/types'
+import {PaginationMeta, OrderDirection} from 'models/api/types'
 
 import {BillingContact, Subscription} from './billing/types'
 import {AccountSetting} from './currentAccount/types'

@@ -36,17 +36,21 @@ describe('<ModalBanners />', () => {
             }
         )
 
-        it('should render the initial banner info text', async () => {
-            const {container, findByText} = render(
-                <ModalBanners
-                    currentStep={1}
-                    initialBannerInfoText="Foo bar initial text"
-                />
-            )
+        it.each(['info', 'error'])(
+            'should render the initial banner info text',
+            async (bannerType) => {
+                const {container, findByText} = render(
+                    <ModalBanners
+                        currentStep={1}
+                        initialBannerText="Foo bar initial text"
+                        initialBannerType={bannerType as 'info' | 'error'}
+                    />
+                )
 
-            await findByText('Foo bar initial text')
+                await findByText('Foo bar initial text')
 
-            expect(container).toMatchSnapshot()
-        })
+                expect(container).toMatchSnapshot()
+            }
+        )
     })
 })

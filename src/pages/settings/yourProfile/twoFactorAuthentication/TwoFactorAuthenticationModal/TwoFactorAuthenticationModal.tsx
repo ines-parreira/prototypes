@@ -1,11 +1,6 @@
-import React, {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useState,
-    useEffect,
-} from 'react'
+import React, {useCallback, useState, useEffect, useMemo} from 'react'
 import {AxiosError} from 'axios'
+import {dismissNotification} from 'reapop'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import {
     saveTwoFASecret as saveTwoFASecretResource,
@@ -25,7 +20,9 @@ import {
 } from 'models/twoFactorAuthentication/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {has2FaEnabled as has2FaEnabledSelector} from 'state/currentUser/selectors'
-import {is2FAEnforcedSelector} from 'state/currentAccount/selectors'
+import {getTwoFAEnforcedDatetime} from 'state/currentAccount/selectors'
+import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
+import {TWO_FA_REQUIRED_NOTIFICATION_ID} from 'state/currentUser/constants'
 import css from './TwoFactorAuthenticationModal.less'
 import ModalContinueButton from './ModalContinueButton'
 import ModalStep from './ModalStep'
@@ -33,22 +30,26 @@ import ModalBanners from './ModalBanners'
 
 export type OwnProps = {
     isOpen: boolean
-    setIsOpen: Dispatch<SetStateAction<boolean>>
     onCancel?: () => void
     onFinish?: () => void
-    initialBannerInfoText?: string
+    initialBannerText?: string
+    initialBannerType?: 'info' | 'error'
 }
 
 export default function TwoFactorAuthenticationModal({
     isOpen,
-    setIsOpen,
     onCancel,
     onFinish,
-    initialBannerInfoText,
+    initialBannerText,
+    initialBannerType,
 }: OwnProps) {
     const dispatch = useAppDispatch()
-    const has2FaEnabled = useAppSelector(has2FaEnabledSelector)
-    const isEnforced = useAppSelector(is2FAEnforcedSelector)
+
+    const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
+    const has2FAEnabled = useAppSelector(has2FaEnabledSelector)
+    const is2FARequired = useMemo(() => {
+        return check2FARequired(twoFAEnforcedDatetime, has2FAEnabled)
+    }, [twoFAEnforcedDatetime, has2FAEnabled])
 
     const [step, setStep] = useState(1)
     const [authenticatorData, setAuthenticatorData] = useState(
@@ -70,8 +71,6 @@ export default function TwoFactorAuthenticationModal({
     }, [])
 
     const handleCancel = useCallback(() => {
-        setIsOpen(false)
-
         if (step === 3 && onFinish) {
             onFinish()
             return
@@ -81,15 +80,15 @@ export default function TwoFactorAuthenticationModal({
         if (onCancel) {
             onCancel()
         }
-    }, [setIsOpen, step, onCancel, onFinish])
+    }, [step, onCancel, onFinish])
 
     const handleFinish = useCallback(() => {
-        setIsOpen(false)
+        dispatch(dismissNotification(TWO_FA_REQUIRED_NOTIFICATION_ID))
 
         if (onFinish) {
             onFinish()
         }
-    }, [setIsOpen, onFinish])
+    }, [dispatch, onFinish])
 
     const handleBack = useCallback(() => {
         if (step !== 2) {
@@ -122,7 +121,7 @@ export default function TwoFactorAuthenticationModal({
         try {
             setErrorText('')
 
-            if (has2FaEnabled) {
+            if (has2FAEnabled) {
                 setRecoveryCodes(await renewRecoveryCodesResource())
             } else {
                 setRecoveryCodes(await createRecoveryCodesResource())
@@ -138,7 +137,7 @@ export default function TwoFactorAuthenticationModal({
             console.error(error)
             return
         }
-    }, [has2FaEnabled])
+    }, [has2FAEnabled])
 
     const saveTwoFASecret = useCallback(async () => {
         try {
@@ -206,7 +205,7 @@ export default function TwoFactorAuthenticationModal({
             setIsLoading(true)
             setErrorText('')
 
-            if (has2FaEnabled) {
+            if (has2FAEnabled) {
                 setAuthenticatorData(
                     await fetchAuthenticatorDataRenewedResource()
                 )
@@ -223,20 +222,20 @@ export default function TwoFactorAuthenticationModal({
             .finally(() => {
                 setIsLoading(false)
             })
-    }, [has2FaEnabled, resetModalState])
+    }, [has2FAEnabled, resetModalState])
 
     return (
         <DEPRECATED_Modal
             isOpen={isOpen}
             header="Setup 2FA"
-            headerClassName={isEnforced ? css.hideCloseButton : ''}
+            headerClassName={is2FARequired ? css.hideCloseButton : ''}
             onClose={handleCancel}
-            dismissible={!isEnforced}
+            dismissible={!is2FARequired}
             backdrop="static"
             style={{maxWidth: '600px'}}
             footer={
                 <>
-                    {step === 1 && (
+                    {step === 1 && !is2FARequired && (
                         <Button
                             intent="secondary"
                             onClick={handleCancel}
@@ -271,7 +270,8 @@ export default function TwoFactorAuthenticationModal({
             <ModalBanners
                 currentStep={step}
                 errorText={errorText}
-                initialBannerInfoText={initialBannerInfoText}
+                initialBannerText={initialBannerText}
+                initialBannerType={initialBannerType}
             />
             <ModalStep
                 authenticatorData={authenticatorData}

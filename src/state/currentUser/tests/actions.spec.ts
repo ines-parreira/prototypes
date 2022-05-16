@@ -3,28 +3,36 @@ import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
+import moment from 'moment'
+import mockDate from 'mockdate'
+import {UserSetting, UserSettingType} from 'config/types/user'
+import client from 'models/api/resources'
+import {StoreDispatch} from 'state/types'
+import history from 'pages/history'
+import * as notificationActions from 'state/notifications/actions'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 import * as types from '../constants'
-import {UserSetting, UserSettingType} from '../../../config/types/user'
-import client from '../../../models/api/resources'
-import {StoreDispatch} from '../../types'
+import {OPEN_TWO_FA_MODAL_URL, TWO_FA_REQUIRED_AFTER_DAYS} from '../constants'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-jest.mock('../../notifications/actions', () => {
+jest.mock('state/notifications/actions', () => {
     return {
         notify: jest.fn(() => (args: unknown) => args),
     }
 })
+
 describe('current user actions', () => {
     let store: MockStoreEnhanced<unknown, StoreDispatch>
     let mockServer: MockAdapter
 
     beforeEach(() => {
+        jest.clearAllMocks()
         store = mockStore({
             currentUser: initialState,
+            notifications: [],
         })
         mockServer = new MockAdapter(client)
     })
@@ -173,6 +181,72 @@ describe('current user actions', () => {
             } as unknown as UserSetting
             store.dispatch(actions.submitSettingSuccess(req, true))
             expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('handle2FAEnforced()', () => {
+        it('should redirect to the 2fa page with 2fa setup modal open and non-dismissible', () => {
+            mockDate.set(new Date('2022-05-12'))
+
+            store = mockStore({
+                currentUser: fromJS({
+                    has_2fa_enabled: false,
+                }),
+                currentAccount: fromJS({
+                    settings: [
+                        {
+                            type: 'access',
+                            data: {
+                                two_fa_enforced_datetime: moment()
+                                    .subtract(
+                                        TWO_FA_REQUIRED_AFTER_DAYS,
+                                        'days'
+                                    )
+                                    .toString(),
+                            },
+                        },
+                    ],
+                }),
+                notifications: [],
+            })
+
+            store.dispatch(actions.handle2FAEnforced())
+
+            expect(store.getActions().length).toEqual(0)
+
+            jest.spyOn(history, 'push')
+            expect(history.push).toHaveBeenCalledWith(OPEN_TWO_FA_MODAL_URL)
+
+            mockDate.reset()
+        })
+
+        it('should display the banner', () => {
+            mockDate.set(new Date('2022-05-12'))
+
+            store = mockStore({
+                currentUser: fromJS({
+                    has_2fa_enabled: false,
+                }),
+                currentAccount: fromJS({
+                    settings: [
+                        {
+                            type: 'access',
+                            data: {
+                                two_fa_enforced_datetime: moment().toString(),
+                            },
+                        },
+                    ],
+                }),
+                notifications: [],
+            })
+
+            const notify = jest.spyOn(notificationActions, 'notify')
+
+            store.dispatch(actions.handle2FAEnforced())
+
+            expect(notify.mock.calls).toMatchSnapshot()
+
+            mockDate.reset()
         })
     })
 })

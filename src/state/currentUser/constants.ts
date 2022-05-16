@@ -13,3 +13,8 @@ export const SUBMIT_SETTING_ERROR = 'SUBMIT_SETTING_ERROR'
 export const TOGGLE_ACTIVE_STATUS = 'TOGGLE_ACTIVE_STATUS'
 
 export const UPDATE_2FA_STATUS = 'UPDATE_2FA_STATUS'
+
+export const TWO_FA_REQUIRED_NOTIFICATION_ID = 'two-fa-setup-required-banner'
+export const OPEN_TWO_FA_MODAL_URL =
+    '/app/settings/password-2fa?enforce_2fa_setup_modal=true'
+export const TWO_FA_REQUIRED_AFTER_DAYS = 14

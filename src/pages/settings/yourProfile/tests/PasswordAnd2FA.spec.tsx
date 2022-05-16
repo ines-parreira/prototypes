@@ -2,10 +2,10 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 
 import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
 import PasswordAnd2FA from '../PasswordAnd2FA'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -25,7 +25,7 @@ describe('<PasswordAnd2FA />', () => {
                     }),
                 })
 
-                const {container} = render(
+                const {container} = renderWithRouter(
                     <Provider store={store}>
                         <PasswordAnd2FA />
                     </Provider>
@@ -42,7 +42,7 @@ describe('<PasswordAnd2FA />', () => {
                 }),
             })
 
-            const {container} = render(
+            const {container} = renderWithRouter(
                 <Provider store={store}>
                     <PasswordAnd2FA />
                 </Provider>

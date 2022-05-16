@@ -228,11 +228,17 @@ export const getViewsOrderingSetting = createSelector<
 export const getAccessSettings = createSettingByTypeSelector(
     AccountSettingType.Access
 )
+export const getTwoFAEnforcedDatetime = createSelector<
+    RootState,
+    string | null,
+    Map<any, any>
+>(
+    getAccessSettings,
+    (setting) =>
+        setting.getIn(['data', 'two_fa_enforced_datetime']) as string | null
+)
 export const is2FAEnforcedSelector = createSelector<
     RootState,
     boolean,
-    Map<any, any>
->(
-    createSettingByTypeSelector(AccountSettingType.Access),
-    (setting) => !!setting.getIn(['data', 'two_fa_enforced_datetime'])
-)
+    string | null
+>(getTwoFAEnforcedDatetime, (twoFAEnforcedDatetime) => !!twoFAEnforcedDatetime)

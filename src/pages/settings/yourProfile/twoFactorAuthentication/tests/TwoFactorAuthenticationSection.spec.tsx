@@ -1,19 +1,26 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
+import {renderWithRouter} from 'utils/testing'
 import TwoFactorAuthenticationSection from '../TwoFactorAuthenticationSection'
 import {OwnProps} from '../TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
 
 jest.mock(
-    '../TwoFactorAuthenticationModal/TwoFactorAuthenticationModal',
+    'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal',
     () => (props: OwnProps) => {
-        const openClass = props.isOpen ? 'Open' : 'Closed'
         return (
-            <div className={openClass}>TwoFactorAuthenticationModal mocked</div>
+            props.isOpen && (
+                <div>
+                    TwoFactorAuthenticationModal mocked
+                    <button type="button" onClick={props.onFinish}>
+                        Finish action mocked
+                    </button>
+                </div>
+            )
         )
     }
 )
@@ -33,7 +40,7 @@ describe('<TwoFactorAuthenticationSection />', () => {
                     }),
                 })
 
-                const {baseElement} = render(
+                const {baseElement} = renderWithRouter(
                     <Provider store={store}>
                         <TwoFactorAuthenticationSection />
                     </Provider>
@@ -52,7 +59,7 @@ describe('<TwoFactorAuthenticationSection />', () => {
                     }),
                 })
 
-                const {baseElement, findByText} = render(
+                const {baseElement, findByText} = renderWithRouter(
                     <Provider store={store}>
                         <TwoFactorAuthenticationSection />
                     </Provider>
@@ -64,6 +71,37 @@ describe('<TwoFactorAuthenticationSection />', () => {
                 fireEvent.click(button)
 
                 expect(baseElement).toMatchSnapshot()
+            }
+        )
+
+        it.each([true, false])(
+            'should open or not the Two-Factor Authentication Modal via queryParam',
+            (has2FAEnabled) => {
+                const store = mockStore({
+                    currentUser: fromJS({
+                        has_2fa_enabled: has2FAEnabled,
+                    }),
+                })
+
+                renderWithRouter(
+                    <Provider store={store}>
+                        <TwoFactorAuthenticationSection />
+                    </Provider>,
+                    {
+                        path: 'app/settings/password-2fa',
+                        route: 'app/settings/password-2fa?enforce_2fa_setup_modal=true',
+                    }
+                )
+
+                const modalQuery = screen.queryByText(
+                    /TwoFactorAuthenticationModal mocked/
+                )
+
+                if (has2FAEnabled) {
+                    expect(modalQuery).toBeNull()
+                } else {
+                    expect(modalQuery).not.toBeNull()
+                }
             }
         )
     })

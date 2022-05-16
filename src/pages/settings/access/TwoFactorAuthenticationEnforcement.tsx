@@ -58,11 +58,15 @@ export default function TwoFactorAuthenticationEnforcement({
             {twoFAModalVisible && (
                 <TwoFactorAuthenticationModal
                     isOpen={twoFAModalVisible}
-                    setIsOpen={set2FAModalVisible}
+                    onCancel={() => {
+                        set2FAModalVisible(false)
+                    }}
                     onFinish={() => {
+                        set2FAModalVisible(false)
                         on2FAEnforced(true)
                     }}
-                    initialBannerInfoText="Set up two-factor authentication (2FA) for your own account. Once enabled, 2FA will be enforced for all helpdesk users."
+                    initialBannerText="Set up two-factor authentication (2FA) for your own account. Once enabled, 2FA will be enforced for all helpdesk users."
+                    initialBannerType="info"
                 />
             )}
         </>

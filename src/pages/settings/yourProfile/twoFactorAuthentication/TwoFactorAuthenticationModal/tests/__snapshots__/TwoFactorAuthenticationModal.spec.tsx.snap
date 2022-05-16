@@ -766,6 +766,22 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
             <div
               class="modal-body"
             >
+              <div
+                class="banner bannerInfo"
+              >
+                <img
+                  alt="icon"
+                  class="icon"
+                  src="test-file-stub"
+                />
+                <div
+                  class="bannerText"
+                >
+                  <span>
+                    Default initialBannerText
+                  </span>
+                </div>
+              </div>
               
               <div
                 class="headingBold"
@@ -892,6 +908,22 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
               class="modal-body"
             >
               <div
+                class="banner bannerInfo"
+              >
+                <img
+                  alt="icon"
+                  class="icon"
+                  src="test-file-stub"
+                />
+                <div
+                  class="bannerText"
+                >
+                  <span>
+                    Default initialBannerText
+                  </span>
+                </div>
+              </div>
+              <div
                 class="banner bannerError"
               >
                 <img
@@ -1014,6 +1046,22 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR C
             <div
               class="modal-body"
             >
+              <div
+                class="banner bannerInfo"
+              >
+                <img
+                  alt="icon"
+                  class="icon"
+                  src="test-file-stub"
+                />
+                <div
+                  class="bannerText"
+                >
+                  <span>
+                    Default initialBannerText
+                  </span>
+                </div>
+              </div>
               
               <div
                 class="headingBold"
@@ -1139,6 +1187,22 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with QR c
             <div
               class="modal-body"
             >
+              <div
+                class="banner bannerInfo"
+              >
+                <img
+                  alt="icon"
+                  class="icon"
+                  src="test-file-stub"
+                />
+                <div
+                  class="bannerText"
+                >
+                  <span>
+                    Default initialBannerText
+                  </span>
+                </div>
+              </div>
               
               <div
                 class="headingBold"
