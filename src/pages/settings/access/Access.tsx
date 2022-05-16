@@ -1,10 +1,4 @@
-import React, {
-    FormEvent,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import React, {FormEvent, useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Container, Form} from 'reactstrap'
@@ -15,7 +9,10 @@ import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import PageHeader from 'pages/common/components/PageHeader'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import {submitSetting} from 'state/currentAccount/actions'
-import {getAccessSettings} from 'state/currentAccount/selectors'
+import {
+    getAccessSettings,
+    getTwoFAEnforcedDatetime,
+} from 'state/currentAccount/selectors'
 import {RootState} from 'state/types'
 import {
     AccountSettingAccess,
@@ -23,7 +20,7 @@ import {
     AccountSettingType,
 } from 'state/currentAccount/types'
 import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
-import {checkAccessTo2FAEnforcement} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
+import useAppSelector from 'hooks/useAppSelector'
 import css from '../settings.less'
 import SsoToggleButton from './SsoToggleButton'
 
@@ -73,10 +70,7 @@ export const AccessContainer = (props: Props) => {
         ['data', 'office365_sso_enabled'],
         false
     )
-    const twoFAEnforcedDatetime = accessSettings.getIn([
-        'data',
-        'two_fa_enforced_datetime',
-    ])
+    const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
 
     const [isLoading, setIsLoading] = useState<LoadingKey>()
     const [signupMode, setSignupMode] = useState(signupModeSetting)
@@ -85,10 +79,6 @@ export const AccessContainer = (props: Props) => {
     )
     const [domainError, setDomainError] = useState(
         validateDomains(allowedDomains)
-    )
-    const hasAccessTo2FAEnforcement = useMemo(
-        () => checkAccessTo2FAEnforcement(accountDomain),
-        [accountDomain]
     )
 
     useEffect(() => {
@@ -265,19 +255,15 @@ export const AccessContainer = (props: Props) => {
                             />
                         )}
 
-                        {hasAccessTo2FAEnforcement && (
-                            <TwoFactorAuthenticationEnforcement
-                                is2FAEnforced={!!twoFAEnforcedDatetime}
-                                loading={
-                                    isLoading === LoadingKey.TwoFAEnforcement
-                                }
-                                disabled={
-                                    !!isLoading &&
-                                    isLoading !== LoadingKey.TwoFAEnforcement
-                                }
-                                on2FAEnforced={toggle2FAEnforcement}
-                            />
-                        )}
+                        <TwoFactorAuthenticationEnforcement
+                            is2FAEnforced={!!twoFAEnforcedDatetime}
+                            loading={isLoading === LoadingKey.TwoFAEnforcement}
+                            disabled={
+                                !!isLoading &&
+                                isLoading !== LoadingKey.TwoFAEnforcement
+                            }
+                            on2FAEnforced={toggle2FAEnforcement}
+                        />
 
                         <Button
                             type="submit"

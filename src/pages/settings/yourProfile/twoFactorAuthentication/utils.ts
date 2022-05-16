@@ -28,13 +28,3 @@ export function check2FARequired(
         TWO_FA_REQUIRED_AFTER_DAYS
     )
 }
-
-export function checkAccessTo2FAEnforcement(domain: string) {
-    return (
-        // allow access to 2FA enforcement for specified domains and for preview envs
-        domain
-            ? ['acme', 'test-martin', 'ionut-zamfir'].includes(domain) ||
-                  domain.includes('.preview')
-            : false
-    )
-}

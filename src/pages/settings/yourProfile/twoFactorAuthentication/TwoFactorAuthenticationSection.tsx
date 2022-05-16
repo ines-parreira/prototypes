@@ -51,8 +51,8 @@ export default function TwoFactorAuthenticationSection() {
                 </Badge>
             </div>
             <div className={classnames('body-regular', css.mb16)}>
-                For an added layer of security, your admin requires you to use
-                two-factor authentication (2FA) when you sign in to Gorgias.
+                For an added layer of security, enable Two-Factor Authentication
+                for your Gorgias login.
             </div>
 
             <Button
