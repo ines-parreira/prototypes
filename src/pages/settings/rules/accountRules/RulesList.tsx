@@ -106,7 +106,7 @@ export function RulesList({rules, limitStatus, handleGoToLibrary}: Props) {
                             <td></td>
                             <td>rule</td>
                             <td></td>
-                            <td>last updated</td>
+                            <td className="text-nowrap">last updated</td>
                             <td></td>
                         </tr>
                     </thead>

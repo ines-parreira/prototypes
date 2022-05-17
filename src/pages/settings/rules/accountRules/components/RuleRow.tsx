@@ -274,7 +274,11 @@ export function RuleRow({
                     </div>
                 </Link>
             </td>
-            <td className={classnames('link-full-td align-middle')}>
+            <td
+                className={classnames(
+                    'link-full-td align-middle smallest pr-4'
+                )}
+            >
                 <Link to={link}>
                     <div className={'text-faded'}>{formattedUpdatedDate}</div>
                 </Link>

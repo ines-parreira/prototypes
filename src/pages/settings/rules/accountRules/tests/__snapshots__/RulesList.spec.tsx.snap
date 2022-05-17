@@ -16,7 +16,9 @@ exports[`<RulesList/> should render the rule views 1`] = `
           rule
         </td>
         <td />
-        <td>
+        <td
+          class="text-nowrap"
+        >
           last updated
         </td>
         <td />
