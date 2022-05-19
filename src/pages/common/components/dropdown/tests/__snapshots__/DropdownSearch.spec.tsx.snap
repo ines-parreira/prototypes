@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropdownSearch /> should be controllable 1`] = `
+Array [
+  <div
+    data-testid="option"
+  >
+    
+    <span
+      class="highlightedLabel"
+    >
+      BA
+    </span>
+    r
+  </div>,
+  <div
+    data-testid="option"
+  >
+    
+    <span
+      class="highlightedLabel"
+    >
+      BA
+    </span>
+    z
+  </div>,
+]
+`;
+
+exports[`<DropdownSearch /> should filter and highlight the results when searching 1`] = `
+Array [
+  <div
+    data-testid="option"
+  >
+    
+    <span
+      class="highlightedLabel"
+    >
+      ba
+    </span>
+    r
+  </div>,
+  <div
+    data-testid="option"
+  >
+    
+    <span
+      class="highlightedLabel"
+    >
+      ba
+    </span>
+    z
+  </div>,
+]
+`;
+
+exports[`<DropdownSearch /> should render 1`] = `
+<body>
+  <div>
+    <div />
+  </div>
+  <div
+    id="floating-ui-root"
+  >
+    <div
+      class="overlay"
+      style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
+    >
+      <div
+        class="wrapper"
+        style="position: absolute;"
+      >
+        <div
+          class="wrapper"
+        >
+          <div
+            class="wrapper"
+          >
+            <span
+              class="prefix"
+            >
+              <i
+                class="material-icons icon"
+              >
+                search
+              </i>
+            </span>
+            <input
+              class="input"
+              id="input-text-1"
+              name="input-text-1"
+              placeholder="Search"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          data-testid="option"
+        >
+          Foo
+        </div>
+        <div
+          data-testid="option"
+        >
+          Bar
+        </div>
+        <div
+          data-testid="option"
+        >
+          Baz
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

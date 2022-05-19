@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Dropdown /> should render a dropdown 1`] = `
+<body>
+  <div>
+    <div>
+      Foo
+    </div>
+    <div>
+      Bar
+    </div>
+  </div>
+  <div
+    id="floating-ui-root"
+  >
+    <div
+      class="overlay"
+      style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
+    >
+      <div
+        class="wrapper"
+        style="position: absolute;"
+      >
+        Baz
+      </div>
+    </div>
+  </div>
+</body>
+`;

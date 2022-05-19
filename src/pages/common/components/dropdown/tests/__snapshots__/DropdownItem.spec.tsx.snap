@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropdownItem /> should not render if the item value is not contained in the context query 1`] = `null`;
+
+exports[`<DropdownItem /> should render 1`] = `
+<li
+  class="item"
+  role="option"
+  tabindex="0"
+>
+  Foo
+</li>
+`;
+
+exports[`<DropdownItem /> should render when selected 1`] = `
+<li
+  class="item"
+  role="option"
+  tabindex="0"
+>
+  Foo
+  <span
+    class="icon material-icons"
+  >
+    done
+  </span>
+</li>
+`;
+
+exports[`<DropdownItem /> should render when selected and multiple selection is enabled 1`] = `
+<li
+  class="item"
+  role="option"
+  tabindex="0"
+>
+  <div
+    class="checkbox"
+  >
+    <label
+      class="label label"
+      for="checkbox-2"
+    >
+      <input
+        checked=""
+        class="input"
+        id="checkbox-2"
+        name="checkbox-2"
+        tabindex="-1"
+        type="checkbox"
+      />
+    </label>
+  </div>
+  Foo
+</li>
+`;
+
+exports[`<DropdownItem /> should render with any HTML tag passed as tag 1`] = `
+<div
+  class="item"
+  role="option"
+  tabindex="0"
+>
+  Foo
+</div>
+`;
+
+exports[`<DropdownItem /> should render with checkbox when multiple selection is enabled 1`] = `
+<li
+  class="item"
+  role="option"
+  tabindex="0"
+>
+  <div
+    class="checkbox"
+  >
+    <label
+      class="label label"
+      for="checkbox-1"
+    >
+      <input
+        class="input"
+        id="checkbox-1"
+        name="checkbox-1"
+        tabindex="-1"
+        type="checkbox"
+      />
+    </label>
+  </div>
+  Foo
+</li>
+`;
+
+exports[`<DropdownItem /> should render with custom children passed 1`] = `
+<li
+  class="item"
+  role="option"
+  tabindex="0"
+>
+  FooChildren
+</li>
+`;
+
+exports[`<DropdownItem /> should render with custom children passed that are neither a string nor a function 1`] = `
+<li
+  class="item"
+  role="option"
+  tabindex="0"
+>
+  88
+</li>
+`;

@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UncontrolledDropdown /> should open the dropdown when clicking the target 1`] = `
+<body>
+  <div
+    id="floating-ui-root"
+  >
+    <div
+      class="overlay"
+      style="position: fixed; overflow: auto; top: 0px; right: 0px; bottom: 0px; left: 0px;"
+    >
+      <div
+        class="wrapper"
+        style="position: absolute;"
+      >
+        Bar
+      </div>
+    </div>
+  </div>
+  <div>
+    <div>
+      Foo
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<UncontrolledDropdown /> should render a closed dropdown 1`] = `
+<body>
+  <div>
+    <div>
+      Foo
+    </div>
+  </div>
+  <div
+    id="floating-ui-root"
+  />
+</body>
+`;
