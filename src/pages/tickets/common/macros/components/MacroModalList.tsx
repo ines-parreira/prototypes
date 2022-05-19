@@ -122,8 +122,7 @@ export default class MacroModalList extends Component<Props> {
                     onChange={(values) =>
                         onSearch({
                             ...searchParams,
-                            languages: values.languages,
-                            tags: values.tags,
+                            ...values,
                         })
                     }
                 />

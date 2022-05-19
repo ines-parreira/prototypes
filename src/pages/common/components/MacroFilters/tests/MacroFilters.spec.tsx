@@ -50,7 +50,6 @@ describe('<MacroFilters />', () => {
         fireEvent.click(getByText('English'))
         expect(minProps.onChange).toHaveBeenCalledWith({
             languages: ['en', null],
-            tags: ['tag1', 'tag2'],
         })
     })
 
@@ -66,7 +65,6 @@ describe('<MacroFilters />', () => {
 
         fireEvent.click(getByText('tag2'))
         expect(minProps.onChange).toHaveBeenCalledWith({
-            languages: ['fr'],
             tags: ['tag1'],
         })
     })

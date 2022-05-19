@@ -39,10 +39,9 @@ const TicketMacrosSearch = ({
             </i>
             <TextInput
                 tabIndex={3}
-                onChange={(value) =>
+                onChange={(search) =>
                     searchMacros({
-                        ...searchParams,
-                        search: value,
+                        search,
                     })
                 }
                 onKeyDown={handleSearchKeyDown}
@@ -62,13 +61,7 @@ const TicketMacrosSearch = ({
                         languages: searchParams.languages,
                         tags: searchParams.tags,
                     }}
-                    onChange={(values) =>
-                        searchMacros({
-                            ...searchParams,
-                            languages: values.languages,
-                            tags: values.tags,
-                        })
-                    }
+                    onChange={searchMacros}
                 />
             )}
             <i

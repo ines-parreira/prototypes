@@ -2,7 +2,6 @@ import React from 'react'
 import {ISO639English} from 'constants/languages'
 import {MacrosProperties} from 'models/macro/types'
 import SelectFilter from 'pages/stats/common/SelectFilter'
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {getMacroParametersOptions} from 'state/macro/selectors'
 
@@ -16,11 +15,6 @@ const MacroFilters = ({selectedProperties, onChange}: Props) => {
         getMacroParametersOptions
     ).toJS()
 
-    const handleChange = (properties: MacrosProperties) => {
-        logEvent(SegmentEvent.MacrosFilterChanged, {...properties})
-        onChange(properties)
-    }
-
     return (
         <div className="d-flex">
             <SelectFilter
@@ -28,8 +22,7 @@ const MacroFilters = ({selectedProperties, onChange}: Props) => {
                 singular="language"
                 onChange={(values) => {
                     const languages = values.length ? [...values, null] : []
-                    handleChange({
-                        ...selectedProperties,
+                    onChange({
                         languages: languages as string[],
                     })
                 }}
@@ -50,8 +43,7 @@ const MacroFilters = ({selectedProperties, onChange}: Props) => {
                 plural="tags"
                 singular="tag"
                 onChange={(values) =>
-                    handleChange({
-                        ...selectedProperties,
+                    onChange({
                         tags: values as string[],
                     })
                 }

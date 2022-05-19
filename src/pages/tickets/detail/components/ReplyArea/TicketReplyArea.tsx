@@ -6,6 +6,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {ContentState} from 'draft-js'
 
 import {clearMacroBeforeApply} from 'business/macro'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import {
     fetchMacros,
@@ -249,6 +250,17 @@ export class TicketReplyArea extends Component<Props, State> {
         })
     }
 
+    loadMacrosWithLogEvent = async (
+        searchParams: fetchMacrosParamsTypes,
+        changedSearchParams: fetchMacrosParamsTypes
+    ): Promise<void> => {
+        logEvent(SegmentEvent.TicketMacrosSearch, {
+            ...searchParams,
+            changed: Object.keys(changedSearchParams),
+        })
+        return await this.loadMacros(searchParams)
+    }
+
     setSelectedMacroId = (macro: Map<any, any>) =>
         this.setState({selectedMacroId: macro.get('id')})
 
@@ -333,16 +345,26 @@ export class TicketReplyArea extends Component<Props, State> {
         }
     }
 
-    debounceLoadMacros = _debounce(this.loadMacros, 350)
+    debounceLoadMacrosWithLogEvent = _debounce(this.loadMacrosWithLogEvent, 350)
 
-    searchMacros = (searchParams: fetchMacrosParamsTypes = {}) => {
-        this.setState({searchParams: searchParams})
+    searchMacros = (changedSearchParams: fetchMacrosParamsTypes = {}) => {
+        const searchParams = {
+            ...this.state.searchParams,
+            ...changedSearchParams,
+        }
+
+        this.setState({
+            searchParams,
+        })
 
         if (
             !searchParams.search?.trim().length ||
             searchParams.search.trim().length > 1
         ) {
-            void this.debounceLoadMacros({...searchParams, page: 1})
+            void this.debounceLoadMacrosWithLogEvent(
+                {...searchParams, page: 1},
+                changedSearchParams
+            )
         }
     }
 
