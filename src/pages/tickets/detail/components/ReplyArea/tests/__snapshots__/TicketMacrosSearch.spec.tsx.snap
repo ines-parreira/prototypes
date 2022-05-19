@@ -9,12 +9,19 @@ exports[`<TicketMacrosSearch /> should render TicketMacrosSearch focused 1`] = `
   >
     bolt
   </i>
-  <input
-    class="border-0 searchInput form-control"
-    placeholder="Search macros by name, tags or body..."
-    tabindex="3"
-    type="text"
-  />
+  <div
+    class="wrapper border-0 shadow-none searchInput"
+  >
+    <input
+      class="input"
+      id="input-text-2"
+      name="input-text-2"
+      placeholder="Search macros by name, tags or body..."
+      tabindex="3"
+      type="text"
+      value=""
+    />
+  </div>
   <div>
     MacroFilters
   </div>
@@ -35,12 +42,19 @@ exports[`<TicketMacrosSearch /> should render TicketMacrosSearch unfocused 1`] =
   >
     bolt
   </i>
-  <input
-    class="border-0 searchInput form-control"
-    placeholder="Search macros by name, tags or body..."
-    tabindex="3"
-    type="text"
-  />
+  <div
+    class="wrapper border-0 shadow-none searchInput"
+  >
+    <input
+      class="input"
+      id="input-text-1"
+      name="input-text-1"
+      placeholder="Search macros by name, tags or body..."
+      tabindex="3"
+      type="text"
+      value=""
+    />
+  </div>
   <i
     class="material-icons md-2 mr-3 clickable closeButton"
   >

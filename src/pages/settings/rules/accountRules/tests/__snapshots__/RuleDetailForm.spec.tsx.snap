@@ -50,21 +50,20 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
           Rule name
         </label>
         <div
-          class="InputField form-group"
-          color=""
+          class="wrapper"
         >
-          <div
-            class=""
-          >
-            <input
-              aria-invalid="false"
-              class="field form-control"
-              id="ruleName"
-              type="text"
-              value="New rule"
-            />
-          </div>
+          <input
+            class="input"
+            id="ruleName"
+            name="ruleName"
+            type="text"
+            value="New rule"
+          />
         </div>
+      </div>
+      <div
+        class="form-group"
+      >
         <label
           class="label"
           for="ruleDescription"
@@ -72,17 +71,15 @@ exports[`<RuleSettingsForm /> rendering should render a filled form when rule id
           Rule description
         </label>
         <div
-          class="InputField form-group"
-          color=""
+          class="wrapper"
         >
-          <div
-            class=""
-          >
-            <textarea
-              class="field form-control"
-              id="ruleDescription"
-            />
-          </div>
+          <input
+            class="input"
+            id="ruleDescription"
+            name="ruleDescription"
+            type="textarea"
+            value=""
+          />
         </div>
       </div>
       <label
@@ -415,21 +412,20 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
           Rule name
         </label>
         <div
-          class="InputField form-group"
-          color=""
+          class="wrapper"
         >
-          <div
-            class=""
-          >
-            <input
-              aria-invalid="false"
-              class="field form-control"
-              id="ruleName"
-              type="text"
-              value="New rule"
-            />
-          </div>
+          <input
+            class="input"
+            id="ruleName"
+            name="ruleName"
+            type="text"
+            value="New rule"
+          />
         </div>
+      </div>
+      <div
+        class="form-group"
+      >
         <label
           class="label"
           for="ruleDescription"
@@ -437,17 +433,15 @@ exports[`<RuleSettingsForm /> rendering should render a loader when rule id befo
           Rule description
         </label>
         <div
-          class="InputField form-group"
-          color=""
+          class="wrapper"
         >
-          <div
-            class=""
-          >
-            <textarea
-              class="field form-control"
-              id="ruleDescription"
-            />
-          </div>
+          <input
+            class="input"
+            id="ruleDescription"
+            name="ruleDescription"
+            type="textarea"
+            value=""
+          />
         </div>
       </div>
       <label
@@ -780,21 +774,20 @@ exports[`<RuleSettingsForm /> rendering should render an empty form when no rule
           Rule name
         </label>
         <div
-          class="InputField form-group"
-          color=""
+          class="wrapper"
         >
-          <div
-            class=""
-          >
-            <input
-              aria-invalid="false"
-              class="field form-control"
-              id="ruleName"
-              type="text"
-              value="New rule"
-            />
-          </div>
+          <input
+            class="input"
+            id="ruleName"
+            name="ruleName"
+            type="text"
+            value="New rule"
+          />
         </div>
+      </div>
+      <div
+        class="form-group"
+      >
         <label
           class="label"
           for="ruleDescription"
@@ -802,17 +795,15 @@ exports[`<RuleSettingsForm /> rendering should render an empty form when no rule
           Rule description
         </label>
         <div
-          class="InputField form-group"
-          color=""
+          class="wrapper"
         >
-          <div
-            class=""
-          >
-            <textarea
-              class="field form-control"
-              id="ruleDescription"
-            />
-          </div>
+          <input
+            class="input"
+            id="ruleDescription"
+            name="ruleDescription"
+            type="textarea"
+            value=""
+          />
         </div>
       </div>
       <label

@@ -1,6 +1,7 @@
 import React from 'react'
 import {fromJS, Map} from 'immutable'
-import {Input} from 'reactstrap'
+
+import TextInput from 'pages/common/forms/input/TextInput'
 
 type Props = {
     action: Map<string, any>
@@ -22,14 +23,14 @@ export default class SetSubjectAction extends React.Component<Props> {
     render() {
         return (
             <div>
-                <Input
+                <TextInput
                     type="text"
-                    onChange={(e) => this._updateSubject(e.target.value)}
+                    onChange={(value) => this._updateSubject(value)}
                     value={this.props.action.getIn(
                         ['arguments', 'subject'],
                         ''
                     )}
-                    required
+                    isRequired
                 />
             </div>
         )

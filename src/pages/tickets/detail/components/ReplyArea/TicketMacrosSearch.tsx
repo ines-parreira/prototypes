@@ -1,8 +1,8 @@
 import classnames from 'classnames'
 import React, {KeyboardEvent as KeyboardEventReact} from 'react'
-import {Input} from 'reactstrap'
 
 import {fetchMacrosParamsTypes} from 'state/macro/actions'
+import TextInput from 'pages/common/forms/input/TextInput'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import css from './TicketMacrosSearch.less'
 
@@ -37,20 +37,24 @@ const TicketMacrosSearch = ({
             >
                 bolt
             </i>
-            <Input
+            <TextInput
                 tabIndex={3}
-                onChange={(e) =>
+                onChange={(value) =>
                     searchMacros({
                         ...searchParams,
-                        search: e.target.value,
+                        search: value,
                     })
                 }
                 onKeyDown={handleSearchKeyDown}
                 onFocus={showMacros}
                 placeholder="Search macros by name, tags or body..."
-                disabled={requireCustomerSelection}
-                className={classnames('border-0', css.searchInput)}
-                innerRef={setFocus}
+                isDisabled={requireCustomerSelection}
+                className={classnames(
+                    'border-0',
+                    'shadow-none',
+                    css.searchInput
+                )}
+                ref={setFocus}
             />
             {macrosVisible && (
                 <MacroFilters

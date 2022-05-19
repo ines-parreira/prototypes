@@ -50,28 +50,33 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
         >
           bolt
         </i>
-        <Input
-          className="border-0 searchInput"
-          disabled={true}
-          innerRef={[Function]}
+        <ForwardRef(TextInput)
+          className="border-0 shadow-none searchInput"
+          isDisabled={true}
           onChange={[Function]}
           onFocus={[Function]}
           onKeyDown={[Function]}
           placeholder="Search macros by name, tags or body..."
           tabIndex={3}
-          type="text"
         >
-          <input
-            className="border-0 searchInput form-control"
-            disabled={true}
-            onChange={[Function]}
-            onFocus={[Function]}
-            onKeyDown={[Function]}
-            placeholder="Search macros by name, tags or body..."
-            tabIndex={3}
-            type="text"
-          />
-        </Input>
+          <div
+            className="wrapper isDisabled border-0 shadow-none searchInput"
+          >
+            <input
+              className="input"
+              disabled={true}
+              id="input-text-3"
+              name="input-text-3"
+              onChange={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              placeholder="Search macros by name, tags or body..."
+              required={false}
+              tabIndex={3}
+              type="text"
+            />
+          </div>
+        </ForwardRef(TextInput)>
         <i
           className="material-icons md-2 mr-3 clickable closeButton"
           onClick={[Function]}

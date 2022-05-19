@@ -68,7 +68,8 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
 `;
 
 exports[`ast widgets IntegrationSelect should render a loading imput (no integrations) 1`] = `
-<Input
+<ForwardRef(TextInput)
+  className="shadow-none border-0"
   placeholder="Loading integrations..."
   readOnly={true}
   type="text"

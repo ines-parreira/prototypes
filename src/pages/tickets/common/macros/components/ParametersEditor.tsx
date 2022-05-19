@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Map, List} from 'immutable'
 import {Row, Col} from 'reactstrap'
 
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import IconButton from 'pages/common/components/button/IconButton'
 import Tooltip from '../../../../common/components/Tooltip'
 import {MAX_HEADER_LENGTH} from '../../../../../config'
@@ -59,14 +59,14 @@ export default class ParametersEditor extends Component<Props> {
                     return (
                         <Row key={index} className="mb-3 form-row">
                             <Col xs="3">
-                                <DEPRECATED_InputField
+                                <InputField
                                     type="text"
                                     placeholder="Key"
                                     value={dict.get('key')}
                                     error={this.validateHeaderName(
                                         dict.get('key')
                                     )}
-                                    required
+                                    isRequired
                                     form="macro_form"
                                     maxLength={MAX_HEADER_LENGTH}
                                     onChange={(value) =>
@@ -75,13 +75,13 @@ export default class ParametersEditor extends Component<Props> {
                                 />
                             </Col>
                             <Col className="flex-grow">
-                                <DEPRECATED_InputField
+                                <InputField
                                     type="text"
                                     placeholder="Value"
                                     value={dict.get('value')}
                                     form="macro_form"
                                     maxLength={MAX_HEADER_LENGTH}
-                                    required={this.props.name === 'headers'}
+                                    isRequired={this.props.name === 'headers'}
                                     onChange={(value) =>
                                         this.changeValue('value', index!, value)
                                     }

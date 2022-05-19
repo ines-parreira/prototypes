@@ -5,22 +5,29 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
   class="http"
 >
   <div
-    class="InputField required form-group"
-    color=""
+    class="mb-3"
   >
     <label
-      class="control-label"
-      for="id-title"
+      class="label label"
+      for="input-text-1"
     >
       Title
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
     </label>
     <div
-      class=""
+      class="wrapper"
     >
       <input
-        class="field form-control"
+        class="input"
         form="macro_form"
-        id="id-title"
+        id="input-text-1"
+        name="title"
         required=""
         type="text"
         value="HTTP hook"
@@ -79,23 +86,29 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     <div
       class="col-9"
     >
-      <div
-        class="InputField required form-group"
-        color=""
-      >
+      <div>
         <label
-          class="control-label"
-          for="id-url"
+          class="label label"
+          for="input-text-3"
         >
           URL
+          <abbr
+            aria-label="required"
+            class="abbr"
+            title="required"
+          >
+            *
+          </abbr>
         </label>
         <div
-          class=""
+          class="wrapper"
         >
           <input
-            class="field form-control"
+            aria-describedby="input-text-3-caption"
+            class="input"
             form="macro_form"
-            id="id-url"
+            id="input-text-3"
+            name="url"
             pattern="*"
             required=""
             title="Example: https://company.com/api"
@@ -103,11 +116,12 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
             value=""
           />
         </div>
-        <small
-          class="form-text text-muted"
+        <div
+          class="caption"
+          id="input-text-3-caption"
         >
           Example: https://company.com/api
-        </small>
+        </div>
       </div>
     </div>
   </div>
@@ -166,7 +180,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
     >
       <fieldset
         class="mb-2"
-        name="radio-field-1"
+        name="radio-field-5"
       >
         <div
           class="option"
@@ -178,7 +192,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
             <input
               class="input"
               id="application/x-www-form-urlencoded"
-              name="radio-field-1"
+              name="radio-field-5"
               type="radio"
             />
             application/x-www-form-urlencoded
@@ -194,7 +208,7 @@ exports[`HTTP action component should render the HTTP action component 1`] = `
             <input
               class="input"
               id="application/json"
-              name="radio-field-1"
+              name="radio-field-5"
               type="radio"
             />
             application/json

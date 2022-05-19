@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
-import {Input} from 'reactstrap'
 import {List, Map} from 'immutable'
 
 import {fetchMacrosParamsTypes, MacrosSearchResult} from 'state/macro/actions'
+import TextInput from 'pages/common/forms/input/TextInput'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import shortcutManager from '../../../../../services/shortcutManager'
 import {moveIndex, MoveIndexDirection} from '../../../../common/utils/keyboard'
@@ -100,10 +100,10 @@ export default class MacroModalList extends Component<Props> {
 
         return (
             <div className={css.component}>
-                <Input
+                <TextInput
                     value={searchParams.search}
-                    onChange={(e) =>
-                        onSearch({...searchParams, search: e.target.value})
+                    onChange={(value) =>
+                        onSearch({...searchParams, search: value})
                     }
                     placeholder="Search macros by name, tags or body..."
                     autoFocus={!searchResults.macros.isEmpty()}

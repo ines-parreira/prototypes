@@ -11,6 +11,7 @@ import {
 import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
+import InputField from 'pages/common/forms/input/InputField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import JsonField from 'pages/common/forms/JsonField'
 
@@ -91,14 +92,15 @@ export default class HttpAction extends React.Component<Props> {
 
         return (
             <div className="http">
-                <DEPRECATED_InputField
+                <InputField
                     type="text"
                     name="title"
                     label="Title"
                     value={action.get('title')}
                     onChange={this._setTitle}
-                    required
+                    isRequired
                     form="macro_form"
+                    className="mb-3"
                 />
                 <Row className="form-row">
                     <Col xs="3">
@@ -121,20 +123,22 @@ export default class HttpAction extends React.Component<Props> {
                         </DEPRECATED_InputField>
                     </Col>
                     <Col xs="9">
-                        <DEPRECATED_InputField
+                        <InputField
                             type="url"
                             title="Example: https://company.com/api"
                             name="url"
                             label="URL"
-                            error={validateWebhookURL(
-                                action.getIn(['arguments', 'url'])
-                            )}
+                            error={
+                                validateWebhookURL(
+                                    action.getIn(['arguments', 'url'])
+                                ) as string
+                            }
                             value={action.getIn(['arguments', 'url'])}
                             onChange={(value) =>
                                 this._setArgument('url', value)
                             }
-                            help="Example: https://company.com/api"
-                            required
+                            caption="Example: https://company.com/api"
+                            isRequired
                             form="macro_form"
                             pattern={validateWebhookURLToPattern(
                                 action.getIn(['arguments', 'url'])

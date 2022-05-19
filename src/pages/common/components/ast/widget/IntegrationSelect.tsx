@@ -1,8 +1,9 @@
 import React, {useEffect} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List} from 'immutable'
-import {Input} from 'reactstrap'
 import _isNumber from 'lodash/isNumber'
+
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import SelectField from '../../../forms/SelectField/SelectField'
 import {RenderLabel} from '../../../utils/labels'
@@ -42,7 +43,12 @@ export function IntegrationSelectContainer({
 
     if (options.isEmpty()) {
         return (
-            <Input type="text" placeholder="Loading integrations..." readOnly />
+            <TextInput
+                type="text"
+                placeholder="Loading integrations..."
+                readOnly
+                className="shadow-none border-0"
+            />
         )
     }
 

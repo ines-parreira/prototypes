@@ -4,12 +4,18 @@ exports[`<MacroModalList /> should render MacroModalList 1`] = `
 <div
   class="component"
 >
-  <input
-    class="search shortcuts-enable mt-3 mb-3 form-control"
-    placeholder="Search macros by name, tags or body..."
-    type="text"
-    value=""
-  />
+  <div
+    class="wrapper isFocused search shortcuts-enable mt-3 mb-3"
+  >
+    <input
+      class="input"
+      id="input-text-1"
+      name="input-text-1"
+      placeholder="Search macros by name, tags or body..."
+      type="text"
+      value=""
+    />
+  </div>
   <div
     class="d-flex"
   >
@@ -92,12 +98,12 @@ exports[`<MacroModalList /> should render MacroModalList 1`] = `
           >
             <label
               class="label label quickSelectionOption"
-              for="checkbox-1"
+              for="checkbox-2"
             >
               <input
                 class="input"
-                id="checkbox-1"
-                name="checkbox-1"
+                id="checkbox-2"
+                name="checkbox-2"
                 type="checkbox"
               />
               Select all
