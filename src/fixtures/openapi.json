@@ -97,7 +97,7 @@
                 "tags": ["User"],
                 "responses": {
                     "400": {"description": "Bad request."},
-                    "202": {"schema": {"$ref": "#/definitions/User"}},
+                    "202": {"schema": {"$ref": "#/definitions/DEPRECATED_User"}},
                     "404": {"description": "Not found."}
                 },
                 "produces": ["application/json"],
@@ -343,7 +343,7 @@
                 "tags": ["User"],
                 "responses": {
                     "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/User"}},
+                    "201": {"schema": {"$ref": "#/definitions/DEPRECATED_User"}},
                     "404": {"description": "Not found."}
                 },
                 "produces": ["application/json"],
@@ -358,7 +358,7 @@
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/User"}
+                            "items": {"$ref": "#/definitions/DEPRECATED_User"}
                         }
                     },
                     "400": {"description": "Bad request."},
@@ -717,7 +717,7 @@
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/User"}
+                            "items": {"$ref": "#/definitions/DEPRECATED_User"}
                         }
                     },
                     "400": {"description": "Bad request."},
@@ -837,7 +837,7 @@
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/User"}
+                            "items": {"$ref": "#/definitions/DEPRECATED_User"}
                         }
                     },
                     "400": {"description": "Bad request."},
@@ -854,7 +854,7 @@
                 "tags": ["User"],
                 "responses": {
                     "400": {"description": "Bad request."},
-                    "202": {"schema": {"$ref": "#/definitions/User"}},
+                    "202": {"schema": {"$ref": "#/definitions/DEPRECATED_User"}},
                     "404": {"description": "Not found."}
                 },
                 "produces": ["application/json"],
@@ -877,7 +877,7 @@
                 "parameters": [{"$ref": "#/parameters/id"}],
                 "tags": ["User"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/User"}},
+                    "200": {"schema": {"$ref": "#/definitions/DEPRECATED_User"}},
                     "400": {"description": "Bad request."},
                     "404": {"description": "Not found."}
                 },
@@ -1226,7 +1226,7 @@
             "required": ["type", "address"],
             "properties": {
                 "deleted_datetime": {"type": "string", "format": "date-time"},
-                "user": {"$ref": "#/definitions/User"},
+                "user": {"$ref": "#/definitions/DEPRECATED_User"},
                 "id": {
                     "description": "Primary key of the object",
                     "type": "integer",
@@ -1245,7 +1245,7 @@
                     "description": "Is this the preferred or (primary) channel to contact this user.",
                     "type": "boolean"
                 },
-                "customer": {"$ref": "#/definitions/User"},
+                "customer": {"$ref": "#/definitions/DEPRECATED_User"},
                 "address": {
                     "description": "Address can be email, phone, facebook id, etc...",
                     "example": "marie@gorgias.io",
@@ -1459,7 +1459,7 @@
             },
             "type": "object"
         },
-        "User": {
+        "DEPRECATED_User": {
             "description": "A User represents a person or a bot which contacted your team via Gorgias.\nThe `User` object is used for both end-users, customers, visitors and agents or admins of your Gorgias account.\nFrom Gorgias's perspective everybody is a `User`, and they are distinguished by their [Roles](#Role-object).\n",
             "required": ["roles"],
             "properties": {
@@ -2104,7 +2104,7 @@
                 },
                 "user": {
                     "description": "User which created this integration.",
-                    "$ref": "#/definitions/User"
+                    "$ref": "#/definitions/DEPRECATED_User"
                 },
                 "updated_datetime": {
                     "description": "When the Integration was last updated.",
@@ -2127,7 +2127,7 @@
                                 "type": "integer",
                                 "format": "int32"
                             },
-                            "user": {"$ref": "#/definitions/User"},
+                            "user": {"$ref": "#/definitions/DEPRECATED_User"},
                             "uri": {
                                 "description": "URI of the object - auto-generated",
                                 "type": "string"
@@ -2844,7 +2844,7 @@
                 "sender": {
                     "description": "The User object who sent this message.",
                     "example": {"id": 7},
-                    "$ref": "#/definitions/User"
+                    "$ref": "#/definitions/DEPRECATED_User"
                 },
                 "public": {
                     "description": "Indicates whether this message was sent to the user, or is an internal note.",
@@ -2999,7 +2999,7 @@
                 "receiver": {
                     "description": "The User who received this message.",
                     "example": {"id": 8},
-                    "$ref": "#/definitions/User"
+                    "$ref": "#/definitions/DEPRECATED_User"
                 },
                 "rule_id": {
                     "description": "Id of the rule which sent this message, if any.",
@@ -3495,7 +3495,7 @@
                 },
                 "user": {
                     "description": "Widget author.",
-                    "$ref": "#/definitions/User"
+                    "$ref": "#/definitions/DEPRECATED_User"
                 },
                 "id": {
                     "description": "Primary key of the object",
@@ -3845,7 +3845,7 @@
                         "email": "sender@gorgias.io",
                         "id": 7
                     },
-                    "$ref": "#/definitions/User"
+                    "$ref": "#/definitions/DEPRECATED_User"
                 },
                 "reply_options": {"type": "string"},
                 "last_received_message_datetime": {
@@ -4335,7 +4335,7 @@
                         "id": 4,
                         "email": "agent-smith@gorgias.io"
                     },
-                    "$ref": "#/definitions/User"
+                    "$ref": "#/definitions/DEPRECATED_User"
                 }
             },
             "type": "object"
