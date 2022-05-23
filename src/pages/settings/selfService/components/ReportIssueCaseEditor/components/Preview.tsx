@@ -11,6 +11,7 @@ import {
 } from 'models/integration/types'
 import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
+import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
 
 import css from './Preview.less'
 
@@ -47,6 +48,9 @@ const Preview = ({reasonOptions}: PreviewProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [immutableIntegrations])
 
+    const sspTexts =
+        GORGIAS_CHAT_SSP_TEXTS[chatIntegration?.meta?.language || 'en-US']
+
     if (!chatIntegration) {
         return null
     }
@@ -64,12 +68,12 @@ const Preview = ({reasonOptions}: PreviewProps) => {
             language={chatIntegration.meta.language}
             renderFooter={false}
         >
-            <span className={css.header}>What is wrong with your order?</span>
+            <span className={css.header}>{sspTexts.whatIsWrongWithOrder}</span>
 
             <ul className={css.list}>
                 {reasonOptions.map((reason) => (
                     <li className={css.listItem} key={reason.value}>
-                        <span>{reason.label}</span>
+                        <span>{sspTexts[reason.value] ?? reason.label}</span>
 
                         <span
                             className={classNames(
