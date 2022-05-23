@@ -5,6 +5,7 @@ import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {agents} from 'fixtures/agents'
 
 import Link from '../Link'
 
@@ -15,7 +16,7 @@ describe('<Link/>', () => {
         index: 2,
         targetId: 'somepath-2',
         link: {
-            url: 'httpbin.org/get?first_name={{first_name}}&last_name={{last_name}}&partner={{user.name}}',
+            url: 'httpbin.org/get?first_name={{first_name}}&last_name={{last_name}}&partner={{user.name}}&agent={{current_user.name}}',
             label: 'Query {{ticket.someData}}',
         },
         source: fromJS({
@@ -36,9 +37,30 @@ describe('<Link/>', () => {
                 store={mockStore({
                     customers: fromJS({active: {name: 'Johanna'}}),
                     ticket: fromJS({someData: '1234'}),
+                    currentUser: fromJS(agents[0]),
                 })}
             >
                 <Link {...props} />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should not render all agent available data', () => {
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {name: 'Johanna'}}),
+                    currentUser: fromJS(agents[0]),
+                })}
+            >
+                <Link
+                    {...props}
+                    link={{
+                        url: 'httpbin.org/get?first_name={{current_user.firstname}}&private={{current_user.created_datetime}}',
+                        label: 'Query {{current_user.has_2fa_enabled}}',
+                    }}
+                />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()

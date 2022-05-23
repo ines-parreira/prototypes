@@ -6,6 +6,7 @@ import {renderTemplate} from 'pages/common/utils/template'
 import {getTicket} from 'state/ticket/selectors'
 import {getActiveCustomer} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUserState} from 'state/currentUser/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
@@ -17,6 +18,15 @@ import {
 
 import css from './Links.less'
 import Editor from './Editor'
+
+const CURRENT_USER_TEMPLATE_FIELDS = [
+    'name',
+    'lastname',
+    'firstname',
+    'email',
+] as const
+
+type CurrentUserTemplateFields = typeof CURRENT_USER_TEMPLATE_FIELDS[number]
 
 type Props = {
     index: number
@@ -38,22 +48,35 @@ export function Link(props: Props) {
         onRemove,
         onSubmit,
     } = props
-
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const {integrationId} = useContext(IntegrationContext)
-
     const {url: linkUrl, label: linkLabel} = link
 
+    const {integrationId} = useContext(IntegrationContext)
+
+    const currentAccount = useAppSelector(getCurrentAccountState)
     const ticket = useAppSelector(getTicket)
     const user = useAppSelector(getActiveCustomer)
+    const currentUser = useAppSelector(getCurrentUserState)
 
     const templateContext = useMemo(() => {
+        const fullCurrentUserData = currentUser.toJS() as Record<
+            string,
+            unknown
+        >
+        const trimmedCurrentUserData: Partial<
+            Record<CurrentUserTemplateFields, unknown>
+        > = {}
+
+        CURRENT_USER_TEMPLATE_FIELDS.forEach((field) => {
+            trimmedCurrentUserData[field] = fullCurrentUserData[field]
+        })
+
         return {
             ...(source.toJS() as Record<string, unknown>),
             ticket,
             user,
+            current_user: trimmedCurrentUserData,
         }
-    }, [user, source, ticket])
+    }, [user, source, ticket, currentUser])
 
     const renderLinkUrl = useCallback(() => {
         return renderTemplate(linkUrl, templateContext)

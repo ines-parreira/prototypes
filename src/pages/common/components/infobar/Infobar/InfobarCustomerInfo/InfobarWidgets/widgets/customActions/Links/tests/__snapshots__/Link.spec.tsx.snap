@@ -1,12 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Link/> should not render all agent available data 1`] = `
+<li
+  class="groupItem list-group-item"
+>
+  <a
+    class="link"
+    href="httpbin.org/get?first_name=Acme&private="
+    rel="noopener noreferrer"
+    target="_blank"
+  >
+    Query 
+    <i
+      class="linkIcon material-icons"
+    >
+      open_in_new
+    </i>
+  </a>
+</li>
+`;
+
 exports[`<Link/> should render with template replaced with its according value 1`] = `
 <li
   class="groupItem list-group-item"
 >
   <a
     class="link"
-    href="httpbin.org/get?first_name=Doe&last_name=John&partner=Johanna"
+    href="httpbin.org/get?first_name=Doe&last_name=John&partner=Johanna&agent=Acme Support"
     rel="noopener noreferrer"
     target="_blank"
   >
@@ -26,7 +46,7 @@ exports[`<Link/> should render with the editor 1`] = `
 >
   <a
     class="link"
-    href="httpbin.org/get?first_name=Doe&last_name=John&partner="
+    href="httpbin.org/get?first_name=Doe&last_name=John&partner=&agent="
     rel="noopener noreferrer"
     target="_blank"
   >
