@@ -26,6 +26,7 @@ const DropdownSearch = forwardRef(
             placeholder = 'Search',
             prefix = <IconInput icon="search" />,
             value,
+            ...other
         }: Props,
         ref: Ref<HTMLInputElement> | null | undefined
     ) => {
@@ -67,6 +68,7 @@ const DropdownSearch = forwardRef(
         return (
             <div className={classnames(css.wrapper, className)}>
                 <TextInput
+                    {...other}
                     onChange={setLocalQuery}
                     placeholder={placeholder}
                     prefix={prefix}

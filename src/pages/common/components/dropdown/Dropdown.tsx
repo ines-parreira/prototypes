@@ -69,7 +69,7 @@ const Dropdown = forwardRef(
             target,
             value,
         }: Props,
-        ref: Ref<HTMLDivElement> | null | undefined
+        ref: Ref<HTMLElement> | null | undefined
     ) => {
         const {x, y, reference, floating, refs, strategy, update} =
             useFloating<HTMLElement>({
@@ -91,8 +91,9 @@ const Dropdown = forwardRef(
                     }),
                 ],
             })
-        useImperativeHandle(ref, () => floating as unknown as HTMLDivElement, [
-            floating,
+        const currentFloatingElement = refs.floating.current!
+        useImperativeHandle(ref, () => currentFloatingElement, [
+            currentFloatingElement,
         ])
         const currentTarget = target.current
         const [query, setQuery] = useState('')
@@ -145,7 +146,12 @@ const Dropdown = forwardRef(
                     <>
                         {substrings.map((substring, index) => (
                             <Fragment key={`${substring}${index}`}>
-                                {substring}
+                                {!!substring.length && (
+                                    <span className={css.subLabel}>
+                                        {substring}
+                                    </span>
+                                )}
+
                                 {index < substrings.length - 1 && (
                                     <span className={css.highlightedLabel}>
                                         {query}

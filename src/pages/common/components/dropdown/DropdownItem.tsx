@@ -11,6 +11,7 @@ import React, {
 import classnames from 'classnames'
 import _isString from 'lodash/isString'
 import _isFunction from 'lodash/isFunction'
+import {useEffectOnce} from 'react-use'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 
@@ -18,6 +19,7 @@ import {DropdownContext} from './Dropdown'
 import css from './DropdownItem.less'
 
 type Props<T extends boolean | number | string> = {
+    autoFocus?: boolean
     children?: ReactNode | ((highlightedLabel: ReactNode) => ReactNode)
     className?: string
     onClick: (value: T) => void
@@ -30,6 +32,7 @@ type Props<T extends boolean | number | string> = {
 }
 
 const DropdownItem = <T extends boolean | number | string>({
+    autoFocus,
     children,
     className,
     onClick,
@@ -79,6 +82,14 @@ const DropdownItem = <T extends boolean | number | string>({
                 : currentValue === option.value),
         [currentValue, option]
     )
+
+    useEffectOnce(() => {
+        const currentItem = itemRef.current
+
+        if (autoFocus && !currentItem?.previousElementSibling) {
+            currentItem?.focus()
+        }
+    })
 
     const handleClick = useCallback(
         (value: T) => {

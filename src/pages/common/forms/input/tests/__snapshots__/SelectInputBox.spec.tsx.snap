@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelectInputBox /> should render a prefix and a suffix 1`] = `
+<div
+  class="wrapper"
+  role="listbox"
+  tabindex="0"
+>
+  <div
+    class="inputWrapper"
+  >
+    <span
+      class="affix prefix"
+    >
+      prefix
+    </span>
+    <div
+      class="input"
+    >
+      Foo
+    </div>
+    <span
+      class="affix suffix"
+    >
+      suffix
+    </span>
+    <i
+      class="affix suffix toggle material-icons"
+    >
+      arrow_drop_down
+    </i>
+  </div>
+</div>
+`;
+
+exports[`<SelectInputBox /> should render a select input box 1`] = `
+<div
+  class="wrapper"
+  role="listbox"
+  tabindex="0"
+>
+  <div
+    class="inputWrapper"
+  >
+    <div
+      class="input"
+    >
+      Foo
+    </div>
+    <i
+      class="affix suffix toggle material-icons"
+    >
+      arrow_drop_down
+    </i>
+  </div>
+</div>
+`;

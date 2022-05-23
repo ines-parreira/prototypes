@@ -5,24 +5,30 @@ Array [
   <div
     data-testid="option"
   >
-    
     <span
       class="highlightedLabel"
     >
       BA
     </span>
-    r
+    <span
+      class="subLabel"
+    >
+      r
+    </span>
   </div>,
   <div
     data-testid="option"
   >
-    
     <span
       class="highlightedLabel"
     >
       BA
     </span>
-    z
+    <span
+      class="subLabel"
+    >
+      z
+    </span>
   </div>,
 ]
 `;
@@ -32,24 +38,30 @@ Array [
   <div
     data-testid="option"
   >
-    
     <span
       class="highlightedLabel"
     >
       ba
     </span>
-    r
+    <span
+      class="subLabel"
+    >
+      r
+    </span>
   </div>,
   <div
     data-testid="option"
   >
-    
     <span
       class="highlightedLabel"
     >
       ba
     </span>
-    z
+    <span
+      class="subLabel"
+    >
+      z
+    </span>
   </div>,
 ]
 `;
