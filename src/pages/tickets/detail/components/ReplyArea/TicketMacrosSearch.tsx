@@ -2,6 +2,7 @@ import classnames from 'classnames'
 import React, {KeyboardEvent as KeyboardEventReact} from 'react'
 
 import {fetchMacrosParamsTypes} from 'state/macro/actions'
+import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import css from './TicketMacrosSearch.less'
@@ -29,14 +30,6 @@ const TicketMacrosSearch = ({
 }: Props) => {
     return (
         <div className={classnames(css.component, 'd-flex align-items-center')}>
-            <i
-                className={classnames(
-                    css.bolt,
-                    'material-icons md-2 ml-2 text-info'
-                )}
-            >
-                bolt
-            </i>
             <TextInput
                 tabIndex={3}
                 onChange={(search) =>
@@ -48,12 +41,15 @@ const TicketMacrosSearch = ({
                 onFocus={showMacros}
                 placeholder="Search macros by name, tags or body..."
                 isDisabled={requireCustomerSelection}
-                className={classnames(
-                    'border-0',
-                    'shadow-none',
-                    css.searchInput
-                )}
+                className={classnames('border-0', 'shadow-none')}
+                inputClassName={css.searchInput}
                 ref={setFocus}
+                prefix={
+                    <IconInput
+                        className={classnames(css.bolt, 'md-2 text-info')}
+                        icon="bolt"
+                    />
+                }
             />
             {macrosVisible && (
                 <MacroFilters

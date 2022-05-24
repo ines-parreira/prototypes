@@ -45,25 +45,42 @@ exports[`<TicketReplyArea/> should block the reply area because the customer is 
       <div
         className="component d-flex align-items-center"
       >
-        <i
-          className="bolt material-icons md-2 ml-2 text-info"
-        >
-          bolt
-        </i>
         <ForwardRef(TextInput)
-          className="border-0 shadow-none searchInput"
+          className="border-0 shadow-none"
+          inputClassName="searchInput"
           isDisabled={true}
           onChange={[Function]}
           onFocus={[Function]}
           onKeyDown={[Function]}
           placeholder="Search macros by name, tags or body..."
+          prefix={
+            <IconInput
+              className="bolt md-2 text-info"
+              icon="bolt"
+            />
+          }
           tabIndex={3}
         >
           <div
-            className="wrapper isDisabled border-0 shadow-none searchInput"
+            className="wrapper isDisabled border-0 shadow-none"
           >
+            <span
+              className="prefix"
+              onClick={[Function]}
+            >
+              <IconInput
+                className="bolt md-2 text-info"
+                icon="bolt"
+              >
+                <i
+                  className="material-icons icon bolt md-2 text-info"
+                >
+                  bolt
+                </i>
+              </IconInput>
+            </span>
             <input
-              className="input"
+              className="input searchInput"
               disabled={true}
               id="input-text-3"
               name="input-text-3"
