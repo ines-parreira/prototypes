@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import * as widgetsFixtures from '../../../../../../../../../fixtures/widgets'
 import * as ticketFixtures from '../../../../../../../../../fixtures/ticket.ts'
 
-import ListInfobarWidget from '../ListInfobarWidget'
+import ListInfobarWidget from '../ListInfobar'
 
 describe('Infobar::Widgets::ListInfobarWidget', () => {
     const source = fromJS(

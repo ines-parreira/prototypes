@@ -16,6 +16,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {ContentType} from 'models/api/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {CustomerContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {WidgetListContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ListInfobar'
 import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 
 import BaseButton from 'pages/common/components/button/Button'
@@ -55,6 +56,7 @@ function Button({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {customerId} = useContext(CustomerContext)
     const {integrationId} = useContext(IntegrationContext)
+    const {currentListIndex} = useContext(WidgetListContext)
     const handleExecuteAction = useCallback(
         (action: Action) => {
             const loadingId = executeAction({
@@ -62,7 +64,13 @@ function Button({
                 actionLabel: label,
                 integrationId: integrationId!,
                 customerId: customerId?.toString(),
-                payload: mapActionToActionPayload(action),
+                payload: mapActionToActionPayload(action, {
+                    listIndex:
+                        currentListIndex !== null
+                            ? currentListIndex.toString()
+                            : undefined,
+                    integrationId: integrationId?.toString(),
+                }),
             })
             logEvent(SegmentEvent.CustomActionButtonsExecuted, {
                 account_domain: currentAccount.get('domain'),
@@ -70,7 +78,14 @@ function Button({
             })
             setLoadingId(loadingId)
         },
-        [label, executeAction, customerId, integrationId, currentAccount]
+        [
+            label,
+            executeAction,
+            customerId,
+            integrationId,
+            currentAccount,
+            currentListIndex,
+        ]
     )
     const handleClick = useCallback(() => {
         if (shouldDisplayEditor(action)) {

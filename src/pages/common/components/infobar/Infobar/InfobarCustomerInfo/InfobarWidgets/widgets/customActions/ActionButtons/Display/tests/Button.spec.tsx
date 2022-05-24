@@ -7,6 +7,9 @@ import thunk from 'redux-thunk'
 import {createStore, applyMiddleware, Reducer} from 'redux'
 
 import * as infobarActions from 'state/infobar/actions'
+import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {WidgetListContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ListInfobar'
+
 const mockedActionId = 'someActionId'
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(() => () => mockedActionId),
@@ -85,6 +88,52 @@ describe('<Button/>', () => {
                 method: 'GET',
                 params: {},
                 url: 'www.someurl.com',
+            },
+        })
+        expect(
+            screen
+                .getByRole('button', {name: props.label})
+                .hasAttribute('disabled')
+        ).toBeTruthy()
+    })
+
+    it('should have correctly templated action’s payload', () => {
+        const currentListIndex = 2
+        const integrationId = 1337
+        render(
+            <Provider
+                store={mockStore({
+                    customers: fromJS({active: {}}),
+                })}
+            >
+                <IntegrationContext.Provider
+                    value={{integration: fromJS({}), integrationId}}
+                >
+                    <WidgetListContext.Provider value={{currentListIndex}}>
+                        <Button
+                            {...props}
+                            action={{
+                                ...actionFixture(),
+                                url: 'www.someurl$listIndex$integrationId.com',
+                            }}
+                        />
+                    </WidgetListContext.Provider>
+                </IntegrationContext.Provider>
+            </Provider>
+        )
+        fireEvent.click(screen.getByText(props.label))
+        expect(infobarActions.executeAction).toHaveBeenCalledWith({
+            actionLabel: props.label,
+            actionName: 'customHttpAction',
+            customerId: undefined,
+            integrationId,
+            payload: {
+                form: {},
+                headers: {},
+                json: {},
+                method: 'GET',
+                params: {},
+                url: `www.someurl${currentListIndex}${integrationId}.com`,
             },
         })
         expect(

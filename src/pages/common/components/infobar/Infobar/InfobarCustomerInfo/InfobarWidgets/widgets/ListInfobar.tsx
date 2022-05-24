@@ -1,36 +1,59 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {Component, createContext} from 'react'
 import classnames from 'classnames'
-import {List} from 'immutable'
+import {Map, List} from 'immutable'
 
-import {compare} from '../../../../../../../../utils.ts'
-import InfobarWidget from '../InfobarWidget'
-import {ShowMore} from '../../ShowMore.tsx'
+import {compare} from 'utils'
+import InfobarWidget from '../InfobarWidget.js'
+import {ShowMore} from '../../ShowMore'
 
 import css from './ListInfobarWidget.less'
 
+type WidgetListContextType = {
+    currentListIndex: number | null
+}
+
+export const WidgetListContext = createContext<WidgetListContextType>({
+    currentListIndex: null,
+})
+
 const DEFAULT_LIST_LIMIT = 3
 
-class ListInfobarWidget extends React.Component {
+type OwnProps = {
+    editing: Record<string | number, unknown>
+    source: List<Map<string, unknown>>
+    widget: Map<unknown, unknown>
+    template: Map<unknown, unknown>
+    isEditing?: boolean
+    isParentList: boolean
+    open?: boolean
+}
+
+class ListInfobarWidget extends Component<OwnProps> {
     state = {
         showMoreTimes: 0, // how many times the agent asked to show more of the list
     }
 
     render() {
-        const {isEditing, isParentList, source, widget, template, editing} =
-            this.props
+        const {
+            isEditing = false,
+            isParentList,
+            source,
+            widget,
+            template,
+            editing,
+        } = this.props
 
         const updatedTemplate = template.set(
             'absolutePath',
-            template.get('absolutePath').concat(['[]'])
+            (template.get('absolutePath') as List<string>).concat(['[]'])
         )
 
-        const passedTemplate = updatedTemplate
-            .getIn(['widgets', '0'])
-            .set(
-                'templatePath',
-                `${updatedTemplate.get('templatePath', '')}.widgets.0`
-            )
+        const passedTemplate = (
+            updatedTemplate.getIn(['widgets', '0']) as Map<unknown, unknown>
+        ).set(
+            'templatePath',
+            `${updatedTemplate.get('templatePath', '') as string}.widgets.0`
+        )
 
         const isParentOfCard =
             updatedTemplate.getIn(['widgets', 0, 'type'], '') === 'card'
@@ -43,18 +66,20 @@ class ListInfobarWidget extends React.Component {
 
         let orderedSource = source
         // order source
-        const orderByConfig = template.getIn(['meta', 'orderBy'])
+        const orderByConfig = template.getIn(['meta', 'orderBy']) as string
 
         if (!isEditing && orderByConfig) {
             // format of config : "-name" would tell order by 'name' DESC
             const orderByProperty = orderByConfig.slice(1)
             orderedSource = orderedSource.sort((a, b) =>
                 compare(a.get(orderByProperty), b.get(orderByProperty))
-            )
+            ) as List<Map<string, unknown>>
 
             const orderByDirection = orderByConfig.slice(0, 1)
             if (orderByDirection === '-') {
-                orderedSource = orderedSource.reverse()
+                orderedSource = orderedSource.reverse() as List<
+                    Map<string, unknown>
+                >
             }
         }
 
@@ -76,7 +101,7 @@ class ListInfobarWidget extends React.Component {
             // calculate limit of cards displayed in this array
             limit = limit * (this.state.showMoreTimes + 1)
             // limit displayed source data
-            sourceList = orderedSource.take(limit)
+            sourceList = orderedSource.take(limit) as List<Map<string, unknown>>
 
             // if there is a limit, explain it under the card
             const excludedItems = source.size - limit
@@ -113,11 +138,16 @@ class ListInfobarWidget extends React.Component {
         }
 
         return (
-            <div className={className} data-key={`${template.get('path')}[]`}>
-                {sourceList.map((d, i) => {
-                    return (
+            <div
+                className={className}
+                data-key={`${template.get('path') as string}[]`}
+            >
+                {sourceList.map((d, i) => (
+                    <WidgetListContext.Provider
+                        value={{currentListIndex: i as number}}
+                        key={i as number}
+                    >
                         <InfobarWidget
-                            key={i}
                             source={d}
                             parent={updatedTemplate}
                             widget={widget}
@@ -126,8 +156,8 @@ class ListInfobarWidget extends React.Component {
                             isEditing={isEditing}
                             open={i === 0}
                         />
-                    )
-                })}
+                    </WidgetListContext.Provider>
+                ))}
                 {!sourceList.isEmpty() &&
                     isParentOfCard &&
                     exclusionMessage && (
@@ -138,20 +168,6 @@ class ListInfobarWidget extends React.Component {
             </div>
         )
     }
-}
-
-ListInfobarWidget.propTypes = {
-    editing: PropTypes.object,
-    source: PropTypes.object.isRequired,
-    widget: PropTypes.object.isRequired,
-    template: PropTypes.object.isRequired,
-    isEditing: PropTypes.bool.isRequired,
-    isParentList: PropTypes.bool.isRequired,
-    open: PropTypes.bool,
-}
-
-ListInfobarWidget.defaultProps = {
-    isEditing: false,
 }
 
 export default ListInfobarWidget

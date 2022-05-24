@@ -7,7 +7,7 @@ import {
     prepareWidgetToDisplay,
 } from '../../../utils.tsx'
 
-import ListInfobarWidget from './widgets/ListInfobarWidget'
+import ListInfobarWidget from './widgets/ListInfobar.tsx'
 import WrapperInfobarWidget from './widgets/WrapperInfobarWidget.tsx'
 import CardInfobarWidget from './widgets/CardInfobarWidget'
 import FieldInfobarWidget from './widgets/FieldInfobarWidget'
