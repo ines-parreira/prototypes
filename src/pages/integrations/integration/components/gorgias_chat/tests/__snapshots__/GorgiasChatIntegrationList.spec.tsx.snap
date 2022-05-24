@@ -49,6 +49,7 @@ exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat 
   </PageHeader>
   <Container
     className="pageContainer pb0"
+    data-candu-id="integration-container"
     fluid={true}
     tag="div"
   >

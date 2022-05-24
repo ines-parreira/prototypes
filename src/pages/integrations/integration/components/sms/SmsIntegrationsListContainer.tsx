@@ -73,7 +73,11 @@ export function SmsIntegrationsListContainer(): JSX.Element {
                     </>
                 }
             />
-            <Container fluid className={css.pageContainer}>
+            <Container
+                data-candu-id="integration-container"
+                fluid
+                className={css.pageContainer}
+            >
                 Chat with your customers via SMS from Gorgias.
                 {isEmpty(integrations) &&
                     (isLoading ? (

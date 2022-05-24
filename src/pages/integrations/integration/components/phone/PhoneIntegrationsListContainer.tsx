@@ -74,7 +74,11 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                     </>
                 }
             />
-            <Container fluid className={css.pageContainer}>
+            <Container
+                data-candu-id="integration-container"
+                fluid
+                className={css.pageContainer}
+            >
                 Chat with your customers over the phone from Gorgias.
                 {isEmpty(integrations) &&
                     (isLoading ? (

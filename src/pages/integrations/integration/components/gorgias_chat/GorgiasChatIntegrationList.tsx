@@ -179,6 +179,7 @@ function GorgiasChatIntegrationList({
             </PageHeader>
 
             <Container
+                data-candu-id="integration-container"
                 fluid
                 className={classnames(
                     settingsCss.pageContainer,
