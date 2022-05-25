@@ -18,7 +18,7 @@ describe('<AuditLogEvent/>', () => {
         users: fromJS([
             {id: 1, name: 'User 1'},
             {id: 2, name: 'User 2'},
-            {id: 3, name: 'User 3'},
+            {id: 3, name: '', email: 'user3@example.com'},
         ]),
         teams: fromJS([
             {id: 1, name: 'Team 1'},
@@ -307,6 +307,21 @@ describe('<AuditLogEvent/>', () => {
 
             it('when the ticket subject updated data is null', () => {
                 const event = getEvent(TICKET_EVENT_TYPES.TicketSubjectUpdated)
+                const component = shallow(
+                    <AuditLogEventContainer
+                        {...minProps}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                )
+                expect(component).toMatchSnapshot()
+            })
+
+            it('should fallback to the email address when user has no name', () => {
+                const event = {
+                    ...getEvent(TICKET_EVENT_TYPES.TicketSubjectUpdated),
+                    user_id: 3,
+                }
                 const component = shallow(
                     <AuditLogEventContainer
                         {...minProps}

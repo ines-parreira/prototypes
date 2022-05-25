@@ -447,7 +447,9 @@ export class AuditLogEventContainer extends Component<Props> {
                         ) : user ? (
                             <>
                                 <Filler>by</Filler>
-                                <AgentLabel name={user.get('name')} />
+                                <AgentLabel
+                                    name={user.get('name') || user.get('email')}
+                                />
                             </>
                         ) : !!event.getIn(['data', 'auto_assigned']) ? (
                             <Filler>via Team auto-assignment</Filler>

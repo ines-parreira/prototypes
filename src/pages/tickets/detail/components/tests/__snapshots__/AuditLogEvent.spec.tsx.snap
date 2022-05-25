@@ -6,6 +6,48 @@ exports[`<AuditLogEvent/> render() should not render when the content is missing
 
 exports[`<AuditLogEvent/> render() should not render when the executed rule is a system rule 1`] = `""`;
 
+exports[`<AuditLogEvent/> render() should render should fallback to the email address when user has no name 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          mode
+        </i>
+      </div>
+      <ActionName
+        key="name"
+      >
+        Subject updated
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className=""
+        name="user3@example.com"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabelContainer)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+    />
+  </div>
+</div>
+`;
+
 exports[`<AuditLogEvent/> render() should render should render via team auto assignment when the event is auto assigned 1`] = `
 <div
   className="component"

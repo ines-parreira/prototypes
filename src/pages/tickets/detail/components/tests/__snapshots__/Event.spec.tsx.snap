@@ -866,3 +866,114 @@ exports[`Event component should display the correct label for an action 1`] = `
   </Card>
 </div>
 `;
+
+exports[`Event component should fallback to email when user has no name 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon danger"
+        title="Fail"
+      >
+        <i
+          className="material-icons"
+        >
+          close
+        </i>
+      </div>
+      <span
+        className="actionName"
+      >
+        Full refund order
+         
+        <a
+          href="https://my-store.myshopify.com/admin/orders/3"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          #1234
+        </a>
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
+        Shopify
+         
+        (
+        my-store
+        )
+      </span>
+      <span
+        className="filler"
+      >
+        by
+      </span>
+      <AgentLabel
+        className=""
+        name="support@acme.gorgias.io"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+      <ForwardRef
+        fillStyle="ghost"
+        intent="secondary"
+        onClick={[Function]}
+        title="More details"
+      >
+        expand_more
+      </ForwardRef>
+    </div>
+    <Connect(DatetimeLabelContainer)
+      className="date text-faded"
+      dateTime="2017-12-07T01:01:34.502206+00:00"
+    />
+  </div>
+  <Card
+    className="details d-none"
+    tag="div"
+  >
+    <CardBody
+      tag="div"
+    >
+      <div
+        key="error"
+      >
+        <b
+          className="text-danger"
+        >
+          Error:
+        </b>
+         
+        the error is real
+      </div>
+      <div
+        key="payload"
+      >
+        <div>
+          <div
+            key="order_id"
+          >
+            <b>
+              Order id
+            </b>
+            :
+             
+            3
+          </div>
+        </div>
+      </div>
+    </CardBody>
+  </Card>
+</div>
+`;

@@ -1,5 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Navbar /> should fallback user name to email 1`] = `
+<button
+  aria-expanded="false"
+  aria-haspopup="true"
+  class="dropdown-toggle dropdown-toggle-dropup btn btn-transparent"
+  type="button"
+>
+  <div>
+    <span
+      class="body-semibold"
+    >
+      alex@gorgias.io
+      <div
+        class="component"
+        style="width: 36px; height: 36px; position: absolute; bottom: 12px; right: 18px;"
+      >
+        <div
+          class="initials"
+          style="width: 36px; height: 36px; font-size: 15px;"
+        >
+          <span
+            style="line-height: 38px;"
+          >
+            a
+          </span>
+        </div>
+        <div
+          class="badge"
+          style="background-color: rgb(36, 214, 157);"
+        />
+      </div>
+    </span>
+  </div>
+</button>
+`;
+
 exports[`<Navbar /> should render the navbar 1`] = `
 <div
   class="nav-primary hidden-panel"

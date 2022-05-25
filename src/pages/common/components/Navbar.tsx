@@ -298,9 +298,13 @@ export class Navbar extends React.Component<Props, State> {
                     >
                         <div>
                             <span className="body-semibold">
-                                {currentUser.get('name')}
+                                {currentUser.get('name') ||
+                                    currentUser.get('email')}
                                 <Avatar
-                                    name={currentUser.get('name')}
+                                    name={
+                                        currentUser.get('name') ||
+                                        currentUser.get('email')
+                                    }
                                     url={currentUser.getIn([
                                         'meta',
                                         'profile_picture_url',

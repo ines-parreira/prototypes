@@ -51,8 +51,9 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     agents: fromJS({
         all: [
-            {id: 1, name: 'agent 1', email: 'agent1@gorgias.io'},
-            {id: 2, name: 'agent 2', email: 'agent2@gorgias.io'},
+            {id: 1, name: 'agent 1', email: 'agent1@gorgias.com'},
+            {id: 2, name: 'agent 2', email: 'agent2@gorgias.com'},
+            {id: 3, name: '', email: 'agent3@gorgias.com'},
         ],
     }),
     entities: {

@@ -1,5 +1,76 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<UserAuditRow/> should fallback to user email when user has no name set 1`] = `
+<div>
+  <tr>
+    <td
+      class="align-middle"
+    >
+      <div>
+        <a
+          to="/app/settings/users/3"
+        >
+          <div
+            class="component d-inline-block"
+            style="width: 26px; height: 26px;"
+          >
+            <div
+              class="initials"
+              style="width: 26px; height: 26px; font-size: 10.833333333333334px;"
+            >
+              <span
+                style="line-height: 28px;"
+              >
+                a
+              </span>
+            </div>
+          </div>
+           
+          agent3@gorgias.com
+        </a>
+      </div>
+    </td>
+    <td
+      class="link-full-td align-middle"
+    >
+      <div
+        class="cell-content"
+      >
+        Ticket customer updated
+      </div>
+    </td>
+    <td
+      class="link-full-td align-middle"
+    >
+      <div
+        class="cell-content"
+      >
+        <a
+          to="/app/ticket/10/"
+        >
+          Ticket #10
+        </a>
+      </div>
+    </td>
+    <td
+      class="smallest link-full-td"
+    >
+      <div
+        class="cell-content"
+      >
+        <span>
+          <span
+            id="datetime-tooltip-ssssssssst"
+          >
+            January 25, 2022 10:39 AM
+          </span>
+        </span>
+      </div>
+    </td>
+  </tr>
+</div>
+`;
+
 exports[`<UserAuditRow/> should not render user when no agents are in store 1`] = `
 <div>
   <tr>

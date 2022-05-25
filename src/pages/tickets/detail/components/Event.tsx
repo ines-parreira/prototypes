@@ -273,7 +273,12 @@ export class EventContainer extends React.Component<Props, State> {
 
                         <span className={css.filler}>by</span>
 
-                        <AgentLabel name={user.get('name') as string} />
+                        <AgentLabel
+                            name={
+                                (user.get('name') ||
+                                    user.get('email')) as string
+                            }
+                        />
 
                         <IconButton
                             fillStyle="ghost"
@@ -290,7 +295,6 @@ export class EventContainer extends React.Component<Props, State> {
                                 : 'expand_more'}
                         </IconButton>
                     </div>
-
                     <DatetimeLabel
                         dateTime={event.get('created_datetime')}
                         className={classnames(css.date, 'text-faded')}

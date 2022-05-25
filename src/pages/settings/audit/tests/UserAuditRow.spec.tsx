@@ -17,8 +17,9 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     agents: fromJS({
         all: [
-            {id: 1, name: 'agent 1', email: 'agent1@gorgias.io'},
-            {id: 2, name: 'agent 2', email: 'agent2@gorgias.io'},
+            {id: 1, name: 'agent 1', email: 'agent1@gorgias.com'},
+            {id: 2, name: 'agent 2', email: 'agent2@gorgias.com'},
+            {id: 3, name: '', email: 'agent3@gorgias.com'},
         ],
     }),
 } as RootState
@@ -56,6 +57,21 @@ describe('<UserAuditRow/>', () => {
                         ...events[0],
                         object_type: objectType,
                         type: '' as EventType,
+                    }}
+                />
+            </Provider>
+        )
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should fallback to user email when user has no name set', () => {
+        const {container} = render(
+            <Provider store={mockStore(defaultState)}>
+                <UserAuditRow
+                    eventItem={{
+                        ...events[0],
+                        user_id: 3,
                     }}
                 />
             </Provider>

@@ -161,7 +161,7 @@ const UserAuditList = () => {
                         {agents.map((agent: Map<any, any>) => (
                             <SelectFilter.Item
                                 key={agent.get('id')}
-                                label={agent.get('name')}
+                                label={agent.get('name') || agent.get('email')}
                                 value={agent.get('id')}
                             />
                         ))}

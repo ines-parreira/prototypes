@@ -98,4 +98,19 @@ describe('<Navbar />', () => {
         userEvent.click(getByText(user.name))
         expect(document.getElementsByClassName('show')).toHaveLength(2)
     })
+
+    it('should fallback user name to email', () => {
+        const {getAllByRole} = render(
+            <Navbar
+                {...minProps}
+                currentPlan={fromJS(proPlan)}
+                isTrialing={true}
+                currentUser={fromJS({
+                    ...user,
+                    name: '',
+                })}
+            />
+        )
+        expect(getAllByRole('button')[1]).toMatchSnapshot()
+    })
 })

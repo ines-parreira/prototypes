@@ -32,12 +32,12 @@ const UserAuditRow = ({eventItem}: Props) => {
             <div>
                 <Link to={`/app/settings/users/${user.get('id') as number}`}>
                     <Avatar
-                        name={user.get('name')}
+                        name={user.get('name') || user.get('email')}
                         url={user.getIn(['meta', 'profile_picture_url'])}
                         size={26}
                         className="d-inline-block"
                     />{' '}
-                    {user.get('name')}
+                    {user.get('name') || user.get('email')}
                 </Link>
             </div>
         )
