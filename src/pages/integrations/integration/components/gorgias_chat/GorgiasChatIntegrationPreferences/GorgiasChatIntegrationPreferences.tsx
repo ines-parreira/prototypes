@@ -6,6 +6,7 @@ import _omitBy from 'lodash/omitBy'
 import {fromJS, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
+import {isContactFormEnabled} from 'utils'
 
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -74,6 +75,7 @@ type State = {
     isUpdating: boolean
     preview: string
     linkedEmailIntegration: number | null
+    enableContactForm: boolean
 }
 
 export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
@@ -94,6 +96,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         isInitialized: false,
         isUpdating: false,
         preview: PREVIEW_EMAIL_CAPTURE,
+        enableContactForm: false,
     }
 
     _initState = (integration: Map<any, any>) => {
@@ -134,6 +137,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'linked_email_integration',
                     ]),
                     isInitialized: true,
+                    enableContactForm: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'enable_contact_form',
+                    ]),
                 },
                 _isUndefined
             ) as State
@@ -189,6 +197,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         this.setState({linkedEmailIntegration: integrationId})
     }
 
+    _setEnableContactForm = (value: boolean) => {
+        this.setState({
+            enableContactForm: value,
+        })
+    }
+
     _submitPreferences = async (event: React.SyntheticEvent) => {
         const {updateOrCreateIntegration, integration} = this.props
         event.preventDefault()
@@ -212,6 +226,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     hide_on_mobile: this.state.hideOnMobile,
                     hide_outside_business_hours:
                         this.state.hideOutsideBusinessHours,
+                    enable_contact_form: this.state.enableContactForm,
                 },
             }),
         })
@@ -231,6 +246,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             isUpdating,
             preview,
             linkedEmailIntegration,
+            enableContactForm,
         } = this.state
         const {integration, emailIntegrations} = this.props
 
@@ -388,6 +404,32 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     onChange={this._setEmailCaptureEnforcement}
                                 />
                             </div>
+
+                            {isContactFormEnabled() && (
+                                <div className={css.formSection}>
+                                    <h4>Contact form</h4>
+                                    <p className={css.mb16}>
+                                        Display a contact form while outside
+                                        business hours and get messages via
+                                        email.
+                                    </p>
+                                    <div
+                                        className={classnames(
+                                            css.formGroup,
+                                            'd-flex'
+                                        )}
+                                    >
+                                        <ToggleInput
+                                            onClick={this._setEnableContactForm}
+                                            isToggled={enableContactForm}
+                                        />
+
+                                        <div className="ml-2">
+                                            <b>Enable contact form</b>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
 
                             <div className={css.formSection}>
                                 <h4 className={css.title}>Hide chat</h4>

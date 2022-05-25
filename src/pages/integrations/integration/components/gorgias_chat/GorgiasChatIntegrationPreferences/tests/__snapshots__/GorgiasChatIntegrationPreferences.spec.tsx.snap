@@ -5,6 +5,7 @@ Object {
   "autoResponderEnabled": false,
   "autoResponderReply": "reply-shortly",
   "emailCaptureEnforcement": "optional",
+  "enableContactForm": false,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": false,
@@ -19,6 +20,7 @@ Object {
   "autoResponderEnabled": false,
   "autoResponderReply": "reply-shortly",
   "emailCaptureEnforcement": "optional",
+  "enableContactForm": false,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": false,
@@ -45,6 +47,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "linked_email_integration": null,
             "hide_on_mobile": false,
             "hide_outside_business_hours": false,
+            "enable_contact_form": false,
           },
         },
       },
@@ -75,6 +78,7 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "linked_email_integration": null,
             "hide_on_mobile": false,
             "hide_outside_business_hours": false,
+            "enable_contact_form": false,
           },
           "language": "en-US",
         },
@@ -95,6 +99,7 @@ Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
+  "enableContactForm": false,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": true,
@@ -109,6 +114,7 @@ Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
+  "enableContactForm": false,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": true,
@@ -256,6 +262,33 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             }
             selectedValue="optional"
           />
+        </div>
+        <div
+          className="formSection"
+        >
+          <h4>
+            Contact form
+          </h4>
+          <p
+            className="mb16"
+          >
+            Display a contact form while outside business hours and get messages via email.
+          </p>
+          <div
+            className="formGroup d-flex"
+          >
+            <ToggleInput
+              isToggled={false}
+              onClick={[Function]}
+            />
+            <div
+              className="ml-2"
+            >
+              <b>
+                Enable contact form
+              </b>
+            </div>
+          </div>
         </div>
         <div
           className="formSection"
@@ -607,6 +640,33 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             }
             selectedValue="optional"
           />
+        </div>
+        <div
+          className="formSection"
+        >
+          <h4>
+            Contact form
+          </h4>
+          <p
+            className="mb16"
+          >
+            Display a contact form while outside business hours and get messages via email.
+          </p>
+          <div
+            className="formGroup d-flex"
+          >
+            <ToggleInput
+              isToggled={false}
+              onClick={[Function]}
+            />
+            <div
+              className="ml-2"
+            >
+              <b>
+                Enable contact form
+              </b>
+            </div>
+          </div>
         </div>
         <div
           className="formSection"

@@ -32,6 +32,7 @@ import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from 'config/integrations'
 import {Language} from 'constants/languages'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import * as integrationSelectors from 'state/integrations/selectors'
+import {isContactFormEnabled} from 'utils'
 import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
@@ -253,6 +254,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         enabled: GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
                         reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
                     },
+                    enable_contact_form: isContactFormEnabled(),
                 },
             },
         }
