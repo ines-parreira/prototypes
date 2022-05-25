@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
+import _debounce from 'lodash/debounce'
 
 import {FORM_CONTENT_TYPE} from 'config'
 import {getIconFromActionType} from 'models/macroAction/helpers'
@@ -44,10 +45,10 @@ export default class TicketReplyAction extends Component<Props> {
         }
     }
 
-    setArguments = (index: number, args = fromJS({})) => {
+    setArguments = _debounce((index: number, args = fromJS({})) => {
         this.props.action.setIn(['arguments'], args)
         this.props.update(index, args, this.props.ticketId)
-    }
+    }, 200)
 
     setValue(key: string, value: number | string | boolean) {
         const newValue = (
