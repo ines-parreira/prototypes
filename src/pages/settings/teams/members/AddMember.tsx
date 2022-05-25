@@ -77,10 +77,6 @@ export class AddMemberContainer extends Component<Props, State> {
                             // rebuild input on each opening so "autoFocus" works
                             this.state.isOpen && (
                                 <div className="input-icon input-icon-right">
-                                    <i className="icon material-icons md-2">
-                                        search
-                                    </i>
-
                                     <TextInput
                                         placeholder="Search user..."
                                         autoFocus

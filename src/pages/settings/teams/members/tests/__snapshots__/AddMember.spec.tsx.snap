@@ -82,11 +82,6 @@ exports[`<AddMember /> should render the dropdown on click 1`] = `
     <div
       class="input-icon input-icon-right"
     >
-      <i
-        class="icon material-icons md-2"
-      >
-        search
-      </i>
       <div
         class="wrapper isFocused"
       >
@@ -168,11 +163,6 @@ exports[`<AddMember /> should render user with empty name 1`] = `
     <div
       class="input-icon input-icon-right"
     >
-      <i
-        class="icon material-icons md-2"
-      >
-        search
-      </i>
       <div
         class="wrapper isFocused"
       >
