@@ -1,3 +1,5 @@
+import {TwilioError} from '@twilio/voice-sdk'
+
 export enum PhoneCallDirection {
     Inbound = 'inbound',
     OutboundApi = 'outbound-api',
@@ -58,3 +60,64 @@ export enum CallForwardingCountries {
     JP = 'JP',
     AU = 'AU',
 }
+
+export enum TwilioSocketEventType {
+    DeviceRegistered = 'device-registered',
+    DeviceUnregistered = 'device-unregistered',
+    DeviceError = 'device-error',
+    CallIncoming = 'call-incoming',
+    CallOutgoing = 'call-outgoing',
+    CallAccepted = 'call-accepted',
+    CallRejected = 'call-rejected',
+    CallCancelled = 'call-cancelled',
+    CallDisconnected = 'call-disconnected',
+    CallReconnected = 'call-reconnected',
+    CallWarningStarted = 'call-warning-started',
+    CallWarningEnded = 'call-warning-ended',
+    CallError = 'call-error',
+}
+
+export type TwilioSocketEvent =
+    | {
+          type:
+              | TwilioSocketEventType.DeviceRegistered
+              | TwilioSocketEventType.DeviceUnregistered
+      }
+    | {
+          type: TwilioSocketEventType.DeviceError
+          data: {
+              error: TwilioError.TwilioError
+          }
+      }
+    | {
+          type: TwilioSocketEventType.CallError
+          data: {
+              id: string
+              call_sid: Maybe<string>
+              error: TwilioError.TwilioError
+          }
+      }
+    | {
+          type:
+              | TwilioSocketEventType.CallIncoming
+              | TwilioSocketEventType.CallOutgoing
+              | TwilioSocketEventType.CallAccepted
+              | TwilioSocketEventType.CallRejected
+              | TwilioSocketEventType.CallDisconnected
+              | TwilioSocketEventType.CallReconnected
+              | TwilioSocketEventType.CallCancelled
+          data: {
+              id: string
+              call_sid: Maybe<string>
+          }
+      }
+    | {
+          type:
+              | TwilioSocketEventType.CallWarningStarted
+              | TwilioSocketEventType.CallWarningEnded
+          data: {
+              id: string
+              call_sid: Maybe<string>
+              metric_name: string
+          }
+      }

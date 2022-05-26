@@ -41,6 +41,7 @@ export enum SocketEventType {
     ViewsDeactivated = 'views-deactivated',
     OutboundPhoneCallInitiated = 'outbound-phone-call-initiated',
     MacroParamsUpdated = 'macro-params-updated',
+    TwilioEventTriggered = 'twilio-event-triggered',
 }
 
 export enum JoinEventType {

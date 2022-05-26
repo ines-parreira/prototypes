@@ -87,7 +87,9 @@ export type SendData = {
 
 type SendEvent = {
     name: string
-    dataToSend: (value?: string | number[]) => SendData
+    dataToSend: (
+        value?: string | number[] | Record<string, unknown>
+    ) => SendData
     onLeave?: (value?: string) => void
 }
 
@@ -168,6 +170,16 @@ export const sendEvents: SendEvent[] = [
             return {
                 clientId: window.CLIENT_ID,
                 event: SocketEventType.SidUpdated,
+            }
+        },
+    },
+    {
+        name: SocketEventType.TwilioEventTriggered,
+        dataToSend: function (payload) {
+            return {
+                clientId: window.CLIENT_ID,
+                event: SocketEventType.TwilioEventTriggered,
+                data: payload,
             }
         },
     },
