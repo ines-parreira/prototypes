@@ -55,6 +55,7 @@ declare global {
         DISABLE_ACTIVITY_POLLING: string
         USER_IMPERSONATED: true | null
         SEGMENT_ANALYTICS_USER_ID: string
+        GORGIAS_LAUNCHDARKLY_CLIENT_ID: string
         devToolsExtension: () => Middleware
     }
 

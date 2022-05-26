@@ -26,6 +26,7 @@ import {View} from 'models/view/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
 import {isProduction, isStaging} from 'utils/environment'
+import {initLaunchDarkly} from 'utils/launchDarkly'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -204,6 +205,8 @@ transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || []).forEach(
         store.dispatch(notify(notification) as any)
     }
 )
+
+initLaunchDarkly(initialState.currentUser, initialState.currentAccount)
 
 // Register ChartJS Sankey plugin
 Chart.register(SankeyController, Flow)

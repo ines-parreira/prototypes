@@ -10,6 +10,8 @@ import {Store} from 'redux'
 
 import {RootState} from '../state/types'
 
+import FeatureFlagsProvider from '../providers/FeatureFlags'
+
 import history from './history'
 import Routes from './routes'
 
@@ -27,9 +29,11 @@ class Root extends Component<Props> {
         return (
             <Provider store={store}>
                 <DndProvider backend={HTML5Backend}>
-                    <Router history={history}>
-                        <Routes />
-                    </Router>
+                    <FeatureFlagsProvider>
+                        <Router history={history}>
+                            <Routes />
+                        </Router>
+                    </FeatureFlagsProvider>
                 </DndProvider>
             </Provider>
         )
