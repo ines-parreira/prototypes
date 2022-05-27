@@ -105,6 +105,38 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
                   />
                 </div>
               </div>
+              <label
+                class="label label"
+              >
+                Team members
+                <abbr
+                  aria-label="required"
+                  class="abbr"
+                  title="required"
+                >
+                  *
+                </abbr>
+              </label>
+              <div
+                class="wrapper"
+                role="listbox"
+                tabindex="0"
+              >
+                <div
+                  class="inputWrapper"
+                >
+                  <div
+                    class="input isGreyed"
+                  >
+                    Add at least 1 team member
+                  </div>
+                  <i
+                    class="affix suffix toggle material-icons"
+                  >
+                    arrow_drop_down
+                  </i>
+                </div>
+              </div>
             </div>
             <div
               class="wrapper wrapper"
@@ -140,5 +172,8 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
       </div>
     </div>
   </div>
+  <div
+    id="floating-ui-root"
+  />
 </body>
 `;

@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropdownQuickSelect /> should render 1`] = `
+<div
+  aria-selected="false"
+  class="wrapper"
+  role="option"
+  tabindex="0"
+>
+  <div
+    class="checkbox"
+  >
+    <label
+      class="label label"
+      for="checkbox-1"
+    >
+      <input
+        class="input"
+        id="checkbox-1"
+        name="checkbox-1"
+        tabindex="-1"
+        type="checkbox"
+      />
+    </label>
+  </div>
+  <span
+    class="label"
+  >
+    Select all
+  </span>
+  <span
+    class="count"
+  >
+    2
+  </span>
+</div>
+`;

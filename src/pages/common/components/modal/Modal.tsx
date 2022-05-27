@@ -5,11 +5,12 @@ import React, {
     useMemo,
     useState,
     useRef,
+    MouseEvent,
 } from 'react'
 import {createPortal} from 'react-dom'
 import {CSSTransition} from 'react-transition-group'
 import classnames from 'classnames'
-import {useClickAway, useKey} from 'react-use'
+import {useKey} from 'react-use'
 
 import useId from 'hooks/useId'
 
@@ -67,8 +68,15 @@ const Modal = ({
 
     useKey('Escape', handleCloseRequest, undefined, [isClosable])
 
-    useClickAway(ref, () => isOpen && handleCloseRequest())
-
+    const handleClose = useCallback(
+        (event: MouseEvent) => {
+            if (ref.current?.contains(event.target as Node)) {
+                return
+            }
+            handleCloseRequest()
+        },
+        [handleCloseRequest]
+    )
     const contextValue = useMemo(
         () => ({
             bodyId,
@@ -101,6 +109,7 @@ const Modal = ({
                     aria-modal="true"
                     aria-labelledby={labelId}
                     aria-describedby={bodyId}
+                    onClick={handleClose}
                 >
                     <div
                         className={classnames(css.dialog, {

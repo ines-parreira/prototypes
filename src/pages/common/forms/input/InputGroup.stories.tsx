@@ -5,6 +5,7 @@ import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickSelect'
 
 import InputGroup from './InputGroup'
 import NumberInput from './NumberInput'
@@ -112,10 +113,16 @@ const WithSelectInputTemplate: Story<
                             target={multiSelectRef}
                             value={multiValue}
                         >
+                            <DropdownQuickSelect
+                                autoFocus
+                                count={options.length}
+                                onRemoveAll={() => setMultiValue([])}
+                                onSelectAll={() => setMultiValue(options)}
+                                values={options}
+                            />
                             <DropdownBody>
                                 {options.map((option) => (
                                     <DropdownItem
-                                        autoFocus
                                         key={option}
                                         option={{
                                             label: option,

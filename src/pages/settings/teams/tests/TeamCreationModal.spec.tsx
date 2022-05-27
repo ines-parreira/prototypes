@@ -1,9 +1,9 @@
 import React, {ComponentProps} from 'react'
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {createTeam} from 'state/teams/actions'
 import {RootState, StoreDispatch} from 'state/types'
@@ -12,6 +12,7 @@ import TeamCreationModal from '../TeamCreationModal'
 const minProps = {
     isOpen: false,
     onClose: jest.fn(),
+    onTeamCreated: jest.fn(),
 } as unknown as ComponentProps<typeof TeamCreationModal>
 
 jest.mock('state/teams/actions', () => ({
@@ -62,12 +63,24 @@ describe('<TeamCreationModal />', () => {
         ).toBe(true)
     })
 
-    it('should submit form when filling conditions are met', () => {
-        const store = mockStore({})
+    it('should submit and call onTeamCreated form when filling conditions are met', async () => {
         const teamName = 'Artemis'
         const teamDescription = 'Goddess of the hunt'
-
-        const {getByLabelText, getAllByText} = render(
+        const nextTeam = {
+            name: teamName,
+            description: teamDescription,
+            decoration: {},
+            members: [{id: 1}],
+        }
+        ;(createTeam as jest.Mock).mockImplementation(
+            () => () => fromJS(nextTeam) as Map<any, any>
+        )
+        const store = mockStore({
+            agents: fromJS({
+                all: [{id: 1, name: 'foo bar'}],
+            }),
+        })
+        const {getByLabelText, getAllByText, getByText} = render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen />
             </Provider>
@@ -79,21 +92,23 @@ describe('<TeamCreationModal />', () => {
         fireEvent.change(getByLabelText(/description/i), {
             target: {value: teamDescription},
         })
+        fireEvent.focus(getByText(/Add at least 1 team member/i))
+        fireEvent.click(screen.getByText(/foo bar/i))
         fireEvent.click(getAllByText(/Create team/i)[1])
 
-        expect(createTeam).toHaveBeenCalledWith(
-            fromJS({
-                name: teamName,
-                description: teamDescription,
-                decoration: {},
-                members: [],
-            })
-        )
+        expect(createTeam).toHaveBeenCalledWith(fromJS(nextTeam))
+        await waitFor(() => {
+            expect(minProps.onTeamCreated).toHaveBeenNthCalledWith(1, nextTeam)
+        })
     })
 
     it('should close modal and reset values once form has successfully been submitted', async () => {
-        const store = mockStore({})
-        const {getByLabelText, getAllByText} = render(
+        const store = mockStore({
+            agents: fromJS({
+                all: [{id: 1, name: 'foo bar'}],
+            }),
+        })
+        const {getByLabelText, getAllByText, getByText} = render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen />
             </Provider>
@@ -105,6 +120,8 @@ describe('<TeamCreationModal />', () => {
         fireEvent.change(getByLabelText(/description/i), {
             target: {value: 'Goddess of the hunt'},
         })
+        fireEvent.focus(getByText(/Add at least 1 team member/i))
+        fireEvent.click(screen.getByText(/foo bar/i))
         fireEvent.click(getAllByText(/create team/i)[1])
 
         await waitFor(() => {
@@ -113,6 +130,38 @@ describe('<TeamCreationModal />', () => {
             expect(getByLabelText(/description/i).getAttribute('value')).toBe(
                 ''
             )
+            expect(getByText(/Add at least 1 team member/i)).toBeTruthy()
+        })
+    })
+
+    it('should reset values if modal is closed', async () => {
+        const store = mockStore({
+            agents: fromJS({
+                all: [{id: 1, name: 'foo bar'}],
+            }),
+        })
+        const {getByLabelText, rerender} = render(
+            <Provider store={store}>
+                <TeamCreationModal {...minProps} isOpen />
+            </Provider>
+        )
+
+        fireEvent.change(getByLabelText(/team name/i), {
+            target: {value: 'Artemis'},
+        })
+        rerender(
+            <Provider store={store}>
+                <TeamCreationModal {...minProps} isOpen={false} />
+            </Provider>
+        )
+        rerender(
+            <Provider store={store}>
+                <TeamCreationModal {...minProps} isOpen />
+            </Provider>
+        )
+
+        await waitFor(() => {
+            expect(getByLabelText(/team name/i).getAttribute('value')).toBe('')
         })
     })
 
