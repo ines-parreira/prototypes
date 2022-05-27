@@ -213,7 +213,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const statusSentence = isImporting ? (
             <span>
                 We are currently importing emails from <strong>{email}</strong>{' '}
-                into Gorgias. You can see it's progress here:{' '}
+                into Gorgias. You can see its progress here:{' '}
                 <Link to="/app/tickets">All tickets</Link>
             </span>
         ) : (
