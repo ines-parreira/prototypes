@@ -1,65 +1,47 @@
-import React, {useCallback} from 'react'
+import React, {useEffect, useState} from 'react'
+import {DropdownItem, DropdownMenu, DropdownToggle, Dropdown} from 'reactstrap'
 import {
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    UncontrolledDropdown,
-} from 'reactstrap'
-import {connect, ConnectedProps} from 'react-redux'
-import classnames from 'classnames'
-import parsePhoneNumber from 'libphonenumber-js'
+    getPhoneIntegrations,
+    getSmsIntegrations,
+} from 'state/integrations/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 
-import {RootState} from 'state/types'
-import {PhoneNumber} from 'models/phoneNumber/types'
-import {PhoneIntegration} from 'models/integration/types'
-import {getPhoneIntegrations} from 'state/integrations/selectors'
-import {getPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {DEPRECATED_getTicket} from 'state/ticket/selectors'
-import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
-
+import PhoneIntegrationsDropdownList from './PhoneIntegrationsDropdownList'
+import SmsIntegrationsDropdownList from './SmsIntegrationsDropdownList'
 import css from './ClickablePhoneNumber.less'
 
-type OwnProps = {
+type Props = {
     id: string
     address: string
+    customerId: string
     customerName: string
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
-
-const ClickablePhoneNumberContainer = ({
-    integrations,
-    phoneNumbers,
-    device,
-    call,
+const ClickablePhoneNumber = ({
     id,
     address,
+    customerId,
     customerName,
-    ticketId,
-    agentId,
 }: Props): JSX.Element => {
-    const toAddress = parsePhoneNumber(address)?.format('E.164') || ''
-    const isDisabled = !device || !!call || !toAddress
-    const onCall = useOutboundCall()
-    const onClick = useCallback(
-        (integration: PhoneIntegration, phoneNumber: PhoneNumber) => {
-            const integrationId: number = integration.id
-            const fromAddress: string = phoneNumber.phone_number
+    const phoneIntegrations = useAppSelector(getPhoneIntegrations)
+    const smsIntegrations = useAppSelector(getSmsIntegrations)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [showPhoneIntegrations, setShowPhoneIntegrations] = useState(false)
+    const [showSmsIntegrations, setShowSmsIntegrations] = useState(false)
 
-            onCall({
-                fromAddress,
-                toAddress,
-                integrationId,
-                customerName,
-                ticketId,
-                agentId,
-            })
-        },
-        [onCall, toAddress, customerName, ticketId, agentId]
-    )
+    const hasPhoneIntegrations = !!phoneIntegrations.length
+    const hasSmsIntegrations = !!smsIntegrations.length
 
-    if (!integrations.length) {
+    useEffect(() => {
+        if (hasPhoneIntegrations && !hasSmsIntegrations) {
+            setShowPhoneIntegrations(true)
+        }
+        if (!hasPhoneIntegrations && hasSmsIntegrations) {
+            setShowSmsIntegrations(true)
+        }
+    }, [hasPhoneIntegrations, hasSmsIntegrations])
+
+    if (!hasPhoneIntegrations && !hasSmsIntegrations) {
         const href = address.replace(/[. ]/g, '')
         return (
             <a id={id} href={`tel:${href}`}>
@@ -69,54 +51,70 @@ const ClickablePhoneNumberContainer = ({
     }
 
     return (
-        <UncontrolledDropdown className={css.dropdown}>
-            <DropdownToggle id={id} tag="a" href="#">
-                {address}
-            </DropdownToggle>
-            <DropdownMenu container="body" className={css.dropdownMenu}>
-                <DropdownItem header className="text-uppercase">
-                    Call via
-                </DropdownItem>
-                {integrations.map((integration) => {
-                    const emoji = integration.meta.emoji
-                    const phoneNumber =
-                        phoneNumbers[integration.meta.twilio_phone_number_id]
-                    if (!phoneNumber) {
-                        return null
-                    }
-
-                    return (
-                        <DropdownItem
-                            key={integration.id}
-                            className={classnames({
-                                'btn-link disabled': isDisabled,
-                            })}
-                            onClick={() =>
-                                isDisabled
-                                    ? null
-                                    : onClick(integration, phoneNumber)
-                            }
-                        >
-                            {emoji} {emoji && ' '}
-                            {integration.name} ({phoneNumber.meta.friendly_name}
-                            )
-                        </DropdownItem>
+        <>
+            <Dropdown
+                isOpen={isDropdownOpen}
+                className={css.dropdown}
+                toggle={() => {
+                    setIsDropdownOpen(!isDropdownOpen)
+                    setShowPhoneIntegrations(
+                        hasPhoneIntegrations && !hasSmsIntegrations
                     )
-                })}
-            </DropdownMenu>
-        </UncontrolledDropdown>
+                    setShowSmsIntegrations(
+                        !hasPhoneIntegrations && hasSmsIntegrations
+                    )
+                }}
+            >
+                <DropdownToggle
+                    tag="a"
+                    href="#"
+                    onClick={(e) => e.preventDefault()}
+                >
+                    {address}
+                </DropdownToggle>
+                <DropdownMenu container="body" className={css.dropdownMenu}>
+                    {hasPhoneIntegrations &&
+                        hasSmsIntegrations &&
+                        !showPhoneIntegrations &&
+                        !showSmsIntegrations && (
+                            <>
+                                <DropdownItem
+                                    toggle={false}
+                                    onClick={() =>
+                                        setShowPhoneIntegrations(true)
+                                    }
+                                >
+                                    <i className="material-icons mr-2">phone</i>
+                                    Make outbound call
+                                </DropdownItem>
+                                <DropdownItem
+                                    toggle={false}
+                                    onClick={() => setShowSmsIntegrations(true)}
+                                >
+                                    <i className="material-icons mr-2">sms</i>
+                                    Send an SMS message
+                                </DropdownItem>
+                            </>
+                        )}
+                    {hasPhoneIntegrations && showPhoneIntegrations && (
+                        <PhoneIntegrationsDropdownList
+                            integrations={phoneIntegrations}
+                            address={address}
+                            customerName={customerName}
+                        />
+                    )}
+                    {hasSmsIntegrations && showSmsIntegrations && (
+                        <SmsIntegrationsDropdownList
+                            integrations={smsIntegrations}
+                            address={address}
+                            customerName={customerName}
+                            customerId={customerId}
+                        />
+                    )}
+                </DropdownMenu>
+            </Dropdown>
+        </>
     )
 }
 
-const mapStateToProps = (state: RootState) => ({
-    integrations: getPhoneIntegrations(state).toJS() as PhoneIntegration[],
-    phoneNumbers: getPhoneNumbers(state),
-    device: state.twilio.device,
-    call: state.twilio.call,
-    ticketId: DEPRECATED_getTicket(state).get('id'),
-    agentId: getCurrentUser(state).get('id'),
-})
-
-const connector = connect(mapStateToProps)
-
-export const ClickablePhoneNumber = connector(ClickablePhoneNumberContainer)
+export default ClickablePhoneNumber

@@ -207,6 +207,9 @@ describe('CustomerChannels component', () => {
 
         const store = mockStore({
             twilio: initialState,
+            integrations: fromJS({
+                integrations: [],
+            }),
         })
 
         const component = mount(

@@ -282,6 +282,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
     >
       <Component
         channels={Immutable.List []}
+        customerId={1}
         customerName="foo"
       >
         <Connect(CustomerNote)
@@ -362,6 +363,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
     >
       <Component
         channels={Immutable.List []}
+        customerId={1}
         customerName="foo"
       >
         <Connect(CustomerNote)
@@ -468,6 +470,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
     >
       <Component
         channels={Immutable.List []}
+        customerId={1}
         customerName="foo"
       >
         <Connect(CustomerNote)
@@ -522,6 +525,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
     >
       <Component
         channels={Immutable.List []}
+        customerId={1}
         customerName="foo"
       >
         <Connect(CustomerNote)
@@ -568,6 +572,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
     >
       <Component
         channels={Immutable.List []}
+        customerId={1}
         customerName="foo"
       >
         <Connect(CustomerNote)
@@ -698,6 +703,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
       >
         <Component
           channels={Immutable.List []}
+          customerId={1}
           customerName="foo"
         >
           <div>

@@ -3,7 +3,12 @@ import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
 import {INTEGRATION_TYPE_CONFIG} from 'config'
-import {Integration, IntegrationType} from 'models/integration/types'
+import {
+    Integration,
+    IntegrationType,
+    isPhoneIntegration,
+    isSmsIntegration,
+} from 'models/integration/types'
 import {MESSAGING_INTEGRATION_TYPES} from 'models/integration/constants'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import {compare} from 'utils'
@@ -244,7 +249,7 @@ export const getEmailIntegrations = createSelector<
         ) as List<any>
 )
 
-export const getPhoneIntegrations = createSelector<
+export const DEPRECATED_getPhoneIntegrations = createSelector<
     RootState,
     List<any>,
     List<any>
@@ -255,6 +260,16 @@ export const getPhoneIntegrations = createSelector<
             (integration: Map<any, any>) =>
                 integration.get('type') === IntegrationType.Phone
         ) as List<any>
+)
+
+export const getPhoneIntegrations = createSelector(
+    getIntegrations,
+    (integrations) => integrations.filter(isPhoneIntegration)
+)
+
+export const getSmsIntegrations = createSelector(
+    getIntegrations,
+    (integrations) => integrations.filter(isSmsIntegration)
 )
 
 export const getBaseEmailIntegration = createSelector<

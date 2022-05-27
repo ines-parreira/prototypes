@@ -305,7 +305,6 @@ export const setSender =
                 ? phoneChannels
                 : emailChannels
         let _sender: Map<any, any> = fromJS({})
-
         if (sender) {
             _sender =
                 channels.find(

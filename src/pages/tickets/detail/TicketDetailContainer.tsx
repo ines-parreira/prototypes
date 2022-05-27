@@ -1,43 +1,42 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {useParams} from 'react-router-dom'
+import {useParams, useLocation} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
 import {useAsyncFn, usePrevious} from 'react-use'
 import DocumentTitle from 'react-document-title'
-
-import useSearch from '../../../hooks/useSearch'
-import {RootState} from '../../../state/types'
-import pendingMessageManager from '../../../services/pendingMessageManager/pendingMessageManager'
-import shortcutManager from '../../../services/shortcutManager'
-import socketManager from '../../../services/socketManager/socketManager'
-import {JoinEventType} from '../../../services/socketManager/types'
-import {isAccountActive} from '../../../state/currentAccount/selectors'
-import {
-    fetchCustomer,
-    fetchCustomerHistory,
-} from '../../../state/customers/actions'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import useSearch from 'hooks/useSearch'
+import {RootState} from 'state/types'
+import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
+import shortcutManager from 'services/shortcutManager'
+import socketManager from 'services/socketManager/socketManager'
+import {JoinEventType} from 'services/socketManager/types'
+import {isAccountActive} from 'state/currentAccount/selectors'
+import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
 import {
     DEPRECATED_getActiveCustomer,
     getCustomersState,
-} from '../../../state/customers/selectors'
+} from 'state/customers/selectors'
 import {
     prepareTicketMessage,
     sendTicketMessage,
     setReceivers,
+    setSender,
     submitTicket,
-} from '../../../state/newMessage/actions'
+    prepare,
+} from 'state/newMessage/actions'
 import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
-} from '../../../state/newMessage/errors'
+} from 'state/newMessage/errors'
 import {
     isReady,
     getNewMessageSource,
     getReceiversProperties,
-} from '../../../state/newMessage/selectors'
-import {fetchTags} from '../../../state/tags/actions'
+} from 'state/newMessage/selectors'
+import {fetchTags} from 'state/tags/actions'
 import {
     clearTicket,
     fetchTicket,
@@ -46,9 +45,9 @@ import {
     goToPrevTicket,
     setCustomer,
     setStatus,
-} from '../../../state/ticket/actions'
-import {updateCursor} from '../../../state/tickets/actions'
-import {getActiveView} from '../../../state/views/selectors'
+} from 'state/ticket/actions'
+import {updateCursor} from 'state/tickets/actions'
+import {getActiveView} from 'state/views/selectors'
 
 import Loader from '../../common/components/Loader/Loader'
 
@@ -79,8 +78,10 @@ export const TicketDetailContainer = ({
     newMessage,
     newMessageSource,
     prepareTicketMessage,
+    prepare,
     sendTicketMessage,
     setCustomer,
+    setSender,
     setReceivers,
     setStatus,
     submitTicket,
@@ -90,6 +91,15 @@ export const TicketDetailContainer = ({
     const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
     const {customer: customerId} = useSearch<{customer?: string}>()
     const ticketIdParamRef = useRef(ticketIdParam)
+    const location = useLocation<{
+        source?: string
+        sender?: string
+        receiver?: {
+            name: string
+            address: string
+        }
+    }>()
+    const {sender, source, receiver} = location.state ?? {}
 
     useEffect(() => {
         ticketIdParamRef.current = ticketIdParam
@@ -345,6 +355,18 @@ export const TicketDetailContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeCustomer, customerId, prevCustomer, ticketIdParam])
 
+    useEffect(() => {
+        if (
+            source &&
+            Object.values<string>(TicketMessageSourceType).includes(source)
+        ) {
+            prepare(source as TicketMessageSourceType)
+            if (sender) {
+                setSender(sender)
+            }
+        }
+    }, [source, sender, setSender, prepare])
+
     // We update the cursor when we display the ticket for the first time.
     // If an attribute of the ticket changes, we don't want to update the cursor because
     // its position in the view has maybe changed.
@@ -378,7 +400,6 @@ export const TicketDetailContainer = ({
                     }
                 })
             }
-
             if (shouldSetCustomer) {
                 void findAndSetCustomer(recipient.get('address'))
             }
@@ -404,22 +425,41 @@ export const TicketDetailContainer = ({
     // as recipient of the new message
     useEffect(() => {
         if (ticketIdParam === 'new' && !customer.isEmpty()) {
-            const newReceivers = _merge(
-                _pick(newMessageSource.toJS(), getReceiversProperties()),
-                {
-                    to: [
-                        {
-                            name: ticket.getIn(['customer', 'name']),
-                            address: ticket.getIn(['customer', 'email']),
-                        },
-                    ],
-                }
+            const newMessageReceivers = _pick(
+                newMessageSource.toJS(),
+                getReceiversProperties()
             )
 
-            setReceivers(newReceivers)
+            if (receiver) {
+                const newReceivers = _merge(newMessageReceivers, {
+                    to: [receiver],
+                })
+                setReceivers(newReceivers)
+            } else {
+                const customerName = ticket.getIn(['customer', 'name'])
+                const customerEmail = ticket.getIn(['customer', 'email'])
+                if (customerName && customerEmail) {
+                    const newReceivers = _merge(newMessageReceivers, {
+                        to: [
+                            {
+                                name: customerName,
+                                address: customerEmail,
+                            },
+                        ],
+                    })
+                    setReceivers(newReceivers)
+                }
+            }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [customer])
+    }, [
+        customer,
+        source,
+        receiver,
+        newMessageSource,
+        setReceivers,
+        ticket,
+        ticketIdParam,
+    ])
 
     const showTicket = () => {
         setIsTicketHidden(false)
@@ -488,9 +528,11 @@ const connector = connect(
         findAndSetCustomer,
         goToNextTicket,
         goToPrevTicket,
+        prepare,
         prepareTicketMessage,
         sendTicketMessage,
         setCustomer,
+        setSender,
         setReceivers,
         setStatus,
         submitTicket,

@@ -514,29 +514,18 @@ exports[`CustomerChannels component should display all passed channels (includin
           phone
         </i>
       </SourceIcon>
-      <Connect(ClickablePhoneNumberContainer)
+      <ClickablePhoneNumber
         address="+15551238523"
         customerName="Foo"
         id="address-copied-4"
       >
-        <ClickablePhoneNumberContainer
-          address="+15551238523"
-          call={null}
-          customerName="Foo"
-          device={null}
-          dispatch={[Function]}
+        <a
+          href="tel:+15551238523"
           id="address-copied-4"
-          integrations={Array []}
-          phoneNumbers={Object {}}
         >
-          <a
-            href="tel:+15551238523"
-            id="address-copied-4"
-          >
-            +15551238523
-          </a>
-        </ClickablePhoneNumberContainer>
-      </Connect(ClickablePhoneNumberContainer)>
+          +15551238523
+        </a>
+      </ClickablePhoneNumber>
       <span
         className="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-4"
@@ -623,29 +612,18 @@ exports[`CustomerChannels component should display all passed channels (includin
           phone
         </i>
       </SourceIcon>
-      <Connect(ClickablePhoneNumberContainer)
+      <ClickablePhoneNumber
         address="+15554567852"
         customerName="Foo"
         id="address-copied-5"
       >
-        <ClickablePhoneNumberContainer
-          address="+15554567852"
-          call={null}
-          customerName="Foo"
-          device={null}
-          dispatch={[Function]}
+        <a
+          href="tel:+15554567852"
           id="address-copied-5"
-          integrations={Array []}
-          phoneNumbers={Object {}}
         >
-          <a
-            href="tel:+15554567852"
-            id="address-copied-5"
-          >
-            +15554567852
-          </a>
-        </ClickablePhoneNumberContainer>
-      </Connect(ClickablePhoneNumberContainer)>
+          +15554567852
+        </a>
+      </ClickablePhoneNumber>
       <span
         className="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-5"
@@ -732,29 +710,18 @@ exports[`CustomerChannels component should display all passed channels (includin
           phone
         </i>
       </SourceIcon>
-      <Connect(ClickablePhoneNumberContainer)
+      <ClickablePhoneNumber
         address="+15557899632"
         customerName="Foo"
         id="address-copied-6"
       >
-        <ClickablePhoneNumberContainer
-          address="+15557899632"
-          call={null}
-          customerName="Foo"
-          device={null}
-          dispatch={[Function]}
+        <a
+          href="tel:+15557899632"
           id="address-copied-6"
-          integrations={Array []}
-          phoneNumbers={Object {}}
         >
-          <a
-            href="tel:+15557899632"
-            id="address-copied-6"
-          >
-            +15557899632
-          </a>
-        </ClickablePhoneNumberContainer>
-      </Connect(ClickablePhoneNumberContainer)>
+          +15557899632
+        </a>
+      </ClickablePhoneNumber>
       <span
         className="copyAddress ml-2 js-clipboard-copy"
         data-clipboard-target="#address-copied-6"
@@ -1115,7 +1082,7 @@ exports[`CustomerChannels component should display first few passed channels and
         className="uncolored mr-2"
         type="phone"
       />
-      <Connect(ClickablePhoneNumberContainer)
+      <ClickablePhoneNumber
         address="+15551238523"
         customerName="Foo"
         id="address-copied-undefined"
@@ -1152,7 +1119,7 @@ exports[`CustomerChannels component should display first few passed channels and
         className="uncolored mr-2"
         type="phone"
       />
-      <Connect(ClickablePhoneNumberContainer)
+      <ClickablePhoneNumber
         address="+15554567852"
         customerName="Foo"
         id="address-copied-undefined"
@@ -1189,7 +1156,7 @@ exports[`CustomerChannels component should display first few passed channels and
         className="uncolored mr-2"
         type="phone"
       />
-      <Connect(ClickablePhoneNumberContainer)
+      <ClickablePhoneNumber
         address="+15557899632"
         customerName="Foo"
         id="address-copied-undefined"

@@ -13,7 +13,7 @@ import {
 } from '../../../../../../business/types/ticket'
 import {RootState} from '../../../../../../state/types'
 import {getCurrentUser} from '../../../../../../state/currentUser/selectors'
-import {ClickablePhoneNumber} from '../../../ClickablePhoneNumber/ClickablePhoneNumber'
+import ClickablePhoneNumber from '../../../ClickablePhoneNumber/ClickablePhoneNumber'
 
 import CustomerInfoWrapper from './CustomerInfoWrapper'
 
@@ -21,6 +21,7 @@ type Props = {
     channels: List<any>
     customerLocationInfo: Map<any, any>
     customerLastSeenOnChat: number | null
+    customerId: string
     customerName: string
     children: ReactNode
 } & ConnectedProps<typeof connector>
@@ -40,6 +41,7 @@ export class CustomerChannels extends Component<Props> {
             children,
             customerLocationInfo,
             customerLastSeenOnChat,
+            customerId,
             customerName,
             currentUser,
         } = this.props
@@ -93,6 +95,7 @@ export class CustomerChannels extends Component<Props> {
                         <ClickablePhoneNumber
                             id={componentId}
                             address={channelAddress}
+                            customerId={customerId}
                             customerName={customerName}
                         />
                     )

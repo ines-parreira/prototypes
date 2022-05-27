@@ -26,7 +26,7 @@ import {
     getShopifyIntegrationsWithoutFacebook,
     hasAtLeastOneEmailIntegration,
     getMessagingIntegrations,
-    getPhoneIntegrations,
+    DEPRECATED_getPhoneIntegrations,
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
 import {
@@ -113,10 +113,10 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getPhoneIntegrations()', () => {
+    describe('DEPRECATED_getPhoneIntegrations()', () => {
         it('should get phone integrations', () => {
             const phoneIntegrations: PhoneIntegration[] =
-                getPhoneIntegrations(state).toJS()
+                DEPRECATED_getPhoneIntegrations(state).toJS()
             const allIntegrations: Integration[] =
                 DEPRECATED_getIntegrations(state).toJS()
             const expected: PhoneIntegration[] =
