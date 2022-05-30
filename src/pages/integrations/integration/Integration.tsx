@@ -120,7 +120,7 @@ export enum Tab {
     HttpEvents = 'events',
     Installation = 'installation',
     QuickReplies = 'quick_replies',
-    ChatSelfService = 'self_service',
+    ChatSelfService = 'automation',
     Campaigns = 'campaigns',
     Appearance = 'appearance',
     PhoneVoicemail = 'voicemail',

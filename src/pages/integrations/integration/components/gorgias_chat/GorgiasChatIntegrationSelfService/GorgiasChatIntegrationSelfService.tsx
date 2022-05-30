@@ -1,23 +1,31 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {fromJS, Map} from 'immutable'
-import {Breadcrumb, BreadcrumbItem, Container, Label} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
-import classnames from 'classnames'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
 import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
-import ToggleInput from 'pages/common/forms/ToggleInput'
+import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
-import Tooltip from 'pages/common/components/Tooltip'
-import settingsCss from 'pages/settings/settings.less'
 import ChatIntegrationNavigation from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation'
 import useAppSelector from 'hooks/useAppSelector'
+import {useFeatureFlags} from 'hooks/useFeatureFlags'
+import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import {FlagKey} from 'providers/FeatureFlags'
 
-import css from './GorgiasChatIntegrationSelfService.less'
+import settingsCss from 'pages/settings/settings.less'
+
+import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
+
+import SelfService from './components/SelfService'
+import FeaturesPreview from './components/FeaturesPreview'
+import ArticleRecommendation from './components/ArticleRecommendation'
+
+import {localeToUserLanguage} from './utils/localeToUserLanguage'
 
 type OwnProps = {
     integration: Map<any, any>
@@ -28,6 +36,11 @@ export function GorgiasChatIntegrationSelfServiceComponent({
 }: OwnProps) {
     const integrationType: string = integration.get('type')
     const dispatch = useAppDispatch()
+    const {getFlag} = useFeatureFlags()
+
+    const helpCenters = useAppSelector(getHelpCenterList)
+
+    const {isLoading} = useHelpCenterList({per_page: 900})
 
     const shopName: string | undefined | null = integration.getIn([
         'meta',
@@ -45,6 +58,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
     }, [integration])
 
     const [sspForceDisabled, setSspForceDisabled] = useState(!shopName)
+    const [isArticleReccEnabled, setArticleReccEnabled] = useState(true)
 
     const [{loading: updating}, updateChatSSP] = useAsyncFn(
         async (sspEnabled: boolean) => {
@@ -107,9 +121,33 @@ export function GorgiasChatIntegrationSelfServiceComponent({
         }
     }
 
+    const handleSaveArticleRecommendation = (
+        isEnabled: boolean,
+        helpCenter: string
+    ) => {
+        // eslint-disable-next-line no-console
+        console.log({isEnabled, helpCenter})
+    }
+
     const isSwitchDisabled = useMemo(() => {
         return updating || loading || sspForceDisabled
     }, [updating, loading, sspForceDisabled])
+
+    const helpCenterList = useMemo(
+        () =>
+            helpCenters
+                .filter(
+                    (helpCenter) => helpCenter.deactivated_datetime === null
+                )
+                .map((helpCenter) => ({
+                    text: helpCenter.name,
+                    label: `${helpCenter.name} (${localeToUserLanguage(
+                        helpCenter.default_locale.split('-')[0]
+                    )})`,
+                    value: helpCenter.name,
+                })),
+        [helpCenters]
+    )
 
     return (
         <div className="full-width">
@@ -137,59 +175,46 @@ export function GorgiasChatIntegrationSelfServiceComponent({
 
             <ChatIntegrationNavigation integration={integration} />
 
-            <Container fluid className={settingsCss.pageContainer}>
-                <h4>Enable Self-service</h4>
-                <p>
-                    Enabling{' '}
-                    <Link to="/app/settings/self-service">self-service</Link>{' '}
-                    will let your customers track their orders, request a return
-                    or cancellation and report issues they might have with an
-                    order. It will then create a chat ticket for your team.
-                </p>
-                <div className="d-flex my-4">
-                    <span id="toggle-button">
-                        <ToggleInput
-                            isToggled={originalSSPEnabled}
-                            isDisabled={isSwitchDisabled}
-                            onClick={handleOnChangeSwitch}
+            {getFlag(FlagKey.SelfServiceArticleRecommendation) ? (
+                <GorgiasChatIntegrationPreviewContainer
+                    preview={
+                        <FeaturesPreview
+                            integration={integration.toJS()}
+                            isSelfServiceChecked={originalSSPEnabled}
+                            isArticleRecommendationChecked={
+                                isArticleReccEnabled
+                            }
                         />
-                    </span>
-                    {sspForceDisabled ? (
-                        <Tooltip
-                            autohide={false}
-                            placement="top"
-                            delay={{show: 200, hide: 300}}
-                            target="toggle-button"
-                            style={{
-                                textAlign: 'left',
-                                width: 220,
+                    }
+                >
+                    <>
+                        <SelfService
+                            isEnabled={originalSSPEnabled}
+                            isDisabled={isSwitchDisabled}
+                            isForcedDisabled={sspForceDisabled}
+                            onChange={handleOnChangeSwitch}
+                        />
+                        <ArticleRecommendation
+                            isLoading={isLoading}
+                            helpCenterList={helpCenterList}
+                            initialValues={{
+                                isEnabled: isArticleReccEnabled,
                             }}
-                        >
-                            Self-service must be first enabled for this store
-                            before you can enable it for this chat integration.
-                            <br />
-                            <Link to="/app/settings/self-service">
-                                Click here to enable.
-                            </Link>
-                        </Tooltip>
-                    ) : null}
-                    <Label
-                        className="control-label ml-2"
-                        onClick={handleOnChangeSwitch}
-                    >
-                        <p
-                            className={classnames(
-                                css['enable-self-service-label'],
-                                sspForceDisabled
-                                    ? css['force-disabled']
-                                    : undefined
-                            )}
-                        >
-                            Enable self-service for this chat
-                        </p>
-                    </Label>
-                </div>
-            </Container>
+                            onToggleEnabled={setArticleReccEnabled}
+                            onSaveChanges={handleSaveArticleRecommendation}
+                        />
+                    </>
+                </GorgiasChatIntegrationPreviewContainer>
+            ) : (
+                <Container fluid className={settingsCss.pageContainer}>
+                    <SelfService
+                        isEnabled={originalSSPEnabled}
+                        isDisabled={isSwitchDisabled}
+                        isForcedDisabled={sspForceDisabled}
+                        onChange={handleOnChangeSwitch}
+                    />
+                </Container>
+            )}
         </div>
     )
 }

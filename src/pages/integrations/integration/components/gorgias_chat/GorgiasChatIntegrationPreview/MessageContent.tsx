@@ -4,9 +4,13 @@ import {Map} from 'immutable'
 
 import Avatar from '../../../../../common/components/Avatar/Avatar'
 
-import css from './ChatIntegrationPreview.less'
 import CustomerInitialMessages from './CustomerInitialMessages'
 import ProductCardAttachment, {ProductAttachment} from './ProductCardAttachment'
+import ArticleAttachment, {
+    ArticleAttachmentSchema,
+    isArticleAttachment,
+} from './ArticleAttachment'
+import css from './ChatIntegrationPreview.less'
 
 type Props = {
     conversationColor: string
@@ -15,7 +19,7 @@ type Props = {
     agentMessages: {
         content: string
         isHtml: boolean
-        attachments: ProductAttachment[]
+        attachments: ProductAttachment[] | ArticleAttachmentSchema[]
     }[]
     hideMessageTimestamp?: boolean
 }
@@ -27,7 +31,7 @@ const renderAgentMessage = ({
 }: {
     content: string
     isHtml: boolean
-    attachments: ProductAttachment[]
+    attachments: ProductAttachment[] | ArticleAttachmentSchema[]
 }) => {
     if (isHtml) {
         return (
@@ -38,6 +42,14 @@ const renderAgentMessage = ({
                     }}
                 />
                 {attachments.map((attachment, index) => {
+                    if (isArticleAttachment(attachment)) {
+                        return (
+                            <ArticleAttachment
+                                title={attachment.title}
+                                summary={attachment.summary}
+                            />
+                        )
+                    }
                     const {url} = attachment
 
                     return (

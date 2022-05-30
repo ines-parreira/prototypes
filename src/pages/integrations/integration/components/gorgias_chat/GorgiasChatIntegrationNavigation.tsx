@@ -33,8 +33,8 @@ export default class GorgiasChatIntegrationNavigation extends Component<Props> {
                     Preferences
                 </NavLink>
                 {shopName ? (
-                    <NavLink to={`${baseURL}/self_service`} exact>
-                        Self-service
+                    <NavLink to={`${baseURL}/automation`} exact>
+                        Automation
                     </NavLink>
                 ) : null}
                 <NavLink to={`${baseURL}/installation`} exact>

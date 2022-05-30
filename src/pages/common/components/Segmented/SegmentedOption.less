@@ -1,0 +1,43 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .badge {
+        position: relative;
+
+        padding: 6px 12px;
+        border-radius: 4px;
+        margin: 0;
+
+        color: @classic-neutral-grey-5;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+
+        cursor: pointer;
+        user-select: none;
+
+        &.checked {
+            background-color: @classic-neutral-grey-3;
+            color: @classic-neutral-grey-6;
+        }
+
+        &.disabled {
+            color: @classic-neutral-grey-4;
+            cursor: not-allowed;
+        }
+    }
+
+    .badge + .badge {
+        margin-left: 4px;
+    }
+
+    .input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        opacity: 0;
+        pointer-events: none;
+    }
+}

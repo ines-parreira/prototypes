@@ -3114,15 +3114,15 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                 className="link"
                 exact={true}
                 key=".4"
-                to="/app/settings/integrations/gorgias_chat/2/self_service"
+                to="/app/settings/integrations/gorgias_chat/2/automation"
               >
                 <a
                   activeClassName="active"
                   className="link"
                   exact={true}
-                  to="/app/settings/integrations/gorgias_chat/2/self_service"
+                  to="/app/settings/integrations/gorgias_chat/2/automation"
                 >
-                  Self-service
+                  Automation
                 </a>
               </NavLink>
               <NavLink

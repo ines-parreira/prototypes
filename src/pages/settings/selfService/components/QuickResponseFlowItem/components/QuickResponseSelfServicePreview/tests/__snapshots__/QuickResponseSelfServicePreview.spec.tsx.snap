@@ -120,7 +120,7 @@ exports[`<ChatIntegrationPreview/> render() displays landing page 1`] = `
             </span>
             <button
               class="btn btn-primary"
-              style="background-color: rgb(13, 135, 221);"
+              style="background-color: rgb(13, 135, 221); border-color: #0d87dd;"
             >
               <img
                 alt="send message icon"

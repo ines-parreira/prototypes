@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Segmented /> should match snapshot 1`] = `
+<div>
+  <div
+    class="container"
+    role="radiogroup"
+  >
+    <label
+      class="badge checked"
+    >
+      <input
+        checked=""
+        class="input"
+        name="self-service"
+        type="radio"
+      />
+      <div>
+        Self-Service
+      </div>
+    </label>
+    <label
+      class="badge"
+    >
+      <input
+        class="input"
+        name="article-recommendation"
+        type="radio"
+      />
+      <div>
+        Article Recommendation
+      </div>
+    </label>
+  </div>
+</div>
+`;

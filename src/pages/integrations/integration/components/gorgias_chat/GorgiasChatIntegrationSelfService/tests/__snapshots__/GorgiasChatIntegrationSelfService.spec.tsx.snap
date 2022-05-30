@@ -74,9 +74,9 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/gorgias_chat/7/self_service"
+      to="/app/settings/integrations/gorgias_chat/7/automation"
     >
-      Self-service
+      Automation
     </a>
     <a
       activeclassname="active"
@@ -89,9 +89,9 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
   <div
     class="pageContainer container-fluid"
   >
-    <h4>
+    <h3>
       Enable Self-service
-    </h4>
+    </h3>
     <p>
       Enabling
        
@@ -100,8 +100,7 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
       >
         self-service
       </a>
-       
-      will let your customers track their orders, request a return or cancellation and report issues they might have with an order. It will then create a chat ticket for your team.
+       will let your customers track their orders, request a return or cancellation and report issues they might have with an order. It will then create a chat ticket for your team.
     </p>
     <div
       class="d-flex my-4"

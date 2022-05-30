@@ -1,0 +1,30 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        width: 384px;
+    }
+
+    .navigation {
+        margin-bottom: 24px;
+    }
+
+    .content {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: space-between;
+
+        background-color: @classic-neutral-grey-1;
+        pointer-events: initial;
+        overflow: auto;
+
+        &.whiteBg {
+            background-color: @classic-neutral-grey-0;
+        }
+    }
+}

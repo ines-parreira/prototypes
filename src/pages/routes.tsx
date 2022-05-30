@@ -664,40 +664,42 @@ export function IntegrationsSettingsRoutes({
     match: {path},
 }: RouteComponentProps) {
     return (
-        <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        IntegrationsList,
-                        ADMIN_ROLE,
-                        PageSection.Integrations
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/app/:appId`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(AppDetail, ADMIN_ROLE),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        IntegrationDetail,
-                        ADMIN_ROLE,
-                        PageSection.Integrations
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-        </Switch>
+        <HelpCenterApiClientProvider>
+            <Switch>
+                <Route
+                    path={`${path}/`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            IntegrationsList,
+                            ADMIN_ROLE,
+                            PageSection.Integrations
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/app/:appId`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(AppDetail, ADMIN_ROLE),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            IntegrationDetail,
+                            ADMIN_ROLE,
+                            PageSection.Integrations
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+            </Switch>
+        </HelpCenterApiClientProvider>
     )
 }
 

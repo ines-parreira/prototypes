@@ -19,6 +19,7 @@ export const SelfServicePreviewFooter = ({
                 color="primary"
                 style={{
                     backgroundColor,
+                    borderColor: backgroundColor,
                 }}
             >
                 <img
