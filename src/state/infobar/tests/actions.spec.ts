@@ -4,10 +4,12 @@ import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
+import client from 'models/api/resources'
+import {SEARCH_ENDPOINT} from 'models/search/resources'
+
 import {StoreDispatch} from '../../types'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
-import client from '../../../models/api/resources'
 
 type MockedRootState = {
     infobar: Map<any, any>
@@ -53,7 +55,7 @@ describe('infobar actions', () => {
     describe('search', () => {
         it('should dispatch search results on success', () => {
             mockServer
-                .onPost('/api/search/')
+                .onPost(SEARCH_ENDPOINT)
                 .reply(200, {data: [{id: 1, name: 'alex'}]})
 
             return store
@@ -63,7 +65,7 @@ describe('infobar actions', () => {
 
         it('should not dispatch results when cancelling the search', () => {
             mockServer
-                .onPost('/api/search/')
+                .onPost(SEARCH_ENDPOINT)
                 .reply(200, {data: [{id: 1, name: 'alex'}]})
             const source = axios.CancelToken.source()
             source.cancel()

@@ -15,6 +15,7 @@ import client from 'models/api/resources'
 import {JobType} from 'models/job/types'
 import {MoveIndexDirection} from 'pages/common/utils/keyboard'
 import {getAST} from 'utils'
+import {SEARCH_ENDPOINT} from 'models/search/resources'
 
 import {ViewNavDirection} from '../types'
 import * as viewsSelectors from '../selectors'
@@ -62,7 +63,7 @@ describe('actions', () => {
                 meta: {},
             }
 
-            mockServer.onPost('/api/search/').reply(200, response)
+            mockServer.onPost(SEARCH_ENDPOINT).reply(200, response)
 
             const field = fromJS({filter: {type: 'customer'}})
             const query = 'foo'
@@ -74,7 +75,7 @@ describe('actions', () => {
         })
 
         it('should dispatch error', async () => {
-            mockServer.onPost('/api/search/').reply(500)
+            mockServer.onPost(SEARCH_ENDPOINT).reply(500)
 
             const field = fromJS({filter: {type: 'customer'}})
             const query = 'xyz'
@@ -89,7 +90,7 @@ describe('actions', () => {
         })
 
         it('should reject when cancelled', async () => {
-            mockServer.onPost('/api/search/').reply(200, {})
+            mockServer.onPost(SEARCH_ENDPOINT).reply(200, {})
             const source = axios.CancelToken.source()
             source.cancel()
 

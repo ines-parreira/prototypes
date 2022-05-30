@@ -8,13 +8,11 @@ import _throttle from 'lodash/throttle'
 import _omit from 'lodash/omit'
 import axios, {AxiosError, CancelToken} from 'axios'
 
-import * as ticketConstants from '../ticket/constants'
-import {notify} from '../notifications/actions'
-import * as ticketActions from '../ticket/actions'
-
-import {Context, renderTemplate} from '../../pages/common/utils/template'
-import {getActionTemplate, toJS, uploadFiles} from '../../utils'
-
+import * as ticketConstants from 'state/ticket/constants'
+import {notify} from 'state/notifications/actions'
+import * as ticketActions from 'state/ticket/actions'
+import {Context, renderTemplate} from 'pages/common/utils/template'
+import {getActionTemplate, toJS, uploadFiles} from 'utils'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
@@ -23,28 +21,25 @@ import {
     getLastSameSourceTypeMessage,
     getSourceTypeOfResponse,
     persistLastSenderChannel,
-} from '../ticket/utils'
-import * as integrationSelectors from '../integrations/selectors'
-import * as ticketSelectors from '../ticket/selectors'
-import * as agentSelectors from '../agents/selectors'
-import socketManager from '../../services/socketManager/socketManager'
-import {ActionTemplate, Attachment} from '../../types'
-import type {CurrentUser, RootState, StoreDispatch} from '../types'
-import {getMomentNow} from '../../utils/date'
-import {TicketMessageSourceType} from '../../business/types/ticket'
-import {
-    IntegrationType,
-    ProductCardDetails,
-} from '../../models/integration/types'
-import client from '../../models/api/resources'
-import {ApiListResponse} from '../../models/api/types'
-import {Ticket as TicketResponse} from '../../models/ticket/types'
-import {Customer} from '../customers/types'
-import {NotificationStatus} from '../notifications/types'
-import {SocketEventType} from '../../services/socketManager/types'
-import history from '../../pages/history'
-
-import {ShopifyProductCardContentType} from '../../constants/integrations/shopify'
+} from 'state/ticket/utils'
+import * as integrationSelectors from 'state/integrations/selectors'
+import * as ticketSelectors from 'state/ticket/selectors'
+import * as agentSelectors from 'state/agents/selectors'
+import socketManager from 'services/socketManager/socketManager'
+import {ActionTemplate, Attachment} from 'types'
+import type {CurrentUser, RootState, StoreDispatch} from 'state/types'
+import {getMomentNow} from 'utils/date'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {IntegrationType, ProductCardDetails} from 'models/integration/types'
+import client from 'models/api/resources'
+import {Ticket as TicketResponse} from 'models/ticket/types'
+import {Customer} from 'state/customers/types'
+import {NotificationStatus} from 'state/notifications/types'
+import {SocketEventType} from 'services/socketManager/types'
+import history from 'pages/history'
+import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
+import {SearchType, UserSearchResult} from 'models/search/types'
+import {search} from 'models/search/resources'
 
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
@@ -54,9 +49,7 @@ import {
     Message,
     NewMessage,
     ReplyAreaState,
-    SearchCustomerType,
     Ticket,
-    UserSearchResult,
 } from './types'
 import {
     addEmailExtraContent,
@@ -570,42 +563,34 @@ export const prepare =
 export const updatePotentialCustomers =
     (
         query: string,
-        type: SearchCustomerType = SearchCustomerType.UserChannelEmail,
+        type: SearchType = SearchType.UserChannelEmail,
         cancelToken?: CancelToken
     ) =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> =>
-        client
-            .post<ApiListResponse<UserSearchResult[], unknown>>(
-                '/api/search/',
-                {
-                    type,
-                    query,
-                },
-                {
-                    cancelToken,
-                }
-            )
-            .then((json) => json?.data)
-            .then(
-                (resp) => {
-                    return resp.data.map((result) => {
-                        return {
-                            ...result,
-                            ...result.user,
-                        }
-                    })
-                },
-                (error: AxiosError) => {
-                    if (axios.isCancel(error)) {
-                        return Promise.resolve() as unknown
+        search<UserSearchResult>({
+            type,
+            query,
+            cancelToken,
+        }).then(
+            (resp) => {
+                return resp.data.map((result) => {
+                    return {
+                        ...result,
+                        ...result.user,
                     }
-                    return dispatch({
-                        type: 'ERROR',
-                        error,
-                        reason: 'Failed to do the search. Please try again...',
-                    })
+                })
+            },
+            (error: AxiosError) => {
+                if (axios.isCancel(error)) {
+                    return Promise.resolve() as unknown
                 }
-            )
+                return dispatch({
+                    type: 'ERROR',
+                    error,
+                    reason: 'Failed to do the search. Please try again...',
+                })
+            }
+        )
 
 export const initializeMessageDraft = () => (dispatch: StoreDispatch) => {
     // get cached ticket reply message

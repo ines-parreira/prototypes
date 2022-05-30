@@ -6,30 +6,29 @@ import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
-import * as viewsConfig from '../../config/views'
-import {BASE_VIEW_ID} from '../../constants/view'
-import {OrderDirection, ApiListResponsePagination} from '../../models/api/types'
-import {Job, JobType} from '../../models/job/types'
-import {Ticket} from '../../models/ticket/types'
-import {View, ViewType} from '../../models/view/types'
-import {notify} from '../notifications/actions'
-import {NotificationStatus, Notification} from '../notifications/types'
-import history from '../../pages/history'
-import socketManager from '../../services/socketManager/socketManager'
-import {
-    SocketEventType,
-    JoinEventType,
-} from '../../services/socketManager/types'
+import {search} from 'models/search/resources'
+import * as viewsConfig from 'config/views'
+import {BASE_VIEW_ID} from 'constants/view'
+import {OrderDirection, ApiListResponsePagination} from 'models/api/types'
+import {Job, JobType} from 'models/job/types'
+import {Ticket} from 'models/ticket/types'
+import {View, ViewType} from 'models/view/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus, Notification} from 'state/notifications/types'
+import history from 'pages/history'
+import socketManager from 'services/socketManager/socketManager'
+import {SocketEventType, JoinEventType} from 'services/socketManager/types'
 import {
     getHashOfObj,
     getPluralObjectName,
     isCurrentlyOnTicket,
     isCurrentlyOnView,
-} from '../../utils'
-import {buildJobMessage} from '../../utils/notificationUtils'
-import {getMoment} from '../../utils/date'
-import {StoreDispatch, RootState} from '../types'
-import client from '../../models/api/resources'
+} from 'utils'
+import {buildJobMessage} from 'utils/notificationUtils'
+import {getMoment} from 'utils/date'
+import {StoreDispatch, RootState} from 'state/types'
+import client from 'models/api/resources'
+import {SearchType} from 'models/search/types'
 
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
@@ -134,23 +133,20 @@ export function fieldEnumSearch(
             string,
             unknown
         >
-        data.query = query
-
-        return client
-            .post<ApiListResponsePagination<unknown[]>>('/api/search/', data, {
-                cancelToken,
-            })
-            .then((json) => json?.data)
-            .then(
-                (resp) => {
-                    return fromJS(resp.data) as List<
-                        Map<keyof FieldSearchResult, FieldSearchResult>
-                    >
-                },
-                (error: AxiosError) => {
-                    return Promise.reject(error)
-                }
-            )
+        return search<unknown>({
+            type: data.type as SearchType,
+            query,
+            cancelToken,
+        }).then(
+            (resp) => {
+                return fromJS(resp.data) as List<
+                    Map<keyof FieldSearchResult, FieldSearchResult>
+                >
+            },
+            (error: AxiosError) => {
+                return Promise.reject(error)
+            }
+        )
     }
 }
 

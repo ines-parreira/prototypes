@@ -3,9 +3,9 @@ import _debounce from 'lodash/debounce'
 import {CancelToken} from 'axios'
 import {isValidPhoneNumber} from 'libphonenumber-js'
 
-import {TicketMessageSourceType} from '../../../../../../../business/types/ticket'
-import useAppDispatch from '../../../../../../../hooks/useAppDispatch'
-import useCancellableRequest from '../../../../../../../hooks/useCancellableRequest'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useCancellableRequest from 'hooks/useCancellableRequest'
 import {
     getValuePropFromSourceType,
     receiversValueFromState,
@@ -13,10 +13,10 @@ import {
     Receiver,
     Receivers,
     ReceiverValue,
-} from '../../../../../../../state/ticket/utils'
-import {updatePotentialCustomers} from '../../../../../../../state/newMessage/actions'
-import {isEmail} from '../../../../../../../utils'
-import {SearchCustomerType} from '../../../../../../../state/newMessage/types'
+} from 'state/ticket/utils'
+import {updatePotentialCustomers} from 'state/newMessage/actions'
+import {isEmail} from 'utils'
+import {SearchType} from 'models/search/types'
 
 import MultiSelectAsyncField from './MultiSelectAsyncField/MultiSelectAsyncField'
 
@@ -44,12 +44,12 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
         const searchType =
             sourceType === TicketMessageSourceType.Phone ||
             sourceType === TicketMessageSourceType.Sms
-                ? SearchCustomerType.UserChannelPhone
-                : SearchCustomerType.UserChannelEmail
+                ? SearchType.UserChannelPhone
+                : SearchType.UserChannelEmail
 
         const [cancellableUpdatePotentialCustomers] = useCancellableRequest(
             (cancelToken: CancelToken) =>
-                async (queryText: string, searchType: SearchCustomerType) =>
+                async (queryText: string, searchType: SearchType) =>
                     await dispatch(
                         updatePotentialCustomers(
                             queryText,

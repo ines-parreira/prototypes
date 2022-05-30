@@ -106,22 +106,4 @@ export type Message = {
     via: string
 }
 
-export type UserSearchResult = {
-    address: string
-    customer: {
-        id: number
-        name: string
-    }
-    id: number
-    user?: {
-        id: number
-        name: string
-    }
-}
-
 export type NewMessageState = Map<any, any>
-
-export enum SearchCustomerType {
-    UserChannelEmail = 'user_channel_email',
-    UserChannelPhone = 'user_channel_phone',
-}

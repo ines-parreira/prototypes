@@ -1,17 +1,17 @@
 import axios, {CancelToken, AxiosError, AxiosResponse} from 'axios'
 import _noop from 'lodash/noop'
 
-import {notify} from '../notifications/actions'
-import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
-
-import {ActionExecutedEvent} from '../../services/socketManager/types'
-import client from '../../models/api/resources'
-import {ApiListResponsePagination} from '../../models/api/types'
-import history from '../../pages/history'
-import {Customer} from '../customers/types'
-import {NotificationStatus} from '../notifications/types'
-import {StoreDispatch, RootState} from '../types'
-import {onApiError} from '../utils'
+import {notify} from 'state/notifications/actions'
+import {isCurrentlyOnTicket, stripErrorMessage} from 'utils'
+import {ActionExecutedEvent} from 'services/socketManager/types'
+import client from 'models/api/resources'
+import {search as apiSearch} from 'models/search/resources'
+import {SearchType} from 'models/search/types'
+import history from 'pages/history'
+import {Customer} from 'state/customers/types'
+import {NotificationStatus} from 'state/notifications/types'
+import {StoreDispatch, RootState} from 'state/types'
+import {onApiError} from 'state/utils'
 
 import * as utils from './utils'
 import * as constants from './constants'
@@ -22,33 +22,28 @@ export const search =
         dispatch({
             type: constants.SEARCH_CUSTOMERS_START,
         })
-        const options = cancelToken ? {cancelToken} : {}
-
-        return client
-            .post<ApiListResponsePagination<Customer>>(
-                '/api/search/',
-                {type: 'user_profile', query},
-                options
-            )
-            .then((json) => json?.data)
-            .then(
-                (resp) => {
-                    return dispatch({
-                        type: constants.SEARCH_CUSTOMERS_SUCCESS,
-                        resp,
-                    })
-                },
-                (error: AxiosError) => {
-                    if (axios.isCancel(error)) {
-                        return Promise.resolve()
-                    }
-                    return dispatch({
-                        type: constants.SEARCH_CUSTOMERS_ERROR,
-                        error,
-                        reason: 'Failed to do the search. Please try again...',
-                    }) as unknown as Promise<void>
+        return apiSearch<Customer>({
+            type: SearchType.UserProfile,
+            query,
+            cancelToken,
+        }).then(
+            (resp) => {
+                return dispatch({
+                    type: constants.SEARCH_CUSTOMERS_SUCCESS,
+                    resp,
+                })
+            },
+            (error: AxiosError) => {
+                if (axios.isCancel(error)) {
+                    return Promise.resolve()
                 }
-            )
+                return dispatch({
+                    type: constants.SEARCH_CUSTOMERS_ERROR,
+                    error,
+                    reason: 'Failed to do the search. Please try again...',
+                }) as unknown as Promise<void>
+            }
+        )
     }
 
 export const similarCustomer =

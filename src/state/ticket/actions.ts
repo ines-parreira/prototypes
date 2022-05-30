@@ -1,4 +1,4 @@
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
 import _noop from 'lodash/noop'
 import _pick from 'lodash/pick'
@@ -8,9 +8,11 @@ import {dismissNotification} from 'reapop'
 import {Moment} from 'moment'
 import {compressToEncodedURIComponent} from 'lz-string'
 
-import {TicketStatus, TicketMessageSourceType} from 'business/types/ticket'
+import {TicketMessageSourceType, TicketStatus} from 'business/types/ticket'
 import {DEFAULT_ACTIONS} from 'config'
 import {ViewType} from 'models/view/constants'
+import {search} from 'models/search/resources'
+import {SearchType, UserSearchResult} from 'models/search/types'
 import browserNotification from 'services/browserNotification'
 import GorgiasApi from 'services/gorgiasApi'
 import socketManager from 'services/socketManager/socketManager'
@@ -24,7 +26,6 @@ import * as viewsSelectors from 'state/views/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isCurrentlyOnTicket, isTabActive} from 'utils'
 
-import {ApiListResponsePagination} from 'models/api/types'
 import {
     Action,
     Ticket,
@@ -34,20 +35,19 @@ import {
 import {View} from 'models/view/types'
 
 import {
-    TicketMessageFailedEvent,
     JoinEventType,
     SocketEventType,
+    TicketMessageFailedEvent,
 } from 'services/socketManager/types'
 import {Customer} from 'state/customers/types'
-import {SearchCustomerType, UserSearchResult} from 'state/newMessage/types'
 import {
-    NotificationStatus,
     Notification,
     NotificationButton,
+    NotificationStatus,
 } from 'state/notifications/types'
 import history from 'pages/history'
 import client from 'models/api/resources'
-import {StoreDispatch, RootState} from 'state/types'
+import {RootState, StoreDispatch} from 'state/types'
 import {Macro} from 'state/macro/types'
 
 import {
@@ -1114,32 +1114,26 @@ export function deleteTicketPendingMessage(message: Map<any, any>) {
 export const findAndSetCustomer =
     (email: string) =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> =>
-        client
-            .post<ApiListResponsePagination<UserSearchResult[]>>(
-                '/api/search/',
-                {
-                    type: SearchCustomerType.UserChannelEmail,
-                    query: email,
-                }
-            )
-            .then((json) => json?.data)
-            .then((resp) => {
-                if (resp.data.length !== 1) {
-                    // We can't do anything if we are not sure which customer should be set as customer of the current
-                    // ticket. We don't want to log an error here, as this may be expected if the agent is sending an email
-                    // to a new customer.
-                    return Promise.resolve()
-                }
+        search<UserSearchResult>({
+            type: SearchType.UserChannelEmail,
+            query: email,
+        }).then((resp) => {
+            if (resp.data.length !== 1) {
+                // We can't do anything if we are not sure which customer should be set as customer of the current
+                // ticket. We don't want to log an error here, as this may be expected if the agent is sending an email
+                // to a new customer.
+                return Promise.resolve()
+            }
 
-                const channel = resp.data[0]
+            const channel = resp.data[0]
 
-                return client
-                    .get<Customer>(`/api/customers/${channel.user?.id || ''}/`)
-                    .then((json) => json?.data)
-                    .then((resp): Promise<ReturnType<StoreDispatch>> => {
-                        return dispatch(setCustomer(fromJS(resp)))
-                    })
-            })
+            return client
+                .get<Customer>(`/api/customers/${channel.user?.id || ''}/`)
+                .then((json) => json?.data)
+                .then((resp): Promise<ReturnType<StoreDispatch>> => {
+                    return dispatch(setCustomer(fromJS(resp)))
+                })
+        })
 
 export const messageDeleted = createAction<string>(types.TICKET_MESSAGE_DELETED)
 

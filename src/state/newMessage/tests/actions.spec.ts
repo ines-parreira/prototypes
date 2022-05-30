@@ -29,7 +29,7 @@ import {IntegrationType} from 'models/integration/types'
 import {ticket} from 'fixtures/ticket'
 import * as emailExtraUtils from 'state/newMessage/emailExtraUtils'
 import {convertFromHTML} from 'utils/editor'
-import {ReplyAreaState, SearchCustomerType} from 'state/newMessage/types'
+import {ReplyAreaState} from 'state/newMessage/types'
 import {
     MacroActionType,
     MacroActionName,
@@ -40,6 +40,8 @@ import {
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
 import client from 'models/api/resources'
+import {SearchType} from 'models/search/types'
+import {SEARCH_ENDPOINT} from 'models/search/resources'
 
 import {getReplyAreaStateSnapshot} from './testUtils'
 
@@ -1437,7 +1439,7 @@ describe('actions', () => {
 
     describe('updatePotentialCustomers', () => {
         it('should return a list of potential customer on success', () => {
-            mockServer.onPost('/api/search/').reply(200, {
+            mockServer.onPost(SEARCH_ENDPOINT).reply(200, {
                 data: [
                     {
                         id: 11,
@@ -1459,7 +1461,7 @@ describe('actions', () => {
         })
 
         it('should resolve when cancelled', () => {
-            mockServer.onPost('/api/search/').reply(200, {
+            mockServer.onPost(SEARCH_ENDPOINT).reply(200, {
                 data: [
                     {
                         id: 11,
@@ -1481,7 +1483,7 @@ describe('actions', () => {
                 .dispatch(
                     actions.updatePotentialCustomers(
                         'foo',
-                        SearchCustomerType.UserChannelEmail,
+                        SearchType.UserChannelEmail,
                         source.token
                     )
                 )

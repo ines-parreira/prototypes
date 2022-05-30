@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`search resource search should call the search endpoint with the type 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "data": "{\\"type\\":\\"user_channel_email\\",\\"query\\":\\"foo\\"}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRF-Token": "abcd",
+        "X-Gorgias-User-Client": "web",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/search/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;
+
+exports[`search resource search should return results 1`] = `
+Object {
+  "data": Array [
+    Object {
+      "foo": "bar",
+    },
+  ],
+  "meta": Object {},
+  "object": "list",
+  "uri": "",
+}
+`;
