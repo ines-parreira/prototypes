@@ -12,6 +12,19 @@ import svSe from 'assets/img/flags/sv-se.svg'
 
 import {Locale} from '../../../../models/helpCenter/types'
 
+const flagsMap: {[key: string]: string} = {
+    cz: 'cs-cz',
+    da: 'da-dk',
+    nl: 'nl-nl',
+    de: 'de-de',
+    it: 'it-it',
+    no: 'no-no',
+    es: 'es-es',
+    sv: 'sv-se',
+    en: 'en-us',
+    fr: 'fr-fr',
+}
+
 // TODO: create ENUM from FLAGS somewhere in a shared folder
 const FLAGS: {[key: string]: string} = {
     'en-us': enUs,
@@ -28,7 +41,13 @@ const FLAGS: {[key: string]: string} = {
 }
 
 export function getEmojiFlag(code: string): string {
-    return FLAGS[code.toLowerCase()] || ''
+    const flag = code.toLowerCase()
+
+    if (!!flagsMap[flag]) {
+        return FLAGS[flagsMap[flag]] || ''
+    }
+
+    return FLAGS[flag] || ''
 }
 
 export function moveLocaleToFront(
