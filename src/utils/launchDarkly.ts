@@ -23,14 +23,23 @@ export function initLaunchDarkly(
             email: user.email,
             country: user.country ?? undefined,
             custom: {
-                roles: user.roles.map((role) => role.name),
-                plan: account.current_subscription.plan,
+                roles: Array.isArray(user?.roles)
+                    ? user.roles.map((role) => role.name)
+                    : [],
+                plan: account?.current_subscription?.plan,
                 domain: account.domain,
             },
         }
     }
 
-    client = LDClient.initialize(window.GORGIAS_LAUNCHDARKLY_CLIENT_ID, LDUser)
+    try {
+        client = LDClient.initialize(
+            window.GORGIAS_LAUNCHDARKLY_CLIENT_ID,
+            LDUser
+        )
+    } catch (err) {
+        console.error(err)
+    }
 
     return client
 }

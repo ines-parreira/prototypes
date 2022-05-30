@@ -22,7 +22,11 @@ const Provider = ({children}: Props): JSX.Element => {
 
     useEffect(() => {
         void client.waitUntilReady().then(() => {
-            setFlags(client.allFlags())
+            try {
+                setFlags(client.allFlags())
+            } catch (err) {
+                console.error(err)
+            }
         })
     }, [client])
 
