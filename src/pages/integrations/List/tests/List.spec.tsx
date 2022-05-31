@@ -50,6 +50,7 @@ describe('<IntegrationsList />', () => {
         plans: {} as {
             [plan in SubscriptionPlan]: Plan
         },
+        accountDomain: 'acme',
     }
 
     it('should display content', () => {

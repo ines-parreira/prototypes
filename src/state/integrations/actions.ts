@@ -356,9 +356,9 @@ export function deleteIntegration(integration: Map<any, any>) {
     }
 }
 
-function updateOrCreateIntegrationRequest(
+export function updateOrCreateIntegrationRequest(
     integration: Map<any, any>,
-    action: Maybe<Record<string, unknown>>,
+    action?: Record<string, unknown>,
     notificationId: Maybe<string> = null
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {

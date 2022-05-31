@@ -194,7 +194,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         ],
         title: 'Email',
         description:
-            'Connect your support email addresses and respond to your customers from Gorgias',
+            'Connect your support email addresses and respond to your customers from Gorgias.',
         longDescription: '',
     } as IntegrationConfig,
     {
@@ -221,7 +221,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         type: IntegrationType.Facebook,
         title: 'Facebook, Messenger & Instagram',
         description:
-            'Create tickets from Facebook posts, comments and recommendations, Instagram comments and mentions and Messenger conversations',
+            'Create tickets from Facebook posts, comments and recommendations, Instagram comments and mentions and Messenger conversations.',
         image: 'facebook.png',
         categories: [Category.SOCIAL],
         longDescription:
@@ -261,7 +261,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
     {
         type: IntegrationType.Http,
         title: 'HTTP',
-        description: 'Connect any application to Gorgias',
+        description: 'Connect any application to Gorgias.',
         image: 'http.png',
         longDescription: '',
     } as IntegrationConfig,
@@ -269,9 +269,9 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         type: IntegrationType.Shopify,
         title: 'Shopify',
         description:
-            'Display customer profiles & orders next to tickets. Edit orders with macros',
+            'Display customer profiles & orders next to tickets. Edit orders with macros.',
         image: 'shopify.png',
-        categories: [Category.ECOM],
+        categories: [Category.ECOMMERCE],
         longDescription:
             '<p>Instantly connect to Shopify in under a minute to have customer and order history at your agents’ fingertips.</p><p><br></p><p>Here are the things you can do with Shopify integration:&nbsp;</p><ul><li>Stop asking for information you already have<ul><li>View your customer’s order history as you close out their ticket to ensure speed and accuracy. No more switching between tabs or cutting and pasting</li></ul></li><li>Actual personalization at scale<ul><li>We make it easy to insert customer data provided by Shopify. From first name to shipping address, directly into each customer interaction. It’s an automatic and accurate way to get a more personal customer experience.</li></ul></li><li>Update Shopify orders directly from your helpdesk<ul><li>Update a shipping address or even issue a partial refund from directly within Gorgias. You can even create and send a draft order without opening a new tab or window.</li></ul></li><li>Automate your most common tasks<ul><li>From looking up the most recent orders to sending out an update to some of your most common questions, we make it easy to automate up to 20% of your customer support tasks.</li></ul></li><li>Detect the intent of what your customers are asking<ul><li>Gorgias uses advanced machine learning to detect the intents and sentiments of each message. By learning about tracking updates, return policies, and urgency, we help you set priorities and categorize tickets based on what they’re about.</li></ul></li></ul>',
         screenshots: ['shopify-1.png', 'shopify-2.png', 'shopify-3.png'],
@@ -286,10 +286,30 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         freeTrialPeriod: TrialPeriod.FOURTEEN,
     },
     {
+        type: IntegrationType.BigCommerce,
+        title: 'BigCommerce',
+        description:
+            'Display customer BigCommerce profile & orders next to their ticket.',
+        image: 'bigcommerce.svg',
+        categories: [Category.ECOMMERCE],
+        longDescription:
+            "<p>BigCommerce is an ecommerce platform that provides 'software as a service' services to retailers. The company’s platform includes online store creation, search engine optimization, hosting, marketing and security.</p><p>With Gorgias, you can:</p><ul><li>View BigCommerce customer and order information in a customer's ticket.</li><li>Easily access links to customer and order profile.</li></ul>",
+        screenshots: ['bigcommerce-1.png'],
+        pricingPlan: PricingPlan.RECURRING,
+        pricingDetails: 'Contact BigCommerce for pricing details.',
+        pricingLink: 'https://www.bigcommerce.com/essentials/pricing/',
+        company: 'Gorgias',
+        companyUrl: 'https://www.gorgias.com/',
+        privacyPolicy: 'https://www.bigcommerce.com/privacy/',
+        setupGuide: 'https://docs.gorgias.com/ecommerce-integrations',
+        hasFreeTrial: true,
+        freeTrialPeriod: TrialPeriod.CUSTOM,
+    },
+    {
         type: IntegrationType.Twitter,
         title: 'Twitter',
         description:
-            'Create tickets when customers interact with you via replies or mentions on Twitter',
+            'Create tickets when customers interact with you via replies or mentions on Twitter.',
         image: 'twitter.png',
         requiredFeature: AccountFeature.TwitterIntegration,
         categories: [Category.SOCIAL],
@@ -311,10 +331,10 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         type: IntegrationType.Magento2,
         title: 'Magento 2',
         description:
-            'Display customer profiles & orders next to tickets. Edit orders with macros',
+            'Display customer profiles & orders next to tickets. Edit orders with macros.',
         image: 'magento.png',
         requiredFeature: AccountFeature.MagentoIntegration,
-        categories: [Category.ECOM],
+        categories: [Category.ECOMMERCE],
         longDescription:
             '<p>Securely connect with Magento to have your customers’ order history at your agents’ fingertips.</p><p><br></p><p>Magento is an ecommerce platform built on open source technology which provides online merchants with a flexible shopping cart system, as well as control over the look, content and functionality of their online store.</p><p><br></p><p>The Gorgias plugin for Magento is currently compatible with Magento 2.2, 2.3 and 2.4 for all Magento versions: Open Source (CE), Commerce using on prem (EE), Commerce on Cloud (ECE).</p><p><br></p><p><span style="text-decoration: underline;" data-mce-style="text-decoration: underline;"><strong>Integration benefits</strong></span></p><ul><li>Display customer profiles next to tickets</li><li>Display orders, shipments and credit memos</li><li>Insert Magento 2 variables in macros</li><li>Use Magento 2 variables as filters in rules</li></ul>',
         screenshots: ['magento-1.png', 'magento-2.png', 'magento-3.png'],
@@ -400,7 +420,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
     {
         type: IntegrationType.Smooch,
         title: 'Smooch',
-        description: 'Connect your own Smooch to Gorgias',
+        description: 'Connect your own Smooch to Gorgias.',
         image: 'smooch.png',
         categories: [],
         longDescription: '',

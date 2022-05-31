@@ -9,6 +9,7 @@ export enum IntegrationType {
     Facebook = 'facebook',
     Http = 'http',
     Shopify = 'shopify',
+    BigCommerce = 'bigcommerce',
     Recharge = 'recharge',
     Smile = 'smile',
     Magento2 = 'magento2',

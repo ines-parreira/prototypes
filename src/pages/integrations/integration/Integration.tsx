@@ -61,6 +61,8 @@ import SmoochIntegrationPreferences from './components/smooch/SmoochIntegrationP
 import ShopifyIntegrationList from './components/shopify/ShopifyIntegrationList'
 import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDetail'
 
+import BigCommerce from './components/bigcommerce/BigCommerce'
+
 import KlaviyoIntegrationList from './components/klaviyo/KlaviyoIntegrationList'
 import KlaviyoIntegrationDetail from './components/klaviyo/KlaviyoIntegrationDetail'
 
@@ -645,6 +647,21 @@ export const IntegrationDetail = ({
             return (
                 <ShopifyIntegrationList
                     integrations={integrationsProp}
+                    loading={loading}
+                    redirectUri={redirectUri}
+                />
+            )
+
+        case IntegrationType.BigCommerce:
+            return (
+                <BigCommerce
+                    integration={integration}
+                    integrations={
+                        integrationsProp.filter(
+                            (v) =>
+                                v!.get('type') === IntegrationType.BigCommerce
+                        ) as List<Map<any, any>>
+                    }
                     loading={loading}
                     redirectUri={redirectUri}
                 />

@@ -31,7 +31,7 @@ export const dummyAppData = {
         'https://screen.com/my4.png',
     ],
     support_email: 'support@gotolstoy.com',
-    categories: [Category.ECOM, Category.REVIEWS],
+    categories: [Category.ECOMMERCE, Category.REVIEWS],
 }
 
 export const dummyAppDetail = appDataToAppDetailMapper(dummyAppData)

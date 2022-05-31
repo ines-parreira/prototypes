@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BigCommerceIntegration/> render() should have a disabled update button that gets enabled when synchonisation is changed and trigger an update 1`] = `
+Array [
+  Array [
+    Immutable.Map {
+      "meta": Immutable.Map {
+        "sync_customer_notes": false,
+      },
+    },
+  ],
+]
+`;
+
+exports[`<BigCommerceIntegration/> render() should render a loader because the integration is loading 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="inner"
+      style="min-height: 500px;"
+    >
+      <i
+        class="icon-custom icon-circle-o-notch md-spin"
+        style="font-size: 40px;"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<BigCommerceIntegration/> render() should render an integration with a delete button that deletes the integration 1`] = `
+<div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-8"
+      >
+        <div
+          class="alert loading mb-4"
+        >
+          <div
+            class="iconContainer"
+          >
+            <span
+              class="loadingIcon"
+            >
+              <svg
+                class="spinner dark"
+                preserveAspectRatio="xMidYMid meet"
+                role="status"
+                viewBox="0 0 20 20"
+                width="100%"
+              >
+                <circle
+                  class="dot"
+                  cx="10"
+                  cy="10"
+                  fill="none"
+                  r="6"
+                  stroke-width="2"
+                />
+                <circle
+                  class="circle"
+                  cx="10"
+                  cy="10"
+                  fill="none"
+                  r="6"
+                  stroke-width="2"
+                />
+                <span
+                  class="sr-only"
+                >
+                  Loading...
+                </span>
+              </svg>
+            </span>
+          </div>
+          <div
+            class="content"
+          >
+            <span
+              class="label"
+            >
+              Import in progress. We will send you an email once it is done. Feel free to leave this page.
+            </span>
+          </div>
+        </div>
+        <form>
+          <label
+            class="label isDisabled mb-2"
+            for="disabled-store-field"
+          >
+            Store name
+          </label>
+          <span
+            class="mb-4 wrapper group horizontal"
+          >
+            <div
+              class="wrapper left isDisabled isNested"
+            >
+              <input
+                class="input"
+                disabled=""
+                id="disabled-store-field"
+                name="name"
+                type="text"
+                value=""
+              />
+            </div>
+            <span
+              class="groupAddon right isDisabled"
+            >
+              .mybigcommerce.com
+            </span>
+          </span>
+          <div
+            class="mb-4"
+          >
+            <div>
+              <label
+                aria-checked="true"
+                class="label label"
+                for="sync_customer_notes"
+                role="switch"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  disabled=""
+                  id="sync_customer_notes"
+                  name="sync_customer_notes"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                Synchronize customer notes between Gorgias and BigCommerce
+              </label>
+              <div
+                class="caption caption"
+              >
+                When editing notes in both places at the same time, the first one saved will be synchronized.
+                <br />
+                Notes will not be synchrorized for customers who are associated with more than one BigCommerce store.
+              </div>
+            </div>
+          </div>
+          <div>
+            <button
+              class="wrapper mr-2 fill primary medium"
+              type="submit"
+            >
+              Update Connection
+            </button>
+            <button
+              class="wrapper float-right fill destructive medium"
+              id="integration-deletion-confirm-button"
+              type="button"
+            >
+              <span
+                class="wrapper"
+              >
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<BigCommerceIntegration/> render() should render an integration with a delete button that deletes the integration 2`] = `
+Array [
+  Array [
+    Immutable.Map {},
+  ],
+]
+`;

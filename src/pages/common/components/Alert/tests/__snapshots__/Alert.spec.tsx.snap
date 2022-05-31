@@ -160,6 +160,59 @@ exports[`<Alert /> should render icon for info alert type 1`] = `
 </div>
 `;
 
+exports[`<Alert /> should render icon for loading alert type 1`] = `
+<div
+  class="alert loading"
+>
+  <div
+    class="iconContainer"
+  >
+    <span
+      class="loadingIcon"
+    >
+      <svg
+        class="spinner dark"
+        preserveAspectRatio="xMidYMid meet"
+        role="status"
+        viewBox="0 0 20 20"
+        width="100%"
+      >
+        <circle
+          class="dot"
+          cx="10"
+          cy="10"
+          fill="none"
+          r="6"
+          stroke-width="2"
+        />
+        <circle
+          class="circle"
+          cx="10"
+          cy="10"
+          fill="none"
+          r="6"
+          stroke-width="2"
+        />
+        <span
+          class="sr-only"
+        >
+          Loading...
+        </span>
+      </svg>
+    </span>
+  </div>
+  <div
+    class="content"
+  >
+    <span
+      class="label"
+    >
+      This is an alert!
+    </span>
+  </div>
+</div>
+`;
+
 exports[`<Alert /> should render icon for success alert type 1`] = `
 <div
   class="alert success"

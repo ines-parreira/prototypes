@@ -4,7 +4,7 @@ import {IntegrationType} from '../constants'
 
 export enum Category {
     SMS_EMAIL = 'SMS and Email',
-    ECOM = 'Ecomm Platforms',
+    ECOMMERCE = 'Ecomm Platforms',
     PHONE = 'Phone',
     REVIEWS = 'Reviews & UGC',
     LOYALTY = 'Loyalty & Retention',

@@ -28,6 +28,10 @@
             border: 1px solid @classic-feedback-error;
         }
 
+        &.loading {
+            border: 1px solid @classic-neutral-grey-4;
+        }
+
         &.closable {
             padding-right: 56px;
         }
@@ -45,13 +49,6 @@
         justify-content: space-between;
         flex: 1;
         flex-wrap: wrap;
-        margin-top: -8px;
-        margin-left: -16px;
-
-        > * {
-            margin-top: 8px;
-            margin-left: 16px;
-        }
 
         @media @desktops {
             flex-wrap: initial;
@@ -88,5 +85,13 @@
     .closeIcon {
         width: 11px;
         height: 11px;
+    }
+
+    .loadingIcon {
+        display: flex;
+        align-items: center;
+        width: 25px;
+        height: 20px;
+        overflow: visible;
     }
 }

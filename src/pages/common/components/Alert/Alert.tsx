@@ -7,6 +7,8 @@ import warningIcon from 'assets/img/icons/warning2.svg'
 import errorIcon from 'assets/img/icons/error.svg'
 import closeIcon from 'assets/img/icons/close.svg'
 
+import Spinner from 'pages/common/components/Spinner'
+
 import css from './Alert.less'
 
 export enum AlertType {
@@ -14,6 +16,7 @@ export enum AlertType {
     Success = 'success',
     Warning = 'warning',
     Error = 'error',
+    Loading = 'loading',
 }
 
 const alertIcon = {
@@ -21,6 +24,11 @@ const alertIcon = {
     [AlertType.Success]: successIcon,
     [AlertType.Warning]: warningIcon,
     [AlertType.Error]: errorIcon,
+    [AlertType.Loading]: (
+        <span className={css.loadingIcon}>
+            <Spinner color="dark" />
+        </span>
+    ),
 }
 
 export type Props = {
@@ -55,8 +63,10 @@ const Alert = ({
                 <div className={css.iconContainer}>
                     {isValidElement(icon) ? (
                         icon
+                    ) : isValidElement(alertIcon[type]) ? (
+                        alertIcon[type]
                     ) : (
-                        <img src={alertIcon[type]} alt="icon" />
+                        <img src={alertIcon[type] as string} alt="icon" />
                     )}
                 </div>
             )}
