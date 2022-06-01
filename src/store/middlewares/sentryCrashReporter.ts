@@ -1,23 +1,17 @@
-import _isUndefined from 'lodash/isUndefined'
 import {Middleware} from 'redux'
 import {AxiosError} from 'axios'
+import * as Sentry from '@sentry/react'
 
-import {reportError} from '../../utils/errors'
-
-const Raven = window.Raven
+import {reportError} from 'utils/errors'
 
 /**
  * Middleware sending redux errors to Sentry
  */
 const crashReporter: Middleware =
     () => (next) => (action: {type: string; error?: AxiosError}) => {
-        if (_isUndefined(Raven)) {
-            return next(action)
-        }
-
         try {
             if (action.type) {
-                Raven.captureBreadcrumb({
+                Sentry.addBreadcrumb({
                     category: 'redux',
                     message: action.type,
                 })

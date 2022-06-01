@@ -25,8 +25,9 @@ import {Tag} from 'models/tag/types'
 import {View} from 'models/view/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from 'constants/integration'
-import {isProduction, isStaging} from 'utils/environment'
 import {initLaunchDarkly} from 'utils/launchDarkly'
+import {getEnvironment, isProduction, isStaging} from 'utils/environment'
+import {initErrorReporter} from 'utils/errors'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -98,6 +99,16 @@ if (isStaging() || isProduction()) {
         window.GORGIAS_STATE.currentUser,
         window.GORGIAS_RELEASE
     )
+}
+
+if (window.SENTRY_DSN) {
+    initErrorReporter({
+        dsn: window.SENTRY_DSN,
+        release: window.GORGIAS_RELEASE,
+        environment: getEnvironment(),
+        currentUser: window.GORGIAS_STATE.currentUser,
+        currentAccount: window.GORGIAS_STATE.currentAccount,
+    })
 }
 
 // Supply an initial state to redux for faster page loads. See #752

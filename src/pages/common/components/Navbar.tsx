@@ -11,6 +11,7 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
+import * as Sentry from '@sentry/react'
 
 import shortcutManager from '../../../services/shortcutManager/index'
 import {DEPRECATED_getCurrentPlan} from '../../../state/billing/selectors'
@@ -143,7 +144,7 @@ export class Navbar extends React.Component<Props, State> {
                     .render('widget', window.noticeableWidgetId)
                     .then(() => {
                         this.setState({noticeableWidgetRendered: true})
-                        window.Raven?.captureBreadcrumb({
+                        Sentry.addBreadcrumb({
                             category: 'noticeable',
                             message: 'widget rendered',
                         })
@@ -170,7 +171,7 @@ export class Navbar extends React.Component<Props, State> {
                                 ? 'hidden'
                                 : 'visible'
                     }
-                    window.Raven?.captureBreadcrumb({
+                    Sentry.addBreadcrumb({
                         category: 'noticeable',
                         message: 'widget unread_count changed',
                     })
@@ -181,7 +182,7 @@ export class Navbar extends React.Component<Props, State> {
                 .destroy('widget', window.noticeableWidgetId)
                 .then(() => {
                     this.setState({noticeableWidgetRendered: false})
-                    window.Raven?.captureBreadcrumb({
+                    Sentry.addBreadcrumb({
                         category: 'noticeable',
                         message: 'widget destroyed',
                     })

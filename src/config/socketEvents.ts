@@ -1,5 +1,6 @@
 import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
+import * as Sentry from '@sentry/react'
 
 import browserNotification from 'services/browserNotification'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
@@ -353,7 +354,7 @@ export const receivedEvents: ReceivedEvent[] = [
                 type: viewsConstants.CREATE_VIEW_SUCCESS,
                 resp: (json as ViewCreatedEvent).view,
             })
-            window.Raven?.captureBreadcrumb({
+            Sentry.addBreadcrumb({
                 message: 'View created from socket event',
                 data: json,
                 level: 'log',

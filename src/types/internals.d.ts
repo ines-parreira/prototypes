@@ -1,4 +1,3 @@
-import type {RavenStatic} from 'raven-js'
 import {Middleware} from 'redux'
 
 import {Page} from 'services/statusPageManager/types'
@@ -11,7 +10,6 @@ declare global {
         GORGIAS_STATE: GorgiasInitialState
         SEGMENT_EVENTS_TO_TRACK?: {data: any; type: string}[]
         SYSTEM_MESSAGES: SystemMessage[]
-        Raven?: RavenStatic
         EMAIL_FORWARDING_DOMAIN: string
         GORGIAS_ASSETS_URL: Maybe<string>
         GORGIAS_RELEASE: string
@@ -56,6 +54,7 @@ declare global {
         USER_IMPERSONATED: true | null
         SEGMENT_ANALYTICS_USER_ID: string
         GORGIAS_LAUNCHDARKLY_CLIENT_ID: string
+        SENTRY_DSN: string
         devToolsExtension: () => Middleware
     }
 

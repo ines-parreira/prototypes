@@ -8,6 +8,7 @@ import React, {
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 import {
+    ButtonDropdown,
     Card,
     CardBody,
     CardFooter,
@@ -15,9 +16,9 @@ import {
     DropdownMenu,
     DropdownToggle,
     UncontrolledDropdown,
-    ButtonDropdown,
 } from 'reactstrap'
 import {useAsyncFn, usePrevious, useUnmount, useUpdateEffect} from 'react-use'
+import * as Sentry from '@sentry/react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
@@ -145,9 +146,9 @@ export const FilterTopbar = ({
                     return
                 }
                 if (view.get('id') == null) {
-                    window.Raven?.captureBreadcrumb({
+                    Sentry.addBreadcrumb({
                         message: 'View created from client',
-                        data: resp,
+                        data: resp as GorgiasAction,
                         level: 'log',
                     })
                     dispatch(viewCreated(resp as View))

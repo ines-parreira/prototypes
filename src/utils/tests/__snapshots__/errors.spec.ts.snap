@@ -1,5 +1,63 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`errors util initErrorReporter should init sentry 1`] = `
+Array [
+  Array [
+    Object {
+      "denyUrls": Array [
+        /extensions\\\\//i,
+        /\\^chrome:\\\\/\\\\//i,
+      ],
+      "dsn": "https://example.com/error",
+      "enabled": true,
+      "environment": "development",
+      "ignoreErrors": Array [
+        "fb_xd_fragment",
+        "draft-js/lib/*",
+        "ResizeObserver loop completed with undelivered notifications",
+        "TypeError: Failed to fetch",
+        "TypeError: NetworkError when attempting to fetch resource.",
+        "Error: Network Error",
+        /\\^Error: timeout of \\\\d\\+ms exceeded\\$/,
+      ],
+      "integrations": Array [
+        BrowserTracing {
+          "name": "BrowserTracing",
+          "options": Object {
+            "finalTimeout": 30000,
+            "idleTimeout": 1000,
+            "markBackgroundTransactions": true,
+            "routingInstrumentation": [Function],
+            "startTransactionOnLocationChange": true,
+            "startTransactionOnPageLoad": true,
+            "traceFetch": true,
+            "traceXHR": true,
+            "tracingOrigins": Array [
+              "localhost",
+              /\\^\\\\//,
+            ],
+          },
+        },
+      ],
+      "release": "foo",
+      "tracesSampleRate": 0.2,
+    },
+  ],
+]
+`;
+
+exports[`errors util initErrorReporter should set user when currentUser option is defined 1`] = `
+Array [
+  Array [
+    Object {
+      "email": "alex@gorgias.io",
+      "id": "2",
+      "name": "Alex Plugaru",
+    },
+  ],
+]
+`;
+
 exports[`errors util reportError should only display error on the console in development environment 1`] = `
 Array [
   Array [
