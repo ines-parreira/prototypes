@@ -1010,8 +1010,3 @@ export const getIconFromUrl = (url: string): string => {
     //eslint-disable-next-line  @typescript-eslint/no-var-requires
     return url ? (require(`assets/img/${url}`) as string) : ''
 }
-
-// Feature flags
-export const isContactFormEnabled = () => {
-    return !isProduction()
-}

@@ -6,7 +6,6 @@ import _omitBy from 'lodash/omitBy'
 import {fromJS, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
-import {isContactFormEnabled} from 'utils'
 
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -42,18 +41,18 @@ const emailCaptureOptions = [
     {
         value: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
         label: 'Optional',
-        description:
+        caption:
             'Leaving your email is optional, everyone can start a conversation. Maximise conversation volume',
     },
     {
         value: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
         label: 'Required only outside business hours',
-        description: 'Reduces conversation volume by around 5%',
+        caption: `Reduces conversation volume by around 5%. This option is ignored when contact form is enabled`,
     },
     {
         value: GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
         label: 'Always required',
-        description:
+        caption:
             "Recommended if you can't provide instant replies. Reduces conversation volume by around 30%",
     },
 ]
@@ -396,7 +395,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 </h4>
                                 <p className={css.mb16}>
                                     Ask your customers to leave their email
-                                    before starting a chat
+                                    before starting a chat.
                                 </p>
                                 <RadioFieldSet
                                     options={emailCaptureOptions}
@@ -405,31 +404,28 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 />
                             </div>
 
-                            {isContactFormEnabled() && (
-                                <div className={css.formSection}>
-                                    <h4>Contact form</h4>
-                                    <p className={css.mb16}>
-                                        Display a contact form while outside
-                                        business hours and get messages via
-                                        email.
-                                    </p>
-                                    <div
-                                        className={classnames(
-                                            css.formGroup,
-                                            'd-flex'
-                                        )}
-                                    >
-                                        <ToggleInput
-                                            onClick={this._setEnableContactForm}
-                                            isToggled={enableContactForm}
-                                        />
+                            <div className={css.formSection}>
+                                <h4>Contact form</h4>
+                                <p className={css.mb16}>
+                                    Display a contact form while outside
+                                    business hours and get messages via email.
+                                </p>
+                                <div
+                                    className={classnames(
+                                        css.formGroup,
+                                        'd-flex'
+                                    )}
+                                >
+                                    <ToggleInput
+                                        onClick={this._setEnableContactForm}
+                                        isToggled={enableContactForm}
+                                    />
 
-                                        <div className="ml-2">
-                                            <b>Enable contact form</b>
-                                        </div>
+                                    <div className="ml-2">
+                                        <b>Enable contact form</b>
                                     </div>
                                 </div>
-                            )}
+                            </div>
 
                             <div className={css.formSection}>
                                 <h4 className={css.title}>Hide chat</h4>

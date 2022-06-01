@@ -16,6 +16,7 @@ import * as IntegrationsActions from 'state/integrations/actions'
 import {
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+    GORGIAS_CHAT_CONTACT_FORM_ENABLED_DEFAULT,
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
@@ -32,7 +33,6 @@ import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from 'config/integrations'
 import {Language} from 'constants/languages'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import * as integrationSelectors from 'state/integrations/selectors'
-import {isContactFormEnabled} from 'utils'
 import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
@@ -254,7 +254,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                         enabled: GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
                         reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
                     },
-                    enable_contact_form: isContactFormEnabled(),
+                    enable_contact_form:
+                        GORGIAS_CHAT_CONTACT_FORM_ENABLED_DEFAULT,
                 },
             },
         }
