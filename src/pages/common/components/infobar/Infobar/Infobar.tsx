@@ -192,9 +192,8 @@ export const Infobar = ({
     )
 
     const updateSimilarCustomer = async () => {
-        setSuggestedCustomer(fromJS({}))
-
         if (customer.isEmpty() || !customer.get('id')) {
+            setSuggestedCustomer(fromJS({}))
             return
         }
 
@@ -202,14 +201,11 @@ export const Infobar = ({
             customer: Customer
         }
         if (!data) {
+            setSuggestedCustomer(fromJS({}))
             return
         }
         const {customer: suggestion} = data
         const suggestionImmutable = fromJS(suggestion || {}) as Map<any, any>
-
-        if (suggestionImmutable.isEmpty()) {
-            return
-        }
 
         setSuggestedCustomer(suggestionImmutable)
     }
