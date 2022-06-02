@@ -77,7 +77,7 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
     }, [integration, dispatch])
 
     useEffect(() => {
-        if (!isPhoneIntegration(integration)) {
+        if (!isPhoneIntegration(integration) || isInitialized) {
             return
         }
         const {meta} = integration
