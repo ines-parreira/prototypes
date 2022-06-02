@@ -13,6 +13,7 @@ const planFixture: Plan = {
     currency: 'usd',
     free_tickets: 300,
     automation_addon_equivalent_plan: 'pro-automation-yearly-usd-2',
+    automation_addon_discount: 0,
     limits: {
         tickets: {
             min: 300,

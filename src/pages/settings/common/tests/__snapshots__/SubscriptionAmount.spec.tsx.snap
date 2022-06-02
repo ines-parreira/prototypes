@@ -39,13 +39,13 @@ exports[`<SubscriptionAmount /> should format amount 1`] = `
 </div>
 `;
 
-exports[`<SubscriptionAmount /> should format discount amount 1`] = `
+exports[`<SubscriptionAmount /> should format full amount 1`] = `
 <div
   class="amountWrapper"
 >
   <span>
     <span
-      class="discountedAmount"
+      class="fullAmount"
     >
       €2,000
     </span>
@@ -90,13 +90,13 @@ exports[`<SubscriptionAmount /> should render tooltip content 1`] = `
 </div>
 `;
 
-exports[`<SubscriptionAmount /> should render with discounted amount 1`] = `
+exports[`<SubscriptionAmount /> should render with full amount 1`] = `
 <div
   class="amountWrapper"
 >
   <span>
     <span
-      class="discountedAmount"
+      class="fullAmount"
     >
       €2,000
     </span>

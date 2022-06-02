@@ -4,9 +4,22 @@ exports[`billing selectors getAddOnAutomationAmountCurrentPlan() should return t
 
 exports[`billing selectors getAddOnAutomationAmountCurrentPlan() should return undefined when equivalent plan does not exist 1`] = `undefined`;
 
+exports[`billing selectors getAddOnAutomationDiscountCurrentPlan() should return the add-on amount discount of the current plan when plan is an automation plan 1`] = `0.5`;
+
+exports[`billing selectors getAddOnAutomationDiscountCurrentPlan() should return the discount of automation add-on amount 1`] = `0.5`;
+
+exports[`billing selectors getAddOnAutomationDiscountCurrentPlan() should return undefined when equivalent plan does not exist 1`] = `undefined`;
+
+exports[`billing selectors getAddOnAutomationFullAmountCurrentPlan() should return the full amount of automation add-on 1`] = `40`;
+
+exports[`billing selectors getAddOnAutomationFullAmountCurrentPlan() should return undefined when discount number is not valid 1`] = `undefined`;
+
+exports[`billing selectors getAddOnAutomationFullAmountCurrentPlan() should return undefined when no automation add-on amount or discount exists 1`] = `undefined`;
+
 exports[`billing selectors getEquivalentAutomationCurrentPlan() should return automation plan when current plan is also automation 1`] = `
 Object {
   "amount": 120,
+  "automation_addon_discount": 0.5,
   "automation_addon_equivalent_plan": "pro-monthly-usd-2",
   "automation_addon_included": true,
   "cost_per_ticket": 0.05,
@@ -32,6 +45,7 @@ Object {
 exports[`billing selectors getEquivalentAutomationCurrentPlan() should return automation plan when current plan is regular 1`] = `
 Object {
   "amount": 120,
+  "automation_addon_discount": 0.5,
   "automation_addon_equivalent_plan": "pro-monthly-usd-2",
   "automation_addon_included": true,
   "cost_per_ticket": 0.05,
@@ -59,6 +73,7 @@ Immutable.Map {
   "cost_per_ticket": 0.05,
   "automation_addon_included": false,
   "interval": "month",
+  "automation_addon_discount": 0,
   "public": true,
   "name": "Pro",
   "trial_period_days": 14,
@@ -84,6 +99,7 @@ Immutable.Map {
   "cost_per_ticket": 0.05,
   "automation_addon_included": false,
   "interval": "month",
+  "automation_addon_discount": 0,
   "public": true,
   "name": "Pro",
   "trial_period_days": 14,
@@ -107,6 +123,7 @@ Immutable.Map {
 exports[`billing selectors getPlan should return the plan from the state 1`] = `
 Object {
   "amount": 500,
+  "automation_addon_discount": 0,
   "automation_addon_equivalent_plan": "growth-automation-usd-1",
   "automation_addon_included": false,
   "cost_per_ticket": 0.045,

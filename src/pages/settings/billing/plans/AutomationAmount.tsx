@@ -17,6 +17,7 @@ const AutomationLabel = ({id}: {id: string}) => (
 
 type Props = {
     addOnAmount?: number | string
+    fullAddOnAmount?: number
     isAutomationChecked?: boolean
     onAutomationChange?: () => void
     plan: Partial<Pick<Plan, 'amount' | 'currency' | 'id' | 'interval'>>
@@ -26,6 +27,7 @@ type Props = {
 
 const AutomationAmount = ({
     addOnAmount,
+    fullAddOnAmount,
     isAutomationChecked,
     onAutomationChange,
     plan,
@@ -59,7 +61,7 @@ const AutomationAmount = ({
                         plan.interval ? (
                             <SubscriptionAmount
                                 amount={addOnAmount}
-                                discountedAmount={addOnAmount * 2}
+                                fullAmount={fullAddOnAmount}
                                 className={classnames(css.amount, {
                                     [css.amountDisabled]: !isAutomationChecked,
                                 })}
@@ -111,7 +113,7 @@ const AutomationAmount = ({
                         plan.interval ? (
                             <SubscriptionAmount
                                 amount={addOnAmount}
-                                discountedAmount={addOnAmount * 2}
+                                fullAmount={fullAddOnAmount}
                                 className={classnames(css.amount)}
                                 currency={plan.currency}
                                 interval={plan.interval}

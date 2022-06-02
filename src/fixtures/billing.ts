@@ -17,6 +17,7 @@ export const billingState = {
             },
             name: 'Free Plan',
             automation_addon_equivalent_plan: null,
+            automation_addon_discount: 0,
         },
         'growth-usd-1': {
             id: 'growth-usd-1',
@@ -38,6 +39,7 @@ export const billingState = {
             integrations: 15,
             automation_addon_equivalent_plan: 'growth-automation-usd-1',
             automation_addon_included: false,
+            automation_addon_discount: 0,
         },
         'helpdesk-monthly-beta': {
             id: 'helpdesk-monthly-beta',
@@ -56,6 +58,7 @@ export const billingState = {
             name: 'Helpdesk Monthly',
             automation_addon_equivalent_plan: null,
             automation_addon_included: false,
+            automation_addon_discount: 0,
         },
         'standard-1': {
             id: 'standard-1',
@@ -75,6 +78,7 @@ export const billingState = {
             name: 'Pay as you go Plan',
             automation_addon_equivalent_plan: null,
             automation_addon_included: false,
+            automation_addon_discount: 0,
         },
         'standard-usd-1': {
             id: 'standard-usd-1',
@@ -96,6 +100,7 @@ export const billingState = {
             integrations: 5,
             automation_addon_equivalent_plan: 'standard-automation-usd-1',
             automation_addon_included: false,
+            automation_addon_discount: 0,
         },
         'team-usd-1': {
             id: 'team-usd-1',
@@ -117,6 +122,7 @@ export const billingState = {
             integrations: 10,
             automation_addon_equivalent_plan: 'team-automation-usd-1',
             automation_addon_included: false,
+            automation_addon_discount: 0,
         },
         'pro-monthly-usd-2': {
             id: 'pro-monthly-usd-2',
@@ -138,6 +144,7 @@ export const billingState = {
             integrations: 10,
             automation_addon_equivalent_plan: 'pro-automation-monthly-usd-2',
             automation_addon_included: false,
+            automation_addon_discount: 0,
         },
         'pro-automation-monthly-usd-2': {
             id: 'pro-automation-monthly-usd-2',
@@ -159,6 +166,7 @@ export const billingState = {
             integrations: 10,
             automation_addon_equivalent_plan: 'pro-monthly-usd-2',
             automation_addon_included: true,
+            automation_addon_discount: 0.5,
         },
     },
     contact: {

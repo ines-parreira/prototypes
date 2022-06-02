@@ -400,6 +400,105 @@ describe('billing selectors', () => {
         })
     })
 
+    describe('getAddOnAutomationDiscountCurrentPlan()', () => {
+        it('should return the discount of automation add-on amount', () => {
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: {plan: 'pro-monthly-usd-2'},
+                }),
+            }
+            expect(
+                selectors.getAddOnAutomationDiscountCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+
+        it('should return the add-on amount discount of the current plan when plan is an automation plan', () => {
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: {
+                        plan: 'pro-automation-monthly-usd-2',
+                    },
+                }),
+            }
+            expect(
+                selectors.getAddOnAutomationDiscountCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+
+        it('should return undefined when equivalent plan does not exist', () => {
+            state = {
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    plans: {},
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {
+                        plan: 'pro-automation-monthly-usd-2',
+                    },
+                }),
+            }
+            expect(
+                selectors.getAddOnAutomationDiscountCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+    })
+
+    describe('getAddOnAutomationFullAmountCurrentPlan()', () => {
+        it('should return the full amount of automation add-on', () => {
+            state = {
+                ...state,
+                currentAccount: fromJS({
+                    current_subscription: {plan: 'pro-monthly-usd-2'},
+                }),
+            }
+            expect(
+                selectors.getAddOnAutomationFullAmountCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+
+        it('should return undefined when discount number is not valid', () => {
+            state = {
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    plans: {
+                        'pro-automation-monthly-usd-2': {
+                            id: 'pro-automation-monthly-usd-2',
+                            automation_addon_equivalent_plan:
+                                'pro-monthly-usd-2',
+                            automation_addon_discount: 2,
+                        },
+                    },
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {plan: 'pro-monthly-usd-2'},
+                }),
+            }
+            expect(
+                selectors.getAddOnAutomationFullAmountCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+
+        it('should return undefined when no automation add-on amount or discount exists', () => {
+            state = {
+                ...state,
+                billing: fromJS({
+                    ...billingFixtures.billingState,
+                    plans: {},
+                }),
+                currentAccount: fromJS({
+                    current_subscription: {plan: 'pro-monthly-usd-2'},
+                }),
+            }
+            expect(
+                selectors.getAddOnAutomationFullAmountCurrentPlan(state)
+            ).toMatchSnapshot()
+        })
+    })
+
     describe('getHasAutomationAddOn()', () => {
         it('should return true', () => {
             expect(

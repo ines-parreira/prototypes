@@ -129,7 +129,6 @@ exports[`<AutomationSubscriptionModal /> should render for customers already wit
                       class="amount"
                       id="subscription-amount-tooltip-target-3"
                     >
-                      0
                       <b>
                         $0
                       </b>
@@ -244,7 +243,7 @@ exports[`<AutomationSubscriptionModal /> should render the modal 1`] = `
                       id="subscription-amount-tooltip-target-1"
                     >
                       <span
-                        class="discountedAmount"
+                        class="fullAmount"
                       >
                         $40
                       </span>

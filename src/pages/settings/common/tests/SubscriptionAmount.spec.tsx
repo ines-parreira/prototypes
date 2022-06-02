@@ -30,20 +30,16 @@ describe('<SubscriptionAmount />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should format discount amount', () => {
+    it('should format full amount', () => {
         const {container} = render(
-            <SubscriptionAmount {...minProps} discountedAmount={2000} />
+            <SubscriptionAmount {...minProps} fullAmount={2000} />
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render with discounted amount', () => {
+    it('should render with full amount', () => {
         const {container} = render(
-            <SubscriptionAmount
-                {...minProps}
-                amount={1000}
-                discountedAmount={2000}
-            />
+            <SubscriptionAmount {...minProps} amount={1000} fullAmount={2000} />
         )
         expect(container.firstChild).toMatchSnapshot()
     })

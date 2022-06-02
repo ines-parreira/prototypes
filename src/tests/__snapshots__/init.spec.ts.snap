@@ -92,6 +92,7 @@ Object {
       "pro-yearly-usd-2": Immutable.Map {
         "cost_per_ticket": 0.23,
         "interval": "year",
+        "automation_addon_discount": 0,
         "public": true,
         "name": "Pro",
         "trial_period_days": 7,

@@ -6,6 +6,7 @@ import ArrowForward from 'assets/img/icons/arrow-forward.svg'
 import {
     DEPRECATED_getCurrentPlan,
     getAddOnAutomationAmountCurrentPlan,
+    getAddOnAutomationFullAmountCurrentPlan,
     getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
 } from 'state/billing/selectors'
@@ -56,6 +57,9 @@ export const ChangePlanModal = ({
     const addOnAmountCurrentPlan = useAppSelector(
         getAddOnAutomationAmountCurrentPlan
     )
+    const addOnFullAmountCurrentPlan = useAppSelector(
+        getAddOnAutomationFullAmountCurrentPlan
+    )
 
     return (
         <SynchronizedScrollTopProvider>
@@ -99,6 +103,9 @@ export const ChangePlanModal = ({
                                             <AutomationAmount
                                                 addOnAmount={
                                                     addOnAmountCurrentPlan
+                                                }
+                                                fullAddOnAmount={
+                                                    addOnFullAmountCurrentPlan
                                                 }
                                                 plan={plan.toJS()}
                                                 isAutomationChecked={

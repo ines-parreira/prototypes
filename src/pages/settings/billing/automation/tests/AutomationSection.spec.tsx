@@ -35,6 +35,7 @@ describe('<AutomationSection />', () => {
                     id: automationPlanId,
                     amount: basicPlan.amount + 2000,
                     automation_addon_included: true,
+                    automation_addon_discount: 0.5,
                 },
             }),
         }),

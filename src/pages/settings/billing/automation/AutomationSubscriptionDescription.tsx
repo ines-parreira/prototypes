@@ -9,6 +9,7 @@ import {
     getAddOnAutomationAmountCurrentPlan,
     DEPRECATED_getCurrentPlan,
     getHasAutomationAddOn,
+    getAddOnAutomationFullAmountCurrentPlan,
 } from 'state/billing/selectors'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 import useAppSelector from 'hooks/useAppSelector'
@@ -24,6 +25,9 @@ const AutomationSubscriptionDescription = () => {
     const currentSubscriptionStart = currentSubscription.get('start_datetime')
     const isSelfServeLegacy = useAppSelector(hasAutomationLegacyFeatures)
     const addOnAmount = useAppSelector(getAddOnAutomationAmountCurrentPlan)
+    const fullAddOnAmount = useAppSelector(
+        getAddOnAutomationFullAmountCurrentPlan
+    )
 
     return (
         <div className={css.description}>
@@ -67,7 +71,7 @@ const AutomationSubscriptionDescription = () => {
                         currency={currentPlan.get('currency')}
                         interval={currentPlan.get('interval')}
                         amount={addOnAmount}
-                        discountedAmount={addOnAmount * 2}
+                        fullAmount={fullAddOnAmount}
                         renderAmount={(amount) => <b>{amount}</b>}
                         className={css.amount}
                         tooltipContent={

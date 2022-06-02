@@ -16,7 +16,7 @@ exports[`<AutomationSection /> should render 1`] = `
         id="subscription-amount-tooltip-target-1"
       >
         <span
-          class="discountedAmount"
+          class="fullAmount"
         >
           $40
         </span>
@@ -183,7 +183,7 @@ exports[`<AutomationSection /> should render for customers already with legacy a
         id="subscription-amount-tooltip-target-2"
       >
         <span
-          class="discountedAmount"
+          class="fullAmount"
         >
           $40
         </span>
@@ -265,7 +265,7 @@ exports[`<AutomationSection /> should render for trialing customers 1`] = `
         id="subscription-amount-tooltip-target-3"
       >
         <span
-          class="discountedAmount"
+          class="fullAmount"
         >
           $40
         </span>

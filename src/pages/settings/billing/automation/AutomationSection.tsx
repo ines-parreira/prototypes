@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom'
 import {
     DEPRECATED_getCurrentPlan,
     getAddOnAutomationAmountCurrentPlan,
+    getAddOnAutomationFullAmountCurrentPlan,
     getHasAutomationAddOn,
 } from 'state/billing/selectors'
 import {
@@ -23,6 +24,9 @@ import css from './AutomationSection.less'
 const AutomationSection = () => {
     const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
     const addOnAmount = useAppSelector(getAddOnAutomationAmountCurrentPlan)
+    const fullAddOnAmount = useAppSelector(
+        getAddOnAutomationFullAmountCurrentPlan
+    )
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
@@ -42,7 +46,7 @@ const AutomationSection = () => {
                         currency={currentPlan.get('currency')}
                         interval={currentPlan.get('interval')}
                         amount={addOnAmount}
-                        discountedAmount={addOnAmount * 2}
+                        fullAmount={fullAddOnAmount}
                         renderAmount={(amount) => <b>{amount}</b>}
                         tooltipContent={
                             <span>

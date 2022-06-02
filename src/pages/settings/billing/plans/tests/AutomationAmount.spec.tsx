@@ -24,6 +24,23 @@ describe('<AutomationAmount />', () => {
             <AutomationAmount
                 {...minProps}
                 addOnAmount={45612}
+                fullAddOnAmount={91224}
+                plan={{
+                    id: 'planId',
+                    interval: PlanInterval.Month,
+                    amount: 40000,
+                    currency: 'usd',
+                }}
+            />
+        )
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should render formatted amount number without discount', () => {
+        const {container} = render(
+            <AutomationAmount
+                {...minProps}
+                addOnAmount={45612}
                 plan={{
                     id: 'planId',
                     interval: PlanInterval.Month,
@@ -40,6 +57,7 @@ describe('<AutomationAmount />', () => {
             <AutomationAmount
                 {...minProps}
                 addOnAmount={45612}
+                fullAddOnAmount={91224}
                 plan={{
                     id: 'planId',
                     interval: PlanInterval.Month,
@@ -54,7 +72,11 @@ describe('<AutomationAmount />', () => {
 
     it('should trigger callback for updating input value', () => {
         const {getByLabelText} = render(
-            <AutomationAmount {...minProps} addOnAmount={45612} />
+            <AutomationAmount
+                {...minProps}
+                addOnAmount={45612}
+                fullAddOnAmount={91224}
+            />
         )
 
         fireEvent.click(getByLabelText(/Automation/))
@@ -67,6 +89,7 @@ describe('<AutomationAmount />', () => {
             <AutomationAmount
                 {...minProps}
                 addOnAmount={2000}
+                fullAddOnAmount={4000}
                 plan={{
                     id: 'planId',
                     interval: PlanInterval.Month,

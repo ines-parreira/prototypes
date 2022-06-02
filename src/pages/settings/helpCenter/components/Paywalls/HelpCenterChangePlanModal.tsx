@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {Map} from 'immutable'
 
@@ -12,6 +12,7 @@ import {updateSubscription} from 'state/currentAccount/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getPlan, isAllowedToChangePlan} from 'state/billing/selectors'
+import {getFullPrice} from 'models/billing/utils'
 
 import TotalAmount from 'pages/settings/billing/plans/TotalAmount'
 import AutomationAmount from 'pages/settings/billing/plans/AutomationAmount'
@@ -47,6 +48,16 @@ const HelpCenterChangePlanModal = ({
                   suitablePlanWithoutAutomationAddOn.amount
           )
         : '?'
+
+    const addOnDiscount =
+        suitablePlanWithAutomationAddOn &&
+        suitablePlanWithAutomationAddOn.automation_addon_discount
+
+    const fullAddOnAmount = useMemo(() => {
+        return typeof addOnAmount === 'number' && addOnDiscount
+            ? getFullPrice(addOnAmount, addOnDiscount)
+            : undefined
+    }, [addOnAmount, addOnDiscount])
 
     const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
         useAsyncFn(async (planId: SubscriptionPlan) => {
@@ -99,6 +110,7 @@ const HelpCenterChangePlanModal = ({
                         <>
                             <AutomationAmount
                                 addOnAmount={addOnAmount}
+                                fullAddOnAmount={fullAddOnAmount}
                                 plan={suitablePlanWithoutAutomationAddOn}
                                 isAutomationChecked={isModalAutomationChecked}
                                 onAutomationChange={() =>

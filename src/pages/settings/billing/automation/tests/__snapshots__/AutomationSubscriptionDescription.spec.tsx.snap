@@ -28,7 +28,6 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
         class="amount"
         id="subscription-amount-tooltip-target-2"
       >
-        0
         <b>
           $0
         </b>
@@ -69,7 +68,7 @@ exports[`<AutomationSubscriptionDescription /> should render for customers alrea
         id="subscription-amount-tooltip-target-3"
       >
         <span
-          class="discountedAmount"
+          class="fullAmount"
         >
           $40
         </span>
@@ -188,7 +187,7 @@ exports[`<AutomationSubscriptionDescription /> should render for customers witho
         id="subscription-amount-tooltip-target-1"
       >
         <span
-          class="discountedAmount"
+          class="fullAmount"
         >
           $40
         </span>

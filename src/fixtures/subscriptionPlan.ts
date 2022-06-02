@@ -30,6 +30,7 @@ export const basicPlan: Plan = {
     is_legacy: false,
     automation_addon_included: false,
     automation_addon_equivalent_plan: 'basic-automation-monthly-usd-2',
+    automation_addon_discount: 0,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -96,6 +97,7 @@ export const proPlan: Plan = {
     is_legacy: false,
     automation_addon_included: false,
     automation_addon_equivalent_plan: 'pro-automation-monthly-usd-2',
+    automation_addon_discount: 0,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -162,6 +164,7 @@ export const advancedPlan: Plan = {
     is_legacy: false,
     automation_addon_included: false,
     automation_addon_equivalent_plan: 'advanced-automation-monthly-usd-2',
+    automation_addon_discount: 0,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -228,6 +231,7 @@ export const enterprisePlan: Plan = {
     is_legacy: true,
     automation_addon_equivalent_plan: null,
     automation_addon_included: false,
+    automation_addon_discount: 0,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -271,6 +275,7 @@ export const customPlan: Plan = {
     is_legacy: false,
     automation_addon_included: false,
     automation_addon_equivalent_plan: 'custom-automation-monthly-usd-2',
+    automation_addon_discount: 0,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -337,6 +342,7 @@ export const legacyPlan: Plan = {
     is_legacy: true,
     automation_addon_included: false,
     automation_addon_equivalent_plan: 'standard-automation-usd-1',
+    automation_addon_discount: 0,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -379,6 +385,7 @@ export const legacyAutomationPlan: Plan = {
     is_legacy: true,
     automation_addon_included: true,
     automation_addon_equivalent_plan: 'standard-usd-1',
+    automation_addon_discount: 0.5,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -420,6 +427,7 @@ export const basicLegacyPlan: Plan = {
     public: false,
     is_legacy: true,
     automation_addon_equivalent_plan: null,
+    automation_addon_discount: 0,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -461,6 +469,7 @@ export const proLegacyPlan: Plan = {
     public: false,
     is_legacy: true,
     automation_addon_equivalent_plan: null,
+    automation_addon_discount: 0,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -502,6 +511,7 @@ export const advancedLegacyPlan: Plan = {
     public: false,
     is_legacy: true,
     automation_addon_equivalent_plan: null,
+    automation_addon_discount: 0,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -545,6 +555,7 @@ export const customLegacyPlan: Plan = {
     is_legacy: true,
     automation_addon_included: false,
     automation_addon_equivalent_plan: null,
+    automation_addon_discount: 0,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -587,6 +598,8 @@ export const basicAutomationPlan: Plan = {
     is_legacy: false,
     automation_addon_included: true,
     automation_addon_equivalent_plan: 'basic-monthly-usd-2',
+    automation_addon_discount: 0.5,
+
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -628,6 +641,7 @@ export const proAutomationPlan: Plan = {
     is_legacy: false,
     automation_addon_included: true,
     automation_addon_equivalent_plan: 'pro-monthly-usd-2',
+    automation_addon_discount: 0.5,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -681,6 +695,7 @@ export const advancedAutomationPlan: Plan = {
     trial_period_days: 7,
     automation_addon_included: true,
     automation_addon_equivalent_plan: 'advanced-monthly-usd-2',
+    automation_addon_discount: 0.5,
     features: {
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},

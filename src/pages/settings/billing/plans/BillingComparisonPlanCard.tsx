@@ -1,4 +1,4 @@
-import React, {ComponentProps, useEffect, useState} from 'react'
+import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
 import {fromJS, Map} from 'immutable'
 
 import {
@@ -13,6 +13,7 @@ import {isFeatureEnabled} from 'utils/account'
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 
+import {getFullPrice} from 'models/billing/utils'
 import BillingPlanCard from './BillingPlanCard'
 import ChangePlanModal from './ChangePlanModal'
 import CurrentPlanBadge from './CurrentPlanBadge'
@@ -59,6 +60,15 @@ export default function BillingComparisonPlanCard({
     const addOnAmount = automationPlan
         ? Math.abs(automationPlan.amount - plan.amount)
         : '?'
+
+    const addOnDiscount =
+        automationPlan && automationPlan.automation_addon_discount
+
+    const fullAddOnAmount = useMemo(() => {
+        return typeof addOnAmount === 'number' && addOnDiscount
+            ? getFullPrice(addOnAmount, addOnDiscount)
+            : undefined
+    }, [addOnAmount, addOnDiscount])
 
     const [isModalAutomationChecked, setModalIsAutomationChecked] =
         useState(isAutomationChecked)
@@ -183,6 +193,7 @@ export default function BillingComparisonPlanCard({
             subHeader={
                 <AutomationAmount
                     addOnAmount={addOnAmount}
+                    fullAddOnAmount={fullAddOnAmount}
                     plan={plan}
                     isAutomationChecked={isAutomationChecked}
                     onAutomationChange={onAutomationChange}
@@ -244,6 +255,7 @@ export default function BillingComparisonPlanCard({
                                     <>
                                         <AutomationAmount
                                             addOnAmount={addOnAmount}
+                                            fullAddOnAmount={fullAddOnAmount}
                                             plan={plan}
                                             isAutomationChecked={
                                                 isModalAutomationChecked

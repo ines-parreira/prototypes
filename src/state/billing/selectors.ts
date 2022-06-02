@@ -1,6 +1,7 @@
 import {createSelector} from 'reselect'
 import {fromJS, Map, List} from 'immutable'
 
+import {getFullPrice} from 'models/billing/utils'
 import {Plan} from '../../models/billing/types'
 import {CurrentAccountState} from '../currentAccount/types'
 import {getCurrentAccountState} from '../currentAccount/selectors'
@@ -152,6 +153,45 @@ export const getAddOnAutomationAmountCurrentPlan = createSelector<
 
     return Math.abs(equivalentPlan.get('amount') - currentPlan.get('amount'))
 })
+
+export const getAddOnAutomationDiscountCurrentPlan = createSelector<
+    RootState,
+    number | undefined,
+    Plan[],
+    Plan | undefined
+>(getPlans, getCurrentPlan, (plans, currentPlan) => {
+    if (currentPlan?.automation_addon_included) {
+        return currentPlan.automation_addon_discount
+    }
+
+    const equivalentPlan =
+        currentPlan &&
+        plans.find(
+            (plan) => plan.id === currentPlan.automation_addon_equivalent_plan
+        )
+    if (!equivalentPlan) {
+        return undefined
+    }
+
+    return equivalentPlan.automation_addon_discount
+})
+
+export const getAddOnAutomationFullAmountCurrentPlan = createSelector<
+    RootState,
+    number | undefined,
+    number | undefined,
+    number | undefined
+>(
+    getAddOnAutomationAmountCurrentPlan,
+    getAddOnAutomationDiscountCurrentPlan,
+    (amount, discount) => {
+        if (amount && discount) {
+            return getFullPrice(amount, discount) || undefined
+        }
+
+        return undefined
+    }
+)
 
 export const invoices = createSelector<
     RootState,

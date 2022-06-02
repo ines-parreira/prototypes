@@ -25,6 +25,58 @@ exports[`<AutomationAmount /> should render a string as amount 1`] = `
 </div>
 `;
 
+exports[`<AutomationAmount /> should render formatted amount number without discount 1`] = `
+<div>
+  <div
+    class="automationRow"
+  >
+    <div
+      class="checkbox"
+    >
+      <label
+        class="label label"
+        for="planId5"
+      >
+        <input
+          class="input"
+          id="planId5"
+          name="planId5"
+          type="checkbox"
+        />
+        <div
+          class="align-middle checkboxLabel"
+        >
+          <span
+            id="automation-text-planId5"
+          >
+            Automation
+          </span>
+        </div>
+      </label>
+    </div>
+    <div
+      class="amountContainer"
+    >
+      <div
+        class="amountWrapper amount amountDisabled"
+      >
+        <span
+          class="amount"
+          id="subscription-amount-tooltip-target-7"
+        >
+          <b>
+            $45,612
+          </b>
+           
+          / 
+          month
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
 <div>
   <div
@@ -65,7 +117,7 @@ exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
           id="subscription-amount-tooltip-target-4"
         >
           <span
-            class="discountedAmount"
+            class="fullAmount"
           >
             $91,224
           </span>
@@ -101,10 +153,10 @@ exports[`<AutomationAmount /> should render not editable variant 1`] = `
       >
         <span
           class="amount"
-          id="subscription-amount-tooltip-target-11"
+          id="subscription-amount-tooltip-target-14"
         >
           <span
-            class="discountedAmount"
+            class="fullAmount"
           >
             $4,000
           </span>
@@ -132,19 +184,19 @@ exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] =
     >
       <label
         class="label label"
-        for="planId5"
+        for="planId8"
       >
         <input
           class="input"
-          id="planId5"
-          name="planId5"
+          id="planId8"
+          name="planId8"
           type="checkbox"
         />
         <div
           class="align-middle checkboxLabel"
         >
           <span
-            id="automation-text-planId5"
+            id="automation-text-planId8"
           >
             Automation
           </span>
@@ -159,10 +211,10 @@ exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] =
       >
         <span
           class="amount"
-          id="subscription-amount-tooltip-target-7"
+          id="subscription-amount-tooltip-target-10"
         >
           <span
-            class="discountedAmount"
+            class="fullAmount"
           >
             $91,224
           </span>

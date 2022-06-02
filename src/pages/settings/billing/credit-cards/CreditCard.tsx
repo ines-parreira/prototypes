@@ -24,6 +24,7 @@ import {
 import {
     DEPRECATED_getCurrentPlan as currentPlanSelector,
     getAddOnAutomationAmountCurrentPlan,
+    getAddOnAutomationFullAmountCurrentPlan,
     getContact,
     getEquivalentRegularCurrentPlan,
     getHasAutomationAddOn,
@@ -374,6 +375,7 @@ export class CreditCardContainer extends Component<Props, State> {
             hasAutomationAddOn,
             regularCurrentPlan,
             automationAddOnAmount,
+            automationAddOnFullAmount,
             location,
             accountHasLegacyPlan,
         } = this.props
@@ -566,6 +568,9 @@ export class CreditCardContainer extends Component<Props, State> {
                                     <>
                                         <AutomationAmount
                                             addOnAmount={automationAddOnAmount}
+                                            fullAddOnAmount={
+                                                automationAddOnFullAmount
+                                            }
                                             plan={regularCurrentPlan.toJS()}
                                             editable={false}
                                         />
@@ -591,6 +596,8 @@ const connector = connect(
         hasAutomationAddOn: getHasAutomationAddOn(state),
         regularCurrentPlan: getEquivalentRegularCurrentPlan(state),
         automationAddOnAmount: getAddOnAutomationAmountCurrentPlan(state),
+        automationAddOnFullAmount:
+            getAddOnAutomationFullAmountCurrentPlan(state),
         currentUser: state.currentUser,
         currentSubscription:
             currentAccountSelectors.getCurrentSubscription(state),

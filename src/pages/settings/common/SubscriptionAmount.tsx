@@ -9,7 +9,7 @@ import css from './SubscriptionAmount.less'
 
 type Props = {
     amount?: number
-    discountedAmount?: number
+    fullAmount?: number
     className?: string
     currency: string
     interval: string
@@ -20,7 +20,7 @@ type Props = {
 
 const SubscriptionAmount = ({
     amount,
-    discountedAmount,
+    fullAmount,
     className,
     currency,
     interval,
@@ -64,11 +64,11 @@ const SubscriptionAmount = ({
                         className: css.amount,
                     })}
                 >
-                    {discountedAmount && (
+                    {fullAmount && (
                         <>
-                            <span className={css.discountedAmount}>
-                                {typeof discountedAmount === 'number' &&
-                                    formatAmount(discountedAmount)}
+                            <span className={css.fullAmount}>
+                                {typeof fullAmount === 'number' &&
+                                    formatAmount(fullAmount)}
                             </span>
                             <wbr />
                         </>
