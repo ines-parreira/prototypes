@@ -11,7 +11,7 @@ import {
     isStaging,
 } from 'utils/environment'
 
-const TRACE_SAMPLE_RATE = 0.2
+const TRACE_SAMPLE_RATE = 0.001
 const IGNORED_ERRORS = [
     'fb_xd_fragment', // Facebook borked
     'draft-js/lib/*', // Draft JS errors
