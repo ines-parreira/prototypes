@@ -470,75 +470,27 @@ export function createImportIntegration(integration: Map<any, any>) {
 }
 
 export function deactivateIntegration(id: number) {
-    return (
-        dispatch: StoreDispatch,
-        getState: () => RootState
-    ): ReturnType<StoreDispatch> => {
-        const fullIntegration = integrationSelectors.getIntegrationById(id)(
-            getState()
-        )
-
+    return (dispatch: StoreDispatch): ReturnType<StoreDispatch> => {
         const integration = fromJS({
             id,
             deactivated_datetime: moment().format(),
         })
 
-        let notificationId = null
-
-        if (fullIntegration.getIn(['meta', 'shopify_integration_ids'])) {
-            const notification = dispatch(
-                notify({
-                    status: NotificationStatus.Loading,
-                    message: 'Removing the chat from your Shopify stores...',
-                })
-            ) as Promise<any> & {id: string}
-
-            notificationId = notification.id
-        }
-
         return dispatch(
-            updateOrCreateIntegrationRequest(
-                integration,
-                undefined,
-                notificationId
-            )
+            updateOrCreateIntegrationRequest(integration, undefined)
         )
     }
 }
 
 export function activateIntegration(id: number) {
-    return (
-        dispatch: StoreDispatch,
-        getState: () => RootState
-    ): ReturnType<StoreDispatch> => {
-        const fullIntegration = integrationSelectors.getIntegrationById(id)(
-            getState()
-        )
-
+    return (dispatch: StoreDispatch): ReturnType<StoreDispatch> => {
         const integration = fromJS({
             id,
             deactivated_datetime: null,
-        }) as Map<any, any>
-
-        let notificationId = null
-
-        if (fullIntegration.getIn(['meta', 'shopify_integration_ids'])) {
-            const notification = dispatch(
-                notify({
-                    status: NotificationStatus.Loading,
-                    message: 'Adding the chat on your Shopify stores...',
-                })
-            ) as Promise<any> & {id: string}
-
-            notificationId = notification.id
-        }
+        })
 
         return dispatch(
-            updateOrCreateIntegrationRequest(
-                integration,
-                undefined,
-                notificationId
-            )
+            updateOrCreateIntegrationRequest(integration, undefined)
         )
     }
 }
