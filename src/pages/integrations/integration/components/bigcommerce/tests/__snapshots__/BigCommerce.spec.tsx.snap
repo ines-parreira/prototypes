@@ -153,7 +153,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
             href="https://store-pk360c6roo.mybigcommerce.com/manage/marketplace/apps/38723"
           >
             <button
-              class="wrapper connectButton fill primary medium"
+              class="wrapper actionButton fill primary medium"
               type="button"
             >
               Connect App
