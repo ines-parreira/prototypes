@@ -35,6 +35,7 @@ export type AppListData = {
     name: string
     headline: string
     app_icon: string
+    is_installed: boolean
 }
 
 export type AppData = AppListData & {
@@ -55,18 +56,25 @@ export type AppData = AppListData & {
     support_phone: string
 }
 
-export type AppListItem = IntegrationListItem & {
+export type AppListItem = Omit<IntegrationListItem, 'count'> & {
     type: IntegrationType.App
     appId: AppListData['id']
+    isConnected: AppListData['is_installed']
     image: AppListData['app_icon']
 }
 
 export type AppDetail = Omit<IntegrationConfig, 'isExternalConnectUrl'> & {
     type: IntegrationType.App
+    isConnected: AppListData['is_installed']
+    appId: AppListData['id']
     image: AppListData['app_icon']
     connectUrl: AppData['app_url']
     supportEmail: AppData['support_email']
     supportPhone: AppData['support_phone']
+}
+
+export type DisconnectResponse = {
+    is_uninstalled: boolean
 }
 
 export const isAppListItem = (

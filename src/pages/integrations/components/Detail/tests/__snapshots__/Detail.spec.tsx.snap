@@ -1,41 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Detail should add a domain query param to connectUrl if an App 1`] = `
-<a
-  class="connectButtonWrapper"
-  href="https://ok.com/?account=20-1+rpz"
-  rel="noopener noreferrer"
-  target="_blank"
->
-  <button
-    class="wrapper connectButton fill primary medium"
-    type="button"
-  >
-    Connect App
-  </button>
-</a>
-`;
-
-exports[`Detail should have a carousel displaying all screenshots 1`] = `
-Array [
-  <img
-    alt="Showcase number 1 of things this app allows you to do in Gorgias"
-    class="sliderPicture"
-    src="https://screen.com/my1.png"
-  />,
-  <img
-    alt="Showcase number 2 of things this app allows you to do in Gorgias"
-    class="sliderPicture"
-    src="https://screen.com/my2.png"
-  />,
-  <img
-    alt="Showcase number 3 of things this app allows you to do in Gorgias"
-    class="sliderPicture"
-    src="https://screen.com/my3.png"
-  />,
-]
-`;
-
 exports[`Detail should render 1`] = `
 <div>
   <header
@@ -168,6 +132,15 @@ exports[`Detail should render 1`] = `
             src="https://screen.com/my3.png"
           />
         </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 4 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="https://screen.com/my4.png"
+          />
+        </li>
       </ul>
     </section>
     <div
@@ -186,7 +159,7 @@ exports[`Detail should render 1`] = `
             target="_blank"
           >
             <button
-              class="wrapper connectButton fill primary medium"
+              class="wrapper actionButton fill primary medium"
               type="button"
             >
               Connect App
@@ -287,18 +260,4 @@ exports[`Detail should render 1`] = `
     </div>
   </main>
 </div>
-`;
-
-exports[`Detail should render an internal link if not an app or not external 1`] = `
-<a
-  class="connectButtonWrapper"
-  to="https://ok.com"
->
-  <button
-    class="wrapper connectButton fill primary medium"
-    type="button"
-  >
-    Connect App
-  </button>
-</a>
 `;

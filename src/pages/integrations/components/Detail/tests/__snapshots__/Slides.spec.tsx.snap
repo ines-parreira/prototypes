@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Slides should have a carousel displaying all screenshots 1`] = `
+Array [
+  <img
+    alt="Showcase number 1 of things this app allows you to do in Gorgias"
+    class="sliderPicture"
+    src="https://screen.com/my1.png"
+  />,
+  <img
+    alt="Showcase number 2 of things this app allows you to do in Gorgias"
+    class="sliderPicture"
+    src="https://screen.com/my2.png"
+  />,
+  <img
+    alt="Showcase number 3 of things this app allows you to do in Gorgias"
+    class="sliderPicture"
+    src="https://screen.com/my3.png"
+  />,
+  <img
+    alt="Showcase number 4 of things this app allows you to do in Gorgias"
+    class="sliderPicture"
+    src="https://screen.com/my4.png"
+  />,
+]
+`;

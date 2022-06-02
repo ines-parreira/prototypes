@@ -8,7 +8,6 @@ import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './Detail.less'
 
-const SCREENSHOTS_MAX_NUMBER = 3
 const imgPrefix = `${
     window.GORGIAS_ASSETS_URL || ''
 }/static/private/js/assets/img/integrations/`
@@ -21,12 +20,10 @@ export default function Slides(
     const [initialSlide, setInitialSlide] = useState(0)
     const sliderRef = useRef<HTMLDivElement>(null)
 
-    const maxedScreenshots = screenshots.slice(0, SCREENSHOTS_MAX_NUMBER)
-
     return (
         <>
             <ul className={css.screenshotList}>
-                {maxedScreenshots.map((src, index) => (
+                {screenshots.map((src, index) => (
                     <li className={css.screenshotListItem} key={index}>
                         <img
                             src={isApp ? src : `${imgPrefix}screenshots/${src}`}
@@ -82,7 +79,7 @@ export default function Slides(
                         </SlideArrow>
                     }
                 >
-                    {maxedScreenshots.map((url, index) => (
+                    {screenshots.map((url, index) => (
                         <div
                             key={index}
                             className={css.pictureContainer}

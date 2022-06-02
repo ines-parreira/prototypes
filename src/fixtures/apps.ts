@@ -1,5 +1,10 @@
 import {appDataToAppDetailMapper} from 'models/integration/resources'
-import {Category, PricingPlan, TrialPeriod} from 'models/integration/types/app'
+import {
+    AppData,
+    Category,
+    PricingPlan,
+    TrialPeriod,
+} from 'models/integration/types/app'
 
 export const dummyAppListData = {
     app_icon: 'https://ok.com/1.png',
@@ -7,10 +12,12 @@ export const dummyAppListData = {
     headline: 'Some tagline here',
     id: 'someid',
     name: 'My test app',
+    is_installed: false,
 }
 
-export const dummyAppData = {
+export const dummyAppData: AppData = {
     ...dummyAppListData,
+    is_installed: false,
     company_url: 'https://www.gomycompany.com/',
     company: 'myCompany',
     pricing_plan: PricingPlan.RECURRING,

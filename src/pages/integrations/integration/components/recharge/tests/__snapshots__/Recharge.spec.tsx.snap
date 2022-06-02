@@ -173,7 +173,7 @@ exports[`<Recharge/> Detail should render a detail view 1`] = `
             to="/app/settings/integrations/recharge/new"
           >
             <button
-              class="wrapper connectButton fill primary medium"
+              class="wrapper actionButton fill primary medium"
               type="button"
             >
               Connect App

@@ -57,6 +57,7 @@ export enum SegmentEvent {
     InfobarIntegrationAddClicked = 'infobar-integration-add-clicked',
     IntegrationClicked = 'integration-clicked',
     IntegrationConnectClicked = 'integration-connect-clicked',
+    IntegrationDisconnectClicked = 'integration-disconnect-clicked',
     IntentFeedbackUserSubmission = 'intent-feedback-user-submission',
     IntentFeedbackDropdownOpen = 'intent-feedback-dropdown-open',
     ModalToggled = 'modal-toggled',

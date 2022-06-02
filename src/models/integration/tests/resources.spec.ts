@@ -2,7 +2,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import {dummyAppListData, dummyAppData} from 'fixtures/apps'
 import client from 'models/api/resources'
-import {fetchApp, fetchApps} from '../resources'
+import {disconnectApp, fetchApp, fetchApps} from '../resources'
 
 const mockedServer = new MockAdapter(client)
 
@@ -40,6 +40,24 @@ describe('integration resource', () => {
                 .onGet(`/api/apps/${appId}`)
                 .reply(503, {message: 'error'})
             return expect(fetchApp(appId)).rejects.toEqual(
+                new Error('Request failed with status code 503')
+            )
+        })
+    })
+
+    describe('disconnectApp', () => {
+        it('should return disconnect response', async () => {
+            mockedServer
+                .onGet(`/api/apps/uninstall/${appId}`)
+                .reply(200, {is_uninstalled: true})
+            const res = await disconnectApp(appId)
+            expect(res).toMatchSnapshot()
+        })
+        it('should reject an error on fail', () => {
+            mockedServer
+                .onGet(`/api/apps/uninstall/${appId}`)
+                .reply(503, {message: 'error'})
+            return expect(disconnectApp(appId)).rejects.toEqual(
                 new Error('Request failed with status code 503')
             )
         })

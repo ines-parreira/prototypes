@@ -43,15 +43,7 @@ export default function Detail(
                         screenshots={screenshots}
                     />
                 </section>
-                <InfoCard
-                    {...props}
-                    disabledMessage={
-                        (!isAppDetail(props) &&
-                            props.isConnectionDisabled &&
-                            props.notification?.message) ||
-                        ''
-                    }
-                />
+                <InfoCard {...props} />
             </main>
         </>
     )

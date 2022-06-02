@@ -7,6 +7,8 @@ import {fetchApps} from 'models/integration/resources'
 import {RootState} from 'state/types'
 import {fetchIntegrations} from 'state/integrations/actions'
 import {IntegrationListItem} from 'state/integrations/types'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     getBillingState,
@@ -44,17 +46,30 @@ export const List = ({
     const [isLoading, setLoading] = useState(true)
     const [apps, setApps] = useState<AppListItem[]>([])
     const dispatch = useAppDispatch()
+
     useEffect(() => {
         async function fetchData() {
-            const res = await fetchApps()
-            setApps(res)
-            setLoading(false)
+            try {
+                const res = await fetchApps()
+                setApps(res)
+            } catch {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message: `Something went wrong while trying to fetch additionnal apps.`,
+                    })
+                )
+            } finally {
+                setLoading(false)
+            }
         }
         void fetchData()
-    }, [])
+    }, [dispatch])
+
     useEffect(() => {
         void dispatch(fetchIntegrations())
     }, [dispatch])
+
     const hasActiveSmoochInsideIntegrations = useMemo(
         () =>
             integrations.find((integration) =>
@@ -65,6 +80,7 @@ export const List = ({
             ),
         [integrations]
     )
+
     const hasTwitterIntegrations = useMemo(
         () =>
             integrations
@@ -159,7 +175,7 @@ export const List = ({
         [hasActiveSmoochInsideIntegrations]
     )
 
-    const displayList: (IntegrationListItem | AppListItem)[] = integrationsList
+    let displayList: (IntegrationListItem | AppListItem)[] = integrationsList
         .filter((integration) => {
             // do not return the smooch inside integration
             // if there is no active integration of it
@@ -214,7 +230,8 @@ export const List = ({
             }
             return integration
         })
-        .concat(apps)
+
+    displayList = displayList.concat(apps)
 
     return (
         <div className="full-width">

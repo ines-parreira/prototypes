@@ -1,12 +1,20 @@
 import {ApiListResponse} from 'models/api/types'
 import client from 'models/api/resources'
 
-import {AppListData, AppData, AppDetail, AppListItem} from './types/app'
+import {
+    AppListData,
+    AppData,
+    AppDetail,
+    AppListItem,
+    DisconnectResponse,
+} from './types/app'
 import {IntegrationType} from './types'
 
 export const appDataToAppDetailMapper = (data: AppData): AppDetail => ({
     type: IntegrationType.App,
     title: data.name,
+    appId: data.id,
+    isConnected: data.is_installed,
     description: data.headline,
     longDescription: data.description,
     image: data.app_icon,
@@ -34,10 +42,10 @@ export const fetchApps = async (): Promise<AppListItem[]> => {
         return {
             type: IntegrationType.App,
             appId: app.id,
+            isConnected: app.is_installed,
             title: app.name,
             description: app.headline,
             image: app.app_icon,
-            count: 0,
         }
     })
 }
@@ -45,4 +53,11 @@ export const fetchApps = async (): Promise<AppListItem[]> => {
 export const fetchApp = async (appId: string): Promise<AppDetail> => {
     const {data} = await client.get<AppData>(`/api/apps/${appId}`)
     return appDataToAppDetailMapper(data)
+}
+
+export const disconnectApp = async (appId: string): Promise<boolean> => {
+    const {data} = await client.get<DisconnectResponse>(
+        `/api/apps/uninstall/${appId}`
+    )
+    return data.is_uninstalled
 }

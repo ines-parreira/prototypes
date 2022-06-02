@@ -60,16 +60,17 @@ const Row = ({integration}: Props) => {
                 {integration.description}
             </div>
             {!integration.requiredPlanName && (
-                <div>
-                    <div className={css.action}>
-                        {integration.count > 0 && (
-                            <span className={css.count}>
-                                {integration.count} active
-                            </span>
-                        )}
-
-                        <i className="material-icons md-1">navigate_next</i>
-                    </div>
+                <div className={css.action}>
+                    {isAppListItem(integration)
+                        ? integration.isConnected && (
+                              <span className={css.connected}>Connected</span>
+                          )
+                        : integration.count > 0 && (
+                              <span className={css.connected}>
+                                  {integration.count} active
+                              </span>
+                          )}
+                    <i className="material-icons md-1">navigate_next</i>
                 </div>
             )}
         </>

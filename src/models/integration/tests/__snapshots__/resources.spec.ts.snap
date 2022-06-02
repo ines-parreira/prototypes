@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`integration resource disconnectApp should return disconnect response 1`] = `true`;
+
 exports[`integration resource fetchApp should return a formatted app 1`] = `
 Object {
+  "appId": "someid",
   "categories": Array [
     "Ecomm Platforms",
     "Reviews & UGC",
@@ -13,6 +16,7 @@ Object {
   "freeTrialPeriod": "14 days",
   "hasFreeTrial": true,
   "image": "https://ok.com/1.png",
+  "isConnected": false,
   "longDescription": "<p>My company is an interactive video platform, helping users create meaningful and personal conversations at scale.</p>
 <p>With the my company app, users can sync their videos and monitor every viewer interaction, while managing leads and audience choices through easy-to-view columns.</p>
 <p>With all of your audience interactions in one place, collecting your insights is a breeze.</p>
@@ -47,9 +51,9 @@ exports[`integration resource fetchApps should return formatted apps 1`] = `
 Array [
   Object {
     "appId": "someid",
-    "count": 0,
     "description": "Some tagline here",
     "image": "https://ok.com/1.png",
+    "isConnected": false,
     "title": "My test app",
     "type": "app",
   },

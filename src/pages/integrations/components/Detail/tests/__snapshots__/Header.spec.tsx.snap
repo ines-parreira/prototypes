@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header should render 1`] = `
+<div>
+  <header
+    class="hero"
+  >
+    <img
+      alt="My test app's logo"
+      class="heroImage"
+      src="https://ok.com/1.png"
+    />
+    <div>
+      <h1
+        class="heroHeading"
+      >
+        My test app
+      </h1>
+      <p
+        class="heroDescription"
+      >
+        Some tagline here
+      </p>
+      <div
+        class="heroMeta"
+      >
+        <span
+          class="badge badge badge-secondary badge-pill"
+        >
+          ECOMM PLATFORMS
+        </span>
+        <span
+          class="badge badge badge-secondary badge-pill"
+        >
+          REVIEWS & UGC
+        </span>
+        <span
+          class="badge badge badge-success badge-pill"
+        >
+          14 DAYS FREE TRIAL
+        </span>
+        <span
+          class="by"
+        >
+          by
+           
+          <a
+            href="https://www.gomycompany.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            myCompany
+          </a>
+        </span>
+      </div>
+    </div>
+  </header>
+</div>
+`;

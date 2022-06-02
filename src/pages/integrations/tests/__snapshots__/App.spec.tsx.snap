@@ -177,6 +177,15 @@ exports[`App should render 2`] = `
             src="https://screen.com/my3.png"
           />
         </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 4 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="https://screen.com/my4.png"
+          />
+        </li>
       </ul>
     </section>
     <div
@@ -195,7 +204,7 @@ exports[`App should render 2`] = `
             target="_blank"
           >
             <button
-              class="wrapper connectButton fill primary medium"
+              class="wrapper actionButton fill primary medium"
               type="button"
             >
               Connect App

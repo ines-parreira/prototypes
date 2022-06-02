@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
 import {IntegrationType} from 'models/integration/constants'
+import {AppListItem} from 'models/integration/types/app'
 import Row from '../Row'
 
 const mockStore = configureMockStore([thunk])
@@ -29,13 +30,13 @@ describe('IntegrationsListRow', () => {
     })
 
     it('should display an external integration', () => {
-        const integration = {
+        const integration: AppListItem = {
             type: IntegrationType.App,
+            isConnected: false,
             title: 'an integration',
             description: 'this is a cool integration',
             appId: '420',
             image: 'ok.png',
-            count: 0,
         }
 
         const {container} = render(
@@ -44,6 +45,24 @@ describe('IntegrationsListRow', () => {
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should display an external integration with a connected badge', () => {
+        const integration: AppListItem = {
+            type: IntegrationType.App,
+            isConnected: true,
+            title: 'an integration',
+            description: 'this is a cool integration',
+            appId: '420',
+            image: 'ok.png',
+        }
+
+        render(
+            <Provider store={store}>
+                <Row integration={integration} />
+            </Provider>
+        )
+        expect(screen.queryByText('Connected')).toBeTruthy()
     })
 
     it('should display an integration with upgrade requirement', () => {

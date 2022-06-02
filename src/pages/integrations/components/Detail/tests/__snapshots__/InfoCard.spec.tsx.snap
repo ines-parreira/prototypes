@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfoCard should add a domain query param to connectUrl if an App 1`] = `
+<a
+  class="connectButtonWrapper"
+  href="https://ok.com/?account=20-1+rpz"
+  rel="noopener noreferrer"
+  target="_blank"
+>
+  <button
+    class="wrapper actionButton fill primary medium"
+    type="button"
+  >
+    Connect App
+  </button>
+</a>
+`;
+
+exports[`InfoCard should have a failed disconnection flow 1`] = `
+Array [
+  Array [
+    Object {
+      "message": "Sorry, something went wrong. My test app is still connected.",
+      "status": "error",
+    },
+  ],
+]
+`;
+
+exports[`InfoCard should have a functionnal disconnect flow 1`] = `
+Array [
+  Array [
+    Object {
+      "message": "My test app has been disconnected.",
+      "status": "success",
+    },
+  ],
+]
+`;
+
+exports[`InfoCard should render 1`] = `
+<div>
+  <div
+    class="infoCard card"
+  >
+    <div
+      class="card-body"
+    >
+      <div
+        class="connectWrapper"
+      >
+        <a
+          class="connectButtonWrapper"
+          href="https://ok.com/?account=20-1+rpz"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <button
+            class="wrapper actionButton fill primary medium"
+            type="button"
+          >
+            Connect App
+          </button>
+        </a>
+      </div>
+      <h2
+        class="categoryTitle cardTitle"
+      >
+        Pricing
+      </h2>
+      <div>
+        <p>
+          They are several options: 
+        </p>
+        
+
+        <ul>
+          
+
+          <li>
+            Pay once
+          </li>
+          
+
+          <li>
+            Pay on ticket
+          </li>
+          
+
+        </ul>
+      </div>
+      <h2
+        class="categoryTitle cardTitle"
+      >
+        Resources
+      </h2>
+      <ul
+        class="cardList"
+      >
+        
+        <li>
+          <a
+            class="actionLink"
+            href="https://www.mycompany.com/privacy-policy"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <i
+              class="material-icons-outlined actionIcon actionIconBigger"
+            >
+              privacy_tip
+            </i>
+            Privacy Policy
+          </a>
+        </li>
+      </ul>
+      <h2
+        class="categoryTitle cardTitle"
+      >
+        Support
+      </h2>
+      <ul
+        class="cardList"
+      >
+        <li>
+          <a
+            class="actionLink"
+            href="mailto:support@gotolstoy.com"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <i
+              class="material-icons actionIcon"
+            >
+              mail
+            </i>
+            support@gotolstoy.com
+          </a>
+        </li>
+        <li>
+          <a
+            class="actionLink"
+            href="tel:+33620033659"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <i
+              class="material-icons actionIcon"
+            >
+              phone
+            </i>
+            +33620033659
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`InfoCard should render an internal link if not an app or not external 1`] = `
+<a
+  class="connectButtonWrapper"
+  to="https://ok.com"
+>
+  <button
+    class="wrapper actionButton fill primary medium"
+    type="button"
+  >
+    Connect App
+  </button>
+</a>
+`;

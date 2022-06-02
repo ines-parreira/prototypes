@@ -61,22 +61,20 @@ exports[`<IntegrationsList /> SMS integrations feature flag should include SMS t
             </div>
             this is a cool integration
           </div>
-          <div>
-            <div
-              class="action"
+          <div
+            class="action"
+          >
+            <span
+              class="connected"
             >
-              <span
-                class="count"
-              >
-                1
-                 active
-              </span>
-              <i
-                class="material-icons md-1"
-              >
-                navigate_next
-              </i>
-            </div>
+              1
+               active
+            </span>
+            <i
+              class="material-icons md-1"
+            >
+              navigate_next
+            </i>
           </div>
         </a>
       </div>
@@ -164,22 +162,20 @@ exports[`<IntegrationsList /> SMS integrations feature flag should not include S
             </div>
             this is a cool integration
           </div>
-          <div>
-            <div
-              class="action"
+          <div
+            class="action"
+          >
+            <span
+              class="connected"
             >
-              <span
-                class="count"
-              >
-                1
-                 active
-              </span>
-              <i
-                class="material-icons md-1"
-              >
-                navigate_next
-              </i>
-            </div>
+              1
+               active
+            </span>
+            <i
+              class="material-icons md-1"
+            >
+              navigate_next
+            </i>
           </div>
         </a>
       </div>
@@ -267,22 +263,20 @@ exports[`<IntegrationsList /> should display content 1`] = `
             </div>
             this is a cool integration
           </div>
-          <div>
-            <div
-              class="action"
+          <div
+            class="action"
+          >
+            <span
+              class="connected"
             >
-              <span
-                class="count"
-              >
-                1
-                 active
-              </span>
-              <i
-                class="material-icons md-1"
-              >
-                navigate_next
-              </i>
-            </div>
+              1
+               active
+            </span>
+            <i
+              class="material-icons md-1"
+            >
+              navigate_next
+            </i>
           </div>
         </a>
       </div>
