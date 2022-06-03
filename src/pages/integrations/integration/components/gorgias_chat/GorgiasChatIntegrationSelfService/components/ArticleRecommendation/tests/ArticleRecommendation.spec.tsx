@@ -15,11 +15,13 @@ describe('<ArticleRecommendation />', () => {
                         text: 'Help Center #1',
                         label: 'Help Center #1',
                         value: 'Help Center #1',
+                        id: 1,
                     },
                     {
                         text: 'Help Center #2',
                         label: 'Help Center #2',
                         value: 'Help Center #2',
+                        id: 2,
                     },
                 ]}
                 onSaveChanges={jest.fn()}
@@ -45,11 +47,13 @@ describe('<ArticleRecommendation />', () => {
                         text: 'Help Center #1',
                         label: 'Help Center #1',
                         value: 'Help Center #1',
+                        id: 1,
                     },
                     {
                         text: 'Help Center #2',
                         label: 'Help Center #2',
                         value: 'Help Center #2',
+                        id: 2,
                     },
                 ]}
                 onSaveChanges={onSaveChanges}
@@ -64,7 +68,7 @@ describe('<ArticleRecommendation />', () => {
         fireEvent.click(getByText('Help Center #1'))
         fireEvent.click(saveButton)
 
-        expect(onSaveChanges).toHaveBeenCalledWith(true, 'Help Center #1')
+        expect(onSaveChanges).toHaveBeenCalledWith(true, 1)
     })
 
     describe('when the merchant has no help centers', () => {
@@ -110,6 +114,7 @@ describe('<ArticleRecommendation />', () => {
                             text: 'Help Center #1',
                             label: 'Help Center #1',
                             value: 'Help Center #1',
+                            id: 1,
                         },
                     ]}
                     onSaveChanges={jest.fn()}
@@ -132,6 +137,7 @@ describe('<ArticleRecommendation />', () => {
                             text: 'Help Center #1',
                             label: 'Help Center #1',
                             value: 'Help Center #1',
+                            id: 1,
                         },
                     ]}
                     onSaveChanges={jest.fn()}
@@ -140,6 +146,30 @@ describe('<ArticleRecommendation />', () => {
 
             getByText('Help Center')
             expect(container.getElementsByClassName('dropdown').length).toBe(1)
+        })
+    })
+
+    describe('when the article recommendation switch is off', () => {
+        it('does not show the help center select input', () => {
+            const {container, queryByText} = render(
+                <ArticleRecommendation
+                    initialValues={{
+                        isEnabled: false,
+                    }}
+                    helpCenterList={[
+                        {
+                            text: 'Help Center #1',
+                            label: 'Help Center #1',
+                            value: 'Help Center #1',
+                            id: 1,
+                        },
+                    ]}
+                    onSaveChanges={jest.fn()}
+                />
+            )
+
+            expect(queryByText('Help Center')).toBeNull()
+            expect(container.getElementsByClassName('dropdown').length).toBe(0)
         })
     })
 })

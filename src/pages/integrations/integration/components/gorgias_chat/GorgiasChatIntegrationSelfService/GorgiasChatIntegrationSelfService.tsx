@@ -7,7 +7,11 @@ import {useAsyncFn} from 'react-use'
 import PageHeader from 'pages/common/components/PageHeader'
 import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
-import {fetchSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
+import {
+    createChatHelpCenterConfiguration,
+    fetchSelfServiceConfiguration,
+    updateChatHelpCenterConfiguration,
+} from 'models/selfServiceConfiguration/resources'
 import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -24,7 +28,7 @@ import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPre
 import SelfService from './components/SelfService'
 import FeaturesPreview from './components/FeaturesPreview'
 import ArticleRecommendation from './components/ArticleRecommendation'
-
+import {useChatHelpCenterConfiguration} from './hooks'
 import {localeToUserLanguage} from './utils/localeToUserLanguage'
 
 type OwnProps = {
@@ -34,6 +38,9 @@ type OwnProps = {
 export function GorgiasChatIntegrationSelfServiceComponent({
     integration,
 }: OwnProps) {
+    const chatApplicationId: string = integration.getIn(['meta', 'app_id'])
+    const {chatHelpCenterConfiguration, setChatHelpCenterConfiguration} =
+        useChatHelpCenterConfiguration(chatApplicationId)
     const integrationType: string = integration.get('type')
     const dispatch = useAppDispatch()
     const {getFlag} = useFeatureFlags()
@@ -121,12 +128,27 @@ export function GorgiasChatIntegrationSelfServiceComponent({
         }
     }
 
-    const handleSaveArticleRecommendation = (
+    const handleSaveArticleRecommendation = async (
         isEnabled: boolean,
-        helpCenter: string
+        helpCenterId: number
     ) => {
-        // eslint-disable-next-line no-console
-        console.log({isEnabled, helpCenter})
+        if (!chatHelpCenterConfiguration) {
+            const response = await createChatHelpCenterConfiguration({
+                helpCenterId,
+                chatApplicationId,
+            })
+            setChatHelpCenterConfiguration(response)
+
+            return
+        }
+
+        const response = await updateChatHelpCenterConfiguration({
+            enabled: isEnabled,
+            helpCenterId,
+            chatApplicationId,
+            id: chatHelpCenterConfiguration?.id,
+        })
+        setChatHelpCenterConfiguration(response)
     }
 
     const isSwitchDisabled = useMemo(() => {
@@ -145,8 +167,17 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                         helpCenter.default_locale.split('-')[0]
                     )})`,
                     value: helpCenter.name,
+                    id: helpCenter.id,
                 })),
         [helpCenters]
+    )
+
+    const selectedHelpCenter = useMemo(
+        () =>
+            helpCenterList?.find(
+                (el) => el.id === chatHelpCenterConfiguration?.help_center_id
+            )?.value,
+        [helpCenterList, chatHelpCenterConfiguration]
     )
 
     return (
@@ -198,7 +229,8 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                             isLoading={isLoading}
                             helpCenterList={helpCenterList}
                             initialValues={{
-                                isEnabled: isArticleReccEnabled,
+                                isEnabled: chatHelpCenterConfiguration?.enabled,
+                                selectedHelpCenter,
                             }}
                             onToggleEnabled={setArticleReccEnabled}
                             onSaveChanges={handleSaveArticleRecommendation}

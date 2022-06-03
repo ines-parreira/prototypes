@@ -18,9 +18,9 @@ type Props = {
         isEnabled?: boolean
         selectedHelpCenter?: string
     }
-    helpCenterList: SelectableOption[]
+    helpCenterList: (SelectableOption & {id: number})[]
     onToggleEnabled?: (enabled: boolean) => void
-    onSaveChanges: (isEnabled: boolean, helpCenter: string) => void
+    onSaveChanges: (isEnabled: boolean, helpCenterId: number) => void
 }
 
 // TODO: Add "Read more" anchor
@@ -38,6 +38,14 @@ const ArticleRecommendation: FC<Props> = ({
     const [selectedHelpCenter, setSelectedHelpCenter] = useState(
         initialValues.selectedHelpCenter ?? ''
     )
+
+    useEffect(() => {
+        setEnabled(initialValues.isEnabled ?? false)
+    }, [initialValues.isEnabled])
+
+    useEffect(() => {
+        setSelectedHelpCenter(initialValues.selectedHelpCenter ?? '')
+    }, [initialValues.selectedHelpCenter])
 
     const handleToggleInput = (nextValue: boolean) => {
         if (helpCenterList.length === 0) {
@@ -57,7 +65,12 @@ const ArticleRecommendation: FC<Props> = ({
     }
 
     const handleSaveChanges = () => {
-        onSaveChanges(isEnabled, selectedHelpCenter)
+        const helpCenterId = (
+            helpCenterList.find((el) => el.value === selectedHelpCenter) as {
+                id: number
+            }
+        ).id
+        onSaveChanges(isEnabled, helpCenterId)
     }
 
     const allowSaveChanges = useMemo(() => {
