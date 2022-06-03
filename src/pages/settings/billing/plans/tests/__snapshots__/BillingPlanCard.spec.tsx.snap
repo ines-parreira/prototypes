@@ -22,7 +22,9 @@ exports[`<BillingPlanCard /> should render features list from the feature plan 1
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $6,000
              
             / 
@@ -288,7 +290,9 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced automation
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $100,000
              
             / 
@@ -553,7 +557,9 @@ exports[`<BillingPlanCard /> should render plan card for the Advanced plan 1`] =
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $70,000
              
             / 
@@ -818,7 +824,9 @@ exports[`<BillingPlanCard /> should render plan card for the Basic automation pl
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $8,000
              
             / 
@@ -1083,7 +1091,9 @@ exports[`<BillingPlanCard /> should render plan card for the Basic plan 1`] = `
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $6,000
              
             / 
@@ -1348,7 +1358,9 @@ exports[`<BillingPlanCard /> should render plan card for the Custom automation p
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $54,000
              
             / 
@@ -1613,7 +1625,9 @@ exports[`<BillingPlanCard /> should render plan card for the Custom plan 1`] = `
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $54,000
              
             / 
@@ -1878,7 +1892,9 @@ exports[`<BillingPlanCard /> should render plan card for the Enterprise plan 1`]
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $70,000
              
             / 
@@ -2143,7 +2159,9 @@ exports[`<BillingPlanCard /> should render plan card for the Legacy plan 1`] = `
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $3,000
              
             / 
@@ -2408,7 +2426,9 @@ exports[`<BillingPlanCard /> should render plan card for the Pro automation plan
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $40,000
              
             / 
@@ -2673,7 +2693,9 @@ exports[`<BillingPlanCard /> should render plan card for the Pro plan 1`] = `
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $30,000
              
             / 
@@ -2958,7 +2980,9 @@ exports[`<BillingPlanCard /> should render the legacy badge for current legacy p
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $3,000
              
             / 

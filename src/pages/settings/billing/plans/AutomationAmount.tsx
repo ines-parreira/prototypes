@@ -68,13 +68,6 @@ const AutomationAmount = ({
                                 currency={plan.currency}
                                 interval={plan.interval}
                                 renderAmount={(amount) => <b>{amount}</b>}
-                                tooltipContent={
-                                    <span>
-                                        Act now and get early access savings on
-                                        the automation add-on{' '}
-                                        <i>(limited time offer)</i>
-                                    </span>
-                                }
                                 isIntervalAbbreviated={isIntervalAbbreviated}
                             />
                         ) : (
@@ -118,13 +111,6 @@ const AutomationAmount = ({
                                 currency={plan.currency}
                                 interval={plan.interval}
                                 renderAmount={(amount) => <b>{amount}</b>}
-                                tooltipContent={
-                                    <span>
-                                        Act now and get early access savings on
-                                        the automation add-on{' '}
-                                        <i>(limited time offer)</i>
-                                    </span>
-                                }
                                 isIntervalAbbreviated={isIntervalAbbreviated}
                             />
                         ) : (

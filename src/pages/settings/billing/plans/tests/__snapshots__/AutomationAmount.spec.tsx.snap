@@ -62,7 +62,6 @@ exports[`<AutomationAmount /> should render formatted amount number without disc
       >
         <span
           class="amount"
-          id="subscription-amount-tooltip-target-7"
         >
           <b>
             $45,612
@@ -114,7 +113,6 @@ exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
       >
         <span
           class="amount"
-          id="subscription-amount-tooltip-target-4"
         >
           <span
             class="fullAmount"
@@ -153,7 +151,6 @@ exports[`<AutomationAmount /> should render not editable variant 1`] = `
       >
         <span
           class="amount"
-          id="subscription-amount-tooltip-target-14"
         >
           <span
             class="fullAmount"
@@ -211,7 +208,6 @@ exports[`<AutomationAmount /> should render with abbreviated plan interval 1`] =
       >
         <span
           class="amount"
-          id="subscription-amount-tooltip-target-10"
         >
           <span
             class="fullAmount"

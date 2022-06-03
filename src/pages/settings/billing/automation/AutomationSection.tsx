@@ -48,12 +48,6 @@ const AutomationSection = () => {
                         amount={addOnAmount}
                         fullAmount={fullAddOnAmount}
                         renderAmount={(amount) => <b>{amount}</b>}
-                        tooltipContent={
-                            <span>
-                                Act now and get early access savings on the
-                                automation add-on <i>(limited time offer)</i>
-                            </span>
-                        }
                     />
                 )}
             </CardTitle>

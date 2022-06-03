@@ -74,12 +74,6 @@ const AutomationSubscriptionDescription = () => {
                         fullAmount={fullAddOnAmount}
                         renderAmount={(amount) => <b>{amount}</b>}
                         className={css.amount}
-                        tooltipContent={
-                            <span>
-                                Act now and get early access savings on the
-                                automation add-on <i>(limited time offer)</i>
-                            </span>
-                        }
                     />
                 )}
             </div>

@@ -57,7 +57,9 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $60
                  
                 / 
@@ -104,7 +106,6 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -370,7 +371,9 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $60
                 </b>
@@ -412,7 +415,9 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $300
                  
                 / 
@@ -459,7 +464,6 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -726,7 +730,9 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $300
                 </b>
@@ -767,7 +773,9 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $700
                  
                 / 
@@ -814,7 +822,6 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -1081,7 +1088,9 @@ exports[`<BillingPlansComparison /> should display disabled link to modal for cu
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $700
                 </b>
@@ -1498,7 +1507,9 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $30
                  
                 / 
@@ -1795,7 +1806,9 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $60
                  
                 / 
@@ -1841,7 +1854,6 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -2107,7 +2119,9 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $60
                 </b>
@@ -2148,7 +2162,9 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $300
                  
                 / 
@@ -2194,7 +2210,6 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -2461,7 +2476,9 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $300
                 </b>
@@ -2502,7 +2519,9 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $700
                  
                 / 
@@ -2548,7 +2567,6 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -2815,7 +2833,9 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $700
                 </b>
@@ -3190,7 +3210,9 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $60
                  
                 / 
@@ -3236,7 +3258,6 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -3502,7 +3523,9 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $60
                 </b>
@@ -3543,7 +3566,9 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $300
                  
                 / 
@@ -3589,7 +3614,6 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -3856,7 +3880,9 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $300
                 </b>
@@ -3897,7 +3923,9 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $700
                  
                 / 
@@ -3943,7 +3971,6 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -4210,7 +4237,9 @@ exports[`<BillingPlansComparison /> should render available plans 1`] = `
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $700
                 </b>
@@ -4592,7 +4621,9 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $60
                  
                 / 
@@ -4638,7 +4669,6 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -4904,7 +4934,9 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $60
                 </b>
@@ -4975,7 +5007,9 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $300
                  
                 / 
@@ -5021,7 +5055,6 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -5288,7 +5321,9 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $300
                 </b>
@@ -5359,7 +5394,9 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $700
                  
                 / 
@@ -5405,7 +5442,6 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -5672,7 +5708,9 @@ exports[`<BillingPlansComparison /> should set plan cards to updating while plan
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $700
                 </b>

@@ -22,7 +22,9 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $60
              
             / 
@@ -68,7 +70,6 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
         >
           <span
             class="amount"
-            id="subscription-amount-tooltip-target-42"
           >
             <span
               class="fullAmount"
@@ -325,7 +326,9 @@ exports[`<BillingComparisonPlanCard /> should not render plan as current plan 1`
         <div
           class="amountWrapper amount"
         >
-          <span>
+          <span
+            class="amount"
+          >
             <b>
               $60
             </b>
@@ -376,7 +379,9 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $3,000
              
             / 
@@ -422,7 +427,6 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
         >
           <span
             class="amount"
-            id="subscription-amount-tooltip-target-42"
           >
             <span
               class="fullAmount"
@@ -669,7 +673,9 @@ exports[`<BillingComparisonPlanCard /> should render current legacy plan 1`] = `
         <div
           class="amountWrapper amount"
         >
-          <span>
+          <span
+            class="amount"
+          >
             <b>
               $3,000
             </b>
@@ -721,7 +727,9 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $60
              
             / 
@@ -767,7 +775,6 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
         >
           <span
             class="amount"
-            id="subscription-amount-tooltip-target-42"
           >
             <span
               class="fullAmount"
@@ -1024,7 +1031,9 @@ exports[`<BillingComparisonPlanCard /> should render current plan 1`] = `
         <div
           class="amountWrapper amount"
         >
-          <span>
+          <span
+            class="amount"
+          >
             <b>
               $60
             </b>
@@ -1076,7 +1085,9 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $540
              
             / 
@@ -1385,7 +1396,9 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $540
              
             / 
@@ -1680,7 +1693,9 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
         <div
           class="amountWrapper"
         >
-          <span>
+          <span
+            class="amount"
+          >
             $60
              
             / 
@@ -1726,7 +1741,6 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
         >
           <span
             class="amount"
-            id="subscription-amount-tooltip-target-42"
           >
             <span
               class="fullAmount"
@@ -1983,7 +1997,9 @@ exports[`<BillingComparisonPlanCard /> should render spinner when plan is updati
         <div
           class="amountWrapper amount"
         >
-          <span>
+          <span
+            class="amount"
+          >
             <b>
               $60
             </b>
@@ -2061,7 +2077,9 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
             <div
               class="amountWrapper"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 $60
                  
                 / 
@@ -2108,7 +2126,6 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
             >
               <span
                 class="amount"
-                id="subscription-amount-tooltip-target-42"
               >
                 <span
                   class="fullAmount"
@@ -2365,7 +2382,9 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
             <div
               class="amountWrapper amount"
             >
-              <span>
+              <span
+                class="amount"
+              >
                 <b>
                   $80
                 </b>
@@ -2484,7 +2503,9 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                         <div
                           class="amountWrapper"
                         >
-                          <span>
+                          <span
+                            class="amount"
+                          >
                             $300
                              
                             / 
@@ -2766,7 +2787,6 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                         >
                           <span
                             class="amount"
-                            id="subscription-amount-tooltip-target-42"
                           >
                             <span
                               class="fullAmount"
@@ -2796,7 +2816,9 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                         <div
                           class="amountWrapper amount"
                         >
-                          <span>
+                          <span
+                            class="amount"
+                          >
                             <b>
                               $300
                             </b>
@@ -2834,7 +2856,9 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                         <div
                           class="amountWrapper"
                         >
-                          <span>
+                          <span
+                            class="amount"
+                          >
                             $60
                              
                             / 
@@ -3115,7 +3139,6 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                         >
                           <span
                             class="amount"
-                            id="subscription-amount-tooltip-target-42"
                           >
                             <span
                               class="fullAmount"
@@ -3145,7 +3168,9 @@ exports[`<BillingComparisonPlanCard /> should render the automation plan feature
                         <div
                           class="amountWrapper amount"
                         >
-                          <span>
+                          <span
+                            class="amount"
+                          >
                             <b>
                               $80
                             </b>

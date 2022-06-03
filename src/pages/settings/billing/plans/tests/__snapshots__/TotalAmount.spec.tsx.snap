@@ -28,7 +28,9 @@ exports[`<TotalAmount /> should render formatted numbers as amount 1`] = `
       <div
         class="amountWrapper amount"
       >
-        <span>
+        <span
+          class="amount"
+        >
           <b>
             $40,000
           </b>
@@ -56,7 +58,9 @@ exports[`<TotalAmount /> should render not editable variant 1`] = `
       <div
         class="amountWrapper amount"
       >
-        <span>
+        <span
+          class="amount"
+        >
           <b>
             $42,000
           </b>

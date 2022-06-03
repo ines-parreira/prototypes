@@ -59,9 +59,11 @@ const SubscriptionAmount = ({
         <>
             <div className={classnames(css.amountWrapper, className)}>
                 <span
+                    className={classnames(css.amount, {
+                        [css.withTooltip]: tooltipContent,
+                    })}
                     {...(tooltipContent && {
                         id: tootltipTargetID,
-                        className: css.amount,
                     })}
                 >
                     {fullAmount && (

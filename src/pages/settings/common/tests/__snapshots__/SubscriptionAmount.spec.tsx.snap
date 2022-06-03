@@ -4,7 +4,9 @@ exports[`<SubscriptionAmount /> should abbreviate known intervals when isInterva
 <div
   class="amountWrapper"
 >
-  <span>
+  <span
+    class="amount"
+  >
     €1,000
      
     / 
@@ -17,7 +19,9 @@ exports[`<SubscriptionAmount /> should abbreviate known intervals when isInterva
 <div
   class="amountWrapper"
 >
-  <span>
+  <span
+    class="amount"
+  >
     €1,000
      
     / 
@@ -30,7 +34,9 @@ exports[`<SubscriptionAmount /> should format amount 1`] = `
 <div
   class="amountWrapper"
 >
-  <span>
+  <span
+    class="amount"
+  >
     €1,000
      
     / 
@@ -43,7 +49,9 @@ exports[`<SubscriptionAmount /> should format full amount 1`] = `
 <div
   class="amountWrapper"
 >
-  <span>
+  <span
+    class="amount"
+  >
     <span
       class="fullAmount"
     >
@@ -61,7 +69,9 @@ exports[`<SubscriptionAmount /> should not abbreviate unknown intervals when isI
 <div
   class="amountWrapper"
 >
-  <span>
+  <span
+    class="amount"
+  >
     €1,000
      
     / 
@@ -74,7 +84,9 @@ exports[`<SubscriptionAmount /> should render 1`] = `
 <div
   class="amountWrapper"
 >
-  <span>
+  <span
+    class="amount"
+  >
      
     / 
     week
@@ -94,7 +106,9 @@ exports[`<SubscriptionAmount /> should render with full amount 1`] = `
 <div
   class="amountWrapper"
 >
-  <span>
+  <span
+    class="amount"
+  >
     <span
       class="fullAmount"
     >
