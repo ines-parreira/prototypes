@@ -66,6 +66,7 @@ const ClickablePhoneNumber = ({
                 }}
             >
                 <DropdownToggle
+                    id={id}
                     tag="a"
                     href="#"
                     onClick={(e) => e.preventDefault()}

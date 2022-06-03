@@ -9,6 +9,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     aria-haspopup="true"
     class=""
     href="#"
+    id="phone-number-1"
   >
     +33 6 11 22 33 44
   </a>
@@ -65,6 +66,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     aria-haspopup="true"
     class=""
     href="#"
+    id="phone-number-1"
   >
     +33 6 11 22 33 44
   </a>
@@ -107,6 +109,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     aria-haspopup="true"
     class=""
     href="#"
+    id="phone-number-1"
   >
     +33 66666666666666666666666666
   </a>
@@ -163,6 +166,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     aria-haspopup="true"
     class=""
     href="#"
+    id="phone-number-1"
   >
     +33 66666666666666666666666666
   </a>
@@ -205,6 +209,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     aria-haspopup="true"
     class=""
     href="#"
+    id="phone-number-1"
   >
     +33 6 11 22 33 44
   </a>
@@ -261,6 +266,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone inte
     aria-haspopup="true"
     class=""
     href="#"
+    id="phone-number-1"
   >
     +33 6 11 22 33 44
   </a>
@@ -303,6 +309,7 @@ exports[`<ClickablePhoneNumber/> should render a dropdown to choose between phon
     aria-haspopup="true"
     class=""
     href="#"
+    id="phone-number-1"
   >
     +33 6 11 22 33 44
   </a>
