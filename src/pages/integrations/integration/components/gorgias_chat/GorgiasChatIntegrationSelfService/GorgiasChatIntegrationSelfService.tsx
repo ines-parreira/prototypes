@@ -12,6 +12,8 @@ import {
     fetchSelfServiceConfiguration,
     updateChatHelpCenterConfiguration,
 } from 'models/selfServiceConfiguration/resources'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -133,22 +135,57 @@ export function GorgiasChatIntegrationSelfServiceComponent({
         helpCenterId: number
     ) => {
         if (!chatHelpCenterConfiguration) {
-            const response = await createChatHelpCenterConfiguration({
-                helpCenterId,
-                chatApplicationId,
-            })
-            setChatHelpCenterConfiguration(response)
+            try {
+                const response = await createChatHelpCenterConfiguration({
+                    helpCenterId,
+                    chatApplicationId,
+                })
+                setChatHelpCenterConfiguration(response)
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message:
+                            'Article recommendation activated with success',
+                    })
+                )
+            } catch (err) {
+                console.error(err)
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            'Failed to activate the article recommendation',
+                    })
+                )
+            }
 
             return
         }
 
-        const response = await updateChatHelpCenterConfiguration({
-            enabled: isEnabled,
-            helpCenterId,
-            chatApplicationId,
-            id: chatHelpCenterConfiguration?.id,
-        })
-        setChatHelpCenterConfiguration(response)
+        try {
+            const response = await updateChatHelpCenterConfiguration({
+                enabled: isEnabled,
+                helpCenterId,
+                chatApplicationId,
+                id: chatHelpCenterConfiguration?.id,
+            })
+            setChatHelpCenterConfiguration(response)
+
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Article recommendation updated with success',
+                })
+            )
+        } catch (err) {
+            console.error(err)
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Failed to update the article recommendation',
+                })
+            )
+        }
     }
 
     const isSwitchDisabled = useMemo(() => {
