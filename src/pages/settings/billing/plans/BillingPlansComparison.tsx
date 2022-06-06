@@ -59,7 +59,7 @@ export default function BillingPlansComparison({
     const availablePlans = isCustomPlan
         ? (plans.filter(
               (plan: Map<any, any>) =>
-                  (plan.get('public') as boolean) &&
+                  !plan.get('is_legacy') &&
                   plan.get('id') === displayedCurrentPlan.get('id')
           ) as Map<any, any>)
         : (plans.filter(

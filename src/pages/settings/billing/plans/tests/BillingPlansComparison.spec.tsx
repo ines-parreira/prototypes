@@ -16,6 +16,8 @@ import {
     basicAutomationPlan,
     proAutomationPlan,
     advancedAutomationPlan,
+    customPlan,
+    customLegacyPlan,
 } from '../../../../../fixtures/subscriptionPlan'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import {account} from '../../../../../fixtures/account'
@@ -222,6 +224,33 @@ describe('<BillingPlansComparison />', () => {
                             [legacyPlan.id]: {
                                 ...legacyPlan,
                                 legacy_features: legacyPlan.features,
+                            },
+                        },
+                    }),
+                })}
+            >
+                <BillingPlansComparison {...minProps} />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render a custom plan', () => {
+        const {container} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: defaultState.currentAccount?.setIn(
+                        ['current_subscription', 'plan'],
+                        customPlan.id
+                    ),
+                    billing: fromJS({
+                        ...billingState,
+                        plans: {
+                            ...defaultPlans,
+                            [customLegacyPlan.id]: customLegacyPlan,
+                            [customPlan.id]: {
+                                ...customPlan,
                             },
                         },
                     }),
