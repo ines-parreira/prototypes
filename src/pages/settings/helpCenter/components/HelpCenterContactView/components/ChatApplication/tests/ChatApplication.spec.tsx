@@ -1,9 +1,13 @@
 import React from 'react'
-import {fireEvent, waitFor} from '@testing-library/react'
+import {fireEvent, waitFor, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {contactInfoFixture} from 'pages/settings/helpCenter/fixtures/contactInfo.fixture'
+import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import {useChatHelpCenterConfiguration} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfService/hooks'
 
 import {RootState, StoreDispatch} from '../../../../../../../../state/types'
 import {renderWithRouter} from '../../../../../../../../utils/testing'
@@ -90,30 +94,10 @@ const defaultState: Partial<RootState> = {
     }),
 }
 
-jest.mock('../../../../../providers/HelpCenterTranslation', () => ({
-    useHelpCenterTranslation: () => ({
-        translation: {
-            chat_application_id: null,
-            contact_info: {
-                email: {
-                    description: '',
-                    enabled: false,
-                    email: '',
-                },
-                phone: {
-                    description: '',
-                    enabled: false,
-                    phone_numbers: '',
-                },
-                chat: {
-                    description: '',
-                    enabled: false,
-                },
-            },
-        },
-        updateTranslation: mockedUpdateTranslation,
-    }),
-}))
+jest.mock('../../../../../providers/HelpCenterTranslation')
+jest.mock(
+    '../../../../../../../integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfService/hooks'
+)
 
 const route = {
     path: '/app/settings/help-center/:helpcenterId/contact',
@@ -123,12 +107,23 @@ const route = {
 describe('<ChatApplication />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        ;(useHelpCenterTranslation as jest.Mock).mockReturnValue({
+            translation: {
+                chatApplicationId: null,
+                contactInfo: contactInfoFixture,
+            },
+            updateTranslation: mockedUpdateTranslation,
+        })
+        ;(useChatHelpCenterConfiguration as jest.Mock).mockReturnValue({
+            chatHelpCenterConfiguration: null,
+            setChatHelpCenterConfiguration: jest.fn(),
+        })
     })
 
     it('allows to enable chat widget and selects the first chat by default', async () => {
         const {container, getByLabelText} = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
-                <ChatApplication />
+                <ChatApplication helpCenterId={1} />
             </Provider>,
             route
         )
@@ -154,11 +149,134 @@ describe('<ChatApplication />', () => {
                     }),
                 })}
             >
-                <ChatApplication />
+                <ChatApplication helpCenterId={1} />
             </Provider>,
             route
         )
 
         expect(container).toMatchSnapshot()
+    })
+
+    it('show alert if the chat application id does not match the one for the article recommendation', () => {
+        ;(useHelpCenterTranslation as jest.Mock).mockReturnValue({
+            translation: {
+                chatApplicationId: 1,
+                contactInfo: contactInfoFixture,
+            },
+            updateTranslation: mockedUpdateTranslation,
+        })
+        ;(useChatHelpCenterConfiguration as jest.Mock).mockReturnValue({
+            chatHelpCenterConfiguration: {
+                chat_application_id: 1,
+                enabled: true,
+                help_center_id: 2,
+                id: 2,
+            },
+            setChatHelpCenterConfiguration: jest.fn(),
+        })
+        renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <ChatApplication helpCenterId={1} />
+            </Provider>,
+            route
+        )
+
+        screen.getByText(
+            'The selected chat integration is using a different help center for article recommendations.'
+        )
+        const chatIntegrationLink = screen.getByText(
+            'Go To Chat Settings'
+        ) as HTMLAnchorElement
+        expect(chatIntegrationLink.getAttribute('to')).toStrictEqual(
+            '/app/settings/integrations/gorgias_chat/10/automation'
+        )
+    })
+
+    it('does not show alert if the chat application id matches the one for the article recommendation', () => {
+        ;(useHelpCenterTranslation as jest.Mock).mockReturnValue({
+            translation: {
+                chatApplicationId: 1,
+                contactInfo: contactInfoFixture,
+            },
+            updateTranslation: mockedUpdateTranslation,
+        })
+        ;(useChatHelpCenterConfiguration as jest.Mock).mockReturnValue({
+            chatHelpCenterConfiguration: {
+                chat_application_id: 1,
+                enabled: true,
+                help_center_id: 1,
+                id: 2,
+            },
+            setChatHelpCenterConfiguration: jest.fn(),
+        })
+        renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <ChatApplication helpCenterId={1} />
+            </Provider>,
+            route
+        )
+
+        expect(
+            screen.queryByText(
+                'The selected chat integration is using a different help center for article recommendations.'
+            )
+        ).toBeNull()
+    })
+
+    it('does not show alert if the chat help center configuration is not enabled', () => {
+        ;(useHelpCenterTranslation as jest.Mock).mockReturnValue({
+            translation: {
+                chatApplicationId: 1,
+                contactInfo: contactInfoFixture,
+            },
+            updateTranslation: mockedUpdateTranslation,
+        })
+        ;(useChatHelpCenterConfiguration as jest.Mock).mockReturnValue({
+            chatHelpCenterConfiguration: {
+                chat_application_id: 1,
+                enabled: false,
+                help_center_id: 2,
+                id: 2,
+            },
+            setChatHelpCenterConfiguration: jest.fn(),
+        })
+        renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <ChatApplication helpCenterId={1} />
+            </Provider>,
+            route
+        )
+
+        expect(
+            screen.queryByText(
+                'The selected chat integration is using a different help center for article recommendations.'
+            )
+        ).toBeNull()
+    })
+
+    it('does not show alert if the chat help center configuration does not exist', () => {
+        ;(useHelpCenterTranslation as jest.Mock).mockReturnValue({
+            translation: {
+                chatApplicationId: 1,
+                contactInfo: contactInfoFixture,
+            },
+            updateTranslation: mockedUpdateTranslation,
+        })
+        ;(useChatHelpCenterConfiguration as jest.Mock).mockReturnValue({
+            chatHelpCenterConfiguration: null,
+            setChatHelpCenterConfiguration: jest.fn(),
+        })
+        renderWithRouter(
+            <Provider store={mockedStore(defaultState)}>
+                <ChatApplication helpCenterId={1} />
+            </Provider>,
+            route
+        )
+
+        expect(
+            screen.queryByText(
+                'The selected chat integration is using a different help center for article recommendations.'
+            )
+        ).toBeNull()
     })
 })

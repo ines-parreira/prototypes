@@ -36,7 +36,7 @@ export type ChatHelpCenterConfiguration = {
 }
 
 export const fetchChatHelpCenterConfiguration = async (
-    chatApplicationId: string
+    chatApplicationId: number
 ) => {
     const res = await client.get<ChatHelpCenterConfiguration>(
         `/api/chat_help_center/${chatApplicationId}`
@@ -50,7 +50,7 @@ export const updateChatHelpCenterConfiguration = async ({
     enabled,
     id,
 }: {
-    chatApplicationId: string
+    chatApplicationId: number
     helpCenterId: number
     enabled: boolean
     id: number
@@ -70,14 +70,14 @@ export const createChatHelpCenterConfiguration = async ({
     chatApplicationId,
     helpCenterId,
 }: {
-    chatApplicationId: string
+    chatApplicationId: number
     helpCenterId: number
 }) => {
     const res = await client.post<ChatHelpCenterConfiguration>(
         `/api/chat_help_center/`,
         {
             helpCenterId,
-            chatApplicationId: parseInt(chatApplicationId),
+            chatApplicationId: chatApplicationId,
         }
     )
     return res.data
