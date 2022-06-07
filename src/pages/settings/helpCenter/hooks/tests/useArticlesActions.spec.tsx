@@ -331,6 +331,8 @@ describe('useArticlesActions()', () => {
                 'fr-FR',
                 {
                     id: 1,
+                    category_id: null,
+                    unlisted_id: '69b26316a6d0474d814457984a232b90',
                     help_center_id: 1,
                     position: 1,
                     created_datetime: '',
@@ -343,6 +345,9 @@ describe('useArticlesActions()', () => {
                         excerpt: '',
                         content: '',
                         slug: '',
+                        article_unlisted_id: '69b26316a6d0474d814457984a232b90',
+                        category_id: null,
+                        visibility_status: 'PUBLIC',
                         seo_meta: {
                             title: null,
                             description: null,
@@ -381,6 +386,8 @@ describe('useArticlesActions()', () => {
                 'en-US',
                 {
                     id: 1,
+                    unlisted_id: 'a04b78751802417989df20c2b9d21b22',
+                    category_id: null,
                     help_center_id: 1,
                     position: 1,
                     created_datetime: '',
@@ -393,6 +400,9 @@ describe('useArticlesActions()', () => {
                         excerpt: '',
                         content: '',
                         slug: '',
+                        article_unlisted_id: 'a04b78751802417989df20c2b9d21b22',
+                        category_id: null,
+                        visibility_status: 'PUBLIC',
                         seo_meta: {
                             title: null,
                             description: null,

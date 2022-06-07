@@ -7,10 +7,12 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             updated_datetime: '2021-06-01T09:46:30.044Z',
             deleted_datetime: null,
             id: 1,
+            unlisted_id: '01de731425874c21b59ff7b99dd44fb4',
             help_center_id: 1,
             available_locales: ['en-US'],
             translation: {
                 parent_category_id: 0,
+                visibility_status: 'PUBLIC',
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
@@ -19,6 +21,7 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                     'the arrangement or disposition of people or things in relation to each other according to a particular sequence, pattern, or method.',
                 slug: 'orders',
                 category_id: 1,
+                category_unlisted_id: '01de731425874c21b59ff7b99dd44fb4',
                 locale: 'en-US',
                 seo_meta: {
                     title: null,
@@ -31,10 +34,12 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             updated_datetime: '2021-06-01T09:46:30.044Z',
             deleted_datetime: null,
             id: 2,
+            unlisted_id: '112552ce15234266ba9c2f2ab2e905f4',
             help_center_id: 1,
             available_locales: ['en-US'],
             translation: {
                 parent_category_id: 0,
+                visibility_status: 'PUBLIC',
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
@@ -43,6 +48,7 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                     'pay back (money), typically to a customer who is not satisfied with goods or services bought.\n          "if you\'re not delighted with your purchase, we guarantee to refund your money in full"',
                 slug: 'refunds',
                 category_id: 2,
+                category_unlisted_id: '112552ce15234266ba9c2f2ab2e905f4',
                 locale: 'en-US',
                 seo_meta: {
                     title: null,
@@ -55,10 +61,12 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             updated_datetime: '2021-06-01T09:46:30.044Z',
             deleted_datetime: null,
             id: 3,
+            unlisted_id: '708cbc21e5ac42d292544fd98cbc6792',
             help_center_id: 1,
             available_locales: ['en-US'],
             translation: {
                 parent_category_id: 0,
+                visibility_status: 'PUBLIC',
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
@@ -67,6 +75,7 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                     'A size chart is a document that reflects the measurements for your size range within your brand. Typically, your public size chart is characterized by 4 main measurements, bust, waist, hip, and height.',
                 slug: 'size-charts',
                 category_id: 3,
+                category_unlisted_id: '708cbc21e5ac42d292544fd98cbc6792',
                 locale: 'en-US',
                 seo_meta: {
                     title: null,
@@ -79,10 +88,12 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
             updated_datetime: '2021-06-01T09:46:30.044Z',
             deleted_datetime: null,
             id: 4,
+            unlisted_id: '65e08839d28149ec8cb9e77ba102476b',
             help_center_id: 1,
             available_locales: ['en-US'],
             translation: {
                 parent_category_id: 0,
+                visibility_status: 'PUBLIC',
                 created_datetime: '2021-06-01T09:46:30.044Z',
                 updated_datetime: '2021-06-01T09:46:30.044Z',
                 deleted_datetime: null,
@@ -90,6 +101,7 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
                 description: 'A deduction from the usual cost of something.',
                 slug: 'orders',
                 category_id: 4,
+                category_unlisted_id: '65e08839d28149ec8cb9e77ba102476b',
                 locale: 'en-US',
                 seo_meta: {
                     title: null,
@@ -110,6 +122,7 @@ export const getCategoriesResponseEnglish: CategoriesListPage = {
 
 export const getSingleCategoryEnglish: Category = {
     id: 1,
+    unlisted_id: '29e86632697e4407b2ca6068fcf738ae',
     help_center_id: 1,
     available_locales: ['en-US'],
     children: [],
@@ -118,7 +131,9 @@ export const getSingleCategoryEnglish: Category = {
     deleted_datetime: null,
     translation: {
         parent_category_id: 0,
+        visibility_status: 'PUBLIC',
         category_id: 1,
+        category_unlisted_id: '29e86632697e4407b2ca6068fcf738ae',
         locale: 'en-US',
         title: 'Orders',
         description:

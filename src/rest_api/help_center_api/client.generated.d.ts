@@ -70,17 +70,18 @@ declare namespace Components {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
-      category_id?: number | null;
+      category_id: number | null;
       available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
       help_center_id: number;
       id: number;
     }
     export interface ArticleListDataDto {
       id: number;
+      unlisted_id: string;
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
-      category_id?: number | null;
+      category_id: number | null;
       help_center_id: number;
       available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
       rating: {
@@ -97,11 +98,14 @@ declare namespace Components {
         slug: string;
         locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
         article_id: number;
+        category_id: number | null;
+        article_unlisted_id: string;
         seo_meta: {
           title: string | null;
           description: string | null;
         };
         sharing_status: "PUBLIC";
+        visibility_status: "PUBLIC" | "UNLISTED";
         is_current: boolean;
         rating: Rating;
         /**
@@ -123,11 +127,14 @@ declare namespace Components {
       slug: string;
       locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       article_id: number;
+      category_id: number | null;
+      article_unlisted_id: string;
       seo_meta: {
         title: string | null;
         description: string | null;
       };
       sharing_status: "PUBLIC";
+      visibility_status: "PUBLIC" | "UNLISTED";
       is_current: boolean;
       rating: Rating;
       /**
@@ -162,11 +169,14 @@ declare namespace Components {
       slug: string;
       locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       article_id: number;
+      category_id: number | null;
+      article_unlisted_id: string;
       seo_meta: {
         title: string | null;
         description: string | null;
       };
       sharing_status: "PUBLIC";
+      visibility_status: "PUBLIC" | "UNLISTED";
       is_current: boolean;
     }
     export interface ArticleTranslationSeoMeta {
@@ -183,11 +193,14 @@ declare namespace Components {
       slug: string;
       locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       article_id: number;
+      category_id: number | null;
+      article_unlisted_id: string;
       seo_meta: {
         title: string | null;
         description: string | null;
       };
       sharing_status: "PUBLIC";
+      visibility_status: "PUBLIC" | "UNLISTED";
       is_current: boolean;
       rating: Rating;
     }
@@ -200,8 +213,9 @@ declare namespace Components {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
+      unlisted_id: string;
       available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
-      category_id?: number | null;
+      category_id: number | null;
       help_center_id: number;
       id: number;
       translation: LocalArticleTranslation;
@@ -231,12 +245,14 @@ declare namespace Components {
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
       category_id: number;
+      category_unlisted_id: string;
       parent_category_id: number | null;
       locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       seo_meta: {
         title: string | null;
         description: string | null;
       };
+      visibility_status: "PUBLIC" | "UNLISTED";
       title: string;
       description: string | null;
       slug: string;
@@ -254,6 +270,7 @@ declare namespace Components {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
+      unlisted_id: string;
       help_center_id: number;
       available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
       translation: {
@@ -261,12 +278,14 @@ declare namespace Components {
         updated_datetime: string; // date-time
         deleted_datetime?: string | null; // date-time
         category_id: number;
+        category_unlisted_id: string;
         parent_category_id: number | null;
         locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
         seo_meta: {
           title: string | null;
           description: string | null;
         };
+        visibility_status: "PUBLIC" | "UNLISTED";
         title: string;
         description: string | null;
         slug: string;
@@ -278,6 +297,7 @@ declare namespace Components {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
+      unlisted_id: string;
       help_center_id: number;
       available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
       translation: LocalCategoryTranslation;
@@ -409,6 +429,14 @@ declare namespace Components {
          * This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.
          */
         is_current?: boolean;
+        /**
+         * The visibility status of the article.
+         */
+        visibility_status?: "PUBLIC" | "UNLISTED";
+        /**
+         * Used to change the categoryId of the article
+         */
+        category_id?: number | null;
       };
       category_id?: number | null;
     }
@@ -470,6 +498,14 @@ declare namespace Components {
        * This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.
        */
       is_current?: boolean;
+      /**
+       * The visibility status of the article.
+       */
+      visibility_status?: "PUBLIC" | "UNLISTED";
+      /**
+       * Used to change the categoryId of the article
+       */
+      category_id?: number | null;
     }
     export interface CreateArticleTranslationRatingDto {
       /**
@@ -545,6 +581,10 @@ declare namespace Components {
            */
           description: string | null;
         };
+        /**
+         * The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.
+         */
+        visibility_status?: "PUBLIC" | "UNLISTED";
       };
     }
     export interface CreateCategoryTranslationDto {
@@ -595,6 +635,10 @@ declare namespace Components {
          */
         description: string | null;
       };
+      /**
+       * The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.
+       */
+      visibility_status?: "PUBLIC" | "UNLISTED";
     }
     export interface CreateCategoryTranslationSeoMetaDto {
       /**
@@ -923,11 +967,14 @@ declare namespace Components {
       slug: string;
       locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       article_id: number;
+      category_id: number | null;
+      article_unlisted_id: string;
       seo_meta: {
         title: string | null;
         description: string | null;
       };
       sharing_status: "PUBLIC";
+      visibility_status: "PUBLIC" | "UNLISTED";
       is_current: boolean;
       /**
        * Gives details on how the translation fallback was chosen:
@@ -942,12 +989,14 @@ declare namespace Components {
       updated_datetime: string; // date-time
       deleted_datetime?: string | null; // date-time
       category_id: number;
+      category_unlisted_id: string;
       parent_category_id: number | null;
       locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       seo_meta: {
         title: string | null;
         description: string | null;
       };
+      visibility_status: "PUBLIC" | "UNLISTED";
       /**
        * Gives details on how the translation fallback was chosen:
        * - `undefined`: the translation is the requested one
@@ -1155,6 +1204,14 @@ declare namespace Components {
        * This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.
        */
       is_current?: boolean;
+      /**
+       * The visibility status of the article.
+       */
+      visibility_status?: "PUBLIC" | "UNLISTED";
+      /**
+       * Used to change the categoryId of the article
+       */
+      category_id?: number | null;
     }
     export interface UpdateArticleTranslationRatingDto {
       /**
@@ -1206,6 +1263,10 @@ declare namespace Components {
          */
         description: string | null;
       };
+      /**
+       * The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.
+       */
+      visibility_status?: "PUBLIC" | "UNLISTED";
     }
     export interface UpdateExtraHTMLDto {
       /**

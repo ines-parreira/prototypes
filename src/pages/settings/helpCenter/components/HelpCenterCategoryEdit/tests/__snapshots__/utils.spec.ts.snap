@@ -17,6 +17,7 @@ Array [
     "id": 47,
     "translation": Object {
       "category_id": 47,
+      "category_unlisted_id": "d5e41b205f974b0b8ae28103712b865b",
       "created_datetime": "2022-03-17T12:52:14.243Z",
       "deleted_datetime": null,
       "description": "",
@@ -29,7 +30,9 @@ Array [
       "slug": "top-level",
       "title": "Top level",
       "updated_datetime": "2022-03-17T12:52:14.243Z",
+      "visibility_status": "PUBLIC",
     },
+    "unlisted_id": "d5e41b205f974b0b8ae28103712b865b",
     "updated_datetime": "2022-03-17T12:52:14.243Z",
   },
   Object {
@@ -46,6 +49,7 @@ Array [
     "id": 48,
     "translation": Object {
       "category_id": 48,
+      "category_unlisted_id": "7e4c2e95803f4918bac6ae0d57734002",
       "created_datetime": "2022-03-17T12:53:10.489Z",
       "deleted_datetime": null,
       "description": "",
@@ -58,7 +62,9 @@ Array [
       "slug": "level-1",
       "title": "Level 1",
       "updated_datetime": "2022-03-17T12:53:10.489Z",
+      "visibility_status": "PUBLIC",
     },
+    "unlisted_id": "7e4c2e95803f4918bac6ae0d57734002",
     "updated_datetime": "2022-03-17T12:52:41.853Z",
   },
   Object {
@@ -75,6 +81,7 @@ Array [
     "id": 49,
     "translation": Object {
       "category_id": 49,
+      "category_unlisted_id": "c28645f2d381483ea08a0f0d21a7a84f",
       "created_datetime": "2022-03-17T12:53:43.235Z",
       "deleted_datetime": null,
       "description": "",
@@ -87,7 +94,9 @@ Array [
       "slug": "level-2",
       "title": "Level 2",
       "updated_datetime": "2022-03-17T12:54:26.411Z",
+      "visibility_status": "PUBLIC",
     },
+    "unlisted_id": "c28645f2d381483ea08a0f0d21a7a84f",
     "updated_datetime": "2022-03-17T12:54:26.401Z",
   },
 ]
@@ -110,6 +119,7 @@ Array [
     "id": 47,
     "translation": Object {
       "category_id": 47,
+      "category_unlisted_id": "d5e41b205f974b0b8ae28103712b865b",
       "created_datetime": "2022-03-17T12:52:14.243Z",
       "deleted_datetime": null,
       "description": "",
@@ -122,7 +132,9 @@ Array [
       "slug": "top-level",
       "title": "Top level",
       "updated_datetime": "2022-03-17T12:52:14.243Z",
+      "visibility_status": "PUBLIC",
     },
+    "unlisted_id": "d5e41b205f974b0b8ae28103712b865b",
     "updated_datetime": "2022-03-17T12:52:14.243Z",
   },
   Object {
@@ -139,6 +151,7 @@ Array [
     "id": 48,
     "translation": Object {
       "category_id": 48,
+      "category_unlisted_id": "7e4c2e95803f4918bac6ae0d57734002",
       "created_datetime": "2022-03-17T12:53:10.489Z",
       "deleted_datetime": null,
       "description": "",
@@ -151,7 +164,9 @@ Array [
       "slug": "level-1",
       "title": "Level 1",
       "updated_datetime": "2022-03-17T12:53:10.489Z",
+      "visibility_status": "PUBLIC",
     },
+    "unlisted_id": "7e4c2e95803f4918bac6ae0d57734002",
     "updated_datetime": "2022-03-17T12:52:41.853Z",
   },
   Object {
@@ -168,6 +183,7 @@ Array [
     "id": 49,
     "translation": Object {
       "category_id": 49,
+      "category_unlisted_id": "c28645f2d381483ea08a0f0d21a7a84f",
       "created_datetime": "2022-03-17T12:53:43.235Z",
       "deleted_datetime": null,
       "description": "",
@@ -180,7 +196,9 @@ Array [
       "slug": "level-2",
       "title": "Level 2",
       "updated_datetime": "2022-03-17T12:54:26.411Z",
+      "visibility_status": "PUBLIC",
     },
+    "unlisted_id": "c28645f2d381483ea08a0f0d21a7a84f",
     "updated_datetime": "2022-03-17T12:54:26.401Z",
   },
 ]
@@ -205,6 +223,7 @@ Array [
     "id": 47,
     "translation": Object {
       "category_id": 47,
+      "category_unlisted_id": "d5e41b205f974b0b8ae28103712b865b",
       "created_datetime": "2022-03-17T12:52:14.243Z",
       "deleted_datetime": null,
       "description": "",
@@ -217,7 +236,9 @@ Array [
       "slug": "top-level",
       "title": "Top level",
       "updated_datetime": "2022-03-17T12:52:14.243Z",
+      "visibility_status": "PUBLIC",
     },
+    "unlisted_id": "d5e41b205f974b0b8ae28103712b865b",
     "updated_datetime": "2022-03-17T12:52:14.243Z",
   },
   Object {
@@ -231,6 +252,7 @@ Array [
     "id": 53,
     "translation": Object {
       "category_id": 53,
+      "category_unlisted_id": "df865d37bbc74135a355b56c20b40e46",
       "created_datetime": "2022-03-23T10:34:42.017Z",
       "deleted_datetime": null,
       "description": "",
@@ -243,7 +265,9 @@ Array [
       "slug": "level-1---b",
       "title": "level 1 - B",
       "updated_datetime": "2022-03-23T10:34:42.017Z",
+      "visibility_status": "PUBLIC",
     },
+    "unlisted_id": "df865d37bbc74135a355b56c20b40e46",
     "updated_datetime": "2022-03-23T10:34:42.017Z",
   },
 ]

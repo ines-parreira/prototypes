@@ -332,7 +332,11 @@
                     }
                 },
                 "tags": ["help-centers"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "security": [
+                    {"ApiKey": []},
+                    {"ApiKey": []},
+                    {"AgentBasicAuth": []}
+                ]
             },
             "put": {
                 "operationId": "updateHelpCenter",
@@ -3944,6 +3948,11 @@
                                 "$ref": "#/components/schemas/CreateCategoryTranslationSeoMetaDto"
                             }
                         ]
+                    },
+                    "visibility_status": {
+                        "description": "The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.",
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
                     }
                 },
                 "required": [
@@ -3993,6 +4002,7 @@
                         "nullable": true
                     },
                     "category_id": {"type": "number"},
+                    "category_unlisted_id": {"type": "string"},
                     "parent_category_id": {"type": "number", "nullable": true},
                     "locale": {
                         "enum": [
@@ -4018,6 +4028,10 @@
                             }
                         ]
                     },
+                    "visibility_status": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
                         "enum": ["default", "available"],
@@ -4031,9 +4045,11 @@
                     "created_datetime",
                     "updated_datetime",
                     "category_id",
+                    "category_unlisted_id",
                     "parent_category_id",
                     "locale",
                     "seo_meta",
+                    "visibility_status",
                     "title",
                     "description",
                     "slug"
@@ -4055,6 +4071,7 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "unlisted_id": {"type": "string"},
                     "help_center_id": {"type": "number"},
                     "available_locales": {
                         "type": "array",
@@ -4083,6 +4100,7 @@
                 "required": [
                     "created_datetime",
                     "updated_datetime",
+                    "unlisted_id",
                     "help_center_id",
                     "available_locales",
                     "translation",
@@ -4124,6 +4142,7 @@
                         "nullable": true
                     },
                     "category_id": {"type": "number"},
+                    "category_unlisted_id": {"type": "string"},
                     "parent_category_id": {"type": "number", "nullable": true},
                     "locale": {
                         "enum": [
@@ -4149,6 +4168,10 @@
                             }
                         ]
                     },
+                    "visibility_status": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "title": {"type": "string"},
                     "description": {"type": "string", "nullable": true},
                     "slug": {"type": "string"}
@@ -4157,9 +4180,11 @@
                     "created_datetime",
                     "updated_datetime",
                     "category_id",
+                    "category_unlisted_id",
                     "parent_category_id",
                     "locale",
                     "seo_meta",
+                    "visibility_status",
                     "title",
                     "description",
                     "slug"
@@ -4215,6 +4240,11 @@
                                 "$ref": "#/components/schemas/CreateCategoryTranslationSeoMetaDto"
                             }
                         ]
+                    },
+                    "visibility_status": {
+                        "description": "The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.",
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
                     }
                 }
             },
@@ -4234,6 +4264,7 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "unlisted_id": {"type": "string"},
                     "help_center_id": {"type": "number"},
                     "available_locales": {
                         "type": "array",
@@ -4274,6 +4305,7 @@
                 "required": [
                     "created_datetime",
                     "updated_datetime",
+                    "unlisted_id",
                     "help_center_id",
                     "available_locales",
                     "translation",
@@ -4334,6 +4366,8 @@
                         "type": "string"
                     },
                     "article_id": {"type": "number"},
+                    "category_id": {"type": "number", "nullable": true},
+                    "article_unlisted_id": {"type": "string"},
                     "seo_meta": {
                         "nullable": false,
                         "allOf": [
@@ -4343,6 +4377,10 @@
                         ]
                     },
                     "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
+                    "visibility_status": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "is_current": {"type": "boolean"},
                     "rating": {"$ref": "#/components/schemas/Rating"},
                     "locale_fallback": {
@@ -4360,8 +4398,11 @@
                     "slug",
                     "locale",
                     "article_id",
+                    "category_id",
+                    "article_unlisted_id",
                     "seo_meta",
                     "sharing_status",
+                    "visibility_status",
                     "is_current",
                     "rating"
                 ]
@@ -4370,6 +4411,7 @@
                 "type": "object",
                 "properties": {
                     "id": {"type": "number"},
+                    "unlisted_id": {"type": "string"},
                     "created_datetime": {
                         "format": "date-time",
                         "type": "string"
@@ -4417,8 +4459,10 @@
                 },
                 "required": [
                     "id",
+                    "unlisted_id",
                     "created_datetime",
                     "updated_datetime",
+                    "category_id",
                     "help_center_id",
                     "available_locales",
                     "rating",
@@ -4480,6 +4524,8 @@
                         "type": "string"
                     },
                     "article_id": {"type": "number"},
+                    "category_id": {"type": "number", "nullable": true},
+                    "article_unlisted_id": {"type": "string"},
                     "seo_meta": {
                         "nullable": false,
                         "allOf": [
@@ -4489,6 +4535,10 @@
                         ]
                     },
                     "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
+                    "visibility_status": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "is_current": {"type": "boolean"},
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
@@ -4505,8 +4555,11 @@
                     "slug",
                     "locale",
                     "article_id",
+                    "category_id",
+                    "article_unlisted_id",
                     "seo_meta",
                     "sharing_status",
+                    "visibility_status",
                     "is_current"
                 ]
             },
@@ -4526,6 +4579,7 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "unlisted_id": {"type": "string"},
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -4555,7 +4609,9 @@
                 "required": [
                     "created_datetime",
                     "updated_datetime",
+                    "unlisted_id",
                     "available_locales",
+                    "category_id",
                     "help_center_id",
                     "id",
                     "translation"
@@ -4609,6 +4665,7 @@
                 "required": [
                     "created_datetime",
                     "updated_datetime",
+                    "category_id",
                     "available_locales",
                     "help_center_id",
                     "id"
@@ -4691,6 +4748,16 @@
                         "type": "boolean",
                         "description": "This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.",
                         "default": true
+                    },
+                    "visibility_status": {
+                        "description": "The visibility status of the article.",
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
+                    "category_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Used to change the categoryId of the article"
                     }
                 },
                 "required": [
@@ -4754,6 +4821,8 @@
                         "type": "string"
                     },
                     "article_id": {"type": "number"},
+                    "category_id": {"type": "number", "nullable": true},
+                    "article_unlisted_id": {"type": "string"},
                     "seo_meta": {
                         "nullable": false,
                         "allOf": [
@@ -4763,6 +4832,10 @@
                         ]
                     },
                     "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
+                    "visibility_status": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "is_current": {"type": "boolean"},
                     "rating": {"$ref": "#/components/schemas/Rating"}
                 },
@@ -4775,8 +4848,11 @@
                     "slug",
                     "locale",
                     "article_id",
+                    "category_id",
+                    "article_unlisted_id",
                     "seo_meta",
                     "sharing_status",
+                    "visibility_status",
                     "is_current",
                     "rating"
                 ]
@@ -4836,6 +4912,8 @@
                         "type": "string"
                     },
                     "article_id": {"type": "number"},
+                    "category_id": {"type": "number", "nullable": true},
+                    "article_unlisted_id": {"type": "string"},
                     "seo_meta": {
                         "nullable": false,
                         "allOf": [
@@ -4845,6 +4923,10 @@
                         ]
                     },
                     "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
+                    "visibility_status": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "is_current": {"type": "boolean"}
                 },
                 "required": [
@@ -4856,8 +4938,11 @@
                     "slug",
                     "locale",
                     "article_id",
+                    "category_id",
+                    "article_unlisted_id",
                     "seo_meta",
                     "sharing_status",
+                    "visibility_status",
                     "is_current"
                 ]
             },
@@ -4904,6 +4989,16 @@
                         "type": "boolean",
                         "description": "This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.",
                         "default": true
+                    },
+                    "visibility_status": {
+                        "description": "The visibility status of the article.",
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
+                    "category_id": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Used to change the categoryId of the article"
                     }
                 }
             },

@@ -1,4 +1,5 @@
 import {keyBy as _keyBy} from 'lodash'
+import {CategoryTranslation} from 'models/helpCenter/types'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import {getCategoriesFlatSorted} from '../../fixtures/getCategoriesTreeFlatSorted.fixtures'
 import {
@@ -7,15 +8,17 @@ import {
 } from '../getCategoriesToUpdate'
 
 const categories = _keyBy(getCategoriesFlatSorted, 'id')
-const translation = {
+const translation: CategoryTranslation = {
     created_datetime: '2022-03-07T14:47:03.686Z',
     updated_datetime: '2022-03-07T14:47:03.686Z',
     deleted_datetime: null,
     parent_category_id: null,
+    visibility_status: 'PUBLIC',
     description: '',
     title: 'Category 1',
     slug: 'category-1',
     category_id: 5,
+    category_unlisted_id: '742929a478954178ad3c7ed00fd6c7f3',
     locale: HELP_CENTER_DEFAULT_LOCALE,
     seo_meta: {
         title: null,
