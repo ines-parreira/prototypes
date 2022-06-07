@@ -561,7 +561,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
             required=""
             step="0.01"
             type="number"
-            value=""
+            value="Map { \\"label\\": \\"Amount\\", \\"default\\": \\"\\", \\"editable\\": true, \\"required\\": true, \\"display_order\\": 1, \\"input\\": Map { \\"type\\": \\"number\\", \\"step\\": 0.01 } }"
           />
           <span
             class="controls group vertical"

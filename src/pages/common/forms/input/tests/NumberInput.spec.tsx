@@ -19,13 +19,11 @@ describe('<NumberInput />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should increase value with proper step when clicking arrow', () => {
-        const {getByText} = render(
-            <NumberInput {...defaultProps} step={0.01} />
-        )
+    it('should increase value when clicking arrow', () => {
+        const {getByText} = render(<NumberInput {...defaultProps} />)
 
         fireEvent.click(getByText('arrow_drop_up'))
-        expect(defaultProps.onChange).toHaveBeenCalledWith(6.01)
+        expect(defaultProps.onChange).toHaveBeenCalledWith(7)
     })
 
     it('should not increase value when input is disabled', () => {
@@ -53,36 +51,5 @@ describe('<NumberInput />', () => {
         expect(input.value).toBe('6')
         fireEvent.change(input, {target: {value: ''}})
         expect(input.value).toBe('')
-    })
-
-    it('should initialize with rounded price', () => {
-        const id = 'test-input'
-        const screen = render(
-            <NumberInput
-                {...defaultProps}
-                value={1.234567}
-                step={0.01}
-                data-testid={id}
-            />
-        )
-
-        const input = screen.getByTestId(id) as HTMLInputElement
-        expect(input.value).toBe('1.23')
-    })
-
-    it('should update with formatted price', () => {
-        const id = 'test-input'
-        const screen = render(
-            <NumberInput
-                {...defaultProps}
-                value={13}
-                step={0.01}
-                data-testid={id}
-            />
-        )
-
-        const input = screen.getByTestId(id) as HTMLInputElement
-        fireEvent.blur(input)
-        expect(input.value).toBe('13.00')
     })
 })

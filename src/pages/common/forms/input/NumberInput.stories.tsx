@@ -27,7 +27,6 @@ const templateParameters = {
             'min',
             'placeholder',
             'value',
-            'step',
         ],
     },
 }
@@ -35,7 +34,6 @@ const templateParameters = {
 const defaultProps: Partial<ComponentProps<typeof NumberInput>> = {
     placeholder: '42',
     value: 0,
-    step: 1,
 }
 
 export const Default = Template.bind({})
