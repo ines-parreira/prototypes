@@ -40,9 +40,12 @@ type OwnProps = {
 export function GorgiasChatIntegrationSelfServiceComponent({
     integration,
 }: OwnProps) {
-    const chatApplicationId: number = parseInt(
-        integration.getIn(['meta', 'app_id'])
-    )
+    const chatApplicationId: number | null = integration.getIn([
+        'meta',
+        'app_id',
+    ])
+        ? parseInt(integration.getIn(['meta', 'app_id']))
+        : null
     const {chatHelpCenterConfiguration, setChatHelpCenterConfiguration} =
         useChatHelpCenterConfiguration(chatApplicationId)
     const integrationType: string = integration.get('type')
@@ -136,6 +139,10 @@ export function GorgiasChatIntegrationSelfServiceComponent({
         isEnabled: boolean,
         helpCenterId: number
     ) => {
+        if (chatApplicationId === null) {
+            return
+        }
+
         if (!chatHelpCenterConfiguration) {
             try {
                 const response = await createChatHelpCenterConfiguration({
