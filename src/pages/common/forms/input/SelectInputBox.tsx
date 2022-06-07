@@ -156,7 +156,7 @@ const SelectInputBox = forwardRef(
         return (
             <SelectInputBoxContext.Provider value={contextValue}>
                 <div
-                    className={css.wrapper}
+                    className={classnames(css.wrapper, className)}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
                     ref={inputElement}
@@ -166,7 +166,6 @@ const SelectInputBox = forwardRef(
                     <div
                         className={classnames(
                             css.inputWrapper,
-                            className,
                             css[appendPosition],
                             {
                                 [css.hasError]: hasError,

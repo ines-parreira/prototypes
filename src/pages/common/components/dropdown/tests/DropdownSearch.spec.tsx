@@ -6,12 +6,13 @@ import DropdownSearch from '../DropdownSearch'
 
 const MockedComponent = (props: ComponentProps<typeof DropdownSearch>) => {
     const targetRef = useRef<HTMLDivElement>(null)
+    const [isOpen, setIsOpen] = useState(true)
     const options = ['Foo', 'Bar', 'Baz']
 
     return (
         <>
             <div ref={targetRef} />
-            <Dropdown isOpen onToggle={jest.fn()} target={targetRef}>
+            <Dropdown isOpen={isOpen} onToggle={jest.fn()} target={targetRef}>
                 <DropdownSearch {...props} />
 
                 <DropdownContext.Consumer>
@@ -35,6 +36,7 @@ const MockedComponent = (props: ComponentProps<typeof DropdownSearch>) => {
                     }}
                 </DropdownContext.Consumer>
             </Dropdown>
+            <div onClick={() => setIsOpen(!isOpen)}>toggle</div>
         </>
     )
 }
@@ -83,6 +85,19 @@ describe('<DropdownSearch />', () => {
         fireEvent.change(getByPlaceholderText(/Search/), {
             target: {value: 'ba'},
         })
+        expect(getAllByTestId('option')).toMatchSnapshot()
+    })
+
+    it('should clear the query when unmounting', () => {
+        const {getAllByTestId, getByPlaceholderText, getByText} = render(
+            <MockedComponent />
+        )
+
+        fireEvent.change(getByPlaceholderText(/Search/), {
+            target: {value: 'ba'},
+        })
+        fireEvent.click(getByText(/toggle/))
+        fireEvent.click(getByText(/toggle/))
         expect(getAllByTestId('option')).toMatchSnapshot()
     })
 })

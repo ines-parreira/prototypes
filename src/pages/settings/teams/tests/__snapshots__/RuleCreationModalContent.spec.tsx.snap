@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleCreationModalContent /> should render 1`] = `
+<form>
+  <div
+    class="wrapper"
+  >
+    <div>
+      <div
+        class="title"
+      >
+        Assign tickets to this team
+      </div>
+      <div
+        class="subtitle"
+      >
+        Create a rule to assign new tickets to this team. You will be able to edit it later in the 'Rules' settings page
+      </div>
+    </div>
+    <i
+      class="material-icons icon"
+    >
+      close
+    </i>
+  </div>
+  <div
+    class="wrapper"
+  >
+    <label
+      class="label label"
+      for="name"
+    >
+      Rule name
+      <abbr
+        aria-label="required"
+        class="abbr"
+        title="required"
+      >
+        *
+      </abbr>
+    </label>
+    <div
+      class="wrapper isFocused"
+    >
+      <input
+        class="input"
+        id="name"
+        name="name"
+        placeholder="[Auto assign] foo"
+        required=""
+        type="text"
+        value="[Auto assign] foo"
+      />
+    </div>
+    <div
+      class="ruleSelectWrapper"
+    >
+      <div
+        class="wrapper selectInput keyInput"
+        role="listbox"
+        tabindex="0"
+      >
+        <div
+          class="inputWrapper"
+        >
+          <div
+            class="input"
+          >
+            Channel
+          </div>
+          <i
+            class="affix suffix toggle material-icons"
+          >
+            arrow_drop_down
+          </i>
+        </div>
+      </div>
+      <span
+        class="operator"
+      >
+        is one of
+      </span>
+      <div
+        class="wrapper selectInput"
+        role="listbox"
+        tabindex="0"
+      >
+        <div
+          class="inputWrapper"
+        >
+          <div
+            class="input"
+          >
+            email
+          </div>
+          <i
+            class="affix suffix toggle material-icons"
+          >
+            arrow_drop_down
+          </i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="wrapper wrapper"
+  >
+    <div
+      class="actions"
+    >
+      <div
+        class="childWrapper"
+      >
+        <button
+          class="wrapper fill secondary medium"
+          type="button"
+        >
+          Create rule later
+        </button>
+      </div>
+      <div
+        class="childWrapper"
+      >
+        <button
+          class="wrapper fill primary medium"
+          type="submit"
+        >
+          Create Rule
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+`;

@@ -33,6 +33,26 @@ Array [
 ]
 `;
 
+exports[`<DropdownSearch /> should clear the query when unmounting 1`] = `
+Array [
+  <div
+    data-testid="option"
+  >
+    Foo
+  </div>,
+  <div
+    data-testid="option"
+  >
+    Bar
+  </div>,
+  <div
+    data-testid="option"
+  >
+    Baz
+  </div>,
+]
+`;
+
 exports[`<DropdownSearch /> should filter and highlight the results when searching 1`] = `
 Array [
   <div
@@ -70,6 +90,9 @@ exports[`<DropdownSearch /> should render 1`] = `
 <body>
   <div>
     <div />
+    <div>
+      toggle
+    </div>
   </div>
   <div
     id="floating-ui-root"

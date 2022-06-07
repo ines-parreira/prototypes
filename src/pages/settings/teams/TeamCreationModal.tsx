@@ -28,6 +28,8 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
+import Wizard, {WizardContext} from 'pages/common/components/wizard/Wizard'
+import WizardStep from 'pages/common/components/wizard/WizardStep'
 import InputField from 'pages/common/forms/input/InputField'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import SelectInputBox, {
@@ -41,12 +43,15 @@ import {Team} from 'state/teams/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import css from './TeamCreationModal.less'
+import RuleCreationModalContent from './RuleCreationModalContent'
 
 type Props = {
     isOpen: boolean
     onClose: () => void
     onTeamCreated: (team: Team) => void
 }
+
+const steps = ['teamCreation', 'ruleCreation']
 
 export default function TeamCreationModal({
     isOpen,
@@ -72,6 +77,7 @@ export default function TeamCreationModal({
         },
     ] = useList<number>([])
     const previousIsOpen = usePrevious(isOpen)
+    const [team, setTeam] = useState<Team | null>()
 
     const membersLabel = useMemo(() => {
         if (memberIds.length > 5) {
@@ -121,7 +127,7 @@ export default function TeamCreationModal({
     )
 
     const [{loading: isSubmitting}, submitTeam] = useAsyncFn(
-        async (event: FormEvent) => {
+        async (event: FormEvent, setActiveStep: (nextStep: string) => void) => {
             event.preventDefault()
             const res = (await dispatch(
                 createTeam(
@@ -137,21 +143,26 @@ export default function TeamCreationModal({
             )) as AnyAction
 
             if (!res.error) {
+                const createdTeam: Team = (
+                    res as unknown as Map<any, any>
+                ).toJS()
                 logEvent(SegmentEvent.TeamCreation, {'referrer-page': 'teams'})
-                onClose()
+                setTeam(createdTeam)
                 resetForm()
-                onTeamCreated((res as unknown as Map<any, any>).toJS())
+                setActiveStep('ruleCreation')
+                onTeamCreated(createdTeam)
             }
         },
         [description, emoji, memberIds, name, resetForm]
     )
 
-    const handleSubmit = useCallback(
-        async (event: FormEvent) => {
-            if (isValidForm) {
-                await submitTeam(event)
-            }
-        },
+    const handleTeamCreationSubmit = useCallback(
+        (setActiveStep: (nextStep: string) => void) =>
+            async (event: FormEvent) => {
+                if (isValidForm) {
+                    await submitTeam(event, setActiveStep)
+                }
+            },
         [isValidForm, submitTeam]
     )
 
@@ -166,105 +177,178 @@ export default function TeamCreationModal({
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <div ref={ref}>
-                <form onSubmit={handleSubmit}>
-                    <ModalHeader title="Create team" />
-                    <ModalBody>
-                        <Label className={css.label} isRequired htmlFor="name">
-                            Team name
-                        </Label>
-                        <InputGroup className={css.inputGroup}>
-                            <EmojiSelect
-                                className={css.emojiSelect}
-                                emoji={(emoji as BaseEmoji)?.native}
-                                onEmojiSelect={(emoji) => {
-                                    setEmoji(
-                                        Object.values(emojiIndex.emojis).find(
-                                            (value) =>
-                                                (value as BaseEmoji)?.native ===
-                                                emoji
-                                        ) as EmojiData | undefined
-                                    )
-                                }}
-                                onEmojiClear={() => setEmoji(undefined)}
-                                container={ref}
-                            />
-                            <TextInput
-                                id="name"
-                                value={name || ''}
-                                placeholder="Team name"
-                                onChange={setName}
-                                autoFocus
-                                isRequired
-                            />
-                        </InputGroup>
-                        <InputField
-                            id="description"
-                            label="Description"
-                            className={css.inputGroup}
-                            value={description || ''}
-                            placeholder="Works on making things awesome!"
-                            onChange={setDescription}
-                        />
-                        <Label className={css.label} isRequired>
-                            Team members
-                        </Label>
-                        <SelectInputBox
-                            floating={floatingRef}
-                            label={membersLabel}
-                            onToggle={setIsMemberSelectOpen}
-                            placeholder="Add at least 1 team member"
-                            ref={targetRef}
-                        >
-                            <SelectInputBoxContext.Consumer>
-                                {(context) => (
-                                    <Dropdown
-                                        isMultiple
-                                        isOpen={isMemberSelectOpen}
-                                        onToggle={() => context!.onBlur()}
-                                        ref={floatingRef}
-                                        target={targetRef}
-                                        value={memberIds}
+                <Wizard steps={steps}>
+                    <WizardStep name="teamCreation">
+                        <WizardContext.Consumer>
+                            {(context) => {
+                                if (!context) {
+                                    return
+                                }
+
+                                return (
+                                    <form
+                                        onSubmit={handleTeamCreationSubmit(
+                                            context.setActiveStep
+                                        )}
                                     >
-                                        <DropdownSearch autoFocus />
-                                        <DropdownQuickSelect
-                                            count={values.length}
-                                            onRemoveAll={() => setMemberIds([])}
-                                            onSelectAll={() =>
-                                                setMemberIds(values)
-                                            }
-                                            values={values}
-                                        />
-                                        <DropdownBody>
-                                            {agents.map(
-                                                (agent: Map<any, any>) => (
-                                                    <UserDropdownItem
-                                                        agent={agent}
-                                                        key={agent.get('id')}
-                                                        onMemberChange={
-                                                            handleMemberChange
-                                                        }
-                                                    />
-                                                )
-                                            )}
-                                        </DropdownBody>
-                                    </Dropdown>
-                                )}
-                            </SelectInputBoxContext.Consumer>
-                        </SelectInputBox>
-                    </ModalBody>
-                    <ModalActionsFooter>
-                        <Button intent="secondary" onClick={onClose}>
-                            Cancel
-                        </Button>
-                        <Button
-                            type="submit"
-                            isDisabled={!isValidForm}
-                            isLoading={isSubmitting}
-                        >
-                            Create team
-                        </Button>
-                    </ModalActionsFooter>
-                </form>
+                                        <ModalHeader title="Create team" />
+                                        <ModalBody>
+                                            <Label
+                                                className={css.label}
+                                                isRequired
+                                                htmlFor="name"
+                                            >
+                                                Team name
+                                            </Label>
+                                            <InputGroup
+                                                className={css.inputGroup}
+                                            >
+                                                <EmojiSelect
+                                                    className={css.emojiSelect}
+                                                    emoji={
+                                                        (emoji as BaseEmoji)
+                                                            ?.native
+                                                    }
+                                                    onEmojiSelect={(emoji) => {
+                                                        setEmoji(
+                                                            Object.values(
+                                                                emojiIndex.emojis
+                                                            ).find(
+                                                                (value) =>
+                                                                    (
+                                                                        value as BaseEmoji
+                                                                    )
+                                                                        ?.native ===
+                                                                    emoji
+                                                            ) as
+                                                                | EmojiData
+                                                                | undefined
+                                                        )
+                                                    }}
+                                                    onEmojiClear={() =>
+                                                        setEmoji(undefined)
+                                                    }
+                                                    container={ref}
+                                                />
+                                                <TextInput
+                                                    id="name"
+                                                    value={name || ''}
+                                                    placeholder="Team name"
+                                                    onChange={setName}
+                                                    autoFocus
+                                                    isRequired
+                                                />
+                                            </InputGroup>
+                                            <InputField
+                                                id="description"
+                                                label="Description"
+                                                className={css.inputGroup}
+                                                value={description || ''}
+                                                placeholder="Works on making things awesome!"
+                                                onChange={setDescription}
+                                            />
+                                            <Label
+                                                className={css.label}
+                                                isRequired
+                                            >
+                                                Team members
+                                            </Label>
+                                            <SelectInputBox
+                                                floating={floatingRef}
+                                                label={membersLabel}
+                                                onToggle={setIsMemberSelectOpen}
+                                                placeholder="Add at least 1 team member"
+                                                ref={targetRef}
+                                            >
+                                                <SelectInputBoxContext.Consumer>
+                                                    {(context) => (
+                                                        <Dropdown
+                                                            isMultiple
+                                                            isOpen={
+                                                                isMemberSelectOpen
+                                                            }
+                                                            onToggle={() =>
+                                                                context!.onBlur()
+                                                            }
+                                                            ref={floatingRef}
+                                                            target={targetRef}
+                                                            value={memberIds}
+                                                        >
+                                                            <DropdownSearch
+                                                                autoFocus
+                                                            />
+                                                            <DropdownQuickSelect
+                                                                count={
+                                                                    values.length
+                                                                }
+                                                                onRemoveAll={() =>
+                                                                    setMemberIds(
+                                                                        []
+                                                                    )
+                                                                }
+                                                                onSelectAll={() =>
+                                                                    setMemberIds(
+                                                                        values
+                                                                    )
+                                                                }
+                                                                values={values}
+                                                            />
+                                                            <DropdownBody>
+                                                                {agents.map(
+                                                                    (
+                                                                        agent: Map<
+                                                                            any,
+                                                                            any
+                                                                        >
+                                                                    ) => (
+                                                                        <UserDropdownItem
+                                                                            agent={
+                                                                                agent
+                                                                            }
+                                                                            key={agent.get(
+                                                                                'id'
+                                                                            )}
+                                                                            onMemberChange={
+                                                                                handleMemberChange
+                                                                            }
+                                                                        />
+                                                                    )
+                                                                )}
+                                                            </DropdownBody>
+                                                        </Dropdown>
+                                                    )}
+                                                </SelectInputBoxContext.Consumer>
+                                            </SelectInputBox>
+                                        </ModalBody>
+                                        <ModalActionsFooter>
+                                            <Button
+                                                intent="secondary"
+                                                onClick={onClose}
+                                            >
+                                                Cancel
+                                            </Button>
+                                            <Button
+                                                type="submit"
+                                                isDisabled={!isValidForm}
+                                                isLoading={isSubmitting}
+                                            >
+                                                Create team
+                                            </Button>
+                                        </ModalActionsFooter>
+                                    </form>
+                                )
+                            }}
+                        </WizardContext.Consumer>
+                    </WizardStep>
+                    <WizardStep name="ruleCreation">
+                        {!!team && (
+                            <RuleCreationModalContent
+                                team={team}
+                                onClose={onClose}
+                            />
+                        )}
+                    </WizardStep>
+                </Wizard>
             </div>
         </Modal>
     )

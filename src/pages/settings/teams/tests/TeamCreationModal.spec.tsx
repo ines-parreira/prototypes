@@ -19,6 +19,10 @@ jest.mock('state/teams/actions', () => ({
     createTeam: jest.fn(() => () => Promise.resolve({})),
 }))
 
+jest.mock('pages/settings/teams/RuleCreationModalContent.tsx', () => () => (
+    <div>RuleCreationModalContent</div>
+))
+
 describe('<TeamCreationModal />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
@@ -102,7 +106,7 @@ describe('<TeamCreationModal />', () => {
         })
     })
 
-    it('should close modal and reset values once form has successfully been submitted', async () => {
+    it('should display the rule creation form once team creation form has successfully been submitted', async () => {
         const store = mockStore({
             agents: fromJS({
                 all: [{id: 1, name: 'foo bar'}],
@@ -125,12 +129,7 @@ describe('<TeamCreationModal />', () => {
         fireEvent.click(getAllByText(/create team/i)[1])
 
         await waitFor(() => {
-            expect(minProps.onClose).toHaveBeenCalled()
-            expect(getByLabelText(/team name/i).getAttribute('value')).toBe('')
-            expect(getByLabelText(/description/i).getAttribute('value')).toBe(
-                ''
-            )
-            expect(getByText(/Add at least 1 team member/i)).toBeTruthy()
+            expect(getByText(/RuleCreationModalContent/i)).toBeTruthy()
         })
     })
 

@@ -42,7 +42,7 @@ type Props = {
     root?: HTMLElement
     safeDistance?: number
     target: RefObject<HTMLElement | null>
-    value?: boolean | number | number[] | string | string[] | null
+    value?: boolean | number | string | Array<number | string> | null
 }
 
 type DropdownContextState = Pick<Props, 'isMultiple' | 'onToggle' | 'value'> & {

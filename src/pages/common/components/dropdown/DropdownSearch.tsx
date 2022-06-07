@@ -8,7 +8,12 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {useEffectOnce, usePrevious, useUpdateEffect} from 'react-use'
+import {
+    useEffectOnce,
+    usePrevious,
+    useUnmount,
+    useUpdateEffect,
+} from 'react-use'
 
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
@@ -64,6 +69,10 @@ const DropdownSearch = forwardRef(
             }
             onQueryChange(localQuery)
         }, [localQuery, previousLocalQuery])
+
+        useUnmount(() => {
+            onQueryChange('')
+        })
 
         return (
             <div className={classnames(css.wrapper, className)}>
