@@ -92,7 +92,10 @@ function useInstantiateDevice() {
         try {
             await client.post('/integrations/phone/call/canceled')
         } catch (error) {
-            onError(error, "Couldn't mark phone call as canceled")
+            const message = "Couldn't mark phone call as canceled"
+            error instanceof Error
+                ? onError(error, message)
+                : onError(new Error(message), message)
         }
     }, [onError])
 
@@ -134,7 +137,10 @@ function useInstantiateDevice() {
 
                 dispatch(setIsDialing(false))
             } catch (error) {
-                onError(error, "Couldn't mark phone call as accepted")
+                const message = "Couldn't mark phone call as accepted"
+                error instanceof Error
+                    ? onError(error, message)
+                    : onError(new Error(message), message)
             }
         },
         [dispatch, onCallAlreadyAccepted, onCancel, onError]
@@ -168,7 +174,9 @@ function useInstantiateDevice() {
                     shouldLogEvents &&
                         sendTwilioSocketEvent({
                             type: TwilioSocketEventType.DeviceError,
-                            data: {error},
+                            data: {
+                                error,
+                            },
                         })
                 }
             )

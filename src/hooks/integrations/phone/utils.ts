@@ -1,10 +1,11 @@
 import crypto from 'crypto'
 import {Call} from '@twilio/voice-sdk'
+import {pick} from 'lodash'
 
 import client from 'models/api/resources'
 import socketManager from 'services/socketManager/socketManager'
 import {SocketEventType} from 'services/socketManager/types'
-import {TwilioSocketEvent} from 'business/twilio'
+import {TwilioSocketEvent, TwilioSocketEventType} from 'business/twilio'
 
 export async function getToken(): Promise<string | null> {
     const response = await client.get('/integrations/phone/token')
@@ -13,7 +14,21 @@ export async function getToken(): Promise<string | null> {
 }
 
 export function sendTwilioSocketEvent(event: TwilioSocketEvent) {
-    socketManager.send(SocketEventType.TwilioEventTriggered, event)
+    if (
+        event.type === TwilioSocketEventType.CallError ||
+        event.type === TwilioSocketEventType.DeviceError
+    ) {
+        const error = pick(event.data.error, ['code', 'name', 'message'])
+        socketManager.send(SocketEventType.TwilioEventTriggered, {
+            ...event,
+            data: {
+                ...event.data,
+                error,
+            },
+        })
+    } else {
+        socketManager.send(SocketEventType.TwilioEventTriggered, event)
+    }
 }
 
 export function generateCallId(call: Call): string {
