@@ -6,12 +6,15 @@ import {EnhancedStore} from '@reduxjs/toolkit'
 
 import {TicketChannel} from 'business/types/ticket'
 import browserNotification from 'services/browserNotification'
+import {advancedPlan} from 'fixtures/subscriptionPlan'
+import {PlanWithCurrencySign} from 'state/billing/types'
 import {TicketStatuses} from '../../business/ticket'
 import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats'
 
 import * as chatActions from '../../state/chats/actions'
 import * as currentAccountConstants from '../../state/currentAccount/constants'
 import * as currentAccountSelectors from '../../state/currentAccount/selectors'
+import * as billingSelectors from '../../state/billing/selectors'
 import {viewsCountFetched} from '../../state/entities/viewsCount/actions'
 import * as integrationActions from '../../state/integrations/actions'
 import * as notificationActions from '../../state/notifications/actions'
@@ -200,8 +203,17 @@ describe('Config: socketEvents', () => {
             const accountUpdatedHandler = _find(receivedEvents, {
                 name: SocketEventType.AccountUpdated,
             })
+            const getPlanSpy = jest.spyOn(billingSelectors, 'getPlan')
 
             beforeEach(() => {
+                jest.useFakeTimers()
+                getPlanSpy.mockImplementation(
+                    () => () => advancedPlan as PlanWithCurrencySign
+                )
+            })
+
+            afterEach(() => {
+                jest.useRealTimers()
                 jest.resetAllMocks()
             })
 
@@ -352,6 +364,52 @@ describe('Config: socketEvents', () => {
                     })
                 }
             )
+
+            it('should not notify and reload app if new account plan is preloaded', () => {
+                const spy = jest.spyOn(notificationActions, 'notify')
+                ;(
+                    currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
+                        typeof currentAccountSelectors.getTicketAssignmentSettings
+                    >
+                ).mockReturnValue(fromJS({}))
+
+                if (accountUpdatedHandler) {
+                    accountUpdatedHandler.onReceive({
+                        account: {
+                            current_subscription: {plan: advancedPlan.id},
+                        },
+                    } as any)
+                }
+
+                expect(spy).not.toHaveBeenCalledWith({
+                    message:
+                        'The app will reload automatically in a few seconds to reflect your subscription changes.',
+                })
+                jest.runAllTimers()
+                expect(window.location.reload).not.toHaveBeenCalled()
+            })
+
+            it('should notify and reload app if new account plan is not preloaded', () => {
+                const spy = jest.spyOn(notificationActions, 'notify')
+                ;(
+                    currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
+                        typeof currentAccountSelectors.getTicketAssignmentSettings
+                    >
+                ).mockReturnValue(fromJS({}))
+
+                getPlanSpy.mockImplementation(() => () => undefined)
+
+                if (accountUpdatedHandler) {
+                    accountUpdatedHandler.onReceive({account: {}} as any)
+                }
+
+                expect(spy).toHaveBeenCalledWith({
+                    message:
+                        'The app will reload automatically in a few seconds to reflect your subscription changes.',
+                })
+                jest.runAllTimers()
+                expect(window.location.reload).toHaveBeenCalled()
+            })
         })
 
         describe('TICKET_MESSAGE_CHAT_CREATED handler', () => {

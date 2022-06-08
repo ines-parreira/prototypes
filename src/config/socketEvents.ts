@@ -20,6 +20,7 @@ import * as viewsConstants from '../state/views/constants'
 import * as currentAccountConstants from '../state/currentAccount/constants'
 
 import * as currentAccountSelectors from '../state/currentAccount/selectors'
+import * as currentBillingSelectors from '../state/billing/selectors'
 import * as currentUserSelectors from '../state/currentUser/selectors'
 import {getTeams} from '../state/teams/selectors'
 
@@ -512,6 +513,22 @@ export const receivedEvents: ReceivedEvent[] = [
 
             if (shouldFetchChats) {
                 chatsActions.fetchChatsThrottled(reduxStore.dispatch)
+            }
+
+            const newAccountPlan = account.current_subscription?.plan
+            const isPlanLoaded =
+                !!currentBillingSelectors.getPlan(newAccountPlan)(state)
+
+            if (!isPlanLoaded) {
+                reduxStore.dispatch(
+                    notificationsActions.notify({
+                        message:
+                            'The app will reload automatically in a few seconds to reflect your subscription changes.',
+                    }) as any
+                )
+                setTimeout(() => {
+                    window.location.reload()
+                }, 5000)
             }
 
             reduxStore.dispatch({
