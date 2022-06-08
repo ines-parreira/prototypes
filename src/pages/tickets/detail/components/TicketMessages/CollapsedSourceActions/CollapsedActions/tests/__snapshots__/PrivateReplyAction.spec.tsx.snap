@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PrivateReplyAction should display correct text for facebook comment 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    class="dropdownItem dropdown-item"
+    id="private-reply-button-1"
+    role="menuitem"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="icon"
+    >
+      <img
+        alt="private message icon"
+        class="messengerIcon"
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      class="content"
+    >
+      <div
+        class="title"
+      >
+        Message
+      </div>
+      <div
+        class="description"
+      >
+        Respond with a  message
+      </div>
+    </div>
+  </button>
+</div>
+`;
+
+exports[`PrivateReplyAction should display correct text for instagram comment 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    class="dropdownItem dropdown-item"
+    id="private-reply-button-1"
+    role="menuitem"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="icon"
+    >
+      <img
+        alt="private message icon"
+        class="instagramDirectMessageIcon"
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      class="content"
+    >
+      <div
+        class="title"
+      >
+        Message
+      </div>
+      <div
+        class="description"
+      >
+        Respond with a direct message
+      </div>
+    </div>
+  </button>
+</div>
+`;

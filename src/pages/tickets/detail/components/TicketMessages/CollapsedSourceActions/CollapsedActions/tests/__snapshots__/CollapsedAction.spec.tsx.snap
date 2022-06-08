@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CollapsedAction should display dropdown item with arrow icon 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    class="dropdownItem dropdown-item"
+    role="menuitem"
+    tabindex="0"
+    type="button"
+  >
+    <div
+      class="icon"
+    >
+      <div>
+        icon
+      </div>
+    </div>
+    <div
+      class="content"
+    >
+      <div
+        class="title"
+      >
+        Title
+      </div>
+      <div
+        class="description"
+      >
+        Description
+      </div>
+    </div>
+    <div
+      class="forwardIcon"
+    >
+      <i
+        class="material-icons"
+      >
+        arrow_forward_ios
+      </i>
+    </div>
+  </button>
+</div>
+`;

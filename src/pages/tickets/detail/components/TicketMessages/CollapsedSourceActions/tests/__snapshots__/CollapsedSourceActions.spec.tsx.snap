@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CollapsedSourceActions should not render any options 1`] = `null`;
+
+exports[`CollapsedSourceActions should render all options 1`] = `
+<div
+  class="dropdown dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="btn btn-secondary hidden-sm-down dropdownToggle btn btn-secondary"
+    type="button"
+  >
+    <i
+      class="material-icons"
+      title="More"
+    >
+      more_vert
+    </i>
+  </button>
+  <div
+    aria-hidden="true"
+    class="menuWrapper dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <div
+      class="menu"
+    >
+      <div
+        class="actions"
+      >
+        <button
+          class="dropdownItem dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="icon"
+          >
+            <i
+              class="material-icons"
+            >
+              visibility_off
+            </i>
+          </div>
+          <div
+            class="content"
+          >
+            <div
+              class="title"
+            >
+              Unhide comment
+            </div>
+            <div
+              class="description"
+            >
+              Unhide the comment in Instagram
+            </div>
+          </div>
+        </button>
+        <button
+          class="dropdownItem dropdown-item"
+          id="private-reply-button-1"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="icon"
+          >
+            <img
+              alt="private message icon"
+              class="instagramDirectMessageIcon"
+              src="test-file-stub"
+            />
+          </div>
+          <div
+            class="content"
+          >
+            <div
+              class="title"
+            >
+              Message
+            </div>
+            <div
+              class="description"
+            >
+              Respond with a direct message
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

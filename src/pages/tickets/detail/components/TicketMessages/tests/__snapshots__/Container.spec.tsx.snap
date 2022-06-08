@@ -62,7 +62,6 @@ exports[`Container should render container 1`] = `
           "via": "email",
         }
       }
-      showIntents={true}
       timezone="America/Los_Angeles"
     />
     <Footer
@@ -183,7 +182,6 @@ exports[`Container should render container with an avatar because the hidden mes
           "via": "facebook",
         }
       }
-      showIntents={true}
       timezone="America/Los_Angeles"
     />
     <Footer
@@ -294,7 +292,6 @@ exports[`Container should render container with isBodyHiglighted because it shou
           "via": "email",
         }
       }
-      showIntents={true}
       timezone="America/Los_Angeles"
     />
     <Footer
@@ -397,7 +394,6 @@ exports[`Container should render container without an avatar because the message
           "via": "email",
         }
       }
-      showIntents={true}
       timezone="America/Los_Angeles"
     />
     <Footer
@@ -500,7 +496,6 @@ exports[`Container should render container without an avatar because the message
           "via": "email",
         }
       }
-      showIntents={true}
       timezone="America/Los_Angeles"
     />
     <Footer

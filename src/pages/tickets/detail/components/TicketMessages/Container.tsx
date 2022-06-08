@@ -104,10 +104,6 @@ export default class Container extends Component<Props> {
                         hasError={isFailed(message)}
                         isMessageHidden={isMessageHidden}
                         isMessageDeleted={isMessageDeleted}
-                        showIntents={
-                            React.Children.count(children) <= 1 &&
-                            !message.from_agent
-                        }
                     />
                     {children}
                     <Footer

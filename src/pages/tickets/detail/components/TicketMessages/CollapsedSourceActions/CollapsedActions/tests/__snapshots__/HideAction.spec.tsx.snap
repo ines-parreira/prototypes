@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HideAction should display correct text for hiding instagram comment 1`] = `
+<div
+  class="content"
+>
+  <div
+    class="title"
+  >
+    Hide comment
+  </div>
+  <div
+    class="description"
+  >
+    Hide the comment in Instagram
+  </div>
+</div>
+`;
+
+exports[`HideAction should display correct text for unhiding non-instagram comment 1`] = `
+<div
+  class="content"
+>
+  <div
+    class="title"
+  >
+    Unhide comment
+  </div>
+  <div
+    class="description"
+  >
+    Unhide the comment in Facebook
+  </div>
+</div>
+`;
