@@ -12,6 +12,7 @@ import _uniqueId from 'lodash/uniqueId'
 import _noop from 'lodash/noop'
 import {Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
+import {CustomerContext, CustomerContextType} from 'providers/CustomerContext'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
@@ -22,10 +23,6 @@ import {getPendingActionCallbacks} from 'state/infobar/selectors'
 import {actionButtonHashForData} from 'state/infobar/utils'
 import {RootState} from 'state/types'
 import Tooltip from 'pages/common/components/Tooltip'
-import {
-    CustomerContext,
-    CustomerContextType,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
 
 import {IntegrationContext, IntegrationContextType} from './IntegrationContext'
 

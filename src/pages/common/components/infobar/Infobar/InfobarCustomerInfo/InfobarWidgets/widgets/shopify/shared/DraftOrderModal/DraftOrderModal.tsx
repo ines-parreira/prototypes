@@ -6,6 +6,8 @@ import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {useUpdateEffect, usePrevious} from 'react-use'
 
+import {CustomerContext} from 'providers/CustomerContext'
+
 import {
     Product,
     Variant,
@@ -33,7 +35,6 @@ import {DatetimeLabel} from '../../../../../../../../../utils/labels'
 import Loader from '../../../../../../../../Loader/Loader'
 import {InfobarModalProps} from '../../../types'
 import DEPRECATED_Modal from '../../../../../../../../DEPRECATED_Modal'
-import {CustomerContext} from '../../../../../InfobarCustomerInfo'
 import {IntegrationContext} from '../../../IntegrationContext'
 import {ShopifyActionType} from '../../types'
 import Alert, {AlertType} from '../../../../../../../../Alert/Alert'

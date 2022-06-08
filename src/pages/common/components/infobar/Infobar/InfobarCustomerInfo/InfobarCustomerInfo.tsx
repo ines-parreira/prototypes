@@ -1,4 +1,4 @@
-import React, {createContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
@@ -11,6 +11,7 @@ import {itemsWithContext} from 'state/widgets/utils'
 import {getDisplayName} from 'state/customers/helpers'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
+import {CustomerContext} from 'providers/CustomerContext'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import css from 'pages/common/components/infobar/Infobar.less'
@@ -24,13 +25,6 @@ import CustomerChannels from './CustomerChannels'
 import CustomerNote from './CustomerNote/CustomerNote'
 import InfobarWidgets from './InfobarWidgets/InfobarWidgets.js'
 import AddIntegrationSuggestion from './AddIntegrationSuggestion'
-
-export type CustomerContextType = {
-    customerId: number | null
-}
-export const CustomerContext = createContext<CustomerContextType>({
-    customerId: null,
-})
 
 type GenerateButtonProps = {
     setEditedWidgets: (items: Map<any, any>[]) => void

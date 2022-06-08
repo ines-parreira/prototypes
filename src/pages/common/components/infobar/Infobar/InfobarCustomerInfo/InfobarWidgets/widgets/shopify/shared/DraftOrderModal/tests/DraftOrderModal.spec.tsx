@@ -13,7 +13,7 @@ import {
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
-import {CustomerContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {CustomerContext} from 'providers/CustomerContext'
 import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'

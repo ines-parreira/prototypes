@@ -12,7 +12,7 @@ import {
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
-import {CustomerContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {CustomerContext} from 'providers/CustomerContext'
 import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import AddCustomItemPopover from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/AddCustomItemPopover/AddCustomItemPopover'
 import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'

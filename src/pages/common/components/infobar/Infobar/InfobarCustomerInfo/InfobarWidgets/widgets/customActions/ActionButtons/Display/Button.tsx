@@ -15,7 +15,7 @@ import {getPendingActionCallbacks} from 'state/infobar/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {ContentType} from 'models/api/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {CustomerContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {CustomerContext} from 'providers/CustomerContext'
 import {WidgetListContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ListInfobar'
 import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 

@@ -4,7 +4,7 @@ import {render, fireEvent} from '@testing-library/react'
 
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {shopifyCustomerFixture} from 'fixtures/shopify'
-import {CustomerContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {CustomerContext} from 'providers/CustomerContext'
 import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import {EditOrderShippingAddressModal} from '../EditOrderShippingAddressModal'
 
