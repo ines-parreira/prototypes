@@ -236,39 +236,18 @@ export class APIViewContainer extends Component<Props, State> {
                     <div className={css.contentWrapper}>
                         <div className={classnames('body-regular', css.mb32)}>
                             <p>
-                                Gorgias prides itself on being a
-                                developer-friendly helpdesk. We expose a{' '}
-                                <a
-                                    href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    RESTful API
-                                </a>{' '}
-                                to make it easy for you to get, create, update
-                                and delete many objects including customers,
-                                tickets, messages and events. To find out more
-                                about our API, please consult our docs here:
+                                We use HTTP basic authentication to authenticate
+                                API requests. Below are the parameters you will
+                                need to access our API. For more details, please
+                                consult our{' '}
                                 <a
                                     href="https://developers.gorgias.com/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    {' '}
-                                    https://developers.gorgias.com/
+                                    Developer Documentation
                                 </a>
                                 .
-                            </p>
-                            <p>
-                                Below are the parameters you will need to access
-                                our API. We're using{' '}
-                                <a
-                                    href="https://en.wikipedia.org/wiki/Basic_access_authentication"
-                                    rel="noopener noreferrer"
-                                >
-                                    HTTP basic authentication
-                                </a>{' '}
-                                to authenticate API requests.
                             </p>
                         </div>
                         <div
@@ -375,7 +354,7 @@ export class APIViewContainer extends Component<Props, State> {
 
                         <div
                             className={classnames(
-                                'heading-subsection-semibold',
+                                'heading-section-semibold',
                                 css.mb8
                             )}
                         >
