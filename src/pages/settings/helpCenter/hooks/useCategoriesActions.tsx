@@ -181,15 +181,38 @@ export const useCategoriesActions = () => {
                     payload
                 )
 
+                if (payload.locale === viewLanguage) {
+                    dispatch(updateCategoryTranslation(translation.data))
+
+                    const previousParentId =
+                        categoriesById[categoryId].translation
+                            ?.parent_category_id ?? null
+                    const currentParentId =
+                        translation.data.parent_category_id ?? null
+                    if (previousParentId !== currentParentId) {
+                        const categoriesToUpdate = getCategoriesToUpdate({
+                            categories: categoriesById,
+                            categoryId,
+                            previousParentId,
+                            currentParentId,
+                            translation: translation.data,
+                        })
+
+                        dispatch(
+                            saveCategories({
+                                categories: categoriesToUpdate,
+                                shouldReset: false,
+                            })
+                        )
+                    }
+                }
+
                 dispatch(
                     pushCategorySupportedLocales({
                         categoryId,
                         supportedLocales: [payload.locale],
                     })
                 )
-                if (payload.locale === viewLanguage) {
-                    dispatch(updateCategoryTranslation(translation.data))
-                }
 
                 setIsLoading(false)
 

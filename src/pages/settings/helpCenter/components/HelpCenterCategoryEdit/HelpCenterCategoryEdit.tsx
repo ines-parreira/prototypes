@@ -109,7 +109,6 @@ export const HelpCenterCategoryEdit = ({
     const [description, setDescription] = useState('')
     const [metaTitle, setMetaTitle] = useState<string | null>(null)
     const [metaDescription, setMetaDescription] = useState<string | null>(null)
-    const [locale, setLocale] = useState(viewLanguage)
     const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
     const [pendingDeleteCategory, setPendingDeleteCategory] = useState(false)
     const categoryTitleRef = useRef<HTMLInputElement>(null)
@@ -122,8 +121,8 @@ export const HelpCenterCategoryEdit = ({
     const [parentOptions, setParentOptions] = useState<Option[]>([])
     const clearSelectionText = 'Clear selection'
     const categoryOptionCandidates = useMemo(
-        () => eligibleParentCategories(categories, locale, category),
-        [categories, locale, category]
+        () => eligibleParentCategories(categories, viewLanguage, category),
+        [categories, viewLanguage, category]
     )
     const [hasPendingChanges, setHasPendingChanges] = useState(false)
     const [isAttemptingToClose, setIsAttemptingToClose] = useState(false)
@@ -155,32 +154,26 @@ export const HelpCenterCategoryEdit = ({
     )
 
     useEffect(() => {
-        setLocale(viewLanguage)
-    }, [viewLanguage])
-
-    useEffect(() => {
-        if (isOpen && category?.id) {
+        if (
+            isOpen &&
+            category?.id &&
+            category.translation?.locale === viewLanguage
+        ) {
             setTitle(translation?.title || '')
             setSlug(translation?.slug || '')
             setDescription(translation?.description || '')
             setMetaTitle(translation?.seo_meta.title || null)
             setMetaDescription(translation?.seo_meta.description || null)
-            setParentCategory(
-                category.translation?.parent_category_id ?? undefined
-            )
-
-            if (translation?.locale) {
-                setLocale(translation?.locale)
-            }
         } else {
             setTitle('')
             setSlug('')
             setDescription('')
             setMetaTitle(null)
             setMetaDescription(null)
-            setLocale(viewLanguage)
-            setParentCategory(parentCategoryId)
         }
+        setParentCategory(
+            category?.translation?.parent_category_id ?? parentCategoryId
+        )
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, category, translation, viewLanguage])
 
@@ -224,7 +217,6 @@ export const HelpCenterCategoryEdit = ({
     }
 
     const handleOnChangeLocale = (localeCode: LocaleCode) => {
-        setLocale(localeCode)
         onLocaleChange(localeCode)
     }
 
@@ -277,7 +269,7 @@ export const HelpCenterCategoryEdit = ({
         if (isCreate) {
             onCreate?.({
                 translation: {
-                    locale,
+                    locale: viewLanguage,
                     title,
                     parent_category_id: parentCategory,
                     slug,
@@ -303,7 +295,7 @@ export const HelpCenterCategoryEdit = ({
                     description: metaDescription,
                 },
             },
-            locale
+            viewLanguage
         )
     }
 
@@ -337,7 +329,7 @@ export const HelpCenterCategoryEdit = ({
     const copyURL = () => {
         const categoryId = category?.id
 
-        copy(getCategoryUrl({domain, locale, slug, categoryId}))
+        copy(getCategoryUrl({domain, locale: viewLanguage, slug, categoryId}))
 
         void dispatch(
             notify({
@@ -352,7 +344,7 @@ export const HelpCenterCategoryEdit = ({
         [canSave, title, slug]
     )
 
-    const slugPrefix = getCategoryUrl({domain, locale})
+    const slugPrefix = getCategoryUrl({domain, locale: viewLanguage})
     const slugSuffix = category?.id ? `-${category.id.toString()}` : ''
 
     return (
@@ -369,7 +361,7 @@ export const HelpCenterCategoryEdit = ({
                 <h3>Category Settings</h3>
                 <Drawer.HeaderActions>
                     <ArticleLanguageSelect
-                        selected={locale}
+                        selected={viewLanguage}
                         list={localeOptions}
                         onSelect={handleOnChangeLocale}
                         onActionClick={handleOnClickAction}

@@ -18,6 +18,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {MODALS} from 'pages/settings/helpCenter/constants'
 import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
 import {HelpCenterCategoryEdit} from 'pages/settings/helpCenter/components/HelpCenterCategoryEdit'
+import {changeViewLanguage} from 'state/ui/helpCenter'
 
 type Props = {
     helpCenter: HelpCenter
@@ -199,9 +200,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
             canSave={!categoriesActions.isLoading}
             translation={translation}
             onLocaleChange={(locale) => {
-                if (category?.id) {
-                    void getCategoryTranslation(category.id, locale)
-                }
+                dispatch(changeViewLanguage(locale))
             }}
             onSave={handleOnSave}
             onCreate={handleOnCreate}

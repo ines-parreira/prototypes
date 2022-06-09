@@ -9,7 +9,6 @@ import {initialState as articlesState} from 'state/entities/helpCenter/articles/
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {RootState, StoreDispatch} from 'state/types'
-import {HELP_CENTER_DOMAIN} from 'pages/settings/helpCenter/constants'
 import {getSingleCustomDomainResponseFixture as customDomain} from 'pages/settings/helpCenter/fixtures/getCustomDomainsResponse.fixture'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
@@ -34,6 +33,8 @@ const store = mockStore(defaultState)
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
+
+const onLocaleChange = jest.fn()
 
 const wrapper = ({children}: {children?: React.ReactNode}) => (
     <Provider store={store}>{children}</Provider>
@@ -63,7 +64,7 @@ const Example = ({
                 canSave={canSave}
                 helpCenter={helpCenter}
                 onClose={() => setOpen(false)}
-                onLocaleChange={jest.fn()}
+                onLocaleChange={onLocaleChange}
                 onDeleteTranslation={jest.fn()}
             />
         </Provider>
@@ -143,16 +144,10 @@ describe('<HelpCenterCategoryEdit />', () => {
     it('changes the language in the slug domain', () => {
         const {getByTestId} = render(<Example isOpen />)
 
-        expect(getByTestId('slug-prefix').textContent).toEqual(
-            `http://${getSingleHelpCenterResponseFixture.subdomain}${HELP_CENTER_DOMAIN}/en-US/articles/`
-        )
-
         fireEvent.click(getByTestId('dropdown-select-trigger'))
         fireEvent.click(getByTestId('option-fr-FR'))
 
-        expect(getByTestId('slug-prefix').textContent).toEqual(
-            `http://${getSingleHelpCenterResponseFixture.subdomain}${HELP_CENTER_DOMAIN}/fr-FR/articles/`
-        )
+        expect(onLocaleChange).toHaveBeenCalledWith('fr-FR')
     })
 
     it("displays the custom domain's hostname in slug", () => {
