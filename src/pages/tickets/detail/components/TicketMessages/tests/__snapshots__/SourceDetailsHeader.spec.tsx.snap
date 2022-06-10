@@ -24,53 +24,43 @@ exports[`<SourceDetailsHeader/> should render a \`go to ticket\` link instead of
   className="wrapper"
 >
   <Connect(SourceActionsHeader)
-    message={
+    fromAgent={false}
+    messageCreatedDatetime=""
+    meta={
       Object {
-        "channel": "facebook",
-        "created_datetime": "",
-        "from_agent": false,
-        "id": 1,
-        "isMessage": true,
-        "meta": Object {
-          "hidden_datetime": "2020-06-18T14:10:14.291746",
-          "is_duplicated": true,
-          "private_reply": Object {
-            "original_ticket_id": 1234,
-          },
+        "hidden_datetime": "2020-06-18T14:10:14.291746",
+        "is_duplicated": true,
+        "private_reply": Object {
+          "original_ticket_id": 1234,
         },
-        "public": true,
-        "receiver": Object {
-          "email": "mary.poppins@example.com",
-          "firstname": "Mary",
-          "id": 2,
-          "lastname": "Poppins",
-          "name": "Mary Poppins",
-        },
-        "sender": Object {
-          "email": "john.doe@example.com",
-          "firstname": "John",
-          "id": 1,
-          "lastname": "Doe",
-          "name": "John Doe",
-        },
-        "source": Object {
-          "from": Object {
-            "address": "657788504429455-657788504429455",
-            "name": "Page",
-          },
-          "to": Array [
-            Object {
-              "address": "657788504429455-4135481299826174",
-              "name": "Cust Omer",
-            },
-          ],
-          "type": "facebook-comment",
-        },
-        "subject": "Some subject",
-        "uri": "http://example.com/messages/1",
-        "via": "facebook",
       }
     }
+    sender={
+      Object {
+        "email": "john.doe@example.com",
+        "firstname": "John",
+        "id": 1,
+        "lastname": "Doe",
+        "name": "John Doe",
+      }
+    }
+    senderId={1}
+    source={
+      Object {
+        "from": Object {
+          "address": "657788504429455-657788504429455",
+          "name": "Page",
+        },
+        "to": Array [
+          Object {
+            "address": "657788504429455-4135481299826174",
+            "name": "Cust Omer",
+          },
+        ],
+        "type": "facebook-comment",
+      }
+    }
+    ticketMessageId={1}
   />
   <From
     key="ref-widget"
@@ -92,58 +82,36 @@ exports[`<SourceDetailsHeader/> should render a DatetimeLabel and the SourceActi
   className="wrapper"
 >
   <Connect(SourceActionsHeader)
-    message={
+    fromAgent={false}
+    integrationId={null}
+    messageCreatedDatetime=""
+    meta={null}
+    sender={
       Object {
-        "actions": null,
-        "attachments": Array [],
-        "channel": "facebook",
-        "created_datetime": "",
-        "external_id": null,
-        "failed_datetime": null,
-        "from_agent": false,
+        "email": "john.doe@example.com",
+        "firstname": "John",
         "id": 1,
-        "integration_id": null,
-        "isMessage": true,
-        "is_retriable": false,
-        "meta": null,
-        "opened_datetime": null,
-        "public": true,
-        "receiver": Object {
-          "email": "mary.poppins@example.com",
-          "firstname": "Mary",
-          "id": 2,
-          "lastname": "Poppins",
-          "name": "Mary Poppins",
-        },
-        "rule_id": null,
-        "sender": Object {
-          "email": "john.doe@example.com",
-          "firstname": "John",
-          "id": 1,
-          "lastname": "Doe",
-          "name": "John Doe",
-        },
-        "source": Object {
-          "from": Object {
-            "address": "657788504429455-657788504429455",
-            "name": "Page",
-          },
-          "to": Array [
-            Object {
-              "address": "657788504429455-4135481299826174",
-              "name": "Cust Omer",
-            },
-          ],
-          "type": "facebook-comment",
-        },
-        "stripped_html": null,
-        "stripped_signature": null,
-        "stripped_text": null,
-        "subject": "Some subject",
-        "uri": "http://example.com/messages/1",
-        "via": "facebook",
+        "lastname": "Doe",
+        "name": "John Doe",
       }
     }
+    senderId={1}
+    source={
+      Object {
+        "from": Object {
+          "address": "657788504429455-657788504429455",
+          "name": "Page",
+        },
+        "to": Array [
+          Object {
+            "address": "657788504429455-4135481299826174",
+            "name": "Cust Omer",
+          },
+        ],
+        "type": "facebook-comment",
+      }
+    }
+    ticketMessageId={1}
   />
   <Connect(DatetimeLabelContainer)
     dateTime=""

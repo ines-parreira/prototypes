@@ -1,7 +1,5 @@
 import React from 'react'
 
-import {Button} from 'reactstrap'
-
 import {render} from '@testing-library/react'
 
 import PrivateReplyButton from '../PrivateReplyButton'
@@ -46,7 +44,6 @@ describe('<PrivateReplyButton/>', () => {
                 <PrivateReplyButton
                     {...defaultProps}
                     messageCreatedDatetime={Date().toString()}
-                    component={Button}
                 />
             )
 
@@ -69,7 +66,6 @@ describe('<PrivateReplyButton/>', () => {
                         {...defaultProps}
                         messageCreatedDatetime={createdDatetime}
                         meta={meta}
-                        component={Button}
                     />
                 )
 

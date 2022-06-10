@@ -2,7 +2,6 @@ import classNamesBind from 'classnames/bind'
 import {fromJS, Map} from 'immutable'
 import React from 'react'
 import classnames from 'classnames'
-import {useMeasure} from 'react-use'
 
 import {TicketMessage} from '../../../../../models/ticket/types'
 import {isForwardedMessage} from '../../../../../state/ticket/utils'
@@ -12,6 +11,7 @@ import css from './Header.less'
 import Meta from './Meta'
 import Source from './Source'
 import SourceDetailsHeader from './SourceDetailsHeader'
+import Intents from './IntentsFeedback/IntentsFeedback'
 
 const classNames = classNamesBind.bind(css)
 
@@ -20,18 +20,18 @@ type Props = {
     message: TicketMessage
     timezone: string
     isLastRead: boolean
+    showIntents: boolean
     hasError?: boolean
     isMessageHidden?: boolean
     isMessageDeleted?: boolean
 }
 
 export default function Header(props: Props) {
-    const [ref, {width}] = useMeasure()
-
     const {
         message,
         timezone,
         isLastRead,
+        showIntents,
         hasError,
         isMessageHidden,
         isMessageDeleted,
@@ -74,7 +74,6 @@ export default function Header(props: Props) {
 
     return (
         <div
-            ref={ref as React.LegacyRef<HTMLDivElement>}
             className={classNames(css.header, {
                 hasError: hasError,
             })}
@@ -107,13 +106,17 @@ export default function Header(props: Props) {
                 )}
                 {metaContent}
             </div>
+            {showIntents && (
+                <div className={css.intents}>
+                    <Intents message={message} />
+                </div>
+            )}
             <SourceDetailsHeader
                 className={css.sourceDetails}
                 message={message}
                 isLastRead={isLastRead}
                 timezone={timezone}
                 isMessageDeleted={isMessageDeleted}
-                collapseActions={width < 640}
             />
         </div>
     )

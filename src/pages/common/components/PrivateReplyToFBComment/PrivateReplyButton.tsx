@@ -1,47 +1,47 @@
-import React from 'react'
-import {UncontrolledTooltip} from 'reactstrap'
+import React, {useState} from 'react'
+import {Button, UncontrolledTooltip} from 'reactstrap'
 import moment from 'moment'
 import classnames from 'classnames'
-import _noop from 'lodash/noop'
 
 import messengerIcon from 'assets/img/integrations/facebook-messenger-dark-icon.svg'
 import instagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
 
-import type {Meta} from 'models/ticket/types'
+import type {Actor, Meta, Source} from '../../../../models/ticket/types'
 
+import PrivateReplyModal from './PrivateReplyModal/PrivateReplyModal'
 import css from './PrivateReplyButton.less'
 
-type ComponentProps = {
-    className?: string
-    onClick?: React.MouseEventHandler
-    disabled?: boolean
-    id?: string
-    href?: string
-}
-
-type Component =
-    | React.FunctionComponent<ComponentProps>
-    | React.ComponentClass<ComponentProps>
-
 type Props = {
-    component: Component
+    integrationId: number
+    messageId: string
     ticketMessageId: number
+    senderId: number
+    ticketId: number
+    commentMessage: string
+    source: Source
+    sender: Actor
     meta?: Meta
     messageCreatedDatetime: string
     isFacebookComment: boolean
     className?: string
-    onClick?: () => void
 }
 
 export default function PrivateReplyButton({
-    component: Component,
+    integrationId,
+    messageId,
     ticketMessageId,
+    senderId,
+    ticketId,
+    commentMessage,
+    source,
+    sender,
     meta,
     messageCreatedDatetime,
     isFacebookComment,
     className,
-    onClick = _noop,
 }: Props) {
+    const [isOpen, setOpen] = useState(false)
+    const toggle = () => setOpen(!isOpen)
     const icon = isFacebookComment ? messengerIcon : instagramDirectMessageIcon
     const buttonText = isFacebookComment ? 'Message' : 'Direct message'
 
@@ -61,9 +61,9 @@ export default function PrivateReplyButton({
 
     return (
         <>
-            <Component
+            <Button
                 className={classnames(css.container, className)}
-                onClick={onClick}
+                onClick={toggle}
                 disabled={isAlreadySent || isMessageTooOld}
                 id={`private-reply-button-${ticketMessageId}`}
                 href="#"
@@ -78,7 +78,24 @@ export default function PrivateReplyButton({
                     alt="private message icon"
                 />
                 {buttonText}
-            </Component>
+            </Button>
+            {isOpen && (
+                <PrivateReplyModal
+                    integrationId={integrationId}
+                    messageId={messageId}
+                    ticketMessageId={ticketMessageId}
+                    senderId={senderId}
+                    isOpen={isOpen}
+                    toggle={toggle}
+                    ticketId={ticketId}
+                    commentMessage={commentMessage}
+                    source={source}
+                    sender={sender}
+                    meta={meta}
+                    messageCreatedDatetime={messageCreatedDatetime}
+                    isFacebookComment={isFacebookComment}
+                />
+            )}
             {(isAlreadySent || isMessageTooOld) && (
                 <UncontrolledTooltip
                     target={`private-reply-button-${ticketMessageId}`}

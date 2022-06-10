@@ -14,7 +14,6 @@ type Props = {
     timezone: string
     className?: string
     isMessageDeleted?: boolean
-    collapseActions?: boolean
 }
 
 const From = ({label, children}: {label: string; children?: ReactNode}) => (
@@ -25,16 +24,24 @@ const From = ({label, children}: {label: string; children?: ReactNode}) => (
 )
 
 export default function SourceDetailsHeader(props: Props) {
-    const {message, isLastRead, timezone, isMessageDeleted, collapseActions} =
-        props
+    const {message, isLastRead, timezone, isMessageDeleted} = props
     let actionHeader: ReactNode
     let infoWidget: ReactNode
 
     if (!isMessageDeleted) {
         actionHeader = (
             <SourceActionsHeader
-                message={message}
-                collapseActions={collapseActions}
+                source={message.source}
+                meta={message.meta!}
+                integrationId={message.integration_id}
+                messageId={message.message_id}
+                fromAgent={message.from_agent}
+                senderId={message.sender.id}
+                ticketMessageId={message.id!}
+                ticketId={message.ticket_id}
+                bodyText={message.body_text}
+                sender={message.sender}
+                messageCreatedDatetime={message.created_datetime}
             />
         )
     }
