@@ -2,17 +2,21 @@ import React, {ComponentProps} from 'react'
 import {fireEvent, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
-import {renderWithRouter} from '../../../../../../utils/testing'
+import {renderWithRouter} from 'utils/testing'
 import {
     FETCH_PREVIEW_CUSTOMER_ERROR,
     FETCH_PREVIEW_CUSTOMER_SUCCESS,
-} from '../../../../../../state/infobar/constants'
+} from 'state/infobar/constants'
+import {WidgetContextType} from 'state/widgets/types'
+import {account} from 'fixtures/account'
+import {SearchEngine} from 'models/search/types'
+import useSearchRankScenario from 'hooks/useSearchRankScenario'
+
 import Search from '../../../Search'
 import InfobarLayout from '../../InfobarLayout'
 import InfobarCustomerInfo from '../InfobarCustomerInfo/InfobarCustomerInfo'
 import InfobarSearchResultsList from '../InfobarSearchResultsList'
 import {Infobar} from '../Infobar'
-import {WidgetContextType} from '../../../../../../state/widgets/types'
 
 jest.mock(
     '../../../Search.tsx',
@@ -65,7 +69,7 @@ jest.mock(
                 <div
                     data-testid="InfobarSearchResultsList"
                     onClick={() => {
-                        void onCustomerClick(mockCustomer)
+                        void onCustomerClick(mockCustomer, 0)
                     }}
                 >
                     <div>errorMessage: {errorMessage}</div>
@@ -74,6 +78,17 @@ jest.mock(
                 </div>
             )
 )
+
+jest.mock('hooks/useSearchRankScenario')
+const mockSearchRank = {
+    registerResultsRequest: jest.fn(),
+    registerResultSelection: jest.fn(),
+    endScenario: jest.fn(),
+    isRunning: false,
+}
+;(
+    useSearchRankScenario as jest.MockedFunction<typeof useSearchRankScenario>
+).mockImplementation(() => mockSearchRank)
 
 const commonProps = {
     actions: {
@@ -128,11 +143,22 @@ const commonProps = {
             hasFetchedWidgets: true,
         },
     }),
+    currentAccount: fromJS(account),
 } as unknown as ComponentProps<typeof Infobar>
+
+let dateNowSpy: jest.SpiedFunction<typeof Date.now>
+const defaultDateNowValue = 1487076708000
 
 describe('<Infobar/>', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        dateNowSpy = jest
+            .spyOn(Date, 'now')
+            .mockImplementation(() => defaultDateNowValue)
+    })
+
+    afterEach(() => {
+        dateNowSpy.mockRestore()
     })
 
     it('should render ticket context', () => {
@@ -331,5 +357,70 @@ describe('<Infobar/>', () => {
                 commonProps.actions.widgets.stopEditionMode
             ).toHaveBeenNthCalledWith(1)
         })
+    })
+
+    it('should register search rank scenario event when user clicks the result', async () => {
+        const results: {id: number}[] = []
+        for (let i = 0; i < 20; i++) {
+            results.push({id: i})
+        }
+        const {getByTestId} = renderWithRouter(
+            <Infobar
+                {...commonProps}
+                searchCustomers={() => {
+                    dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
+                    return Promise.resolve({
+                        resp: {data: results, searchEngine: SearchEngine.ES},
+                    })
+                }}
+            />
+        )
+
+        fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        await waitFor(() =>
+            fireEvent.click(getByTestId('InfobarSearchResultsList'))
+        )
+
+        expect(
+            mockSearchRank.registerResultsRequest.mock.calls
+        ).toMatchSnapshot()
+        expect(
+            mockSearchRank.registerResultSelection.mock.calls
+        ).toMatchSnapshot()
+    })
+
+    it('should end the search rank scenario when user click Back button', async () => {
+        const {getByText, getByTestId} = renderWithRouter(
+            <Infobar
+                {...commonProps}
+                searchCustomers={() => {
+                    dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
+                    return Promise.resolve({resp: {data: [{id: 1}]}})
+                }}
+            />
+        )
+
+        fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        await waitFor(() => fireEvent.click(getByText('Back')))
+
+        expect(mockSearchRank.endScenario).toHaveBeenCalledWith()
+    })
+
+    it('should end the search rank scenario when user performs the second search', async () => {
+        const {getByTestId, findByTestId} = renderWithRouter(
+            <Infobar
+                {...commonProps}
+                searchCustomers={() => {
+                    dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
+                    return Promise.resolve({resp: {data: [{id: 1}]}})
+                }}
+            />
+        )
+
+        fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        await waitFor(() => findByTestId('InfobarSearchResultsList'))
+        fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+
+        expect(mockSearchRank.endScenario).toHaveBeenCalledWith()
     })
 })

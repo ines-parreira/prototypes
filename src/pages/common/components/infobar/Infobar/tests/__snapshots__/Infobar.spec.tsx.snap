@@ -71,6 +71,31 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
 </div>
 `;
 
+exports[`<Infobar/> should register search rank scenario event when user clicks the result 1`] = `
+Array [
+  Array [
+    Object {
+      "numberOfResults": 20,
+      "query": "query",
+      "requestTime": 1487076708000,
+      "responseTime": 1487076708011,
+      "searchEngine": "ES",
+    },
+  ],
+]
+`;
+
+exports[`<Infobar/> should register search rank scenario event when user clicks the result 2`] = `
+Array [
+  Array [
+    Object {
+      "id": 7,
+      "index": 0,
+    },
+  ],
+]
+`;
+
 exports[`<Infobar/> should render current customer with suggested customer 1`] = `
 <div
   data-testid="InfobarLayout"

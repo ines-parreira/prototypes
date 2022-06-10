@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useSearchRankScenario should log search success when user clicks the result 1`] = `
+Array [
+  Array [
+    "search-query-ranked",
+    Object {
+      "account_domain": "acme",
+      "database_type": "elasticsearch",
+      "datetime": "1970-01-01T00:00:01.000Z",
+      "number_of_results": 3,
+      "query_source": "customer_profile",
+      "rank": 3,
+      "response_time": 234,
+      "result_object_id": "bar",
+      "search_query": "foo",
+    },
+  ],
+]
+`;

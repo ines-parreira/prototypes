@@ -1,9 +1,14 @@
 import {user} from 'fixtures/users'
+import {mockProductionEnvironment} from 'utils/testing'
 
 import {identifyUser} from '../segmentTracker'
 
 describe('segmentTracker', () => {
     const analytics = globalThis.analytics
+
+    beforeEach(() => {
+        mockProductionEnvironment()
+    })
 
     afterEach(() => {
         jest.clearAllMocks()
@@ -30,7 +35,7 @@ describe('segmentTracker', () => {
             )
         })
 
-        it('should not identify the user when the user is impersonnated', () => {
+        it('should not identify the user when the user is impersonated', () => {
             window.USER_IMPERSONATED = true
             identifyUser(user)
 

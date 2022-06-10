@@ -6,14 +6,17 @@ import {devLog} from '../../utils'
 import {isDevelopment} from '../../utils/environment'
 import {User} from '../../config/types/user'
 
-export const logEvent = (event: SegmentEvent, props = {}) => {
-    devLog('Track Segment', event, props)
-
-    if (
+const shouldSendEvent = () =>
+    !(
         window.USER_IMPERSONATED ||
         _isUndefined(window.analytics) ||
         isDevelopment()
-    ) {
+    )
+
+export const logEvent = (event: SegmentEvent, props = {}) => {
+    devLog('Track Segment', event, props)
+
+    if (!shouldSendEvent()) {
         return
     }
 
@@ -21,7 +24,7 @@ export const logEvent = (event: SegmentEvent, props = {}) => {
 }
 
 export const identifyUser = (user: User) => {
-    if (window.USER_IMPERSONATED || _isUndefined(window.analytics)) {
+    if (!shouldSendEvent()) {
         return
     }
     const domain = window.location.hostname.split('.')[0]
@@ -38,11 +41,7 @@ export const identifyUser = (user: User) => {
 }
 
 export const logPageChange = () => {
-    if (
-        window.USER_IMPERSONATED ||
-        _isUndefined(window.analytics) ||
-        isDevelopment()
-    ) {
+    if (!shouldSendEvent()) {
         return
     }
 
@@ -185,6 +184,7 @@ export enum SegmentEvent {
     QuickResponseFlowEdited = 'quick-response-flow-edited',
     QuickResponseFlowActivated = 'quick-response-flow-activated',
     QuickResponseFlowDeactivated = 'quick-response-flow-deactivated',
+    SearchQueryRanked = 'search-query-ranked',
 }
 
 export enum StatViewLinkClickedStat {

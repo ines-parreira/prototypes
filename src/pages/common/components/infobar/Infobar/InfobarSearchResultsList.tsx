@@ -12,7 +12,7 @@ type Props = {
     errorMessage: Maybe<string>
     searchResults: List<Map<any, any>>
     defaultCustomerId: Maybe<number>
-    onCustomerClick: (map: Map<any, any>) => Promise<void>
+    onCustomerClick: (map: Map<any, any>, index: number) => Promise<void>
 }
 
 export default class InfobarSearchResultsList extends React.Component<Props> {
@@ -49,7 +49,7 @@ export default class InfobarSearchResultsList extends React.Component<Props> {
                             <Card
                                 className={className}
                                 key={idx}
-                                onClick={() => onCustomerClick(customer!)}
+                                onClick={() => onCustomerClick(customer!, idx!)}
                             >
                                 <CardBody>
                                     {

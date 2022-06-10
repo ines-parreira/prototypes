@@ -2,37 +2,36 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {useLocation} from 'react-router-dom'
-import {fromJS, Map} from 'immutable'
-import {CancelToken, AxiosError} from 'axios'
+import {fromJS, List, Map} from 'immutable'
+import {AxiosError, CancelToken} from 'axios'
 import {usePrevious, useUpdateEffect} from 'react-use'
 
-import useCancellableRequest from '../../../../../hooks/useCancellableRequest'
-import * as infobarActions from '../../../../../state/infobar/actions'
-import * as infobarConstants from '../../../../../state/infobar/constants'
-import * as customersActions from '../../../../../state/customers/actions'
-import {setCustomer} from '../../../../../state/ticket/actions'
-import * as WidgetsActions from '../../../../../state/widgets/actions'
-import history from '../../../../history'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../store/middlewares/segmentTracker'
-import {ConnectedAction} from '../../../../../state/types'
-import {WidgetContextType} from '../../../../../state/widgets/types'
-import {ApiListResponsePagination} from '../../../../../models/api/types'
-import {Customer} from '../../../../../state/customers/types'
-
-import Loader from '../../Loader/Loader'
-import Tooltip from '../../Tooltip'
-import InfobarLayout from '../InfobarLayout'
-import MergeCustomersContainer from '../../MergeCustomers/MergeCustomersContainer'
-import Search from '../../Search'
-import Button from '../../button/Button'
-import ButtonIconLabel from '../../button/ButtonIconLabel'
-import IconButton from '../../button/IconButton'
-
-import {areSourcesReady} from '../utils'
-import css from '../Infobar.less'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import * as infobarActions from 'state/infobar/actions'
+import * as infobarConstants from 'state/infobar/constants'
+import * as customersActions from 'state/customers/actions'
+import {setCustomer} from 'state/ticket/actions'
+import * as WidgetsActions from 'state/widgets/actions'
+import history from 'pages/history'
+import {ConnectedAction} from 'state/types'
+import {WidgetContextType} from 'state/widgets/types'
+import {ApiListResponsePagination} from 'models/api/types'
+import {Customer} from 'state/customers/types'
+import Loader from 'pages/common/components/Loader/Loader'
+import Tooltip from 'pages/common/components/Tooltip'
+import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
+import MergeCustomersContainer from 'pages/common/components/MergeCustomers/MergeCustomersContainer'
+import Search from 'pages/common/components/Search'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import IconButton from 'pages/common/components/button/IconButton'
+import {areSourcesReady} from 'pages/common/components/infobar/utils'
+import css from 'pages/common/components/infobar/Infobar.less'
+import useSearchRankScenario, {
+    SearchRankSource,
+} from 'hooks/useSearchRankScenario'
+import {SearchResponse} from 'models/search/types'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import InfobarSearchResultsList from './InfobarSearchResultsList'
 import InfobarCustomerInfo from './InfobarCustomerInfo/InfobarCustomerInfo'
@@ -116,12 +115,13 @@ export const Infobar = ({
     const [displaySelectedCustomer, setDisplaySelectedCustomer] =
         useState(false)
     const [showMergeCustomerModal, setShowMergeCustomerModal] = useState(false)
-    const [searchResults, setSearchResults] = useState(fromJS([]))
+    const [searchResults, setSearchResults] = useState<List<any>>(fromJS([]))
     const [selectedCustomer, setSelectedCustomer] = useState(fromJS({}))
     const [suggestedCustomer, setSuggestedCustomer] = useState<Map<any, any>>(
         fromJS({})
     )
     const prevCustomer = usePrevious(customer)
+    const searchRank = useSearchRankScenario(SearchRankSource.CustomerProfile)
 
     const isWidgetEditing = useMemo(
         () => widgets.getIn(['_internal', 'isEditing']) as boolean,
@@ -224,7 +224,11 @@ export const Infobar = ({
         }
     }
 
-    const onSearchResultClick = async (customer: Map<any, any>) => {
+    const onSearchResultClick = async (
+        customer: Map<any, any>,
+        index: number
+    ) => {
+        searchRank.registerResultSelection({index, id: customer.get('id')})
         setIsFetchingCustomer(true)
         const result = (await fetchPreviewCustomer(customer.get('id'))) as {
             type: string
@@ -238,11 +242,13 @@ export const Infobar = ({
     }
 
     const onSearch = async (query: string) => {
+        searchRank.endScenario()
         if (query) {
+            const requestTime = Date.now()
             setIsSearching(true)
             const res = (await cancellableSearch(query)) as {
                 error?: AxiosError<{error?: {message: string}}>
-                resp: ApiListResponsePagination<Customer[]>
+                resp: SearchResponse<Customer>
             }
             if (!res) {
                 return
@@ -256,6 +262,13 @@ export const Infobar = ({
                     'Failed to do the search. Please try again.'
             }
 
+            searchRank.registerResultsRequest({
+                query,
+                requestTime,
+                responseTime: Date.now(),
+                numberOfResults: !error ? resp.data.length : 0,
+                searchEngine: !error ? resp.searchEngine : undefined,
+            })
             setSearchErrorMessage(errorMessage)
             setDisplaySelectedCustomer(false)
             setDisplaySearchResults(true)
@@ -289,6 +302,7 @@ export const Infobar = ({
     const resetSearch = () => {
         setDisplaySearchResults(false)
         setSearchResults(fromJS([]))
+        searchRank.endScenario()
     }
 
     const resetSelected = () => {
