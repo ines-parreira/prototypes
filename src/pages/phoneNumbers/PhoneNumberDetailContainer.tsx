@@ -1,25 +1,14 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
-import {
-    Link,
-    withRouter,
-    useParams,
-    RouteComponentProps,
-} from 'react-router-dom'
-import {useAsyncFn} from 'react-use'
+import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
 import {get} from 'lodash'
 import ReactCountryFlag from 'react-country-flag'
 
-import {fetchPhoneNumber} from 'models/phoneNumber/resources'
 import {RootState} from 'state/types'
-import {phoneNumberFetched} from 'state/entities/phoneNumbers/actions'
 import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import PageHeader from 'pages/common/components/PageHeader'
-import useAppDispatch from 'hooks/useAppDispatch'
 import PhoneNumberDetails from 'pages/phoneNumbers/PhoneNumberDetails'
 
 import css from 'pages/settings/settings.less'
@@ -27,27 +16,6 @@ import css from 'pages/settings/settings.less'
 export function PhoneNumberDetailContainer({
     phoneNumber,
 }: ConnectedProps<typeof connector>) {
-    const dispatch = useAppDispatch()
-    const {phoneNumberId} = useParams<{phoneNumberId?: string}>()
-
-    const [, handleFetchPhoneNumber] = useAsyncFn(async (id) => {
-        try {
-            const phoneNumber = await fetchPhoneNumber(id)
-            dispatch(phoneNumberFetched(phoneNumber))
-        } catch (error) {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch phone number',
-                    status: NotificationStatus.Error,
-                })
-            )
-        }
-    })
-
-    useEffect(() => {
-        void handleFetchPhoneNumber(phoneNumberId)
-    }, [handleFetchPhoneNumber, phoneNumberId])
-
     return (
         <div className="full-width">
             <PageHeader

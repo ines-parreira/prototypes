@@ -11,8 +11,6 @@ import {
     PhoneIntegrationPreferences,
     isPhoneIntegration,
 } from 'models/integration/types'
-import {fetchPhoneNumber} from 'models/phoneNumber/resources'
-import {phoneNumberFetched} from 'state/entities/phoneNumbers/actions'
 import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -88,15 +86,6 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
         setPreferences(preferences)
         setIsInitialized(true)
     }, [integration, isInitialized])
-
-    const [, handleFetchPhoneNumber] = useAsyncFn(async (id) => {
-        const phoneNumber = await fetchPhoneNumber(id)
-        dispatch(phoneNumberFetched(phoneNumber))
-    })
-
-    useEffect(() => {
-        void handleFetchPhoneNumber(phoneNumberId)
-    }, [handleFetchPhoneNumber, phoneNumberId])
 
     if (!isPhoneIntegration(integration)) {
         return <div />

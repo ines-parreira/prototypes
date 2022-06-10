@@ -1,53 +1,22 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
-import {useAsyncFn} from 'react-use'
 import {isEmpty} from 'lodash'
 
-import {fetchPhoneNumbers} from 'models/phoneNumber/resources'
-import {phoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
-import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
 import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
 import css from 'pages/settings/settings.less'
 
 export function PhoneIntegrationsListContainer(): JSX.Element {
-    const dispatch = useAppDispatch()
     const integrations = useAppSelector(
         getIntegrationsByTypes([IntegrationType.Phone])
     )?.toJS()
-    const [{loading: isLoading}, handleFetchPhoneNumbers] = useAsyncFn(
-        async () => {
-            try {
-                const res = await fetchPhoneNumbers()
-                if (!res) {
-                    return
-                }
-                dispatch(phoneNumbersFetched(res.data))
-            } catch (error) {
-                void dispatch(
-                    notify({
-                        message: 'Failed to fetch phone numbers',
-                        status: NotificationStatus.Error,
-                    })
-                )
-            }
-        }
-    )
-
-    useEffect(() => {
-        void handleFetchPhoneNumbers()
-    }, [handleFetchPhoneNumbers])
 
     return (
         <div className="full-width">
@@ -80,14 +49,11 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                 className={css.pageContainer}
             >
                 Chat with your customers over the phone from Gorgias.
-                {isEmpty(integrations) &&
-                    (isLoading ? (
-                        <Loader />
-                    ) : (
-                        <div className="mt-3">
-                            You don't have any voice integrations at the moment.
-                        </div>
-                    ))}
+                {isEmpty(integrations) && (
+                    <div className="mt-3">
+                        You don't have any voice integrations at the moment.
+                    </div>
+                )}
             </Container>
             <PhoneIntegrationsList type={IntegrationType.Phone} />
         </div>

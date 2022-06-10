@@ -7,8 +7,6 @@ import classnames from 'classnames'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import {SmsIntegration, isSmsIntegration} from 'models/integration/types'
-import {fetchPhoneNumber} from 'models/phoneNumber/resources'
-import {phoneNumberFetched} from 'state/entities/phoneNumbers/actions'
 import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import Button from 'pages/common/components/button/Button'
@@ -74,15 +72,6 @@ export default function SmsAppPreferences({
         setEmoji(meta.emoji)
         setIsInitialized(true)
     }, [integration, isInitialized])
-
-    const [, handleFetchPhoneNumber] = useAsyncFn(async (id) => {
-        const phoneNumber = await fetchPhoneNumber(id)
-        dispatch(phoneNumberFetched(phoneNumber))
-    })
-
-    useEffect(() => {
-        void handleFetchPhoneNumber(phoneNumberId)
-    }, [handleFetchPhoneNumber, phoneNumberId])
 
     if (!isSmsIntegration(integration)) {
         return null
