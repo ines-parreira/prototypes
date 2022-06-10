@@ -20,7 +20,7 @@ const ArticleRecommendationPreview = ({
             introductionText={integration.decoration?.introduction_text}
             mainColor={integration.decoration?.main_color}
             language={integration.meta?.language}
-            renderPoweredBy={false}
+            renderPoweredBy={true}
             renderFooter={false}
         >
             <SelfServiceOffArticleRecommendationOn integration={integration} />
