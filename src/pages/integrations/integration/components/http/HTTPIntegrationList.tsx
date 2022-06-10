@@ -95,7 +95,7 @@ export class HTTPIntegrationList extends Component<Props> {
                 createIntegration={() =>
                     history.push('/app/settings/integrations/http/new')
                 }
-                createIntegrationButtonContent="Add HTTP integration"
+                createIntegrationButtonLabel="Add HTTP integration"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

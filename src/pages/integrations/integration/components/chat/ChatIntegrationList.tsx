@@ -118,7 +118,7 @@ export class ChatIntegrationListContainer extends Component<Props> {
                 createIntegration={() =>
                     history.push('/app/settings/integrations/smooch_inside/new')
                 }
-                createIntegrationButtonContent="Add chat"
+                createIntegrationButtonLabel="Add chat"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

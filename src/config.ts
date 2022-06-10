@@ -222,7 +222,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         title: 'Facebook, Messenger & Instagram',
         description:
             'Create tickets from Facebook posts, comments and recommendations, Instagram comments and mentions and Messenger conversations.',
-        image: 'facebook.png',
+        image: 'facebook.svg',
         categories: [Category.SOCIAL],
         longDescription:
             '<p><strong>The most efficient way to provide personalized Facebook support for your shoppers.</strong></p><p>Gorgias makes it easy to engage with messages, comments, mentions, or ad comments directly from your helpdesk, with detailed ecommerce information and powerful automation tools.</p><p><strong>When you integrate your Facebook page with Gorgias, you’ll be able to:&nbsp;</strong></p><ul role="list"><li>Automatically create tickets based on page comments, ad comments, mentions, and Messenger notifications</li><li>Reply to all Facebook tickets with a public comment or private message</li><li>React to Facebook comments</li><li>Answer questions quickly, thanks to contextual customer information next to every ticket</li><li>Automate answers to common questions with Gorgias’ powerful automation tools<br></li></ul>',

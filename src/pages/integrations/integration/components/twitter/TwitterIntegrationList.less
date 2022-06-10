@@ -2,22 +2,22 @@
 
 :local {
     .createIntegrationButton {
+        background-color: @twitterBlue !important;
+        border-width: 0;
         border-radius: 4px;
-        padding: 6px 12px;
-
-        background-color: @twitterBlue;
-        border-color: @twitterBlue;
+        padding: 0px 12px;
+        color: white;
+        transition: background-color 0.2s linear;
 
         &:hover,
         &:active,
         &:focus {
-            background-color: @twitterBlue !important;
-            border-color: @twitterBlue !important;
+            background-color: darken(@twitterBlue, 5%) !important;
         }
 
         .twitterLogo {
             width: 21px;
-            margin-right: 4px;
+            margin-right: 5px;
         }
     }
 }

@@ -42,7 +42,7 @@ export default class AircallIntegrationList extends React.Component {
                 createIntegration={() =>
                     history.push('/app/settings/integrations/aircall/new')
                 }
-                createIntegrationButtonContent="Connect Aircall"
+                createIntegrationButtonLabel="Connect Aircall"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

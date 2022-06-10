@@ -200,7 +200,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             createIntegration={() =>
                 history.push('/app/settings/integrations/email/new')
             }
-            createIntegrationButtonContent="Add email address"
+            createIntegrationButtonLabel="Add email address"
             integrationToItemDisplay={integrationToItemDisplay}
             loading={loading}
         />

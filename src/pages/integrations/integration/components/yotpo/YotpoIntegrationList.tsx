@@ -90,7 +90,7 @@ export default class YotpoIntegrationList extends Component<IReceivedProps> {
                 createIntegration={() =>
                     (window.location.href = this.props.redirectUri)
                 }
-                createIntegrationButtonContent="Add Yotpo account"
+                createIntegrationButtonLabel="Add Yotpo account"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

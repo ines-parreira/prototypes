@@ -85,7 +85,7 @@ export default class SmileIntegrationList extends Component<Props> {
                 integrationType={IntegrationType.Smile}
                 integrations={smileIntegrations}
                 createIntegration={this._onLogin}
-                createIntegrationButtonContent="Add Smile account"
+                createIntegrationButtonLabel="Add Smile account"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

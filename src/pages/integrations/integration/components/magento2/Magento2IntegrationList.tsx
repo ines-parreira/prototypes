@@ -121,7 +121,7 @@ export class Magento2IntegrationList extends Component<Props> {
                 createIntegration={() =>
                     history.push('/app/settings/integrations/magento2/new')
                 }
-                createIntegrationButtonContent="Add Magento 2 store"
+                createIntegrationButtonLabel="Add Magento 2 store"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

@@ -22,8 +22,8 @@ type Props = {
     integrationType: IntegrationType
     integrations: List<Map<any, any>>
     createIntegration: () => void
-    createIntegrationButtonClassName?: string
-    createIntegrationButtonContent: ReactNode
+    createIntegrationButton?: ReactNode
+    createIntegrationButtonLabel?: string
     longTypeDescription?: ReactNode
     loading: Map<any, any>
     alert?: ReactNode
@@ -85,8 +85,8 @@ class IntegrationList extends React.Component<Props> {
         const {
             integrations,
             integrationType,
-            createIntegrationButtonContent,
-            createIntegrationButtonClassName,
+            createIntegrationButton,
+            createIntegrationButtonLabel,
             longTypeDescription,
             integrationToItemDisplay,
             loading,
@@ -111,15 +111,21 @@ class IntegrationList extends React.Component<Props> {
                         </Breadcrumb>
                     }
                 >
-                    {!this.props.createIntegrationButtonHidden && (
-                        <Button
-                            type="submit"
-                            onClick={this.onButtonClick}
-                            className={createIntegrationButtonClassName}
-                        >
-                            {createIntegrationButtonContent}
-                        </Button>
-                    )}
+                    {!this.props.createIntegrationButtonHidden &&
+                        createIntegrationButtonLabel && (
+                            <Button type="submit" onClick={this.onButtonClick}>
+                                {createIntegrationButtonLabel}
+                            </Button>
+                        )}
+                    {!this.props.createIntegrationButtonHidden &&
+                        React.isValidElement(createIntegrationButton) && (
+                            <>
+                                {React.cloneElement(createIntegrationButton, {
+                                    ...createIntegrationButton.props,
+                                    onClick: this.onButtonClick,
+                                })}
+                            </>
+                        )}
                 </PageHeader>
 
                 <Container

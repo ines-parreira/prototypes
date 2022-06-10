@@ -55,18 +55,17 @@ export function TwitterIntegrationList({
             integrationType={IntegrationType.Twitter}
             integrations={twitterIntegrations}
             createIntegration={() => (window.location.href = redirectUri)}
-            createIntegrationButtonContent={
-                <div>
+            createIntegrationButton={
+                <button className={css.createIntegrationButton}>
                     <img
                         src={twitterWhiteIcon}
                         alt="twitter-logo"
                         className={css.twitterLogo}
                     />
                     Login with Twitter
-                </div>
+                </button>
             }
             createIntegrationButtonHidden={isLimitReached}
-            createIntegrationButtonClassName={css.createIntegrationButton}
             integrationToItemDisplay={integrationToItemDisplay}
             loading={loading}
             alert={alert}

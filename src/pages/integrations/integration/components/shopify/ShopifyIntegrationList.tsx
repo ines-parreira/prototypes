@@ -101,7 +101,7 @@ export default class ShopifyIntegrationList extends Component<Props> {
                 createIntegration={() =>
                     window.open('https://apps.shopify.com/helpdesk')
                 }
-                createIntegrationButtonContent="Add Shopify"
+                createIntegrationButtonLabel="Add Shopify"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

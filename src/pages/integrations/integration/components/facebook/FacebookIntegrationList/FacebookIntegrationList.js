@@ -4,12 +4,14 @@ import ImmutablePropsTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 
 import IntegrationList from '../../IntegrationList.tsx'
-import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
-import {getIconFromUrl} from '../../../../../../utils'
 
 import FacebookPageRow from './FacebookPageRow'
 
 import css from './FacebookIntegrationList.less'
+
+import facebookLogo from 'assets/img/integrations/facebook-icon.svg'
+
+import * as integrationsSelectors from 'state/integrations/selectors.ts'
 
 export class FacebookIntegrationListContainer extends React.Component {
     static propTypes = {
@@ -42,19 +44,16 @@ This integration creates tickets when customers post on your Facebook page or se
                 integrations={integrations}
                 longTypeDescription={longTypeDescription}
                 createIntegration={this._onLogin}
-                createIntegrationButtonContent={
-                    <div>
+                createIntegrationButton={
+                    <button className={css.createIntegrationButton}>
                         <img
-                            src={getIconFromUrl(
-                                'integrations/facebook-white.png'
-                            )}
+                            src={facebookLogo}
                             alt="facebook-logo"
                             className={css.facebookLogo}
                         />
                         Login with Facebook
-                    </div>
+                    </button>
                 }
-                createIntegrationButtonClassName={css.createIntegrationButton}
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

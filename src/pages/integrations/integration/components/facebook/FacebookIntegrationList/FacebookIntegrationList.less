@@ -2,20 +2,23 @@
 
 :local {
     .createIntegrationButton {
-        background-color: @facebookBlue;
-        border-color: @facebookBlue;
-        padding: 6px 12px;
+        background-color: @facebookBlue !important;
+        border-width: 0;
+        border-radius: 4px;
+        padding: 0px 12px;
+        color: white;
+        transition: background-color 0.2s linear;
 
         &:hover,
         &:active,
         &:focus {
-            background-color: @facebookBlue !important;
-            border-color: @facebookBlue !important;
+            background-color: darken(@facebookBlue, 5%) !important;
         }
 
         .facebookLogo {
             width: 21px;
-            margin-right: 4px;
+            margin-top: -2px;
+            margin-right: 6px;
         }
     }
 }

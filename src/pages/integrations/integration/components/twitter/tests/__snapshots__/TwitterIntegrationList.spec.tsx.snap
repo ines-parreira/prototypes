@@ -33,17 +33,14 @@ exports[`<TwitterIntegrationList/> render() should render 1`] = `
     </nav>
     <div>
       <button
-        class="wrapper createIntegrationButton fill primary medium"
-        type="submit"
+        class="createIntegrationButton"
       >
-        <div>
-          <img
-            alt="twitter-logo"
-            class="twitterLogo"
-            src="test-file-stub"
-          />
-          Login with Twitter
-        </div>
+        <img
+          alt="twitter-logo"
+          class="twitterLogo"
+          src="test-file-stub"
+        />
+        Login with Twitter
       </button>
     </div>
   </div>
@@ -133,17 +130,14 @@ exports[`<TwitterIntegrationList/> render() should render with a warning message
     </nav>
     <div>
       <button
-        class="wrapper createIntegrationButton fill primary medium"
-        type="submit"
+        class="createIntegrationButton"
       >
-        <div>
-          <img
-            alt="twitter-logo"
-            class="twitterLogo"
-            src="test-file-stub"
-          />
-          Login with Twitter
-        </div>
+        <img
+          alt="twitter-logo"
+          class="twitterLogo"
+          src="test-file-stub"
+        />
+        Login with Twitter
       </button>
     </div>
   </div>
@@ -268,6 +262,7 @@ exports[`<TwitterIntegrationList/> render() should render with an error message 
         </li>
       </ol>
     </nav>
+    <div />
   </div>
   <div
     class="pageContainer pb0 container-fluid"
@@ -392,17 +387,14 @@ exports[`<TwitterIntegrationList/> render() should render with empty list 1`] = 
     </nav>
     <div>
       <button
-        class="wrapper createIntegrationButton fill primary medium"
-        type="submit"
+        class="createIntegrationButton"
       >
-        <div>
-          <img
-            alt="twitter-logo"
-            class="twitterLogo"
-            src="test-file-stub"
-          />
-          Login with Twitter
-        </div>
+        <img
+          alt="twitter-logo"
+          class="twitterLogo"
+          src="test-file-stub"
+        />
+        Login with Twitter
       </button>
     </div>
   </div>

@@ -115,7 +115,7 @@ export class SmoochIntegrationList extends Component<Props> {
                     ) as List<Map<any, any>>
                 }
                 createIntegration={this._onLogin}
-                createIntegrationButtonContent="Add a Smooch account"
+                createIntegrationButtonLabel="Add a Smooch account"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
             />

@@ -71,7 +71,7 @@ const KlaviyoIntegrationList = (props: Props) => {
             createIntegration={() => {
                 history.push('/app/settings/integrations/klaviyo/new')
             }}
-            createIntegrationButtonContent="Add Klaviyo Integration"
+            createIntegrationButtonLabel="Add Klaviyo Integration"
             integrationToItemDisplay={integrationToItemDisplay}
             loading={loading}
         />
