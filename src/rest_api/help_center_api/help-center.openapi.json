@@ -1506,13 +1506,6 @@
                         }
                     },
                     {
-                        "name": "sharing_status",
-                        "required": false,
-                        "in": "query",
-                        "description": "This query parameter filters article translation data based on their sharing status, and it defaults to public. Public means the article is listed and will be accessible by everyone; private and unlisted are not supported for now.",
-                        "schema": {"enum": ["PUBLIC"], "type": "string"}
-                    },
-                    {
                         "name": "order_by",
                         "required": false,
                         "in": "query",
@@ -1709,13 +1702,6 @@
                         }
                     },
                     {
-                        "name": "sharing_status",
-                        "required": false,
-                        "in": "query",
-                        "description": "This query parameter filters article translation data based on their sharing status, and it defaults to public. Public means the article is listed and will be accessible by everyone; private and unlisted are not supported for now.",
-                        "schema": {"enum": ["PUBLIC"], "type": "string"}
-                    },
-                    {
                         "name": "order_by",
                         "required": false,
                         "in": "query",
@@ -1894,13 +1880,6 @@
                         }
                     },
                     {
-                        "name": "sharing_status",
-                        "required": false,
-                        "in": "query",
-                        "description": "This query parameter filters article translation data based on their sharing status, and it defaults to public. Public means the article is listed and will be accessible by everyone; private and unlisted are not supported for now.",
-                        "schema": {"enum": ["PUBLIC"], "type": "string"}
-                    },
-                    {
                         "name": "locale",
                         "required": true,
                         "in": "query",
@@ -2032,13 +2011,6 @@
                             "enum": ["latest_draft", "current"],
                             "type": "string"
                         }
-                    },
-                    {
-                        "name": "sharing_status",
-                        "required": false,
-                        "in": "query",
-                        "description": "This query parameter filters article translations based on their sharing status, and it defaults to public. Public means the article is listed and will be accessible by everyone; private and unlisted are not supported for now.",
-                        "schema": {"enum": ["PUBLIC"], "type": "string"}
                     },
                     {
                         "name": "per_page",
@@ -2371,7 +2343,6 @@
             "get": {
                 "operationId": "listNavigationLinks",
                 "summary": "List navigation links",
-                "description": "When sorting by `position` you need to specify a `group`.",
                 "parameters": [
                     {
                         "name": "help_center_id",
@@ -3212,6 +3183,8 @@
                         "nullable": true
                     },
                     "algolia_api_key": {"type": "string", "nullable": true},
+                    "algolia_app_id": {"type": "string"},
+                    "algolia_index_name": {"type": "string"},
                     "primary_color": {"type": "string", "nullable": false},
                     "primary_font_family": {
                         "type": "string",
@@ -3241,6 +3214,8 @@
                     "search_deactivated_datetime",
                     "powered_by_deactivated_datetime",
                     "algolia_api_key",
+                    "algolia_app_id",
+                    "algolia_index_name",
                     "primary_color",
                     "primary_font_family",
                     "theme",
@@ -4376,7 +4351,6 @@
                             }
                         ]
                     },
-                    "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
                     "visibility_status": {
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
@@ -4401,7 +4375,6 @@
                     "category_id",
                     "article_unlisted_id",
                     "seo_meta",
-                    "sharing_status",
                     "visibility_status",
                     "is_current",
                     "rating"
@@ -4534,7 +4507,6 @@
                             }
                         ]
                     },
-                    "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
                     "visibility_status": {
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
@@ -4558,7 +4530,6 @@
                     "category_id",
                     "article_unlisted_id",
                     "seo_meta",
-                    "sharing_status",
                     "visibility_status",
                     "is_current"
                 ]
@@ -4738,12 +4709,6 @@
                             }
                         ]
                     },
-                    "sharing_status": {
-                        "type": "string",
-                        "description": "This field describes who has access to the created translation, and it defaults to public. Public means the article is listed and will be accessible by everyone; private and unlisted are not supported for now.",
-                        "enum": ["PUBLIC"],
-                        "default": "PUBLIC"
-                    },
                     "is_current": {
                         "type": "boolean",
                         "description": "This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.",
@@ -4831,7 +4796,6 @@
                             }
                         ]
                     },
-                    "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
                     "visibility_status": {
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
@@ -4851,7 +4815,6 @@
                     "category_id",
                     "article_unlisted_id",
                     "seo_meta",
-                    "sharing_status",
                     "visibility_status",
                     "is_current",
                     "rating"
@@ -4922,7 +4885,6 @@
                             }
                         ]
                     },
-                    "sharing_status": {"type": "string", "enum": ["PUBLIC"]},
                     "visibility_status": {
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
@@ -4941,7 +4903,6 @@
                     "category_id",
                     "article_unlisted_id",
                     "seo_meta",
-                    "sharing_status",
                     "visibility_status",
                     "is_current"
                 ]
@@ -4978,12 +4939,6 @@
                                 "$ref": "#/components/schemas/CreateArticleTranslationSeoMetaDto"
                             }
                         ]
-                    },
-                    "sharing_status": {
-                        "type": "string",
-                        "description": "This field describes who has access to the created translation, and it defaults to public. Public means the article is listed and will be accessible by everyone; private and unlisted are not supported for now.",
-                        "enum": ["PUBLIC"],
-                        "default": "PUBLIC"
                     },
                     "is_current": {
                         "type": "boolean",

@@ -358,7 +358,6 @@ describe('useArticlesActions()', () => {
                             up: 0,
                             down: 0,
                         },
-                        sharing_status: 'PUBLIC',
                         is_current: false,
                     },
                     rating: {
@@ -413,7 +412,6 @@ describe('useArticlesActions()', () => {
                             up: 0,
                             down: 0,
                         },
-                        sharing_status: 'PUBLIC',
                         is_current: false,
                     },
                     rating: {

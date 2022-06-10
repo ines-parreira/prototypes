@@ -104,7 +104,6 @@ declare namespace Components {
           title: string | null;
           description: string | null;
         };
-        sharing_status: "PUBLIC";
         visibility_status: "PUBLIC" | "UNLISTED";
         is_current: boolean;
         rating: Rating;
@@ -133,7 +132,6 @@ declare namespace Components {
         title: string | null;
         description: string | null;
       };
-      sharing_status: "PUBLIC";
       visibility_status: "PUBLIC" | "UNLISTED";
       is_current: boolean;
       rating: Rating;
@@ -175,7 +173,6 @@ declare namespace Components {
         title: string | null;
         description: string | null;
       };
-      sharing_status: "PUBLIC";
       visibility_status: "PUBLIC" | "UNLISTED";
       is_current: boolean;
     }
@@ -199,7 +196,6 @@ declare namespace Components {
         title: string | null;
         description: string | null;
       };
-      sharing_status: "PUBLIC";
       visibility_status: "PUBLIC" | "UNLISTED";
       is_current: boolean;
       rating: Rating;
@@ -422,10 +418,6 @@ declare namespace Components {
           description: string | null;
         };
         /**
-         * This field describes who has access to the created translation, and it defaults to public. Public means the article is listed and will be accessible by everyone; private and unlisted are not supported for now.
-         */
-        sharing_status?: "PUBLIC";
-        /**
          * This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.
          */
         is_current?: boolean;
@@ -490,10 +482,6 @@ declare namespace Components {
          */
         description: string | null;
       };
-      /**
-       * This field describes who has access to the created translation, and it defaults to public. Public means the article is listed and will be accessible by everyone; private and unlisted are not supported for now.
-       */
-      sharing_status?: "PUBLIC";
       /**
        * This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.
        */
@@ -876,6 +864,8 @@ declare namespace Components {
       search_deactivated_datetime: string | null; // date-time
       powered_by_deactivated_datetime: string | null; // date-time
       algolia_api_key: string | null;
+      algolia_app_id: string;
+      algolia_index_name: string;
       primary_color: string;
       primary_font_family: string;
       theme: string;
@@ -973,7 +963,6 @@ declare namespace Components {
         title: string | null;
         description: string | null;
       };
-      sharing_status: "PUBLIC";
       visibility_status: "PUBLIC" | "UNLISTED";
       is_current: boolean;
       /**
@@ -1196,10 +1185,6 @@ declare namespace Components {
          */
         description: string | null;
       };
-      /**
-       * This field describes who has access to the created translation, and it defaults to public. Public means the article is listed and will be accessible by everyone; private and unlisted are not supported for now.
-       */
-      sharing_status?: "PUBLIC";
       /**
        * This field describes whether the translation is going to be published or not, and it defaults to true. If true, it means it will be the published version; if previously it was only in draft, it will become published. If false, it will be the draft version and therefore, unpublished.
        */
@@ -1795,7 +1780,6 @@ declare namespace Paths {
       export type Id = number;
       export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       export type LocaleFallback = boolean;
-      export type SharingStatus = "PUBLIC";
       export type VersionStatus = "latest_draft" | "current";
     }
     export interface PathParameters {
@@ -1804,7 +1788,6 @@ declare namespace Paths {
     }
     export interface QueryParameters {
       version_status?: Parameters.VersionStatus;
-      sharing_status?: Parameters.SharingStatus;
       locale: Parameters.Locale;
       locale_fallback?: Parameters.LocaleFallback;
     }
@@ -2011,7 +1994,6 @@ declare namespace Paths {
       export type HelpCenterId = number;
       export type Page = any;
       export type PerPage = any;
-      export type SharingStatus = "PUBLIC";
       export type VersionStatus = "latest_draft" | "current";
     }
     export interface PathParameters {
@@ -2020,7 +2002,6 @@ declare namespace Paths {
     }
     export interface QueryParameters {
       version_status?: Parameters.VersionStatus;
-      sharing_status?: Parameters.SharingStatus;
       per_page?: Parameters.PerPage;
       page?: Parameters.Page;
     }
@@ -2037,7 +2018,6 @@ declare namespace Paths {
       export type OrderDir = "asc" | "desc";
       export type Page = any;
       export type PerPage = any;
-      export type SharingStatus = "PUBLIC";
       export type VersionStatus = "latest_draft" | "current";
     }
     export interface PathParameters {
@@ -2047,7 +2027,6 @@ declare namespace Paths {
       has_category?: Parameters.HasCategory;
       locale?: Parameters.Locale;
       version_status?: Parameters.VersionStatus;
-      sharing_status?: Parameters.SharingStatus;
       order_by?: Parameters.OrderBy;
       order_dir?: Parameters.OrderDir;
       per_page?: Parameters.PerPage;
@@ -2091,7 +2070,6 @@ declare namespace Paths {
       export type OrderDir = "asc" | "desc";
       export type Page = any;
       export type PerPage = any;
-      export type SharingStatus = "PUBLIC";
       export type VersionStatus = "latest_draft" | "current";
     }
     export interface PathParameters {
@@ -2101,7 +2079,6 @@ declare namespace Paths {
     export interface QueryParameters {
       locale?: Parameters.Locale;
       version_status?: Parameters.VersionStatus;
-      sharing_status?: Parameters.SharingStatus;
       order_by?: Parameters.OrderBy;
       order_dir?: Parameters.OrderDir;
       per_page?: Parameters.PerPage;
@@ -2930,8 +2907,6 @@ export interface OperationMethods {
   ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
   /**
    * listNavigationLinks - List navigation links
-   * 
-   * When sorting by `position` you need to specify a `group`.
    */
   'listNavigationLinks'(
     parameters?: Parameters<Paths.ListNavigationLinks.PathParameters & Paths.ListNavigationLinks.QueryParameters> | null,
@@ -3622,8 +3597,6 @@ export interface PathsDictionary {
     ): OperationResponse<Paths.CreateNavigationLink.Responses.$201>
     /**
      * listNavigationLinks - List navigation links
-     * 
-     * When sorting by `position` you need to specify a `group`.
      */
     'get'(
       parameters?: Parameters<Paths.ListNavigationLinks.PathParameters & Paths.ListNavigationLinks.QueryParameters> | null,

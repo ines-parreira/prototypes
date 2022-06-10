@@ -33,7 +33,6 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     title: null,
                     description: null,
                 },
-                sharing_status: 'PUBLIC',
                 is_current: true,
                 rating: {
                     up: 0,
@@ -71,7 +70,6 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     title: null,
                     description: null,
                 },
-                sharing_status: 'PUBLIC',
                 is_current: true,
                 rating: {
                     up: 0,
@@ -109,7 +107,6 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     title: null,
                     description: null,
                 },
-                sharing_status: 'PUBLIC',
                 is_current: true,
                 rating: {
                     up: 0,
@@ -147,7 +144,6 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     title: null,
                     description: null,
                 },
-                sharing_status: 'PUBLIC',
                 is_current: true,
                 rating: {
                     up: 0,
@@ -185,7 +181,6 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     title: null,
                     description: null,
                 },
-                sharing_status: 'PUBLIC',
                 is_current: true,
                 rating: {
                     up: 0,
@@ -223,7 +218,6 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     title: null,
                     description: null,
                 },
-                sharing_status: 'PUBLIC',
                 is_current: true,
                 rating: {
                     up: 0,
@@ -261,7 +255,6 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     title: null,
                     description: null,
                 },
-                sharing_status: 'PUBLIC',
                 is_current: true,
                 rating: {
                     up: 0,
@@ -299,7 +292,6 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                     title: null,
                     description: null,
                 },
-                sharing_status: 'PUBLIC',
                 is_current: true,
                 rating: {
                     up: 0,
@@ -334,7 +326,6 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 content: '<p>Uncategorized article</p>',
                 slug: 'uncategorized-article',
                 seo_meta: {title: null, description: null},
-                sharing_status: 'PUBLIC',
                 is_current: true,
                 rating: {
                     up: 0,
@@ -381,7 +372,6 @@ export const getSingleArticleEnglish: Article = {
         content: '<p>Uncategorized article</p>',
         slug: 'uncategorized-article',
         seo_meta: {title: null, description: null},
-        sharing_status: 'PUBLIC',
         is_current: true,
         rating: {
             up: 0,
