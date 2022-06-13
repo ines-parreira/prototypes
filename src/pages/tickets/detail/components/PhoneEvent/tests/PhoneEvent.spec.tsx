@@ -27,6 +27,7 @@ describe('<PhoneEvent/>', () => {
             PhoneIntegrationEvent.MissedPhoneCall,
             PhoneIntegrationEvent.VoicemailRecording,
             PhoneIntegrationEvent.PhoneCallAnswered,
+            PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
         ])('should render with closed details', (eventType) => {
             const event = fromJS({
                 type: eventType,

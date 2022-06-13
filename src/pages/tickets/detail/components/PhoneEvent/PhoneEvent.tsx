@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useEffect} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import {Link} from 'react-router-dom'
@@ -14,6 +14,7 @@ import callOutgoingIcon from './icons/call-outgoing.svg'
 import callCompletedIcon from './icons/call-completed.svg'
 import callMissedIcon from './icons/call-missed.svg'
 import voicemailLeftIcon from './icons/voicemail-left.svg'
+import callForwardedIcon from './icons/call-forwarded.svg'
 import PhoneEventDetails from './PhoneEventDetails'
 
 const icons = new window.Map<string, string>([
@@ -25,6 +26,10 @@ const icons = new window.Map<string, string>([
     [PhoneIntegrationEvent.VoicemailRecording, voicemailLeftIcon],
     [PhoneIntegrationEvent.PhoneCallAnswered, callAnsweredIcon],
     [PhoneIntegrationEvent.ConversationStarted, callAnsweredIcon],
+    [
+        PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
+        callForwardedIcon,
+    ],
 ])
 
 const names = new window.Map<string, string>([
@@ -36,6 +41,10 @@ const names = new window.Map<string, string>([
     [PhoneIntegrationEvent.PhoneCallAnswered, 'Call answered'],
     [PhoneIntegrationEvent.VoicemailRecording, 'Voicemail left'],
     [PhoneIntegrationEvent.ConversationStarted, 'Phone conversation started'],
+    [
+        PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
+        'Call forwarded to an external number',
+    ],
 ])
 const customerBasedEvents = [
     PhoneIntegrationEvent.IncomingPhoneCall,

@@ -7,4 +7,5 @@ export enum PhoneIntegrationEvent {
     VoicemailRecording = 'voicemail-recording',
     PhoneCallAnswered = 'phone-call-answered',
     ConversationStarted = 'phone-call-conversation-started',
+    PhoneCallForwardedToExternalNumber = 'phone-call-forwarded-to-external-number',
 }
