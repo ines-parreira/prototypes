@@ -4,7 +4,7 @@ import React, {ReactNode, useContext} from 'react'
 import {ButtonContext} from './Button'
 import css from './ButtonIconLabel.less'
 
-type ButtonIconPosition = 'left' | 'right'
+export type ButtonIconPosition = 'left' | 'right'
 
 type Props = {
     children?: ReactNode

@@ -118,7 +118,7 @@ describe('<QuickResponseFlowEditItem />', () => {
             </Provider>
         )
 
-        screen.getByText('Leverage the power of Self-service')
+        screen.getByText('Get advanced automation features')
     })
 
     it('should edit existing flow', async () => {

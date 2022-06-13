@@ -90,17 +90,16 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
     class="pageContainer container-fluid"
   >
     <h3>
-      Enable Self-service
+      Self-service
     </h3>
     <p>
-      Enabling
-       
       <a
         to="/app/settings/self-service"
       >
-        self-service
+        Self-service
       </a>
-       will let your customers track their orders, request a return or cancellation and report issues they might have with an order. It will then create a chat ticket for your team.
+       
+      empowers customers to find answers to common questions and manage orders on their own, resolving requests without an agent. If customers require further assistance, a ticket is created.
     </p>
     <div
       class="d-flex my-4"

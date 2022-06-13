@@ -111,8 +111,8 @@ const ArticleRecommendation: FC<Props> = ({
                     actionLabel="Create Help Center"
                     type={AlertType.Info}
                 >
-                    Create a Help Center and add articles to enable the
-                    recommendations.
+                    Create a Help Center and add articles to enable this
+                    feature.
                 </LinkAlert>
             )}
             <div className={css['switch-container']}>

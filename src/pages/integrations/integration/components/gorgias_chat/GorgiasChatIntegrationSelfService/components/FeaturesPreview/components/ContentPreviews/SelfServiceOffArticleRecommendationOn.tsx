@@ -8,6 +8,7 @@ import {GorgiasChatIntegration} from 'models/integration/types/gorgiasChat'
 
 import QuickResponseReplies from 'pages/settings/selfService/components/QuickResponseFlowItem/components/QuickResponseReplies/QuickResponseReplies'
 import MessageContent from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
+import css from '../../FeaturesPreview.less'
 
 type SelfServiceOffArticleRecommendationOnProps = {
     integration: GorgiasChatIntegration
@@ -18,7 +19,7 @@ export const SelfServiceOffArticleRecommendationOn = ({
 }: SelfServiceOffArticleRecommendationOnProps): JSX.Element => {
     const currentUser = useAppSelector(getCurrentUser)
     return (
-        <>
+        <div className={css.container}>
             <MessageContent
                 conversationColor=""
                 currentUser={currentUser}
@@ -42,7 +43,7 @@ export const SelfServiceOffArticleRecommendationOn = ({
                         ],
                     },
                     {
-                        content: 'Was it helpful?',
+                        content: 'Was this helpful?',
                         isHtml: false,
                         attachments: [],
                     },
@@ -52,6 +53,6 @@ export const SelfServiceOffArticleRecommendationOn = ({
                 quickReplies={['Yes, thank you', 'No, I need more help']}
                 mainColor={integration.decoration?.main_color}
             />
-        </>
+        </div>
     )
 }

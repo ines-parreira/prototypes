@@ -3,7 +3,9 @@ import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ButtonIconLabel, {
+    ButtonIconPosition,
+} from 'pages/common/components/button/ButtonIconLabel'
 import {
     logEvent,
     SegmentEvent,
@@ -15,6 +17,7 @@ type Props = {
     segmentEventToSend?: Partial<SegmentEventToSend>
     state?: any
     label?: string
+    position?: ButtonIconPosition
 } & ComponentProps<typeof Button>
 
 type SegmentEventToSend = {
@@ -38,6 +41,7 @@ const UpgradeButton = ({
     onClick,
     state = {},
     segmentEventToSend = {},
+    position = 'right',
     ...other
 }: Props) => {
     return (
@@ -57,7 +61,10 @@ const UpgradeButton = ({
                             onClick(e)
                         }}
                     >
-                        <ButtonIconLabel icon="auto_awesome" position="right">
+                        <ButtonIconLabel
+                            icon="auto_awesome"
+                            position={position}
+                        >
                             {label}
                         </ButtonIconLabel>
                     </Button>
@@ -72,7 +79,7 @@ const UpgradeButton = ({
                         >
                             <ButtonIconLabel
                                 icon="auto_awesome"
-                                position="right"
+                                position={position}
                             >
                                 {label}
                             </ButtonIconLabel>

@@ -24,13 +24,12 @@ const SelfService = ({
 }: SelfServiceProps): JSX.Element => {
     return (
         <>
-            <h3>Enable Self-service</h3>
+            <h3>Self-service</h3>
             <p>
-                Enabling{' '}
-                <Link to="/app/settings/self-service">self-service</Link> will
-                let your customers track their orders, request a return or
-                cancellation and report issues they might have with an order. It
-                will then create a chat ticket for your team.
+                <Link to="/app/settings/self-service">Self-service</Link>{' '}
+                empowers customers to find answers to common questions and
+                manage orders on their own, resolving requests without an agent.
+                If customers require further assistance, a ticket is created.
             </p>
             <div className="d-flex my-4">
                 <span id="toggle-button">

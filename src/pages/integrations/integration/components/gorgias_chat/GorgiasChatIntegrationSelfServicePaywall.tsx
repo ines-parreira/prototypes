@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-import Paywall from 'pages/common/components/Paywall/Paywall'
+import Paywall, {UpgradeType} from 'pages/common/components/Paywall/Paywall'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import {DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
@@ -32,23 +32,25 @@ export const GorgiasChatIntegrationSelfServicePaywall = () => {
     return (
         <Paywall
             requiredUpgrade="Automation"
-            header="Leverage the power of Self-service"
+            header="Get advanced automation features"
             description={
                 <>
-                    Let your customers <b>track their orders on their own</b>,
-                    request to <b>cancel</b> or <b>return</b> them and{' '}
-                    <b>tell you more</b> about them at their convenience. <br />
+                    Empower customers to manage their orders, find
+                    <br />
+                    answers to common questions and receive help center <br />
+                    article recommendations based on their questions.
                 </>
             }
             previewImage={sspAutomationAddonMock}
             renderFilterShadow
             customCta={
                 <UpgradeButton
-                    label="Get Automation Features"
+                    label="Add Automation Features"
                     onClick={() => {
                         setIsAutomationModalOpened(true)
                     }}
                     segmentEventToSend={segmentEventToSend}
+                    position="left"
                 />
             }
             modal={
@@ -58,6 +60,7 @@ export const GorgiasChatIntegrationSelfServicePaywall = () => {
                     onClose={() => setIsAutomationModalOpened(false)}
                 />
             }
+            upgradeType={UpgradeType.AddOn}
         />
     )
 }

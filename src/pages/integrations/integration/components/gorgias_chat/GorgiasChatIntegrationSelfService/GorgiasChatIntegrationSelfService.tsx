@@ -143,6 +143,24 @@ export function GorgiasChatIntegrationSelfServiceComponent({
             return
         }
 
+        const dispatchSuccessNotification = () => {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Integration successfully updated',
+                })
+            )
+        }
+
+        const dispatchErrorNotification = () => {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Failed to update integration',
+                })
+            )
+        }
+
         if (!chatHelpCenterConfiguration) {
             try {
                 const response = await createChatHelpCenterConfiguration({
@@ -150,22 +168,10 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                     chatApplicationId,
                 })
                 setChatHelpCenterConfiguration(response)
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Success,
-                        message:
-                            'Article recommendation activated with success',
-                    })
-                )
+                dispatchSuccessNotification()
             } catch (err) {
                 console.error(err)
-                void dispatch(
-                    notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            'Failed to activate the article recommendation',
-                    })
-                )
+                dispatchErrorNotification()
             }
 
             return
@@ -179,21 +185,10 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                 id: chatHelpCenterConfiguration?.id,
             })
             setChatHelpCenterConfiguration(response)
-
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Success,
-                    message: 'Article recommendation updated with success',
-                })
-            )
+            dispatchSuccessNotification()
         } catch (err) {
             console.error(err)
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to update the article recommendation',
-                })
-            )
+            dispatchErrorNotification()
         }
     }
 

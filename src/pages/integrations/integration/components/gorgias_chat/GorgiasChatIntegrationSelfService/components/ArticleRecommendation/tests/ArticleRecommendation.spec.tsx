@@ -85,7 +85,7 @@ describe('<ArticleRecommendation />', () => {
 
         it('displays the info alert', () => {
             component.getByText(
-                'Create a Help Center and add articles to enable the recommendations.'
+                'Create a Help Center and add articles to enable this feature.'
             )
         })
 
