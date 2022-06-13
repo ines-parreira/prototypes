@@ -100,9 +100,10 @@ const ArticleRecommendation: FC<Props> = ({
         <div>
             <h3>Article recommendation</h3>
             <p>
-                Enable help center article recommendation in chat to answer your
-                customers' questions. If customers are not satisfied with the
-                recommendation, they can ask to speak with an agent.
+                Relevant articles from your help center are automatically
+                suggested to answer customer questions. If customers are not
+                satisfied, they can ask to speak with an agent and a ticket is
+                created.
             </p>
             {!isLoading && helpCenterList.length === 0 && (
                 <LinkAlert
