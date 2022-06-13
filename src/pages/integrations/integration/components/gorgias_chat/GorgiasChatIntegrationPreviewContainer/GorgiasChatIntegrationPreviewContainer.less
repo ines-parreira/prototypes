@@ -2,35 +2,8 @@
 
 :local {
     flex-grow: 1;
-    .row {
-        @media @medium {
-            flex-direction: column-reverse;
-        }
-    }
-
-    .content {
-        flex-grow: 1;
-        max-width: 680px;
-        box-sizing: content-box;
-    }
-
-    .column {
-        flex-grow: initial;
-        @media @medium {
-            flex-direction: column-reverse;
-        }
-        margin-bottom: 16px;
-    }
 
     .preview {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    @media @medium {
-        .preview {
-            align-items: flex-start;
-        }
+        margin-left: 30px;
     }
 }

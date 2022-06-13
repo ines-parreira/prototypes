@@ -99,10 +99,10 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
         class="pageContainer container-fluid"
       >
         <div
-          class="row row"
+          class="row"
         >
           <div
-            class="content col"
+            class="col"
           >
             <div
               class="formWrapper"
@@ -563,86 +563,90 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
             </div>
           </div>
           <div
-            class="column preview col"
+            class="col"
           >
             <div
               class="preview"
             >
               <div
-                class="titlebar"
-              />
-              <div
-                class="campaign"
+                class="preview"
               >
                 <div
-                  class="header"
+                  class="titlebar"
+                />
+                <div
+                  class="campaign"
                 >
                   <div
-                    class="author"
+                    class="header"
                   >
                     <div
-                      class="component authorAvatar"
-                      style="width: 50px; height: 50px;"
+                      class="author"
                     >
                       <div
-                        class="initials"
-                        style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
+                        class="component authorAvatar"
+                        style="width: 50px; height: 50px;"
                       >
-                        <span
-                          style="line-height: 52px;"
+                        <div
+                          class="initials"
+                          style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
                         >
-                          Ra
-                        </span>
+                          <span
+                            style="line-height: 52px;"
+                          >
+                            Ra
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="message"
+                    >
+                      <div
+                        class="authorName"
+                      >
+                        <b>
+                          [Random agent's name]
+                        </b>
+                      </div>
+                      <div
+                        class="messageText"
+                      >
+                        <div>
+                          <br />
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div
-                    class="message"
+                    class="poweredBy"
                   >
-                    <div
-                      class="authorName"
-                    >
-                      <b>
-                        [Random agent's name]
-                      </b>
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
+                      />
                     </div>
-                    <div
-                      class="messageText"
-                    >
-                      <div>
-                        <br />
-                      </div>
-                    </div>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    Click to reply
                   </div>
                 </div>
                 <div
-                  class="poweredBy"
+                  class="button bottom-right"
+                  style="background-color: rgb(254, 254, 254);"
                 >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
-                    />
-                  </div>
+                  <img
+                    alt="Close icon"
+                    class="icon"
+                    src="test-file-stub"
+                  />
                 </div>
-                <div
-                  class="footer"
-                >
-                  Click to reply
-                </div>
-              </div>
-              <div
-                class="button bottom-right"
-                style="background-color: rgb(254, 254, 254);"
-              >
-                <img
-                  alt="Close icon"
-                  class="icon"
-                  src="test-file-stub"
-                />
               </div>
             </div>
           </div>
@@ -752,10 +756,10 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
         class="pageContainer container-fluid"
       >
         <div
-          class="row row"
+          class="row"
         >
           <div
-            class="content col"
+            class="col"
           >
             <div
               class="formWrapper"
@@ -1281,91 +1285,95 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
             </div>
           </div>
           <div
-            class="column preview col"
+            class="col"
           >
             <div
               class="preview"
             >
               <div
-                class="titlebar"
-              />
-              <div
-                class="campaign"
+                class="preview"
               >
                 <div
-                  class="header"
+                  class="titlebar"
+                />
+                <div
+                  class="campaign"
                 >
                   <div
-                    class="author"
+                    class="header"
                   >
                     <div
-                      class="component hasImage authorAvatar"
-                      style="width: 50px; height: 50px;"
+                      class="author"
                     >
                       <div
-                        class="initials"
-                        style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
+                        class="component hasImage authorAvatar"
+                        style="width: 50px; height: 50px;"
                       >
-                        <span
-                          style="line-height: 52px;"
+                        <div
+                          class="initials"
+                          style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
                         >
-                          J
-                        </span>
+                          <span
+                            style="line-height: 52px;"
+                          >
+                            J
+                          </span>
+                        </div>
+                        <img
+                          alt="avatar"
+                          class="gravatar"
+                          src="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
+                        />
                       </div>
+                    </div>
+                    <div
+                      class="message"
+                    >
+                      <div
+                        class="authorName"
+                      >
+                        <b>
+                          John
+                        </b>
+                      </div>
+                      <div
+                        class="messageText"
+                      >
+                        <div>
+                          My little message
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
                       <img
-                        alt="avatar"
-                        class="gravatar"
-                        src="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
+                        alt="powered-by"
+                        src="test-file-stub"
                       />
                     </div>
                   </div>
                   <div
-                    class="message"
+                    class="footer"
                   >
-                    <div
-                      class="authorName"
-                    >
-                      <b>
-                        John
-                      </b>
-                    </div>
-                    <div
-                      class="messageText"
-                    >
-                      <div>
-                        My little message
-                      </div>
-                    </div>
+                    Click to reply
                   </div>
                 </div>
                 <div
-                  class="poweredBy"
+                  class="button bottom-right"
+                  style="background-color: rgb(254, 254, 254);"
                 >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
-                    />
-                  </div>
+                  <img
+                    alt="Close icon"
+                    class="icon"
+                    src="test-file-stub"
+                  />
                 </div>
-                <div
-                  class="footer"
-                >
-                  Click to reply
-                </div>
-              </div>
-              <div
-                class="button bottom-right"
-                style="background-color: rgb(254, 254, 254);"
-              >
-                <img
-                  alt="Close icon"
-                  class="icon"
-                  src="test-file-stub"
-                />
               </div>
             </div>
           </div>
@@ -1475,10 +1483,10 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
         class="pageContainer container-fluid"
       >
         <div
-          class="row row"
+          class="row"
         >
           <div
-            class="content col"
+            class="col"
           >
             <div
               class="formWrapper"
@@ -2004,91 +2012,95 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
             </div>
           </div>
           <div
-            class="column preview col"
+            class="col"
           >
             <div
               class="preview"
             >
               <div
-                class="titlebar"
-              />
-              <div
-                class="campaign"
+                class="preview"
               >
                 <div
-                  class="header"
+                  class="titlebar"
+                />
+                <div
+                  class="campaign"
                 >
                   <div
-                    class="author"
+                    class="header"
                   >
                     <div
-                      class="component hasImage authorAvatar"
-                      style="width: 50px; height: 50px;"
+                      class="author"
                     >
                       <div
-                        class="initials"
-                        style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
+                        class="component hasImage authorAvatar"
+                        style="width: 50px; height: 50px;"
                       >
-                        <span
-                          style="line-height: 52px;"
+                        <div
+                          class="initials"
+                          style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
                         >
-                          J
-                        </span>
+                          <span
+                            style="line-height: 52px;"
+                          >
+                            J
+                          </span>
+                        </div>
+                        <img
+                          alt="avatar"
+                          class="gravatar"
+                          src="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
+                        />
                       </div>
+                    </div>
+                    <div
+                      class="message"
+                    >
+                      <div
+                        class="authorName"
+                      >
+                        <b>
+                          John
+                        </b>
+                      </div>
+                      <div
+                        class="messageText"
+                      >
+                        <div>
+                          My little message
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
                       <img
-                        alt="avatar"
-                        class="gravatar"
-                        src="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
+                        alt="powered-by"
+                        src="test-file-stub"
                       />
                     </div>
                   </div>
                   <div
-                    class="message"
+                    class="footer"
                   >
-                    <div
-                      class="authorName"
-                    >
-                      <b>
-                        John
-                      </b>
-                    </div>
-                    <div
-                      class="messageText"
-                    >
-                      <div>
-                        My little message
-                      </div>
-                    </div>
+                    Click to reply
                   </div>
                 </div>
                 <div
-                  class="poweredBy"
+                  class="button bottom-right"
+                  style="background-color: rgb(254, 254, 254);"
                 >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
-                    />
-                  </div>
+                  <img
+                    alt="Close icon"
+                    class="icon"
+                    src="test-file-stub"
+                  />
                 </div>
-                <div
-                  class="footer"
-                >
-                  Click to reply
-                </div>
-              </div>
-              <div
-                class="button bottom-right"
-                style="background-color: rgb(254, 254, 254);"
-              >
-                <img
-                  alt="Close icon"
-                  class="icon"
-                  src="test-file-stub"
-                />
               </div>
             </div>
           </div>

@@ -287,7 +287,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
               className="pageContainer container-fluid"
             >
               <Row
-                className="row"
                 tag="div"
                 widths={
                   Array [
@@ -300,10 +299,9 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 }
               >
                 <div
-                  className="row row"
+                  className="row"
                 >
                   <Col
-                    className="content"
                     tag="div"
                     widths={
                       Array [
@@ -316,7 +314,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                     }
                   >
                     <div
-                      className="content col"
+                      className="col"
                     >
                       <Form
                         onSubmit={[Function]}
@@ -640,7 +638,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                     </div>
                   </Col>
                   <Col
-                    className="column preview"
                     tag="div"
                     widths={
                       Array [
@@ -653,253 +650,257 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                     }
                   >
                     <div
-                      className="column preview col"
+                      className="col"
                     >
-                      <ChatIntegrationPreview
-                        introductionText="this is an intro"
-                        isOnline={true}
-                        mainColor="#123456"
-                        name="my chat integration"
-                        position={
-                          Object {
-                            "alignment": "bottom-right",
-                            "offsetX": 0,
-                            "offsetY": 0,
-                          }
-                        }
+                      <div
+                        className="preview"
                       >
-                        <div
-                          className="preview"
-                          style={Object {}}
+                        <ChatIntegrationPreview
+                          introductionText="this is an intro"
+                          isOnline={true}
+                          mainColor="#123456"
+                          name="my chat integration"
+                          position={
+                            Object {
+                              "alignment": "bottom-right",
+                              "offsetX": 0,
+                              "offsetY": 0,
+                            }
+                          }
                         >
                           <div
-                            className="dialog"
+                            className="preview"
+                            style={Object {}}
                           >
                             <div
-                              className="header"
+                              className="dialog"
+                            >
+                              <div
+                                className="header"
+                                style={
+                                  Object {
+                                    "backgroundColor": "#123456",
+                                  }
+                                }
+                              >
+                                <ChatIntegrationAvatar
+                                  isOnline={true}
+                                  mainColor="#123456"
+                                  offlineColor="#A1A9B6"
+                                >
+                                  <div
+                                    className="agents"
+                                  >
+                                    <div
+                                      className="agent first"
+                                      key="first"
+                                      style={
+                                        Object {
+                                          "borderColor": "#123456",
+                                        }
+                                      }
+                                    >
+                                      <i
+                                        className="material-icons"
+                                      >
+                                        person
+                                      </i>
+                                    </div>
+                                    <div
+                                      className="agent middle"
+                                      key="middle"
+                                      style={
+                                        Object {
+                                          "borderColor": "#123456",
+                                        }
+                                      }
+                                    >
+                                      <i
+                                        className="material-icons"
+                                      >
+                                        person
+                                      </i>
+                                      <div
+                                        className="onlineMarker"
+                                      />
+                                    </div>
+                                    <div
+                                      className="agent last"
+                                      key="last"
+                                      style={
+                                        Object {
+                                          "borderColor": "#123456",
+                                        }
+                                      }
+                                    >
+                                      <i
+                                        className="material-icons"
+                                      >
+                                        person
+                                      </i>
+                                    </div>
+                                  </div>
+                                </ChatIntegrationAvatar>
+                                <div
+                                  className="details"
+                                >
+                                  <div
+                                    className="appName"
+                                  >
+                                    my chat integration
+                                  </div>
+                                  <div
+                                    className="introductionText"
+                                  >
+                                    this is an intro
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                className="content"
+                              />
+                              <QuickReplies
+                                mainColor="#123456"
+                                quickReplies={
+                                  Array [
+                                    "Get order status",
+                                    "Apply promo code",
+                                  ]
+                                }
+                              >
+                                <div
+                                  className="content quick-replies-content"
+                                >
+                                  <div
+                                    className="quick-replies-wrapper"
+                                  >
+                                    <button
+                                      className="btn btn-reply-action reply"
+                                      key="Get order status-0"
+                                      style={
+                                        Object {
+                                          "borderColor": "#123456",
+                                          "color": "#123456",
+                                        }
+                                      }
+                                    >
+                                      Get order status
+                                    </button>
+                                    <button
+                                      className="btn btn-reply-action reply"
+                                      key="Apply promo code-1"
+                                      style={
+                                        Object {
+                                          "borderColor": "#123456",
+                                          "color": "#123456",
+                                        }
+                                      }
+                                    >
+                                      Apply promo code
+                                    </button>
+                                  </div>
+                                </div>
+                              </QuickReplies>
+                              <PoweredByGorgias
+                                translatedTexts={
+                                  Object {
+                                    "actionPostbackError": "An error occurred while processing your action. Please try again.",
+                                    "backLabelBackAt": "Back online at {time}",
+                                    "backLabelBackInAMinute": "Back in 1 minute",
+                                    "backLabelBackInAnHour": "Back in 1 hour",
+                                    "backLabelBackInDays": "Back in {value} days",
+                                    "backLabelBackInHours": "Back in {value} hours",
+                                    "backLabelBackInMinutes": "Back in {value} minutes",
+                                    "backLabelBackTomorrow": "Back tomorrow",
+                                    "campaignClickToReply": "Click to reply",
+                                    "clickToRetry": "Message not delivered. Click to retry.",
+                                    "conversationTimestampHeaderFormat": "MMMM D",
+                                    "emailCaptureInputLabel": "Get notified by email",
+                                    "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+                                    "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+                                    "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+                                    "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
+                                    "emailCapturePlaceholder": "your@email.com",
+                                    "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+                                    "emailCaptureRequiredMessagePlaceholder": "Write your message",
+                                    "fetchHistory": "Load more",
+                                    "fetchingHistory": "Retrieving history...",
+                                    "headerText": "Gorgias Team",
+                                    "inputPlaceholder": "Type a message...",
+                                    "introductionText": "How can we help?",
+                                    "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+                                    "messageDelivered": "Delivered",
+                                    "messageError": "An error occurred while sending your message. Please try again.",
+                                    "messageIndicatorTitlePlural": "({count}) New messages",
+                                    "messageIndicatorTitleSingular": "({count}) New message",
+                                    "messageRelativeTimeDay": "{value}d ago",
+                                    "messageRelativeTimeHour": "{value}h ago",
+                                    "messageRelativeTimeJustNow": "Just now",
+                                    "messageRelativeTimeMinute": "{value}m ago",
+                                    "messageSending": "Sending...",
+                                    "messageTimestampFormat": "h:mm A",
+                                    "offlineIntroductionText": "We'll be back tomorrow",
+                                    "poweredBy": "Powered by",
+                                    "poweredByGorgias": "Powered by Gorgias",
+                                    "send": "Send",
+                                    "tapToRetry": "Message not delivered. Tap to retry.",
+                                    "unsupportedActionType": "Unsupported action type.",
+                                    "unsupportedMessageType": "Unsupported message type.",
+                                    "usualReplyTimeDay": "Typically replies within a day",
+                                    "usualReplyTimeHours": "Typically replies in a few hours",
+                                    "usualReplyTimeMinutes": "Typically replies in a few minutes",
+                                  }
+                                }
+                              >
+                                <div
+                                  className="poweredBy"
+                                >
+                                  <div>
+                                    <span>
+                                      Powered by
+                                    </span>
+                                    <img
+                                      alt="powered-by"
+                                      src="test-file-stub"
+                                    />
+                                  </div>
+                                </div>
+                              </PoweredByGorgias>
+                              <div
+                                className="footer"
+                              >
+                                <div
+                                  className="placeholder"
+                                >
+                                  Type a message...
+                                </div>
+                                <i
+                                  className="icon camera"
+                                />
+                              </div>
+                            </div>
+                            <div
+                              className="button bottom-right"
                               style={
                                 Object {
                                   "backgroundColor": "#123456",
                                 }
                               }
                             >
-                              <ChatIntegrationAvatar
-                                isOnline={true}
-                                mainColor="#123456"
-                                offlineColor="#A1A9B6"
-                              >
-                                <div
-                                  className="agents"
-                                >
-                                  <div
-                                    className="agent first"
-                                    key="first"
-                                    style={
-                                      Object {
-                                        "borderColor": "#123456",
-                                      }
-                                    }
-                                  >
-                                    <i
-                                      className="material-icons"
-                                    >
-                                      person
-                                    </i>
-                                  </div>
-                                  <div
-                                    className="agent middle"
-                                    key="middle"
-                                    style={
-                                      Object {
-                                        "borderColor": "#123456",
-                                      }
-                                    }
-                                  >
-                                    <i
-                                      className="material-icons"
-                                    >
-                                      person
-                                    </i>
-                                    <div
-                                      className="onlineMarker"
-                                    />
-                                  </div>
-                                  <div
-                                    className="agent last"
-                                    key="last"
-                                    style={
-                                      Object {
-                                        "borderColor": "#123456",
-                                      }
-                                    }
-                                  >
-                                    <i
-                                      className="material-icons"
-                                    >
-                                      person
-                                    </i>
-                                  </div>
-                                </div>
-                              </ChatIntegrationAvatar>
                               <div
-                                className="details"
+                                className="iconWrapper"
                               >
+                                <i
+                                  className="icon"
+                                />
                                 <div
-                                  className="appName"
-                                >
-                                  my chat integration
-                                </div>
-                                <div
-                                  className="introductionText"
-                                >
-                                  this is an intro
-                                </div>
+                                  className="shadow"
+                                />
                               </div>
-                            </div>
-                            <div
-                              className="content"
-                            />
-                            <QuickReplies
-                              mainColor="#123456"
-                              quickReplies={
-                                Array [
-                                  "Get order status",
-                                  "Apply promo code",
-                                ]
-                              }
-                            >
-                              <div
-                                className="content quick-replies-content"
-                              >
-                                <div
-                                  className="quick-replies-wrapper"
-                                >
-                                  <button
-                                    className="btn btn-reply-action reply"
-                                    key="Get order status-0"
-                                    style={
-                                      Object {
-                                        "borderColor": "#123456",
-                                        "color": "#123456",
-                                      }
-                                    }
-                                  >
-                                    Get order status
-                                  </button>
-                                  <button
-                                    className="btn btn-reply-action reply"
-                                    key="Apply promo code-1"
-                                    style={
-                                      Object {
-                                        "borderColor": "#123456",
-                                        "color": "#123456",
-                                      }
-                                    }
-                                  >
-                                    Apply promo code
-                                  </button>
-                                </div>
-                              </div>
-                            </QuickReplies>
-                            <PoweredByGorgias
-                              translatedTexts={
-                                Object {
-                                  "actionPostbackError": "An error occurred while processing your action. Please try again.",
-                                  "backLabelBackAt": "Back online at {time}",
-                                  "backLabelBackInAMinute": "Back in 1 minute",
-                                  "backLabelBackInAnHour": "Back in 1 hour",
-                                  "backLabelBackInDays": "Back in {value} days",
-                                  "backLabelBackInHours": "Back in {value} hours",
-                                  "backLabelBackInMinutes": "Back in {value} minutes",
-                                  "backLabelBackTomorrow": "Back tomorrow",
-                                  "campaignClickToReply": "Click to reply",
-                                  "clickToRetry": "Message not delivered. Click to retry.",
-                                  "conversationTimestampHeaderFormat": "MMMM D",
-                                  "emailCaptureInputLabel": "Get notified by email",
-                                  "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-                                  "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-                                  "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-                                  "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-                                  "emailCapturePlaceholder": "your@email.com",
-                                  "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-                                  "emailCaptureRequiredMessagePlaceholder": "Write your message",
-                                  "fetchHistory": "Load more",
-                                  "fetchingHistory": "Retrieving history...",
-                                  "headerText": "Gorgias Team",
-                                  "inputPlaceholder": "Type a message...",
-                                  "introductionText": "How can we help?",
-                                  "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-                                  "messageDelivered": "Delivered",
-                                  "messageError": "An error occurred while sending your message. Please try again.",
-                                  "messageIndicatorTitlePlural": "({count}) New messages",
-                                  "messageIndicatorTitleSingular": "({count}) New message",
-                                  "messageRelativeTimeDay": "{value}d ago",
-                                  "messageRelativeTimeHour": "{value}h ago",
-                                  "messageRelativeTimeJustNow": "Just now",
-                                  "messageRelativeTimeMinute": "{value}m ago",
-                                  "messageSending": "Sending...",
-                                  "messageTimestampFormat": "h:mm A",
-                                  "offlineIntroductionText": "We'll be back tomorrow",
-                                  "poweredBy": "Powered by",
-                                  "poweredByGorgias": "Powered by Gorgias",
-                                  "send": "Send",
-                                  "tapToRetry": "Message not delivered. Tap to retry.",
-                                  "unsupportedActionType": "Unsupported action type.",
-                                  "unsupportedMessageType": "Unsupported message type.",
-                                  "usualReplyTimeDay": "Typically replies within a day",
-                                  "usualReplyTimeHours": "Typically replies in a few hours",
-                                  "usualReplyTimeMinutes": "Typically replies in a few minutes",
-                                }
-                              }
-                            >
-                              <div
-                                className="poweredBy"
-                              >
-                                <div>
-                                  <span>
-                                    Powered by
-                                  </span>
-                                  <img
-                                    alt="powered-by"
-                                    src="test-file-stub"
-                                  />
-                                </div>
-                              </div>
-                            </PoweredByGorgias>
-                            <div
-                              className="footer"
-                            >
-                              <div
-                                className="placeholder"
-                              >
-                                Type a message...
-                              </div>
-                              <i
-                                className="icon camera"
-                              />
                             </div>
                           </div>
-                          <div
-                            className="button bottom-right"
-                            style={
-                              Object {
-                                "backgroundColor": "#123456",
-                              }
-                            }
-                          >
-                            <div
-                              className="iconWrapper"
-                            >
-                              <i
-                                className="icon"
-                              />
-                              <div
-                                className="shadow"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </ChatIntegrationPreview>
+                        </ChatIntegrationPreview>
+                      </div>
                     </div>
                   </Col>
                 </div>
@@ -1224,7 +1225,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
               className="pageContainer container-fluid"
             >
               <Row
-                className="row"
                 tag="div"
                 widths={
                   Array [
@@ -1237,10 +1237,9 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 }
               >
                 <div
-                  className="row row"
+                  className="row"
                 >
                   <Col
-                    className="content"
                     tag="div"
                     widths={
                       Array [
@@ -1253,7 +1252,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                     }
                   >
                     <div
-                      className="content col"
+                      className="col"
                     >
                       <Form
                         onSubmit={[Function]}
@@ -1577,7 +1576,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                     </div>
                   </Col>
                   <Col
-                    className="column preview"
                     tag="div"
                     widths={
                       Array [
@@ -1590,253 +1588,257 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                     }
                   >
                     <div
-                      className="column preview col"
+                      className="col"
                     >
-                      <ChatIntegrationPreview
-                        introductionText="this is an intro"
-                        isOnline={true}
-                        mainColor="#123456"
-                        name="my chat integration"
-                        position={
-                          Object {
-                            "alignment": "bottom-right",
-                            "offsetX": 0,
-                            "offsetY": 0,
-                          }
-                        }
+                      <div
+                        className="preview"
                       >
-                        <div
-                          className="preview"
-                          style={Object {}}
+                        <ChatIntegrationPreview
+                          introductionText="this is an intro"
+                          isOnline={true}
+                          mainColor="#123456"
+                          name="my chat integration"
+                          position={
+                            Object {
+                              "alignment": "bottom-right",
+                              "offsetX": 0,
+                              "offsetY": 0,
+                            }
+                          }
                         >
                           <div
-                            className="dialog"
+                            className="preview"
+                            style={Object {}}
                           >
                             <div
-                              className="header"
+                              className="dialog"
+                            >
+                              <div
+                                className="header"
+                                style={
+                                  Object {
+                                    "backgroundColor": "#123456",
+                                  }
+                                }
+                              >
+                                <ChatIntegrationAvatar
+                                  isOnline={true}
+                                  mainColor="#123456"
+                                  offlineColor="#A1A9B6"
+                                >
+                                  <div
+                                    className="agents"
+                                  >
+                                    <div
+                                      className="agent first"
+                                      key="first"
+                                      style={
+                                        Object {
+                                          "borderColor": "#123456",
+                                        }
+                                      }
+                                    >
+                                      <i
+                                        className="material-icons"
+                                      >
+                                        person
+                                      </i>
+                                    </div>
+                                    <div
+                                      className="agent middle"
+                                      key="middle"
+                                      style={
+                                        Object {
+                                          "borderColor": "#123456",
+                                        }
+                                      }
+                                    >
+                                      <i
+                                        className="material-icons"
+                                      >
+                                        person
+                                      </i>
+                                      <div
+                                        className="onlineMarker"
+                                      />
+                                    </div>
+                                    <div
+                                      className="agent last"
+                                      key="last"
+                                      style={
+                                        Object {
+                                          "borderColor": "#123456",
+                                        }
+                                      }
+                                    >
+                                      <i
+                                        className="material-icons"
+                                      >
+                                        person
+                                      </i>
+                                    </div>
+                                  </div>
+                                </ChatIntegrationAvatar>
+                                <div
+                                  className="details"
+                                >
+                                  <div
+                                    className="appName"
+                                  >
+                                    my chat integration
+                                  </div>
+                                  <div
+                                    className="introductionText"
+                                  >
+                                    this is an intro
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                className="content"
+                              />
+                              <QuickReplies
+                                mainColor="#123456"
+                                quickReplies={
+                                  Array [
+                                    "foo",
+                                    "bar",
+                                  ]
+                                }
+                              >
+                                <div
+                                  className="content quick-replies-content"
+                                >
+                                  <div
+                                    className="quick-replies-wrapper"
+                                  >
+                                    <button
+                                      className="btn btn-reply-action reply"
+                                      key="foo-0"
+                                      style={
+                                        Object {
+                                          "borderColor": "#123456",
+                                          "color": "#123456",
+                                        }
+                                      }
+                                    >
+                                      foo
+                                    </button>
+                                    <button
+                                      className="btn btn-reply-action reply"
+                                      key="bar-1"
+                                      style={
+                                        Object {
+                                          "borderColor": "#123456",
+                                          "color": "#123456",
+                                        }
+                                      }
+                                    >
+                                      bar
+                                    </button>
+                                  </div>
+                                </div>
+                              </QuickReplies>
+                              <PoweredByGorgias
+                                translatedTexts={
+                                  Object {
+                                    "actionPostbackError": "An error occurred while processing your action. Please try again.",
+                                    "backLabelBackAt": "Back online at {time}",
+                                    "backLabelBackInAMinute": "Back in 1 minute",
+                                    "backLabelBackInAnHour": "Back in 1 hour",
+                                    "backLabelBackInDays": "Back in {value} days",
+                                    "backLabelBackInHours": "Back in {value} hours",
+                                    "backLabelBackInMinutes": "Back in {value} minutes",
+                                    "backLabelBackTomorrow": "Back tomorrow",
+                                    "campaignClickToReply": "Click to reply",
+                                    "clickToRetry": "Message not delivered. Click to retry.",
+                                    "conversationTimestampHeaderFormat": "MMMM D",
+                                    "emailCaptureInputLabel": "Get notified by email",
+                                    "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+                                    "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+                                    "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+                                    "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
+                                    "emailCapturePlaceholder": "your@email.com",
+                                    "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+                                    "emailCaptureRequiredMessagePlaceholder": "Write your message",
+                                    "fetchHistory": "Load more",
+                                    "fetchingHistory": "Retrieving history...",
+                                    "headerText": "Gorgias Team",
+                                    "inputPlaceholder": "Type a message...",
+                                    "introductionText": "How can we help?",
+                                    "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+                                    "messageDelivered": "Delivered",
+                                    "messageError": "An error occurred while sending your message. Please try again.",
+                                    "messageIndicatorTitlePlural": "({count}) New messages",
+                                    "messageIndicatorTitleSingular": "({count}) New message",
+                                    "messageRelativeTimeDay": "{value}d ago",
+                                    "messageRelativeTimeHour": "{value}h ago",
+                                    "messageRelativeTimeJustNow": "Just now",
+                                    "messageRelativeTimeMinute": "{value}m ago",
+                                    "messageSending": "Sending...",
+                                    "messageTimestampFormat": "h:mm A",
+                                    "offlineIntroductionText": "We'll be back tomorrow",
+                                    "poweredBy": "Powered by",
+                                    "poweredByGorgias": "Powered by Gorgias",
+                                    "send": "Send",
+                                    "tapToRetry": "Message not delivered. Tap to retry.",
+                                    "unsupportedActionType": "Unsupported action type.",
+                                    "unsupportedMessageType": "Unsupported message type.",
+                                    "usualReplyTimeDay": "Typically replies within a day",
+                                    "usualReplyTimeHours": "Typically replies in a few hours",
+                                    "usualReplyTimeMinutes": "Typically replies in a few minutes",
+                                  }
+                                }
+                              >
+                                <div
+                                  className="poweredBy"
+                                >
+                                  <div>
+                                    <span>
+                                      Powered by
+                                    </span>
+                                    <img
+                                      alt="powered-by"
+                                      src="test-file-stub"
+                                    />
+                                  </div>
+                                </div>
+                              </PoweredByGorgias>
+                              <div
+                                className="footer"
+                              >
+                                <div
+                                  className="placeholder"
+                                >
+                                  Type a message...
+                                </div>
+                                <i
+                                  className="icon camera"
+                                />
+                              </div>
+                            </div>
+                            <div
+                              className="button bottom-right"
                               style={
                                 Object {
                                   "backgroundColor": "#123456",
                                 }
                               }
                             >
-                              <ChatIntegrationAvatar
-                                isOnline={true}
-                                mainColor="#123456"
-                                offlineColor="#A1A9B6"
-                              >
-                                <div
-                                  className="agents"
-                                >
-                                  <div
-                                    className="agent first"
-                                    key="first"
-                                    style={
-                                      Object {
-                                        "borderColor": "#123456",
-                                      }
-                                    }
-                                  >
-                                    <i
-                                      className="material-icons"
-                                    >
-                                      person
-                                    </i>
-                                  </div>
-                                  <div
-                                    className="agent middle"
-                                    key="middle"
-                                    style={
-                                      Object {
-                                        "borderColor": "#123456",
-                                      }
-                                    }
-                                  >
-                                    <i
-                                      className="material-icons"
-                                    >
-                                      person
-                                    </i>
-                                    <div
-                                      className="onlineMarker"
-                                    />
-                                  </div>
-                                  <div
-                                    className="agent last"
-                                    key="last"
-                                    style={
-                                      Object {
-                                        "borderColor": "#123456",
-                                      }
-                                    }
-                                  >
-                                    <i
-                                      className="material-icons"
-                                    >
-                                      person
-                                    </i>
-                                  </div>
-                                </div>
-                              </ChatIntegrationAvatar>
                               <div
-                                className="details"
+                                className="iconWrapper"
                               >
+                                <i
+                                  className="icon"
+                                />
                                 <div
-                                  className="appName"
-                                >
-                                  my chat integration
-                                </div>
-                                <div
-                                  className="introductionText"
-                                >
-                                  this is an intro
-                                </div>
+                                  className="shadow"
+                                />
                               </div>
-                            </div>
-                            <div
-                              className="content"
-                            />
-                            <QuickReplies
-                              mainColor="#123456"
-                              quickReplies={
-                                Array [
-                                  "foo",
-                                  "bar",
-                                ]
-                              }
-                            >
-                              <div
-                                className="content quick-replies-content"
-                              >
-                                <div
-                                  className="quick-replies-wrapper"
-                                >
-                                  <button
-                                    className="btn btn-reply-action reply"
-                                    key="foo-0"
-                                    style={
-                                      Object {
-                                        "borderColor": "#123456",
-                                        "color": "#123456",
-                                      }
-                                    }
-                                  >
-                                    foo
-                                  </button>
-                                  <button
-                                    className="btn btn-reply-action reply"
-                                    key="bar-1"
-                                    style={
-                                      Object {
-                                        "borderColor": "#123456",
-                                        "color": "#123456",
-                                      }
-                                    }
-                                  >
-                                    bar
-                                  </button>
-                                </div>
-                              </div>
-                            </QuickReplies>
-                            <PoweredByGorgias
-                              translatedTexts={
-                                Object {
-                                  "actionPostbackError": "An error occurred while processing your action. Please try again.",
-                                  "backLabelBackAt": "Back online at {time}",
-                                  "backLabelBackInAMinute": "Back in 1 minute",
-                                  "backLabelBackInAnHour": "Back in 1 hour",
-                                  "backLabelBackInDays": "Back in {value} days",
-                                  "backLabelBackInHours": "Back in {value} hours",
-                                  "backLabelBackInMinutes": "Back in {value} minutes",
-                                  "backLabelBackTomorrow": "Back tomorrow",
-                                  "campaignClickToReply": "Click to reply",
-                                  "clickToRetry": "Message not delivered. Click to retry.",
-                                  "conversationTimestampHeaderFormat": "MMMM D",
-                                  "emailCaptureInputLabel": "Get notified by email",
-                                  "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-                                  "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-                                  "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-                                  "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-                                  "emailCapturePlaceholder": "your@email.com",
-                                  "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-                                  "emailCaptureRequiredMessagePlaceholder": "Write your message",
-                                  "fetchHistory": "Load more",
-                                  "fetchingHistory": "Retrieving history...",
-                                  "headerText": "Gorgias Team",
-                                  "inputPlaceholder": "Type a message...",
-                                  "introductionText": "How can we help?",
-                                  "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-                                  "messageDelivered": "Delivered",
-                                  "messageError": "An error occurred while sending your message. Please try again.",
-                                  "messageIndicatorTitlePlural": "({count}) New messages",
-                                  "messageIndicatorTitleSingular": "({count}) New message",
-                                  "messageRelativeTimeDay": "{value}d ago",
-                                  "messageRelativeTimeHour": "{value}h ago",
-                                  "messageRelativeTimeJustNow": "Just now",
-                                  "messageRelativeTimeMinute": "{value}m ago",
-                                  "messageSending": "Sending...",
-                                  "messageTimestampFormat": "h:mm A",
-                                  "offlineIntroductionText": "We'll be back tomorrow",
-                                  "poweredBy": "Powered by",
-                                  "poweredByGorgias": "Powered by Gorgias",
-                                  "send": "Send",
-                                  "tapToRetry": "Message not delivered. Tap to retry.",
-                                  "unsupportedActionType": "Unsupported action type.",
-                                  "unsupportedMessageType": "Unsupported message type.",
-                                  "usualReplyTimeDay": "Typically replies within a day",
-                                  "usualReplyTimeHours": "Typically replies in a few hours",
-                                  "usualReplyTimeMinutes": "Typically replies in a few minutes",
-                                }
-                              }
-                            >
-                              <div
-                                className="poweredBy"
-                              >
-                                <div>
-                                  <span>
-                                    Powered by
-                                  </span>
-                                  <img
-                                    alt="powered-by"
-                                    src="test-file-stub"
-                                  />
-                                </div>
-                              </div>
-                            </PoweredByGorgias>
-                            <div
-                              className="footer"
-                            >
-                              <div
-                                className="placeholder"
-                              >
-                                Type a message...
-                              </div>
-                              <i
-                                className="icon camera"
-                              />
                             </div>
                           </div>
-                          <div
-                            className="button bottom-right"
-                            style={
-                              Object {
-                                "backgroundColor": "#123456",
-                              }
-                            }
-                          >
-                            <div
-                              className="iconWrapper"
-                            >
-                              <i
-                                className="icon"
-                              />
-                              <div
-                                className="shadow"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </ChatIntegrationPreview>
+                        </ChatIntegrationPreview>
+                      </div>
                     </div>
                   </Col>
                 </div>

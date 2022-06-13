@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import React, {ReactNode} from 'react'
 import {Col, Container, Row} from 'reactstrap'
 
@@ -15,9 +14,11 @@ export const GorgiasChatIntegrationPreviewContainer = ({
     preview,
 }: Props) => (
     <Container fluid className={settingsCss.pageContainer}>
-        <Row className={css.row}>
-            <Col className={(css.column, css.content)}>{children}</Col>
-            <Col className={classNames(css.column, css.preview)}>{preview}</Col>
+        <Row>
+            <Col>{children}</Col>
+            <Col>
+                <div className={css.preview}>{preview}</div>
+            </Col>
         </Row>
     </Container>
 )
