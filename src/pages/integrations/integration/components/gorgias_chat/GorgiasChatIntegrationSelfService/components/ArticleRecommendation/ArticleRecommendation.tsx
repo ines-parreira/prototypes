@@ -125,6 +125,7 @@ const ArticleRecommendation: FC<Props> = ({
                         isDisabled={helpCenterList.length === 0}
                         isToggled={isEnabled}
                         onClick={handleToggleInput}
+                        isLoading={isLoading}
                     />
                 </span>
                 <Label

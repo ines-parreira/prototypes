@@ -13,6 +13,7 @@ type SelfServiceProps = {
     isEnabled?: boolean
     isDisabled?: boolean
     isForcedDisabled?: boolean
+    isLoading?: boolean
     onChange: () => void
 }
 
@@ -20,6 +21,7 @@ const SelfService = ({
     isEnabled = false,
     isDisabled = false,
     isForcedDisabled = false,
+    isLoading = false,
     onChange,
 }: SelfServiceProps): JSX.Element => {
     return (
@@ -36,6 +38,7 @@ const SelfService = ({
                     <ToggleInput
                         isToggled={isEnabled}
                         isDisabled={isDisabled}
+                        isLoading={isLoading}
                         onClick={onChange}
                     />
                 </span>

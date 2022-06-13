@@ -121,7 +121,7 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
                     type: 'gorgias_chat',
                     meta: fromJS({
                         shop_name: 'totoshop',
-                        self_service_deactivated_datetime: date,
+                        self_service_deactivated_datetime: null,
                     }),
                 })
             )

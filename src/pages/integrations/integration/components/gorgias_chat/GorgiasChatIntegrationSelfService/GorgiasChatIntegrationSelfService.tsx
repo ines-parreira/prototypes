@@ -46,8 +46,11 @@ export function GorgiasChatIntegrationSelfServiceComponent({
     ])
         ? parseInt(integration.getIn(['meta', 'app_id']))
         : null
-    const {chatHelpCenterConfiguration, setChatHelpCenterConfiguration} =
-        useChatHelpCenterConfiguration(chatApplicationId)
+    const {
+        chatHelpCenterConfiguration,
+        setChatHelpCenterConfiguration,
+        chatHelpCenterConfigurationLoading,
+    } = useChatHelpCenterConfiguration(chatApplicationId)
     const integrationType: string = integration.get('type')
     const dispatch = useAppDispatch()
     const {getFlag} = useFeatureFlags()
@@ -62,6 +65,10 @@ export function GorgiasChatIntegrationSelfServiceComponent({
     ])
 
     const originalSSPEnabled: boolean = useMemo(() => {
+        if (chatApplicationId === null) {
+            return false
+        }
+
         const sspDeactivatedDatetime: string | undefined | null =
             integration.getIn(['meta', 'self_service_deactivated_datetime'])
 
@@ -69,7 +76,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
             sspDeactivatedDatetime === null ||
             sspDeactivatedDatetime === undefined
         )
-    }, [integration])
+    }, [integration, chatApplicationId])
 
     const [sspForceDisabled, setSspForceDisabled] = useState(!shopName)
     const [isArticleReccEnabled, setArticleReccEnabled] = useState(true)
@@ -265,9 +272,12 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                             isDisabled={isSwitchDisabled}
                             isForcedDisabled={sspForceDisabled}
                             onChange={handleOnChangeSwitch}
+                            isLoading={isLoading}
                         />
                         <ArticleRecommendation
-                            isLoading={isLoading}
+                            isLoading={
+                                isLoading || chatHelpCenterConfigurationLoading
+                            }
                             helpCenterList={helpCenterList}
                             initialValues={{
                                 isEnabled: chatHelpCenterConfiguration?.enabled,

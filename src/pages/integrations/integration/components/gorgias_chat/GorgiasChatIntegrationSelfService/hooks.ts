@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react'
+import {useAsyncFn} from 'react-use'
 import {
     fetchChatHelpCenterConfiguration,
     ChatHelpCenterConfiguration,
@@ -10,12 +11,12 @@ export const useChatHelpCenterConfiguration = (
     const [chatHelpCenterConfiguration, setChatHelpCenterConfiguration] =
         useState<ChatHelpCenterConfiguration | null>(null)
 
-    useEffect(() => {
-        if (chatApplicationId === null) {
-            return
-        }
+    const [{loading: chatHelpCenterConfigurationLoading}, fetchData] =
+        useAsyncFn(async () => {
+            if (chatApplicationId === null) {
+                return
+            }
 
-        const fetchData = async () => {
             try {
                 const data = await fetchChatHelpCenterConfiguration(
                     chatApplicationId
@@ -24,10 +25,15 @@ export const useChatHelpCenterConfiguration = (
             } catch (error) {
                 setChatHelpCenterConfiguration(null)
             }
-        }
+        }, [chatApplicationId])
 
+    useEffect(() => {
         void fetchData()
-    }, [chatApplicationId])
+    }, [fetchData])
 
-    return {chatHelpCenterConfiguration, setChatHelpCenterConfiguration}
+    return {
+        chatHelpCenterConfiguration,
+        setChatHelpCenterConfiguration,
+        chatHelpCenterConfigurationLoading,
+    }
 }
