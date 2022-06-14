@@ -19,7 +19,7 @@ export const SelfServiceOffArticleRecommendationOn = ({
 }: SelfServiceOffArticleRecommendationOnProps): JSX.Element => {
     const currentUser = useAppSelector(getCurrentUser)
     return (
-        <div className={css.container}>
+        <div className={css.conversationContainer}>
             <MessageContent
                 conversationColor=""
                 currentUser={currentUser}

@@ -575,186 +575,190 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           <div
             class="preview"
           >
-            <span
-              class="mb-3 group horizontal"
-            >
-              <button
-                class="wrapper fill primary medium left"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="wrapper fill secondary medium right"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </span>
             <div
-              class="preview"
+              class="container"
             >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  During business hours
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Outside business hours
+                </button>
+              </span>
               <div
-                class="dialog"
+                class="preview"
               >
                 <div
-                  class="header"
-                  style="background-color: rgb(13, 135, 221);"
+                  class="dialog"
                 >
                   <div
-                    class="agents"
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
                   >
                     <div
-                      class="agent first"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                    <div
-                      class="agent middle"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                      <div
-                        class="onlineMarker"
-                      />
-                    </div>
-                    <div
-                      class="agent last"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                  </div>
-                  <div
-                    class="details"
-                  >
-                    <div
-                      class="appName"
-                    >
-                       
-                    </div>
-                    <div
-                      class="introductionText"
-                    >
-                      How can we help?
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="content"
-                >
-                  <div>
-                    <div
-                      class="conversationTimestamp"
-                    >
-                      June 23
-                    </div>
-                    <div
-                      class="bubble primary firstMessageOfAppUser"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      Hey there
-                    </div>
-                    <div
-                      class="bubble primary lastMessage"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
-                    </div>
-                    <div
-                      class="messageTimestamp"
-                    >
-                      <span>
-                        6 minutes ago
-                        . 
-                      </span>
-                      <span
-                        class="messageStatus"
-                      >
-                        Delivered
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    class="appMakerMessageWrapper"
-                  >
-                    <div
-                      class="component avatar"
-                      style="width: 35px; height: 35px;"
+                      class="agents"
                     >
                       <div
-                        class="initials"
-                        style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        class="agent first"
+                        style="border-color: #0d87dd;"
                       >
-                        <span
-                          style="line-height: 37px;"
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
                         />
                       </div>
-                    </div>
-                    <div>
                       <div
-                        class="user"
-                      />
-                      <div
-                        class="bubble firstMessageOfAppMaker"
+                        class="agent last"
+                        style="border-color: #0d87dd;"
                       >
-                        Sure, what's your email / order number?
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="appName"
+                      >
+                         
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="poweredBy"
-                >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <div
+                        class="conversationTimestamp"
+                      >
+                        June 23
+                      </div>
+                      <div
+                        class="bubble primary firstMessageOfAppUser"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        Hey there
+                      </div>
+                      <div
+                        class="bubble primary lastMessage"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                      </div>
+                      <div
+                        class="messageTimestamp"
+                      >
+                        <span>
+                          6 minutes ago
+                          . 
+                        </span>
+                        <span
+                          class="messageStatus"
+                        >
+                          Delivered
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper"
+                    >
+                      <div
+                        class="component avatar"
+                        style="width: 35px; height: 35px;"
+                      >
+                        <div
+                          class="initials"
+                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        >
+                          <span
+                            style="line-height: 37px;"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="user"
+                        />
+                        <div
+                          class="bubble firstMessageOfAppMaker"
+                        >
+                          Sure, what's your email / order number?
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <div
+                      class="placeholder"
+                    >
+                      Type a message...
+                    </div>
+                    <i
+                      class="icon camera"
                     />
                   </div>
                 </div>
                 <div
-                  class="footer"
+                  class="button bottom-right"
+                  style="background-color: rgb(13, 135, 221);"
                 >
                   <div
-                    class="placeholder"
+                    class="iconWrapper"
                   >
-                    Type a message...
+                    <i
+                      class="icon"
+                    />
+                    <div
+                      class="shadow"
+                    />
                   </div>
-                  <i
-                    class="icon camera"
-                  />
-                </div>
-              </div>
-              <div
-                class="button bottom-right"
-                style="background-color: rgb(13, 135, 221);"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <i
-                    class="icon"
-                  />
-                  <div
-                    class="shadow"
-                  />
                 </div>
               </div>
             </div>
@@ -1318,186 +1322,190 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           <div
             class="preview"
           >
-            <span
-              class="mb-3 group horizontal"
-            >
-              <button
-                class="wrapper fill primary medium left"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="wrapper fill secondary medium right"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </span>
             <div
-              class="preview"
+              class="container"
             >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  During business hours
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Outside business hours
+                </button>
+              </span>
               <div
-                class="dialog"
+                class="preview"
               >
                 <div
-                  class="header"
-                  style="background-color: rgb(13, 135, 221);"
+                  class="dialog"
                 >
                   <div
-                    class="agents"
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
                   >
                     <div
-                      class="agent first"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                    <div
-                      class="agent middle"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                      <div
-                        class="onlineMarker"
-                      />
-                    </div>
-                    <div
-                      class="agent last"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                  </div>
-                  <div
-                    class="details"
-                  >
-                    <div
-                      class="appName"
-                    >
-                      hellochatintegration
-                    </div>
-                    <div
-                      class="introductionText"
-                    >
-                      How can we help?
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="content"
-                >
-                  <div>
-                    <div
-                      class="conversationTimestamp"
-                    >
-                      June 23
-                    </div>
-                    <div
-                      class="bubble primary firstMessageOfAppUser"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      Hey there
-                    </div>
-                    <div
-                      class="bubble primary lastMessage"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
-                    </div>
-                    <div
-                      class="messageTimestamp"
-                    >
-                      <span>
-                        6 minutes ago
-                        . 
-                      </span>
-                      <span
-                        class="messageStatus"
-                      >
-                        Delivered
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    class="appMakerMessageWrapper"
-                  >
-                    <div
-                      class="component avatar"
-                      style="width: 35px; height: 35px;"
+                      class="agents"
                     >
                       <div
-                        class="initials"
-                        style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        class="agent first"
+                        style="border-color: #0d87dd;"
                       >
-                        <span
-                          style="line-height: 37px;"
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
                         />
                       </div>
-                    </div>
-                    <div>
                       <div
-                        class="user"
-                      />
-                      <div
-                        class="bubble firstMessageOfAppMaker"
+                        class="agent last"
+                        style="border-color: #0d87dd;"
                       >
-                        Sure, what's your email / order number?
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="appName"
+                      >
+                        hellochatintegration
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="poweredBy"
-                >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <div
+                        class="conversationTimestamp"
+                      >
+                        June 23
+                      </div>
+                      <div
+                        class="bubble primary firstMessageOfAppUser"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        Hey there
+                      </div>
+                      <div
+                        class="bubble primary lastMessage"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                      </div>
+                      <div
+                        class="messageTimestamp"
+                      >
+                        <span>
+                          6 minutes ago
+                          . 
+                        </span>
+                        <span
+                          class="messageStatus"
+                        >
+                          Delivered
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper"
+                    >
+                      <div
+                        class="component avatar"
+                        style="width: 35px; height: 35px;"
+                      >
+                        <div
+                          class="initials"
+                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        >
+                          <span
+                            style="line-height: 37px;"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="user"
+                        />
+                        <div
+                          class="bubble firstMessageOfAppMaker"
+                        >
+                          Sure, what's your email / order number?
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <div
+                      class="placeholder"
+                    >
+                      Type a message...
+                    </div>
+                    <i
+                      class="icon camera"
                     />
                   </div>
                 </div>
                 <div
-                  class="footer"
+                  class="button bottom-right"
+                  style="background-color: rgb(13, 135, 221);"
                 >
                   <div
-                    class="placeholder"
+                    class="iconWrapper"
                   >
-                    Type a message...
+                    <i
+                      class="icon"
+                    />
+                    <div
+                      class="shadow"
+                    />
                   </div>
-                  <i
-                    class="icon camera"
-                  />
-                </div>
-              </div>
-              <div
-                class="button bottom-right"
-                style="background-color: rgb(13, 135, 221);"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <i
-                    class="icon"
-                  />
-                  <div
-                    class="shadow"
-                  />
                 </div>
               </div>
             </div>
@@ -2031,186 +2039,190 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           <div
             class="preview"
           >
-            <span
-              class="mb-3 group horizontal"
-            >
-              <button
-                class="wrapper fill primary medium left"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="wrapper fill secondary medium right"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </span>
             <div
-              class="preview"
+              class="container"
             >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  During business hours
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Outside business hours
+                </button>
+              </span>
               <div
-                class="dialog"
+                class="preview"
               >
                 <div
-                  class="header"
-                  style="background-color: rgb(13, 135, 221);"
+                  class="dialog"
                 >
                   <div
-                    class="agents"
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
                   >
                     <div
-                      class="agent first"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                    <div
-                      class="agent middle"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                      <div
-                        class="onlineMarker"
-                      />
-                    </div>
-                    <div
-                      class="agent last"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                  </div>
-                  <div
-                    class="details"
-                  >
-                    <div
-                      class="appName"
-                    >
-                      hellochatintegration
-                    </div>
-                    <div
-                      class="introductionText"
-                    >
-                      How can we help?
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="content"
-                >
-                  <div>
-                    <div
-                      class="conversationTimestamp"
-                    >
-                      June 23
-                    </div>
-                    <div
-                      class="bubble primary firstMessageOfAppUser"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      Hey there
-                    </div>
-                    <div
-                      class="bubble primary lastMessage"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
-                    </div>
-                    <div
-                      class="messageTimestamp"
-                    >
-                      <span>
-                        6 minutes ago
-                        . 
-                      </span>
-                      <span
-                        class="messageStatus"
-                      >
-                        Delivered
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    class="appMakerMessageWrapper"
-                  >
-                    <div
-                      class="component avatar"
-                      style="width: 35px; height: 35px;"
+                      class="agents"
                     >
                       <div
-                        class="initials"
-                        style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        class="agent first"
+                        style="border-color: #0d87dd;"
                       >
-                        <span
-                          style="line-height: 37px;"
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
                         />
                       </div>
-                    </div>
-                    <div>
                       <div
-                        class="user"
-                      />
-                      <div
-                        class="bubble firstMessageOfAppMaker"
+                        class="agent last"
+                        style="border-color: #0d87dd;"
                       >
-                        Sure, what's your email / order number?
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="appName"
+                      >
+                        hellochatintegration
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="poweredBy"
-                >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <div
+                        class="conversationTimestamp"
+                      >
+                        June 23
+                      </div>
+                      <div
+                        class="bubble primary firstMessageOfAppUser"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        Hey there
+                      </div>
+                      <div
+                        class="bubble primary lastMessage"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                      </div>
+                      <div
+                        class="messageTimestamp"
+                      >
+                        <span>
+                          6 minutes ago
+                          . 
+                        </span>
+                        <span
+                          class="messageStatus"
+                        >
+                          Delivered
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper"
+                    >
+                      <div
+                        class="component avatar"
+                        style="width: 35px; height: 35px;"
+                      >
+                        <div
+                          class="initials"
+                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        >
+                          <span
+                            style="line-height: 37px;"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="user"
+                        />
+                        <div
+                          class="bubble firstMessageOfAppMaker"
+                        >
+                          Sure, what's your email / order number?
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <div
+                      class="placeholder"
+                    >
+                      Type a message...
+                    </div>
+                    <i
+                      class="icon camera"
                     />
                   </div>
                 </div>
                 <div
-                  class="footer"
+                  class="button bottom-right"
+                  style="background-color: rgb(13, 135, 221);"
                 >
                   <div
-                    class="placeholder"
+                    class="iconWrapper"
                   >
-                    Type a message...
+                    <i
+                      class="icon"
+                    />
+                    <div
+                      class="shadow"
+                    />
                   </div>
-                  <i
-                    class="icon camera"
-                  />
-                </div>
-              </div>
-              <div
-                class="button bottom-right"
-                style="background-color: rgb(13, 135, 221);"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <i
-                    class="icon"
-                  />
-                  <div
-                    class="shadow"
-                  />
                 </div>
               </div>
             </div>
@@ -2752,186 +2764,190 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
           <div
             class="preview"
           >
-            <span
-              class="mb-3 group horizontal"
-            >
-              <button
-                class="wrapper fill primary medium left"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="wrapper fill secondary medium right"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </span>
             <div
-              class="preview"
+              class="container"
             >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  During business hours
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Outside business hours
+                </button>
+              </span>
               <div
-                class="dialog"
+                class="preview"
               >
                 <div
-                  class="header"
-                  style="background-color: rgb(13, 135, 221);"
+                  class="dialog"
                 >
                   <div
-                    class="agents"
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
                   >
                     <div
-                      class="agent first"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                    <div
-                      class="agent middle"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                      <div
-                        class="onlineMarker"
-                      />
-                    </div>
-                    <div
-                      class="agent last"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                  </div>
-                  <div
-                    class="details"
-                  >
-                    <div
-                      class="appName"
-                    >
-                      hellochatintegration
-                    </div>
-                    <div
-                      class="introductionText"
-                    >
-                      How can we help?
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="content"
-                >
-                  <div>
-                    <div
-                      class="conversationTimestamp"
-                    >
-                      June 23
-                    </div>
-                    <div
-                      class="bubble primary firstMessageOfAppUser"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      Hey there
-                    </div>
-                    <div
-                      class="bubble primary lastMessage"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
-                    </div>
-                    <div
-                      class="messageTimestamp"
-                    >
-                      <span>
-                        6 minutes ago
-                        . 
-                      </span>
-                      <span
-                        class="messageStatus"
-                      >
-                        Delivered
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    class="appMakerMessageWrapper"
-                  >
-                    <div
-                      class="component avatar"
-                      style="width: 35px; height: 35px;"
+                      class="agents"
                     >
                       <div
-                        class="initials"
-                        style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        class="agent first"
+                        style="border-color: #0d87dd;"
                       >
-                        <span
-                          style="line-height: 37px;"
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
                         />
                       </div>
-                    </div>
-                    <div>
                       <div
-                        class="user"
-                      />
-                      <div
-                        class="bubble firstMessageOfAppMaker"
+                        class="agent last"
+                        style="border-color: #0d87dd;"
                       >
-                        Sure, what's your email / order number?
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="appName"
+                      >
+                        hellochatintegration
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="poweredBy"
-                >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <div
+                        class="conversationTimestamp"
+                      >
+                        June 23
+                      </div>
+                      <div
+                        class="bubble primary firstMessageOfAppUser"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        Hey there
+                      </div>
+                      <div
+                        class="bubble primary lastMessage"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                      </div>
+                      <div
+                        class="messageTimestamp"
+                      >
+                        <span>
+                          6 minutes ago
+                          . 
+                        </span>
+                        <span
+                          class="messageStatus"
+                        >
+                          Delivered
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper"
+                    >
+                      <div
+                        class="component avatar"
+                        style="width: 35px; height: 35px;"
+                      >
+                        <div
+                          class="initials"
+                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        >
+                          <span
+                            style="line-height: 37px;"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="user"
+                        />
+                        <div
+                          class="bubble firstMessageOfAppMaker"
+                        >
+                          Sure, what's your email / order number?
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <div
+                      class="placeholder"
+                    >
+                      Type a message...
+                    </div>
+                    <i
+                      class="icon camera"
                     />
                   </div>
                 </div>
                 <div
-                  class="footer"
+                  class="button bottom-right"
+                  style="background-color: rgb(13, 135, 221);"
                 >
                   <div
-                    class="placeholder"
+                    class="iconWrapper"
                   >
-                    Type a message...
+                    <i
+                      class="icon"
+                    />
+                    <div
+                      class="shadow"
+                    />
                   </div>
-                  <i
-                    class="icon camera"
-                  />
-                </div>
-              </div>
-              <div
-                class="button bottom-right"
-                style="background-color: rgb(13, 135, 221);"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <i
-                    class="icon"
-                  />
-                  <div
-                    class="shadow"
-                  />
                 </div>
               </div>
             </div>
@@ -3465,186 +3481,190 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           <div
             class="preview"
           >
-            <span
-              class="mb-3 group horizontal"
-            >
-              <button
-                class="wrapper fill primary medium left"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="wrapper fill secondary medium right"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </span>
             <div
-              class="preview"
+              class="container"
             >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  During business hours
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Outside business hours
+                </button>
+              </span>
               <div
-                class="dialog"
+                class="preview"
               >
                 <div
-                  class="header"
-                  style="background-color: rgb(13, 135, 221);"
+                  class="dialog"
                 >
                   <div
-                    class="agents"
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
                   >
                     <div
-                      class="agent first"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                    <div
-                      class="agent middle"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                      <div
-                        class="onlineMarker"
-                      />
-                    </div>
-                    <div
-                      class="agent last"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                  </div>
-                  <div
-                    class="details"
-                  >
-                    <div
-                      class="appName"
-                    >
-                      hellochatintegration
-                    </div>
-                    <div
-                      class="introductionText"
-                    >
-                      How can we help?
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="content"
-                >
-                  <div>
-                    <div
-                      class="conversationTimestamp"
-                    >
-                      June 23
-                    </div>
-                    <div
-                      class="bubble primary firstMessageOfAppUser"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      Hey there
-                    </div>
-                    <div
-                      class="bubble primary lastMessage"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
-                    </div>
-                    <div
-                      class="messageTimestamp"
-                    >
-                      <span>
-                        6 minutes ago
-                        . 
-                      </span>
-                      <span
-                        class="messageStatus"
-                      >
-                        Delivered
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    class="appMakerMessageWrapper"
-                  >
-                    <div
-                      class="component avatar"
-                      style="width: 35px; height: 35px;"
+                      class="agents"
                     >
                       <div
-                        class="initials"
-                        style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        class="agent first"
+                        style="border-color: #0d87dd;"
                       >
-                        <span
-                          style="line-height: 37px;"
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
                         />
                       </div>
-                    </div>
-                    <div>
                       <div
-                        class="user"
-                      />
-                      <div
-                        class="bubble firstMessageOfAppMaker"
+                        class="agent last"
+                        style="border-color: #0d87dd;"
                       >
-                        Sure, what's your email / order number?
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="appName"
+                      >
+                        hellochatintegration
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="poweredBy"
-                >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <div
+                        class="conversationTimestamp"
+                      >
+                        June 23
+                      </div>
+                      <div
+                        class="bubble primary firstMessageOfAppUser"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        Hey there
+                      </div>
+                      <div
+                        class="bubble primary lastMessage"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                      </div>
+                      <div
+                        class="messageTimestamp"
+                      >
+                        <span>
+                          6 minutes ago
+                          . 
+                        </span>
+                        <span
+                          class="messageStatus"
+                        >
+                          Delivered
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper"
+                    >
+                      <div
+                        class="component avatar"
+                        style="width: 35px; height: 35px;"
+                      >
+                        <div
+                          class="initials"
+                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        >
+                          <span
+                            style="line-height: 37px;"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="user"
+                        />
+                        <div
+                          class="bubble firstMessageOfAppMaker"
+                        >
+                          Sure, what's your email / order number?
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <div
+                      class="placeholder"
+                    >
+                      Type a message...
+                    </div>
+                    <i
+                      class="icon camera"
                     />
                   </div>
                 </div>
                 <div
-                  class="footer"
+                  class="button bottom-right"
+                  style="background-color: rgb(13, 135, 221);"
                 >
                   <div
-                    class="placeholder"
+                    class="iconWrapper"
                   >
-                    Type a message...
+                    <i
+                      class="icon"
+                    />
+                    <div
+                      class="shadow"
+                    />
                   </div>
-                  <i
-                    class="icon camera"
-                  />
-                </div>
-              </div>
-              <div
-                class="button bottom-right"
-                style="background-color: rgb(13, 135, 221);"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <i
-                    class="icon"
-                  />
-                  <div
-                    class="shadow"
-                  />
                 </div>
               </div>
             </div>
@@ -4192,165 +4212,169 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           <div
             class="preview"
           >
-            <span
-              class="mb-3 group horizontal"
-            >
-              <button
-                class="wrapper fill primary medium left"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="wrapper fill secondary medium right"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </span>
             <div
-              class="preview"
+              class="container"
             >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  During business hours
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Outside business hours
+                </button>
+              </span>
               <div
-                class="dialog"
+                class="preview"
               >
                 <div
-                  class="header"
-                  style="background-color: rgb(13, 135, 221);"
+                  class="dialog"
                 >
                   <div
-                    class="team-picture-wrapper"
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
                   >
                     <div
-                      class="team-picture"
-                      style="border-color: #0d87dd;"
-                    >
-                      <img
-                        alt="Team"
-                        src="https://gorgias.io/teampicture.png"
-                      />
-                      <div
-                        class="onlineMarker"
-                      />
-                    </div>
-                  </div>
-                  <div
-                    class="details"
-                  >
-                    <div
-                      class="appName"
-                    >
-                      hellochatintegration
-                    </div>
-                    <div
-                      class="introductionText"
-                    >
-                      How can we help?
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="content"
-                >
-                  <div>
-                    <div
-                      class="conversationTimestamp"
-                    >
-                      June 23
-                    </div>
-                    <div
-                      class="bubble primary firstMessageOfAppUser"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      Hey there
-                    </div>
-                    <div
-                      class="bubble primary lastMessage"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
-                    </div>
-                    <div
-                      class="messageTimestamp"
-                    >
-                      <span>
-                        6 minutes ago
-                        . 
-                      </span>
-                      <span
-                        class="messageStatus"
-                      >
-                        Delivered
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    class="appMakerMessageWrapper"
-                  >
-                    <div
-                      class="component avatar"
-                      style="width: 35px; height: 35px;"
+                      class="team-picture-wrapper"
                     >
                       <div
-                        class="initials"
-                        style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        class="team-picture"
+                        style="border-color: #0d87dd;"
                       >
-                        <span
-                          style="line-height: 37px;"
+                        <img
+                          alt="Team"
+                          src="https://gorgias.io/teampicture.png"
+                        />
+                        <div
+                          class="onlineMarker"
                         />
                       </div>
                     </div>
-                    <div>
+                    <div
+                      class="details"
+                    >
                       <div
-                        class="user"
-                      />
-                      <div
-                        class="bubble firstMessageOfAppMaker"
+                        class="appName"
                       >
-                        Sure, what's your email / order number?
+                        hellochatintegration
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="poweredBy"
-                >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <div
+                        class="conversationTimestamp"
+                      >
+                        June 23
+                      </div>
+                      <div
+                        class="bubble primary firstMessageOfAppUser"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        Hey there
+                      </div>
+                      <div
+                        class="bubble primary lastMessage"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                      </div>
+                      <div
+                        class="messageTimestamp"
+                      >
+                        <span>
+                          6 minutes ago
+                          . 
+                        </span>
+                        <span
+                          class="messageStatus"
+                        >
+                          Delivered
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper"
+                    >
+                      <div
+                        class="component avatar"
+                        style="width: 35px; height: 35px;"
+                      >
+                        <div
+                          class="initials"
+                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        >
+                          <span
+                            style="line-height: 37px;"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="user"
+                        />
+                        <div
+                          class="bubble firstMessageOfAppMaker"
+                        >
+                          Sure, what's your email / order number?
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <div
+                      class="placeholder"
+                    >
+                      Type a message...
+                    </div>
+                    <i
+                      class="icon camera"
                     />
                   </div>
                 </div>
                 <div
-                  class="footer"
+                  class="button bottom-right"
+                  style="background-color: rgb(13, 135, 221);"
                 >
                   <div
-                    class="placeholder"
+                    class="iconWrapper"
                   >
-                    Type a message...
+                    <i
+                      class="icon"
+                    />
+                    <div
+                      class="shadow"
+                    />
                   </div>
-                  <i
-                    class="icon camera"
-                  />
-                </div>
-              </div>
-              <div
-                class="button bottom-right"
-                style="background-color: rgb(13, 135, 221);"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <i
-                    class="icon"
-                  />
-                  <div
-                    class="shadow"
-                  />
                 </div>
               </div>
             </div>
@@ -4996,186 +5020,190 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
           <div
             class="preview"
           >
-            <span
-              class="mb-3 group horizontal"
-            >
-              <button
-                class="wrapper fill primary medium left"
-                type="button"
-              >
-                During business hours
-              </button>
-              <button
-                class="wrapper fill secondary medium right"
-                type="button"
-              >
-                Outside business hours
-              </button>
-            </span>
             <div
-              class="preview"
+              class="container"
             >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  During business hours
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Outside business hours
+                </button>
+              </span>
               <div
-                class="dialog"
+                class="preview"
               >
                 <div
-                  class="header"
-                  style="background-color: rgb(13, 135, 221);"
+                  class="dialog"
                 >
                   <div
-                    class="agents"
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
                   >
                     <div
-                      class="agent first"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                    <div
-                      class="agent middle"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                      <div
-                        class="onlineMarker"
-                      />
-                    </div>
-                    <div
-                      class="agent last"
-                      style="border-color: #0d87dd;"
-                    >
-                      <i
-                        class="material-icons"
-                      >
-                        person
-                      </i>
-                    </div>
-                  </div>
-                  <div
-                    class="details"
-                  >
-                    <div
-                      class="appName"
-                    >
-                       
-                    </div>
-                    <div
-                      class="introductionText"
-                    >
-                      How can we help?
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="content"
-                >
-                  <div>
-                    <div
-                      class="conversationTimestamp"
-                    >
-                      June 23
-                    </div>
-                    <div
-                      class="bubble primary firstMessageOfAppUser"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      Hey there
-                    </div>
-                    <div
-                      class="bubble primary lastMessage"
-                      style="background-color: rgb(13, 135, 221);"
-                    >
-                      I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
-                    </div>
-                    <div
-                      class="messageTimestamp"
-                    >
-                      <span>
-                        6 minutes ago
-                        . 
-                      </span>
-                      <span
-                        class="messageStatus"
-                      >
-                        Delivered
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    class="appMakerMessageWrapper"
-                  >
-                    <div
-                      class="component avatar"
-                      style="width: 35px; height: 35px;"
+                      class="agents"
                     >
                       <div
-                        class="initials"
-                        style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        class="agent first"
+                        style="border-color: #0d87dd;"
                       >
-                        <span
-                          style="line-height: 37px;"
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
                         />
                       </div>
-                    </div>
-                    <div>
                       <div
-                        class="user"
-                      />
-                      <div
-                        class="bubble firstMessageOfAppMaker"
+                        class="agent last"
+                        style="border-color: #0d87dd;"
                       >
-                        Sure, what's your email / order number?
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="appName"
+                      >
+                         
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
                       </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="poweredBy"
-                >
-                  <div>
-                    <span>
-                      Powered by
-                    </span>
-                    <img
-                      alt="powered-by"
-                      src="test-file-stub"
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <div
+                        class="conversationTimestamp"
+                      >
+                        June 23
+                      </div>
+                      <div
+                        class="bubble primary firstMessageOfAppUser"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        Hey there
+                      </div>
+                      <div
+                        class="bubble primary lastMessage"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                      </div>
+                      <div
+                        class="messageTimestamp"
+                      >
+                        <span>
+                          6 minutes ago
+                          . 
+                        </span>
+                        <span
+                          class="messageStatus"
+                        >
+                          Delivered
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper"
+                    >
+                      <div
+                        class="component avatar"
+                        style="width: 35px; height: 35px;"
+                      >
+                        <div
+                          class="initials"
+                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        >
+                          <span
+                            style="line-height: 37px;"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="user"
+                        />
+                        <div
+                          class="bubble firstMessageOfAppMaker"
+                        >
+                          Sure, what's your email / order number?
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <div
+                      class="placeholder"
+                    >
+                      Type a message...
+                    </div>
+                    <i
+                      class="icon camera"
                     />
                   </div>
                 </div>
                 <div
-                  class="footer"
+                  class="button bottom-right"
+                  style="background-color: rgb(13, 135, 221);"
                 >
                   <div
-                    class="placeholder"
+                    class="iconWrapper"
                   >
-                    Type a message...
+                    <i
+                      class="icon"
+                    />
+                    <div
+                      class="shadow"
+                    />
                   </div>
-                  <i
-                    class="icon camera"
-                  />
-                </div>
-              </div>
-              <div
-                class="button bottom-right"
-                style="background-color: rgb(13, 135, 221);"
-              >
-                <div
-                  class="iconWrapper"
-                >
-                  <i
-                    class="icon"
-                  />
-                  <div
-                    class="shadow"
-                  />
                 </div>
               </div>
             </div>

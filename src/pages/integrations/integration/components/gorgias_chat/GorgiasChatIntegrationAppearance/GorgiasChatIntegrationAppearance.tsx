@@ -368,7 +368,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     ])
 
     const chatPreview = (
-        <>
+        <div className={css.container}>
             <Group className="mb-3">
                 <Button
                     intent={isOnline ? 'primary' : 'secondary'}
@@ -424,7 +424,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     ]}
                 />
             </ChatIntegrationPreview>
-        </>
+        </div>
     )
 
     return (
