@@ -2,6 +2,7 @@ export enum TicketMessageSourceType {
     Aircall = 'aircall',
     Api = 'api',
     Chat = 'chat',
+    ChatContactForm = 'chat-contact-form',
     Email = 'email',
     EmailForward = 'email-forward',
     Facebook = 'facebook',

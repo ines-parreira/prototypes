@@ -346,6 +346,10 @@ export function sourceTypeToChannel(
         return TicketChannel.Twitter
     }
 
+    if (sourceType === TicketMessageSourceType.ChatContactForm) {
+        return TicketChannel.Email
+    }
+
     return sourceType
 }
 
