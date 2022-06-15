@@ -305,7 +305,7 @@ export const gorgiasFieldsMappingsLocalizedToDto = (
             title: mappings.ArticleTitle,
             content: mappings.ArticleContent,
             slug: mappings.ArticleSlug,
-            excerpt: mappings.ArticleSlug,
+            excerpt: mappings.ArticleExcerpt,
         }
 
         // category mappings are optional
