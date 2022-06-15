@@ -23,6 +23,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import Tooltip from 'pages/common/components/Tooltip'
 import {
     ARTICLES_PER_PAGE,
+    CategoryRowActionTypes,
     CATEGORY_ROW_ACTIONS,
     MODALS,
 } from 'pages/settings/helpCenter/constants'
@@ -34,6 +35,7 @@ import {
 } from 'pages/settings/helpCenter/components/DroppableTableBodyRow'
 import {TableActions} from 'pages/settings/helpCenter/components/TableActions'
 import useAppSelector from 'hooks/useAppSelector'
+import {unreachable} from 'utils'
 
 import {
     getCategoriesById,
@@ -119,22 +121,29 @@ const DroppableCategoriesTableRow = ({
     }, [category, localesByCode])
 
     const handleOnActionClick = useCallback(
-        (ev: MouseEvent, name: string) => {
-            if (name === 'categorySettings') {
-                categoryModal.openModal(MODALS.CATEGORY, false, category)
-                return
-            }
-            if (name === 'createNestedCategory') {
-                categoryModal.openModal(MODALS.CATEGORY, false, {
-                    isCreate: true,
-                    parentCategoryId: category.id,
-                })
-                return
-            }
-            if (name === 'createNestedArticle') {
-                articleModal.openModal(MODALS.ARTICLE, false, {
-                    categoryId: category.id,
-                })
+        (ev: MouseEvent, name: CategoryRowActionTypes) => {
+            switch (name) {
+                case 'categorySettings': {
+                    categoryModal.openModal(MODALS.CATEGORY, false, category)
+                    return
+                }
+                case 'createNestedCategory': {
+                    categoryModal.openModal(MODALS.CATEGORY, false, {
+                        isCreate: true,
+                        parentCategoryId: category.id,
+                    })
+                    return
+                }
+                case 'createNestedArticle': {
+                    articleModal.openModal(MODALS.ARTICLE, false, {
+                        categoryId: category.id,
+                    })
+                    return
+                }
+
+                default: {
+                    unreachable(name)
+                }
             }
 
             // FIXME: the form language selector is broken for this case

@@ -22,7 +22,9 @@ import {getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
+import {unreachable} from 'utils'
 import {
+    ArticleRowActionTypes,
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LOCALE,
     MODALS,
@@ -427,42 +429,53 @@ export const HelpCenterArticlesView: React.FC = () => {
         void articlesActions.updateArticlesPositions(articles, categoryId)
     }
 
-    // FIXME: separate into 3 distinct actions to avoid havind non-typed string action to provide
     const onArticleRowSettingsClick = async (
-        action: string,
+        action: ArticleRowActionTypes,
         article: Article
     ) => {
-        if (action === 'articleSettings') {
-            setSelectedArticleTranslations(null)
-            setSelectedArticle(article)
-            setEditModal({
-                isOpened: true,
-                view: HelpCenterArticleModalView.ADVANCED,
-            })
-        }
+        switch (action) {
+            case 'articleSettings': {
+                setSelectedArticleTranslations(null)
+                setSelectedArticle(article)
+                setEditModal({
+                    isOpened: true,
+                    view: HelpCenterArticleModalView.ADVANCED,
+                })
 
-        if (action === 'copyToClipboard') {
-            onCopyLinkToClipboard(article)
-        }
+                return
+            }
 
-        if (action === 'duplicateArticle') {
-            try {
-                await articlesActions.cloneArticle(article)
+            case 'copyToClipboard': {
+                onCopyLinkToClipboard(article)
 
-                void dispatch(
-                    notify({
-                        message: 'Article duplicated with success',
-                        status: NotificationStatus.Success,
-                    })
-                )
-            } catch (err) {
-                void dispatch(
-                    notify({
-                        message: 'Failed to duplicate the article',
-                        status: NotificationStatus.Error,
-                    })
-                )
-                console.error(err)
+                return
+            }
+
+            case 'duplicateArticle': {
+                try {
+                    await articlesActions.cloneArticle(article)
+
+                    void dispatch(
+                        notify({
+                            message: 'Article duplicated with success',
+                            status: NotificationStatus.Success,
+                        })
+                    )
+                } catch (err) {
+                    void dispatch(
+                        notify({
+                            message: 'Failed to duplicate the article',
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                    console.error(err)
+                }
+
+                return
+            }
+
+            default: {
+                unreachable(action)
             }
         }
     }

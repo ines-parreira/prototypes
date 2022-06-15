@@ -8,6 +8,7 @@ import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import {ArticleRowActionTypes} from '../../constants'
 
 import {ArticleRow} from './components/ArticleRow'
 
@@ -19,7 +20,7 @@ type Props = {
     level: number
     articles: Article[]
     onClick: (article: Article) => void
-    onClickSettings: (name: string, article: Article) => void
+    onClickSettings: (name: ArticleRowActionTypes, article: Article) => void
     onReorderFinish?: (categoryId: number | null, articles: Article[]) => void
 }
 
@@ -45,7 +46,7 @@ export const ArticlesTable = ({
     }
     const handleOnClickSettings = (
         event: React.MouseEvent,
-        name: string,
+        name: ArticleRowActionTypes,
         article: Article
     ) => {
         event.stopPropagation()

@@ -5,9 +5,9 @@ import Tooltip from '../../../../../../common/components/Tooltip'
 
 import css from '../../TableActions.less'
 
-export type ActionSchema = {
+export type ActionSchema<TName extends string = string> = {
     icon: string
-    name: string
+    name: TName
     tooltip?: {
         content: string | React.ReactNode
         target: string
@@ -15,17 +15,17 @@ export type ActionSchema = {
     disabled?: boolean
 }
 
-type ActionProps = ActionSchema & {
-    onClick: (ev: React.MouseEvent<HTMLSpanElement>, name: string) => void
+type ActionProps<TName extends string> = ActionSchema<TName> & {
+    onClick: (ev: React.MouseEvent<HTMLSpanElement>, name: TName) => void
 }
 
-export const Action = ({
+export function Action<TName extends string>({
     icon,
     name,
     tooltip,
     disabled,
     onClick,
-}: ActionProps): JSX.Element => {
+}: ActionProps<TName>): JSX.Element {
     return (
         <>
             <button

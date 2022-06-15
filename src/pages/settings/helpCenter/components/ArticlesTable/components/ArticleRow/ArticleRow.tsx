@@ -9,7 +9,7 @@ import {Article} from '../../../../../../../models/helpCenter/types'
 import {LanguageList} from '../../../../../../common/components/LanguageBulletList'
 import BodyCell from '../../../../../../common/components/table/cells/BodyCell'
 import TableBodyRow from '../../../../../../common/components/table/TableBodyRow'
-import {ARTICLE_ROW_ACTIONS} from '../../../../constants'
+import {ArticleRowActionTypes, ARTICLE_ROW_ACTIONS} from '../../../../constants'
 import {useSupportedLocales} from '../../../../providers/SupportedLocales'
 import {Callbacks, useReorderDnD} from '../../../../hooks/useReorderDnD'
 import {TableActions} from '../../../TableActions'
@@ -26,7 +26,7 @@ export type RowEventListeners = {
     onClickRow: (article: Article) => void
     onClickSettings: (
         ev: React.MouseEvent,
-        name: string,
+        name: ArticleRowActionTypes,
         article: Article
     ) => void
 }
@@ -76,7 +76,10 @@ export const ArticleRow = ({
 
     const ratingScore = useRatingScore(article.rating)
 
-    const handleOnActionsClick = (ev: React.MouseEvent, name: string) => {
+    const handleOnActionsClick = (
+        ev: React.MouseEvent,
+        name: ArticleRowActionTypes
+    ) => {
         return onClickSettings(ev, name, article)
     }
 

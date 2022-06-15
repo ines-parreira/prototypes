@@ -1010,3 +1010,15 @@ export const getIconFromUrl = (url: string): string => {
     //eslint-disable-next-line  @typescript-eslint/no-var-requires
     return url ? (require(`assets/img/${url}`) as string) : ''
 }
+
+/**
+ * This function can be called in the default case of some switch
+ * statements so that the switch is exhaustive. See (https://stackoverflow.com/a/39419171).
+ *
+ * This is useful since TS will show and error if we add another option to a type but don't handle
+ * it in the switch.
+ */
+export function unreachable(v: never): never {
+    // It's not clear what to return in this case. We could throw an error for example
+    return v
+}

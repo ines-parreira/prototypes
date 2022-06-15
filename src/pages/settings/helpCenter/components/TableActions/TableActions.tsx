@@ -4,12 +4,15 @@ import {ActionSchema, Action} from './components/Action'
 
 import css from './TableActions.less'
 
-type Props = {
-    actions: ActionSchema[]
-    onClick: (ev: React.MouseEvent<HTMLSpanElement>, name: string) => void
+type Props<TName extends string> = {
+    actions: ActionSchema<TName>[]
+    onClick: (ev: React.MouseEvent<HTMLSpanElement>, name: TName) => void
 }
 
-export const TableActions = ({actions, onClick}: Props): JSX.Element => {
+export function TableActions<TName extends string>({
+    actions,
+    onClick,
+}: Props<TName>): JSX.Element {
     return (
         <div className={css['action-list']}>
             {actions.map((action) => (
