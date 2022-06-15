@@ -387,7 +387,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <a
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            href="https://docs.gorgias.com/video-tutorials/change-email-capture-message-on-chat"
+                                            href="https://docs.gorgias.com/en-US/chat-getting-started-81789#email-capture"
                                         >
                                             Read more
                                         </a>
