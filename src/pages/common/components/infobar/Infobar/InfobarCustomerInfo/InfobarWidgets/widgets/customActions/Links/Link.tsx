@@ -84,7 +84,7 @@ export function Link(props: Props) {
 
     const handleClick = useCallback(() => {
         logEvent(SegmentEvent.CustomActionLinksClicked, {
-            account_domain: currentAccount,
+            account_domain: currentAccount.get('domain'),
             integration_id: integrationId,
         })
     }, [currentAccount, integrationId])

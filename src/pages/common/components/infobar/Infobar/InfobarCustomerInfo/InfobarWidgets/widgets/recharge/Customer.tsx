@@ -1,9 +1,12 @@
-import React, {ContextType, ReactNode} from 'react'
+import React, {ReactNode, useContext} from 'react'
 import {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/recharge.svg'
 
-import {renderTemplate} from '../../../../../../../utils/template'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {renderTemplate} from 'pages/common/utils/template'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'
 import {CardHeaderTitle} from '../CardHeaderTitle'
@@ -41,39 +44,40 @@ type TitleWrapperProps = {
     template: Map<any, any>
 }
 
-export class TitleWrapper extends React.Component<TitleWrapperProps> {
-    static contextType = IntegrationContext
-    context!: ContextType<typeof IntegrationContext>
-    render() {
-        const {children, source, template} = this.props
-        const {integration} = this.context
-        const storeName = integration.getIn(['meta', 'store_name']) as string
-        const customerHash = source.get('hash') as string
-        const defaultLink = `https://${storeName}-sp.admin.rechargeapps.com/admin/customers/${customerHash}/subscriptions/`
-        let customLink = template.getIn(['meta', 'link']) as string | null
+export function TitleWrapper({children, source, template}: TitleWrapperProps) {
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const {integration} = useContext(IntegrationContext)
+    const storeName = integration.getIn(['meta', 'store_name']) as string
+    const customerHash = source.get('hash') as string
+    const defaultLink = `https://${storeName}-sp.admin.rechargeapps.com/admin/customers/${customerHash}/subscriptions/`
+    let customLink = template.getIn(['meta', 'link']) as string | null
 
-        if (customLink) {
-            customLink = renderTemplate(
-                customLink,
-                source.set('customerHash', customerHash).toJS()
-            )
-        }
-
-        return (
-            <>
-                <CardHeaderIcon src={logo} alt="Recharge" />
-                <CardHeaderTitle>Recharge</CardHeaderTitle>
-                <CardHeaderSubtitle>
-                    <a
-                        href={customLink || defaultLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {children}
-                    </a>
-                </CardHeaderSubtitle>
-                <ExpandAllButton />
-            </>
+    if (customLink) {
+        customLink = renderTemplate(
+            customLink,
+            source.set('customerHash', customerHash).toJS()
         )
     }
+
+    return (
+        <>
+            <CardHeaderIcon src={logo} alt="Recharge" />
+            <CardHeaderTitle>Recharge</CardHeaderTitle>
+            <CardHeaderSubtitle>
+                <a
+                    href={customLink || defaultLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                        logEvent(SegmentEvent.RechargeProfileClicked, {
+                            account_domain: currentAccount.get('domain'),
+                        })
+                    }}
+                >
+                    {children}
+                </a>
+            </CardHeaderSubtitle>
+            <ExpandAllButton />
+        </>
+    )
 }

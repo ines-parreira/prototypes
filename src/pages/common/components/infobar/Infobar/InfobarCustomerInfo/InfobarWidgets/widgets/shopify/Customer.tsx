@@ -1,13 +1,15 @@
-import React, {Component, ContextType, ReactNode} from 'react'
+import React, {Component, ContextType, ReactNode, useContext} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 
 import logo from 'assets/img/infobar/shopify.svg'
-
+import {RootState} from 'state/types'
+import useAppSelector from 'hooks/useAppSelector'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import * as integrationsSelectors from 'state/integrations/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import * as integrationsSelectors from '../../../../../../../../../state/integrations/selectors'
-import {RootState} from '../../../../../../../../../state/types'
-import {IntegrationType} from '../../../../../../../../../models/integration/types'
+import {IntegrationType} from 'models/integration/types'
 import {IntegrationContext} from '../IntegrationContext'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 import ActionButtonsGroup from '../ActionButtonsGroup'
@@ -125,30 +127,33 @@ type TitleWrapperProps = {
     source: Map<any, any>
 }
 
-class TitleWrapper extends Component<TitleWrapperProps> {
-    render() {
-        const {children, source} = this.props
-        const shopName: string = (
-            this.context as {
-                integration: Map<any, any>
-            }
-        ).integration.getIn(['meta', 'shop_name'])
-        const href = `https://${shopName}.myshopify.com/admin/customers/${(
-            (source.get('id') as string) || ''
-        ).toString()}`
+function TitleWrapper({children, source}: TitleWrapperProps) {
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const {integration} = useContext(IntegrationContext)
+    const shopName: string = integration.getIn(['meta', 'shop_name'])
+    const href = `https://${shopName}.myshopify.com/admin/customers/${(
+        (source.get('id') as string) || ''
+    ).toString()}`
 
-        return (
-            <>
-                <CardHeaderIcon src={logo} alt="Shopify" />
-                <CardHeaderTitle>Shopify</CardHeaderTitle>
-                <CardHeaderSubtitle>
-                    <a href={href} target="_blank" rel="noopener noreferrer">
-                        {children}
-                    </a>
-                </CardHeaderSubtitle>
-                <ExpandAllButton />
-            </>
-        )
-    }
+    return (
+        <>
+            <CardHeaderIcon src={logo} alt="Shopify" />
+            <CardHeaderTitle>Shopify</CardHeaderTitle>
+            <CardHeaderSubtitle>
+                <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                        logEvent(SegmentEvent.ShopifyProfileClicked, {
+                            account_domain: currentAccount.get('domain'),
+                        })
+                    }}
+                >
+                    {children}
+                </a>
+            </CardHeaderSubtitle>
+            <ExpandAllButton />
+        </>
+    )
 }
-TitleWrapper.contextType = IntegrationContext

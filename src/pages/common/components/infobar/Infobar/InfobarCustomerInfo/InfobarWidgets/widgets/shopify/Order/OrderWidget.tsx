@@ -13,6 +13,9 @@ import {
     FulfillmentStatus,
     FinancialStatus,
 } from 'constants/integrations/types/shopify'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import {CardHeaderDetails} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderDetails'
@@ -279,28 +282,27 @@ type TitleWrapperProps = {
     children?: ReactNode
     source: Map<any, any>
 }
-class TitleWrapper extends Component<TitleWrapperProps> {
-    static contextType = OrderContext
-    context!: ContextType<typeof OrderContext>
-    render() {
-        const {children, source} = this.props
-        const shopName: string = this.context.integration.getIn([
-            'meta',
-            'shop_name',
-        ]) as string
+function TitleWrapper({children, source}: TitleWrapperProps) {
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const {integration} = useContext(IntegrationContext)
+    const shopName: string = integration.getIn(['meta', 'shop_name']) as string
 
-        return (
-            <a
-                href={`https://${shopName}.myshopify.com/admin/orders/${(
-                    (source.get('id') as number) || ''
-                ).toString()}`}
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                {children}
-            </a>
-        )
-    }
+    return (
+        <a
+            href={`https://${shopName}.myshopify.com/admin/orders/${(
+                (source.get('id') as number) || ''
+            ).toString()}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => {
+                logEvent(SegmentEvent.ShopifyOrderClicked, {
+                    account_domain: currentAccount.get('domain'),
+                })
+            }}
+        >
+            {children}
+        </a>
+    )
 }
 
 const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({

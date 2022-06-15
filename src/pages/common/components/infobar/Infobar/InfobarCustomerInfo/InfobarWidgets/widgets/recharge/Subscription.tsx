@@ -8,27 +8,26 @@ import React, {
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {
-    devLog,
-    humanizeString,
-    isCurrentlyOnTicket,
-} from '../../../../../../../../../utils'
-import {renderTemplate} from '../../../../../../../utils/template'
+import {RECHARGE_INTEGRATION_TYPE} from 'constants/integration'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {RootState} from 'state/types'
+import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
+import * as ticketSelectors from 'state/ticket/selectors'
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
-} from '../../../../../../../../../config/integrations/recharge'
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
-import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
-import {RootState} from '../../../../../../../../../state/types'
-import {DatetimeLabel} from '../../../../../../../utils/labels'
+} from 'config/integrations/recharge'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
+import {renderTemplate} from 'pages/common/utils/template'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'
 import {IntegrationContext} from '../IntegrationContext'
-import {RECHARGE_INTEGRATION_TYPE} from '../../../../../../../../../constants/integration'
 
 export default function Subscription() {
     return {
@@ -169,40 +168,49 @@ type TitleWrapperProps = {
     template: Map<any, any>
 } & ConnectedProps<typeof connectorTitleWrapper>
 
-export class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
-    static contextType = OrderContext
-    context!: ContextType<typeof OrderContext>
+export function TitleWrapperContainer({
+    children,
+    source,
+    getIntegrationData,
+    template,
+}: TitleWrapperProps) {
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const {integration, integrationId} = useContext(IntegrationContext)
+    const storeName = integration.getIn(['meta', 'store_name']) as string
 
-    render() {
-        const {children, source, getIntegrationData, template} = this.props
-        const {integration, integrationId} = this.context
-        const storeName = integration.getIn(['meta', 'store_name']) as string
+    const customerHash = getIntegrationData(
+        integrationId!,
+        source.get('customer_id')
+    ).getIn(['customer', 'hash']) as string
+    const subscriptionId = source.get('id') as string
+    let link = undefined
+    if (customerHash) {
+        link = `https://${storeName}-sp.admin.rechargeapps.com/admin/customers/${customerHash}/subscriptions/${subscriptionId}`
 
-        const customerHash = getIntegrationData(
-            integrationId!,
-            source.get('customer_id')
-        ).getIn(['customer', 'hash']) as string
-        const subscriptionId = source.get('id') as string
-        let link = undefined
-        if (customerHash) {
-            link = `https://${storeName}-sp.admin.rechargeapps.com/admin/customers/${customerHash}/subscriptions/${subscriptionId}`
+        const customLink = template.getIn(['meta', 'link'])
 
-            const customLink = template.getIn(['meta', 'link'])
-
-            if (customLink) {
-                link = renderTemplate(
-                    customLink,
-                    source.set('customerHash', customerHash).toJS()
-                )
-            }
+        if (customLink) {
+            link = renderTemplate(
+                customLink,
+                source.set('customerHash', customerHash).toJS()
+            )
         }
-
-        return (
-            <a href={link} target="_blank" rel="noopener noreferrer">
-                {children}
-            </a>
-        )
     }
+
+    return (
+        <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => {
+                logEvent(SegmentEvent.RechargeSubscriptionClicked, {
+                    account_domain: currentAccount.get('domain'),
+                })
+            }}
+        >
+            {children}
+        </a>
+    )
 }
 
 const connectorTitleWrapper = connect((state: RootState) => {

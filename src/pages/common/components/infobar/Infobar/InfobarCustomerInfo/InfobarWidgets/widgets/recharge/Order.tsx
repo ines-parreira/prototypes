@@ -8,19 +8,22 @@ import React, {
 import {fromJS, Map, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
+import {RECHARGE_INTEGRATION_TYPE} from 'constants/integration'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
+import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
+import {RootState} from 'state/types'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import {renderTemplate} from 'pages/common/utils/template'
-import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
-import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
-import {RootState} from 'state/types'
-import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'
 import {IntegrationContext} from '../IntegrationContext'
-import {RECHARGE_INTEGRATION_TYPE} from '../../../../../../../../../constants/integration'
 
 const OrderContext = createContext<{
     order: Map<string, unknown> | null
@@ -266,42 +269,51 @@ type TitleWrapperProps = {
     template: Map<any, any>
 } & ConnectedProps<typeof connectorTitleWrapper>
 
-export class TitleWrapper extends React.Component<TitleWrapperProps> {
-    static contextType = OrderContext
-    context!: ContextType<typeof OrderContext>
+export function TitleWrapper({
+    children,
+    source,
+    getIntegrationData,
+    template,
+}: TitleWrapperProps) {
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const {integration, integrationId} = useContext(IntegrationContext)
+    const storeName = integration.getIn(['meta', 'store_name']) as string
 
-    render() {
-        const {children, source, getIntegrationData, template} = this.props
-        const {integration, integrationId} = this.context
-        const storeName = integration.getIn(['meta', 'store_name']) as string
+    const customerHash = getIntegrationData(
+        integrationId!,
+        source.get('customer_id')
+    ).getIn(['customer', 'hash']) as string
+    const customerId = source.get('customer_id') as string
+    const orderId = source.get('id') as string
 
-        const customerHash = getIntegrationData(
-            integrationId!,
-            source.get('customer_id')
-        ).getIn(['customer', 'hash']) as string
-        const customerId = source.get('customer_id') as string
-        const orderId = source.get('id') as string
+    let link = undefined
 
-        let link = undefined
+    if (customerHash) {
+        link = `https://${storeName}-sp.admin.rechargeapps.com/admin/customers/${customerId}/orders/history/${orderId}`
+        const customLink = template.getIn(['meta', 'link']) as string
 
-        if (customerHash) {
-            link = `https://${storeName}-sp.admin.rechargeapps.com/admin/customers/${customerId}/orders/history/${orderId}`
-            const customLink = template.getIn(['meta', 'link']) as string
-
-            if (customLink) {
-                link = renderTemplate(
-                    customLink,
-                    source.set('customerHash', customerHash).toJS()
-                )
-            }
+        if (customLink) {
+            link = renderTemplate(
+                customLink,
+                source.set('customerHash', customerHash).toJS()
+            )
         }
-
-        return (
-            <a href={link} target="_blank" rel="noopener noreferrer">
-                {children}
-            </a>
-        )
     }
+
+    return (
+        <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => {
+                logEvent(SegmentEvent.RechargeOrderClicked, {
+                    account_domain: currentAccount.get('domain'),
+                })
+            }}
+        >
+            {children}
+        </a>
+    )
 }
 
 const connectorTitleWrapper = connect(makeGetIntegrationData)
