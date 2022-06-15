@@ -100,6 +100,15 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the self se
       </a>
        
       empowers customers to find answers to common questions and manage orders on their own, resolving requests without an agent. If customers require further assistance, a ticket is created.
+       
+      <a
+        href="https://docs.gorgias.com/en-US/help-center-article-recommendation-in-chat-89341"
+        rel="noreferrer"
+        target="_blank"
+      >
+        Read more
+      </a>
+      .
     </p>
     <div
       class="d-flex my-4"

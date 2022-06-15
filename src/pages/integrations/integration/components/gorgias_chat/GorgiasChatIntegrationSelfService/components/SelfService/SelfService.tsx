@@ -31,7 +31,15 @@ const SelfService = ({
                 <Link to="/app/settings/self-service">Self-service</Link>{' '}
                 empowers customers to find answers to common questions and
                 manage orders on their own, resolving requests without an agent.
-                If customers require further assistance, a ticket is created.
+                If customers require further assistance, a ticket is created.{' '}
+                <a
+                    href="https://docs.gorgias.com/en-US/help-center-article-recommendation-in-chat-89341"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    Read more
+                </a>
+                .
             </p>
             <div className="d-flex my-4">
                 <span id="toggle-button">
