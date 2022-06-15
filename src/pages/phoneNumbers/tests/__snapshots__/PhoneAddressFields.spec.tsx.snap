@@ -60,101 +60,65 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
     </div>
   </div>
   <div
-    class="InputField required form-group"
-    color=""
+    class="form-group"
   >
-    <label
-      class="control-label"
-      for="id-input-8"
-    >
-      Business name
-    </label>
-    <div
-      class=""
-    >
-      <input
-        class="field form-control"
-        id="id-input-8"
-        required=""
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
-  <div
-    class="InputField required form-group"
-    color=""
-  >
-    <label
-      class="control-label"
-      for="id-input-9"
-    >
-      Address 1
-    </label>
-    <div
-      class=""
-    >
-      <input
-        class="field form-control"
-        id="id-input-9"
-        required=""
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
-  <div
-    class="row"
-  >
-    <div
-      class="pr-0 col"
-    >
-      <div
-        class="InputField form-group"
-        color=""
+    <div>
+      <label
+        class="label label"
+        for="input-text-13"
       >
-        <label
-          class="control-label"
-          for="id-input-10"
+        Business name
+        <abbr
+          aria-label="required"
+          class="abbr"
+          title="required"
         >
-          Address 2
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-10"
-            type="text"
-            value=""
-          />
-        </div>
+          *
+        </abbr>
+      </label>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          id="input-text-13"
+          name="input-text-13"
+          required=""
+          type="text"
+          value=""
+        />
       </div>
     </div>
-    <div
-      class="col"
-    >
-      <div
-        class="InputField required form-group"
-        color=""
+  </div>
+  <div
+    class="form-group"
+  >
+    <div>
+      <label
+        class="label label"
+        for="input-text-15"
       >
-        <label
-          class="control-label"
-          for="id-input-11"
+        Address
+        <abbr
+          aria-label="required"
+          class="abbr"
+          title="required"
         >
-          City
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-11"
-            required=""
-            type="text"
-            value=""
-          />
-        </div>
+          *
+        </abbr>
+      </label>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          id="input-text-15"
+          name="input-text-15"
+          placeholder="Street address, apartment, suite etc."
+          required=""
+          type="text"
+          value=""
+        />
       </div>
     </div>
   </div>
@@ -165,51 +129,34 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       class="pr-0 col"
     >
       <div
-        class="InputField required form-group"
-        color=""
+        class="form-group"
       >
-        <label
-          class="control-label"
-          for="id-input-12"
-        >
-          State/Province/Region
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-12"
-            required=""
-            type="text"
-            value=""
-          />
-        </div>
-      </div>
-    </div>
-    <div
-      class="pr-0 col"
-    >
-      <div
-        class="InputField required form-group"
-        color=""
-      >
-        <label
-          class="control-label"
-          for="id-input-13"
-        >
-          Postal Code
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-13"
-            required=""
-            type="text"
-            value=""
-          />
+        <div>
+          <label
+            class="label label"
+            for="input-text-17"
+          >
+            City
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-17"
+              name="input-text-17"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -217,26 +164,109 @@ exports[`<PhoneAddressFields /> should allow to use company information for vali
       class="col"
     >
       <div
-        class="InputField required form-group"
-        color=""
+        class="form-group"
       >
-        <label
-          class="control-label"
-          for="id-input-14"
-        >
-          Country
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            disabled=""
-            id="id-input-14"
-            required=""
-            type="text"
-            value=""
-          />
+        <div>
+          <label
+            class="label label"
+            for="input-text-19"
+          >
+            State/Province/Region
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-19"
+              name="input-text-19"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="form-group"
+      >
+        <div>
+          <label
+            class="label label"
+            for="input-text-21"
+          >
+            Postal Code
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-21"
+              name="input-text-21"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="form-group"
+      >
+        <div>
+          <label
+            class="label isDisabled label"
+            for="input-text-23"
+          >
+            Country
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper isDisabled"
+          >
+            <input
+              class="input"
+              disabled=""
+              id="input-text-23"
+              name="input-text-23"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -304,101 +334,65 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
     </div>
   </div>
   <div
-    class="InputField required form-group"
-    color=""
+    class="form-group"
   >
-    <label
-      class="control-label"
-      for="id-input-15"
-    >
-      Name
-    </label>
-    <div
-      class=""
-    >
-      <input
-        class="field form-control"
-        id="id-input-15"
-        required=""
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
-  <div
-    class="InputField required form-group"
-    color=""
-  >
-    <label
-      class="control-label"
-      for="id-input-16"
-    >
-      Address 1
-    </label>
-    <div
-      class=""
-    >
-      <input
-        class="field form-control"
-        id="id-input-16"
-        required=""
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
-  <div
-    class="row"
-  >
-    <div
-      class="pr-0 col"
-    >
-      <div
-        class="InputField form-group"
-        color=""
+    <div>
+      <label
+        class="label label"
+        for="input-text-25"
       >
-        <label
-          class="control-label"
-          for="id-input-17"
+        Name
+        <abbr
+          aria-label="required"
+          class="abbr"
+          title="required"
         >
-          Address 2
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-17"
-            type="text"
-            value=""
-          />
-        </div>
+          *
+        </abbr>
+      </label>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          id="input-text-25"
+          name="input-text-25"
+          required=""
+          type="text"
+          value=""
+        />
       </div>
     </div>
-    <div
-      class="col"
-    >
-      <div
-        class="InputField required form-group"
-        color=""
+  </div>
+  <div
+    class="form-group"
+  >
+    <div>
+      <label
+        class="label label"
+        for="input-text-27"
       >
-        <label
-          class="control-label"
-          for="id-input-18"
+        Address
+        <abbr
+          aria-label="required"
+          class="abbr"
+          title="required"
         >
-          City
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-18"
-            required=""
-            type="text"
-            value=""
-          />
-        </div>
+          *
+        </abbr>
+      </label>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          id="input-text-27"
+          name="input-text-27"
+          placeholder="Street address, apartment, suite etc."
+          required=""
+          type="text"
+          value=""
+        />
       </div>
     </div>
   </div>
@@ -409,51 +403,34 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       class="pr-0 col"
     >
       <div
-        class="InputField required form-group"
-        color=""
+        class="form-group"
       >
-        <label
-          class="control-label"
-          for="id-input-19"
-        >
-          State/Province/Region
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-19"
-            required=""
-            type="text"
-            value=""
-          />
-        </div>
-      </div>
-    </div>
-    <div
-      class="pr-0 col"
-    >
-      <div
-        class="InputField required form-group"
-        color=""
-      >
-        <label
-          class="control-label"
-          for="id-input-20"
-        >
-          Postal Code
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-20"
-            required=""
-            type="text"
-            value=""
-          />
+        <div>
+          <label
+            class="label label"
+            for="input-text-29"
+          >
+            City
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-29"
+              name="input-text-29"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -461,26 +438,109 @@ exports[`<PhoneAddressFields /> should allow to use personal information for val
       class="col"
     >
       <div
-        class="InputField required form-group"
-        color=""
+        class="form-group"
       >
-        <label
-          class="control-label"
-          for="id-input-21"
-        >
-          Country
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            disabled=""
-            id="id-input-21"
-            required=""
-            type="text"
-            value=""
-          />
+        <div>
+          <label
+            class="label label"
+            for="input-text-31"
+          >
+            State/Province/Region
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-31"
+              name="input-text-31"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="form-group"
+      >
+        <div>
+          <label
+            class="label label"
+            for="input-text-33"
+          >
+            Postal Code
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-33"
+              name="input-text-33"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="form-group"
+      >
+        <div>
+          <label
+            class="label isDisabled label"
+            for="input-text-35"
+          >
+            Country
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper isDisabled"
+          >
+            <input
+              class="input"
+              disabled=""
+              id="input-text-35"
+              name="input-text-35"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -547,101 +607,72 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
     </div>
   </div>
   <div
-    class="InputField required form-group"
-    color=""
+    class="form-group"
   >
-    <label
-      class="control-label"
-      for="id-input-22"
-    >
-      Business name
-    </label>
-    <div
-      class=""
-    >
-      <input
-        class="field form-control"
-        id="id-input-22"
-        required=""
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
-  <div
-    class="InputField required form-group"
-    color=""
-  >
-    <label
-      class="control-label"
-      for="id-input-23"
-    >
-      Address 1
-    </label>
-    <div
-      class=""
-    >
-      <input
-        class="field form-control"
-        id="id-input-23"
-        required=""
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
-  <div
-    class="row"
-  >
-    <div
-      class="pr-0 col"
-    >
-      <div
-        class="InputField form-group"
-        color=""
+    <div>
+      <label
+        class="label label"
+        for="input-text-37"
       >
-        <label
-          class="control-label"
-          for="id-input-24"
+        Business name
+        <abbr
+          aria-label="required"
+          class="abbr"
+          title="required"
         >
-          Address 2
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-24"
-            type="text"
-            value=""
-          />
-        </div>
+          *
+        </abbr>
+      </label>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          id="input-text-37"
+          name="input-text-37"
+          required=""
+          type="text"
+          value=""
+        />
       </div>
     </div>
-    <div
-      class="col"
-    >
-      <div
-        class="InputField required form-group"
-        color=""
+  </div>
+  <div
+    class="form-group"
+  >
+    <div>
+      <label
+        class="label label"
+        for="input-text-39"
       >
-        <label
-          class="control-label"
-          for="id-input-25"
+        Address
+        <abbr
+          aria-label="required"
+          class="abbr"
+          title="required"
         >
-          City
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-25"
-            required=""
-            type="text"
-            value=""
-          />
-        </div>
+          *
+        </abbr>
+      </label>
+      <div
+        class="wrapper"
+      >
+        <input
+          aria-describedby="input-text-39-caption"
+          class="input"
+          id="input-text-39"
+          name="input-text-39"
+          placeholder="Street address, apartment, suite etc."
+          required=""
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="caption"
+        id="input-text-39-caption"
+      >
+        Note: PO Boxes are not allowed for local Australian numbers.
       </div>
     </div>
   </div>
@@ -652,51 +683,34 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       class="pr-0 col"
     >
       <div
-        class="InputField required form-group"
-        color=""
+        class="form-group"
       >
-        <label
-          class="control-label"
-          for="id-input-26"
-        >
-          State/Province/Region
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-26"
-            required=""
-            type="text"
-            value=""
-          />
-        </div>
-      </div>
-    </div>
-    <div
-      class="pr-0 col"
-    >
-      <div
-        class="InputField required form-group"
-        color=""
-      >
-        <label
-          class="control-label"
-          for="id-input-27"
-        >
-          Postal Code
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-27"
-            required=""
-            type="text"
-            value=""
-          />
+        <div>
+          <label
+            class="label label"
+            for="input-text-41"
+          >
+            City
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-41"
+              name="input-text-41"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -704,26 +718,109 @@ exports[`<PhoneAddressFields /> should display the country name in a disabled fi
       class="col"
     >
       <div
-        class="InputField required form-group"
-        color=""
+        class="form-group"
       >
-        <label
-          class="control-label"
-          for="id-input-28"
-        >
-          Country
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            disabled=""
-            id="id-input-28"
-            required=""
-            type="text"
-            value="Australia"
-          />
+        <div>
+          <label
+            class="label label"
+            for="input-text-43"
+          >
+            State/Province/Region
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-43"
+              name="input-text-43"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="form-group"
+      >
+        <div>
+          <label
+            class="label label"
+            for="input-text-45"
+          >
+            Postal Code
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-45"
+              name="input-text-45"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="form-group"
+      >
+        <div>
+          <label
+            class="label isDisabled label"
+            for="input-text-47"
+          >
+            Country
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper isDisabled"
+          >
+            <input
+              class="input"
+              disabled=""
+              id="input-text-47"
+              name="input-text-47"
+              required=""
+              type="text"
+              value="Australia"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -790,101 +887,65 @@ exports[`<PhoneAddressFields /> should render 1`] = `
     </div>
   </div>
   <div
-    class="InputField required form-group"
-    color=""
+    class="form-group"
   >
-    <label
-      class="control-label"
-      for="id-input-1"
-    >
-      Business name
-    </label>
-    <div
-      class=""
-    >
-      <input
-        class="field form-control"
-        id="id-input-1"
-        required=""
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
-  <div
-    class="InputField required form-group"
-    color=""
-  >
-    <label
-      class="control-label"
-      for="id-input-2"
-    >
-      Address 1
-    </label>
-    <div
-      class=""
-    >
-      <input
-        class="field form-control"
-        id="id-input-2"
-        required=""
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
-  <div
-    class="row"
-  >
-    <div
-      class="pr-0 col"
-    >
-      <div
-        class="InputField form-group"
-        color=""
+    <div>
+      <label
+        class="label label"
+        for="input-text-1"
       >
-        <label
-          class="control-label"
-          for="id-input-3"
+        Business name
+        <abbr
+          aria-label="required"
+          class="abbr"
+          title="required"
         >
-          Address 2
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-3"
-            type="text"
-            value=""
-          />
-        </div>
+          *
+        </abbr>
+      </label>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          id="input-text-1"
+          name="input-text-1"
+          required=""
+          type="text"
+          value=""
+        />
       </div>
     </div>
-    <div
-      class="col"
-    >
-      <div
-        class="InputField required form-group"
-        color=""
+  </div>
+  <div
+    class="form-group"
+  >
+    <div>
+      <label
+        class="label label"
+        for="input-text-3"
       >
-        <label
-          class="control-label"
-          for="id-input-4"
+        Address
+        <abbr
+          aria-label="required"
+          class="abbr"
+          title="required"
         >
-          City
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-4"
-            required=""
-            type="text"
-            value=""
-          />
-        </div>
+          *
+        </abbr>
+      </label>
+      <div
+        class="wrapper"
+      >
+        <input
+          class="input"
+          id="input-text-3"
+          name="input-text-3"
+          placeholder="Street address, apartment, suite etc."
+          required=""
+          type="text"
+          value=""
+        />
       </div>
     </div>
   </div>
@@ -895,51 +956,34 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       class="pr-0 col"
     >
       <div
-        class="InputField required form-group"
-        color=""
+        class="form-group"
       >
-        <label
-          class="control-label"
-          for="id-input-5"
-        >
-          State/Province/Region
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-5"
-            required=""
-            type="text"
-            value=""
-          />
-        </div>
-      </div>
-    </div>
-    <div
-      class="pr-0 col"
-    >
-      <div
-        class="InputField required form-group"
-        color=""
-      >
-        <label
-          class="control-label"
-          for="id-input-6"
-        >
-          Postal Code
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            id="id-input-6"
-            required=""
-            type="text"
-            value=""
-          />
+        <div>
+          <label
+            class="label label"
+            for="input-text-5"
+          >
+            City
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-5"
+              name="input-text-5"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -947,26 +991,109 @@ exports[`<PhoneAddressFields /> should render 1`] = `
       class="col"
     >
       <div
-        class="InputField required form-group"
-        color=""
+        class="form-group"
       >
-        <label
-          class="control-label"
-          for="id-input-7"
-        >
-          Country
-        </label>
-        <div
-          class=""
-        >
-          <input
-            class="field form-control"
-            disabled=""
-            id="id-input-7"
-            required=""
-            type="text"
-            value=""
-          />
+        <div>
+          <label
+            class="label label"
+            for="input-text-7"
+          >
+            State/Province/Region
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-7"
+              name="input-text-7"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="row"
+  >
+    <div
+      class="pr-0 col"
+    >
+      <div
+        class="form-group"
+      >
+        <div>
+          <label
+            class="label label"
+            for="input-text-9"
+          >
+            Postal Code
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper"
+          >
+            <input
+              class="input"
+              id="input-text-9"
+              name="input-text-9"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col"
+    >
+      <div
+        class="form-group"
+      >
+        <div>
+          <label
+            class="label isDisabled label"
+            for="input-text-11"
+          >
+            Country
+            <abbr
+              aria-label="required"
+              class="abbr"
+              title="required"
+            >
+              *
+            </abbr>
+          </label>
+          <div
+            class="wrapper isDisabled"
+          >
+            <input
+              class="input"
+              disabled=""
+              id="input-text-11"
+              name="input-text-11"
+              required=""
+              type="text"
+              value=""
+            />
+          </div>
         </div>
       </div>
     </div>

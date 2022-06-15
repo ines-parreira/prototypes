@@ -35,7 +35,7 @@ export type AddressInformation = {
     region: string
     postal_code: string
     city: string
-    country: string
+    country: PhoneCountry
     type: AddressType
 }
 

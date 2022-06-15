@@ -7,7 +7,6 @@ import {
     IntegrationType,
     IvrMenuActionType,
     VoiceMessageType,
-    AddressType,
 } from '../constants'
 
 import {IntegrationBase} from './base'
@@ -89,16 +88,6 @@ export type IvrForwardCallMenuAction = {
 export type IvrForwardCall = {
     phone_number: string
     integration_id?: number
-}
-
-export type AddressInformation = {
-    address: string
-    business_name: string
-    region: string
-    postal_code: string
-    city: string
-    country: string
-    type: AddressType
 }
 
 export const isPhoneIntegration = createTypeGuard<

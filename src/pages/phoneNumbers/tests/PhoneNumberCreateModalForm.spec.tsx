@@ -91,8 +91,7 @@ describe('<PhoneNumberCreateModalForm/>', () => {
             )
 
             expect(queryByText('Business name')).not.toBe(null)
-            expect(queryByText('Address 1')).not.toBe(null)
-            expect(queryByText('Address 2')).not.toBe(null)
+            expect(queryByText('Address')).not.toBe(null)
             expect(queryByText('City')).not.toBe(null)
             expect(queryByText('State/Province/Region')).not.toBe(null)
             expect(queryByText('Postal Code')).not.toBe(null)

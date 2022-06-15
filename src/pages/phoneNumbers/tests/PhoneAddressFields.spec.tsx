@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import {AddressInformation, AddressType} from 'models/integration/types'
+import {AddressInformation, AddressType} from 'models/phoneNumber/types'
 import {PhoneCountry} from 'business/twilio'
 
 import PhoneAddressFields from '../PhoneAddressFields'
@@ -29,8 +29,8 @@ describe('<PhoneAddressFields />', () => {
             />
         )
 
-        expect(queryByLabelText('Business name')).not.toBe(null)
-        expect(queryByLabelText('Name')).toBe(null)
+        expect(queryByLabelText('Business name*')).not.toBe(null)
+        expect(queryByLabelText('Name*')).toBe(null)
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -45,8 +45,8 @@ describe('<PhoneAddressFields />', () => {
             />
         )
 
-        expect(queryByLabelText('Business name')).toBe(null)
-        expect(queryByLabelText('Name')).not.toBe(null)
+        expect(queryByLabelText('Business name*')).toBe(null)
+        expect(queryByLabelText('Name*')).not.toBe(null)
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -66,7 +66,7 @@ describe('<PhoneAddressFields />', () => {
             />
         )
 
-        expect(queryByLabelText('Country')).not.toBe(null)
+        expect(queryByLabelText('Country*')).not.toBe(null)
         expect(queryByDisplayValue('Australia')).not.toBe(null)
         expect(
             (getByDisplayValue('Australia') as HTMLInputElement).disabled

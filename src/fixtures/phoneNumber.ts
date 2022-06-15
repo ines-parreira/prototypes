@@ -61,7 +61,7 @@ export const phoneNumbers: PhoneNumber[] = [
             address: 'SomethingVile, Somewhere',
             business_name: 'ACME',
             city: 'SomethingVile',
-            country: 'GB',
+            country: PhoneCountry.GB,
             postal_code: '123',
             region: 'Somewhere',
             type: AddressType.Company,

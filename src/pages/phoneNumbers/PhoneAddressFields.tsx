@@ -1,16 +1,12 @@
-import React, {useCallback, useState, useEffect} from 'react'
-import {Col, Row} from 'reactstrap'
-import {isEmpty} from 'lodash'
+import React, {useCallback} from 'react'
+import {Col, Row, FormGroup} from 'reactstrap'
 
 import {PhoneCountry} from 'business/twilio'
-import {AddressType, AddressInformation} from 'models/integration/types'
+import {AddressType} from 'models/integration/types'
+import {AddressInformation} from 'models/phoneNumber/types'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
-
-import rawCountries from './options/countries.json'
-
-const countries: SelectableOption[] = rawCountries
+import InputField from 'pages/common/forms/input/InputField'
+import {countryName} from 'pages/phoneNumbers/utils'
 
 type Props = {
     value: Partial<AddressInformation>
@@ -21,14 +17,7 @@ export default function PhoneAddressFields({
     value,
     onChange,
 }: Props): JSX.Element {
-    const [address1, setAddress1] = useState('')
-    const [address2, setAddress2] = useState('')
     const isDisabled = value.country === PhoneCountry.FR
-
-    const countryName = value.country
-        ? countries.find((c) => c.value === value.country)?.label ??
-          value.country
-        : ''
 
     const handleChange = useCallback(
         (key: keyof AddressInformation, changedValue: string) => {
@@ -39,15 +28,6 @@ export default function PhoneAddressFields({
         },
         [value, onChange]
     )
-
-    useEffect(() => {
-        const address = isEmpty(address2)
-            ? address1
-            : [address1, address2].join(', ')
-        if (address !== value.address) {
-            handleChange('address', address)
-        }
-    }, [value.address, address1, address2, handleChange])
 
     return (
         <div>
@@ -75,77 +55,91 @@ export default function PhoneAddressFields({
                     />
                 </Col>
             </Row>
-            <DEPRECATED_InputField
-                label={
-                    value.type === AddressType.Personal
-                        ? 'Name'
-                        : 'Business name'
-                }
-                required
-                value={value.business_name ?? ''}
-                disabled={isDisabled}
-                onChange={(value: string) =>
-                    handleChange('business_name', value)
-                }
-            />
-            <DEPRECATED_InputField
-                label="Address 1"
-                required
-                value={address1}
-                onChange={setAddress1}
-                disabled={isDisabled}
-            />
+            <FormGroup>
+                <InputField
+                    label={
+                        value.type === AddressType.Personal
+                            ? 'Name'
+                            : 'Business name'
+                    }
+                    isRequired
+                    value={value.business_name ?? ''}
+                    isDisabled={isDisabled}
+                    onChange={(value: string) =>
+                        handleChange('business_name', value)
+                    }
+                />
+            </FormGroup>
+            <FormGroup>
+                <InputField
+                    label="Address"
+                    isRequired
+                    value={value.address}
+                    onChange={(value: string) => handleChange('address', value)}
+                    isDisabled={isDisabled}
+                    placeholder="Street address, apartment, suite etc."
+                    caption={
+                        value.country === PhoneCountry.AU
+                            ? 'Note: PO Boxes are not allowed for local Australian numbers.'
+                            : undefined
+                    }
+                />
+            </FormGroup>
             <Row>
                 <Col className="pr-0">
-                    <DEPRECATED_InputField
-                        label="Address 2"
-                        value={address2}
-                        onChange={setAddress2}
-                        disabled={isDisabled}
-                    />
+                    <FormGroup>
+                        <InputField
+                            label="City"
+                            isRequired
+                            value={value.city}
+                            onChange={(value: string) =>
+                                handleChange('city', value)
+                            }
+                            isDisabled={isDisabled}
+                        />
+                    </FormGroup>
                 </Col>
                 <Col>
-                    <DEPRECATED_InputField
-                        label="City"
-                        required
-                        value={value.city}
-                        onChange={(value: string) =>
-                            handleChange('city', value)
-                        }
-                        disabled={isDisabled}
-                    />
+                    <FormGroup>
+                        <InputField
+                            label="State/Province/Region"
+                            isRequired
+                            value={value.region}
+                            onChange={(value: string) =>
+                                handleChange('region', value)
+                            }
+                            isDisabled={isDisabled}
+                        />
+                    </FormGroup>
                 </Col>
             </Row>
             <Row>
                 <Col className="pr-0">
-                    <DEPRECATED_InputField
-                        label="State/Province/Region"
-                        required
-                        value={value.region}
-                        onChange={(value: string) =>
-                            handleChange('region', value)
-                        }
-                        disabled={isDisabled}
-                    />
-                </Col>
-                <Col className="pr-0">
-                    <DEPRECATED_InputField
-                        label="Postal Code"
-                        required
-                        value={value.postal_code}
-                        onChange={(value: string) =>
-                            handleChange('postal_code', value)
-                        }
-                        disabled={isDisabled}
-                    />
+                    <FormGroup>
+                        <InputField
+                            label="Postal Code"
+                            isRequired
+                            value={value.postal_code}
+                            onChange={(value: string) =>
+                                handleChange('postal_code', value)
+                            }
+                            isDisabled={isDisabled}
+                        />
+                    </FormGroup>
                 </Col>
                 <Col>
-                    <DEPRECATED_InputField
-                        label="Country"
-                        required
-                        value={countryName}
-                        disabled
-                    />
+                    <FormGroup>
+                        <InputField
+                            label="Country"
+                            isRequired
+                            value={
+                                value.country
+                                    ? countryName(value.country)
+                                    : value.country
+                            }
+                            isDisabled
+                        />
+                    </FormGroup>
                 </Col>
             </Row>
         </div>
