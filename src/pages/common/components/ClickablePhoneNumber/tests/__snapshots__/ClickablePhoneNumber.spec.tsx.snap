@@ -1,5 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<ClickablePhoneNumber/> should render a dropdown listing SMS integrations 1`] = `
+<div
+  class="dropdown dropdown"
+>
+  <a
+    aria-expanded="false"
+    aria-haspopup="true"
+    class=""
+    href="#"
+    id="phone-number-1"
+  >
+    +33 6 11 22 33 44
+  </a>
+  <div
+    aria-hidden="true"
+    class="dropdownMenu dropdown-menu"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="text-uppercase dropdown-header"
+      tabindex="-1"
+    >
+      SMS with
+    </h6>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      
+       
+      
+      My Phone Integration 1
+       (
+      +1 415 111 2222
+      )
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
+    >
+      
+       
+      
+      My Phone Integration 2
+       (
+      +1 813 111 2223
+      )
+    </button>
+  </div>
+</div>
+`;
+
 exports[`<ClickablePhoneNumber/> should render a dropdown listing the phone integrations 1`] = `
 <div
   class="dropdown dropdown"

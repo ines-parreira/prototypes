@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {DropdownItem, DropdownMenu, DropdownToggle, Dropdown} from 'reactstrap'
 import {
     getPhoneIntegrations,
     getSmsIntegrations,
 } from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
+
+import Tooltip from 'pages/common/components/Tooltip'
 
 import PhoneIntegrationsDropdownList from './PhoneIntegrationsDropdownList'
 import SmsIntegrationsDropdownList from './SmsIntegrationsDropdownList'
@@ -41,6 +43,18 @@ const ClickablePhoneNumber = ({
         }
     }, [hasPhoneIntegrations, hasSmsIntegrations])
 
+    const tooltipMessage = useMemo(() => {
+        if (hasPhoneIntegrations && hasSmsIntegrations) {
+            return 'Make an outbound call or send an SMS'
+        }
+        if (hasPhoneIntegrations && !hasSmsIntegrations) {
+            return 'Make an outbound call'
+        }
+        if (!hasPhoneIntegrations && hasSmsIntegrations) {
+            return 'Send SMS'
+        }
+    }, [hasPhoneIntegrations, hasSmsIntegrations])
+
     if (!hasPhoneIntegrations && !hasSmsIntegrations) {
         const href = address.replace(/[. ]/g, '')
         return (
@@ -71,6 +85,7 @@ const ClickablePhoneNumber = ({
                     href="#"
                     onClick={(e) => e.preventDefault()}
                 >
+                    <Tooltip target={id}>{tooltipMessage}</Tooltip>
                     {address}
                 </DropdownToggle>
                 <DropdownMenu container="body" className={css.dropdownMenu}>
@@ -93,7 +108,7 @@ const ClickablePhoneNumber = ({
                                     onClick={() => setShowSmsIntegrations(true)}
                                 >
                                     <i className="material-icons mr-2">sms</i>
-                                    Send an SMS message
+                                    Send SMS
                                 </DropdownItem>
                             </>
                         )}
