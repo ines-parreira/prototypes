@@ -13,6 +13,9 @@ export enum SearchRankSource {
 export type SearchRankRequest = {
     query: string
     requestTime: number
+}
+
+export type SearchRankResponse = {
     responseTime: number
     numberOfResults: number
     searchEngine?: SearchEngine
@@ -33,20 +36,17 @@ export default function useSearchRankScenario(
     scenarioTimeout = 60000
 ) {
     const request = useRef<SearchRankRequest | undefined>()
+    const response = useRef<SearchRankResponse | undefined>()
     const selectedItem = useRef<SearchRankSelectedItem | undefined>()
     const timeout = useRef<NodeJS.Timeout | undefined>()
     const [isLive, setIsLive] = useState(false)
     const currentAccount = useAppSelector(getCurrentAccountState)
 
     const endScenario = useCallback(() => {
-        if (request.current) {
-            const {
-                query,
-                requestTime,
-                responseTime,
-                numberOfResults,
-                searchEngine,
-            } = request.current
+        if (request.current && response.current) {
+            const {query, requestTime} = request.current
+            const {responseTime, numberOfResults, searchEngine} =
+                response.current
             logEvent(SegmentEvent.SearchQueryRanked, {
                 search_query: query,
                 datetime: new Date(requestTime).toISOString(),
@@ -60,9 +60,10 @@ export default function useSearchRankScenario(
                 result_object_id: selectedItem?.current?.id,
                 database_type: searchEngine
                     ? DATABASE_TYPE[searchEngine]
-                    : 'unknown',
+                    : SearchEngine.PG,
             })
             request.current = undefined
+            response.current = undefined
         }
         if (timeout.current) {
             clearTimeout(timeout.current)
@@ -75,6 +76,14 @@ export default function useSearchRankScenario(
         (req: SearchRankRequest) => {
             endScenario()
             request.current = req
+        },
+        [endScenario]
+    )
+
+    const registerResultsResponse = useCallback(
+        (res: SearchRankResponse) => {
+            endScenario()
+            response.current = res
             setIsLive(true)
         },
         [endScenario]
@@ -92,7 +101,7 @@ export default function useSearchRankScenario(
             clearTimeout(timeout.current)
         }
         if (isLive) {
-            if (request.current?.numberOfResults) {
+            if (response.current?.numberOfResults) {
                 timeout.current = setTimeout(endScenario, scenarioTimeout)
             } else {
                 endScenario()
@@ -106,8 +115,15 @@ export default function useSearchRankScenario(
         return {
             isRunning: isLive,
             registerResultsRequest,
+            registerResultsResponse,
             registerResultSelection,
             endScenario,
         }
-    }, [isLive, registerResultsRequest, registerResultSelection, endScenario])
+    }, [
+        isLive,
+        registerResultsRequest,
+        registerResultsResponse,
+        registerResultSelection,
+        endScenario,
+    ])
 }

@@ -244,7 +244,10 @@ export const Infobar = ({
     const onSearch = async (query: string) => {
         searchRank.endScenario()
         if (query) {
-            const requestTime = Date.now()
+            searchRank.registerResultsRequest({
+                query,
+                requestTime: Date.now(),
+            })
             setIsSearching(true)
             const res = (await cancellableSearch(query)) as {
                 error?: AxiosError<{error?: {message: string}}>
@@ -262,9 +265,7 @@ export const Infobar = ({
                     'Failed to do the search. Please try again.'
             }
 
-            searchRank.registerResultsRequest({
-                query,
-                requestTime,
+            searchRank.registerResultsResponse({
                 responseTime: Date.now(),
                 numberOfResults: !error ? resp.data.length : 0,
                 searchEngine: !error ? resp.searchEngine : undefined,

@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 
 import useSearchRankScenario, {
     SearchRankRequest,
+    SearchRankResponse,
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import {RootState, StoreDispatch} from 'state/types'
@@ -20,9 +21,11 @@ const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 describe('useSearchRankScenario', () => {
     const defaultScenarioTimeout = 1000
     const defaultResultsRequest: SearchRankRequest = {
-        numberOfResults: 3,
         query: 'foo',
         requestTime: 1000,
+    }
+    const defaultResultsResponse: SearchRankResponse = {
+        numberOfResults: 3,
         responseTime: 1234,
         searchEngine: SearchEngine.ES,
     }
@@ -56,9 +59,13 @@ describe('useSearchRankScenario', () => {
         )
 
         act(() => {
-            const {registerResultSelection, registerResultsRequest} =
-                result.current
+            const {
+                registerResultSelection,
+                registerResultsRequest,
+                registerResultsResponse,
+            } = result.current
             registerResultsRequest(defaultResultsRequest)
+            registerResultsResponse(defaultResultsResponse)
             registerResultSelection({index: 1, id: 'foo'})
             registerResultSelection({index: 2, id: 'bar'})
         })
@@ -86,8 +93,10 @@ describe('useSearchRankScenario', () => {
         expect(result.current.isRunning).toBe(false)
 
         act(() => {
-            const {registerResultsRequest} = result.current
+            const {registerResultsRequest, registerResultsResponse} =
+                result.current
             registerResultsRequest(defaultResultsRequest)
+            registerResultsResponse(defaultResultsResponse)
         })
         expect(result.current.isRunning).toBe(true)
 
@@ -112,9 +121,11 @@ describe('useSearchRankScenario', () => {
         )
 
         act(() => {
-            const {registerResultsRequest} = result.current
-            registerResultsRequest({
-                ...defaultResultsRequest,
+            const {registerResultsRequest, registerResultsResponse} =
+                result.current
+            registerResultsRequest(defaultResultsRequest)
+            registerResultsResponse({
+                ...defaultResultsResponse,
                 numberOfResults: 0,
             })
         })
@@ -144,8 +155,10 @@ describe('useSearchRankScenario', () => {
         )
 
         act(() => {
-            const {registerResultsRequest} = result.current
+            const {registerResultsRequest, registerResultsResponse} =
+                result.current
             registerResultsRequest(defaultResultsRequest)
+            registerResultsResponse(defaultResultsResponse)
         })
         act(() => jest.runAllTimers())
 
@@ -157,7 +170,7 @@ describe('useSearchRankScenario', () => {
         )
     })
 
-    it('should log search failure when second results request is registered', () => {
+    it('should log rank when second results request is registered', () => {
         const {result} = renderHook(
             () =>
                 useSearchRankScenario(
@@ -174,13 +187,17 @@ describe('useSearchRankScenario', () => {
         )
 
         act(() => {
-            const {registerResultsRequest} = result.current
+            const {
+                registerResultsRequest,
+                registerResultsResponse,
+                registerResultSelection,
+            } = result.current
             registerResultsRequest(defaultResultsRequest)
+            registerResultsResponse(defaultResultsResponse)
+            registerResultSelection({index: 1, id: 'bar'})
             registerResultsRequest({
-                numberOfResults: 2,
                 query: 'foobar',
                 requestTime: 2000,
-                responseTime: 2345,
             })
         })
 
@@ -188,7 +205,7 @@ describe('useSearchRankScenario', () => {
             SegmentEvent.SearchQueryRanked,
             expect.objectContaining({
                 search_query: 'foo',
-                rank: -1,
+                rank: 2,
             })
         )
     })
@@ -210,9 +227,13 @@ describe('useSearchRankScenario', () => {
         )
 
         act(() => {
-            const {registerResultsRequest, registerResultSelection} =
-                result.current
+            const {
+                registerResultsRequest,
+                registerResultsResponse,
+                registerResultSelection,
+            } = result.current
             registerResultsRequest(defaultResultsRequest)
+            registerResultsResponse(defaultResultsResponse)
             registerResultSelection({index: 1, id: 'foo'})
         })
         unmount()
@@ -244,10 +265,12 @@ describe('useSearchRankScenario', () => {
         act(() => {
             const {
                 registerResultsRequest,
+                registerResultsResponse,
                 registerResultSelection,
                 endScenario,
             } = result.current
             registerResultsRequest(defaultResultsRequest)
+            registerResultsResponse(defaultResultsResponse)
             registerResultSelection({index: 1, id: 'foo'})
             endScenario()
         })
@@ -256,6 +279,46 @@ describe('useSearchRankScenario', () => {
             SegmentEvent.SearchQueryRanked,
             expect.objectContaining({
                 rank: 2,
+            })
+        )
+    })
+
+    it('should log PG database type by default', () => {
+        const {result} = renderHook(
+            () =>
+                useSearchRankScenario(
+                    SearchRankSource.CustomerProfile,
+                    defaultScenarioTimeout
+                ),
+            {
+                wrapper: (({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                )) as ComponentType,
+            }
+        )
+
+        act(() => {
+            const {
+                registerResultsRequest,
+                registerResultsResponse,
+                registerResultSelection,
+                endScenario,
+            } = result.current
+            registerResultsRequest(defaultResultsRequest)
+            registerResultsResponse({
+                ...defaultResultsResponse,
+                searchEngine: undefined,
+            })
+            registerResultSelection({index: 1, id: 'foo'})
+            endScenario()
+        })
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SearchQueryRanked,
+            expect.objectContaining({
+                database_type: SearchEngine.PG,
             })
         )
     })

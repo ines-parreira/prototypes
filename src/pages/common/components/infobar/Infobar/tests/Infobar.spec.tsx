@@ -82,6 +82,7 @@ jest.mock(
 jest.mock('hooks/useSearchRankScenario')
 const mockSearchRank = {
     registerResultsRequest: jest.fn(),
+    registerResultsResponse: jest.fn(),
     registerResultSelection: jest.fn(),
     endScenario: jest.fn(),
     isRunning: false,
@@ -383,6 +384,9 @@ describe('<Infobar/>', () => {
 
         expect(
             mockSearchRank.registerResultsRequest.mock.calls
+        ).toMatchSnapshot()
+        expect(
+            mockSearchRank.registerResultsResponse.mock.calls
         ).toMatchSnapshot()
         expect(
             mockSearchRank.registerResultSelection.mock.calls

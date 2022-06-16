@@ -75,9 +75,18 @@ exports[`<Infobar/> should register search rank scenario event when user clicks 
 Array [
   Array [
     Object {
-      "numberOfResults": 20,
       "query": "query",
       "requestTime": 1487076708000,
+    },
+  ],
+]
+`;
+
+exports[`<Infobar/> should register search rank scenario event when user clicks the result 2`] = `
+Array [
+  Array [
+    Object {
+      "numberOfResults": 20,
       "responseTime": 1487076708011,
       "searchEngine": "ES",
     },
@@ -85,7 +94,7 @@ Array [
 ]
 `;
 
-exports[`<Infobar/> should register search rank scenario event when user clicks the result 2`] = `
+exports[`<Infobar/> should register search rank scenario event when user clicks the result 3`] = `
 Array [
   Array [
     Object {
