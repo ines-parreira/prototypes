@@ -5,6 +5,7 @@ import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 
 import PageHeader from 'pages/common/components/PageHeader'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
 import {
@@ -101,6 +102,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
     )
 
     const integrations = useAppSelector(DEPRECATED_getIntegrations)
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const shopifyIntegration: Map<any, any> | undefined = integrations.find(
         (shopifyIntegration: Map<any, any>) => {
@@ -254,7 +256,8 @@ export function GorgiasChatIntegrationSelfServiceComponent({
 
             <ChatIntegrationNavigation integration={integration} />
 
-            {getFlag(FlagKey.SelfServiceArticleRecommendation) ? (
+            {getFlag(FlagKey.SelfServiceArticleRecommendation) &&
+            hasAutomationAddOn ? (
                 <GorgiasChatIntegrationPreviewContainer
                     preview={
                         <FeaturesPreview

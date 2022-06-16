@@ -14,6 +14,8 @@ import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 
+import {basicAutomationPlan} from 'fixtures/subscriptionPlan'
+
 import GorgiasChatIntegrationSelfService from '..'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -66,6 +68,9 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
 
     const defaultState = {
         currentAccount: fromJS({
+            current_subscription: {
+                plan: basicAutomationPlan.id,
+            },
             features: {
                 automation_return_flow: {enabled: true},
                 automation_cancellations_flow: {enabled: true},
@@ -73,6 +78,11 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
                 automation_report_issue_flow: {enabled: true},
             },
             created_datetime: '2021-08-01T00:00:00Z',
+        }),
+        billing: fromJS({
+            plans: fromJS({
+                [basicAutomationPlan.id]: basicAutomationPlan,
+            }),
         }),
         entities: {
             macros: {},
