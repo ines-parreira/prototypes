@@ -39,6 +39,7 @@ export type AppListData = {
 }
 
 export type AppData = AppListData & {
+    is_unapproved: boolean
     description: string
     app_url: string
     categories: Category[]
@@ -68,6 +69,7 @@ export type AppDetail = Omit<IntegrationConfig, 'isExternalConnectUrl'> & {
     isConnected: AppListData['is_installed']
     appId: AppListData['id']
     image: AppListData['app_icon']
+    isUnapproved: AppData['is_unapproved']
     connectUrl: AppData['app_url']
     supportEmail: AppData['support_email']
     supportPhone: AppData['support_phone']

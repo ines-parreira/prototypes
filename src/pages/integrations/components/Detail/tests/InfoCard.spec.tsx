@@ -200,4 +200,18 @@ describe(`InfoCard`, () => {
         })
         expect((notify as jest.Mock).mock.calls).toMatchSnapshot()
     })
+
+    it('should display a warning with the right text', () => {
+        render(
+            <Provider store={store}>
+                <InfoCard
+                    {...{
+                        ...dummyAppDetail,
+                        isUnapproved: true,
+                    }}
+                />
+            </Provider>
+        )
+        expect(screen.getByText(/has not been approved/))
+    })
 })

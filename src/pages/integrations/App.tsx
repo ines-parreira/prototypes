@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
+import {AppDetail as AppDetailType} from 'models/integration/types/app'
 import PageHeader from 'pages/common/components/PageHeader'
 import {fetchApp} from 'models/integration/resources'
-import {AppDetail as AppDetailType} from 'models/integration/types/app'
 import Loader from 'pages/common/components/Loader/Loader'
 import Detail from 'pages/integrations/components/Detail/Detail'
 

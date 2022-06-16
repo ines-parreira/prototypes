@@ -17,6 +17,7 @@ Object {
   "hasFreeTrial": true,
   "image": "https://ok.com/1.png",
   "isConnected": false,
+  "isUnapproved": false,
   "longDescription": "<p>My company is an interactive video platform, helping users create meaningful and personal conversations at scale.</p>
 <p>With the my company app, users can sync their videos and monitor every viewer interaction, while managing leads and audience choices through easy-to-view columns.</p>
 <p>With all of your audience interactions in one place, collecting your insights is a breeze.</p>

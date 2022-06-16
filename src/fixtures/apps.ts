@@ -17,6 +17,7 @@ export const dummyAppListData = {
 
 export const dummyAppData: AppData = {
     ...dummyAppListData,
+    is_unapproved: false,
     is_installed: false,
     company_url: 'https://www.gomycompany.com/',
     company: 'myCompany',

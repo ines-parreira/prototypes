@@ -12,6 +12,7 @@ import {IntegrationType} from './types'
 
 export const appDataToAppDetailMapper = (data: AppData): AppDetail => ({
     type: IntegrationType.App,
+    isUnapproved: data.is_unapproved,
     title: data.name,
     appId: data.id,
     isConnected: data.is_installed,

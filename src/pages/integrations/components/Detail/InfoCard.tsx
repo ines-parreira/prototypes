@@ -6,11 +6,13 @@ import {IntegrationConfig} from 'config'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {notify} from 'state/notifications/actions'
+import BannerNotification, {
+    Props as BannerProps,
+} from 'pages/common/components/BannerNotifications/BannerNotification'
 import {NotificationStatus} from 'state/notifications/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {AppDetail, isAppDetail, PricingPlan} from 'models/integration/types/app'
-import {Props as BannerProps} from 'pages/common/components/BannerNotifications/BannerNotification'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -99,6 +101,19 @@ export default function InfoCard(
 
     return (
         <Card className={css.infoCard}>
+            {isAppDetail(props) && props.isUnapproved && (
+                <div className={css.rounderWrapper}>
+                    <BannerNotification
+                        status={NotificationStatus.Warning}
+                        allowHTML
+                        message="<strong>This app has not been approved by Gorgias.</strong><br />We approve apps to ensure your security, be sure
+                        that you trust this app before granting it
+                        access."
+                        showIcon
+                        dismissible={false}
+                    />
+                </div>
+            )}
             <CardBody>
                 <div className={css.connectWrapper}>
                     {isAppInstalled ? (
@@ -126,7 +141,9 @@ export default function InfoCard(
                                 className={css.actionButton}
                                 isDisabled={isDisabled}
                             >
-                                Connect App
+                                {isAppDetail(props) && props.isUnapproved
+                                    ? 'Connect Unapproved App'
+                                    : 'Connect App'}
                             </Button>
                         </ConnectLink>
                     )}
