@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import copy from 'copy-to-clipboard'
 
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
@@ -8,6 +8,7 @@ import {
     ArticleTranslationSeoMeta,
     CreateArticleTranslationDto,
     LocalArticleTranslation,
+    VisibilityStatus,
 } from 'models/helpCenter/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -15,6 +16,8 @@ import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulate
 import Label from 'pages/common/forms/Label/Label'
 import TextArea from 'pages/common/forms/TextArea'
 import settingsCss from 'pages/settings/settings.less'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCategories} from 'state/entities/helpCenter/categories'
 import {HELP_CENTER_TITLE_MAX_LENGTH} from '../../constants'
 import {
     getAbsoluteUrl,
@@ -22,6 +25,9 @@ import {
     slugify,
 } from '../../utils/helpCenter.utils'
 import {SearchEnginePreview} from '../SearchEnginePreview'
+import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
+import {isOneOfParentsUnlisted} from '../HelpCenterCategoryEdit/utils'
+import {useEditionManager} from '../../providers/EditionManagerContext'
 import ArticleCategorySelect from './ArticleCategorySelect'
 
 import css from './HelpCenterEditAdvancedArticleForm.less'
@@ -49,8 +55,20 @@ export const HelpCenterEditAdvancedArticleForm = ({
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
 
+    const {selectedCategoryId} = useEditionManager()
+
+    const categories = useAppSelector(getCategories)
+    const [showNotification, setShowNotification] = useState(false)
+    const [isParentUnlisted, setIsParentUnlisted] = useState(false)
+
     const slugPrefix = getAbsoluteUrl({domain, locale: translation.locale})
     const slugSuffix = articleId ? `-${articleId.toString()}` : ''
+
+    useEffect(() => {
+        setIsParentUnlisted(
+            isOneOfParentsUnlisted(categories, selectedCategoryId)
+        )
+    }, [selectedCategoryId, categories])
 
     const onEditArticle =
         (editKey: keyof CreateArticleTranslationDto) => (value: string) => {
@@ -83,12 +101,36 @@ export const HelpCenterEditAdvancedArticleForm = ({
 
     const onChangeCategory = (selectedCategoryId: number | null) => {
         onCategoryChange(selectedCategoryId)
+        onChange({
+            ...translation,
+            category_id: selectedCategoryId,
+        })
+        setShowNotification(
+            isOneOfParentsUnlisted(categories, selectedCategoryId)
+        )
     }
 
     const copyURL = () => {
         const {locale, slug} = translation
+        const isUnlisted =
+            isOneOfParentsUnlisted(categories, selectedCategoryId) ||
+            translation.visibility_status === 'UNLISTED'
 
-        copy(getArticleUrl({domain, locale, slug, articleId}))
+        const unlistedId =
+            'article_unlisted_id' in translation
+                ? translation.article_unlisted_id
+                : ''
+
+        copy(
+            getArticleUrl({
+                domain,
+                locale,
+                slug,
+                articleId,
+                unlistedId,
+                isUnlisted,
+            })
+        )
 
         void dispatch(
             notify({
@@ -110,15 +152,34 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
                 className={settingsCss.mb16}
             />
-            <div className={css.categorySelect}>
-                <Label>Category</Label>
-                <ArticleCategorySelect
-                    locale={translation.locale}
-                    helpCenterId={helpCenterId}
-                    categoryId={categoryId ?? null}
-                    onChange={onChangeCategory}
-                />
+            <div className={css.split}>
+                <div className={css.categorySelect}>
+                    <Label>Category</Label>
+                    <ArticleCategorySelect
+                        locale={translation.locale}
+                        helpCenterId={helpCenterId}
+                        categoryId={categoryId ?? null}
+                        onChange={onChangeCategory}
+                    />
+                </div>
+                <div>
+                    <Label>Visibility status</Label>
+                    <SelectVisibilityStatus
+                        onChange={(status: VisibilityStatus) => {
+                            onChange({
+                                ...translation,
+                                visibility_status: status,
+                            })
+                        }}
+                        status={translation.visibility_status}
+                        showNotification={showNotification}
+                        setShowNotification={setShowNotification}
+                        isParentUnlisted={isParentUnlisted}
+                        type="article"
+                    />
+                </div>
             </div>
+
             <div className={css.inputWrapper}>
                 <DEPRECATED_InputField
                     required

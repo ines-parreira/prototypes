@@ -14,12 +14,14 @@ import {
 
 describe('getNewArticleTranslation()', () => {
     it('returns a new article translation', () => {
-        expect(getNewArticleTranslation('en-US')).toEqual({
+        expect(getNewArticleTranslation('en-US', null)).toEqual({
             title: '',
             content: '',
             excerpt: '',
             is_current: false,
             slug: '',
+            category_id: null,
+            visibility_status: 'PUBLIC',
             locale: 'en-US',
             seo_meta: {
                 title: null,
@@ -127,28 +129,60 @@ describe('getHelpCenterDomain()', () => {
 })
 
 describe('getArticleUrl()', () => {
-    it(`returns an absolute article URL`, () => {
+    it(`returns an absolute public article URL`, () => {
         expect(
             getArticleUrl({
                 domain: 'acme.gorgias.rehab',
                 locale: 'en-US',
                 slug: 'great-article',
                 articleId: 2,
+                unlistedId: '12345678901234567890123456789012',
+                isUnlisted: false,
             })
         ).toEqual('http://acme.gorgias.rehab/en-US/great-article-2')
+    })
+    it(`returns an absolute unlisted article URL`, () => {
+        expect(
+            getArticleUrl({
+                domain: 'acme.gorgias.rehab',
+                locale: 'en-US',
+                slug: 'great-article',
+                articleId: 2,
+                unlistedId: '12345678901234567890123456789012',
+                isUnlisted: true,
+            })
+        ).toEqual(
+            'http://acme.gorgias.rehab/en-US/2-12345678901234567890123456789012'
+        )
     })
 })
 
 describe('getCategoryUrl()', () => {
-    it(`returns an absolute category URL`, () => {
+    it(`returns an absolute public category URL`, () => {
         expect(
             getCategoryUrl({
                 domain: 'acme.gorgias.rehab',
                 locale: 'en-US',
                 slug: 'orders',
                 categoryId: 4,
+                unlistedId: '12345678901234567890123456789012',
+                isUnlisted: false,
             })
         ).toEqual('http://acme.gorgias.rehab/en-US/articles/orders-4')
+    })
+    it(`returns an absolute unlisted category URL`, () => {
+        expect(
+            getCategoryUrl({
+                domain: 'acme.gorgias.rehab',
+                locale: 'en-US',
+                slug: 'orders',
+                categoryId: 4,
+                unlistedId: '12345678901234567890123456789012',
+                isUnlisted: true,
+            })
+        ).toEqual(
+            'http://acme.gorgias.rehab/en-US/articles/4-12345678901234567890123456789012'
+        )
     })
 })
 

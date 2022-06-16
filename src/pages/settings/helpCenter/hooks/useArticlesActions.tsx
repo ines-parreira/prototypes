@@ -1,6 +1,5 @@
-import {useState} from 'react'
+import {useCallback, useState} from 'react'
 import {chain as _chain} from 'lodash'
-import _isNumber from 'lodash/isNumber'
 
 import {HelpCenterClient} from 'rest_api/help_center_api/index'
 
@@ -128,43 +127,45 @@ export const useArticlesActions = () => {
             }
         },
 
-        getArticleCount: async (categoryId: number | null) => {
-            if (!client) throw new Error('HTTP client not initialized!')
+        getArticleCount: useCallback(
+            async (categoryId: number | null) => {
+                if (!client) throw new Error('HTTP client not initialized!')
 
-            setIsLoading(true)
+                setIsLoading(true)
 
-            try {
-                const {
-                    data: {meta},
-                } = await (categoryId !== null
-                    ? client.listCategoryArticles({
-                          help_center_id: helpCenterId,
-                          category_id: categoryId,
-                          page: 1,
-                          per_page: 1,
-                          version_status: 'latest_draft',
-                      })
-                    : client.listArticles({
-                          help_center_id: helpCenterId,
-                          has_category: false,
-                          page: 1,
-                          per_page: 1,
-                          version_status: 'latest_draft',
-                      }))
+                try {
+                    const {
+                        data: {meta},
+                    } = await (categoryId !== null
+                        ? client.listCategoryArticles({
+                              help_center_id: helpCenterId,
+                              category_id: categoryId,
+                              page: 1,
+                              per_page: 1,
+                              version_status: 'latest_draft',
+                          })
+                        : client.listArticles({
+                              help_center_id: helpCenterId,
+                              has_category: false,
+                              page: 1,
+                              per_page: 1,
+                              version_status: 'latest_draft',
+                          }))
 
-                setIsLoading(false)
+                    setIsLoading(false)
 
-                return meta.item_count
-            } catch (err) {
-                setIsLoading(false)
+                    return meta.item_count
+                } catch (err) {
+                    setIsLoading(false)
 
-                throw err
-            }
-        },
+                    throw err
+                }
+            },
+            [client, helpCenterId]
+        ),
 
         async createArticle(
-            translation: CreateArticleTranslationDto,
-            categoryId: number | null
+            translation: CreateArticleTranslationDto
         ): Promise<Article> {
             if (!client) throw new Error('HTTP client not initialized!')
 
@@ -175,13 +176,13 @@ export const useArticlesActions = () => {
                     {
                         help_center_id: helpCenterId,
                     },
-                    {category_id: categoryId, translation}
+                    {translation}
                 )
 
-                const {data: positions} = categoryId
+                const {data: positions} = translation.category_id
                     ? await client.getCategoryArticlesPositions({
                           help_center_id: helpCenterId,
-                          category_id: categoryId,
+                          category_id: translation.category_id,
                       })
                     : await client.getUncategorizedArticlesPositions({
                           help_center_id: helpCenterId,
@@ -206,28 +207,17 @@ export const useArticlesActions = () => {
 
         async updateArticle(
             defaultLocale: LocaleCode,
-            article: Article,
-            categoryId: number | null
+            article: Article
         ): Promise<Article> {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
 
             try {
-                if (article.category_id !== categoryId) {
-                    await client.updateArticle(
-                        {
-                            id: article.id,
-                            help_center_id: helpCenterId,
-                        },
-                        {category_id: categoryId}
-                    )
-                }
-
-                const {data: positions} = categoryId
+                const {data: positions} = article.translation.category_id
                     ? await client.getCategoryArticlesPositions({
                           help_center_id: helpCenterId,
-                          category_id: categoryId,
+                          category_id: article.translation.category_id,
                       })
                     : await client.getUncategorizedArticlesPositions({
                           help_center_id: helpCenterId,
@@ -235,7 +225,6 @@ export const useArticlesActions = () => {
 
                 const updatedArticle: Article = {
                     ...article,
-                    category_id: categoryId,
                     translation: article.translation,
                     position: positions.findIndex(
                         (articleId) => articleId === article.id
@@ -312,6 +301,8 @@ export const useArticlesActions = () => {
                     slug: article.translation.slug,
                     seo_meta: article.translation.seo_meta,
                     is_current: article.translation.is_current,
+                    category_id: article.translation.category_id,
+                    visibility_status: article.translation.visibility_status,
                 }
             )
 
@@ -334,6 +325,8 @@ export const useArticlesActions = () => {
                     slug: article.translation.slug,
                     seo_meta: article.translation.seo_meta,
                     is_current: article.translation.is_current,
+                    visibility_status: article.translation.visibility_status,
+                    category_id: article.translation.category_id,
                 }
             )
 
@@ -429,6 +422,8 @@ export const useArticlesActions = () => {
                 excerpt: article.translation.excerpt,
                 content: article.translation.content || '',
                 slug: `${article.translation.slug}-copy`,
+                category_id: article.translation.category_id,
+                visibility_status: article.translation.visibility_status,
                 seo_meta: {
                     title: null,
                     description: null,
@@ -446,9 +441,7 @@ export const useArticlesActions = () => {
                     })
                     .then((response) => response.data.data)
 
-                const clonedArticle = _isNumber(article.category_id)
-                    ? await this.createArticle(translation, article.category_id)
-                    : await this.createArticle(translation, null)
+                const clonedArticle = await this.createArticle(translation)
 
                 await Promise.all(
                     translations
@@ -469,6 +462,8 @@ export const useArticlesActions = () => {
                                         title: null,
                                         description: null,
                                     },
+                                    category_id: t.category_id,
+                                    visibility_status: t.visibility_status,
                                 }
                             )
                         )

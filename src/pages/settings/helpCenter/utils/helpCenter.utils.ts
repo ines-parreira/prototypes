@@ -15,13 +15,16 @@ export const articleRequiredFields: Partial<
 >[] = ['title', 'slug', 'content']
 
 export const getNewArticleTranslation = (
-    locale: LocaleCode
+    locale: LocaleCode,
+    categoryId: number | null
 ): CreateArticleTranslationDto => ({
     locale,
     title: '',
     content: '',
     excerpt: '',
     slug: '',
+    category_id: categoryId,
+    visibility_status: 'PUBLIC',
     seo_meta: {
         title: null,
         description: null,
@@ -135,23 +138,27 @@ export const getCategoryUrl = ({
     locale,
     slug,
     categoryId,
+    unlistedId = '',
+    isUnlisted,
 }: {
     domain: string
     locale: string
     slug?: string
     categoryId?: number
+    unlistedId?: string
+    isUnlisted?: boolean
 }): string => {
-    let url = getAbsoluteUrl({domain, locale, path: 'articles'})
+    const url = getAbsoluteUrl({domain, locale, path: 'articles'})
 
-    if (slug) {
-        url += slug
+    if (!slug || !categoryId) {
+        return url
     }
 
-    if (categoryId) {
-        url += `-${categoryId.toString()}`
+    if (isUnlisted) {
+        return `${url}${categoryId.toString()}-${unlistedId}`
     }
 
-    return url
+    return `${url}${slug}-${categoryId.toString()}`
 }
 
 export const getArticleUrl = ({
@@ -159,21 +166,25 @@ export const getArticleUrl = ({
     locale,
     slug,
     articleId,
+    unlistedId,
+    isUnlisted,
 }: {
     domain: string
     locale: string
     slug?: string
     articleId?: number
+    unlistedId: string
+    isUnlisted: boolean
 }): string => {
-    let url = getAbsoluteUrl({domain, locale})
+    const url = getAbsoluteUrl({domain, locale})
 
-    if (slug) {
-        url += slug
+    if (!articleId || !slug) {
+        return url
     }
 
-    if (articleId) {
-        url += `-${articleId.toString()}`
+    if (isUnlisted) {
+        return `${url}${articleId.toString()}-${unlistedId}`
     }
 
-    return url
+    return `${url}${slug}-${articleId.toString()}`
 }

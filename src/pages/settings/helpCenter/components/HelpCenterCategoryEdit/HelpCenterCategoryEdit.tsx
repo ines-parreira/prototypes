@@ -20,11 +20,12 @@ import {
     LocalCategoryTranslation,
     LocaleCode,
     UpdateCategoryTranslationDto,
+    VisibilityStatus,
 } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
+import IconButton from 'pages/common/components/button/IconButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {Drawer} from 'pages/common/components/Drawer'
-import Tooltip from 'pages/common/components/Tooltip'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Option, Value} from 'pages/common/forms/SelectField/types'
@@ -58,7 +59,9 @@ import {getCategoryDropdownOption} from '../articles/ArticleCategorySelect/hooks
 import {ConfirmationModal} from '../ConfirmationModal'
 import {SearchEnginePreview} from '../SearchEnginePreview'
 import {CloseModal} from '../articles/CloseModal'
-import {eligibleParentCategories} from './utils'
+import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
+import {useArticlesActions} from '../../hooks/useArticlesActions'
+import {eligibleParentCategories, isOneOfParentsUnlisted} from './utils'
 
 import css from './HelpCenterCategoryEdit.less'
 
@@ -104,6 +107,8 @@ export const HelpCenterCategoryEdit = ({
     const locales = useSupportedLocales()
     const [title, setTitle] = useState('')
     const [parentCategory, setParentCategory] = useState<number | undefined>()
+    const [visibilityStatus, setVisibilityStatus] =
+        useState<VisibilityStatus>('PUBLIC')
     const [slug, setSlug] = useState('')
     const [isPristineSlug, setPristineSlug] = useState(true)
     const [description, setDescription] = useState('')
@@ -111,6 +116,7 @@ export const HelpCenterCategoryEdit = ({
     const [metaDescription, setMetaDescription] = useState<string | null>(null)
     const [pendingDeleteLocale, setPendingDeleteLocale] = useState<OptionItem>()
     const [pendingDeleteCategory, setPendingDeleteCategory] = useState(false)
+    const [pendingSaveCategory, setPendingSaveCategory] = useState(false)
     const categoryTitleRef = useRef<HTMLInputElement>(null)
     const screenSize = useScreenSize()
     const categories = useAppSelector(getParentCategories)
@@ -128,6 +134,12 @@ export const HelpCenterCategoryEdit = ({
     const [isAttemptingToClose, setIsAttemptingToClose] = useState(false)
 
     const domain = useMemo(() => getHelpCenterDomain(helpCenter), [helpCenter])
+
+    const [isParentUnlisted, setIsParentUnlisted] = useState(false)
+    const [showNotification, setShowNotification] = useState(false)
+
+    const {getArticleCount} = useArticlesActions()
+    const [articlesCount, setArticlesCount] = useState(0)
 
     const localeOptions = useMemo(
         () =>
@@ -164,12 +176,20 @@ export const HelpCenterCategoryEdit = ({
             setDescription(translation?.description || '')
             setMetaTitle(translation?.seo_meta.title || null)
             setMetaDescription(translation?.seo_meta.description || null)
+            setParentCategory(
+                category.translation?.parent_category_id ?? undefined
+            )
+            if (category.translation) {
+                setVisibilityStatus(category.translation.visibility_status)
+            }
         } else {
             setTitle('')
             setSlug('')
             setDescription('')
             setMetaTitle(null)
             setMetaDescription(null)
+            setParentCategory(parentCategoryId)
+            setVisibilityStatus('PUBLIC')
         }
         setParentCategory(
             category?.translation?.parent_category_id ?? parentCategoryId
@@ -199,6 +219,29 @@ export const HelpCenterCategoryEdit = ({
             },
         ])
     }, [categoryOptionCandidates])
+
+    useEffect(() => {
+        if (parentCategory) {
+            setIsParentUnlisted(
+                isOneOfParentsUnlisted(categories, parentCategory)
+            )
+        } else {
+            setIsParentUnlisted(false)
+        }
+    }, [parentCategory, categories])
+
+    useEffect(() => {
+        async function init() {
+            if (!category?.id) {
+                return
+            }
+            const count = await getArticleCount(category.id)
+
+            setArticlesCount(count)
+        }
+
+        void init()
+    }, [category?.id, getArticleCount])
 
     const handleOnClickAction = (
         action: ActionType,
@@ -262,9 +305,29 @@ export const HelpCenterCategoryEdit = ({
         setHasPendingChanges(true)
     }
 
+    const attemptSave = () => {
+        setIsAttemptingToClose(false)
+
+        const hasChildren =
+            articlesCount > 0 || (category && category.children.length > 0)
+
+        if (
+            !isCreate &&
+            hasChildren &&
+            category?.translation?.visibility_status === 'PUBLIC' &&
+            visibilityStatus === 'UNLISTED'
+        ) {
+            setPendingSaveCategory(true)
+
+            return
+        }
+        handleOnSave()
+    }
+
     const handleOnSave = () => {
         setIsAttemptingToClose(false)
         setHasPendingChanges(false)
+        setPendingSaveCategory(false)
 
         if (isCreate) {
             onCreate?.({
@@ -272,6 +335,7 @@ export const HelpCenterCategoryEdit = ({
                     locale: viewLanguage,
                     title,
                     parent_category_id: parentCategory,
+                    visibility_status: visibilityStatus,
                     slug,
                     description,
                     seo_meta: {
@@ -290,6 +354,7 @@ export const HelpCenterCategoryEdit = ({
                 slug,
                 description,
                 parent_category_id: parentCategory,
+                visibility_status: visibilityStatus,
                 seo_meta: {
                     title: metaTitle,
                     description: metaDescription,
@@ -313,9 +378,19 @@ export const HelpCenterCategoryEdit = ({
         }
     }
 
+    const handleVisibilityChange = (status: VisibilityStatus) => {
+        setHasPendingChanges(true)
+        setVisibilityStatus(status)
+    }
+
     const handleChangeParent = (categoryId: Value) => {
         setParentCategory(Number(categoryId))
         setHasPendingChanges(true)
+        if (isOneOfParentsUnlisted(categories, Number(categoryId))) {
+            setShowNotification(true)
+        } else {
+            setShowNotification(false)
+        }
     }
     const handleOnSearchChange = (text: string) => {
         setIsFirstOptionHidden(!!text)
@@ -326,10 +401,46 @@ export const HelpCenterCategoryEdit = ({
         )
     }
 
-    const copyURL = () => {
-        const categoryId = category?.id
+    const onPreviewCategory = () => {
+        if (!category?.translation) return
 
-        copy(getCategoryUrl({domain, locale: viewLanguage, slug, categoryId}))
+        const categoryId = category.id
+        const unlistedId = category.translation.category_unlisted_id
+        const isUnlisted =
+            category.translation.visibility_status === 'UNLISTED' ||
+            isParentUnlisted
+
+        const categoryUrl = getCategoryUrl({
+            domain,
+            locale: viewLanguage,
+            slug,
+            categoryId,
+            unlistedId,
+            isUnlisted,
+        })
+
+        window.open(categoryUrl, '_blank')?.focus()
+    }
+
+    const copyURL = () => {
+        if (!category?.translation) return
+
+        const categoryId = category.id
+        const unlistedId = category.translation.category_unlisted_id
+        const isUnlisted =
+            category.translation.visibility_status === 'UNLISTED' ||
+            isParentUnlisted
+
+        copy(
+            getCategoryUrl({
+                domain,
+                locale: viewLanguage,
+                slug,
+                categoryId,
+                unlistedId,
+                isUnlisted,
+            })
+        )
 
         void dispatch(
             notify({
@@ -356,27 +467,87 @@ export const HelpCenterCategoryEdit = ({
             portalRootId="app-root"
             onBackdropClick={handleCloseModalAttempt}
             transitionDurationMs={DRAWER_TRANSITION_DURATION_MS}
+            className={css.drawer}
         >
-            <Drawer.Header>
-                <h3>Category Settings</h3>
-                <Drawer.HeaderActions>
+            <Drawer.Header className={css.header}>
+                <div className={css.headerTop}>
+                    <h3 className={css.headerTitle}>Category Settings</h3>
+                    <Drawer.HeaderActions>
+                        {!isCreate && (
+                            <IconButton
+                                onClick={onPreviewCategory}
+                                fillStyle="ghost"
+                                intent="secondary"
+                                size="medium"
+                                aria-label="preview category"
+                            >
+                                open_in_new
+                            </IconButton>
+                        )}
+                        {!isCreate && (
+                            <IconButton
+                                onClick={copyURL}
+                                fillStyle="ghost"
+                                intent="secondary"
+                                size="medium"
+                                aria-label="copy url"
+                            >
+                                share
+                            </IconButton>
+                        )}
+                        <IconButton
+                            onClick={onClose}
+                            fillStyle="ghost"
+                            intent="secondary"
+                            size="medium"
+                            aria-label="close edit modal"
+                            data-testid="close-drawer"
+                        >
+                            keyboard_tab
+                        </IconButton>
+                    </Drawer.HeaderActions>
+                </div>
+                <div className={css.headerActions}>
+                    <SelectField
+                        allowCustomValue
+                        id="parentCategory"
+                        dropdownMenuClassName={classNames(
+                            css['parentDropdown'],
+                            {
+                                [css['hideFirstOption']]: isFirstOptionHidden,
+                                [css['hideClearSelection']]:
+                                    isClearSelectionButtonHidden,
+                            }
+                        )}
+                        value={
+                            parentCategory && categoriesById[parentCategory]
+                                ? categoriesById[parentCategory].translation
+                                      ?.title
+                                : null
+                        }
+                        fullWidth
+                        options={parentOptions}
+                        placeholder="Category parent"
+                        onChange={handleChangeParent}
+                        onSearchChange={handleOnSearchChange}
+                    />
+                    <SelectVisibilityStatus
+                        onChange={handleVisibilityChange}
+                        status={visibilityStatus}
+                        className={css.visibilitySelect}
+                        isParentUnlisted={isParentUnlisted}
+                        showNotification={showNotification}
+                        setShowNotification={setShowNotification}
+                        type="category"
+                    />
                     <ArticleLanguageSelect
                         selected={viewLanguage}
                         list={localeOptions}
                         onSelect={handleOnChangeLocale}
                         onActionClick={handleOnClickAction}
+                        className={css.inlineLanguageSelect}
                     />
-                    <Button
-                        data-testid="close-drawer"
-                        aria-label="close modal"
-                        className={css['close-btn']}
-                        intent="secondary"
-                        fillStyle="ghost"
-                        onClick={onClose}
-                    >
-                        <ButtonIconLabel icon="keyboard_tab" />
-                    </Button>
-                </Drawer.HeaderActions>
+                </div>
             </Drawer.Header>
             <Drawer.Content>
                 <div className={css.groupedFormGroups}>
@@ -393,55 +564,6 @@ export const HelpCenterCategoryEdit = ({
                             placeholder="Category title"
                             onChange={handleChangeTitle}
                             maxLength={HELP_CENTER_TITLE_MAX_LENGTH}
-                        />
-                    </FormGroup>
-                    <FormGroup className={classNames(css.textfield)}>
-                        <Label for="parentCategory">
-                            <>Parent</>
-                            <i
-                                id="category-parent-toggle-info"
-                                className={classNames(
-                                    'material-icons',
-                                    css.tooltipIcon
-                                )}
-                            >
-                                info_outline
-                            </i>
-                            <Tooltip
-                                placement="top-start"
-                                target="category-parent-toggle-info"
-                                popperClassName={css.tooltip}
-                                innerClassName={css['tooltip-inner']}
-                                arrowClassName={css['tooltip-arrow']}
-                                boundariesElement="body"
-                            >
-                                Make this category a sub-category by adding a
-                                parent.
-                            </Tooltip>
-                        </Label>
-                        <SelectField
-                            allowCustomValue
-                            id="parentCategory"
-                            dropdownMenuClassName={classNames(
-                                css['parentDropdown'],
-                                {
-                                    [css['hideFirstOption']]:
-                                        isFirstOptionHidden,
-                                    [css['hideClearSelection']]:
-                                        isClearSelectionButtonHidden,
-                                }
-                            )}
-                            value={
-                                parentCategory && categoriesById[parentCategory]
-                                    ? categoriesById[parentCategory].translation
-                                          ?.title
-                                    : null
-                            }
-                            fullWidth
-                            options={parentOptions}
-                            placeholder="Category parent"
-                            onChange={handleChangeParent}
-                            onSearchChange={handleOnSearchChange}
                         />
                     </FormGroup>
                 </div>
@@ -544,7 +666,7 @@ export const HelpCenterCategoryEdit = ({
                 <Button
                     data-testid="button-save"
                     isDisabled={!canSaveCategory}
-                    onClick={handleOnSave}
+                    onClick={attemptSave}
                 >
                     Save
                 </Button>
@@ -580,6 +702,39 @@ export const HelpCenterCategoryEdit = ({
                     </span>
                 </ConfirmationModal>
             )}
+            {pendingSaveCategory && !isCreate && (
+                <div className={css.confirmSaveUnlisted}>
+                    <div className={css.confirmSaveUnlistedHeader}>
+                        <span>Unlist category and its content</span>
+                        <IconButton
+                            onClick={() => setPendingSaveCategory(false)}
+                            fillStyle="ghost"
+                            intent="secondary"
+                            size="medium"
+                            aria-label="cancel save category"
+                        >
+                            close
+                        </IconButton>
+                    </div>
+                    <div className={css.confirmSaveUnlistedContent}>
+                        Unlisting this category will make all its public
+                        subcategories and articles accessible via direct link
+                        only.
+                        <div className={css.confirmSaveUnlistedButtons}>
+                            <Button onClick={handleOnSave} size="small">
+                                Confirm
+                            </Button>
+                            <Button
+                                onClick={() => setPendingSaveCategory(false)}
+                                intent="secondary"
+                                size="small"
+                            >
+                                Cancel
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
             {pendingDeleteLocale && (
                 <ConfirmationModal
                     isOpen={!!pendingDeleteLocale}
@@ -612,7 +767,7 @@ export const HelpCenterCategoryEdit = ({
                 discardText="Discard changes"
                 onDiscard={handleDiscard}
                 onContinueEditing={() => setIsAttemptingToClose(false)}
-                onSave={handleOnSave}
+                onSave={attemptSave}
             >
                 <span>
                     If you close this category, you'll lose all changes made. Do

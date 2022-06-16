@@ -49,7 +49,7 @@ exports[`<CategoriesTableRow /> should render "Uncategorized articles" row when 
     >
       <div
         class="cellContent"
-        style="width: 120px;"
+        style="width: 104px;"
       />
     </td>
   </tr>
@@ -104,6 +104,29 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
     </td>
     <td
       class="wrapper normal"
+      style="min-width: 110px; width: 110px;"
+    >
+      <div
+        class="cellContent no-click"
+      >
+        <div
+          class="container"
+        >
+          <i
+            class="icon material-icons"
+          >
+            visibility_off
+          </i>
+          <div
+            class="title"
+          >
+            Unlisted
+          </div>
+        </div>
+      </div>
+    </td>
+    <td
+      class="wrapper normal"
       style="min-width: 104px; width: 104px;"
     >
       <div
@@ -128,7 +151,7 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Id
     </td>
     <td
       class="wrapper normal"
-      style="min-width: 120px; width: 104px;"
+      style="min-width: 120px; width: 120px;"
     >
       <div
         class="cellContent actions no-click"
@@ -212,6 +235,29 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
     </td>
     <td
       class="wrapper normal"
+      style="min-width: 110px; width: 110px;"
+    >
+      <div
+        class="cellContent no-click"
+      >
+        <div
+          class="container"
+        >
+          <i
+            class="icon material-icons"
+          >
+            visibility_off
+          </i>
+          <div
+            class="title"
+          >
+            Unlisted
+          </div>
+        </div>
+      </div>
+    </td>
+    <td
+      class="wrapper normal"
       style="min-width: 104px; width: 104px;"
     >
       <div
@@ -236,7 +282,7 @@ exports[`<CategoriesTableRow /> should render category row loading then idle: Lo
     </td>
     <td
       class="wrapper normal"
-      style="min-width: 120px; width: 104px;"
+      style="min-width: 120px; width: 120px;"
     >
       <div
         class="cellContent actions no-click"
@@ -320,6 +366,29 @@ exports[`<CategoriesTableRow /> should render category that has children 1`] = `
     </td>
     <td
       class="wrapper normal"
+      style="min-width: 110px; width: 110px;"
+    >
+      <div
+        class="cellContent no-click"
+      >
+        <div
+          class="container"
+        >
+          <i
+            class="icon material-icons"
+          >
+            visibility_off
+          </i>
+          <div
+            class="title"
+          >
+            Unlisted
+          </div>
+        </div>
+      </div>
+    </td>
+    <td
+      class="wrapper normal"
       style="min-width: 104px; width: 104px;"
     >
       <div
@@ -344,7 +413,7 @@ exports[`<CategoriesTableRow /> should render category that has children 1`] = `
     </td>
     <td
       class="wrapper normal"
-      style="min-width: 120px; width: 104px;"
+      style="min-width: 120px; width: 120px;"
     >
       <div
         class="cellContent actions no-click"

@@ -44,6 +44,7 @@ import {
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableBody from 'pages/common/components/table/TableBody'
 import {getCategoryDndType} from 'pages/settings/helpCenter/utils/getCategoryDndType'
+import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
 
 import css from './CategoriesTableRow.less'
 
@@ -53,11 +54,13 @@ export type CategoriesTableRowProps = {
     categoryId: number | null
     childCategories: number[]
     level: number
+    isUnlisted: boolean
     title: string
     renderArticleList: (
         categoryId: number | null,
         articles: Article[],
-        level: number
+        level: number,
+        isUnlisted: boolean
     ) => ReactElement
     tooltip?: string
     shouldRenderRowWithoutArticles?: boolean
@@ -90,6 +93,7 @@ type DroppableCategoriesTableRowProps = {
     onDragStart: () => void
     position: number
     level: number
+    isUnlisted: boolean
 } & RowEventListeners
 
 const DroppableCategoriesTableRow = ({
@@ -102,6 +106,7 @@ const DroppableCategoriesTableRow = ({
     onCancelDnD,
     position,
     level,
+    isUnlisted,
 }: DroppableCategoriesTableRowProps) => {
     const locales = useSupportedLocales()
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
@@ -170,6 +175,15 @@ const DroppableCategoriesTableRow = ({
         >
             {headerCell}
             <BodyCell
+                style={{minWidth: 110, width: 110}}
+                innerClassName={bodyInnerClass}
+            >
+                <VisibilityCell
+                    status={category.translation.visibility_status}
+                    isParentUnlisted={isUnlisted}
+                />
+            </BodyCell>
+            <BodyCell
                 style={{minWidth: 104, width: 104}}
                 innerClassName={bodyInnerClass}
             >
@@ -180,7 +194,7 @@ const DroppableCategoriesTableRow = ({
                 />
             </BodyCell>
             <BodyCell
-                style={{minWidth: 120, width: 104}}
+                style={{minWidth: 120, width: 120}}
                 innerClassName={classNames(css.actions, bodyInnerClass)}
             >
                 <TableActions
@@ -207,6 +221,7 @@ export const CategoriesTableRow = ({
     categoryId,
     childCategories,
     level,
+    isUnlisted,
     renderArticleList,
     title = '',
     tooltip,
@@ -273,7 +288,7 @@ export const CategoriesTableRow = ({
                 {childCategories.length > 0 && (
                     <TableBodyRow>
                         <BodyCell
-                            colSpan={4}
+                            colSpan={5}
                             className={css['subCategory-cell']}
                         >
                             <TableWrapper
@@ -283,40 +298,46 @@ export const CategoriesTableRow = ({
                             >
                                 <TableBody>
                                     {childCategories.map(
-                                        (categoryId, index) => (
-                                            <CategoriesTableRow
-                                                key={categoryId}
-                                                categoryId={categoryId}
-                                                childCategories={
-                                                    nonNullCategories[
-                                                        categoryId
-                                                    ].children
-                                                }
-                                                level={level + 1}
-                                                category={
-                                                    nonNullCategories[
-                                                        categoryId.toString()
-                                                    ]
-                                                }
-                                                position={index}
-                                                title={
-                                                    nonNullCategories[
-                                                        categoryId.toString()
-                                                    ].translation.title
-                                                }
-                                                renderArticleList={
-                                                    renderArticleList
-                                                }
-                                                onMoveEntity={
-                                                    props.onMoveEntity
-                                                }
-                                                onDropEntity={
-                                                    props.onDropEntity
-                                                }
-                                                onCancelDnD={props.onCancelDnD}
-                                                onDragStart={onDragStart}
-                                            />
-                                        )
+                                        (categoryId, index) => {
+                                            const currentCategory =
+                                                nonNullCategories[categoryId]
+                                            return (
+                                                <CategoriesTableRow
+                                                    key={categoryId}
+                                                    categoryId={categoryId}
+                                                    childCategories={
+                                                        currentCategory.children
+                                                    }
+                                                    level={level + 1}
+                                                    isUnlisted={
+                                                        isUnlisted ||
+                                                        currentCategory
+                                                            .translation
+                                                            .visibility_status ===
+                                                            'UNLISTED'
+                                                    }
+                                                    category={currentCategory}
+                                                    position={index}
+                                                    title={
+                                                        currentCategory
+                                                            .translation.title
+                                                    }
+                                                    renderArticleList={
+                                                        renderArticleList
+                                                    }
+                                                    onMoveEntity={
+                                                        props.onMoveEntity
+                                                    }
+                                                    onDropEntity={
+                                                        props.onDropEntity
+                                                    }
+                                                    onCancelDnD={
+                                                        props.onCancelDnD
+                                                    }
+                                                    onDragStart={onDragStart}
+                                                />
+                                            )
+                                        }
                                     )}
                                 </TableBody>
                             </TableWrapper>
@@ -325,15 +346,20 @@ export const CategoriesTableRow = ({
                 )}
                 {articles.length > 0 && (
                     <TableBodyRow>
-                        <BodyCell colSpan={4} className={css['parent-cell']}>
-                            {renderArticleList(categoryId, articles, level)}
+                        <BodyCell colSpan={5} className={css['parent-cell']}>
+                            {renderArticleList(
+                                categoryId,
+                                articles,
+                                level,
+                                isUnlisted
+                            )}
                         </BodyCell>
                     </TableBodyRow>
                 )}
                 {hasMore && (
                     <TableBodyRow>
                         <BodyCell
-                            colSpan={4}
+                            colSpan={5}
                             innerClassName={classNames(
                                 css['no-click'],
                                 css['load-more']
@@ -467,6 +493,7 @@ export const CategoriesTableRow = ({
                     bodyInnerClass={bodyInnerClass}
                     onDragStart={handleOnDragStart}
                     level={level}
+                    isUnlisted={isUnlisted}
                     {...props}
                 />
             ) : (

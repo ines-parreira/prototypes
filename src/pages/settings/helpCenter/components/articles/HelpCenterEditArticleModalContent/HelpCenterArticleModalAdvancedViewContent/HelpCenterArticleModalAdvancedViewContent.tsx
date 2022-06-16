@@ -10,7 +10,6 @@ import {Components} from 'rest_api/help_center_api/client.generated'
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {
-    getArticleUrl,
     getHelpCenterDomain,
     isExistingArticle,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
@@ -51,7 +50,7 @@ type Props = {
     articleMode: ArticleMode
 
     onChangesDiscard: () => void
-    onCopyLinkToClipboard: (article: Article) => void
+    onCopyLinkToClipboard: (article: Article, isUnlisted: boolean) => void
 }
 
 const HelpCenterArticleModalAdvancedViewContent = ({
@@ -81,20 +80,11 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     }
 
     const helpCenterDomain = getHelpCenterDomain(helpCenter)
-    const selectedArticleUrl =
-        isExistingArticle(selectedArticle) &&
-        'article_id' in selectedArticle.translation
-            ? getArticleUrl({
-                  domain: helpCenterDomain,
-                  locale: selectedArticle.translation.locale,
-                  slug: selectedArticle.translation.slug,
-                  articleId: selectedArticle.translation.article_id,
-              })
-            : undefined
 
     return (
         <span className={css.modalForm}>
             <HelpCenterEditModalHeader
+                articleMode={articleMode}
                 helpCenterId={helpCenter.id}
                 supportedLocales={helpCenter.supported_locales}
                 onLanguageSelect={onArticleLanguageSelect}
@@ -110,7 +100,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                         }
                         fillStyle="ghost"
                         intent="secondary"
-                        size="small"
+                        size="medium"
                         aria-label="basic editor modal"
                     >
                         edit
@@ -121,7 +111,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 }
                 onCopyLinkToClipboard={onCopyLinkToClipboard}
                 autoFocus={autoFocus}
-                previewUrl={selectedArticleUrl}
+                domain={helpCenterDomain}
             />
             <HelpCenterEditAdvancedArticleForm
                 articleId={

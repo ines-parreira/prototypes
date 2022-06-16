@@ -123,6 +123,10 @@ export const CategoriesTable = ({
                         categoryId={category.id}
                         childCategories={category.children}
                         level={0}
+                        isUnlisted={
+                            category.translation.visibility_status ===
+                            'UNLISTED'
+                        }
                         category={category}
                         position={index}
                         title={category.translation.title}

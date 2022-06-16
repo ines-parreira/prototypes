@@ -192,6 +192,7 @@ describe('<CategoriesTableRow />', () => {
                         category={category}
                         position={0}
                         level={0}
+                        isUnlisted={false}
                         childCategories={[]}
                         renderArticleList={() => <div />}
                         onMoveEntity={() => {
@@ -255,6 +256,7 @@ describe('<CategoriesTableRow />', () => {
                         category={categories[0]}
                         position={0}
                         level={0}
+                        isUnlisted={false}
                         childCategories={categories[0].children}
                         renderArticleList={() => <div />}
                         onMoveEntity={() => {
@@ -315,6 +317,7 @@ describe('<CategoriesTableRow />', () => {
                         category={categories[0]}
                         position={0}
                         level={0}
+                        isUnlisted={false}
                         childCategories={categories[0].children}
                         renderArticleList={() => <div />}
                         onMoveEntity={() => {
@@ -374,6 +377,7 @@ describe('<CategoriesTableRow />', () => {
                         category={categories[0]}
                         position={0}
                         level={3}
+                        isUnlisted={false}
                         childCategories={categories[0].children}
                         renderArticleList={() => <div />}
                         onMoveEntity={() => {

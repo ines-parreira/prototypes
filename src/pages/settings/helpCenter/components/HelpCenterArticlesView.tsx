@@ -168,8 +168,10 @@ export const HelpCenterArticlesView: React.FC = () => {
                     })
                 }
 
-                if (selectedArticle.category_id !== undefined) {
-                    setSelectedCategoryId(selectedArticle.category_id)
+                if (selectedArticle.translation.category_id !== undefined) {
+                    setSelectedCategoryId(
+                        selectedArticle.translation.category_id
+                    )
                 }
 
                 setSelectedExistingArticleTranslation(translation || null)
@@ -220,18 +222,19 @@ export const HelpCenterArticlesView: React.FC = () => {
     const nextAction = useRef(closeModal)
 
     const onArticleCreate = () => {
+        const categoryFromModalParams =
+            articleModal.getParams()?.categoryId ?? null
+
         // FIXME: creating a template of an article should not select any article
         // we should separate the selection from the creation
         onArticleSelect({
-            translation: getNewArticleTranslation(selectedArticleLanguage),
+            translation: getNewArticleTranslation(
+                selectedArticleLanguage,
+                categoryFromModalParams
+            ),
         })
 
-        const categoryFromModalParams = articleModal.getParams()?.categoryId
-        if (categoryFromModalParams !== undefined) {
-            setSelectedCategoryId(articleModal.getParams()?.categoryId)
-        } else {
-            setSelectedCategoryId(null)
-        }
+        setSelectedCategoryId(categoryFromModalParams)
     }
 
     const onCategoryCreate = () => {
@@ -296,10 +299,15 @@ export const HelpCenterArticlesView: React.FC = () => {
         const oldTranslations = selectedArticleTranslations ?? []
 
         setSelectedArticleTranslations([
-            ...oldTranslations.filter(
-                (translation) =>
-                    translation.locale !== article.translation.locale
-            ),
+            ...oldTranslations
+                .filter(
+                    (translation) =>
+                        translation.locale !== article.translation.locale
+                )
+                .map((translation) => ({
+                    ...translation,
+                    visibility_status: article.translation.visibility_status,
+                })),
             article.translation,
         ])
     }
@@ -313,13 +321,10 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
 
         try {
-            const newArticle = await articlesActions.createArticle(
-                {
-                    ...article.translation,
-                    is_current: isPublished,
-                },
-                selectedCategoryId
-            )
+            const newArticle = await articlesActions.createArticle({
+                ...article.translation,
+                is_current: isPublished,
+            })
 
             reloadArticle(newArticle)
 
@@ -364,8 +369,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         ...article.translation,
                         is_current: isPublished,
                     },
-                },
-                selectedCategoryId
+                }
             )
 
             reloadArticle(updatedArticle)
@@ -431,7 +435,8 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     const onArticleRowSettingsClick = async (
         action: ArticleRowActionTypes,
-        article: Article
+        article: Article,
+        isArticleOrAncestorUnlisted: boolean
     ) => {
         switch (action) {
             case 'articleSettings': {
@@ -446,7 +451,7 @@ export const HelpCenterArticlesView: React.FC = () => {
             }
 
             case 'copyToClipboard': {
-                onCopyLinkToClipboard(article)
+                onCopyLinkToClipboard(article, isArticleOrAncestorUnlisted)
 
                 return
             }
@@ -478,35 +483,48 @@ export const HelpCenterArticlesView: React.FC = () => {
                 unreachable(action)
             }
         }
+
+        if (action === 'copyToClipboard') {
+            onCopyLinkToClipboard(article, isArticleOrAncestorUnlisted)
+        }
     }
 
-    const onCopyLinkToClipboard = (article: Article) => {
-        if (article.translation) {
-            const {id: articleId, translation} = article
-            const {locale, slug} = translation
-
-            const domain = getHelpCenterDomain(helpCenter)
-
-            try {
-                copy(getArticleUrl({domain, locale, slug, articleId}))
-
-                void dispatch(
-                    notify({
-                        message: 'Link copied with success',
-                        status: NotificationStatus.Success,
-                    })
-                )
-            } catch (err) {
-                void dispatch(
-                    notify({
-                        message: 'Failed to copy the link',
-                        status: NotificationStatus.Error,
-                    })
-                )
-                console.error(err)
-            }
+    const onCopyLinkToClipboard = (article: Article, isUnlisted: boolean) => {
+        if (!article.translation) {
+            return
         }
-        return
+        const {id: articleId, translation} = article
+        const {locale, slug, article_unlisted_id: unlistedId} = translation
+
+        const domain = getHelpCenterDomain(helpCenter)
+
+        try {
+            copy(
+                getArticleUrl({
+                    domain,
+                    locale,
+                    slug,
+                    articleId,
+                    unlistedId,
+                    isUnlisted,
+                })
+            )
+
+            void dispatch(
+                notify({
+                    message: 'Link copied with success',
+                    status: NotificationStatus.Success,
+                })
+            )
+        } catch (err) {
+            void dispatch(
+                notify({
+                    message: 'Failed to copy the link',
+                    status: NotificationStatus.Error,
+                })
+            )
+            console.error(err)
+        }
     }
 
     const onArticleLanguageSelect = (
@@ -570,11 +588,15 @@ export const HelpCenterArticlesView: React.FC = () => {
                     const translation =
                         translations.find(
                             ({locale}) => locale === localeCode
-                        ) || getNewArticleTranslation(localeCode)
+                        ) ??
+                        getNewArticleTranslation(localeCode, selectedCategoryId)
                     onArticleLanguageSelect(localeCode, translation)
                     setSelectedArticleTranslations(translations)
                 } else {
-                    const translation = getNewArticleTranslation(localeCode)
+                    const translation = getNewArticleTranslation(
+                        localeCode,
+                        selectedCategoryId
+                    )
                     onArticleLanguageSelect(localeCode, translation)
                 }
             }
@@ -583,7 +605,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 selectedArticleTranslations?.find(
                     ({locale: translationLocale}) =>
                         translationLocale === localeCode
-                ) || getNewArticleTranslation(localeCode)
+                ) ?? getNewArticleTranslation(localeCode, selectedCategoryId)
             if (translation) onArticleLanguageSelect(localeCode, translation)
         }
     }
@@ -704,6 +726,18 @@ export const HelpCenterArticlesView: React.FC = () => {
         const currentTranslation = selectedArticle?.translation
         const requiredFieldsArticle: typeof articleRequiredFields = []
 
+        const translationHasBeenChanged = !_isEqual(
+            currentTranslation,
+            selectedExistingArticleTranslation
+        )
+
+        // selectedArticle?.category_id is number | undefined | null, we want to compare it to number | null
+        const oldCategory = selectedArticle?.translation.category_id ?? null
+        const categoryHasBeenChanged = oldCategory !== selectedCategoryId
+
+        const articleModified =
+            categoryHasBeenChanged || translationHasBeenChanged
+
         if (
             articlesActions.isLoading ||
             !currentTranslation ||
@@ -711,7 +745,8 @@ export const HelpCenterArticlesView: React.FC = () => {
         ) {
             return {
                 canSaveArticle: false,
-                articleModified: false,
+                articleModified:
+                    !!selectedExistingArticleTranslation && articleModified,
                 requiredFieldsArticle,
             }
         }
@@ -732,18 +767,6 @@ export const HelpCenterArticlesView: React.FC = () => {
                 requiredFieldsArticle,
             }
         }
-
-        const translationHasBeenChanged = !_isEqual(
-            currentTranslation,
-            selectedExistingArticleTranslation
-        )
-
-        // selectedArticle?.category_id is number | undefined | null, we want to compare it to number | null
-        const oldCategory = selectedArticle?.category_id ?? null
-        const categoryHasBeenChanged = oldCategory !== selectedCategoryId
-
-        const articleModified =
-            categoryHasBeenChanged || translationHasBeenChanged
 
         return {
             canSaveArticle: filledRequired && articleModified,
@@ -785,11 +808,17 @@ export const HelpCenterArticlesView: React.FC = () => {
                     helpCenter={helpCenter}
                     onCreateArticle={onArticleCreate}
                     onCreateCategory={onCategoryCreate}
-                    renderArticleList={(categoryId, articles, level) => (
+                    renderArticleList={(
+                        categoryId,
+                        articles,
+                        level,
+                        isUnlisted
+                    ) => (
                         <ArticlesTable
                             isNested
                             categoryId={categoryId}
                             level={level}
+                            isAncestorUnlisted={isUnlisted}
                             articles={articles}
                             onClick={onArticleSelect}
                             onReorderFinish={onArticlesReorder}

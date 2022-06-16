@@ -18,9 +18,14 @@ type Props = {
     isNested?: boolean
     categoryId: number | null
     level: number
+    isAncestorUnlisted: boolean
     articles: Article[]
     onClick: (article: Article) => void
-    onClickSettings: (name: ArticleRowActionTypes, article: Article) => void
+    onClickSettings: (
+        name: ArticleRowActionTypes,
+        article: Article,
+        isArticleOrAncestorUnlisted: boolean
+    ) => void
     onReorderFinish?: (categoryId: number | null, articles: Article[]) => void
 }
 
@@ -28,6 +33,7 @@ export const ArticlesTable = ({
     isNested = false,
     categoryId,
     level,
+    isAncestorUnlisted,
     articles,
     onClick,
     onClickSettings,
@@ -47,11 +53,12 @@ export const ArticlesTable = ({
     const handleOnClickSettings = (
         event: React.MouseEvent,
         name: ArticleRowActionTypes,
-        article: Article
+        article: Article,
+        isArticleOrAncestorUnlisted: boolean
     ) => {
         event.stopPropagation()
 
-        onClickSettings(name, article)
+        onClickSettings(name, article, isArticleOrAncestorUnlisted)
     }
 
     const handleOnMoveArticle = (dragIndex: number, hoverIndex: number) => {
@@ -96,6 +103,7 @@ export const ArticlesTable = ({
                         key={article.id}
                         isNested={isNested}
                         level={level}
+                        isAncestorUnlisted={isAncestorUnlisted}
                         categoryId={categoryId}
                         article={article}
                         position={index}

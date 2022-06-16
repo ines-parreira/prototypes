@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<VisibilityCell /> should match snapshot 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <i
+      class="icon material-icons"
+    >
+      visibility
+    </i>
+    <div
+      class="title"
+    >
+      Public
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<VisibilityCell /> should match snapshot 2`] = `
+<div>
+  <div
+    class="container"
+  >
+    <i
+      class="icon material-icons"
+    >
+      visibility_off
+    </i>
+    <div
+      class="title"
+    >
+      Unlisted
+    </div>
+  </div>
+</div>
+`;

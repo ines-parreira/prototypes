@@ -279,20 +279,19 @@ describe('useArticlesActions()', () => {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.createArticle(
-                {
-                    locale: 'en-US',
-                    title: '',
-                    excerpt: '',
-                    content: '',
-                    slug: '',
-                    seo_meta: {
-                        title: null,
-                        description: null,
-                    },
+            await result.current.createArticle({
+                locale: 'en-US',
+                title: '',
+                excerpt: '',
+                content: '',
+                slug: '',
+                seo_meta: {
+                    title: null,
+                    description: null,
                 },
-                null
-            )
+                category_id: null,
+                visibility_status: 'PUBLIC',
+            })
 
             expect(saveArticles).toHaveBeenCalled()
         })
@@ -302,20 +301,19 @@ describe('useArticlesActions()', () => {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.createArticle(
-                {
-                    locale: 'en-US',
-                    title: '',
-                    excerpt: '',
-                    content: '',
-                    slug: '',
-                    seo_meta: {
-                        title: null,
-                        description: null,
-                    },
+            await result.current.createArticle({
+                locale: 'en-US',
+                title: '',
+                excerpt: '',
+                content: '',
+                slug: '',
+                seo_meta: {
+                    title: null,
+                    description: null,
                 },
-                1
-            )
+                category_id: 1,
+                visibility_status: 'PUBLIC',
+            })
 
             expect(saveArticles).toHaveBeenCalled()
         })
@@ -364,8 +362,7 @@ describe('useArticlesActions()', () => {
                         up: 0,
                         down: 0,
                     },
-                },
-                null
+                }
             )
 
             expect(updateArticle).toHaveBeenCalled()
@@ -418,8 +415,7 @@ describe('useArticlesActions()', () => {
                         up: 0,
                         down: 0,
                     },
-                },
-                null
+                }
             )
 
             expect(updateArticle).toHaveBeenCalledTimes(0)

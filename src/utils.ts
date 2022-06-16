@@ -1022,3 +1022,13 @@ export function unreachable(v: never): never {
     // It's not clear what to return in this case. We could throw an error for example
     return v
 }
+
+/**
+ * Wrapper around the `Object.keys()` function that returns a correctly typed
+ * array of keys instead of just `string[]`
+ *
+ * @param value An object from which to extract the keys
+ */
+export function objKeys<T>(value: T): (keyof T)[] {
+    return Object.keys(value) as (keyof T)[]
+}

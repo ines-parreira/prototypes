@@ -1,0 +1,83 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .wrapper {
+        display: block;
+        padding: 8px 0;
+        position: relative;
+    }
+
+    .select {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        line-height: 20px;
+        padding: 5px 14px;
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 0.25rem;
+        background-clip: padding-box;
+        -webkit-background-clip: padding-box;
+        background-image: none;
+        background-color: @classic-neutral-grey-0;
+        font-size: 1rem;
+        color: @classic-neutral-grey-6;
+        white-space: nowrap;
+        box-sizing: border-box;
+        cursor: pointer;
+    }
+
+    .status {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .icon {
+        color: @classic-neutral-grey-4;
+        font-size: 20px;
+    }
+
+    .dropdown {
+        .option {
+            padding: 8px;
+            display: flex;
+            column-gap: 8px;
+            cursor: pointer;
+
+            .icon {
+                color: @classic-neutral-grey-6;
+            }
+
+            .details {
+                .title {
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 20px;
+                }
+                .description {
+                    font-weight: 400;
+                    font-size: 12px;
+                    color: @classic-neutral-grey-5;
+                    white-space: normal;
+                }
+            }
+        }
+    }
+
+    .notificationWrapper {
+        min-width: 380px;
+        position: absolute;
+        z-index: 3;
+        margin-top: 8px;
+        background-color: @classic-neutral-grey-0;
+        border-radius: 4px;
+        box-shadow: 1px 1px 8px rgba(22, 22, 22, 0.24);
+        padding: 16px;
+    }
+
+    .gotItButton {
+        margin-top: 16px;
+    }
+}

@@ -46,6 +46,7 @@ type Props = {
     onBackdropClick?: () => void
     transitionDurationMs?: number
     containerZIndices?: [number, number]
+    className?: string
 }
 
 const Drawer = ({
@@ -58,6 +59,7 @@ const Drawer = ({
     onBackdropClick,
     transitionDurationMs = 300,
     containerZIndices = [5, -1],
+    className,
 }: Props): JSX.Element => {
     const [zIndexOpen, zIndexClosed] = containerZIndices
     const [containerZIndex, setContainerZIndex] = useState(
@@ -100,11 +102,14 @@ const Drawer = ({
                 style={{
                     transitionDuration: `${transitionDurationMs}ms`,
                 }}
-                className={classNames({
-                    [css.drawer]: true,
-                    [css.fullscreen]: open && fullscreen,
-                    [css.opened]: open,
-                })}
+                className={classNames(
+                    {
+                        [css.drawer]: true,
+                        [css.fullscreen]: open && fullscreen,
+                        [css.opened]: open,
+                    },
+                    className
+                )}
             >
                 {isLoading ? (
                     <Container

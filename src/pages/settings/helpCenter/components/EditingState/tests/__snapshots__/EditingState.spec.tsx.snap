@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EditingState /> should match snapshot 1`] = `
+<div>
+  <span
+    class="editingState published"
+    id="editingState"
+  >
+    <i
+      class="material-icons icon"
+    >
+      verified
+    </i>
+    PUBLISHED
+  </span>
+</div>
+`;
+
+exports[`<EditingState /> should match snapshot 2`] = `
+<div>
+  <span
+    class="editingState unsaved"
+    id="editingState"
+  >
+    <i
+      class="material-icons icon"
+    >
+      edit
+    </i>
+    UNSAVED
+  </span>
+</div>
+`;
+
+exports[`<EditingState /> should match snapshot 3`] = `
+<div>
+  <span
+    class="editingState saved"
+    id="editingState"
+  >
+    <i
+      class="material-icons icon"
+    >
+      save
+    </i>
+    SAVED
+  </span>
+</div>
+`;

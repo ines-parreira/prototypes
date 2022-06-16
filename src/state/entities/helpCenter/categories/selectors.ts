@@ -90,7 +90,8 @@ export const getCategoriesWithArticles = createSelector(
             // TODO: Find a way to use getArticlesInCategory from articles selectors
             const articlesInCategory = articles.filter(
                 (article) =>
-                    article.category_id && article.category_id === category.id
+                    article.translation.category_id &&
+                    article.translation.category_id === category.id
             )
 
             return {

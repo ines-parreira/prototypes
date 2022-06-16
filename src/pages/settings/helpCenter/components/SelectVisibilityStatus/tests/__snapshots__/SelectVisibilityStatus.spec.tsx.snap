@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SelectVisibilityStatus /> should show selected option 1`] = `
+<div>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="dropdown"
+    >
+      <div
+        aria-expanded="false"
+        aria-haspopup="true"
+        class=""
+        data-toggle="dropdown"
+      >
+        <div
+          class="select dropdown-toggle"
+        >
+          <div
+            class="status"
+          >
+            <i
+              class="icon material-icons"
+            >
+              visibility
+            </i>
+            <div>
+              Public
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        aria-hidden="true"
+        class="dropdown dropdown-menu"
+        role="menu"
+        tabindex="-1"
+      >
+        <div
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        >
+          <i
+            class="icon material-icons"
+          >
+            visibility_off
+          </i>
+          <div
+            class="details"
+          >
+            <div
+              class="title"
+            >
+              Unlisted
+            </div>
+            <div
+              class="description"
+            >
+              Article is accessible only via direct link and is not indexed by search engines.
+            </div>
+          </div>
+        </div>
+        <div
+          class="option dropdown-item"
+          role="menuitem"
+          tabindex="0"
+        >
+          <i
+            class="icon material-icons"
+          >
+            visibility
+          </i>
+          <div
+            class="details"
+          >
+            <div
+              class="title"
+            >
+              Public
+            </div>
+            <div
+              class="description"
+            >
+              Article is public to everyone visiting your helpcenter.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

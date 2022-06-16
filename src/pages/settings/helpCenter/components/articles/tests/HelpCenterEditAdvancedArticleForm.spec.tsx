@@ -22,6 +22,22 @@ jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
     getSingleHelpCenterResponseFixture
 )
 
+const mockedUseEditionManager = {
+    selectedVisibility: 'PUBLIC',
+    setSelectedVisibility: jest.fn(),
+}
+
+jest.mock('../../../providers/EditionManagerContext', () => {
+    const module: Record<string, unknown> = jest.requireActual(
+        '../../../providers/EditionManagerContext'
+    )
+
+    return {
+        ...module,
+        useEditionManager: () => mockedUseEditionManager,
+    }
+})
+
 describe('<HelpCenterEditAdvancedArticleForm/>', () => {
     const {translation} = getSingleArticleEnglish
     const props = {

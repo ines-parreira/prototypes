@@ -36,58 +36,157 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
       </div>
     </div>
     <div
-      class="categorySelect"
+      class="split"
     >
-      <label
-        class="label"
+      <div
+        class="categorySelect"
       >
-        Category
-      </label>
-      <div>
-        <div
-          class="dropdown"
+        <label
+          class="label"
         >
+          Category
+        </label>
+        <div>
           <div
-            aria-expanded="false"
-            aria-haspopup="true"
-            class="select"
-            data-toggle="dropdown"
+            class="dropdown"
           >
             <div
-              class="select dropdown-toggle selectFullWidth"
+              aria-expanded="false"
+              aria-haspopup="true"
+              class="select"
+              data-toggle="dropdown"
             >
-              <span
-                class="label"
-                style="min-width: 10px; opacity: 1;"
+              <div
+                class="select dropdown-toggle selectFullWidth"
               >
-                - No Category -
-              </span>
-              <input
-                autocomplete="chrome-off"
-                class="input"
-                style="min-width: 10px;"
-                type="text"
-                value=""
-              />
+                <span
+                  class="label"
+                  style="min-width: 10px; opacity: 1;"
+                >
+                  - No Category -
+                </span>
+                <input
+                  autocomplete="chrome-off"
+                  class="input"
+                  style="min-width: 10px;"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+            <div
+              aria-hidden="true"
+              class="options categoryDropdown optionsFullWidth dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              
+              <button
+                class="option dropdown-item"
+                role="menuitem"
+                tabindex="0"
+                type="button"
+              >
+                <span>
+                  - No category -
+                </span>
+              </button>
             </div>
           </div>
+        </div>
+      </div>
+      <div>
+        <label
+          class="label"
+        >
+          Visibility status
+        </label>
+        <div
+          class="wrapper"
+        >
           <div
-            aria-hidden="true"
-            class="options categoryDropdown optionsFullWidth dropdown-menu"
-            role="menu"
-            tabindex="-1"
+            class="dropdown"
           >
-            
-            <button
-              class="option dropdown-item"
-              role="menuitem"
-              tabindex="0"
-              type="button"
+            <div
+              aria-expanded="false"
+              aria-haspopup="true"
+              class=""
+              data-toggle="dropdown"
             >
-              <span>
-                - No category -
-              </span>
-            </button>
+              <div
+                class="select dropdown-toggle"
+              >
+                <div
+                  class="status"
+                >
+                  <i
+                    class="icon material-icons"
+                  >
+                    visibility
+                  </i>
+                  <div>
+                    Public
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              aria-hidden="true"
+              class="dropdown dropdown-menu"
+              role="menu"
+              tabindex="-1"
+            >
+              <div
+                class="option dropdown-item"
+                role="menuitem"
+                tabindex="0"
+              >
+                <i
+                  class="icon material-icons"
+                >
+                  visibility_off
+                </i>
+                <div
+                  class="details"
+                >
+                  <div
+                    class="title"
+                  >
+                    Unlisted
+                  </div>
+                  <div
+                    class="description"
+                  >
+                    Article is accessible only via direct link and is not indexed by search engines.
+                  </div>
+                </div>
+              </div>
+              <div
+                class="option dropdown-item"
+                role="menuitem"
+                tabindex="0"
+              >
+                <i
+                  class="icon material-icons"
+                >
+                  visibility
+                </i>
+                <div
+                  class="details"
+                >
+                  <div
+                    class="title"
+                  >
+                    Public
+                  </div>
+                  <div
+                    class="description"
+                  >
+                    Article is public to everyone visiting your helpcenter.
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

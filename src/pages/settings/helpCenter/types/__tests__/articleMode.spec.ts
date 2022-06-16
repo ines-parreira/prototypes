@@ -72,6 +72,8 @@ describe('articleMode', () => {
             },
             slug: 'i-am-the-title',
             title: 'I am the title',
+            category_id: null,
+            visibility_status: 'PUBLIC',
         }
 
         const existingArticleData = {

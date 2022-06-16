@@ -25,7 +25,8 @@ export type BaseCategoriesTableRowProps = {
     renderArticleList: (
         categoryId: number | null,
         articles: Article[],
-        level: number
+        level: number,
+        isUnlisted: boolean
     ) => ReactElement
     tooltip?: string
     shouldRenderRowWithoutArticles?: boolean
@@ -44,7 +45,7 @@ const FixedCategoriesTableRow = ({
         <BodyCell>{''}</BodyCell>
         {headerCell}
         <BodyCell innerClassName={bodyInnerClass}>{''}</BodyCell>
-        <BodyCell width={120} innerClassName={bodyInnerClass}>
+        <BodyCell width={104} innerClassName={bodyInnerClass}>
             {''}
         </BodyCell>
     </TableBodyRow>
@@ -96,15 +97,15 @@ export const CategoriesTableBasicRow = ({
             <>
                 {articles.length > 0 && (
                     <TableBodyRow>
-                        <BodyCell colSpan={4} className={css['parent-cell']}>
-                            {renderArticleList(null, articles, -1)}
+                        <BodyCell colSpan={5} className={css['parent-cell']}>
+                            {renderArticleList(null, articles, -1, false)}
                         </BodyCell>
                     </TableBodyRow>
                 )}
                 {hasMore && (
                     <TableBodyRow>
                         <BodyCell
-                            colSpan={4}
+                            colSpan={5}
                             innerClassName={classNames(
                                 css['no-click'],
                                 css['load-more']

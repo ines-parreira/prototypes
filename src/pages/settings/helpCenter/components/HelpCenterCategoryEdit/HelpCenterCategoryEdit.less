@@ -1,11 +1,16 @@
 @import (reference) '~css/new/colorTokens';
 
 :local {
-    .close-btn {
+    .close-btn.close-btn {
         border: 0;
         background-color: transparent;
+        padding: 0;
 
         font-size: 20px;
+
+        i {
+            margin-right: 0;
+        }
     }
 
     .delete-btn {
@@ -14,6 +19,10 @@
         i {
             color: @classic-feedback-error;
         }
+    }
+
+    .headerTitle {
+        margin-bottom: 0px;
     }
 
     .textfield {
@@ -130,5 +139,120 @@
                 display: none;
             }
         }
+    }
+
+    .header {
+        display: block;
+    }
+
+    .headerTop {
+        display: flex;
+        padding: 16px 0;
+        align-items: center;
+    }
+
+    .headerActions {
+        display: flex;
+        column-gap: 16px;
+        padding-top: 8px;
+
+        & > * {
+            flex: 1 100%;
+        }
+    }
+
+    :global(#App) .visibilitySelect {
+        padding: 0;
+    }
+
+    .inlineLanguageSelect {
+        display: block;
+        position: relative;
+        width: 100%;
+        line-height: 1.25;
+        padding: 0 6px 0 14px;
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 0.25rem;
+        background-clip: padding-box;
+        -webkit-background-clip: padding-box;
+        background-image: none;
+        background-color: @classic-neutral-grey-0;
+        color: #464a4c;
+        font-size: 1rem;
+        white-space: nowrap;
+        box-sizing: border-box;
+
+        :global(.dropdown-options) {
+            margin-top: 0.125rem;
+        }
+
+        button {
+            padding: 5px 0px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            &:focus {
+                outline: none;
+            }
+
+            :global(.material-icons) {
+                color: @classic-neutral-grey-4;
+                font-size: 20px;
+            }
+        }
+    }
+
+    :global(#App) .drawer {
+        grid-template-rows: 128px auto 64px;
+    }
+
+    .confirmSaveUnlisted {
+        position: absolute;
+        bottom: 60px;
+        left: 16px;
+        box-shadow: 1px 1px 8px rgba(22, 22, 22, 0.24);
+        border-radius: 4px;
+        max-width: 424px;
+    }
+
+    .confirmSaveUnlistedHeader {
+        padding: 12px;
+        background-color: @classic-neutral-grey-1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        span {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 20px;
+            color: @classic-neutral-grey-6;
+        }
+    }
+
+    .confirmSaveUnlistedContent {
+        padding: 16px;
+        background-color: @classic-neutral-grey-0;
+        border-top: 1px solid @classic-neutral-grey-3;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 99%;
+            left: 7%;
+            margin-left: -8px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: @classic-neutral-grey-0 transparent transparent
+                transparent;
+        }
+    }
+
+    .confirmSaveUnlistedButtons {
+        display: flex;
+        margin-top: 16px;
+        column-gap: 8px;
     }
 }

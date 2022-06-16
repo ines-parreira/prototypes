@@ -220,21 +220,202 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         style="transition-delay: 0ms; transition-duration: 150ms;"
       />
       <div
-        class="drawer"
+        class="drawer drawer"
         data-testid="category-edit"
         style="transition-duration: 300ms;"
       >
         <header
-          class="header"
+          class="header header"
         >
-          <h3>
-            Category Settings
-          </h3>
           <div
-            class="header-actions"
+            class="headerTop"
           >
+            <h3
+              class="headerTitle"
+            >
+              Category Settings
+            </h3>
             <div
-              class="wrapper"
+              class="header-actions"
+            >
+              <button
+                aria-label="preview category"
+                class="wrapper wrapper ghost medium ghost secondary medium"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  open_in_new
+                </i>
+              </button>
+              <button
+                aria-label="copy url"
+                class="wrapper wrapper ghost medium ghost secondary medium"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  share
+                </i>
+              </button>
+              <button
+                aria-label="close edit modal"
+                class="wrapper wrapper ghost medium ghost secondary medium"
+                data-testid="close-drawer"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  keyboard_tab
+                </i>
+              </button>
+            </div>
+          </div>
+          <div
+            class="headerActions"
+          >
+            <div>
+              <div
+                class="dropdown"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <div
+                    class="select dropdown-toggle selectFullWidth"
+                  >
+                    <span
+                      class="label placeholder"
+                      style="min-width: 10px; opacity: 1;"
+                    >
+                      Category parent
+                    </span>
+                    <input
+                      autocomplete="chrome-off"
+                      class="input"
+                      id="parentCategory"
+                      style="min-width: 10px;"
+                      type="text"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options parentDropdown optionsFullWidth dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  
+                  <button
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Clear selection
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              class="visibilitySelect wrapper"
+            >
+              <div
+                class="dropdown"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <div
+                    class="select dropdown-toggle"
+                  >
+                    <div
+                      class="status"
+                    >
+                      <i
+                        class="icon material-icons"
+                      >
+                        visibility
+                      </i>
+                      <div>
+                        Public
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="dropdown dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  <div
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                  >
+                    <i
+                      class="icon material-icons"
+                    >
+                      visibility_off
+                    </i>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Unlisted
+                      </div>
+                      <div
+                        class="description"
+                      >
+                        Category is accessible only via direct link and is not indexed by search engines.
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="option dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                  >
+                    <i
+                      class="icon material-icons"
+                    >
+                      visibility
+                    </i>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="title"
+                      >
+                        Public
+                      </div>
+                      <div
+                        class="description"
+                      >
+                        Category is public to everyone visiting your helpcenter.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="wrapper inlineLanguageSelect"
             >
               <button
                 class="trigger"
@@ -261,22 +442,6 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 </span>
               </button>
             </div>
-            <button
-              aria-label="close modal"
-              class="wrapper close-btn ghost secondary medium"
-              data-testid="close-drawer"
-              type="button"
-            >
-              <span
-                class="wrapper"
-              >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  keyboard_tab
-                </i>
-              </span>
-            </button>
           </div>
         </header>
         <div
@@ -304,71 +469,6 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                 type="text"
                 value=""
               />
-            </div>
-            <div
-              class="textfield form-group"
-            >
-              <label
-                class=""
-                for="parentCategory"
-              >
-                Parent
-                <i
-                  class="material-icons tooltipIcon"
-                  id="category-parent-toggle-info"
-                >
-                  info_outline
-                </i>
-              </label>
-              <div>
-                <div
-                  class="dropdown"
-                >
-                  <div
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    class=""
-                    data-toggle="dropdown"
-                  >
-                    <div
-                      class="select dropdown-toggle selectFullWidth"
-                    >
-                      <span
-                        class="label placeholder"
-                        style="min-width: 10px; opacity: 1;"
-                      >
-                        Category parent
-                      </span>
-                      <input
-                        autocomplete="chrome-off"
-                        class="input"
-                        id="parentCategory"
-                        style="min-width: 10px;"
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                  <div
-                    aria-hidden="true"
-                    class="options parentDropdown optionsFullWidth dropdown-menu"
-                    role="menu"
-                    tabindex="-1"
-                  >
-                    
-                    <button
-                      class="option dropdown-item"
-                      role="menuitem"
-                      tabindex="0"
-                      type="button"
-                    >
-                      <span>
-                        Clear selection
-                      </span>
-                    </button>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
           <div

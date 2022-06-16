@@ -1,7 +1,8 @@
 import React, {createRef, useMemo} from 'react'
+import classnames from 'classnames'
 
-import {LocaleCode} from '../../../../../../models/helpCenter/types'
-import {useOpenToggle} from '../../../../../common/hooks/useOpenToggle'
+import {LocaleCode} from 'models/helpCenter/types'
+import {useOpenToggle} from 'pages/common/hooks/useOpenToggle'
 
 import {ActionButton} from './components/ActionButton'
 
@@ -22,6 +23,7 @@ type Props = {
     list?: OptionItem[]
     onSelect: (localeCode: LocaleCode) => void
     onActionClick: (action: ActionType, currentOption: OptionItem) => void
+    className?: string
 }
 
 export const ArticleLanguageSelect = ({
@@ -29,6 +31,7 @@ export const ArticleLanguageSelect = ({
     list = [],
     onSelect,
     onActionClick,
+    className,
 }: Props): JSX.Element => {
     const $ref = createRef<HTMLDivElement>()
     const {isOpen, onOpen, onClose} = useOpenToggle($ref, false)
@@ -85,7 +88,7 @@ export const ArticleLanguageSelect = ({
     }
 
     return (
-        <div ref={$ref} className={css.wrapper}>
+        <div ref={$ref} className={classnames(css.wrapper, className)}>
             <button
                 data-testid="dropdown-select-trigger"
                 className={css.trigger}
@@ -95,7 +98,10 @@ export const ArticleLanguageSelect = ({
                 <span className="material-icons">arrow_drop_down</span>
             </button>
             {isOpen && (
-                <div data-testid="dropdown-options" className={css.dropdown}>
+                <div
+                    data-testid="dropdown-options"
+                    className={classnames(css.dropdown, 'dropdown-options')}
+                >
                     <ul>
                         {list.map((option) => (
                             <li

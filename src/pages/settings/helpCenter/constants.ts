@@ -139,3 +139,8 @@ export const DRAWER_TRANSITION_DURATION_MS = 300
 export const EDITOR_MODAL_CONTAINER_ID = 'editor-modal-container-id'
 
 export const EMOJI_REGEX = emojiRegex
+export enum EditingStateEnum {
+    PUBLISHED = 'PUBLISHED',
+    UNSAVED = 'UNSAVED',
+    SAVED = 'SAVED',
+}

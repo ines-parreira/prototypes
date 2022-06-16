@@ -6,7 +6,6 @@ import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
 
 import {EDITOR_MODAL_CONTAINER_ID} from 'pages/settings/helpCenter/constants'
 import {
-    getArticleUrl,
     getHelpCenterDomain,
     isExistingArticle,
     slugify,
@@ -63,7 +62,7 @@ type Props = {
     articleMode: ArticleMode
 
     onChangesDiscard: () => void
-    onCopyLinkToClipboard: (article: Article) => void
+    onCopyLinkToClipboard: (article: Article, isUnlisted: boolean) => void
 }
 
 const HelpCenterArticleModalBasicViewContent = ({
@@ -110,20 +109,14 @@ const HelpCenterArticleModalBasicViewContent = ({
             ? selectedArticle.translation.article_id
             : undefined
     const helpCenterDomain = getHelpCenterDomain(helpCenter)
-    const selectedArticleUrl =
-        isExistingArticle(selectedArticle) && articleId
-            ? getArticleUrl({
-                  domain: helpCenterDomain,
-                  locale: selectedArticle.translation.locale,
-                  slug: selectedArticle.translation.slug,
-                  articleId,
-              })
-            : undefined
 
     return (
         <span className={css.modalForm} id={EDITOR_MODAL_CONTAINER_ID}>
             <HelpCenterEditModalHeader
-                showCategorySelect={true}
+                articleMode={articleMode}
+                showInlineLanguageSelect
+                showCategorySelect
+                showVisibilitySelect
                 helpCenterId={helpCenter.id}
                 title={selectedArticle.translation.title}
                 isFullscreen={isFullscreenEditModal}
@@ -149,6 +142,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                             null
                     )
                 }
+                visibilityStatus={selectedArticle.translation.visibility_status}
                 onArticleLanguageSelectActionClick={
                     onArticleLanguageSelectActionClick
                 }
@@ -163,14 +157,14 @@ const HelpCenterArticleModalBasicViewContent = ({
                         }
                         fillStyle="ghost"
                         intent="secondary"
-                        size="small"
+                        size="medium"
                         aria-label="advanced editor modal"
                     >
                         settings
                     </IconButton>
                 }
                 autoFocus={autoFocus}
-                previewUrl={selectedArticleUrl}
+                domain={helpCenterDomain}
             />
             <HelpCenterEditor
                 articleId={articleId}

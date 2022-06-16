@@ -27,12 +27,13 @@ export const getArticlesInCategory = (categoryId: number) =>
     createSelector(getArticles, (articles: Article[]) =>
         articles.filter(
             (article) =>
-                article.category_id && article.category_id === categoryId
+                article.translation.category_id &&
+                article.translation.category_id === categoryId
         )
     )
 
 export const getUncategorizedArticles = createSelector(
     getArticles,
     (articles: Article[]) =>
-        articles.filter((article) => article.category_id === null)
+        articles.filter((article) => article.translation.category_id === null)
 )

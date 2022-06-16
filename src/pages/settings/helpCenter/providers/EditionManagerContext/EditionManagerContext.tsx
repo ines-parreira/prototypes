@@ -7,7 +7,12 @@ import React, {
     useEffect,
 } from 'react'
 
-import {Article, CreateArticleDto, LocaleCode} from 'models/helpCenter/types'
+import {
+    Article,
+    CreateArticleDto,
+    LocaleCode,
+    VisibilityStatus,
+} from 'models/helpCenter/types'
 import {getViewLanguage} from 'state/ui/helpCenter/selectors'
 import {HelpCenterArticleModalState} from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
 import {changeViewLanguage} from 'state/ui/helpCenter'
@@ -19,6 +24,9 @@ import {useCurrentHelpCenter} from '../CurrentHelpCenter'
 type EditionManagerContextValues = {
     selectedCategoryId: number | null
     setSelectedCategoryId: Dispatch<SetStateAction<number | null>>
+
+    selectedVisibility: VisibilityStatus
+    setSelectedVisibility: Dispatch<SetStateAction<VisibilityStatus>>
 
     selectedArticleLanguage: LocaleCode
     setSelectedArticleLanguage: Dispatch<SetStateAction<LocaleCode>>
@@ -53,6 +61,8 @@ export const EditionManagerContextProvider = (props: {
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
         null
     )
+    const [selectedVisibility, setSelectedVisibility] =
+        useState<VisibilityStatus>('PUBLIC')
     const [selectedArticleLanguage, setSelectedArticleLanguage] =
         useState<LocaleCode>(viewLanguage ?? helpCenter.supported_locales[0])
 
@@ -94,6 +104,9 @@ export const EditionManagerContextProvider = (props: {
     const contextValues = {
         selectedCategoryId,
         setSelectedCategoryId,
+
+        selectedVisibility,
+        setSelectedVisibility,
 
         selectedArticleLanguage,
         setSelectedArticleLanguage,

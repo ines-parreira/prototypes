@@ -31,6 +31,14 @@ const defaultState: Partial<RootState> = {
 
 const store = mockStore(defaultState)
 
+jest.mock('pages/settings/helpCenter/hooks/useArticlesActions', () => {
+    return {
+        useArticlesActions: () => ({
+            getArticleCount: jest.fn().mockResolvedValue(0),
+        }),
+    }
+})
+
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
@@ -86,13 +94,15 @@ describe('<HelpCenterCategoryEdit />', () => {
             {wrapper}
         )
 
-        expect(getByTestId('category-edit').className).toEqual('drawer')
+        expect(getByTestId('category-edit').className).toEqual('drawer drawer')
     })
 
     it('appears when isOpen is true', () => {
         const {getByTestId} = render(<Example isOpen />)
 
-        expect(getByTestId('category-edit').className).toEqual('drawer opened')
+        expect(getByTestId('category-edit').className).toEqual(
+            'drawer opened drawer'
+        )
     })
 
     it('focuses the Title input after drawer finish its transition', async () => {

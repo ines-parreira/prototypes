@@ -3,16 +3,24 @@ import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 import Tooltip from 'pages/common/components/Tooltip'
 
-import {useLimitations} from '../../../../../../../hooks/helpCenter/useLimitations'
-import {useRatingScore} from '../../../../hooks/useRatingScore'
-import {Article} from '../../../../../../../models/helpCenter/types'
-import {LanguageList} from '../../../../../../common/components/LanguageBulletList'
-import BodyCell from '../../../../../../common/components/table/cells/BodyCell'
-import TableBodyRow from '../../../../../../common/components/table/TableBodyRow'
-import {ArticleRowActionTypes, ARTICLE_ROW_ACTIONS} from '../../../../constants'
-import {useSupportedLocales} from '../../../../providers/SupportedLocales'
-import {Callbacks, useReorderDnD} from '../../../../hooks/useReorderDnD'
+import {useLimitations} from 'hooks/helpCenter/useLimitations'
+import {useRatingScore} from 'pages/settings/helpCenter/hooks/useRatingScore'
+import {Article} from 'models/helpCenter/types'
+import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import {
+    ARTICLE_ROW_ACTIONS,
+    ArticleRowActionTypes,
+} from 'pages/settings/helpCenter/constants'
+import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import {
+    Callbacks,
+    useReorderDnD,
+} from 'pages/settings/helpCenter/hooks/useReorderDnD'
 import {TableActions} from '../../../TableActions'
+
+import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
 
 import up from '../../../../../../../../img/icons/rating-up-white.svg'
 import down from '../../../../../../../../img/icons/rating-down-white.svg'
@@ -27,7 +35,8 @@ export type RowEventListeners = {
     onClickSettings: (
         ev: React.MouseEvent,
         name: ArticleRowActionTypes,
-        article: Article
+        article: Article,
+        isArticleOrAncestorUnlisted: boolean
     ) => void
 }
 
@@ -36,12 +45,14 @@ type Props = RowEventListeners & {
     article: Article
     categoryId: number | null
     level: number
+    isAncestorUnlisted: boolean
     position: number
 }
 
 export const ArticleRow = ({
     isNested = false,
     level,
+    isAncestorUnlisted,
     article,
     position,
     categoryId,
@@ -80,7 +91,13 @@ export const ArticleRow = ({
         ev: React.MouseEvent,
         name: ArticleRowActionTypes
     ) => {
-        return onClickSettings(ev, name, article)
+        ev.stopPropagation()
+
+        const isArticleOrAncestorUnlisted =
+            isAncestorUnlisted ||
+            article.translation.visibility_status === 'UNLISTED'
+
+        return onClickSettings(ev, name, article, isArticleOrAncestorUnlisted)
     }
 
     return (
@@ -112,7 +129,7 @@ export const ArticleRow = ({
                 {article.translation.title}
             </BodyCell>
             <BodyCell
-                style={{width: 77, minWidth: 77}}
+                style={{width: 85, minWidth: 85}}
                 className={css['nested-cell']}
             >
                 <div className={css.rating} id={`rating-${article.id}`}>
@@ -149,6 +166,16 @@ export const ArticleRow = ({
                         </div>
                     </Tooltip>
                 )}
+            </BodyCell>
+            <BodyCell
+                style={{width: 110, minWidth: 110}}
+                className={css['nested-cell']}
+            >
+                <VisibilityCell
+                    status={article.translation.visibility_status}
+                    isParentUnlisted={isAncestorUnlisted}
+                    isArticle
+                />
             </BodyCell>
             <BodyCell style={{width: 105, minWidth: 105}}>
                 {article.translation && (

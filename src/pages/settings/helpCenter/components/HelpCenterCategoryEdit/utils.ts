@@ -41,3 +41,27 @@ export const eligibleParentCategories = (
                 !childrenCategoryIds.includes(category.id)
         )
 }
+
+export const isOneOfParentsUnlisted = (
+    categories: Category[],
+    categoryId: number | null
+): boolean => {
+    let isUnlisted = false
+    const traverseParents = (categoryId: number | null) => {
+        if (categoryId) {
+            const currentCategory = categories.find(
+                (category) => category.id === categoryId
+            )
+            isUnlisted =
+                isUnlisted ||
+                currentCategory?.translation?.visibility_status === 'UNLISTED'
+
+            if (currentCategory?.translation?.parent_category_id) {
+                traverseParents(currentCategory.translation.parent_category_id)
+            }
+        }
+    }
+    traverseParents(categoryId)
+
+    return isUnlisted
+}

@@ -85,6 +85,9 @@ export type Article = ArticleWithLocalTranslationAndRating & {
     position: number
 }
 
+export type VisibilityStatus =
+    Components.Schemas.LocalArticleTranslation['visibility_status']
+
 // NAVIGATION
 
 export type CreateNavigationLinkDto = Components.Schemas.CreateNavigationLinkDto
