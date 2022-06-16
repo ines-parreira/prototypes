@@ -100,6 +100,7 @@ describe('actions', () => {
                     playSoundNotification: true,
                     ticketId: 1,
                     title: 'Mark Frizeli',
+                    requireInteraction: true,
                 })
             })
 

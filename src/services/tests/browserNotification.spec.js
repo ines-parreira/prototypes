@@ -42,6 +42,14 @@ describe('services', () => {
                 }
             )
 
+            it('should require interaction', () => {
+                browserNotification.newMessage({
+                    requireInteraction: true,
+                })
+
+                expect(PushJS.getAll()).toMatchSnapshot()
+            })
+
             it('should create a browser notification with default values (empty)', () => {
                 const spy = jest.spyOn(
                     global.HTMLMediaElement.prototype,

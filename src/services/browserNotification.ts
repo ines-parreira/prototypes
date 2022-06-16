@@ -27,11 +27,13 @@ class BrowserNotification {
         body,
         ticketId,
         playSoundNotification,
+        requireInteraction,
     }: {
         title?: unknown
         body?: unknown
         ticketId?: number | string
         playSoundNotification?: boolean
+        requireInteraction?: boolean
     } = {}) => {
         if (
             playSoundNotification === null ||
@@ -46,7 +48,7 @@ class BrowserNotification {
             {
                 body: _isString(body) && body ? body : 'You received an answer',
                 icon,
-                timeout: 5000,
+                timeout: requireInteraction ? undefined : 5000,
                 onClick: function () {
                     // go to the ticket
                     if (ticketId) {
@@ -55,6 +57,7 @@ class BrowserNotification {
                     window.focus()
                     ;(this as PushNotification).close()
                 },
+                requireInteraction: !!requireInteraction,
             }
         )
     }

@@ -891,6 +891,7 @@ describe('Config: socketEvents', () => {
                     {
                         body: `New assigned ticket [${TicketChannel.Email}]: Foo bar`,
                         ticketId: 1,
+                        requireInteraction: true,
                     }
                 )
             })

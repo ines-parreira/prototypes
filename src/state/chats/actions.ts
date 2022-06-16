@@ -45,6 +45,7 @@ export const addChat =
                 body: ticket.last_message_body_text || '',
                 ticketId: ticket.id,
                 playSoundNotification: playSoundNotification,
+                requireInteraction: true,
             })
         }
     }

@@ -291,6 +291,7 @@ export const receivedEvents: ReceivedEvent[] = [
             browserNotification.newMessage({
                 body: `New assigned ticket [${ticket.channel}]: ${ticket.subject}`,
                 ticketId: ticket.id,
+                requireInteraction: true,
             })
         },
     },
