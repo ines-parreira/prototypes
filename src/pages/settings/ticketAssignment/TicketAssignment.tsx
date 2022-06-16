@@ -1,8 +1,9 @@
 import React, {Component, SyntheticEvent} from 'react'
 import {List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
+import {Col, Container, Form, FormGroup, Row} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
+import classNames from 'classnames'
 
 import {TicketChannel} from 'business/types/ticket'
 import Button from 'pages/common/components/button/Button'
@@ -11,13 +12,17 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 import HeaderWithInfo from 'pages/common/components/HeaderWithInfo'
-import UserActivityManager from 'services/userActivityManager'
 import {fetchChats} from 'state/chats/actions'
 import {submitSetting} from 'state/currentAccount/actions'
 import {getTicketAssignmentSettings} from 'state/currentAccount/selectors'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {RootState} from 'state/types'
-import css from '../settings.less'
+import Label from 'pages/common/forms/Label/Label'
+import settingsCss from 'pages/settings/settings.less'
+import NumberInput from 'pages/common/forms/input/NumberInput'
+import Tooltip from 'pages/common/components/Tooltip'
+
+import css from './TicketAssignment.less'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -26,19 +31,11 @@ type State = {
     unassignOnReply: boolean
     autoAssignToTeams: boolean
     assignmentChannels: TicketChannel[]
+    chatTicketsLimit?: number
+    nonChatTicketsLimit?: number
 }
 
 export class TicketAssignmentContainer extends Component<Props, State> {
-    state: State = {
-        isLoading: false,
-        unassignOnReply: true,
-        autoAssignToTeams: false,
-        assignmentChannels: [
-            TicketChannel.Chat,
-            TicketChannel.FacebookMessenger,
-        ],
-    }
-
     static channelsToOptions(channels: TicketChannel[]): Option[] {
         return channels.map((channel) => ({
             value: channel,
@@ -46,37 +43,60 @@ export class TicketAssignmentContainer extends Component<Props, State> {
         }))
     }
 
-    componentDidMount() {
+    constructor(props: Props) {
+        super(props)
         const {ticketAssignmentSettings} = this.props
         const assignmentChannels = ticketAssignmentSettings.getIn([
             'data',
             'assignment_channels',
         ]) as List<any>
-
-        if (!ticketAssignmentSettings.isEmpty()) {
-            this.setState({
-                unassignOnReply: ticketAssignmentSettings.getIn([
-                    'data',
-                    'unassign_on_reply',
-                ]),
-                autoAssignToTeams: ticketAssignmentSettings.getIn([
-                    'data',
-                    'auto_assign_to_teams',
-                ]),
-                assignmentChannels: assignmentChannels
-                    ? assignmentChannels.toJS()
-                    : [TicketChannel.Chat, TicketChannel.FacebookMessenger],
-            })
+        this.state = {
+            isLoading: false,
+            unassignOnReply: ticketAssignmentSettings.getIn(
+                ['data', 'unassign_on_reply'],
+                true
+            ),
+            autoAssignToTeams: ticketAssignmentSettings.getIn(
+                ['data', 'auto_assign_to_teams'],
+                false
+            ),
+            assignmentChannels: assignmentChannels
+                ? assignmentChannels.toJS()
+                : [TicketChannel.Chat, TicketChannel.FacebookMessenger],
+            chatTicketsLimit: ticketAssignmentSettings.getIn(
+                ['data', 'max_user_chat_ticket'],
+                3
+            ),
+            nonChatTicketsLimit: ticketAssignmentSettings.getIn(
+                ['data', 'max_user_non_chat_ticket'],
+                4
+            ),
         }
+    }
+
+    private _isStateValid(): this is {
+        state: Required<State>
+    } {
+        const {chatTicketsLimit, nonChatTicketsLimit} = this.state
+        return chatTicketsLimit != null && nonChatTicketsLimit != null
     }
 
     _onSubmit = async (evt: SyntheticEvent) => {
         evt.preventDefault()
+        if (!this._isStateValid()) {
+            return
+        }
+
         this.setState({isLoading: true})
 
         const {ticketAssignmentSettings, submitSetting, fetchChats} = this.props
-        const {unassignOnReply, autoAssignToTeams, assignmentChannels} =
-            this.state
+        const {
+            unassignOnReply,
+            autoAssignToTeams,
+            assignmentChannels,
+            chatTicketsLimit,
+            nonChatTicketsLimit,
+        } = this.state
 
         let shouldFetchChats = true
 
@@ -107,6 +127,8 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                 unassign_on_reply: unassignOnReply,
                 auto_assign_to_teams: autoAssignToTeams,
                 assignment_channels: assignmentChannels,
+                max_user_chat_ticket: chatTicketsLimit,
+                max_user_non_chat_ticket: nonChatTicketsLimit,
             },
         })
 
@@ -131,6 +153,8 @@ export class TicketAssignmentContainer extends Component<Props, State> {
             assignmentChannels,
             autoAssignToTeams,
             isLoading,
+            chatTicketsLimit,
+            nonChatTicketsLimit,
         } = this.state
 
         return (
@@ -139,21 +163,26 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                     title={
                         <HeaderWithInfo
                             title="Ticket assignment"
-                            description="Automate the assignment of tickets among your team members or the unassignment when your 
+                            description="Automate the assignment of tickets among your team members or the unassignment when your
                     agents are not available to respond. You can use both at the same time!"
                             helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
                         />
                     }
                 />
 
-                <Container fluid className={css.pageContainer}>
+                <Container fluid className={settingsCss.pageContainer}>
                     <Form onSubmit={this._onSubmit}>
-                        <Row className={css.contentWrapper}>
+                        <Row className={settingsCss.contentWrapper}>
                             <Col>
-                                <FormGroup className={css.inputField}>
-                                    <Label className="control-label">
-                                        Auto-assign tickets
-                                    </Label>
+                                <FormGroup className={settingsCss.mb16}>
+                                    <h3
+                                        className={classNames(
+                                            'heading-section-semibold',
+                                            settingsCss.mb8
+                                        )}
+                                    >
+                                        Team auto-assignment settings
+                                    </h3>
                                     <CheckBox
                                         name="auto_assign_to_teams"
                                         isChecked={autoAssignToTeams}
@@ -162,17 +191,122 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                                 autoAssignToTeams: value,
                                             })
                                         }
+                                        caption={
+                                            <span>
+                                                When a ticket is assigned to a
+                                                team, it will automatically be
+                                                assigned to an{' '}
+                                                <strong
+                                                    className={
+                                                        css.labelBoldText
+                                                    }
+                                                >
+                                                    eligible member
+                                                </strong>{' '}
+                                                of that team
+                                            </span>
+                                        }
                                     >
-                                        Auto-assign tickets that are assigned to
-                                        a team, to an available agent of this
-                                        team, as soon as an agent of the team is
-                                        available
+                                        Auto-assign tickets
                                     </CheckBox>
                                 </FormGroup>
-                                <FormGroup className={css.inputField}>
-                                    <Label className="control-label">
-                                        Un-assign on reply
+                                <FormGroup className={settingsCss.mb32}>
+                                    <Label
+                                        className={classNames(
+                                            'body-semibold',
+                                            css.limitsHeader
+                                        )}
+                                    >
+                                        Auto-assignment limits
+                                        <i
+                                            id="limits-info"
+                                            className={classNames(
+                                                'material-icons',
+                                                css.infoIcon
+                                            )}
+                                        >
+                                            info_outline
+                                        </i>
+                                        <Tooltip target="limits-info">
+                                            An agent is eligible for
+                                            auto-assignment if they are
+                                            “online”, set to "available" and
+                                            have fewer open tickets assigned to
+                                            them than the limits defined below
+                                        </Tooltip>
                                     </Label>
+                                    <div className={css.limits}>
+                                        <div className={css.limitsSection}>
+                                            <label className={css.limitLabel}>
+                                                <NumberInput
+                                                    className={css.limitInput}
+                                                    min={0}
+                                                    max={500}
+                                                    isRequired
+                                                    value={chatTicketsLimit}
+                                                    onChange={(
+                                                        chatTicketsLimit
+                                                    ) => {
+                                                        this.setState({
+                                                            chatTicketsLimit,
+                                                        })
+                                                    }}
+                                                />
+                                                <strong
+                                                    id="chat-messaging-tooltip"
+                                                    className={
+                                                        css.limitsTooltip
+                                                    }
+                                                >
+                                                    Chat & Messaging
+                                                </strong>{' '}
+                                                tickets
+                                            </label>
+                                            <Tooltip target="chat-messaging-tooltip">
+                                                Includes chat, Facebook
+                                                messenger, Instagram DM or any
+                                                1-1 instant messaging channels
+                                            </Tooltip>
+                                        </div>
+                                        <div className={css.limitsSection}>
+                                            <label className={css.limitLabel}>
+                                                <NumberInput
+                                                    className={css.limitInput}
+                                                    min={0}
+                                                    max={500}
+                                                    isRequired
+                                                    value={nonChatTicketsLimit}
+                                                    onChange={(
+                                                        nonChatTicketsLimit
+                                                    ) => {
+                                                        this.setState({
+                                                            nonChatTicketsLimit,
+                                                        })
+                                                    }}
+                                                />
+                                                <strong
+                                                    id="other-text-tooltip"
+                                                    className={
+                                                        css.limitsTooltip
+                                                    }
+                                                >
+                                                    Other text
+                                                </strong>{' '}
+                                                tickets
+                                            </label>
+                                            <Tooltip target="other-text-tooltip">
+                                                Includes email, Facebook and
+                                                Instagram comments or any other
+                                                asynchronous channels. Does not
+                                                include Phone
+                                            </Tooltip>
+                                        </div>
+                                    </div>
+                                </FormGroup>
+                                <FormGroup className={settingsCss.mb40}>
+                                    <h3 className="heading-section-semibold">
+                                        Unassignment settings
+                                    </h3>
                                     <CheckBox
                                         name="unassign_on_reply"
                                         isChecked={unassignOnReply}
@@ -182,41 +316,43 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                             })
                                         }
                                     >
-                                        When there is a new reply in a ticket of
-                                        the following channels, if the user
-                                        assigned to it is not available,
-                                        un-assign the ticket
+                                        Unassign on reply{' '}
+                                        <i
+                                            id="unassign-info"
+                                            className={classNames(
+                                                'material-icons',
+                                                css.infoIcon
+                                            )}
+                                        >
+                                            info_outline
+                                        </i>
+                                        <Tooltip target="unassign-info">
+                                            Unassigns a ticket if the customer
+                                            replies but the ticket is assigned
+                                            to agent that is “offline” or
+                                            “unavailable”
+                                        </Tooltip>
                                     </CheckBox>
                                 </FormGroup>
-                                <div className="text-faded">
-                                    Users are considered as not available when
-                                    any of those conditions is true:
-                                    <ul>
-                                        <li>
-                                            the user turned off its "Available"
-                                            setting
-                                        </li>
-                                        <li>
-                                            the user has been inactive on
-                                            Gorgias for more than{' '}
-                                            {UserActivityManager.unavailabilityTimeout /
-                                                1000 /
-                                                60}{' '}
-                                            minutes
-                                        </li>
-                                        <li>
-                                            the user is not on Gorgias on any
-                                            device
-                                        </li>
-                                    </ul>
-                                </div>
-                                <FormGroup className={css.inputField}>
-                                    <Label className="control-label">
+
+                                <FormGroup className={settingsCss.mb40}>
+                                    <h3
+                                        className={classNames(
+                                            'heading-section-semibold',
+                                            settingsCss.mb8
+                                        )}
+                                    >
                                         Channels
-                                    </Label>
-                                    <p>
+                                    </h3>
+                                    <p
+                                        className={classNames(
+                                            'body-regular',
+                                            css.description,
+                                            settingsCss.mb8
+                                        )}
+                                    >
                                         Apply ticket assignment settings to the
-                                        following channels:
+                                        following channels
                                     </p>
                                     <MultiSelectOptionsField
                                         options={TicketAssignmentContainer.channelsToOptions(

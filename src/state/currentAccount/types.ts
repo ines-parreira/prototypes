@@ -50,15 +50,7 @@ export type ViewsOrderingAccountSetting = {
 
 export type AccountSetting =
     | AccountSettingBusinessHours
-    | {
-          id: number
-          type: AccountSettingType.TicketAssignment
-          data: {
-              assignment_channels: TicketChannel[]
-              auto_assign_to_teams: boolean
-              unassign_on_reply: boolean
-          }
-      }
+    | AccountSettingTicketAssignment
     | AccountSettingSatisfactionSurvey
     | ViewsOrderingAccountSetting
     | AccountSettingAccess
@@ -73,6 +65,18 @@ export type AccountSettingBusinessHours = {
             from_time: string
             to_time: string
         }[]
+    }
+}
+
+export type AccountSettingTicketAssignment = {
+    id: number
+    type: AccountSettingType.TicketAssignment
+    data: {
+        assignment_channels: TicketChannel[]
+        auto_assign_to_teams: boolean
+        unassign_on_reply: boolean
+        max_user_chat_ticket: number
+        max_user_non_chat_ticket: number
     }
 }
 

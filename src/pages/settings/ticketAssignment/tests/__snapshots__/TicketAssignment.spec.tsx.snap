@@ -1,15 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicketAssignment/> _onSubmit() should call \`fetchChats\` because the \`assignment_channels\` setting has changed and \`auto_assign_to_teams\` is enabled 1`] = `
+exports[`<TicketAssignment/> should call \`fetchChats\` on submit when the \`assignment_channels\` setting has changed and \`auto_assign_to_teams\` is enabled 1`] = `
 Array [
   Array [
     Object {
       "data": Object {
         "assignment_channels": Array [
-          "chat",
+          "facebook-messenger",
         ],
         "auto_assign_to_teams": true,
-        "unassign_on_reply": false,
+        "max_user_chat_ticket": 3,
+        "max_user_non_chat_ticket": 4,
+        "unassign_on_reply": true,
       },
       "id": 1,
       "type": "ticket-assignment",
@@ -18,7 +20,7 @@ Array [
 ]
 `;
 
-exports[`<TicketAssignment/> _onSubmit() should call \`fetchChats\` because the \`auto_assign_to_teams\` setting has changed 1`] = `
+exports[`<TicketAssignment/> should call \`fetchChats\` on submit when the \`auto_assign_to_teams\` setting has changed 1`] = `
 Array [
   Array [
     Object {
@@ -28,7 +30,9 @@ Array [
           "facebook-messenger",
         ],
         "auto_assign_to_teams": false,
-        "unassign_on_reply": false,
+        "max_user_chat_ticket": 3,
+        "max_user_non_chat_ticket": 4,
+        "unassign_on_reply": true,
       },
       "id": 1,
       "type": "ticket-assignment",
@@ -37,7 +41,7 @@ Array [
 ]
 `;
 
-exports[`<TicketAssignment/> _onSubmit() should call \`submitSetting\` and call \`fetchChats\` because the account has no \`ticket-assignment\` setting 1`] = `
+exports[`<TicketAssignment/> should call \`submitSetting\` and call \`fetchChats\` on submit when the account has no \`ticket-assignment\` setting 1`] = `
 Array [
   Array [
     Object {
@@ -46,8 +50,10 @@ Array [
           "chat",
           "facebook-messenger",
         ],
-        "auto_assign_to_teams": true,
-        "unassign_on_reply": false,
+        "auto_assign_to_teams": false,
+        "max_user_chat_ticket": 3,
+        "max_user_non_chat_ticket": 4,
+        "unassign_on_reply": true,
       },
       "id": undefined,
       "type": "ticket-assignment",
@@ -56,7 +62,7 @@ Array [
 ]
 `;
 
-exports[`<TicketAssignment/> _onSubmit() should call \`submitSetting\` and not call \`fetchChats\` because nor the \`auto_assign_to_teams\` setting nor the \`assignment_channels\` setting has changed 1`] = `
+exports[`<TicketAssignment/> should call \`submitSetting\` and not call \`fetchChats\` on submit when nor the \`auto_assign_to_teams\` setting nor the \`assignment_channels\` setting has changed 1`] = `
 Array [
   Array [
     Object {
@@ -66,7 +72,9 @@ Array [
           "facebook-messenger",
         ],
         "auto_assign_to_teams": true,
-        "unassign_on_reply": false,
+        "max_user_chat_ticket": 3,
+        "max_user_non_chat_ticket": 4,
+        "unassign_on_reply": true,
       },
       "id": 1,
       "type": "ticket-assignment",
@@ -75,1791 +83,640 @@ Array [
 ]
 `;
 
-exports[`<TicketAssignment/> _onSubmit() should not call \`fetchChats\` because the \`assignment_channels\` setting has changed but \`auto_assign_to_teams\` is disabled 1`] = `
+exports[`<TicketAssignment/> should not call \`fetchChats\` on submit when the \`assignment_channels\` setting has changed but \`auto_assign_to_teams\` is disabled 1`] = `
+Array [
+  Array [
+    Object {
+      "data": Object {
+        "assignment_channels": Array [
+          "facebook-messenger",
+        ],
+        "auto_assign_to_teams": false,
+        "max_user_chat_ticket": 3,
+        "max_user_non_chat_ticket": 4,
+        "unassign_on_reply": true,
+      },
+      "id": 1,
+      "type": "ticket-assignment",
+    },
+  ],
+]
+`;
+
+exports[`<TicketAssignment/> should render the "Save changes" button loading and disabled when the setting are being saved 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="align-items-center"
+    >
+      <span>
+        Ticket assignment
+      </span>
+      <button
+        class="wrapper wrapper ml-3 fill secondary medium"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            info_outline
+          </i>
+          Learn
+        </span>
+      </button>
+    </h1>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <form
+      class=""
+    >
+      <div
+        class="contentWrapper row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="mb16 form-group"
+          >
+            <h3
+              class="heading-section-semibold mb8"
+            >
+              Team auto-assignment settings
+            </h3>
+            <div>
+              <label
+                class="label label"
+                for="auto_assign_to_teams"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  id="auto_assign_to_teams"
+                  name="auto_assign_to_teams"
+                  type="checkbox"
+                />
+                Auto-assign tickets
+              </label>
+              <div
+                class="caption caption"
+              >
+                <span>
+                  When a ticket is assigned to a team, it will automatically be assigned to an
+                   
+                  <strong
+                    class="labelBoldText"
+                  >
+                    eligible member
+                  </strong>
+                   
+                  of that team
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="mb32 form-group"
+          >
+            <label
+              class="label body-semibold limitsHeader"
+            >
+              Auto-assignment limits
+              <i
+                class="material-icons infoIcon"
+                id="limits-info"
+              >
+                info_outline
+              </i>
+            </label>
+            <div
+              class="limits"
+            >
+              <div
+                class="limitsSection"
+              >
+                <label
+                  class="limitLabel"
+                >
+                  <span
+                    class="limitInput wrapper group horizontal"
+                  >
+                    <input
+                      class="input"
+                      max="500"
+                      min="0"
+                      required=""
+                      type="number"
+                      value="3"
+                    />
+                    <span
+                      class="controls group vertical"
+                    >
+                      <button
+                        class="wrapper button wrapper small fill secondary small top"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_up
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small bottom"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </button>
+                    </span>
+                  </span>
+                  <strong
+                    class="limitsTooltip"
+                    id="chat-messaging-tooltip"
+                  >
+                    Chat & Messaging
+                  </strong>
+                   
+                  tickets
+                </label>
+              </div>
+              <div
+                class="limitsSection"
+              >
+                <label
+                  class="limitLabel"
+                >
+                  <span
+                    class="limitInput wrapper group horizontal"
+                  >
+                    <input
+                      class="input"
+                      max="500"
+                      min="0"
+                      required=""
+                      type="number"
+                      value="4"
+                    />
+                    <span
+                      class="controls group vertical"
+                    >
+                      <button
+                        class="wrapper button wrapper small fill secondary small top"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_up
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small bottom"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </button>
+                    </span>
+                  </span>
+                  <strong
+                    class="limitsTooltip"
+                    id="other-text-tooltip"
+                  >
+                    Other text
+                  </strong>
+                   
+                  tickets
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="mb40 form-group"
+          >
+            <h3
+              class="heading-section-semibold"
+            >
+              Unassignment settings
+            </h3>
+            <div>
+              <label
+                class="label label"
+                for="unassign_on_reply"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  id="unassign_on_reply"
+                  name="unassign_on_reply"
+                  type="checkbox"
+                />
+                Unassign on reply
+                 
+                <i
+                  class="material-icons infoIcon"
+                  id="unassign-info"
+                >
+                  info_outline
+                </i>
+              </label>
+            </div>
+          </div>
+          <div
+            class="mb40 form-group"
+          >
+            <h3
+              class="heading-section-semibold mb8"
+            >
+              Channels
+            </h3>
+            <p
+              class="body-regular description mb8"
+            >
+              Apply ticket assignment settings to the following channels
+            </p>
+            <ul
+              aria-label="MultiSelectOptionField mock"
+            >
+              <li>
+                chat
+                <button
+                  type="button"
+                >
+                  Remove 
+                  chat
+                </button>
+              </li>
+              <li>
+                facebook-messenger
+                <button
+                  type="button"
+                >
+                  Remove 
+                  facebook-messenger
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <button
+        class="wrapper fill primary medium isDisabled"
+        disabled=""
+        type="submit"
+      >
+        <svg
+          class="spinner gloom spinner"
+          preserveAspectRatio="xMidYMid meet"
+          role="status"
+          viewBox="0 0 20 20"
+          width="100%"
+        >
+          <circle
+            class="dot"
+            cx="10"
+            cy="10"
+            fill="none"
+            r="6"
+            stroke-width="2"
+          />
+          <circle
+            class="circle"
+            cx="10"
+            cy="10"
+            fill="none"
+            r="6"
+            stroke-width="2"
+          />
+          <span
+            class="sr-only"
+          >
+            Loading...
+          </span>
+        </svg>
+        Save changes
+      </button>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`<TicketAssignment/> should render the store data 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="align-items-center"
+    >
+      <span>
+        Ticket assignment
+      </span>
+      <button
+        class="wrapper wrapper ml-3 fill secondary medium"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            info_outline
+          </i>
+          Learn
+        </span>
+      </button>
+    </h1>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <form
+      class=""
+    >
+      <div
+        class="contentWrapper row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="mb16 form-group"
+          >
+            <h3
+              class="heading-section-semibold mb8"
+            >
+              Team auto-assignment settings
+            </h3>
+            <div>
+              <label
+                class="label label"
+                for="auto_assign_to_teams"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  id="auto_assign_to_teams"
+                  name="auto_assign_to_teams"
+                  type="checkbox"
+                />
+                Auto-assign tickets
+              </label>
+              <div
+                class="caption caption"
+              >
+                <span>
+                  When a ticket is assigned to a team, it will automatically be assigned to an
+                   
+                  <strong
+                    class="labelBoldText"
+                  >
+                    eligible member
+                  </strong>
+                   
+                  of that team
+                </span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="mb32 form-group"
+          >
+            <label
+              class="label body-semibold limitsHeader"
+            >
+              Auto-assignment limits
+              <i
+                class="material-icons infoIcon"
+                id="limits-info"
+              >
+                info_outline
+              </i>
+            </label>
+            <div
+              class="limits"
+            >
+              <div
+                class="limitsSection"
+              >
+                <label
+                  class="limitLabel"
+                >
+                  <span
+                    class="limitInput wrapper group horizontal"
+                  >
+                    <input
+                      class="input"
+                      max="500"
+                      min="0"
+                      required=""
+                      type="number"
+                      value="20"
+                    />
+                    <span
+                      class="controls group vertical"
+                    >
+                      <button
+                        class="wrapper button wrapper small fill secondary small top"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_up
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small bottom"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </button>
+                    </span>
+                  </span>
+                  <strong
+                    class="limitsTooltip"
+                    id="chat-messaging-tooltip"
+                  >
+                    Chat & Messaging
+                  </strong>
+                   
+                  tickets
+                </label>
+              </div>
+              <div
+                class="limitsSection"
+              >
+                <label
+                  class="limitLabel"
+                >
+                  <span
+                    class="limitInput wrapper group horizontal"
+                  >
+                    <input
+                      class="input"
+                      max="500"
+                      min="0"
+                      required=""
+                      type="number"
+                      value="50"
+                    />
+                    <span
+                      class="controls group vertical"
+                    >
+                      <button
+                        class="wrapper button wrapper small fill secondary small top"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_up
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small bottom"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          arrow_drop_down
+                        </i>
+                      </button>
+                    </span>
+                  </span>
+                  <strong
+                    class="limitsTooltip"
+                    id="other-text-tooltip"
+                  >
+                    Other text
+                  </strong>
+                   
+                  tickets
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            class="mb40 form-group"
+          >
+            <h3
+              class="heading-section-semibold"
+            >
+              Unassignment settings
+            </h3>
+            <div>
+              <label
+                class="label label"
+                for="unassign_on_reply"
+              >
+                <input
+                  class="input"
+                  id="unassign_on_reply"
+                  name="unassign_on_reply"
+                  type="checkbox"
+                />
+                Unassign on reply
+                 
+                <i
+                  class="material-icons infoIcon"
+                  id="unassign-info"
+                >
+                  info_outline
+                </i>
+              </label>
+            </div>
+          </div>
+          <div
+            class="mb40 form-group"
+          >
+            <h3
+              class="heading-section-semibold mb8"
+            >
+              Channels
+            </h3>
+            <p
+              class="body-regular description mb8"
+            >
+              Apply ticket assignment settings to the following channels
+            </p>
+            <ul
+              aria-label="MultiSelectOptionField mock"
+            >
+              <li>
+                chat
+                <button
+                  type="button"
+                >
+                  Remove 
+                  chat
+                </button>
+              </li>
+              <li>
+                facebook-messenger
+                <button
+                  type="button"
+                >
+                  Remove 
+                  facebook-messenger
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <button
+        class="wrapper fill primary medium"
+        type="submit"
+      >
+        Save changes
+      </button>
+    </form>
+  </div>
+</div>
+`;
+
+exports[`<TicketAssignment/> should send updated auto assignment limits on submit 1`] = `
 Array [
   Array [
     Object {
       "data": Object {
         "assignment_channels": Array [
           "chat",
+          "facebook-messenger",
         ],
-        "auto_assign_to_teams": false,
-        "unassign_on_reply": false,
+        "auto_assign_to_teams": true,
+        "max_user_chat_ticket": 0,
+        "max_user_non_chat_ticket": 20,
+        "unassign_on_reply": true,
       },
       "id": 1,
       "type": "ticket-assignment",
     },
   ],
 ]
-`;
-
-exports[`<TicketAssignment/> render() should render selected channels 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <HeaderWithInfo
-        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
-        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
-        title="Ticket assignment"
-      />
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <Row
-        className="contentWrapper"
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Col
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Auto-assign tickets
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={true}
-              name="auto_assign_to_teams"
-              onChange={[Function]}
-            >
-              Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Un-assign on reply
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={true}
-              name="unassign_on_reply"
-              onChange={[Function]}
-            >
-              When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 
-                minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Channels
-            </Label>
-            <p>
-              Apply ticket assignment settings to the following channels:
-            </p>
-            <MultiSelectOptionsField
-              allowCustomOptions={false}
-              caseInsensitive={true}
-              matchInput={true}
-              onChange={[Function]}
-              options={
-                Array [
-                  Object {
-                    "label": "aircall",
-                    "value": "aircall",
-                  },
-                  Object {
-                    "label": "api",
-                    "value": "api",
-                  },
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "email",
-                    "value": "email",
-                  },
-                  Object {
-                    "label": "facebook",
-                    "value": "facebook",
-                  },
-                  Object {
-                    "label": "facebook-mention",
-                    "value": "facebook-mention",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                  Object {
-                    "label": "facebook-recommendations",
-                    "value": "facebook-recommendations",
-                  },
-                  Object {
-                    "label": "help-center",
-                    "value": "help-center",
-                  },
-                  Object {
-                    "label": "instagram-ad-comment",
-                    "value": "instagram-ad-comment",
-                  },
-                  Object {
-                    "label": "instagram-comment",
-                    "value": "instagram-comment",
-                  },
-                  Object {
-                    "label": "instagram-mention",
-                    "value": "instagram-mention",
-                  },
-                  Object {
-                    "label": "instagram-direct-message",
-                    "value": "instagram-direct-message",
-                  },
-                  Object {
-                    "label": "phone",
-                    "value": "phone",
-                  },
-                  Object {
-                    "label": "sms",
-                    "value": "sms",
-                  },
-                  Object {
-                    "label": "twitter",
-                    "value": "twitter",
-                  },
-                  Object {
-                    "label": "twitter-direct-message",
-                    "value": "twitter-direct-message",
-                  },
-                  Object {
-                    "label": "yotpo-review",
-                    "value": "yotpo-review",
-                  },
-                ]
-              }
-              plural="channels"
-              selectedOptions={
-                Array [
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                ]
-              }
-              singular="channel"
-            />
-          </FormGroup>
-        </Col>
-      </Row>
-      <ForwardRef
-        isLoading={true}
-        type="submit"
-      >
-        Save changes
-      </ForwardRef>
-    </Form>
-  </Container>
-</div>
-`;
-
-exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox checked because the setting "Auto assign" is enabled 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <HeaderWithInfo
-        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
-        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
-        title="Ticket assignment"
-      />
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <Row
-        className="contentWrapper"
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Col
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Auto-assign tickets
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={true}
-              name="auto_assign_to_teams"
-              onChange={[Function]}
-            >
-              Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Un-assign on reply
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={true}
-              name="unassign_on_reply"
-              onChange={[Function]}
-            >
-              When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 
-                minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Channels
-            </Label>
-            <p>
-              Apply ticket assignment settings to the following channels:
-            </p>
-            <MultiSelectOptionsField
-              allowCustomOptions={false}
-              caseInsensitive={true}
-              matchInput={true}
-              onChange={[Function]}
-              options={
-                Array [
-                  Object {
-                    "label": "aircall",
-                    "value": "aircall",
-                  },
-                  Object {
-                    "label": "api",
-                    "value": "api",
-                  },
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "email",
-                    "value": "email",
-                  },
-                  Object {
-                    "label": "facebook",
-                    "value": "facebook",
-                  },
-                  Object {
-                    "label": "facebook-mention",
-                    "value": "facebook-mention",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                  Object {
-                    "label": "facebook-recommendations",
-                    "value": "facebook-recommendations",
-                  },
-                  Object {
-                    "label": "help-center",
-                    "value": "help-center",
-                  },
-                  Object {
-                    "label": "instagram-ad-comment",
-                    "value": "instagram-ad-comment",
-                  },
-                  Object {
-                    "label": "instagram-comment",
-                    "value": "instagram-comment",
-                  },
-                  Object {
-                    "label": "instagram-mention",
-                    "value": "instagram-mention",
-                  },
-                  Object {
-                    "label": "instagram-direct-message",
-                    "value": "instagram-direct-message",
-                  },
-                  Object {
-                    "label": "phone",
-                    "value": "phone",
-                  },
-                  Object {
-                    "label": "sms",
-                    "value": "sms",
-                  },
-                  Object {
-                    "label": "twitter",
-                    "value": "twitter",
-                  },
-                  Object {
-                    "label": "twitter-direct-message",
-                    "value": "twitter-direct-message",
-                  },
-                  Object {
-                    "label": "yotpo-review",
-                    "value": "yotpo-review",
-                  },
-                ]
-              }
-              plural="channels"
-              selectedOptions={
-                Array [
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                ]
-              }
-              singular="channel"
-            />
-          </FormGroup>
-        </Col>
-      </Row>
-      <ForwardRef
-        isLoading={false}
-        type="submit"
-      >
-        Save changes
-      </ForwardRef>
-    </Form>
-  </Container>
-</div>
-`;
-
-exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox unchecked because the setting "Auto assign" is disabled 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <HeaderWithInfo
-        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
-        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
-        title="Ticket assignment"
-      />
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <Row
-        className="contentWrapper"
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Col
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Auto-assign tickets
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={false}
-              name="auto_assign_to_teams"
-              onChange={[Function]}
-            >
-              Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Un-assign on reply
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={true}
-              name="unassign_on_reply"
-              onChange={[Function]}
-            >
-              When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 
-                minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Channels
-            </Label>
-            <p>
-              Apply ticket assignment settings to the following channels:
-            </p>
-            <MultiSelectOptionsField
-              allowCustomOptions={false}
-              caseInsensitive={true}
-              matchInput={true}
-              onChange={[Function]}
-              options={
-                Array [
-                  Object {
-                    "label": "aircall",
-                    "value": "aircall",
-                  },
-                  Object {
-                    "label": "api",
-                    "value": "api",
-                  },
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "email",
-                    "value": "email",
-                  },
-                  Object {
-                    "label": "facebook",
-                    "value": "facebook",
-                  },
-                  Object {
-                    "label": "facebook-mention",
-                    "value": "facebook-mention",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                  Object {
-                    "label": "facebook-recommendations",
-                    "value": "facebook-recommendations",
-                  },
-                  Object {
-                    "label": "help-center",
-                    "value": "help-center",
-                  },
-                  Object {
-                    "label": "instagram-ad-comment",
-                    "value": "instagram-ad-comment",
-                  },
-                  Object {
-                    "label": "instagram-comment",
-                    "value": "instagram-comment",
-                  },
-                  Object {
-                    "label": "instagram-mention",
-                    "value": "instagram-mention",
-                  },
-                  Object {
-                    "label": "instagram-direct-message",
-                    "value": "instagram-direct-message",
-                  },
-                  Object {
-                    "label": "phone",
-                    "value": "phone",
-                  },
-                  Object {
-                    "label": "sms",
-                    "value": "sms",
-                  },
-                  Object {
-                    "label": "twitter",
-                    "value": "twitter",
-                  },
-                  Object {
-                    "label": "twitter-direct-message",
-                    "value": "twitter-direct-message",
-                  },
-                  Object {
-                    "label": "yotpo-review",
-                    "value": "yotpo-review",
-                  },
-                ]
-              }
-              plural="channels"
-              selectedOptions={
-                Array [
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                ]
-              }
-              singular="channel"
-            />
-          </FormGroup>
-        </Col>
-      </Row>
-      <ForwardRef
-        isLoading={false}
-        type="submit"
-      >
-        Save changes
-      </ForwardRef>
-    </Form>
-  </Container>
-</div>
-`;
-
-exports[`<TicketAssignment/> render() should render the "Save changes" button loading and disabled because the setting are being saved 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <HeaderWithInfo
-        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
-        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
-        title="Ticket assignment"
-      />
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <Row
-        className="contentWrapper"
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Col
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Auto-assign tickets
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={true}
-              name="auto_assign_to_teams"
-              onChange={[Function]}
-            >
-              Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Un-assign on reply
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={false}
-              name="unassign_on_reply"
-              onChange={[Function]}
-            >
-              When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 
-                minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Channels
-            </Label>
-            <p>
-              Apply ticket assignment settings to the following channels:
-            </p>
-            <MultiSelectOptionsField
-              allowCustomOptions={false}
-              caseInsensitive={true}
-              matchInput={true}
-              onChange={[Function]}
-              options={
-                Array [
-                  Object {
-                    "label": "aircall",
-                    "value": "aircall",
-                  },
-                  Object {
-                    "label": "api",
-                    "value": "api",
-                  },
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "email",
-                    "value": "email",
-                  },
-                  Object {
-                    "label": "facebook",
-                    "value": "facebook",
-                  },
-                  Object {
-                    "label": "facebook-mention",
-                    "value": "facebook-mention",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                  Object {
-                    "label": "facebook-recommendations",
-                    "value": "facebook-recommendations",
-                  },
-                  Object {
-                    "label": "help-center",
-                    "value": "help-center",
-                  },
-                  Object {
-                    "label": "instagram-ad-comment",
-                    "value": "instagram-ad-comment",
-                  },
-                  Object {
-                    "label": "instagram-comment",
-                    "value": "instagram-comment",
-                  },
-                  Object {
-                    "label": "instagram-mention",
-                    "value": "instagram-mention",
-                  },
-                  Object {
-                    "label": "instagram-direct-message",
-                    "value": "instagram-direct-message",
-                  },
-                  Object {
-                    "label": "phone",
-                    "value": "phone",
-                  },
-                  Object {
-                    "label": "sms",
-                    "value": "sms",
-                  },
-                  Object {
-                    "label": "twitter",
-                    "value": "twitter",
-                  },
-                  Object {
-                    "label": "twitter-direct-message",
-                    "value": "twitter-direct-message",
-                  },
-                  Object {
-                    "label": "yotpo-review",
-                    "value": "yotpo-review",
-                  },
-                ]
-              }
-              plural="channels"
-              selectedOptions={
-                Array [
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                ]
-              }
-              singular="channel"
-            />
-          </FormGroup>
-        </Col>
-      </Row>
-      <ForwardRef
-        isLoading={true}
-        type="submit"
-      >
-        Save changes
-      </ForwardRef>
-    </Form>
-  </Container>
-</div>
-`;
-
-exports[`<TicketAssignment/> render() should render the "Unassign on replies" checkbox checked because the setting Unassign replies is enabled 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <HeaderWithInfo
-        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
-        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
-        title="Ticket assignment"
-      />
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <Row
-        className="contentWrapper"
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Col
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Auto-assign tickets
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={true}
-              name="auto_assign_to_teams"
-              onChange={[Function]}
-            >
-              Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Un-assign on reply
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={true}
-              name="unassign_on_reply"
-              onChange={[Function]}
-            >
-              When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 
-                minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Channels
-            </Label>
-            <p>
-              Apply ticket assignment settings to the following channels:
-            </p>
-            <MultiSelectOptionsField
-              allowCustomOptions={false}
-              caseInsensitive={true}
-              matchInput={true}
-              onChange={[Function]}
-              options={
-                Array [
-                  Object {
-                    "label": "aircall",
-                    "value": "aircall",
-                  },
-                  Object {
-                    "label": "api",
-                    "value": "api",
-                  },
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "email",
-                    "value": "email",
-                  },
-                  Object {
-                    "label": "facebook",
-                    "value": "facebook",
-                  },
-                  Object {
-                    "label": "facebook-mention",
-                    "value": "facebook-mention",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                  Object {
-                    "label": "facebook-recommendations",
-                    "value": "facebook-recommendations",
-                  },
-                  Object {
-                    "label": "help-center",
-                    "value": "help-center",
-                  },
-                  Object {
-                    "label": "instagram-ad-comment",
-                    "value": "instagram-ad-comment",
-                  },
-                  Object {
-                    "label": "instagram-comment",
-                    "value": "instagram-comment",
-                  },
-                  Object {
-                    "label": "instagram-mention",
-                    "value": "instagram-mention",
-                  },
-                  Object {
-                    "label": "instagram-direct-message",
-                    "value": "instagram-direct-message",
-                  },
-                  Object {
-                    "label": "phone",
-                    "value": "phone",
-                  },
-                  Object {
-                    "label": "sms",
-                    "value": "sms",
-                  },
-                  Object {
-                    "label": "twitter",
-                    "value": "twitter",
-                  },
-                  Object {
-                    "label": "twitter-direct-message",
-                    "value": "twitter-direct-message",
-                  },
-                  Object {
-                    "label": "yotpo-review",
-                    "value": "yotpo-review",
-                  },
-                ]
-              }
-              plural="channels"
-              selectedOptions={
-                Array [
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                ]
-              }
-              singular="channel"
-            />
-          </FormGroup>
-        </Col>
-      </Row>
-      <ForwardRef
-        isLoading={false}
-        type="submit"
-      >
-        Save changes
-      </ForwardRef>
-    </Form>
-  </Container>
-</div>
-`;
-
-exports[`<TicketAssignment/> render() should render the "Unassign on replies" checkbox checked by default and the auto assign checkbox unchecked by default, because there is no account setting for assignment 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <HeaderWithInfo
-        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
-        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
-        title="Ticket assignment"
-      />
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <Row
-        className="contentWrapper"
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Col
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Auto-assign tickets
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={false}
-              name="auto_assign_to_teams"
-              onChange={[Function]}
-            >
-              Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Un-assign on reply
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={true}
-              name="unassign_on_reply"
-              onChange={[Function]}
-            >
-              When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 
-                minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Channels
-            </Label>
-            <p>
-              Apply ticket assignment settings to the following channels:
-            </p>
-            <MultiSelectOptionsField
-              allowCustomOptions={false}
-              caseInsensitive={true}
-              matchInput={true}
-              onChange={[Function]}
-              options={
-                Array [
-                  Object {
-                    "label": "aircall",
-                    "value": "aircall",
-                  },
-                  Object {
-                    "label": "api",
-                    "value": "api",
-                  },
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "email",
-                    "value": "email",
-                  },
-                  Object {
-                    "label": "facebook",
-                    "value": "facebook",
-                  },
-                  Object {
-                    "label": "facebook-mention",
-                    "value": "facebook-mention",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                  Object {
-                    "label": "facebook-recommendations",
-                    "value": "facebook-recommendations",
-                  },
-                  Object {
-                    "label": "help-center",
-                    "value": "help-center",
-                  },
-                  Object {
-                    "label": "instagram-ad-comment",
-                    "value": "instagram-ad-comment",
-                  },
-                  Object {
-                    "label": "instagram-comment",
-                    "value": "instagram-comment",
-                  },
-                  Object {
-                    "label": "instagram-mention",
-                    "value": "instagram-mention",
-                  },
-                  Object {
-                    "label": "instagram-direct-message",
-                    "value": "instagram-direct-message",
-                  },
-                  Object {
-                    "label": "phone",
-                    "value": "phone",
-                  },
-                  Object {
-                    "label": "sms",
-                    "value": "sms",
-                  },
-                  Object {
-                    "label": "twitter",
-                    "value": "twitter",
-                  },
-                  Object {
-                    "label": "twitter-direct-message",
-                    "value": "twitter-direct-message",
-                  },
-                  Object {
-                    "label": "yotpo-review",
-                    "value": "yotpo-review",
-                  },
-                ]
-              }
-              plural="channels"
-              selectedOptions={
-                Array [
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                ]
-              }
-              singular="channel"
-            />
-          </FormGroup>
-        </Col>
-      </Row>
-      <ForwardRef
-        isLoading={false}
-        type="submit"
-      >
-        Save changes
-      </ForwardRef>
-    </Form>
-  </Container>
-</div>
-`;
-
-exports[`<TicketAssignment/> render() should render the "Unassign on replies" checkbox unchecked because the setting Unassign replies isdisabled 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <HeaderWithInfo
-        description="Automate the assignment of tickets among your team members or the unassignment when your  agents are not available to respond. You can use both at the same time!"
-        helpUrl="https://docs.gorgias.com/ticket/auto-assign-tickets"
-        title="Ticket assignment"
-      />
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
-  >
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <Row
-        className="contentWrapper"
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <Col
-          tag="div"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Auto-assign tickets
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={true}
-              name="auto_assign_to_teams"
-              onChange={[Function]}
-            >
-              Auto-assign tickets that are assigned to a team, to an available agent of this team, as soon as an agent of the team is available
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Un-assign on reply
-            </Label>
-            <ForwardRef(CheckBox)
-              isChecked={false}
-              name="unassign_on_reply"
-              onChange={[Function]}
-            >
-              When there is a new reply in a ticket of the following channels, if the user assigned to it is not available, un-assign the ticket
-            </ForwardRef(CheckBox)>
-          </FormGroup>
-          <div
-            className="text-faded"
-          >
-            Users are considered as not available when any of those conditions is true:
-            <ul>
-              <li>
-                the user turned off its "Available" setting
-              </li>
-              <li>
-                the user has been inactive on Gorgias for more than
-                 
-                10
-                 
-                minutes
-              </li>
-              <li>
-                the user is not on Gorgias on any device
-              </li>
-            </ul>
-          </div>
-          <FormGroup
-            className="inputField"
-            tag="div"
-          >
-            <Label
-              className="control-label"
-              tag="label"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              Channels
-            </Label>
-            <p>
-              Apply ticket assignment settings to the following channels:
-            </p>
-            <MultiSelectOptionsField
-              allowCustomOptions={false}
-              caseInsensitive={true}
-              matchInput={true}
-              onChange={[Function]}
-              options={
-                Array [
-                  Object {
-                    "label": "aircall",
-                    "value": "aircall",
-                  },
-                  Object {
-                    "label": "api",
-                    "value": "api",
-                  },
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "email",
-                    "value": "email",
-                  },
-                  Object {
-                    "label": "facebook",
-                    "value": "facebook",
-                  },
-                  Object {
-                    "label": "facebook-mention",
-                    "value": "facebook-mention",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                  Object {
-                    "label": "facebook-recommendations",
-                    "value": "facebook-recommendations",
-                  },
-                  Object {
-                    "label": "help-center",
-                    "value": "help-center",
-                  },
-                  Object {
-                    "label": "instagram-ad-comment",
-                    "value": "instagram-ad-comment",
-                  },
-                  Object {
-                    "label": "instagram-comment",
-                    "value": "instagram-comment",
-                  },
-                  Object {
-                    "label": "instagram-mention",
-                    "value": "instagram-mention",
-                  },
-                  Object {
-                    "label": "instagram-direct-message",
-                    "value": "instagram-direct-message",
-                  },
-                  Object {
-                    "label": "phone",
-                    "value": "phone",
-                  },
-                  Object {
-                    "label": "sms",
-                    "value": "sms",
-                  },
-                  Object {
-                    "label": "twitter",
-                    "value": "twitter",
-                  },
-                  Object {
-                    "label": "twitter-direct-message",
-                    "value": "twitter-direct-message",
-                  },
-                  Object {
-                    "label": "yotpo-review",
-                    "value": "yotpo-review",
-                  },
-                ]
-              }
-              plural="channels"
-              selectedOptions={
-                Array [
-                  Object {
-                    "label": "chat",
-                    "value": "chat",
-                  },
-                  Object {
-                    "label": "facebook-messenger",
-                    "value": "facebook-messenger",
-                  },
-                ]
-              }
-              singular="channel"
-            />
-          </FormGroup>
-        </Col>
-      </Row>
-      <ForwardRef
-        isLoading={false}
-        type="submit"
-      >
-        Save changes
-      </ForwardRef>
-    </Form>
-  </Container>
-</div>
 `;
