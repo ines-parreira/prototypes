@@ -20,6 +20,8 @@ import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategorie
 import {HelpCenterCategoryEdit} from 'pages/settings/helpCenter/components/HelpCenterCategoryEdit'
 import {changeViewLanguage} from 'state/ui/helpCenter'
 
+import {useSearchContext} from '../../providers/SearchContext'
+
 type Props = {
     helpCenter: HelpCenter
 }
@@ -34,6 +36,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
     } = getParams()
     const category = useAppSelector(getCategoryById(params?.id))
     const categoriesActions = useCategoriesActions()
+    const {setSearchInput} = useSearchContext()
 
     const [{loading, value: translation}, getCategoryTranslation] = useAsyncFn(
         (categoryId: number, locale: LocaleCode) => {
@@ -92,6 +95,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
             )
 
             closeModal()
+            setSearchInput('')
         } catch (err) {
             const errorMessage =
                 axios.isAxiosError(err) && err.response?.status === 400
@@ -121,6 +125,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
             )
 
             closeModal()
+            setSearchInput('')
         } catch (err) {
             const errorMessage =
                 axios.isAxiosError(err) && err.response?.status === 400
@@ -149,6 +154,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 })
             )
             closeModal()
+            setSearchInput('')
         } catch (err) {
             void dispatch(
                 notify({
@@ -177,6 +183,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                     status: NotificationStatus.Success,
                 })
             )
+            setSearchInput('')
         } catch (err) {
             void dispatch(
                 notify({

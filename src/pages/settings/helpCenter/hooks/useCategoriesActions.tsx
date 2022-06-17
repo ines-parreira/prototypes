@@ -20,6 +20,7 @@ import {
 } from 'state/entities/helpCenter/categories'
 import {getViewLanguage} from 'state/ui/helpCenter'
 import useAppSelector from 'hooks/useAppSelector'
+import {flattenCategories} from 'models/helpCenter/utils'
 
 import {CategoriesPositionsType} from '../components/CategoriesTable'
 import {getCategoriesToUpdate} from '../utils/getCategoriesToUpdate'
@@ -56,6 +57,38 @@ export const useCategoriesActions = () => {
                 setIsLoading(false)
 
                 throw error
+            }
+        },
+
+        async fetchCategories(
+            locale: LocaleCode,
+            parentCategoryId: number,
+            shouldReset: boolean
+        ) {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            try {
+                setIsLoading(true)
+                const {data} = await client.getCategoryTree({
+                    help_center_id: helpCenterId,
+                    parent_category_id: parentCategoryId,
+                    depth: -1,
+                    order_by: 'position',
+                    order_dir: 'asc',
+                    locale,
+                })
+
+                const flatCategories = flattenCategories(data)
+                dispatch(
+                    saveCategories({
+                        categories: flatCategories,
+                        shouldReset,
+                    })
+                )
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setIsLoading(false)
             }
         },
 

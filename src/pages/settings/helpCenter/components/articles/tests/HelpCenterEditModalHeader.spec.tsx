@@ -83,7 +83,6 @@ describe('<HelpCenterEditModalHeader />', () => {
         onCopyLinkToClipboard: mockedOnCopyToClipboard,
         onArticleLanguageSelectActionClick:
             mockedOnArticleLanguageSelectActionClick,
-        helpCenterId: 1,
         articleMode: {
             mode: 'modified',
             onSave: mockedOnSave,

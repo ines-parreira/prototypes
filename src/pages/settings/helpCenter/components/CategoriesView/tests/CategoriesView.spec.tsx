@@ -16,6 +16,7 @@ import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getInitialRootCategory} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
+import {SearchContextProvider} from 'pages/settings/helpCenter/providers/SearchContext'
 
 import {CategoriesViews} from '../CategoriesView'
 
@@ -97,12 +98,16 @@ describe('<CategoriesViews />', () => {
 
         renderWithRouter(
             <Provider store={mockedStore(initialState)}>
-                <CategoriesViews
+                <SearchContextProvider
                     helpCenter={getSingleHelpCenterResponseFixture}
-                    renderArticleList={() => <div />}
-                    onCreateArticle={jest.fn()}
-                    onCreateCategory={jest.fn()}
-                />
+                >
+                    <CategoriesViews
+                        helpCenter={getSingleHelpCenterResponseFixture}
+                        renderArticleList={() => <div />}
+                        onCreateArticle={jest.fn()}
+                        onCreateCategory={jest.fn()}
+                    />
+                </SearchContextProvider>
             </Provider>
         )
 
@@ -156,14 +161,18 @@ describe('<CategoriesViews />', () => {
 
         renderWithRouter(
             <Provider store={mockedStore(initialState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <CategoriesViews
-                        helpCenter={getSingleHelpCenterResponseFixture}
-                        renderArticleList={() => <div />}
-                        onCreateArticle={jest.fn()}
-                        onCreateCategory={jest.fn()}
-                    />
-                </DndProvider>
+                <SearchContextProvider
+                    helpCenter={getSingleHelpCenterResponseFixture}
+                >
+                    <DndProvider backend={HTML5Backend}>
+                        <CategoriesViews
+                            helpCenter={getSingleHelpCenterResponseFixture}
+                            renderArticleList={() => <div />}
+                            onCreateArticle={jest.fn()}
+                            onCreateCategory={jest.fn()}
+                        />
+                    </DndProvider>
+                </SearchContextProvider>
             </Provider>
         )
 
@@ -203,14 +212,18 @@ describe('<CategoriesViews />', () => {
 
         renderWithRouter(
             <Provider store={mockedStore(initialState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <CategoriesViews
-                        helpCenter={getSingleHelpCenterResponseFixture}
-                        renderArticleList={() => <div />}
-                        onCreateArticle={jest.fn()}
-                        onCreateCategory={jest.fn()}
-                    />
-                </DndProvider>
+                <SearchContextProvider
+                    helpCenter={getSingleHelpCenterResponseFixture}
+                >
+                    <DndProvider backend={HTML5Backend}>
+                        <CategoriesViews
+                            helpCenter={getSingleHelpCenterResponseFixture}
+                            renderArticleList={() => <div />}
+                            onCreateArticle={jest.fn()}
+                            onCreateCategory={jest.fn()}
+                        />
+                    </DndProvider>
+                </SearchContextProvider>
             </Provider>
         )
 

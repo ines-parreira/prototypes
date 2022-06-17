@@ -114,9 +114,6 @@ const DroppableCategoriesTableRow = ({
 
     const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
 
-    // FIXME: the form language selector is broken for this case
-    // cf. https://linear.app/gorgias/issue/SS-1019/cms-the-language-selector-is-broken-when-creating-an-article-inside-a
-
     const languageList = useMemo(() => {
         if (category.available_locales.length > 0) {
             return category.available_locales.map((code) => localesByCode[code])
@@ -150,9 +147,6 @@ const DroppableCategoriesTableRow = ({
                     unreachable(name)
                 }
             }
-
-            // FIXME: the form language selector is broken for this case
-            // cf. https://linear.app/gorgias/issue/SS-1019/cms-the-language-selector-is-broken-when-creating-an-article-inside-a
         },
         [articleModal, category, categoryModal]
     )

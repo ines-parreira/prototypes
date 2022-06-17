@@ -848,6 +848,33 @@ declare namespace Components {
        */
       custom_footer_deactivated?: boolean;
     }
+    export interface GetHelpCenterDto {
+      created_datetime: string; // date-time
+      updated_datetime: string; // date-time
+      deleted_datetime?: string | null; // date-time
+      id: number;
+      name: string;
+      subdomain: string;
+      deactivated_datetime: string | null; // date-time
+      readonly default_locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      supported_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
+      favicon_url?: string | null;
+      brand_logo_url?: string | null;
+      brand_logo_light_url?: string | null;
+      search_deactivated_datetime: string | null; // date-time
+      powered_by_deactivated_datetime: string | null; // date-time
+      algolia_api_key: string | null;
+      algolia_app_id: string;
+      algolia_index_name: string;
+      primary_color: string;
+      primary_font_family: string;
+      theme: string;
+      shop_name: string | null;
+      self_service_deactivated_datetime: string | null; // date-time
+      hotswap_session_token: string | null;
+      translations?: HelpCenterTranslationDto[];
+      redirects?: RedirectDto[];
+    }
     export interface HelpCenterDto {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
@@ -924,7 +951,7 @@ declare namespace Components {
     export interface HelpCentersListPageDto {
       meta: PageMetaDto;
       object: "list";
-      data: HelpCenterDto[];
+      data: GetHelpCenterDto[];
     }
     export interface HotswapProgressDto {
       progress: "NOT_STARTED" | "IN_PROGRESS" | "SUCCESS" | "FAILURE";
@@ -1891,13 +1918,17 @@ declare namespace Paths {
   }
   namespace GetHelpCenter {
     namespace Parameters {
+      export type Fields = string;
       export type HelpCenterId = number;
     }
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
     }
+    export interface QueryParameters {
+      fields?: Parameters.Fields;
+    }
     namespace Responses {
-      export type $200 = Components.Schemas.HelpCenterDto;
+      export type $200 = Components.Schemas.GetHelpCenterDto;
     }
   }
   namespace GetHotswapStatus {
@@ -2013,6 +2044,7 @@ declare namespace Paths {
     namespace Parameters {
       export type HasCategory = boolean;
       export type HelpCenterId = number;
+      export type Ids = number[];
       export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
@@ -2027,6 +2059,7 @@ declare namespace Paths {
       has_category?: Parameters.HasCategory;
       locale?: Parameters.Locale;
       version_status?: Parameters.VersionStatus;
+      ids?: Parameters.Ids;
       order_by?: Parameters.OrderBy;
       order_dir?: Parameters.OrderDir;
       per_page?: Parameters.PerPage;
@@ -2065,6 +2098,7 @@ declare namespace Paths {
     namespace Parameters {
       export type CategoryId = number;
       export type HelpCenterId = number;
+      export type Ids = number[];
       export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       export type OrderBy = "position";
       export type OrderDir = "asc" | "desc";
@@ -2079,6 +2113,7 @@ declare namespace Paths {
     export interface QueryParameters {
       locale?: Parameters.Locale;
       version_status?: Parameters.VersionStatus;
+      ids?: Parameters.Ids;
       order_by?: Parameters.OrderBy;
       order_dir?: Parameters.OrderDir;
       per_page?: Parameters.PerPage;
@@ -2144,6 +2179,7 @@ declare namespace Paths {
   namespace ListHelpCenters {
     namespace Parameters {
       export type CustomDomain = string;
+      export type Fields = string;
       export type Page = any;
       export type PerPage = any;
       export type Subdomain = string;
@@ -2151,6 +2187,7 @@ declare namespace Paths {
     export interface QueryParameters {
       subdomain?: Parameters.Subdomain;
       custom_domain?: Parameters.CustomDomain;
+      fields?: Parameters.Fields;
       per_page?: Parameters.PerPage;
       page?: Parameters.Page;
     }
@@ -2476,7 +2513,7 @@ export interface OperationMethods {
    * getHelpCenter - Retrieve a help center
    */
   'getHelpCenter'(
-    parameters?: Parameters<Paths.GetHelpCenter.PathParameters> | null,
+    parameters?: Parameters<Paths.GetHelpCenter.PathParameters & Paths.GetHelpCenter.QueryParameters> | null,
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetHelpCenter.Responses.$200>
@@ -2616,6 +2653,30 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetLocale.Responses.$200>
+  /**
+   * getRedirect - Retrieve a redirect
+   */
+  'getRedirect'(
+    parameters?: Parameters<Paths.GetRedirect.PathParameters & Paths.GetRedirect.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetRedirect.Responses.$200>
+  /**
+   * createRedirect - Create a new redirect
+   */
+  'createRedirect'(
+    parameters?: Parameters<Paths.CreateRedirect.PathParameters> | null,
+    data?: Paths.CreateRedirect.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.CreateRedirect.Responses.$201>
+  /**
+   * deleteRedirect - Delete a redirect
+   */
+  'deleteRedirect'(
+    parameters?: Parameters<Paths.DeleteRedirect.PathParameters & Paths.DeleteRedirect.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
   /**
    * listCategories - List categories
    * 
@@ -2963,30 +3024,6 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
-  /**
-   * getRedirect - Retrieve a redirect
-   */
-  'getRedirect'(
-    parameters?: Parameters<Paths.GetRedirect.PathParameters & Paths.GetRedirect.QueryParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.GetRedirect.Responses.$200>
-  /**
-   * createRedirect - Create a new redirect
-   */
-  'createRedirect'(
-    parameters?: Parameters<Paths.CreateRedirect.PathParameters> | null,
-    data?: Paths.CreateRedirect.RequestBody,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<Paths.CreateRedirect.Responses.$201>
-  /**
-   * deleteRedirect - Delete a redirect
-   */
-  'deleteRedirect'(
-    parameters?: Parameters<Paths.DeleteRedirect.PathParameters & Paths.DeleteRedirect.QueryParameters> | null,
-    data?: any,
-    config?: AxiosRequestConfig  
-  ): OperationResponse<any>
 }
 
 export interface PathsDictionary {
@@ -3100,7 +3137,7 @@ export interface PathsDictionary {
      * getHelpCenter - Retrieve a help center
      */
     'get'(
-      parameters?: Parameters<Paths.GetHelpCenter.PathParameters> | null,
+      parameters?: Parameters<Paths.GetHelpCenter.PathParameters & Paths.GetHelpCenter.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetHelpCenter.Responses.$200>
@@ -3262,6 +3299,32 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetLocale.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/redirects']: {
+    /**
+     * createRedirect - Create a new redirect
+     */
+    'post'(
+      parameters?: Parameters<Paths.CreateRedirect.PathParameters> | null,
+      data?: Paths.CreateRedirect.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.CreateRedirect.Responses.$201>
+    /**
+     * getRedirect - Retrieve a redirect
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetRedirect.PathParameters & Paths.GetRedirect.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetRedirect.Responses.$200>
+    /**
+     * deleteRedirect - Delete a redirect
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteRedirect.PathParameters & Paths.DeleteRedirect.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/{help_center_id}/categories']: {
     /**
@@ -3648,32 +3711,6 @@ export interface PathsDictionary {
      */
     'get'(
       parameters?: Parameters<UnknownParamsObject> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<any>
-  }
-  ['/api/help-center/help-centers/{help_center_id}/redirects']: {
-    /**
-     * createRedirect - Create a new redirect
-     */
-    'post'(
-      parameters?: Parameters<Paths.CreateRedirect.PathParameters> | null,
-      data?: Paths.CreateRedirect.RequestBody,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.CreateRedirect.Responses.$201>
-    /**
-     * getRedirect - Retrieve a redirect
-     */
-    'get'(
-      parameters?: Parameters<Paths.GetRedirect.PathParameters & Paths.GetRedirect.QueryParameters> | null,
-      data?: any,
-      config?: AxiosRequestConfig  
-    ): OperationResponse<Paths.GetRedirect.Responses.$200>
-    /**
-     * deleteRedirect - Delete a redirect
-     */
-    'delete'(
-      parameters?: Parameters<Paths.DeleteRedirect.PathParameters & Paths.DeleteRedirect.QueryParameters> | null,
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>

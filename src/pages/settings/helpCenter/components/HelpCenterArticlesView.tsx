@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 import axios from 'axios'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
+import {usePrevious} from 'react-use'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -43,6 +44,7 @@ import {
 import {ArticleMode, getArticleMode} from '../types/articleMode'
 
 import {useEditionManager} from '../providers/EditionManagerContext'
+import {useSearchContext} from '../providers/SearchContext'
 
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 import {CloseModal} from './articles/CloseModal'
@@ -59,6 +61,7 @@ import css from './HelpCenterArticlesView.less'
 import HelpCenterArticleModalBasicViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent'
 import HelpCenterArticleModalAdvancedViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent'
 import {HelpCenterArticleModalView} from './articles/HelpCenterEditArticleModalContent/types'
+import {SearchView} from './SearchView'
 
 export const HelpCenterArticlesView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -67,6 +70,7 @@ export const HelpCenterArticlesView: React.FC = () => {
     const helpCenter = useCurrentHelpCenter()
     const {getHelpCenterCustomDomain} = useHelpCenterActions()
     const [isReady, setIsReady] = useState(false)
+    const {setSearchInput} = useSearchContext()
 
     /**
      * EditionManagerContext
@@ -82,6 +86,8 @@ export const HelpCenterArticlesView: React.FC = () => {
         setEditModal,
         isEditorCodeViewActive,
     } = useEditionManager()
+
+    const {searchResults} = useSearchContext()
 
     /**
      * States
@@ -292,6 +298,10 @@ export const HelpCenterArticlesView: React.FC = () => {
         })
     }
 
+    const resetSearch = () => {
+        setSearchInput('')
+    }
+
     const reloadArticle = (article: Article) => {
         setSelectedArticle(article)
         setSelectedExistingArticleTranslation(article.translation)
@@ -310,6 +320,8 @@ export const HelpCenterArticlesView: React.FC = () => {
                 })),
             article.translation,
         ])
+
+        resetSearch()
     }
 
     const createArticle = async (
@@ -423,6 +435,7 @@ export const HelpCenterArticlesView: React.FC = () => {
             setSelectedExistingArticleTranslation(null)
             setSelectedArticle(null)
             closeModal()
+            resetSearch()
         }
     }
 
@@ -431,6 +444,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         articles: Article[]
     ): void => {
         void articlesActions.updateArticlesPositions(articles, categoryId)
+        resetSearch()
     }
 
     const onArticleRowSettingsClick = async (
@@ -459,6 +473,7 @@ export const HelpCenterArticlesView: React.FC = () => {
             case 'duplicateArticle': {
                 try {
                     await articlesActions.cloneArticle(article)
+                    resetSearch()
 
                     void dispatch(
                         notify({
@@ -567,6 +582,7 @@ export const HelpCenterArticlesView: React.FC = () => {
             )
         }
         onArticleModalClose()
+        resetSearch()
     }
 
     const onArticleLanguageSelectAttempt = (localeCode: LocaleCode) => {
@@ -781,6 +797,25 @@ export const HelpCenterArticlesView: React.FC = () => {
         isEditorCodeViewActive,
     ])
 
+    const isSearching =
+        searchResults !== null && searchResults.state !== 'error'
+
+    const previousIsSearching = usePrevious(isSearching)
+
+    useEffect(() => {
+        /*
+         * if we just switched from search results to no ongoing search,
+         * then we must reset loaded categories and articles,
+         * otherwise, CategoriesView will wrongly assume that the first 20 articles / categories are already loaded,
+         * whilst it is not the case.
+         */
+        if (previousIsSearching && !isSearching) {
+            dispatch(resetCategories())
+            dispatch(resetArticles())
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isSearching, previousIsSearching])
+
     return (
         <HelpCenterPageWrapper
             helpCenter={helpCenter}
@@ -803,7 +838,14 @@ export const HelpCenterArticlesView: React.FC = () => {
             <MaxArticleBanner
                 nbArticles={limitations.createArticle.currentNumber}
             />
-            {isReady && (
+
+            <SearchView
+                helpCenter={helpCenter}
+                onArticleClick={onArticleSelect}
+                onArticleClickSettings={onArticleRowSettingsClick}
+            />
+
+            {isReady && !isSearching && (
                 <CategoriesViews
                     helpCenter={helpCenter}
                     onCreateArticle={onArticleCreate}

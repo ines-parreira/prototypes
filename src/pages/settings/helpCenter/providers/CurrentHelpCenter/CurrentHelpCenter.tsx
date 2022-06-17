@@ -41,6 +41,7 @@ import {
 
 import './CurrentHelpCenter.less'
 import {EditionManagerContextProvider} from '../EditionManagerContext'
+import {SearchContextProvider} from '../SearchContext'
 
 const CurrentHelpCenterContext = createContext<HelpCenter | null>(null)
 
@@ -120,9 +121,11 @@ export const CurrentHelpCenter: React.FC = () => {
                     path={`${path}/articles`}
                     exact
                     render={() => (
-                        <EditionManagerContextProvider>
-                            <HelpCenterArticlesView />
-                        </EditionManagerContextProvider>
+                        <SearchContextProvider helpCenter={helpCenter}>
+                            <EditionManagerContextProvider>
+                                <HelpCenterArticlesView />
+                            </EditionManagerContextProvider>
+                        </SearchContextProvider>
                     )}
                 />
                 <Route

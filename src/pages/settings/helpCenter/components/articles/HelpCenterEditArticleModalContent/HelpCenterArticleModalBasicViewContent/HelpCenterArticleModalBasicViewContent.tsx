@@ -117,7 +117,6 @@ const HelpCenterArticleModalBasicViewContent = ({
                 showInlineLanguageSelect
                 showCategorySelect
                 showVisibilitySelect
-                helpCenterId={helpCenter.id}
                 title={selectedArticle.translation.title}
                 isFullscreen={isFullscreenEditModal}
                 supportedLocales={helpCenter.supported_locales}

@@ -69,9 +69,42 @@ export const useArticlesActions = () => {
     return {
         isLoading,
 
+        fetchArticlesByIds: async (ids: number[]) => {
+            if (!client) throw new Error('HTTP client not initialized!')
+
+            setIsLoading(true)
+
+            try {
+                const {
+                    data: {data: articles, meta},
+                } = await client.listArticles({
+                    help_center_id: helpCenterId,
+                    order_by: 'position',
+                    version_status: 'latest_draft',
+                    ids,
+                    per_page: ids.length,
+                    page: 1,
+                })
+
+                const payload = articles.map((article, index) =>
+                    createArticleFromDto(article, index)
+                )
+
+                dispatch(saveArticles(payload))
+
+                setIsLoading(false)
+
+                return {articles, meta}
+            } catch (err) {
+                setIsLoading(false)
+
+                throw err
+            }
+        },
+
         fetchArticles: async (
             categoryId: number | null,
-            params?: {page: number; per_page: number}
+            params?: {page: number; per_page: number; ids?: number[]}
         ) => {
             if (!client) throw new Error('HTTP client not initialized!')
 

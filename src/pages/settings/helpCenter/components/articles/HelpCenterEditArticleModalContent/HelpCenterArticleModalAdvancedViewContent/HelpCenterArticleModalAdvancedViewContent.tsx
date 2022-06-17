@@ -85,7 +85,6 @@ const HelpCenterArticleModalAdvancedViewContent = ({
         <span className={css.modalForm}>
             <HelpCenterEditModalHeader
                 articleMode={articleMode}
-                helpCenterId={helpCenter.id}
                 supportedLocales={helpCenter.supported_locales}
                 onLanguageSelect={onArticleLanguageSelect}
                 title="Article Settings"
@@ -120,7 +119,6 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                         : undefined
                 }
                 categoryId={selectedCategoryId}
-                helpCenterId={helpCenter.id}
                 translation={selectedArticle.translation}
                 onCategoryChange={setSelectedCategoryId}
                 onChange={(translation: CreateArticleTranslationDto) =>

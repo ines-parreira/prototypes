@@ -19,6 +19,7 @@ import settingsCss from 'pages/settings/settings.less'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {CategoriesPositionsType} from '../CategoriesTable/CategoriesTable'
+import {useSearchContext} from '../../providers/SearchContext'
 
 import css from './CategoriesView.less'
 
@@ -39,12 +40,13 @@ export const CategoriesViews = ({
     const uncategorizedArticles = useAppSelector(getUncategorizedArticles)
     const viewLanguage =
         useAppSelector(getViewLanguage) || helpCenter.default_locale
-    const {categories, isLoading} = useHelpCenterCategories(helpCenter.id, {
+    const {categories, isLoading} = useHelpCenterCategories({
         per_page: CATEGORIES_PER_PAGE,
         locale: viewLanguage,
     })
     const [uncategorizedArticleCount, setUncategorizedArticleCount] =
         useState(0)
+    const {setSearchInput} = useSearchContext()
 
     const handleOnReorder = ({
         categories,
@@ -57,6 +59,7 @@ export const CategoriesViews = ({
                 categoryId,
                 defaultSiblingsPositions,
             })
+            setSearchInput('')
         }
     }
 

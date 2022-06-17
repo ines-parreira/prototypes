@@ -1,0 +1,1169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchResults displays article and category search results 1`] = `
+<div>
+  <table
+    class="table"
+  >
+    <thead
+      class="header-tr"
+    >
+      <tr
+        class="headerRow"
+      >
+        <td
+          class="wrapper normal"
+          style="width: 25px;"
+        />
+        <td
+          class="wrapper normal"
+        />
+        <td
+          class="wrapper normal"
+        />
+        <td
+          class="wrapper normal"
+          style="width: 124px;"
+        />
+        <td
+          class="wrapper normal"
+          style="width: 160px;"
+        />
+      </tr>
+    </thead>
+    <tbody
+      class="tableBody table-body"
+    >
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper cell nesting-level-0 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <span
+              class="caret material-icons"
+            >
+              arrow_drop_down
+            </span>
+            <span
+              class="category-title"
+            >
+              Cat 1 mod
+            </span>
+          </div>
+        </td>
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="min-width: 110px; width: 110px;"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="container"
+            >
+              <i
+                class="icon material-icons"
+              >
+                visibility
+              </i>
+              <div
+                class="title"
+              >
+                Public
+              </div>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="language-bullet-list"
+            >
+              <div
+                class="language-bullet-item"
+                data-testid="locale-bullet-en-US"
+              >
+                <img
+                  alt="en-US"
+                  class="flag-emoji"
+                  data-testid="flag-en-US"
+                  src="test-file-stub"
+                />
+              </div>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="categorySettings"
+                id="categorySettings-28"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedCategory"
+                id="createNestedCategory-28"
+              >
+                playlist_add
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedArticle"
+                id="createNestedArticle-28"
+              >
+                note_add
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper cell nesting-level-1 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="min-width: 110px; width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="categorySettings"
+                id="categorySettings-39"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedCategory"
+                id="createNestedCategory-39"
+              >
+                playlist_add
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedArticle"
+                id="createNestedArticle-39"
+              >
+                note_add
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        aria-label="open article"
+        class="row row isClickable"
+      >
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper nesting-level-2 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 77px; min-width: 77px;"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="rating"
+              id="rating-34"
+            >
+              <img
+                alt="star"
+                src="test-file-stub"
+              />
+              <div
+                class="rating-text"
+              >
+                0
+                %
+              </div>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper nested-cell normal"
+          style="width: 110px; min-width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 120px;"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="articleSettings"
+                id="articleSettings-34"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="duplicateArticle"
+                id="duplicateArticle-34"
+              >
+                content_copy
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="copyToClipboard"
+                id="copyToClipboard-34"
+              >
+                share
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper cell nesting-level-1 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="min-width: 110px; width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="categorySettings"
+                id="categorySettings-38"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedCategory"
+                id="createNestedCategory-38"
+              >
+                playlist_add
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedArticle"
+                id="createNestedArticle-38"
+              >
+                note_add
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper cell nesting-level-1 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="min-width: 110px; width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="categorySettings"
+                id="categorySettings-37"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedCategory"
+                id="createNestedCategory-37"
+              >
+                playlist_add
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedArticle"
+                id="createNestedArticle-37"
+              >
+                note_add
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper cell nesting-level-1 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="min-width: 110px; width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="categorySettings"
+                id="categorySettings-35"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedCategory"
+                id="createNestedCategory-35"
+              >
+                playlist_add
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedArticle"
+                id="createNestedArticle-35"
+              >
+                note_add
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper cell nesting-level-2 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="min-width: 110px; width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="categorySettings"
+                id="categorySettings-36"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedCategory"
+                id="createNestedCategory-36"
+              >
+                playlist_add
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedArticle"
+                id="createNestedArticle-36"
+              >
+                note_add
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper cell nesting-level-1 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="min-width: 110px; width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="categorySettings"
+                id="categorySettings-29"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedCategory"
+                id="createNestedCategory-29"
+              >
+                playlist_add
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedArticle"
+                id="createNestedArticle-29"
+              >
+                note_add
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper cell nesting-level-2 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="min-width: 110px; width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="categorySettings"
+                id="categorySettings-30"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedCategory"
+                id="createNestedCategory-30"
+              >
+                playlist_add
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedArticle"
+                id="createNestedArticle-30"
+              >
+                note_add
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        class="row row"
+      >
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper cell nesting-level-3 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper cell normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="min-width: 110px; width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="categorySettings"
+                id="categorySettings-31"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedCategory"
+                disabled=""
+                id="createNestedCategory-31"
+              >
+                playlist_add
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="createNestedArticle"
+                id="createNestedArticle-31"
+              >
+                note_add
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        aria-label="open article"
+        class="row row isClickable"
+      >
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper nesting-level-4 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 77px; min-width: 77px;"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="rating"
+              id="rating-32"
+            >
+              <img
+                alt="star"
+                src="test-file-stub"
+              />
+              <div
+                class="rating-text"
+              >
+                0
+                %
+              </div>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper nested-cell normal"
+          style="width: 110px; min-width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 120px;"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="articleSettings"
+                id="articleSettings-32"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="duplicateArticle"
+                id="duplicateArticle-32"
+              >
+                content_copy
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="copyToClipboard"
+                id="copyToClipboard-32"
+              >
+                share
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        aria-label="open article"
+        class="row row isClickable"
+      >
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper nesting-level-4 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 77px; min-width: 77px;"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="rating"
+              id="rating-31"
+            >
+              <img
+                alt="star"
+                src="test-file-stub"
+              />
+              <div
+                class="rating-text"
+              >
+                0
+                %
+              </div>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper nested-cell normal"
+          style="width: 110px; min-width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 120px;"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="articleSettings"
+                id="articleSettings-31"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="duplicateArticle"
+                id="duplicateArticle-31"
+              >
+                content_copy
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="copyToClipboard"
+                id="copyToClipboard-31"
+              >
+                share
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr
+        aria-label="open article"
+        class="row row isClickable"
+      >
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper nesting-level-4 normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="loading-content"
+            />
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 77px; min-width: 77px;"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="rating"
+              id="rating-29"
+            >
+              <img
+                alt="star"
+                src="test-file-stub"
+              />
+              <div
+                class="rating-text"
+              >
+                0
+                %
+              </div>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper nested-cell normal"
+          style="width: 110px; min-width: 110px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 105px; min-width: 105px;"
+        >
+          <div
+            class="cellContent"
+          />
+        </td>
+        <td
+          class="wrapper normal"
+          style="width: 120px;"
+        >
+          <div
+            class="cellContent actions"
+          >
+            <div
+              class="action-list"
+            >
+              <button
+                class="action material-icons"
+                data-testid="articleSettings"
+                id="articleSettings-29"
+              >
+                settings
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="duplicateArticle"
+                id="duplicateArticle-29"
+              >
+                content_copy
+              </button>
+              <button
+                class="action material-icons"
+                data-testid="copyToClipboard"
+                id="copyToClipboard-29"
+              >
+                share
+              </button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

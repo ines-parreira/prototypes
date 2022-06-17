@@ -8,38 +8,16 @@ import configureMockStore from 'redux-mock-store'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
-import {
-    getCategories,
-    saveCategories,
-} from 'state/entities/helpCenter/categories'
+import {getCategories} from 'state/entities/helpCenter/categories'
 
 import {useHelpCenterCategories} from '../useHelpCenterCategories'
 import {useCurrentHelpCenter} from '../../providers/CurrentHelpCenter'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import {useCategoriesActions} from '../useCategoriesActions'
 
-jest.mock('../useHelpCenterApi', () => {
-    return {
-        useHelpCenterApi: jest.fn().mockReturnValue({
-            isReady: true,
-            client: {
-                getCategoryTree: () =>
-                    Promise.resolve({
-                        data: {
-                            created_datetime: '2022-03-07T14:46:47.212Z',
-                            updated_datetime: '2022-03-07T14:46:47.212Z',
-                            deleted_datetime: null,
-                            id: 0,
-                            help_center_id: 3,
-                            available_locales: [],
-                            children: [],
-                            articles: [],
-                            translation: null,
-                        },
-                    }),
-                getCategoriesPositions: () => Promise.resolve({data: []}),
-            },
-        }),
-    }
+jest.mock('../useCategoriesActions')
+;(useCategoriesActions as jest.Mock).mockReturnValue({
+    fetchCategories: () => Promise.resolve(),
 })
 
 jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
@@ -49,14 +27,6 @@ jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
 
 jest.mock('state/entities/helpCenter/categories', () => ({
     getCategories: jest.fn(),
-    saveCategories: jest.fn().mockReturnValue({
-        type: 'HELPCENTER/CATEGORIES/SAVE_CATEGORIES',
-        payload: {},
-    }),
-    savePositions: jest.fn().mockReturnValue({
-        type: 'HELPCENTER/CATEGORIES/SAVE_POSITIONS',
-        payload: [],
-    }),
 }))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -81,7 +51,7 @@ describe('useHelpCenterCategories', () => {
 
     it('finishes loading once the requests are done', async () => {
         const {result, waitForNextUpdate} = renderHook(
-            () => useHelpCenterCategories(1, {locale: 'en-US'}),
+            () => useHelpCenterCategories({locale: 'en-US'}),
             {
                 wrapper: dependencyWrapper,
             }
@@ -91,19 +61,8 @@ describe('useHelpCenterCategories', () => {
         expect(result.current.isLoading).toBeFalsy()
     })
 
-    it('saves the categories once they are fetched', async () => {
-        const {waitForNextUpdate} = renderHook(
-            () => useHelpCenterCategories(1, {locale: 'en-US'}),
-            {
-                wrapper: dependencyWrapper,
-            }
-        )
-        await waitForNextUpdate()
-        expect(saveCategories).toHaveBeenCalled()
-    })
-
     it('uses the getCategories selector', () => {
-        renderHook(() => useHelpCenterCategories(1, {locale: 'en-US'}), {
+        renderHook(() => useHelpCenterCategories({locale: 'en-US'}), {
             wrapper: dependencyWrapper,
         })
         expect(getCategories).toHaveBeenCalled()

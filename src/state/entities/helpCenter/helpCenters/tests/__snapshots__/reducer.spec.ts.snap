@@ -5,8 +5,8 @@ Object {
   "helpCentersById": Object {
     "1": Object {
       "algolia_api_key": null,
-      "algolia_app_id": "",
-      "algolia_index_name": "",
+      "algolia_app_id": "my-algolia-app-id-1",
+      "algolia_index_name": "my-algolia-index-1",
       "created_datetime": "2021-05-17T18:21:42.022Z",
       "deactivated_datetime": null,
       "default_locale": "en-US",
@@ -36,8 +36,8 @@ Object {
   "helpCentersById": Object {
     "2": Object {
       "algolia_api_key": null,
-      "algolia_app_id": "",
-      "algolia_index_name": "",
+      "algolia_app_id": "my-algolia-app-id-2",
+      "algolia_index_name": "my-algolia-index-2",
       "created_datetime": "2021-05-17T18:22:42.022Z",
       "deactivated_datetime": null,
       "default_locale": "de-DE",
@@ -68,8 +68,8 @@ Object {
   "helpCentersById": Object {
     "1": Object {
       "algolia_api_key": null,
-      "algolia_app_id": "",
-      "algolia_index_name": "",
+      "algolia_app_id": "my-algolia-app-id-1",
+      "algolia_index_name": "my-algolia-index-1",
       "created_datetime": "2021-05-17T18:21:42.022Z",
       "deactivated_datetime": null,
       "default_locale": "en-US",
@@ -99,8 +99,8 @@ Object {
   "helpCentersById": Object {
     "1": Object {
       "algolia_api_key": null,
-      "algolia_app_id": "",
-      "algolia_index_name": "",
+      "algolia_app_id": "my-algolia-app-id-1",
+      "algolia_index_name": "my-algolia-index-1",
       "created_datetime": "2021-05-17T18:21:42.022Z",
       "deactivated_datetime": null,
       "default_locale": "en-US",
@@ -123,8 +123,8 @@ Object {
     },
     "2": Object {
       "algolia_api_key": null,
-      "algolia_app_id": "",
-      "algolia_index_name": "",
+      "algolia_app_id": "my-algolia-app-id-2",
+      "algolia_index_name": "my-algolia-index-2",
       "created_datetime": "2021-05-17T18:22:42.022Z",
       "deactivated_datetime": null,
       "default_locale": "de-DE",
@@ -148,8 +148,8 @@ Object {
     },
     "3": Object {
       "algolia_api_key": null,
-      "algolia_app_id": "",
-      "algolia_index_name": "",
+      "algolia_app_id": "my-algolia-app-id-3",
+      "algolia_index_name": "my-algolia-index-3",
       "created_datetime": "2021-05-17T18:23:42.022Z",
       "deactivated_datetime": null,
       "default_locale": "fr-FR",
@@ -180,8 +180,8 @@ Object {
   "helpCentersById": Object {
     "1": Object {
       "algolia_api_key": null,
-      "algolia_app_id": "",
-      "algolia_index_name": "",
+      "algolia_app_id": "my-algolia-app-id-1",
+      "algolia_index_name": "my-algolia-index-1",
       "created_datetime": "2021-05-17T18:21:42.022Z",
       "deactivated_datetime": null,
       "default_locale": "en-US",
@@ -204,8 +204,8 @@ Object {
     },
     "2": Object {
       "algolia_api_key": null,
-      "algolia_app_id": "",
-      "algolia_index_name": "",
+      "algolia_app_id": "my-algolia-app-id-2",
+      "algolia_index_name": "my-algolia-index-2",
       "created_datetime": "2021-05-17T18:22:42.022Z",
       "deactivated_datetime": null,
       "default_locale": "de-DE",

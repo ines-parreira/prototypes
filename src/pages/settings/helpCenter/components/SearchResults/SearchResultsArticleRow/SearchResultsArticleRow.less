@@ -1,0 +1,40 @@
+@import (reference) '~css/new/colorTokens';
+
+:local {
+    .actions {
+        opacity: 0;
+
+        transition: opacity 250ms ease;
+    }
+
+    .row {
+        background-color: @classic-neutral-grey-2;
+        height: 67px;
+
+        &:hover {
+            background-color: @classic-neutral-grey-1;
+
+            .actions {
+                opacity: 1;
+            }
+        }
+        &:last-child {
+            border: 0px;
+        }
+    }
+
+    .rating {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .rating-text {
+            padding-left: 5px;
+        }
+        .rating-separator {
+            padding: 0 8px;
+        }
+        .rating-icon {
+            padding-right: 5px;
+        }
+    }
+}

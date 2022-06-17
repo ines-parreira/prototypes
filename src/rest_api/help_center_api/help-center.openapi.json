@@ -225,6 +225,13 @@
                         "schema": {"type": "string"}
                     },
                     {
+                        "name": "fields",
+                        "required": false,
+                        "in": "query",
+                        "description": "List of comma-separated field names among `[translations, redirects]`. If not provided, the default value will be `\"translations,redirects\"`",
+                        "schema": {"type": "string"}
+                    },
+                    {
                         "name": "per_page",
                         "required": false,
                         "in": "query",
@@ -317,6 +324,13 @@
                         "required": true,
                         "in": "path",
                         "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "fields",
+                        "required": false,
+                        "in": "query",
+                        "description": "List of comma-separated field names among `[translations, redirects]`. If not provided, the default value will be `\"translations,redirects\"`",
+                        "schema": {"type": "string"}
                     }
                 ],
                 "responses": {
@@ -325,7 +339,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/HelpCenterDto"
+                                    "$ref": "#/components/schemas/GetHelpCenterDto"
                                 }
                             }
                         }
@@ -855,6 +869,95 @@
                 },
                 "tags": ["locales"],
                 "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/redirects": {
+            "post": {
+                "operationId": "createRedirect",
+                "summary": "Create a new redirect",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateRedirectDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RedirectDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["redirects"]
+            },
+            "get": {
+                "operationId": "getRedirect",
+                "summary": "Retrieve a redirect",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "from",
+                        "required": true,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RedirectDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["redirects"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            },
+            "delete": {
+                "operationId": "deleteRedirect",
+                "summary": "Delete a redirect",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "from",
+                        "required": true,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {"200": {"description": ""}},
+                "tags": ["redirects"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/categories": {
@@ -1506,6 +1609,13 @@
                         }
                     },
                     {
+                        "name": "ids",
+                        "required": false,
+                        "in": "query",
+                        "description": "List of numeric ids in the form ids=1&ids=2...",
+                        "schema": {"type": "array", "items": {"type": "number"}}
+                    },
+                    {
                         "name": "order_by",
                         "required": false,
                         "in": "query",
@@ -1700,6 +1810,13 @@
                             "enum": ["latest_draft", "current"],
                             "type": "string"
                         }
+                    },
+                    {
+                        "name": "ids",
+                        "required": false,
+                        "in": "query",
+                        "description": "List of numeric ids in the form ids=1&ids=2...",
+                        "schema": {"type": "array", "items": {"type": "number"}}
                     },
                     {
                         "name": "order_by",
@@ -2627,95 +2744,6 @@
                 "tags": ["google-fonts"],
                 "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
             }
-        },
-        "/api/help-center/help-centers/{help_center_id}/redirects": {
-            "post": {
-                "operationId": "createRedirect",
-                "summary": "Create a new redirect",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CreateRedirectDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/RedirectDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["redirects"]
-            },
-            "get": {
-                "operationId": "getRedirect",
-                "summary": "Retrieve a redirect",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    },
-                    {
-                        "name": "from",
-                        "required": true,
-                        "in": "query",
-                        "schema": {"type": "string"}
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/RedirectDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["redirects"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
-            },
-            "delete": {
-                "operationId": "deleteRedirect",
-                "summary": "Delete a redirect",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": {"type": "number"}
-                    },
-                    {
-                        "name": "from",
-                        "required": true,
-                        "in": "query",
-                        "schema": {"type": "string"}
-                    }
-                ],
-                "responses": {"200": {"description": ""}},
-                "tags": ["redirects"]
-            }
         }
     },
     "info": {
@@ -3274,107 +3302,6 @@
                     "nb_pages"
                 ]
             },
-            "HelpCentersListPageDto": {
-                "type": "object",
-                "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
-                    "object": {
-                        "type": "string",
-                        "default": "list",
-                        "enum": ["list"]
-                    },
-                    "data": {
-                        "type": "array",
-                        "items": {"$ref": "#/components/schemas/HelpCenterDto"}
-                    }
-                },
-                "required": ["meta", "object", "data"]
-            },
-            "UpdateHelpCenterDto": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "example": "My Help Center",
-                        "minLength": 2
-                    },
-                    "subdomain": {
-                        "type": "string",
-                        "description": "A valid subdomain for the Help center.\n\nShould be:\n- length no greater than 63\n- must begin and end with an alpha-numeric\n- may contain hyphens (dashes)\n- may not begin or end with a hyphen\n\nIf not provided, a subdomain will be generated.",
-                        "example": "mysubdomain"
-                    },
-                    "default_locale": {
-                        "enum": [
-                            "en-US",
-                            "fr-FR",
-                            "fr-CA",
-                            "es-ES",
-                            "de-DE",
-                            "nl-NL",
-                            "cs-CZ",
-                            "da-DK",
-                            "no-NO",
-                            "it-IT",
-                            "sv-SE"
-                        ],
-                        "type": "string"
-                    },
-                    "favicon_url": {
-                        "type": "string",
-                        "nullable": true,
-                        "description": "Should be a valid URL."
-                    },
-                    "brand_logo_url": {
-                        "type": "string",
-                        "nullable": true,
-                        "description": "Should be a valid URL."
-                    },
-                    "brand_logo_light_url": {
-                        "type": "string",
-                        "nullable": true,
-                        "description": "Should be a valid URL."
-                    },
-                    "search_deactivated": {
-                        "type": "boolean",
-                        "description": "Boolean indicating if search feature is deactivated for this Help center.",
-                        "example": false
-                    },
-                    "primary_color": {"type": "string", "nullable": true},
-                    "theme": {
-                        "nullable": true,
-                        "default": "light",
-                        "type": "object"
-                    },
-                    "shop_name": {"type": "string", "nullable": true},
-                    "self_service_deactivated": {
-                        "type": "boolean",
-                        "description": "Boolean indicating if self service is deactivated for this Help center.",
-                        "example": false
-                    },
-                    "powered_by_deactivated": {
-                        "type": "boolean",
-                        "description": "Boolean indicating if \"Powered By Gorgias\" will be displayed in this help center footer",
-                        "example": false
-                    },
-                    "deactivated": {
-                        "type": "boolean",
-                        "description": "Boolean indicating if the help center is deactivated.",
-                        "example": false
-                    },
-                    "primary_font_family": {"type": "string", "nullable": true}
-                }
-            },
-            "DeleteAccountDto": {
-                "type": "object",
-                "properties": {
-                    "account_id": {
-                        "type": "number",
-                        "description": "The account id whose help centers should be deleted",
-                        "example": 1
-                    }
-                },
-                "required": ["account_id"]
-            },
             "HelpCenterTranslationSeoMeta": {
                 "type": "object",
                 "properties": {
@@ -3556,6 +3483,268 @@
                     "extra_html",
                     "chat_application_id"
                 ]
+            },
+            "RedirectDto": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "id": {"type": "number"},
+                    "from": {"type": "string"},
+                    "to": {"type": "string"},
+                    "help_center_id": {"type": "number"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "id",
+                    "from",
+                    "to",
+                    "help_center_id"
+                ]
+            },
+            "GetHelpCenterDto": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "id": {"type": "number"},
+                    "name": {"type": "string"},
+                    "subdomain": {"type": "string"},
+                    "deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "default_locale": {
+                        "type": "string",
+                        "readOnly": true,
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ]
+                    },
+                    "supported_locales": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ]
+                        }
+                    },
+                    "favicon_url": {"type": "string", "nullable": true},
+                    "brand_logo_url": {"type": "string", "nullable": true},
+                    "brand_logo_light_url": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "search_deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "powered_by_deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "algolia_api_key": {"type": "string", "nullable": true},
+                    "algolia_app_id": {"type": "string"},
+                    "algolia_index_name": {"type": "string"},
+                    "primary_color": {"type": "string", "nullable": false},
+                    "primary_font_family": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "theme": {"type": "string", "nullable": false},
+                    "shop_name": {"type": "string", "nullable": true},
+                    "self_service_deactivated_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "hotswap_session_token": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "translations": {
+                        "minItems": 1,
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/HelpCenterTranslationDto"
+                        }
+                    },
+                    "redirects": {
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/RedirectDto"}
+                    }
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "id",
+                    "name",
+                    "subdomain",
+                    "deactivated_datetime",
+                    "default_locale",
+                    "supported_locales",
+                    "search_deactivated_datetime",
+                    "powered_by_deactivated_datetime",
+                    "algolia_api_key",
+                    "algolia_app_id",
+                    "algolia_index_name",
+                    "primary_color",
+                    "primary_font_family",
+                    "theme",
+                    "shop_name",
+                    "self_service_deactivated_datetime",
+                    "hotswap_session_token"
+                ]
+            },
+            "HelpCentersListPageDto": {
+                "type": "object",
+                "properties": {
+                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "object": {
+                        "type": "string",
+                        "default": "list",
+                        "enum": ["list"]
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GetHelpCenterDto"
+                        }
+                    }
+                },
+                "required": ["meta", "object", "data"]
+            },
+            "UpdateHelpCenterDto": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "My Help Center",
+                        "minLength": 2
+                    },
+                    "subdomain": {
+                        "type": "string",
+                        "description": "A valid subdomain for the Help center.\n\nShould be:\n- length no greater than 63\n- must begin and end with an alpha-numeric\n- may contain hyphens (dashes)\n- may not begin or end with a hyphen\n\nIf not provided, a subdomain will be generated.",
+                        "example": "mysubdomain"
+                    },
+                    "default_locale": {
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "favicon_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Should be a valid URL."
+                    },
+                    "brand_logo_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Should be a valid URL."
+                    },
+                    "brand_logo_light_url": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Should be a valid URL."
+                    },
+                    "search_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if search feature is deactivated for this Help center.",
+                        "example": false
+                    },
+                    "primary_color": {"type": "string", "nullable": true},
+                    "theme": {
+                        "nullable": true,
+                        "default": "light",
+                        "type": "object"
+                    },
+                    "shop_name": {"type": "string", "nullable": true},
+                    "self_service_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if self service is deactivated for this Help center.",
+                        "example": false
+                    },
+                    "powered_by_deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if \"Powered By Gorgias\" will be displayed in this help center footer",
+                        "example": false
+                    },
+                    "deactivated": {
+                        "type": "boolean",
+                        "description": "Boolean indicating if the help center is deactivated.",
+                        "example": false
+                    },
+                    "primary_font_family": {"type": "string", "nullable": true}
+                }
+            },
+            "DeleteAccountDto": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "number",
+                        "description": "The account id whose help centers should be deleted",
+                        "example": 1
+                    }
+                },
+                "required": ["account_id"]
             },
             "HelpCenterTranslationsListPageDto": {
                 "type": "object",
@@ -3856,6 +4045,14 @@
                     }
                 },
                 "required": ["name", "code"]
+            },
+            "CreateRedirectDto": {
+                "type": "object",
+                "properties": {
+                    "from": {"type": "string"},
+                    "to": {"type": "string"}
+                },
+                "required": ["from", "to"]
             },
             "CreateCategoryTranslationSeoMetaDto": {
                 "type": "object",
@@ -5162,44 +5359,6 @@
                     }
                 },
                 "required": ["meta", "object", "data"]
-            },
-            "CreateRedirectDto": {
-                "type": "object",
-                "properties": {
-                    "from": {"type": "string"},
-                    "to": {"type": "string"}
-                },
-                "required": ["from", "to"]
-            },
-            "RedirectDto": {
-                "type": "object",
-                "properties": {
-                    "created_datetime": {
-                        "format": "date-time",
-                        "type": "string"
-                    },
-                    "updated_datetime": {
-                        "format": "date-time",
-                        "type": "string"
-                    },
-                    "deleted_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "id": {"type": "number"},
-                    "from": {"type": "string"},
-                    "to": {"type": "string"},
-                    "help_center_id": {"type": "number"}
-                },
-                "required": [
-                    "created_datetime",
-                    "updated_datetime",
-                    "id",
-                    "from",
-                    "to",
-                    "help_center_id"
-                ]
             }
         }
     },

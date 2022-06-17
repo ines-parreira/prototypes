@@ -33,11 +33,7 @@ describe('<ArticleCategorySelect />', () => {
     it('should display the category options on the screen', async () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <ArticleCategorySelect
-                    locale="en-US"
-                    helpCenterId={1}
-                    categoryId={1}
-                />
+                <ArticleCategorySelect locale="en-US" categoryId={1} />
             </Provider>
         )
         await screen.findByText('- No category -')
@@ -48,11 +44,7 @@ describe('<ArticleCategorySelect />', () => {
     it('should show new options if locale changed', async () => {
         const {rerender} = render(
             <Provider store={mockStore(defaultState)}>
-                <ArticleCategorySelect
-                    locale="en-US"
-                    helpCenterId={1}
-                    categoryId={1}
-                />
+                <ArticleCategorySelect locale="en-US" categoryId={1} />
             </Provider>
         )
         await screen.findByText('Orders')
@@ -63,11 +55,7 @@ describe('<ArticleCategorySelect />', () => {
         ])
         rerender(
             <Provider store={mockStore(defaultState)}>
-                <ArticleCategorySelect
-                    locale="fr-FR"
-                    helpCenterId={1}
-                    categoryId={1}
-                />
+                <ArticleCategorySelect locale="fr-FR" categoryId={1} />
             </Provider>
         )
         await screen.findByText('Commandes')

@@ -9,6 +9,7 @@ import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import HelpCenterEditAdvancedArticleForm from '../HelpCenterEditAdvancedArticleForm'
 import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
 
@@ -20,6 +21,11 @@ const mockedOnCategoryChange = jest.fn()
 jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
+)
+
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam')
+;(useHelpCenterIdParam as jest.Mock).mockReturnValue(
+    getSingleHelpCenterResponseFixture.id
 )
 
 const mockedUseEditionManager = {
@@ -42,7 +48,6 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
     const {translation} = getSingleArticleEnglish
     const props = {
         articleId: 1,
-        helpCenterId: 1,
         categoryId: 1,
         translation,
         domain: 'acme.gorgias.rehab',

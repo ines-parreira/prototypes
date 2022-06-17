@@ -42,7 +42,20 @@ jest.mock('../useHelpCenterApi', () => {
                         translation: {},
                     },
                 }),
-                getCategoryTree: jest.fn().mockResolvedValue({data: {}}),
+                getCategoryTree: () =>
+                    Promise.resolve({
+                        data: {
+                            created_datetime: '2022-03-07T14:46:47.212Z',
+                            updated_datetime: '2022-03-07T14:46:47.212Z',
+                            deleted_datetime: null,
+                            id: 0,
+                            help_center_id: 3,
+                            available_locales: [],
+                            children: [],
+                            articles: [],
+                            translation: null,
+                        },
+                    }),
                 createCategoryTranslation: jest
                     .fn()
                     .mockResolvedValueOnce({
@@ -339,6 +352,32 @@ describe('useCategoriesActions', () => {
             await result.current.deleteCategory(1)
 
             expect(deleteCategory).toHaveBeenCalledWith(1)
+        })
+    })
+
+    describe('fetchCategories()', () => {
+        it('saves the categories once they are fetched', async () => {
+            const {result} = renderHook(() => useCategoriesActions(), {
+                wrapper: dependencyWrapper,
+            })
+            await result.current.fetchCategories('en-US', 0, true)
+
+            expect(saveCategories).toHaveBeenLastCalledWith({
+                categories: [
+                    {
+                        articles: [],
+                        available_locales: [],
+                        children: [],
+                        created_datetime: '2022-03-07T14:46:47.212Z',
+                        deleted_datetime: null,
+                        help_center_id: 3,
+                        id: 0,
+                        translation: null,
+                        updated_datetime: '2022-03-07T14:46:47.212Z',
+                    },
+                ],
+                shouldReset: true,
+            })
         })
     })
 })

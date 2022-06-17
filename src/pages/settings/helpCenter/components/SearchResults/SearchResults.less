@@ -1,0 +1,50 @@
+@import (reference) '~css/new/colorTokens';
+
+:global {
+    .search-highlight {
+        background-color: @classic-feedback-warning-2;
+        padding: 2px 0;
+    }
+}
+
+:local {
+    .header-tr {
+        tr {
+            border: 0;
+        }
+
+        td {
+            padding: 0;
+        }
+    }
+
+    .table-body {
+        border-top: 1px solid @classic-neutral-grey-3;
+        border-bottom: 1px solid @classic-neutral-grey-3;
+    }
+
+    .row {
+        background-color: @classic-neutral-grey-0;
+        height: 67px;
+
+        &:hover {
+            background-color: @classic-neutral-grey-1;
+        }
+    }
+
+    .uncategorized-header-cell {
+        padding-left: 30px;
+        font-style: italic;
+
+        > div {
+            padding-left: 0;
+            cursor: default;
+        }
+    }
+
+    .caret {
+        margin-right: 16px;
+        color: @classic-neutral-grey-4;
+        font-size: 22px;
+    }
+}

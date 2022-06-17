@@ -15,17 +15,15 @@ import css from './ArticleCategorySelect.less'
 interface ArticleCategorySelectProps {
     locale: LocaleCode
     categoryId: number | null
-    helpCenterId: number
     onChange?: (value: number | null) => void
 }
 
 const ArticleCategorySelect = ({
     locale,
     categoryId,
-    helpCenterId,
     onChange,
 }: ArticleCategorySelectProps): JSX.Element => {
-    const options = useCategoriesOptions({locale, helpCenterId})
+    const options = useCategoriesOptions({locale})
     const categoriesById = useAppSelector(getCategoriesById)
     const [selectFieldClassName, setSelectFieldClassName] = useState<string>('')
 

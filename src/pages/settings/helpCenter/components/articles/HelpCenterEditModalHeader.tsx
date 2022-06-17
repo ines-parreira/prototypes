@@ -38,7 +38,6 @@ export type Props = {
     title: string
     isFullscreen?: boolean
     supportedLocales: LocaleCode[]
-    helpCenterId: number
     onTitleChange?: (title: string) => void
     onLanguageSelect: (localeCode: LocaleCode) => void
     onResize?: () => void
@@ -69,7 +68,6 @@ export const HelpCenterEditModalHeader = ({
     onArticleLanguageSelectActionClick,
     onCopyLinkToClipboard,
     toggleModalBtn,
-    helpCenterId,
     autoFocus = false,
     showCategorySelect = false,
     showInlineLanguageSelect = false,
@@ -259,7 +257,6 @@ export const HelpCenterEditModalHeader = ({
                     <div className={css.categorySelect}>
                         <ArticleCategorySelect
                             locale={selectedArticleLanguage}
-                            helpCenterId={helpCenterId}
                             categoryId={selectedCategoryId}
                             onChange={(value: number | null) => {
                                 setSelectedArticle((prevSelectedArticle) =>

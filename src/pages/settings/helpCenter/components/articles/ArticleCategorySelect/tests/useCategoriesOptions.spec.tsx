@@ -9,6 +9,7 @@ import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
 import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 
 import {RootState, StoreDispatch} from 'state/types'
@@ -21,6 +22,11 @@ import useCategoriesOptions from '../hooks/useCategoriesOptions'
 jest.mock('pages/settings/helpCenter/providers/CurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
     getSingleHelpCenterResponseFixture
+)
+
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam')
+;(useHelpCenterIdParam as jest.Mock).mockReturnValue(
+    getSingleHelpCenterResponseFixture.id
 )
 
 const categories = getCategoriesFlatSorted
@@ -48,7 +54,6 @@ describe('useCategoriesOptions()', () => {
             () =>
                 useCategoriesOptions({
                     locale: HELP_CENTER_DEFAULT_LOCALE,
-                    helpCenterId: 1,
                 }),
             {
                 wrapper: dependencyWrapper,

@@ -16,6 +16,8 @@ import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getL
 import {useCurrentHelpCenter} from 'pages/settings/helpCenter/providers/CurrentHelpCenter'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import HelpCenterArticlesView from '../HelpCenterArticlesView'
+import {SearchContextProvider} from '../../providers/SearchContext'
+import {useHelpCenterCategories} from '../../hooks/useHelpCenterCategories'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
@@ -56,6 +58,23 @@ jest.mock('hooks/useModalManager/useModalManager.tsx', () => {
         }),
     }
 })
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterCategories')
+;(useHelpCenterCategories as jest.Mock).mockReturnValue({
+    categories: [
+        {
+            created_datetime: '2022-03-07T14:46:47.212Z',
+            updated_datetime: '2022-03-07T14:46:47.212Z',
+            deleted_datetime: null,
+            id: 0,
+            help_center_id: 3,
+            available_locales: [],
+            children: [],
+            articles: [],
+            translation: null,
+        },
+    ],
+    isLoading: false,
+})
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
@@ -91,7 +110,11 @@ describe('<HelpCenterArticlesView />', () => {
             <Provider store={mockedStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>
                     <EditionManagerContextProvider>
-                        <HelpCenterArticlesView />
+                        <SearchContextProvider
+                            helpCenter={getSingleHelpCenterResponseFixture}
+                        >
+                            <HelpCenterArticlesView />
+                        </SearchContextProvider>
                     </EditionManagerContextProvider>
                 </DndProvider>
             </Provider>,

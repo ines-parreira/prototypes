@@ -8,7 +8,7 @@ const helpCenterArticlesStore = createSelector(
     (store) => store.articles
 )
 
-const getArticlesById = createSelector(
+export const getArticlesById = createSelector(
     helpCenterArticlesStore,
     (store) => store.articlesById
 )

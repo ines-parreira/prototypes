@@ -35,7 +35,6 @@ import css from './HelpCenterEditAdvancedArticleForm.less'
 type Props = {
     articleId?: number
     categoryId?: number | null
-    helpCenterId: number
     translation: CreateArticleTranslationDto | LocalArticleTranslation
     domain: string
     onChange: (
@@ -47,7 +46,6 @@ type Props = {
 export const HelpCenterEditAdvancedArticleForm = ({
     articleId,
     categoryId,
-    helpCenterId,
     translation,
     domain,
     onChange,
@@ -157,7 +155,6 @@ export const HelpCenterEditAdvancedArticleForm = ({
                     <Label>Category</Label>
                     <ArticleCategorySelect
                         locale={translation.locale}
-                        helpCenterId={helpCenterId}
                         categoryId={categoryId ?? null}
                         onChange={onChangeCategory}
                     />

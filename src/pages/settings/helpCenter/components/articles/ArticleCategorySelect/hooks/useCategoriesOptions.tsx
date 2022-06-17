@@ -7,7 +7,6 @@ import {CategoryDropdownOptionLabel} from '../../../CategoryDropdownOptionLabel/
 
 interface UseCategoriesOptions {
     locale: LocaleCode
-    helpCenterId: number
 }
 
 export const NO_CATEGORY_OPTION = 'null'
@@ -22,8 +21,8 @@ export const getCategoryDropdownOption = (
     }
 }
 
-const useCategoriesOptions = ({locale, helpCenterId}: UseCategoriesOptions) => {
-    const {categories} = useHelpCenterCategories(helpCenterId, {
+const useCategoriesOptions = ({locale}: UseCategoriesOptions) => {
+    const {categories} = useHelpCenterCategories({
         locale,
     })
 

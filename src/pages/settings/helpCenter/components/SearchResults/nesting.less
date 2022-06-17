@@ -1,0 +1,10 @@
+.mixin-level-loop (@i) when (@i < 5) {
+    :global(#app-root) .nesting-level-@{i} {
+        padding-left: (30px + @i*28px);
+    }
+    .mixin-level-loop(@i + 1);
+}
+
+:local {
+    .mixin-level-loop(0);
+}
