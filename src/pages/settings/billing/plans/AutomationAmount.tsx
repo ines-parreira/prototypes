@@ -79,6 +79,7 @@ const AutomationAmount = ({
                         placement="top-start"
                         innerClassName={css.tooltip}
                         fade={false}
+                        autohide={false}
                     >
                         Leverage self-service to provide instant answers in
                         Gorgias Chat and Help Center, 24/7:
