@@ -1,28 +1,35 @@
 @import '~css/new/colorTokens';
 
-:local .row {
-    .actions {
-        :global .btn {
-            box-shadow: none;
+:local {
+    .row {
+        .actions {
+            :global .btn {
+                box-shadow: none;
 
-            .material-icons,
-            .material-icons-outlined {
-                transition: 0.2s all;
-                opacity: 0.3;
-                color: @classic-neutral-grey-6;
+                .material-icons,
+                .material-icons-outlined {
+                    transition: 0.2s all;
+                    opacity: 0.3;
+                    color: @classic-neutral-grey-6;
+                }
+
+                &:hover .material-icons {
+                    opacity: 1;
+                }
+
+                &.btn-loading .material-icons {
+                    opacity: 0;
+                }
             }
 
-            &:hover .material-icons {
-                opacity: 1;
-            }
-
-            &.btn-loading .material-icons {
-                opacity: 0;
+            .actionButton {
+                display: inline-block;
             }
         }
+    }
 
-        .actionButton {
-            display: inline-block;
-        }
+    .listWrapper {
+        margin-bottom: 0;
+        padding-left: 22px;
     }
 }

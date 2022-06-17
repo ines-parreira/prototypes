@@ -16,6 +16,8 @@ import _get from 'lodash/get'
 import Button from 'pages/common/components/button/Button'
 import {GroupPositionContext} from 'pages/common/components/layout/Group'
 
+import css from './ConfirmationPopover.less'
+
 type Props = {
     buttonProps?: ComponentProps<typeof Button>
     children: (props: {
@@ -113,7 +115,7 @@ export default function ConfirmationPopover({
                     <PopoverHeader>{title}</PopoverHeader>
 
                     <PopoverBody>
-                        <p>{content}</p>
+                        <div className={css.content}>{content}</div>
                         <GroupPositionContext.Provider value={null}>
                             <Button
                                 {...buttonProps}

@@ -217,8 +217,23 @@ export class Row extends Component<Props, State> {
                             }}
                             content={
                                 <>
-                                    Are you sure you want to delete this tag?{' '}
-                                    <b>It will be removed from all tickets</b>.
+                                    Are you sure you want to delete this tag?
+                                    <ul className={css.listWrapper}>
+                                        <li>
+                                            It will be removed from all tickets
+                                        </li>
+
+                                        <li>
+                                            Historical Statistics for this tag
+                                            will be lost
+                                        </li>
+
+                                        <li>
+                                            It will not be possible to add the
+                                            tag back to the tickets it was
+                                            previously on
+                                        </li>
+                                    </ul>
                                 </>
                             }
                             id={`remove-button-${row.get('id') as number}`}
