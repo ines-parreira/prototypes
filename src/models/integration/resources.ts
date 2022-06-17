@@ -51,8 +51,12 @@ export const fetchApps = async (): Promise<AppListItem[]> => {
     })
 }
 
-export const fetchApp = async (appId: string): Promise<AppDetail> => {
-    const {data} = await client.get<AppData>(`/api/apps/${appId}`)
+export const fetchApp = async (
+    appId: string,
+    preview?: boolean
+): Promise<AppDetail> => {
+    const params = {preview}
+    const {data} = await client.get<AppData>(`/api/apps/${appId}`, {params})
     return appDataToAppDetailMapper(data)
 }
 

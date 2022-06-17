@@ -2,16 +2,24 @@ import React, {useState, useEffect} from 'react'
 import {Link, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
+import useSearch from 'hooks/useSearch'
 import {AppDetail as AppDetailType} from 'models/integration/types/app'
 import PageHeader from 'pages/common/components/PageHeader'
 import {fetchApp} from 'models/integration/resources'
 import Loader from 'pages/common/components/Loader/Loader'
 import Detail from 'pages/integrations/components/Detail/Detail'
 
+function queryStringToBool(flag?: string): boolean {
+    return flag === '' || flag === '1' || flag?.toLowerCase() === 'true'
+}
+
 export default function AppDetail() {
     const {appId} = useParams<{
         appId: string
     }>()
+
+    const search = useSearch<{preview?: string}>()
+    const preview = queryStringToBool(search.preview)
 
     const [appItem, setAppDetail] = useState<AppDetailType | null>(null)
     const [isLoading, setLoading] = useState(false)
@@ -19,7 +27,7 @@ export default function AppDetail() {
     useEffect(() => {
         async function loadAppDetails(appId: string) {
             try {
-                const res = await fetchApp(appId)
+                const res = await fetchApp(appId, preview)
                 setAppDetail(res)
             } catch (error) {
                 console.error(error)
@@ -29,7 +37,7 @@ export default function AppDetail() {
         }
         setLoading(true)
         void loadAppDetails(appId)
-    }, [appId])
+    }, [appId, preview])
 
     if (!appItem || isLoading) {
         return <Loader minHeight="300px" />

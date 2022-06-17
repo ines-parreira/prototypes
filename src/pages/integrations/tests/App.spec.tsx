@@ -17,6 +17,8 @@ const appId = '1234'
 const mockServer = new MockAdapter(client)
 
 describe(`App`, () => {
+    beforeEach(() => mockServer.reset())
+
     it('should render', async () => {
         const {container} = renderWithRouter(
             <Provider store={store}>
@@ -32,5 +34,25 @@ describe(`App`, () => {
         mockServer.onGet(`/api/apps/${appId}`).reply(200, dummyAppData)
         await screen.findAllByText(new RegExp(dummyAppData.name))
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render in preview mode', async () => {
+        mockServer.onGet(`/api/apps/${appId}`).reply((config) => {
+            expect(config.params).toEqual({preview: true})
+            return [200, dummyAppData]
+        })
+
+        const {findAllByText} = renderWithRouter(
+            <Provider store={store}>
+                <App />
+            </Provider>,
+            {
+                path: '/integrations/app/:appId',
+                route: `/integrations/app/${appId}?preview=1`,
+            }
+        )
+        await findAllByText(new RegExp(dummyAppData.name))
+
+        expect(mockServer.history.get.length).toEqual(1)
     })
 })
