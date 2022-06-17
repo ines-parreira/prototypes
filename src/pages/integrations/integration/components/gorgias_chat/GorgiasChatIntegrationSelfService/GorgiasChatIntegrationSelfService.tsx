@@ -271,7 +271,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                 >
                     <>
                         <SelfService
-                            isEnabled={originalSSPEnabled}
+                            isEnabled={originalSSPEnabled && !isLoading}
                             isDisabled={isSwitchDisabled}
                             isForcedDisabled={sspForceDisabled}
                             onChange={handleOnChangeSwitch}
