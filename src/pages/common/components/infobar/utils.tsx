@@ -35,9 +35,13 @@ import {
     getSourcePathFromContext,
 } from 'state/widgets/utils'
 
+import {
+    Template,
+    CardTemplate,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
+import EditableListWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
 import {DatetimeLabel} from '../../utils/labels'
 import css from './utils.less'
-import EditableListWidget from './Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
 
 /**
  * Check if is an array of objects (and no an array of string for example)
@@ -188,19 +192,17 @@ export function areSourcesReady(
  * Return true if can display the passed widget according to passed source
  * Passed widget should be a wrapper
  */
-export function canDisplayWidget(widget: Map<any, any>, source: Map<any, any>) {
-    if (widget.get('type') !== 'wrapper') {
+export function canDisplayWidget(widget: Template, source: Map<any, any>) {
+    if (widget.type !== 'wrapper') {
         return false
     }
 
-    const splitPath = widget.get('path', '') as string
-
-    if (!splitPath.length) {
+    if (!widget.path.length) {
         return false
     }
 
     // ex : ticket, customer, etc.
-    const initialSourceName = splitPath[0] as WidgetContextType
+    const initialSourceName = widget.path[0] as WidgetContextType
 
     const ready = areSourcesReady(
         fromJS({
@@ -213,47 +215,54 @@ export function canDisplayWidget(widget: Map<any, any>, source: Map<any, any>) {
 }
 
 export function isWidgetEmpty(
-    widget: Map<any, any>,
+    widget: Template,
     source: Map<any, any>,
     path: string[] = []
 ): boolean {
-    switch (widget.get('type')) {
+    switch (widget.type) {
         case 'wrapper': {
-            const subPath = widget.get('path')
-            return (widget.get('widgets', []) as List<any>).every(
-                (subWidget: Map<any, any>) =>
-                    isWidgetEmpty(subWidget, source, subPath)
+            const subWidgets = widget.widgets
+            if (!subWidgets || !subWidgets.length) return true
+            return subWidgets.every((subWidget) =>
+                isWidgetEmpty(subWidget, source, widget.path)
             )
         }
         case 'card': {
-            const subPath = widget.get('path')
-                ? [...path, widget.get('path')]
-                : path
-            return (widget.get('widgets', []) as List<any>).every(
-                (subWidget: Map<any, any>) =>
-                    isWidgetEmpty(subWidget, source, subPath)
+            const subWidgets = widget.widgets
+            if (hasCustomAction(widget)) return false
+            if (!subWidgets || !subWidgets.length) return true
+            const subPath = widget.path ? [...path, widget.path] : path
+            return subWidgets.every((subWidget) =>
+                isWidgetEmpty(subWidget, source, subPath)
             )
         }
         case 'list': {
-            const subPath = widget.get('path')
-                ? [...path, widget.get('path')]
-                : path
+            const subWidgets = widget.widgets
+            if (!subWidgets || !subWidgets.length) return true
+            const subPath = widget.path ? [...path, widget.path] : path
             const data = source.getIn(subPath, fromJS([])) as List<any>
-
             if (!List.isList(data)) return true
             return data.every((value, index) =>
-                (widget.get('widgets', []) as List<any>).every(
-                    (subWidget: Map<any, any>) =>
-                        isWidgetEmpty(subWidget, source, [...subPath, index])
+                subWidgets.every((subWidget) =>
+                    isWidgetEmpty(subWidget, source, [
+                        ...subPath,
+                        index?.toString() || '0',
+                    ])
                 )
             )
         }
         default: {
-            const subPath = [...path, widget.get('path')]
+            const subPath = [...path, widget.path]
             const data = source.getIn(subPath, null)
             return data === null || data === ''
         }
     }
+}
+
+function hasCustomAction(widget: CardTemplate) {
+    const links = widget.meta?.custom?.links
+    const buttons = widget.meta?.custom?.buttons
+    return Boolean((links && links.length) || (buttons && buttons.length))
 }
 
 export function makeWrapper({

@@ -11,8 +11,8 @@ import {Form, Button} from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {updateEditedWidget, stopWidgetEdition} from 'state/widgets/actions'
-import {WidgetTemplateType} from 'state/widgets/types'
 import ColorField from 'pages/common/forms/ColorField'
+import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 
 type Props = {
     template: Map<string, unknown>
@@ -45,8 +45,8 @@ const PopoverEditWrapper = ({template, onClose}: Props) => {
         (evt: FormEvent<HTMLFormElement>) => {
             evt.preventDefault()
 
-            const wrapper = {
-                type: WidgetTemplateType.Wrapper,
+            const wrapper: PartialTemplate = {
+                type: 'wrapper',
                 meta: {
                     color: formState.color,
                 },

@@ -130,7 +130,7 @@ class InfobarWidgets extends React.Component {
                 .set('path', sourcePath)
                 .set('templatePath', `${widget.get('order')}.template`)
 
-            if (!isEditing && !canDisplayWidget(template, source)) {
+            if (!isEditing && !canDisplayWidget(template.toJS(), source)) {
                 return
             }
 

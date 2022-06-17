@@ -5,6 +5,11 @@ import _last from 'lodash/last'
 import _isUndefined from 'lodash/isUndefined'
 import {Map} from 'immutable'
 
+import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
+import {
+    Button,
+    Link,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {getSources, getSourcesWithCustomer} from '../widgets/selectors'
 
 import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
@@ -14,19 +19,8 @@ import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch, RootState} from '../types'
 import client from '../../models/api/resources'
 
-import {
-    Button,
-    Link,
-} from '../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-
 import * as types from './constants'
-import {
-    Widget,
-    WidgetContextType,
-    WidgetDraft,
-    WidgetTemplateWidget,
-    WidgetTemplate,
-} from './types'
+import {Widget, WidgetContextType} from './types'
 
 export function fetchWidgets() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
@@ -189,9 +183,7 @@ export function drop(
     }
 }
 
-export function updateEditedWidget(
-    data: WidgetTemplate | WidgetTemplateWidget
-) {
+export function updateEditedWidget(data: PartialTemplate) {
     return {
         type: types.UPDATE_EDITED_WIDGET,
         item: data,
@@ -227,7 +219,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
             type: types.SUBMIT_WIDGET_START,
         })
 
-        let items: Array<Widget | WidgetDraft> = data || []
+        let items: Partial<Widget>[] = data || []
 
         // clear widgets, remove those with empty template
         items = items.filter((item) => {
@@ -257,7 +249,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
                 'context',
                 'type',
                 'integration_id',
-            ]) as Widget | WidgetDraft
+            ]) as Widget
         })
 
         return client

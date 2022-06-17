@@ -13,7 +13,6 @@ import {Form, FormGroup} from 'reactstrap'
 import {IntegrationType} from 'models/integration/constants'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {updateEditedWidget, stopWidgetEdition} from 'state/widgets/actions'
-import {WidgetTemplateWidgetType} from 'state/widgets/types'
 import Button from 'pages/common/components/button/Button'
 import ColorField from 'pages/common/forms/ColorField'
 import {isSimpleTemplateWidget} from 'pages/common/components/infobar/utils'
@@ -21,6 +20,7 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import FileField, {UploadType} from 'pages/common/forms/FileField'
 import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 
 type EditionHiddenField = 'link' | 'displayCard'
 
@@ -75,8 +75,8 @@ const WidgetEdit = ({
     const handleSubmit = useCallback(
         (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault()
-            const card = {
-                type: WidgetTemplateWidgetType.Card,
+            const card: PartialTemplate = {
+                type: 'card',
                 title: formState.title,
                 meta: {
                     link: formState.link,
@@ -85,26 +85,22 @@ const WidgetEdit = ({
                     color: formState.color,
                 },
             }
-            const list = {
-                meta: {
-                    limit: formState.limit,
-                    orderBy: formState.orderBy,
-                },
-            }
 
             if (isParentList) {
+                const list: PartialTemplate = {
+                    title: parent.get('title') as string,
+                    type: 'list',
+                    meta: {
+                        limit: formState.limit,
+                        orderBy: formState.orderBy,
+                    },
+                    widgets: [card],
+                }
                 // saving the parent list AND the card inside that list
-                dispatch(
-                    updateEditedWidget({
-                        title: parent.get('title') as string,
-                        type: WidgetTemplateWidgetType.List,
-                        ...list,
-                        widgets: [{...card}],
-                    })
-                )
+                dispatch(updateEditedWidget(list))
             } else {
                 // saving only the card
-                dispatch(updateEditedWidget({...card}))
+                dispatch(updateEditedWidget(card))
             }
 
             handleClose()

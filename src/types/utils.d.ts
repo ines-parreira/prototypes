@@ -15,3 +15,10 @@ type RemoveIndex<T> = {
         ? never
         : K]: T[K]
 }
+
+type DeepPartial<T> = {
+    [P in keyof T]?:
+        T[P] extends (infer U)[] ? DeepPartial<U>[] :
+        T[P] extends object | undefined ? DeepPartial<T[P]> :
+        T[P]
+}

@@ -474,58 +474,58 @@ describe('widgets infobar utils', () => {
 
     describe('isWidgetEmpty()', () => {
         const emptyValues = [
-            [fromJS({type: 'wrapper', path: 'foo'}), fromJS({})],
+            [{type: 'wrapper', path: 'foo'}, fromJS({})],
             [
-                fromJS({
+                {
                     type: 'wrapper',
                     path: 'foo',
                     widgets: [
-                        fromJS({type: 'wrapper', path: 'bar'}),
-                        fromJS({type: 'card', path: 'baz'}),
+                        {type: 'wrapper', path: 'bar'},
+                        {type: 'card', path: 'baz'},
                     ],
-                }),
+                },
                 fromJS({}),
             ],
             [
-                fromJS({
+                {
                     type: 'wrapper',
                     path: 'foo',
                     widgets: [
-                        fromJS({
+                        {
                             type: 'card',
                             path: 'bar',
-                            widgets: [fromJS({type: 'text', path: 'baz'})],
-                        }),
+                            widgets: [{type: 'text', path: 'baz'}],
+                        },
                     ],
-                }),
+                },
                 fromJS({foo: {bar: {baz: null}}}),
             ],
             [
-                fromJS({
+                {
                     type: 'wrapper',
                     path: 'foo',
                     widgets: [
-                        fromJS({
+                        {
                             type: 'list',
                             path: 'bar',
-                            widgets: [fromJS({type: 'text', path: 'baz'})],
-                        }),
+                            widgets: [{type: 'text', path: 'baz'}],
+                        },
                     ],
-                }),
+                },
                 fromJS({foo: {bar: []}}),
             ],
             [
-                fromJS({
+                {
                     type: 'wrapper',
                     path: 'foo',
                     widgets: [
-                        fromJS({
+                        {
                             type: 'list',
                             path: 'bar',
-                            widgets: [fromJS({type: 'text', path: 'baz'})],
-                        }),
+                            widgets: [{type: 'text', path: 'baz'}],
+                        },
                     ],
-                }),
+                },
                 fromJS({foo: {bar: [{baz: null}]}}),
             ],
         ]
@@ -540,38 +540,74 @@ describe('widgets infobar utils', () => {
 
         const validValues = [
             [
-                fromJS({
+                {
                     type: 'wrapper',
                     path: 'foo',
                     widgets: [
-                        fromJS({
+                        {
                             type: 'card',
                             path: 'bar',
                             widgets: [
-                                fromJS({type: 'text', path: 'baz'}),
-                                fromJS({type: 'text', path: 'buz'}),
+                                {type: 'text', path: 'baz'},
+                                {type: 'text', path: 'buz'},
                             ],
-                        }),
+                        },
                     ],
-                }),
+                },
                 fromJS({foo: {bar: {baz: 'baz!', buz: ''}}}),
             ],
             [
-                fromJS({
+                {
                     type: 'wrapper',
                     path: 'foo',
                     widgets: [
-                        fromJS({
+                        {
                             type: 'list',
                             path: 'bar',
                             widgets: [
-                                fromJS({type: 'text', path: 'baz'}),
-                                fromJS({type: 'text', path: 'buz'}),
+                                {type: 'text', path: 'baz'},
+                                {type: 'text', path: 'buz'},
                             ],
-                        }),
+                        },
                     ],
-                }),
+                },
                 fromJS({foo: {bar: [{baz: 'baz!', buz: ''}]}}),
+            ],
+            [
+                {
+                    type: 'wrapper',
+                    path: 'foo',
+                    widgets: [
+                        {
+                            type: 'card',
+                            path: 'bar',
+                            meta: {
+                                custom: {
+                                    links: ['a link'],
+                                },
+                            },
+                        },
+                    ],
+                },
+                fromJS({}),
+            ],
+            [
+                {
+                    type: 'wrapper',
+                    path: 'foo',
+                    widgets: [
+                        {
+                            type: 'card',
+                            path: 'bar',
+                            meta: {
+                                custom: {
+                                    buttons: ['a button'],
+                                },
+                            },
+                        },
+                    ],
+                },
+                fromJS({}),
             ],
         ]
 
