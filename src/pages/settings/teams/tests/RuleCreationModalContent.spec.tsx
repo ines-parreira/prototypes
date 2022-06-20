@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {integrationsState} from 'fixtures/integrations'
 import {tags} from 'fixtures/tag'
 import {createRule} from 'models/rule/resources'
@@ -20,6 +21,10 @@ jest.mock('models/rule/resources', () => ({
 }))
 
 jest.mock('state/notifications/actions')
+
+jest.mock('store/middlewares/segmentTracker')
+
+const logEventMock = logEvent as jest.Mock
 
 describe('<RuleCreationModalContent />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -108,7 +113,7 @@ describe('<RuleCreationModalContent />', () => {
         expect(minProps.onClose).toHaveBeenCalled()
     })
 
-    it('should call onClose when successfully creating a new rule', async () => {
+    it('should log a segment event and call onClose when successfully creating a new rule', async () => {
         const {getByText} = render(
             <Provider store={store}>
                 <RuleCreationModalContent {...minProps} />
@@ -117,6 +122,9 @@ describe('<RuleCreationModalContent />', () => {
 
         fireEvent.click(getByText(/^Create Rule$/))
 
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.TeamWizardCreatedRule
+        )
         expect(createRule).toHaveBeenCalled()
 
         await waitFor(() => {

@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {createTeam} from 'state/teams/actions'
 import {RootState, StoreDispatch} from 'state/types'
 import TeamCreationModal from '../TeamCreationModal'
@@ -22,6 +23,10 @@ jest.mock('state/teams/actions', () => ({
 jest.mock('pages/settings/teams/RuleCreationModalContent.tsx', () => () => (
     <div>RuleCreationModalContent</div>
 ))
+
+jest.mock('store/middlewares/segmentTracker')
+
+const logEventMock = logEvent as jest.Mock
 
 describe('<TeamCreationModal />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -67,7 +72,7 @@ describe('<TeamCreationModal />', () => {
         ).toBe(true)
     })
 
-    it('should submit and call onTeamCreated form when filling conditions are met', async () => {
+    it('should submit, send a segment event and call onTeamCreated form when filling conditions are met', async () => {
         const teamName = 'Artemis'
         const teamDescription = 'Goddess of the hunt'
         const nextTeam = {
@@ -100,6 +105,9 @@ describe('<TeamCreationModal />', () => {
         fireEvent.click(screen.getByText(/foo bar/i))
         fireEvent.click(getAllByText(/Create team/i)[1])
 
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.TeamWizardCreatedTeam
+        )
         expect(createTeam).toHaveBeenCalledWith(fromJS(nextTeam))
         await waitFor(() => {
             expect(minProps.onTeamCreated).toHaveBeenNthCalledWith(1, nextTeam)

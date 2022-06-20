@@ -148,7 +148,6 @@ export enum SegmentEvent {
     ShopifyRefundOrderOpen = 'shopify/refund-order/open',
     ShowMoreFieldsClicked = 'show-more-fields-clicked',
     SubscribedToDevNewsletter = 'subscribed-to-dev-newsletter',
-    TeamCreation = 'team-created',
     TicketMergeClicked = 'ticket-merge-clicked',
     TicketMessageCreated = 'ticket-message-created',
     TicketMacrosSearch = 'ticket-macros-search',
@@ -190,6 +189,9 @@ export enum SegmentEvent {
     QuickResponseFlowActivated = 'quick-response-flow-activated',
     QuickResponseFlowDeactivated = 'quick-response-flow-deactivated',
     SearchQueryRanked = 'search-query-ranked',
+    TeamWizardEntry = 'team-wizard-entry',
+    TeamWizardCreatedTeam = 'team-wizard-created-team',
+    TeamWizardCreatedRule = 'team-wizard-created-rule',
 }
 
 export enum StatViewLinkClickedStat {

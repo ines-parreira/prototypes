@@ -30,6 +30,7 @@ import {getEmptyRule} from 'state/rules/utils'
 import {Team} from 'state/teams/types'
 import {getAST} from 'utils'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import css from './RuleCreationModalContent.less'
 
 type Props = {
@@ -235,6 +236,7 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
     const handleSubmit = useCallback(
         (event: FormEvent) => {
             event.preventDefault()
+            logEvent(SegmentEvent.TeamWizardCreatedRule)
             void submitRule()
         },
         [submitRule]

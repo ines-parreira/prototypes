@@ -16,6 +16,7 @@ import TeamCreationModal from 'pages/settings/teams/TeamCreationModal'
 import {fetchTeamsPagination} from 'state/teams/actions'
 import {Team} from 'state/teams/types'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import settingsCss from '../settings.less'
 
 import css from './List.less'
@@ -105,6 +106,11 @@ const TeamList = () => {
         }
     })
 
+    const handleClick = () => {
+        setIsModalOpen(true)
+        logEvent(SegmentEvent.TeamWizardEntry)
+    }
+
     if (isFetching) {
         return <Loader />
     }
@@ -112,9 +118,7 @@ const TeamList = () => {
     return (
         <div className={classnames(css.component, 'full-width')}>
             <PageHeader title="Teams">
-                <Button onClick={() => setIsModalOpen(true)}>
-                    Create Team
-                </Button>
+                <Button onClick={handleClick}>Create Team</Button>
             </PageHeader>
 
             <Container fluid className={settingsCss.pageContainer}>

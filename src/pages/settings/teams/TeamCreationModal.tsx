@@ -146,7 +146,6 @@ export default function TeamCreationModal({
                 const createdTeam: Team = (
                     res as unknown as Map<any, any>
                 ).toJS()
-                logEvent(SegmentEvent.TeamCreation, {'referrer-page': 'teams'})
                 setTeam(createdTeam)
                 resetForm()
                 setActiveStep('ruleCreation')
@@ -160,6 +159,7 @@ export default function TeamCreationModal({
         (setActiveStep: (nextStep: string) => void) =>
             async (event: FormEvent) => {
                 if (isValidForm) {
+                    logEvent(SegmentEvent.TeamWizardCreatedTeam)
                     await submitTeam(event, setActiveStep)
                 }
             },
