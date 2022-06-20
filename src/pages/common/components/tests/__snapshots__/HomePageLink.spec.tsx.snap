@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HomePageLink /> should (re)render when candu element is injected 1`] = `
+<div>
+  <div
+    class="hiddenLink"
+    data-candu-id="navbar-dropdown"
+    data-testid="candu-hidden-link"
+  >
+    <span>
+      candu button
+    </span>
+  </div>
+  <a
+    class="link link category-title"
+    to="/app/home"
+  >
+    <i
+      class="material-icons icon"
+    >
+      home
+    </i>
+    Home
+  </a>
+</div>
+`;
+
+exports[`<HomePageLink /> should not render the link if candu has not loaded 1`] = `
+<div>
+  <div
+    class="hiddenLink"
+    data-candu-id="navbar-dropdown"
+    data-testid="candu-hidden-link"
+  />
+</div>
+`;
+
+exports[`<HomePageLink /> should render the link if candu has some nodes injected 1`] = `
+<div>
+  <div
+    class="hiddenLink"
+    data-candu-id="navbar-dropdown"
+    data-testid="candu-hidden-link"
+  />
+  <a
+    class="link link category-title"
+    to="/app/home"
+  >
+    <i
+      class="material-icons icon"
+    >
+      home
+    </i>
+    Home
+  </a>
+</div>
+`;
