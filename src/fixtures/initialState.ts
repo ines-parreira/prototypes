@@ -27,7 +27,7 @@ export const initialState: GorgiasInitialState = {
             {
                 channel: TicketChannel.Chat,
                 customer: {
-                    email: 'marïe@gorgias.io',
+                    email: 'marie@gorgias.io',
                     id: 4,
                     name: 'Marie Curie',
                 },

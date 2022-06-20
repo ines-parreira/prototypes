@@ -9,7 +9,7 @@ describe('DefaultEntryComponent', () => {
             DefaultEntryComponent({
                 mention: fromJS({
                     name: 'Marie Curie',
-                    email: 'marïe@gorgias.io',
+                    email: 'marie@gorgias.io',
                     meta: {
                         profile_picture_url:
                             'https://gorgias.io/profilepicture.png',

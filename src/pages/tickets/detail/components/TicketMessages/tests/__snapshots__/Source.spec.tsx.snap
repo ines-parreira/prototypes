@@ -36,7 +36,7 @@ exports[`<Source /> should render the tooltip on hover 1`] = `
       : 
     </span>
     <strong>
-      Marie Curie (marïe@gorgias.io)
+      Marie Curie (marie@gorgias.io)
     </strong>
   </li>
   <li>
@@ -47,7 +47,7 @@ exports[`<Source /> should render the tooltip on hover 1`] = `
       : 
     </span>
     <strong>
-      Marie Curie (marïe@gorgias.io), Gorgias Bot (support@acme.gorgias.io)
+      Marie Curie (marie@gorgias.io), Gorgias Bot (support@acme.gorgias.io)
     </strong>
   </li>
   <li>

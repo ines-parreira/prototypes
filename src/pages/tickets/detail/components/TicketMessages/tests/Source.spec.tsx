@@ -18,9 +18,9 @@ const minProps = {
     isForwarded: false,
     source: {
         type: TicketMessageSourceType.Email,
-        to: [{name: 'Marie Curie', address: 'marïe@gorgias.io'}],
+        to: [{name: 'Marie Curie', address: 'marie@gorgias.io'}],
         cc: [
-            {name: 'Marie Curie', address: 'marïe@gorgias.io'},
+            {name: 'Marie Curie', address: 'marie@gorgias.io'},
             {name: 'Gorgias Bot', address: 'support@acme.gorgias.io'},
         ],
         from: {
