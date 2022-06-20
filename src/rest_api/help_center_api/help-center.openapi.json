@@ -228,8 +228,8 @@
                         "name": "fields",
                         "required": false,
                         "in": "query",
-                        "description": "List of comma-separated field names among `[translations, redirects]`. If not provided, the default value will be `\"translations,redirects\"`",
-                        "schema": {"type": "string"}
+                        "description": "List of field names among `[translations, redirects]` in the form of `fields=name1&fields=name2`. If not provided, the default value will be `\"translations,redirects\"`",
+                        "schema": {"type": "array", "items": {"type": "string"}}
                     },
                     {
                         "name": "per_page",
@@ -243,6 +243,12 @@
                         "required": false,
                         "in": "query",
                         "description": "The index of the page to retrieve. E.g: 3",
+                        "schema": {}
+                    },
+                    {
+                        "name": "account_id",
+                        "required": false,
+                        "in": "query",
                         "schema": {}
                     }
                 ],
@@ -259,7 +265,11 @@
                     }
                 },
                 "tags": ["help-centers"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "security": [
+                    {"ApiKey": []},
+                    {"ApiKey": []},
+                    {"AgentBasicAuth": []}
+                ]
             }
         },
         "/api/help-center/help-centers/account": {
@@ -329,8 +339,8 @@
                         "name": "fields",
                         "required": false,
                         "in": "query",
-                        "description": "List of comma-separated field names among `[translations, redirects]`. If not provided, the default value will be `\"translations,redirects\"`",
-                        "schema": {"type": "string"}
+                        "description": "List of field names among `[translations, redirects]` in the form of `fields=name1&fields=name2`. If not provided, the default value will be `\"translations,redirects\"`",
+                        "schema": {"type": "array", "items": {"type": "string"}}
                     }
                 ],
                 "responses": {

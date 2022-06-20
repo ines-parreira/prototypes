@@ -61,16 +61,12 @@ export const CurrentHelpCenter: React.FC = () => {
                 try {
                     const {data: helpCenter} = await client.getHelpCenter({
                         help_center_id: helpCenterId,
+                        fields: ['translations'],
                     })
 
                     dispatch(changeHelpCenterId(helpCenter.id))
                     dispatch(helpCentersFetched([helpCenter]))
-                    const {
-                        data: {data: translations},
-                    } = await client.listHelpCenterTranslations({
-                        help_center_id: helpCenter.id,
-                    })
-                    dispatch(helpCenterUpdated({...helpCenter, translations}))
+                    dispatch(helpCenterUpdated(helpCenter))
                 } catch (err) {
                     const errorMessage =
                         axios.isAxiosError(err) && err.response?.status === 400

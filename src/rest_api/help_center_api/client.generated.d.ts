@@ -1918,7 +1918,7 @@ declare namespace Paths {
   }
   namespace GetHelpCenter {
     namespace Parameters {
-      export type Fields = string;
+      export type Fields = string[];
       export type HelpCenterId = number;
     }
     export interface PathParameters {
@@ -2178,8 +2178,9 @@ declare namespace Paths {
   }
   namespace ListHelpCenters {
     namespace Parameters {
+      export type AccountId = any;
       export type CustomDomain = string;
-      export type Fields = string;
+      export type Fields = string[];
       export type Page = any;
       export type PerPage = any;
       export type Subdomain = string;
@@ -2190,6 +2191,7 @@ declare namespace Paths {
       fields?: Parameters.Fields;
       per_page?: Parameters.PerPage;
       page?: Parameters.Page;
+      account_id?: Parameters.AccountId;
     }
     namespace Responses {
       export type $200 = Components.Schemas.HelpCentersListPageDto;
