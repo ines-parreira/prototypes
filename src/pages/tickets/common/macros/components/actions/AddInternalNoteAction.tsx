@@ -113,11 +113,6 @@ export default function AddInternalNoteAction({
 
     return (
         <div className={css.field}>
-            {renderVariables && (
-                <div className="textarea-toolbar">
-                    {_renderInsertVariable()}
-                </div>
-            )}
             <DEPRECATED_RichField
                 ref={richArea}
                 value={{
@@ -127,7 +122,13 @@ export default function AddInternalNoteAction({
                 onChange={_setInternalNote}
                 spellCheck
                 productCardsEnabled={false}
+                placeholder="Type {{ for variables }}"
             />
+            {renderVariables && (
+                <div className="textarea-toolbar">
+                    {_renderInsertVariable()}
+                </div>
+            )}
         </div>
     )
 }

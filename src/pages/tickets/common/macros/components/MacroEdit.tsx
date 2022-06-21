@@ -204,7 +204,7 @@ export class MacroEdit extends Component<Props> {
                 break
             case newMessageTypes.SET_RESPONSE_TEXT:
                 config = {
-                    title: 'Set response text',
+                    title: 'Response text',
                     content: (
                         <SetResponseTextAction
                             index={index}
@@ -216,7 +216,7 @@ export class MacroEdit extends Component<Props> {
                 break
             case ticketTypes.ADD_INTERNAL_NOTE:
                 config = {
-                    title: 'Add internal note',
+                    title: 'Internal note',
                     content: (
                         <AddInternalNoteAction
                             index={index}
@@ -360,7 +360,7 @@ export class MacroEdit extends Component<Props> {
 
         return (
             <form>
-                <div className={className}>
+                <div className={classnames(css.wrapper, className)}>
                     <div className="d-flex">
                         <div className="flex-grow-1 mr-4">
                             <InputField

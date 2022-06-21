@@ -105,6 +105,7 @@ export const AutoReplyWismoEditor = ({
                             index={0}
                             updateActionArgs={handleBodyChange}
                             ignoredVariables={['shopify']}
+                            toolbarOnTop={true}
                         />
                     </div>
                     <div
@@ -140,6 +141,7 @@ export const AutoReplyWismoEditor = ({
                             index={1}
                             updateActionArgs={handleSignatureChange}
                             ignoredVariables={['shopify']}
+                            toolbarOnTop={true}
                         />
                     </div>
                 </div>

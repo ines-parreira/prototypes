@@ -1,6 +1,21 @@
 @import '~css/new/colorTokens';
 
 :local {
+    .wrapper {
+        :global {
+            .textarea-toolbar {
+                border-top: none;
+                border-radius: 4px;
+                border-top-left-radius: 0px;
+                border-top-right-radius: 0px;
+            }
+
+            .rich-textarea-wrapper {
+                border-radius: 0;
+            }
+        }
+    }
+
     .title {
         font-weight: 600;
         font-size: 14px;

@@ -369,6 +369,17 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                   class="DraftEditor-root"
                 >
                   <div
+                    class="public-DraftEditorPlaceholder-root"
+                  >
+                    <div
+                      class="public-DraftEditorPlaceholder-inner"
+                      id="placeholder-123"
+                      style="white-space: pre-wrap;"
+                    >
+                      Type {{ for variables }}
+                    </div>
+                  </div>
+                  <div
                     class="DraftEditor-editorContainer"
                   >
                     <div
@@ -672,6 +683,17 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                 <div
                   class="DraftEditor-root"
                 >
+                  <div
+                    class="public-DraftEditorPlaceholder-root"
+                  >
+                    <div
+                      class="public-DraftEditorPlaceholder-inner"
+                      id="placeholder-123"
+                      style="white-space: pre-wrap;"
+                    >
+                      Type {{ for variables }}
+                    </div>
+                  </div>
                   <div
                     class="DraftEditor-editorContainer"
                   >

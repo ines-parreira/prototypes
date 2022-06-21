@@ -24,6 +24,7 @@ type Props = {
     index: number
     ignoredVariables?: string[]
     updateActionArgs: (index: number, args: Map<string, any>) => void
+    toolbarOnTop?: boolean
 } & ConnectedProps<typeof connector>
 
 export class SetResponseTextAction extends Component<Props> {
@@ -119,12 +120,17 @@ export class SetResponseTextAction extends Component<Props> {
     }
 
     render() {
-        const {action} = this.props
+        const {action, toolbarOnTop} = this.props
+
+        const toolbar = (
+            <div className="textarea-toolbar">
+                {this._renderInsertVariable()}
+            </div>
+        )
+
         return (
             <div className="field">
-                <div className="textarea-toolbar">
-                    {this._renderInsertVariable()}
-                </div>
+                {toolbarOnTop && toolbar}
                 <DEPRECATED_RichField
                     ref={(richArea) => {
                         this.richArea = richArea
@@ -137,7 +143,9 @@ export class SetResponseTextAction extends Component<Props> {
                     spellCheck
                     productCardsEnabled={false}
                     allowExternalChanges
+                    placeholder="Type {{ for variables }}"
                 />
+                {!toolbarOnTop && toolbar}
             </div>
         )
     }
