@@ -185,13 +185,14 @@ export const HelpCenterInstallationView: React.FC = () => {
             <section>
                 <ConfirmModalAction
                     actions={(onClose) => (
-                        <div className={css['modal-actions']}>
+                        <>
                             <Button
                                 intent="secondary"
                                 onClick={() => {
                                     setDeleteModalConfirmation('')
                                     onClose()
                                 }}
+                                className={css['cancel-btn']}
                             >
                                 Cancel
                             </Button>
@@ -204,7 +205,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                                 <i className="material-icons">delete</i>
                                 Delete Forever
                             </Button>
-                        </div>
+                        </>
                     )}
                     content={
                         <>

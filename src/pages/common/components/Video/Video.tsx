@@ -1,7 +1,9 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import DEPRECATED_Modal from '../DEPRECATED_Modal'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import css from './Video.less'
 
@@ -52,22 +54,18 @@ export default class Video extends React.Component<Props, State> {
                     </div>
                     <div className={css.title}>{legend}</div>
                 </div>
-                <DEPRECATED_Modal
-                    isOpen={isOpen}
-                    onClose={this._toggleModal}
-                    className={css.modal}
-                    bodyClassName={css.modalBody}
-                    header={legend}
-                    dismissible
-                >
-                    <iframe
-                        className={css.iframe}
-                        title="rule-video"
-                        src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
-                        frameBorder="0"
-                        allowFullScreen
-                    />
-                </DEPRECATED_Modal>
+                <Modal isOpen={isOpen} onClose={this._toggleModal} size="huge">
+                    <ModalHeader title={legend} />
+                    <ModalBody className={css.modalBody}>
+                        <iframe
+                            className={css.iframe}
+                            title="rule-video"
+                            src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+                            frameBorder="0"
+                            allowFullScreen
+                        />
+                    </ModalBody>
+                </Modal>
             </div>
         )
     }

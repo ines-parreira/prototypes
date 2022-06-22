@@ -2,6 +2,8 @@ import React from 'react'
 import {mount} from 'enzyme'
 
 import Button from 'pages/common/components/button/Button'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalBody from 'pages/common/components/modal/ModalBody'
 import {Action, ActionStatus, TicketMessage} from 'models/ticket/types'
 import {
     action as defaultAction,
@@ -98,9 +100,9 @@ describe('Actions component', () => {
         expect(refundActionButton).toIncludeText('Refund Action')
         refundActionButton.simulate('click')
 
-        const modalHeader = component.find('.modal-header').at(0)
+        const modalHeader = component.find(ModalHeader)
         expect(modalHeader).toIncludeText('Options')
-        const modalContent = component.find('.modal-content').at(0)
+        const modalContent = component.find(ModalBody)
         expect(modalContent).toIncludeText('restock: trueorder_id: 1234')
     })
 })

@@ -1,24 +1,36 @@
-import React, {ReactNode} from 'react'
+import React, {ComponentProps, ReactNode} from 'react'
 import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-
 import {fromJS, List} from 'immutable'
+import MockDate from 'mockdate'
+
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import {RootState} from 'state/types'
+
 import MacroModal from '../MacroModal'
 
 const mockStore = configureMockStore([thunk])
 
+jest.mock('lodash/uniqueId', () => () => '42')
+
 jest.mock('../MacroModalList', () => () => <div>MacroModalList</div>)
 jest.mock('../MacroEdit', () => () => <div>MacroEdit</div>)
 
-jest.mock(
-    'pages/common/components/DEPRECATED_Modal',
-    () =>
-        ({children}: {children: ReactNode}) =>
-            <div>{children}</div>
-)
+jest.mock('pages/common/components/modal/Modal', () => {
+    return ({children}: {children: ReactNode}) => <div>{children}</div>
+})
+
+jest.mock('pages/common/components/modal/ModalHeader', () => {
+    return ({title}: ComponentProps<typeof ModalHeader>) => <div>{title}</div>
+})
+
+jest.mock('pages/common/components/modal/ModalBody', () => {
+    return ({children}: {children: ReactNode}) => <div>{children}</div>
+})
+
+const date = '2021-01-24T17:30:00.000Z'
 
 describe('<MacroModal />', () => {
     const defaultStore: Partial<RootState> = {}
@@ -31,6 +43,14 @@ describe('<MacroModal />', () => {
             actions: [{name: 'http'}],
         },
     ])
+
+    beforeEach(() => {
+        MockDate.set(date)
+    })
+
+    afterEach(() => {
+        MockDate.reset()
+    })
 
     it('should render MacroModal', () => {
         const {container} = render(

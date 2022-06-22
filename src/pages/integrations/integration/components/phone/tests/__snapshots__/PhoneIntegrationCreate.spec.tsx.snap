@@ -219,9 +219,6 @@ exports[`<PhoneIntegrationCreate/> render() should prefill the title field using
                 </div>
               </div>
             </div>
-            <form
-              class=""
-            />
           </div>
           <div
             class="form-group"
@@ -544,9 +541,6 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                 </div>
               </div>
             </div>
-            <form
-              class=""
-            />
           </div>
           <div
             class="form-group"
@@ -839,9 +833,6 @@ exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with t
                 </div>
               </div>
             </div>
-            <form
-              class=""
-            />
           </div>
           <div
             class="form-group"

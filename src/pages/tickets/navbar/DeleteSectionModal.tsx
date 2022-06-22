@@ -2,8 +2,12 @@ import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import {Section} from '../../../models/section/types'
-import DEPRECATED_Modal from '../../common/components/DEPRECATED_Modal'
 
 import css from './DeleteSectionModal.less'
 
@@ -22,42 +26,41 @@ export default function DeleteSectionModal({
     onSubmit,
     section,
 }: Props) {
-    if (!section) {
-        return null
-    }
-    const emoji = section.decoration?.emoji
+    const emoji = section?.decoration?.emoji
 
     return (
-        <DEPRECATED_Modal
-            className={css.modal}
-            centered
-            header="Delete section"
-            isOpen={isOpen}
-            onClose={onClose}
-        >
-            <div className={css.content}>
-                All the views in{' '}
-                <span className={css.sectionName}>
-                    {emoji ? `${emoji} ` : null} {section.name}
-                </span>{' '}
-                will move back under{' '}
-                {section.private ? 'Private Views' : 'Shared Views'}. This won't
-                delete any view.
-            </div>
-            <div className="float-left mt-3">
-                <Button
-                    className="mr-2"
-                    intent="destructive"
-                    isLoading={isSubmitting}
-                    onClick={onSubmit}
-                >
-                    <ButtonIconLabel icon="delete">Delete</ButtonIconLabel>
-                </Button>
+        <Modal isOpen={isOpen && !!section} onClose={onClose}>
+            <ModalHeader title="Delete section" />
+            {!!section && (
+                <>
+                    <ModalBody>
+                        <div className={css.content}>
+                            All the views in{' '}
+                            <span className={css.sectionName}>
+                                {emoji ? `${emoji} ` : null} {section.name}
+                            </span>{' '}
+                            will move back under{' '}
+                            {section.private ? 'Private Views' : 'Shared Views'}
+                            . This won't delete any view.
+                        </div>
+                    </ModalBody>
+                    <ModalActionsFooter>
+                        <Button
+                            intent="destructive"
+                            isLoading={isSubmitting}
+                            onClick={onSubmit}
+                        >
+                            <ButtonIconLabel icon="delete">
+                                Delete
+                            </ButtonIconLabel>
+                        </Button>
 
-                <Button intent="secondary" onClick={onClose}>
-                    Cancel
-                </Button>
-            </div>
-        </DEPRECATED_Modal>
+                        <Button intent="secondary" onClick={onClose}>
+                            Cancel
+                        </Button>
+                    </ModalActionsFooter>
+                </>
+            )}
+        </Modal>
     )
 }

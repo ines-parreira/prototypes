@@ -7,6 +7,10 @@ import _pick from 'lodash/pick'
 
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import {isCustomerDataPresent, isCustomerDataValid} from '../infobar/utils'
 import {
     logEvent,
@@ -14,7 +18,6 @@ import {
 } from '../../../../store/middlewares/segmentTracker'
 
 import SourceIcon from '../SourceIcon'
-import DEPRECATED_Modal from '../DEPRECATED_Modal'
 import Tooltip from '../Tooltip'
 import {JSONTree} from '../JSONTree'
 import BinaryChoiceField from '../BinaryChoiceField'
@@ -60,7 +63,6 @@ type State = {
 
 export default class MergeCustomersModal extends React.Component<Props, State> {
     state = _clone(defaultContent)
-    buttonsRef = React.createRef<HTMLDivElement>()
 
     componentDidMount = () => {
         const {sourceCustomer} = this.props
@@ -191,195 +193,213 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
         )
 
         return (
-            <DEPRECATED_Modal
+            <Modal
                 isOpen={this.props.isOpen}
                 onClose={this._toggle}
-                size="lg"
-                header="Merge customers"
+                size="large"
             >
                 <Form onSubmit={this._handleSubmit}>
-                    <div className="content">
-                        <p className="merge-instructions">
-                            Select what data you want to keep, then click the
-                            "Merge Customers" button. The fields in blue will be
-                            kept.
-                        </p>
-                        <BinaryChoiceField
-                            label="Name"
-                            options={[
-                                {
-                                    label: (
-                                        <span>
-                                            <i className="material-icons mr-2">
-                                                person
-                                            </i>
-                                            {destinationCustomer.get('name')}
-                                        </span>
+                    <ModalHeader title="Merge customers" />
+                    <ModalBody>
+                        <div className="content">
+                            <p className="merge-instructions">
+                                Select what data you want to keep, then click
+                                the "Merge Customers" button. The fields in blue
+                                will be kept.
+                            </p>
+                            <BinaryChoiceField
+                                label="Name"
+                                options={[
+                                    {
+                                        label: (
+                                            <span>
+                                                <i className="material-icons mr-2">
+                                                    person
+                                                </i>
+                                                {destinationCustomer.get(
+                                                    'name'
+                                                )}
+                                            </span>
+                                        ),
+                                        value:
+                                            destinationCustomer.get('name') ||
+                                            '',
+                                    },
+                                    {
+                                        label: (
+                                            <span>
+                                                <i className="material-icons mr-2">
+                                                    person
+                                                </i>
+                                                {sourceCustomer.get('name')}
+                                            </span>
+                                        ),
+                                        value: sourceCustomer.get('name') || '',
+                                    },
+                                ]}
+                                value={this.state.name}
+                                onChange={(name: string) =>
+                                    this.setState({name})
+                                }
+                            />
+                            <BinaryChoiceField
+                                label="Note"
+                                options={[
+                                    {
+                                        label: (
+                                            <span>
+                                                <i className="material-icons mr-2">
+                                                    note
+                                                </i>
+                                                {destinationCustomer.get(
+                                                    'note'
+                                                )}
+                                            </span>
+                                        ),
+                                        value:
+                                            destinationCustomer.get('note') ||
+                                            '',
+                                    },
+                                    {
+                                        label: (
+                                            <span>
+                                                <i className="material-icons mr-2">
+                                                    note
+                                                </i>
+                                                {sourceCustomer.get('note')}
+                                            </span>
+                                        ),
+                                        value: sourceCustomer.get('note') || '',
+                                    },
+                                ]}
+                                value={this.state.note}
+                                onChange={(note: string) =>
+                                    this.setState({note})
+                                }
+                            />
+                            <BinaryChoiceField
+                                label="Primary email"
+                                tooltip={
+                                    <span>
+                                        <i
+                                            id="merge-primary-email"
+                                            className="material-icons ml-2"
+                                        >
+                                            help
+                                        </i>
+                                        <Tooltip
+                                            placement="top"
+                                            target="merge-primary-email"
+                                        >
+                                            This is the email address which will
+                                            be used to fetch data for the
+                                            customer
+                                        </Tooltip>
+                                    </span>
+                                }
+                                options={[
+                                    {
+                                        label: (
+                                            <span>
+                                                <SourceIcon
+                                                    className="mr-2"
+                                                    type={
+                                                        TicketMessageSourceType.Email
+                                                    }
+                                                />
+                                                {destinationCustomer.get(
+                                                    'email'
+                                                )}
+                                            </span>
+                                        ),
+                                        value:
+                                            destinationCustomer.get('email') ||
+                                            '',
+                                    },
+                                    {
+                                        label: (
+                                            <span>
+                                                <SourceIcon
+                                                    className="mr-2"
+                                                    type={
+                                                        TicketMessageSourceType.Email
+                                                    }
+                                                />
+                                                {sourceCustomer.get('email')}
+                                            </span>
+                                        ),
+                                        value:
+                                            sourceCustomer.get('email') || '',
+                                    },
+                                ]}
+                                value={this.state.email}
+                                onChange={(email: string) =>
+                                    this.setState({email})
+                                }
+                            />
+                            <MultiSelectBinaryChoiceField
+                                label="Contact info"
+                                tooltip={
+                                    <span>
+                                        <i
+                                            id="merge-contact-info"
+                                            className="material-icons ml-2"
+                                        >
+                                            help
+                                        </i>
+                                        <Tooltip
+                                            placement="top"
+                                            target="merge-contact-info"
+                                        >
+                                            You can not deselect the contact
+                                            info associated with the primary
+                                            email
+                                        </Tooltip>
+                                    </span>
+                                }
+                                requiredValues={requiredChannelValues}
+                                options={[
+                                    this._generateChannelOptions(
+                                        destinationCustomer
                                     ),
-                                    value:
-                                        destinationCustomer.get('name') || '',
-                                },
-                                {
-                                    label: (
-                                        <span>
-                                            <i className="material-icons mr-2">
-                                                person
-                                            </i>
-                                            {sourceCustomer.get('name')}
-                                        </span>
+                                    this._generateChannelOptions(
+                                        sourceCustomer
                                     ),
-                                    value: sourceCustomer.get('name') || '',
-                                },
-                            ]}
-                            value={this.state.name}
-                            onChange={(name: string) => this.setState({name})}
-                        />
-                        <BinaryChoiceField
-                            label="Note"
-                            options={[
-                                {
-                                    label: (
-                                        <span>
-                                            <i className="material-icons mr-2">
-                                                note
-                                            </i>
-                                            {destinationCustomer.get('note')}
-                                        </span>
-                                    ),
-                                    value:
-                                        destinationCustomer.get('note') || '',
-                                },
-                                {
-                                    label: (
-                                        <span>
-                                            <i className="material-icons mr-2">
-                                                note
-                                            </i>
-                                            {sourceCustomer.get('note')}
-                                        </span>
-                                    ),
-                                    value: sourceCustomer.get('note') || '',
-                                },
-                            ]}
-                            value={this.state.note}
-                            onChange={(note: string) => this.setState({note})}
-                        />
-                        <BinaryChoiceField
-                            label="Primary email"
-                            tooltip={
-                                <span>
-                                    <i
-                                        id="merge-primary-email"
-                                        className="material-icons ml-2"
-                                    >
-                                        help
-                                    </i>
-                                    <Tooltip
-                                        placement="top"
-                                        target="merge-primary-email"
-                                    >
-                                        This is the email address which will be
-                                        used to fetch data for the customer
-                                    </Tooltip>
-                                </span>
-                            }
-                            options={[
-                                {
-                                    label: (
-                                        <span>
-                                            <SourceIcon
-                                                className="mr-2"
-                                                type={
-                                                    TicketMessageSourceType.Email
-                                                }
+                                ]}
+                                propertiesToCompare={['address', 'type']}
+                                value={this.state.channels}
+                                onChange={(channels: CustomerChannel[]) =>
+                                    this.setState({channels})
+                                }
+                            />
+                            <BinaryChoiceField
+                                label="Customer data"
+                                options={[
+                                    {
+                                        label: (
+                                            <JSONTree
+                                                data={fromJS(baseCustomerData)}
                                             />
-                                            {destinationCustomer.get('email')}
-                                        </span>
-                                    ),
-                                    value:
-                                        destinationCustomer.get('email') || '',
-                                },
-                                {
-                                    label: (
-                                        <span>
-                                            <SourceIcon
-                                                className="mr-2"
-                                                type={
-                                                    TicketMessageSourceType.Email
-                                                }
+                                        ),
+                                        value: baseCustomerData,
+                                    },
+                                    {
+                                        label: (
+                                            <JSONTree
+                                                data={fromJS(mergeCustomerData)}
                                             />
-                                            {sourceCustomer.get('email')}
-                                        </span>
-                                    ),
-                                    value: sourceCustomer.get('email') || '',
-                                },
-                            ]}
-                            value={this.state.email}
-                            onChange={(email: string) => this.setState({email})}
-                        />
-                        <MultiSelectBinaryChoiceField
-                            label="Contact info"
-                            tooltip={
-                                <span>
-                                    <i
-                                        id="merge-contact-info"
-                                        className="material-icons ml-2"
-                                    >
-                                        help
-                                    </i>
-                                    <Tooltip
-                                        placement="top"
-                                        target="merge-contact-info"
-                                    >
-                                        You can not deselect the contact info
-                                        associated with the primary email
-                                    </Tooltip>
-                                </span>
-                            }
-                            requiredValues={requiredChannelValues}
-                            options={[
-                                this._generateChannelOptions(
-                                    destinationCustomer
-                                ),
-                                this._generateChannelOptions(sourceCustomer),
-                            ]}
-                            propertiesToCompare={['address', 'type']}
-                            value={this.state.channels}
-                            onChange={(channels: CustomerChannel[]) =>
-                                this.setState({channels})
-                            }
-                        />
-                        <BinaryChoiceField
-                            label="Customer data"
-                            options={[
-                                {
-                                    label: (
-                                        <JSONTree
-                                            data={fromJS(baseCustomerData)}
-                                        />
-                                    ),
-                                    value: baseCustomerData,
-                                },
-                                {
-                                    label: (
-                                        <JSONTree
-                                            data={fromJS(mergeCustomerData)}
-                                        />
-                                    ),
-                                    value: mergeCustomerData,
-                                },
-                            ]}
-                            value={_omit(this.state.data, ['_shopify'])}
-                            onChange={(data: Record<string, unknown>) =>
-                                this.setState({data})
-                            }
-                        />
-                    </div>
-
-                    <div
-                        className="float-right buttons-bar"
-                        ref={this.buttonsRef}
-                    >
+                                        ),
+                                        value: mergeCustomerData,
+                                    },
+                                ]}
+                                value={_omit(this.state.data, ['_shopify'])}
+                                onChange={(data: Record<string, unknown>) =>
+                                    this.setState({data})
+                                }
+                            />
+                        </div>
+                    </ModalBody>
+                    <ModalActionsFooter>
                         <Button
                             intent="secondary"
                             className="mr-2"
@@ -395,9 +415,9 @@ export default class MergeCustomersModal extends React.Component<Props, State> {
                         >
                             Merge customers
                         </ConfirmButton>
-                    </div>
+                    </ModalActionsFooter>
                 </Form>
-            </DEPRECATED_Modal>
+            </Modal>
         )
     }
 }

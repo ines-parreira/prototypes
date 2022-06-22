@@ -1,155 +1,137 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MergeTicketsContainer component should render a closed modal because isOpen==false 1`] = `
-<DEPRECATED_Modal
-  className="modal"
-  dismissible={true}
-  footer={null}
-  footerClassName="footer"
-  header="Merge tickets"
+<Modal
   isOpen={false}
   onClose={[Function]}
-  onClosed={[Function]}
-  size="lg"
+  size="huge"
 >
-  <Connect(SelectTargetTicket)
-    customerId={22}
-    sourceTicket={
-      Immutable.Map {
-        "subject": "foo",
-        "assignee_user": Immutable.Map {
-          "id": 1,
-          "name": "John Smith",
-        },
-        "customer": Immutable.Map {
-          "id": 22,
-          "name": "Maria Curie",
-        },
-      }
-    }
-    updateTargetTicket={[Function]}
+  <ModalHeader
+    title="Merge tickets"
   />
-</DEPRECATED_Modal>
+  <ModalBody>
+    <Connect(SelectTargetTicket)
+      customerId={22}
+      sourceTicket={
+        Immutable.Map {
+          "subject": "foo",
+          "assignee_user": Immutable.Map {
+            "id": 1,
+            "name": "John Smith",
+          },
+          "customer": Immutable.Map {
+            "id": 22,
+            "name": "Maria Curie",
+          },
+        }
+      }
+      updateTargetTicket={[Function]}
+    />
+  </ModalBody>
+</Modal>
 `;
 
 exports[`MergeTicketsContainer component should render the build component if there is a selected ticket in the state 1`] = `
-<DEPRECATED_Modal
-  className="modal"
-  dismissible={true}
-  footer={
-    <Form
-      onSubmit={[Function]}
-      style={
-        Object {
-          "width": "100%",
-        }
-      }
-      tag="form"
-    >
-      <div
-        className="float-left buttons-bar"
-      >
-        <ForwardRef
-          color="secondary"
-          isDisabled={false}
-          onClick={[Function]}
-        >
-          <ButtonIconLabel
-            icon="arrow_back"
-          >
-            Back
-          </ButtonIconLabel>
-        </ForwardRef>
-      </div>
-      <div
-        className="float-right buttons-bar"
-      >
-        <ForwardRef
-          className="mr-2"
-          intent="secondary"
-          isDisabled={false}
-          onClick={[Function]}
-        >
-          Cancel
-        </ForwardRef>
-        <ConfirmButton
-          confirmationContent="This action is irreversible. Are you sure you want to merge these tickets?"
-          isLoading={false}
-          type="submit"
-        >
-          Merge tickets
-        </ConfirmButton>
-      </div>
-    </Form>
-  }
-  footerClassName="footer"
-  header="Merge tickets"
+<Modal
   isOpen={true}
   onClose={[Function]}
-  onClosed={[Function]}
-  size="lg"
+  size="huge"
 >
-  <BuildFinalTicket
-    finalTicket={null}
-    sourceTicket={
-      Immutable.Map {
-        "subject": "foo",
-        "assignee_user": Immutable.Map {
-          "id": 1,
-          "name": "John Smith",
-        },
-        "customer": Immutable.Map {
-          "id": 22,
-          "name": "Maria Curie",
-        },
-      }
-    }
-    targetTicket={
-      Immutable.Map {
-        "subject": "foo",
-        "assignee_user": Immutable.Map {
-          "id": 1,
-          "name": "John Smith",
-        },
-        "customer": Immutable.Map {
-          "id": 22,
-          "name": "Maria Curie",
-        },
-      }
-    }
-    updateFinalTicket={[Function]}
+  <ModalHeader
+    title="Merge tickets"
   />
-</DEPRECATED_Modal>
+  <ModalBody>
+    <BuildFinalTicket
+      finalTicket={null}
+      sourceTicket={
+        Immutable.Map {
+          "subject": "foo",
+          "assignee_user": Immutable.Map {
+            "id": 1,
+            "name": "John Smith",
+          },
+          "customer": Immutable.Map {
+            "id": 22,
+            "name": "Maria Curie",
+          },
+        }
+      }
+      targetTicket={
+        Immutable.Map {
+          "subject": "foo",
+          "assignee_user": Immutable.Map {
+            "id": 1,
+            "name": "John Smith",
+          },
+          "customer": Immutable.Map {
+            "id": 22,
+            "name": "Maria Curie",
+          },
+        }
+      }
+      updateFinalTicket={[Function]}
+    />
+  </ModalBody>
+  <ModalActionsFooter
+    extra={
+      <ForwardRef
+        color="secondary"
+        isDisabled={false}
+        onClick={[Function]}
+      >
+        <ButtonIconLabel
+          icon="arrow_back"
+        >
+          Back
+        </ButtonIconLabel>
+      </ForwardRef>
+    }
+  >
+    <ForwardRef
+      intent="secondary"
+      isDisabled={false}
+      onClick={[Function]}
+    >
+      Cancel
+    </ForwardRef>
+    <ConfirmButton
+      confirmationContent="This action is irreversible. Are you sure you want to merge these tickets?"
+      isLoading={false}
+      onClick={[Function]}
+    >
+      Merge tickets
+    </ConfirmButton>
+  </ModalActionsFooter>
+</Modal>
 `;
 
 exports[`MergeTicketsContainer component should render the selection component if there is no selected ticket in the state 1`] = `
-<DEPRECATED_Modal
-  className="modal"
-  dismissible={true}
-  footer={null}
-  footerClassName="footer"
-  header="Merge tickets"
+<Modal
   isOpen={true}
   onClose={[Function]}
-  onClosed={[Function]}
-  size="lg"
+  size="huge"
 >
-  <Connect(SelectTargetTicket)
-    customerId={22}
-    sourceTicket={
-      Immutable.Map {
-        "subject": "foo",
-        "assignee_user": Immutable.Map {
-          "id": 1,
-          "name": "John Smith",
-        },
-        "customer": Immutable.Map {
-          "id": 22,
-          "name": "Maria Curie",
-        },
-      }
-    }
-    updateTargetTicket={[Function]}
+  <ModalHeader
+    title="Merge tickets"
   />
-</DEPRECATED_Modal>
+  <ModalBody>
+    <Connect(SelectTargetTicket)
+      customerId={22}
+      sourceTicket={
+        Immutable.Map {
+          "subject": "foo",
+          "assignee_user": Immutable.Map {
+            "id": 1,
+            "name": "John Smith",
+          },
+          "customer": Immutable.Map {
+            "id": 22,
+            "name": "Maria Curie",
+          },
+        }
+      }
+      updateTargetTicket={[Function]}
+    />
+  </ModalBody>
+</Modal>
 `;

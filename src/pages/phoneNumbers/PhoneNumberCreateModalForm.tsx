@@ -1,5 +1,4 @@
-import React, {useCallback, useState, useEffect} from 'react'
-import classnames from 'classnames'
+import React, {useCallback, useState, useEffect, useMemo} from 'react'
 import {Col, Form, FormGroup, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 
@@ -16,9 +15,12 @@ import {GorgiasApiError} from 'models/api/types'
 import {phoneNumberCreated} from 'state/entities/phoneNumbers/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
-import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {errorToChildren} from 'utils'
 
@@ -27,8 +29,6 @@ import PhoneNumberAddressValidationAlert from './PhoneNumberAddressValidationAle
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'
 import {shouldValidateAddress} from './utils'
-
-import css from './PhoneNumberCreateModalForm.less'
 
 type Props = {
     isOpen: boolean
@@ -111,64 +111,96 @@ export default function PhoneNumberCreateModalForm({
         }))
     }, [country])
 
+    const footerExtra = useMemo(() => {
+        if (country && shouldValidateAddress(country)) {
+            if (step === Step.PhoneInformation) {
+                return 'Step 1 of 2 - Phone Information'
+            } else if (step === Step.AddressVerfication) {
+                return 'Step 2 of 2 - Address Verification'
+            }
+            return null
+        }
+        return null
+    }, [country, step])
+
     return (
-        <Form onSubmit={onSubmit}>
-            <DEPRECATED_Modal
-                centered
-                isOpen={isOpen}
-                header="Create Phone Number"
-                onClose={onClose}
-                bodyClassName={css.body}
-                footerClassName={classnames(css.footer, {
-                    [css.steppedFooter]:
-                        country && shouldValidateAddress(country),
-                })}
-                className={css.modal}
-                footer={
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <ModalHeader title="Create Phone Number" />
+            <Form onSubmit={onSubmit}>
+                <ModalBody>
+                    <Row>
+                        <Col>
+                            {country && type && (
+                                <PhoneNumberCapabilitiesAlert
+                                    country={country}
+                                    type={type}
+                                />
+                            )}
+                            <PhoneNumberAddressValidationAlert
+                                country={country}
+                            />
+                            {step === Step.PhoneInformation && (
+                                <>
+                                    <FormGroup>
+                                        <DEPRECATED_InputField
+                                            label="Title"
+                                            placeholder="Ex: Company Support Line"
+                                            value={name}
+                                            onChange={setName}
+                                            required
+                                        />
+                                    </FormGroup>
+                                    <PhoneMetaFields
+                                        value={meta}
+                                        onChange={setMeta}
+                                    />
+                                </>
+                            )}
+                            {step === Step.AddressVerfication &&
+                                address &&
+                                country &&
+                                shouldValidateAddress(country) && (
+                                    <PhoneAddressFields
+                                        value={address}
+                                        onChange={setAddress}
+                                    />
+                                )}
+                        </Col>
+                    </Row>
+                </ModalBody>
+                <ModalActionsFooter extra={footerExtra}>
                     <>
                         {country && shouldValidateAddress(country) && (
                             <>
                                 {step === Step.PhoneInformation && (
-                                    <>
-                                        <span>
-                                            Step 1 of 2 - Phone Information
-                                        </span>
-                                        <Button
-                                            onClick={() =>
-                                                setStep(Step.AddressVerfication)
-                                            }
-                                        >
-                                            Next
-                                        </Button>
-                                    </>
+                                    <Button
+                                        onClick={() =>
+                                            setStep(Step.AddressVerfication)
+                                        }
+                                    >
+                                        Next
+                                    </Button>
                                 )}
                                 {step === Step.AddressVerfication && (
                                     <>
-                                        <span>
-                                            Step 2 of 2 - Address Verification
-                                        </span>
-                                        <div className={css.buttons}>
-                                            <Button
-                                                className="mr-2"
-                                                intent="secondary"
-                                                onClick={() =>
-                                                    setStep(
-                                                        Step.PhoneInformation
-                                                    )
-                                                }
-                                            >
-                                                Back
-                                            </Button>
-                                            <Button
-                                                isDisabled={
-                                                    country === PhoneCountry.FR
-                                                }
-                                                isLoading={isLoading}
-                                                onClick={onSubmit}
-                                            >
-                                                Create phone number
-                                            </Button>
-                                        </div>
+                                        <Button
+                                            className="mr-2"
+                                            intent="secondary"
+                                            onClick={() =>
+                                                setStep(Step.PhoneInformation)
+                                            }
+                                        >
+                                            Back
+                                        </Button>
+                                        <Button
+                                            isDisabled={
+                                                country === PhoneCountry.FR
+                                            }
+                                            isLoading={isLoading}
+                                            onClick={onSubmit}
+                                        >
+                                            Create phone number
+                                        </Button>
                                     </>
                                 )}
                             </>
@@ -183,46 +215,8 @@ export default function PhoneNumberCreateModalForm({
                             </Button>
                         )}
                     </>
-                }
-            >
-                <Row>
-                    <Col>
-                        {country && type && (
-                            <PhoneNumberCapabilitiesAlert
-                                country={country}
-                                type={type}
-                            />
-                        )}
-                        <PhoneNumberAddressValidationAlert country={country} />
-                        {step === Step.PhoneInformation && (
-                            <>
-                                <FormGroup>
-                                    <DEPRECATED_InputField
-                                        label="Title"
-                                        placeholder="Ex: Company Support Line"
-                                        value={name}
-                                        onChange={setName}
-                                        required
-                                    />
-                                </FormGroup>
-                                <PhoneMetaFields
-                                    value={meta}
-                                    onChange={setMeta}
-                                />
-                            </>
-                        )}
-                        {step === Step.AddressVerfication &&
-                            address &&
-                            country &&
-                            shouldValidateAddress(country) && (
-                                <PhoneAddressFields
-                                    value={address}
-                                    onChange={setAddress}
-                                />
-                            )}
-                    </Col>
-                </Row>
-            </DEPRECATED_Modal>
-        </Form>
+                </ModalActionsFooter>
+            </Form>
+        </Modal>
     )
 }

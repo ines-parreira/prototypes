@@ -28,22 +28,26 @@ exports[`Video component should render with default videoPreviewIndex 1`] = `
       foo
     </div>
   </div>
-  <DEPRECATED_Modal
-    bodyClassName="modalBody"
-    className="modal"
-    dismissible={true}
-    header="foo"
+  <Modal
     isOpen={false}
     onClose={[Function]}
+    size="huge"
   >
-    <iframe
-      allowFullScreen={true}
-      className="iframe"
-      frameBorder="0"
-      src="https://www.youtube.com/embed/8fDF546?autoplay=1"
-      title="rule-video"
+    <ModalHeader
+      title="foo"
     />
-  </DEPRECATED_Modal>
+    <ModalBody
+      className="modalBody"
+    >
+      <iframe
+        allowFullScreen={true}
+        className="iframe"
+        frameBorder="0"
+        src="https://www.youtube.com/embed/8fDF546?autoplay=1"
+        title="rule-video"
+      />
+    </ModalBody>
+  </Modal>
 </div>
 `;
 
@@ -75,21 +79,25 @@ exports[`Video component should render with passed videoPreviewIndex 1`] = `
       foo
     </div>
   </div>
-  <DEPRECATED_Modal
-    bodyClassName="modalBody"
-    className="modal"
-    dismissible={true}
-    header="foo"
+  <Modal
     isOpen={false}
     onClose={[Function]}
+    size="huge"
   >
-    <iframe
-      allowFullScreen={true}
-      className="iframe"
-      frameBorder="0"
-      src="https://www.youtube.com/embed/8fDF546?autoplay=1"
-      title="rule-video"
+    <ModalHeader
+      title="foo"
     />
-  </DEPRECATED_Modal>
+    <ModalBody
+      className="modalBody"
+    >
+      <iframe
+        allowFullScreen={true}
+        className="iframe"
+        frameBorder="0"
+        src="https://www.youtube.com/embed/8fDF546?autoplay=1"
+        title="rule-video"
+      />
+    </ModalBody>
+  </Modal>
 </div>
 `;
