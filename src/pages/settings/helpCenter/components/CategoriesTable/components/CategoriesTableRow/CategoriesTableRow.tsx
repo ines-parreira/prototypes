@@ -12,11 +12,13 @@ import {usePrevious} from 'react-use'
 import {Badge, Spinner} from 'reactstrap'
 
 import {useModalManager} from 'hooks/useModalManager'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {Article, NonRootCategory} from 'models/helpCenter/types'
 import {
     getArticlesInCategory,
     getUncategorizedArticles,
 } from 'state/entities/helpCenter/articles'
+import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -108,9 +110,11 @@ const DroppableCategoriesTableRow = ({
     level,
     isUnlisted,
 }: DroppableCategoriesTableRowProps) => {
+    const dispatch = useAppDispatch()
     const locales = useSupportedLocales()
     const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
     const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
+    const viewLanguage = useAppSelector(getViewLanguage)
 
     const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
 
@@ -126,6 +130,12 @@ const DroppableCategoriesTableRow = ({
         (ev: MouseEvent, name: CategoryRowActionTypes) => {
             switch (name) {
                 case 'categorySettings': {
+                    if (category.translation.locale !== viewLanguage) {
+                        dispatch(
+                            changeViewLanguage(category.translation.locale)
+                        )
+                    }
+
                     categoryModal.openModal(MODALS.CATEGORY, false, category)
                     return
                 }
@@ -148,7 +158,7 @@ const DroppableCategoriesTableRow = ({
                 }
             }
         },
-        [articleModal, category, categoryModal]
+        [articleModal, category, categoryModal, dispatch, viewLanguage]
     )
 
     return (

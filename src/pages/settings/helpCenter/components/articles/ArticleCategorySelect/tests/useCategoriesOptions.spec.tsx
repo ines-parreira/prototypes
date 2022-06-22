@@ -29,6 +29,16 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam')
     getSingleHelpCenterResponseFixture.id
 )
 
+const mockFetchCategories = jest.fn().mockResolvedValue(null)
+
+jest.mock('../../../../hooks/useCategoriesActions', () => {
+    return {
+        useCategoriesActions: () => ({
+            fetchCategories: mockFetchCategories,
+        }),
+    }
+})
+
 const categories = getCategoriesFlatSorted
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

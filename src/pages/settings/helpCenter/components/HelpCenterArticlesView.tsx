@@ -19,7 +19,7 @@ import {
 } from 'models/helpCenter/types'
 import {resetArticles} from 'state/entities/helpCenter/articles'
 import {resetCategories} from 'state/entities/helpCenter/categories'
-import {getViewLanguage} from 'state/ui/helpCenter'
+import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
@@ -168,6 +168,11 @@ export const HelpCenterArticlesView: React.FC = () => {
 
                 if (translation) {
                     setSelectedArticleTranslations(translations)
+
+                    if (translation.locale !== viewLanguage) {
+                        dispatch(changeViewLanguage(translation.locale))
+                    }
+
                     setSelectedArticle({
                         ...selectedArticle,
                         translation,
