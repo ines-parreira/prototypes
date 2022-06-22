@@ -70,7 +70,7 @@ export const IntentsFeedbackDropdown = ({
                 <Dropdown
                     toggle={() => _setOpen(!isOpen)}
                     isOpen={isOpen}
-                    onMouseLeave={close}
+                    onMouseLeave={() => _setOpen(false)}
                 >
                     <DropdownToggle className={css.toggleMenu}>
                         <span className={classnames('mr-1', css.menuLabel)}>

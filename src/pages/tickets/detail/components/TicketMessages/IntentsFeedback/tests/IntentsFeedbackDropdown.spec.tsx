@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {render} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 import _noop from 'lodash/noop'
 
 import {IntentsFeedbackDropdown} from '../IntentsFeedbackDropdown'
@@ -26,5 +26,19 @@ describe('<IntentsFeedbackDropdown/>', () => {
         minProps.activeIntentsNames = ['foo/baz']
         const {container} = render(<IntentsFeedbackDropdown {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should hide the dropdown on mouse leave', () => {
+        const {getByRole, findByRole} = render(
+            <IntentsFeedbackDropdown
+                {...minProps}
+                activeIntentsNames={['foo/baz']}
+            />
+        )
+
+        fireEvent.click(getByRole('button'))
+        fireEvent.mouseLeave(getByRole('button'))
+
+        expect(findByRole('menu', {hidden: true})).not.toBe(null)
     })
 })
