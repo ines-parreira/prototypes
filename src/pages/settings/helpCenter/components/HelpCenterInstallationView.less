@@ -6,10 +6,6 @@
         flex-direction: column;
     }
 
-    .cancel-btn {
-        margin-right: 8px;
-    }
-
     .delete-btn {
         i {
             color: @classic-feedback-error;
@@ -24,6 +20,12 @@
                 color: @classic-neutral-grey-4;
             }
         }
+    }
+
+    .modal-actions {
+        display: flex;
+        flex-grow: 1;
+        justify-content: space-between;
     }
 
     .delete-modal-help-center {

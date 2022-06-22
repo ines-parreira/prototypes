@@ -321,9 +321,9 @@ export const CsvColumnMatching = ({
                 </Button>
                 <ConfirmModalAction
                     actions={(onClose) => (
-                        <>
+                        <div className={css['modal-actions']}>
                             <Button
-                                className={css['cancel-button']}
+                                className="mr-2"
                                 intent="secondary"
                                 onClick={() => onClose()}
                             >
@@ -332,7 +332,7 @@ export const CsvColumnMatching = ({
                             <Button intent="destructive" onClick={onCancel}>
                                 Stop Import
                             </Button>
-                        </>
+                        </div>
                     )}
                     content={
                         <p>

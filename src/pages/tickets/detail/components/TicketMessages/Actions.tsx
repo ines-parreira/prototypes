@@ -6,9 +6,7 @@ import classnames from 'classnames'
 import {getActionTemplate} from 'utils'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import {JSONTree} from 'pages/common/components/JSONTree'
 import {ContentType} from 'models/api/types'
 import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
@@ -63,7 +61,7 @@ export default class Actions extends Component<Props, State> {
     _renderShopifyActionModalContent = (id: number, action: Action) => {
         const hiddenOptions = ['tracking_event_name']
         return (
-            <ModalBody>
+            <div>
                 {Object.keys(action.arguments!).map((arg, idx) => {
                     if (!hiddenOptions.includes(arg)) {
                         let value: string =
@@ -82,7 +80,7 @@ export default class Actions extends Component<Props, State> {
                         )
                     }
                 })}
-            </ModalBody>
+            </div>
         )
     }
 
@@ -92,7 +90,7 @@ export default class Actions extends Component<Props, State> {
         contentType: ContentType
     ) => {
         return (
-            <ModalBody>
+            <div>
                 <h3>Headers</h3>
                 {Object.keys(action.arguments!.headers!).map((arg, idx) => (
                     <p key={idx}>
@@ -135,7 +133,7 @@ export default class Actions extends Component<Props, State> {
                         </div>
                     </div>
                 )}
-            </ModalBody>
+            </div>
         )
     }
 
@@ -191,31 +189,31 @@ export default class Actions extends Component<Props, State> {
                                 </ButtonIconLabel>
                             </Button>
                             {isShopifyAction ? (
-                                <Modal
+                                <DEPRECATED_Modal
                                     isOpen={this.state.isModalOpen[index]}
                                     onClose={this._closeModal(index)}
-                                    size="large"
+                                    header="Options"
+                                    size="lg"
                                 >
-                                    <ModalHeader title="Options" />
                                     {this._renderShopifyActionModalContent(
                                         index,
                                         action
                                     )}
-                                </Modal>
+                                </DEPRECATED_Modal>
                             ) : null}
                             {isHttpAction ? (
-                                <Modal
+                                <DEPRECATED_Modal
                                     isOpen={this.state.isModalOpen[index]}
                                     onClose={this._closeModal(index)}
-                                    size="large"
+                                    header="Request"
+                                    size="lg"
                                 >
-                                    <ModalHeader title="Request" />
                                     {this._renderModalContent(
                                         index,
                                         action,
                                         contentType
                                     )}
-                                </Modal>
+                                </DEPRECATED_Modal>
                             ) : null}
                         </div>
                     )

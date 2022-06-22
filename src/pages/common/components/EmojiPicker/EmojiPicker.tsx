@@ -1,5 +1,5 @@
 import React, {ComponentProps, CSSProperties} from 'react'
-import {Picker} from 'emoji-mart'
+import {EmojiData, Picker} from 'emoji-mart'
 import classNames from 'classnames'
 
 import css from './EmojiPicker.less'
@@ -7,6 +7,7 @@ import css from './EmojiPicker.less'
 type Props = {
     className?: string
     style?: CSSProperties
+    onClick?: (emoji: EmojiData) => void
 } & ComponentProps<typeof Picker>
 
 const EmojiPicker = (props: Props) => (

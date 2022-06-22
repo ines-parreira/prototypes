@@ -16,11 +16,8 @@ import {
     MacrosSearchResult,
 } from 'state/macro/actions'
 import {MacroActionName} from 'models/macroAction/types'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalFooter from 'pages/common/components/modal/ModalFooter'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import Loader from '../../../../common/components/Loader/Loader'
+import DEPRECATED_Modal from '../../../../common/components/DEPRECATED_Modal'
 import {DEFAULT_ACTIONS} from '../../../../../config'
 import {
     logEvent,
@@ -69,7 +66,6 @@ type State = {
     actions: List<any>
     name: string
     language: string | null
-    isModalOpen: boolean
 }
 
 export class MacroModalContainer extends Component<Props, State> {
@@ -86,7 +82,6 @@ export class MacroModalContainer extends Component<Props, State> {
             actions: props.currentMacro.get('actions') || fromJS([]),
             name: props.currentMacro.get('name') || '',
             language: props.currentMacro.get('language') || null,
-            isModalOpen: false,
         }
     }
 
@@ -101,8 +96,6 @@ export class MacroModalContainer extends Component<Props, State> {
         if (this.props.isCreatingMacro) {
             this._addNewMacro()
         }
-
-        this.setState({isModalOpen: true})
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -328,62 +321,16 @@ export class MacroModalContainer extends Component<Props, State> {
             : selectedItemsIds.size
 
         return (
-            <Modal
-                isOpen={this.state.isModalOpen}
+            <DEPRECATED_Modal
+                isOpen
                 onClose={closeModal}
                 className={css.component}
-                size="huge"
-            >
-                <ModalHeader
-                    title={selectionMode ? 'Macros' : 'Manage Macros'}
-                />
-                <ModalBody className={css.body}>
-                    <Container fluid>
-                        <Row>
-                            <Col
-                                xs="3"
-                                className={classnames(css.list, css.content)}
-                            >
-                                <MacroModalList
-                                    currentMacro={currentMacro}
-                                    searchResults={searchResults}
-                                    searchParams={searchParams}
-                                    fetchMacros={this.props.fetchMacros}
-                                    disableExternalActions={
-                                        disableExternalActions
-                                    }
-                                    handleClickItem={handleClickItem}
-                                    onSearch={onSearch}
-                                />
-                            </Col>
-                            <Col xs="9" className={css.content}>
-                                {firstLoad ? (
-                                    <Loader minHeight="0" />
-                                ) : noResults ? (
-                                    <MacroNoResults
-                                        searchParams={this.props.searchParams}
-                                        newAction={this._addNewMacro}
-                                    />
-                                ) : selectionMode ? (
-                                    <MacroPreview currentMacro={currentMacro} />
-                                ) : (
-                                    <MacroEdit
-                                        className="mt-3 mb-3"
-                                        currentMacro={currentMacro}
-                                        agents={this.props.agents}
-                                        name={this.state.name}
-                                        language={this.state.language}
-                                        actions={this.state.actions}
-                                        setActions={this._setActions}
-                                        setName={this._setName}
-                                        setLanguage={this._setLanguage}
-                                    />
-                                )}
-                            </Col>
-                        </Row>
-                    </Container>
-                </ModalBody>
-                <ModalFooter className={css.footer}>
+                bodyClassName={css.body}
+                size="lg"
+                header={selectionMode ? 'Macros' : 'Manage Macros'}
+                autoFocus={false}
+                footerClassName={css.footer}
+                footer={
                     <Container fluid>
                         <Row>
                             <Col
@@ -509,8 +456,51 @@ export class MacroModalContainer extends Component<Props, State> {
                             </Col>
                         </Row>
                     </Container>
-                </ModalFooter>
-            </Modal>
+                }
+            >
+                <Container fluid>
+                    <Row>
+                        <Col
+                            xs="3"
+                            className={classnames(css.list, css.content)}
+                        >
+                            <MacroModalList
+                                currentMacro={currentMacro}
+                                searchResults={searchResults}
+                                searchParams={searchParams}
+                                fetchMacros={this.props.fetchMacros}
+                                disableExternalActions={disableExternalActions}
+                                handleClickItem={handleClickItem}
+                                onSearch={onSearch}
+                            />
+                        </Col>
+                        <Col xs="9" className={css.content}>
+                            {firstLoad ? (
+                                <Loader minHeight="0" />
+                            ) : noResults ? (
+                                <MacroNoResults
+                                    searchParams={this.props.searchParams}
+                                    newAction={this._addNewMacro}
+                                />
+                            ) : selectionMode ? (
+                                <MacroPreview currentMacro={currentMacro} />
+                            ) : (
+                                <MacroEdit
+                                    className="mt-3 mb-3"
+                                    currentMacro={currentMacro}
+                                    agents={this.props.agents}
+                                    name={this.state.name}
+                                    language={this.state.language}
+                                    actions={this.state.actions}
+                                    setActions={this._setActions}
+                                    setName={this._setName}
+                                    setLanguage={this._setLanguage}
+                                />
+                            )}
+                        </Col>
+                    </Row>
+                </Container>
+            </DEPRECATED_Modal>
         )
     }
 }

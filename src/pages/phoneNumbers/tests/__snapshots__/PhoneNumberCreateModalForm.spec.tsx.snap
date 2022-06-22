@@ -2,1608 +2,1625 @@
 
 exports[`<PhoneNumberCreateModalForm/> render() should not render when isOpen is false 1`] = `
 <body>
-  <div />
+  <div>
+    <form
+      class=""
+    />
+  </div>
 </body>
 `;
 
 exports[`<PhoneNumberCreateModalForm/> render() should render a second with for address validation for certain countries 1`] = `
-<body>
-  <div />
+<body
+  class="modal-open"
+>
+  <div>
+    <form
+      class=""
+    />
+  </div>
   <div
-    aria-describedby="modal-6-desc"
-    aria-labelledby="modal-6-title"
-    aria-modal="true"
-    class="modal default"
-    role="dialog"
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
   >
     <div
-      class="dialog"
+      class=""
     >
       <div
-        class="modalContent default"
+        class="modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
       >
         <div
-          class="wrapper"
+          class="modal-dialog modal modal-dialog-centered"
+          role="document"
         >
-          <div>
+          <div
+            class="modal-content"
+          >
             <div
-              class="title"
-              id="modal-6-title"
+              class="modal-header"
             >
-              Create Phone Number
+              <h5
+                class="modal-title"
+              >
+                Create Phone Number
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
             </div>
             <div
-              class="subtitle"
-            />
+              class="body modal-body"
+            >
+              <div
+                class="row"
+              >
+                <div
+                  class="col"
+                >
+                  <div
+                    class="form-group"
+                  >
+                    <div
+                      class="InputField required form-group"
+                      color=""
+                    >
+                      <label
+                        class="control-label"
+                        for="id-input-16"
+                      >
+                        Title
+                      </label>
+                      <div
+                        class=""
+                      >
+                        <input
+                          class="field form-control"
+                          id="id-input-16"
+                          placeholder="Ex: Company Support Line"
+                          required=""
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="row"
+                  >
+                    <div
+                      class="col"
+                    >
+                      <div
+                        class="form-group"
+                      >
+                        <label
+                          class="control-label"
+                          for="country"
+                        >
+                          Country
+                        </label>
+                        <div>
+                          <div
+                            class="dropdown"
+                          >
+                            <div
+                              aria-expanded="false"
+                              aria-haspopup="true"
+                              class=""
+                              data-toggle="dropdown"
+                            >
+                              <div
+                                class="select dropdown-toggle selectFullWidth"
+                              >
+                                <span
+                                  class="label"
+                                  style="min-width: 10px; opacity: 1;"
+                                >
+                                  Australia
+                                </span>
+                                <input
+                                  autocomplete="chrome-off"
+                                  class="input"
+                                  id="country"
+                                  style="min-width: 10px;"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              aria-hidden="true"
+                              class="options optionsFullWidth dropdown-menu"
+                              role="menu"
+                              tabindex="-1"
+                            >
+                              
+                              <button
+                                class="option option--focused dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Canada
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  United States
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  United Kingdom
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  France
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group"
+                      >
+                        <label
+                          class="control-label"
+                          for="area-code"
+                        >
+                          Area code
+                        </label>
+                        <div>
+                          <div
+                            class="dropdown"
+                          >
+                            <div
+                              aria-expanded="false"
+                              aria-haspopup="true"
+                              class=""
+                              data-toggle="dropdown"
+                            >
+                              <div
+                                class="select dropdown-toggle selectFullWidth"
+                              >
+                                <span
+                                  class="label placeholder"
+                                  style="min-width: 10px; opacity: 1;"
+                                >
+                                  Select an option
+                                </span>
+                                <input
+                                  autocomplete="chrome-off"
+                                  class="input"
+                                  id="area-code"
+                                  required=""
+                                  style="min-width: 10px;"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              aria-hidden="true"
+                              class="options optionsFullWidth dropdown-menu"
+                              role="menu"
+                              tabindex="-1"
+                            >
+                              
+                              <button
+                                class="option option--focused dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Adelaide (888)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Adelaide (87)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Adelaide (872)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Albany (8)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Albury (260)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Alice Springs (889)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Armadale (861)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Avalon Beach, Dural, Terrey Hills (284)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Ayr (7)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Bairnsdale (3)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Ballarat (343)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Bankstown, Liverpool (281)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Beenleigh (730)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Bendigo (344)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Blacktown, Parramatta (286)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Brisbane (73)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Bunbury (897)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Bundaberg (743)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Carins (742)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Caloundra (Caboolture) (753)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Canberra (251)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Clayton (385)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Craigieburn, Point Cook (383)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Croydon (382)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Dandenong (387)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Darwin (879)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Dubbo (258)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Eltham (384)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Engadine, Sutherland (285)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Geelon (342)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Gosford (243)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Hobart (361)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Kalkallo, Whittlesea (381)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Launceston (363)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Mandurah (Pinjarra) (895)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Melbourne (39)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Mildura (340)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Newcastle (240)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Orange (253)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Perth (862)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Perth (86)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Port Macquarie (Wauchope) (255)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Ringwood (388)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Rockhampton (748)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Sandgate (731)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Sheppaton (358)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Sunbury, Werribee (380)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Sydney (27)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Tamworth (257)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Toowoomba (745)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Townsville (744)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Tweed Heads (Beaudesert) (756)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Wagga Wagga (259)
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Wollongong  (242)
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="footer steppedFooter modal-footer"
+            >
+              <span>
+                Step 1 of 2 - Phone Information
+              </span>
+              <button
+                class="wrapper fill primary medium"
+                type="button"
+              >
+                Next
+              </button>
+            </div>
           </div>
-          <i
-            class="material-icons icon"
-          >
-            close
-          </i>
         </div>
-        <form
-          class=""
-        >
-          <div
-            class="wrapper"
-            id="modal-6-desc"
-          >
-            <div
-              class="row"
-            >
-              <div
-                class="col"
-              >
-                <div
-                  class="form-group"
-                >
-                  <div
-                    class="InputField required form-group"
-                    color=""
-                  >
-                    <label
-                      class="control-label"
-                      for="id-input-20"
-                    >
-                      Title
-                    </label>
-                    <div
-                      class=""
-                    >
-                      <input
-                        class="field form-control"
-                        id="id-input-20"
-                        placeholder="Ex: Company Support Line"
-                        required=""
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="row"
-                >
-                  <div
-                    class="col"
-                  >
-                    <div
-                      class="form-group"
-                    >
-                      <label
-                        class="control-label"
-                        for="country"
-                      >
-                        Country
-                      </label>
-                      <div>
-                        <div
-                          class="dropdown"
-                        >
-                          <div
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            class=""
-                            data-toggle="dropdown"
-                          >
-                            <div
-                              class="select dropdown-toggle selectFullWidth"
-                            >
-                              <span
-                                class="label"
-                                style="min-width: 10px; opacity: 1;"
-                              >
-                                Australia
-                              </span>
-                              <input
-                                autocomplete="chrome-off"
-                                class="input"
-                                id="country"
-                                style="min-width: 10px;"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                          </div>
-                          <div
-                            aria-hidden="true"
-                            class="options optionsFullWidth dropdown-menu"
-                            role="menu"
-                            tabindex="-1"
-                          >
-                            
-                            <button
-                              class="option option--focused dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Canada
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                United States
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                United Kingdom
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                France
-                              </span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="form-group"
-                    >
-                      <label
-                        class="control-label"
-                        for="area-code"
-                      >
-                        Area code
-                      </label>
-                      <div>
-                        <div
-                          class="dropdown"
-                        >
-                          <div
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            class=""
-                            data-toggle="dropdown"
-                          >
-                            <div
-                              class="select dropdown-toggle selectFullWidth"
-                            >
-                              <span
-                                class="label placeholder"
-                                style="min-width: 10px; opacity: 1;"
-                              >
-                                Select an option
-                              </span>
-                              <input
-                                autocomplete="chrome-off"
-                                class="input"
-                                id="area-code"
-                                required=""
-                                style="min-width: 10px;"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                          </div>
-                          <div
-                            aria-hidden="true"
-                            class="options optionsFullWidth dropdown-menu"
-                            role="menu"
-                            tabindex="-1"
-                          >
-                            
-                            <button
-                              class="option option--focused dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Adelaide (888)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Adelaide (87)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Adelaide (872)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Albany (8)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Albury (260)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Alice Springs (889)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Armadale (861)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Avalon Beach, Dural, Terrey Hills (284)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Ayr (7)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Bairnsdale (3)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Ballarat (343)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Bankstown, Liverpool (281)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Beenleigh (730)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Bendigo (344)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Blacktown, Parramatta (286)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Brisbane (73)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Bunbury (897)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Bundaberg (743)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Carins (742)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Caloundra (Caboolture) (753)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Canberra (251)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Clayton (385)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Craigieburn, Point Cook (383)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Croydon (382)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Dandenong (387)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Darwin (879)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Dubbo (258)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Eltham (384)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Engadine, Sutherland (285)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Geelon (342)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Gosford (243)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Hobart (361)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Kalkallo, Whittlesea (381)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Launceston (363)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Mandurah (Pinjarra) (895)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Melbourne (39)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Mildura (340)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Newcastle (240)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Orange (253)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Perth (862)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Perth (86)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Port Macquarie (Wauchope) (255)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Ringwood (388)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Rockhampton (748)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Sandgate (731)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Sheppaton (358)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Sunbury, Werribee (380)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Sydney (27)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Tamworth (257)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Toowoomba (745)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Townsville (744)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Tweed Heads (Beaudesert) (756)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Wagga Wagga (259)
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Wollongong  (242)
-                              </span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="wrapper wrapper hasExtraInfo"
-          >
-            <div
-              class="extra"
-            >
-              Step 1 of 2 - Phone Information
-            </div>
-            <div
-              class="actions"
-            >
-              <div
-                class="childWrapper"
-              >
-                <button
-                  class="wrapper fill primary medium"
-                  type="button"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          </div>
-        </form>
       </div>
+      <div
+        class="modal-backdrop show"
+      />
     </div>
   </div>
 </body>
 `;
 
 exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no address validation is required 1`] = `
-<body>
-  <div />
+<body
+  class="modal-open"
+>
+  <div>
+    <form
+      class=""
+    />
+  </div>
   <div
-    aria-describedby="modal-4-desc"
-    aria-labelledby="modal-4-title"
-    aria-modal="true"
-    class="modal default"
-    role="dialog"
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
   >
     <div
-      class="dialog"
+      class=""
     >
       <div
-        class="modalContent default"
+        class="modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
       >
         <div
-          class="wrapper"
-        >
-          <div>
-            <div
-              class="title"
-              id="modal-4-title"
-            >
-              Create Phone Number
-            </div>
-            <div
-              class="subtitle"
-            />
-          </div>
-          <i
-            class="material-icons icon"
-          >
-            close
-          </i>
-        </div>
-        <form
-          class=""
+          class="modal-dialog modal modal-dialog-centered"
+          role="document"
         >
           <div
-            class="wrapper"
-            id="modal-4-desc"
+            class="modal-content"
           >
             <div
-              class="row"
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Create Phone Number
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="body modal-body"
             >
               <div
-                class="col"
+                class="row"
               >
                 <div
-                  class="form-group"
+                  class="col"
                 >
                   <div
-                    class="InputField required form-group"
-                    color=""
+                    class="form-group"
                   >
-                    <label
-                      class="control-label"
-                      for="id-input-5"
-                    >
-                      Title
-                    </label>
                     <div
-                      class=""
+                      class="InputField required form-group"
+                      color=""
                     >
-                      <input
-                        class="field form-control"
-                        id="id-input-5"
-                        placeholder="Ex: Company Support Line"
-                        required=""
-                        type="text"
-                        value=""
-                      />
+                      <label
+                        class="control-label"
+                        for="id-input-2"
+                      >
+                        Title
+                      </label>
+                      <div
+                        class=""
+                      >
+                        <input
+                          class="field form-control"
+                          id="id-input-2"
+                          placeholder="Ex: Company Support Line"
+                          required=""
+                          type="text"
+                          value=""
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div
-                  class="row"
-                >
                   <div
-                    class="col"
+                    class="row"
                   >
                     <div
-                      class="form-group"
+                      class="col"
                     >
-                      <label
-                        class="control-label"
-                        for="country"
+                      <div
+                        class="form-group"
                       >
-                        Country
-                      </label>
-                      <div>
-                        <div
-                          class="dropdown show"
+                        <label
+                          class="control-label"
+                          for="country"
                         >
+                          Country
+                        </label>
+                        <div>
                           <div
-                            aria-expanded="true"
-                            aria-haspopup="true"
-                            class=""
-                            data-toggle="dropdown"
+                            class="dropdown show"
                           >
                             <div
-                              class="select dropdown-toggle selectFullWidth"
+                              aria-expanded="true"
+                              aria-haspopup="true"
+                              class=""
+                              data-toggle="dropdown"
                             >
-                              <span
-                                class="label"
-                                style="min-width: 10px; opacity: 1;"
+                              <div
+                                class="select dropdown-toggle selectFullWidth"
                               >
-                                United States
-                              </span>
-                              <input
-                                autocomplete="chrome-off"
-                                class="input"
-                                id="country"
-                                style="min-width: 10px;"
-                                type="text"
-                                value=""
-                              />
+                                <span
+                                  class="label"
+                                  style="min-width: 10px; opacity: 1;"
+                                >
+                                  United States
+                                </span>
+                                <input
+                                  autocomplete="chrome-off"
+                                  class="input"
+                                  id="country"
+                                  style="min-width: 10px;"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
                             </div>
-                          </div>
-                          <div
-                            aria-hidden="false"
-                            class="options optionsFullWidth dropdown-menu show"
-                            role="menu"
-                            style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
-                            tabindex="-1"
-                          >
-                            
-                            <button
-                              class="option option--focused dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Canada
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Australia
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                United Kingdom
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                France
-                              </span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="form-group"
-                    >
-                      <label
-                        class="control-label"
-                        for="type"
-                      >
-                        Type
-                      </label>
-                      <div>
-                        <div
-                          class="dropdown"
-                        >
-                          <div
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            class=""
-                            data-toggle="dropdown"
-                          >
                             <div
-                              class="select dropdown-toggle selectFullWidth"
-                            >
-                              <span
-                                class="label"
-                                style="min-width: 10px; opacity: 1;"
-                              >
-                                Local
-                              </span>
-                              <input
-                                autocomplete="chrome-off"
-                                class="input"
-                                id="type"
-                                style="min-width: 10px;"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                          </div>
-                          <div
-                            aria-hidden="true"
-                            class="options optionsFullWidth dropdown-menu"
-                            role="menu"
-                            tabindex="-1"
-                          >
-                            
-                            <button
-                              class="option option--focused dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Toll-free
-                              </span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="form-group"
-                    >
-                      <label
-                        class="control-label"
-                        for="state"
-                      >
-                        State
-                      </label>
-                      <div>
-                        <div
-                          class="dropdown"
-                        >
-                          <div
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            class=""
-                            data-toggle="dropdown"
-                          >
-                            <div
-                              class="select dropdown-toggle selectFullWidth"
-                            >
-                              <span
-                                class="label placeholder"
-                                style="min-width: 10px; opacity: 1;"
-                              >
-                                Select an option
-                              </span>
-                              <input
-                                autocomplete="chrome-off"
-                                class="input"
-                                id="state"
-                                required=""
-                                style="min-width: 10px;"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                          </div>
-                          <div
-                            aria-hidden="true"
-                            class="options optionsFullWidth dropdown-menu"
-                            role="menu"
-                            tabindex="-1"
-                          >
-                            
-                            <button
-                              class="option option--focused dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Alabama
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Arizona
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Arkansas
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                California
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Colorado
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Connecticut
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Delaware
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                District Of Columbia
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Florida
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Georgia
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Idaho
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Illinois
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Indiana
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Iowa
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Kansas
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Kentucky
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Louisiana
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Maine
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Maryland
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Massachusetts
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Michigan
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Minnesota
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Mississippi
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Missouri
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Montana
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Nebraska
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Nevada
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                New Jersey
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                New Mexico
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                New York
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                North Carolina
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                North Dakota
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Ohio
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Oklahoma
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Oregon
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Pennsylvania
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Rhode Island
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                South Carolina
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                South Dakota
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Tennessee
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Texas
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Utah
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Vermont
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Virginia
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Washington
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                West Virginia
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Wisconsin
-                              </span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="form-group"
-                    >
-                      <label
-                        class="control-label"
-                        for="area-code"
-                      >
-                        Area code
-                      </label>
-                      <div>
-                        <div
-                          class="dropdown"
-                        >
-                          <div
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            class=""
-                            data-toggle="dropdown"
-                          >
-                            <div
-                              class="select dropdown-toggle selectFullWidth"
-                            >
-                              <span
-                                class="label placeholder"
-                                style="min-width: 10px; opacity: 1;"
-                              >
-                                Select an option
-                              </span>
-                              <input
-                                autocomplete="chrome-off"
-                                class="input"
-                                id="area-code"
-                                required=""
-                                style="min-width: 10px;"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                          </div>
-                          <div
-                            aria-hidden="true"
-                            class="options optionsFullWidth dropdown-menu"
-                            role="menu"
-                            tabindex="-1"
-                          >
-                            <h6
-                              class="dropdown-header"
+                              aria-hidden="false"
+                              class="options optionsFullWidth dropdown-menu show"
+                              role="menu"
+                              style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
                               tabindex="-1"
                             >
-                              No result
-                            </h6>
+                              
+                              <button
+                                class="option option--focused dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Canada
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Australia
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  United Kingdom
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  France
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group"
+                      >
+                        <label
+                          class="control-label"
+                          for="type"
+                        >
+                          Type
+                        </label>
+                        <div>
+                          <div
+                            class="dropdown"
+                          >
+                            <div
+                              aria-expanded="false"
+                              aria-haspopup="true"
+                              class=""
+                              data-toggle="dropdown"
+                            >
+                              <div
+                                class="select dropdown-toggle selectFullWidth"
+                              >
+                                <span
+                                  class="label"
+                                  style="min-width: 10px; opacity: 1;"
+                                >
+                                  Local
+                                </span>
+                                <input
+                                  autocomplete="chrome-off"
+                                  class="input"
+                                  id="type"
+                                  style="min-width: 10px;"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              aria-hidden="true"
+                              class="options optionsFullWidth dropdown-menu"
+                              role="menu"
+                              tabindex="-1"
+                            >
+                              
+                              <button
+                                class="option option--focused dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Toll-free
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group"
+                      >
+                        <label
+                          class="control-label"
+                          for="state"
+                        >
+                          State
+                        </label>
+                        <div>
+                          <div
+                            class="dropdown"
+                          >
+                            <div
+                              aria-expanded="false"
+                              aria-haspopup="true"
+                              class=""
+                              data-toggle="dropdown"
+                            >
+                              <div
+                                class="select dropdown-toggle selectFullWidth"
+                              >
+                                <span
+                                  class="label placeholder"
+                                  style="min-width: 10px; opacity: 1;"
+                                >
+                                  Select an option
+                                </span>
+                                <input
+                                  autocomplete="chrome-off"
+                                  class="input"
+                                  id="state"
+                                  required=""
+                                  style="min-width: 10px;"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              aria-hidden="true"
+                              class="options optionsFullWidth dropdown-menu"
+                              role="menu"
+                              tabindex="-1"
+                            >
+                              
+                              <button
+                                class="option option--focused dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Alabama
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Arizona
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Arkansas
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  California
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Colorado
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Connecticut
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Delaware
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  District Of Columbia
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Florida
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Georgia
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Idaho
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Illinois
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Indiana
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Iowa
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Kansas
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Kentucky
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Louisiana
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Maine
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Maryland
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Massachusetts
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Michigan
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Minnesota
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Mississippi
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Missouri
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Montana
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Nebraska
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Nevada
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  New Jersey
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  New Mexico
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  New York
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  North Carolina
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  North Dakota
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Ohio
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Oklahoma
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Oregon
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Pennsylvania
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Rhode Island
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  South Carolina
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  South Dakota
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Tennessee
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Texas
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Utah
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Vermont
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Virginia
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Washington
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  West Virginia
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Wisconsin
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group"
+                      >
+                        <label
+                          class="control-label"
+                          for="area-code"
+                        >
+                          Area code
+                        </label>
+                        <div>
+                          <div
+                            class="dropdown"
+                          >
+                            <div
+                              aria-expanded="false"
+                              aria-haspopup="true"
+                              class=""
+                              data-toggle="dropdown"
+                            >
+                              <div
+                                class="select dropdown-toggle selectFullWidth"
+                              >
+                                <span
+                                  class="label placeholder"
+                                  style="min-width: 10px; opacity: 1;"
+                                >
+                                  Select an option
+                                </span>
+                                <input
+                                  autocomplete="chrome-off"
+                                  class="input"
+                                  id="area-code"
+                                  required=""
+                                  style="min-width: 10px;"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              aria-hidden="true"
+                              class="options optionsFullWidth dropdown-menu"
+                              role="menu"
+                              tabindex="-1"
+                            >
+                              <h6
+                                class="dropdown-header"
+                                tabindex="-1"
+                              >
+                                No result
+                              </h6>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1612,265 +1629,270 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="wrapper wrapper"
-          >
             <div
-              class="actions"
+              class="footer modal-footer"
             >
-              <div
-                class="childWrapper"
+              <button
+                class="wrapper fill primary medium"
+                type="button"
               >
-                <button
-                  class="wrapper fill primary medium"
-                  type="button"
-                >
-                  Create phone number
-                </button>
-              </div>
+                Create phone number
+              </button>
             </div>
           </div>
-        </form>
+        </div>
       </div>
+      <div
+        class="modal-backdrop show"
+      />
     </div>
   </div>
 </body>
 `;
 
 exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is true 1`] = `
-<body>
-  <div />
+<body
+  class="modal-open"
+>
+  <div>
+    <form
+      class=""
+    />
+  </div>
   <div
-    aria-describedby="modal-2-desc"
-    aria-labelledby="modal-2-title"
-    aria-modal="true"
-    class="modal default"
-    role="dialog"
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
   >
     <div
-      class="dialog"
+      class=""
     >
       <div
-        class="modalContent default"
+        class="modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
       >
         <div
-          class="wrapper"
-        >
-          <div>
-            <div
-              class="title"
-              id="modal-2-title"
-            >
-              Create Phone Number
-            </div>
-            <div
-              class="subtitle"
-            />
-          </div>
-          <i
-            class="material-icons icon"
-          >
-            close
-          </i>
-        </div>
-        <form
-          class=""
+          class="modal-dialog modal modal-dialog-centered"
+          role="document"
         >
           <div
-            class="wrapper"
-            id="modal-2-desc"
+            class="modal-content"
           >
             <div
-              class="row"
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Create Phone Number
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="body modal-body"
             >
               <div
-                class="col"
+                class="row"
               >
                 <div
-                  class="form-group"
+                  class="col"
                 >
                   <div
-                    class="InputField required form-group"
-                    color=""
-                  >
-                    <label
-                      class="control-label"
-                      for="id-input-3"
-                    >
-                      Title
-                    </label>
-                    <div
-                      class=""
-                    >
-                      <input
-                        class="field form-control"
-                        id="id-input-3"
-                        placeholder="Ex: Company Support Line"
-                        required=""
-                        type="text"
-                        value=""
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="row"
-                >
-                  <div
-                    class="col"
+                    class="form-group"
                   >
                     <div
-                      class="form-group"
+                      class="InputField required form-group"
+                      color=""
                     >
                       <label
                         class="control-label"
-                        for="country"
+                        for="id-input-1"
                       >
-                        Country
+                        Title
                       </label>
-                      <div>
-                        <div
-                          class="dropdown"
-                        >
-                          <div
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            class=""
-                            data-toggle="dropdown"
-                          >
-                            <div
-                              class="select dropdown-toggle selectFullWidth"
-                            >
-                              <span
-                                class="label placeholder"
-                                style="min-width: 10px; opacity: 1;"
-                              >
-                                Select an option
-                              </span>
-                              <input
-                                autocomplete="chrome-off"
-                                class="input"
-                                id="country"
-                                required=""
-                                style="min-width: 10px;"
-                                type="text"
-                                value=""
-                              />
-                            </div>
-                          </div>
-                          <div
-                            aria-hidden="true"
-                            class="options optionsFullWidth dropdown-menu"
-                            role="menu"
-                            tabindex="-1"
-                          >
-                            
-                            <button
-                              class="option option--focused dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Canada
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                United States
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                Australia
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                United Kingdom
-                              </span>
-                            </button>
-                            <button
-                              class="option dropdown-item"
-                              role="menuitem"
-                              tabindex="0"
-                              type="button"
-                            >
-                              <span>
-                                France
-                              </span>
-                            </button>
-                          </div>
-                        </div>
+                      <div
+                        class=""
+                      >
+                        <input
+                          class="field form-control"
+                          id="id-input-1"
+                          placeholder="Ex: Company Support Line"
+                          required=""
+                          type="text"
+                          value=""
+                        />
                       </div>
                     </div>
+                  </div>
+                  <div
+                    class="row"
+                  >
                     <div
-                      class="form-group"
+                      class="col"
                     >
-                      <label
-                        class="control-label"
-                        for="area-code"
+                      <div
+                        class="form-group"
                       >
-                        Area code
-                      </label>
-                      <div>
-                        <div
-                          class="dropdown"
+                        <label
+                          class="control-label"
+                          for="country"
                         >
+                          Country
+                        </label>
+                        <div>
                           <div
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            class=""
-                            data-toggle="dropdown"
+                            class="dropdown"
                           >
                             <div
-                              class="select dropdown-toggle selectFullWidth"
+                              aria-expanded="false"
+                              aria-haspopup="true"
+                              class=""
+                              data-toggle="dropdown"
                             >
-                              <span
-                                class="label placeholder"
-                                style="min-width: 10px; opacity: 1;"
+                              <div
+                                class="select dropdown-toggle selectFullWidth"
                               >
-                                Select an option
-                              </span>
-                              <input
-                                autocomplete="chrome-off"
-                                class="input"
-                                id="area-code"
-                                required=""
-                                style="min-width: 10px;"
-                                type="text"
-                                value=""
-                              />
+                                <span
+                                  class="label placeholder"
+                                  style="min-width: 10px; opacity: 1;"
+                                >
+                                  Select an option
+                                </span>
+                                <input
+                                  autocomplete="chrome-off"
+                                  class="input"
+                                  id="country"
+                                  required=""
+                                  style="min-width: 10px;"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
                             </div>
-                          </div>
-                          <div
-                            aria-hidden="true"
-                            class="options optionsFullWidth dropdown-menu"
-                            role="menu"
-                            tabindex="-1"
-                          >
-                            <h6
-                              class="dropdown-header"
+                            <div
+                              aria-hidden="true"
+                              class="options optionsFullWidth dropdown-menu"
+                              role="menu"
                               tabindex="-1"
                             >
-                              No result
-                            </h6>
+                              
+                              <button
+                                class="option option--focused dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Canada
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  United States
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  Australia
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  United Kingdom
+                                </span>
+                              </button>
+                              <button
+                                class="option dropdown-item"
+                                role="menuitem"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span>
+                                  France
+                                </span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="form-group"
+                      >
+                        <label
+                          class="control-label"
+                          for="area-code"
+                        >
+                          Area code
+                        </label>
+                        <div>
+                          <div
+                            class="dropdown"
+                          >
+                            <div
+                              aria-expanded="false"
+                              aria-haspopup="true"
+                              class=""
+                              data-toggle="dropdown"
+                            >
+                              <div
+                                class="select dropdown-toggle selectFullWidth"
+                              >
+                                <span
+                                  class="label placeholder"
+                                  style="min-width: 10px; opacity: 1;"
+                                >
+                                  Select an option
+                                </span>
+                                <input
+                                  autocomplete="chrome-off"
+                                  class="input"
+                                  id="area-code"
+                                  required=""
+                                  style="min-width: 10px;"
+                                  type="text"
+                                  value=""
+                                />
+                              </div>
+                            </div>
+                            <div
+                              aria-hidden="true"
+                              class="options optionsFullWidth dropdown-menu"
+                              role="menu"
+                              tabindex="-1"
+                            >
+                              <h6
+                                class="dropdown-header"
+                                tabindex="-1"
+                              >
+                                No result
+                              </h6>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1879,27 +1901,22 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="wrapper wrapper"
-          >
             <div
-              class="actions"
+              class="footer modal-footer"
             >
-              <div
-                class="childWrapper"
+              <button
+                class="wrapper fill primary medium"
+                type="button"
               >
-                <button
-                  class="wrapper fill primary medium"
-                  type="button"
-                >
-                  Create phone number
-                </button>
-              </div>
+                Create phone number
+              </button>
             </div>
           </div>
-        </form>
+        </div>
       </div>
+      <div
+        class="modal-backdrop show"
+      />
     </div>
   </div>
 </body>

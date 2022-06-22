@@ -1,4 +1,4 @@
-import React, {ComponentProps, MouseEvent} from 'react'
+import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import _noop from 'lodash/noop'
@@ -19,10 +19,7 @@ jest.mock(
                     <div
                         data-testid="EmojiPicker-new-emoji"
                         onClick={() => {
-                            onClick!(
-                                {native: '1'} as EmojiData,
-                                {} as MouseEvent<HTMLElement>
-                            )
+                            onClick!({native: '1'} as EmojiData)
                         }}
                     />
                 </div>
@@ -89,7 +86,7 @@ describe('<EmojiSelect/>', () => {
                     '.' + css.clearButton
                 ) as HTMLElement
             )
-            expect(onEmojiClear).toHaveBeenCalled()
+            expect(onEmojiClear).toHaveBeenLastCalledWith()
         })
     })
 })

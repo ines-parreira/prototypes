@@ -37,15 +37,4 @@ describe('<ModalActionsFooter />', () => {
 
         expect(container.firstChild).toMatchSnapshot()
     })
-
-    it('should render with no extra style if extra is not a string', () => {
-        const {container} = render(
-            <ModalActionsFooter {...minProps} extra={<button>Foo</button>}>
-                <button>Cancel</button>
-                <button>OK</button>
-            </ModalActionsFooter>
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
 })

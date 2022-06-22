@@ -1,4 +1,4 @@
-import React, {MouseEvent} from 'react'
+import React from 'react'
 import {shallow, ShallowWrapper} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 
@@ -250,12 +250,9 @@ describe('ViewTable::Header', () => {
                 )
                 ;(
                     component.find(EmojiSelect).props() as {
-                        onEmojiSelect: (
-                            emoji: string,
-                            event: MouseEvent<HTMLElement>
-                        ) => void
+                        onEmojiSelect: (emoji: string) => void
                     }
-                ).onEmojiSelect(emoji, {} as MouseEvent<HTMLElement>)
+                ).onEmojiSelect(emoji)
                 const expectedActiveView = activeView.merge({
                     decoration: {emoji},
                 })
@@ -276,12 +273,9 @@ describe('ViewTable::Header', () => {
                 )
                 ;(
                     component.find(EmojiSelect).props() as {
-                        onEmojiSelect: (
-                            emoji: string,
-                            event: MouseEvent<HTMLElement>
-                        ) => void
+                        onEmojiSelect: (emoji: string) => void
                     }
-                ).onEmojiSelect(emoji, {} as MouseEvent<HTMLElement>)
+                ).onEmojiSelect(emoji)
                 const expectedActiveView = activeView.merge({
                     decoration: {
                         ...decoration,
@@ -309,11 +303,9 @@ describe('ViewTable::Header', () => {
 
                 ;(
                     component.find(EmojiSelect).props() as {
-                        onEmojiClear: (
-                            event: MouseEvent<HTMLButtonElement>
-                        ) => void
+                        onEmojiClear: () => void
                     }
-                ).onEmojiClear({} as MouseEvent<HTMLButtonElement>)
+                ).onEmojiClear()
                 const expectedActiveView = activeView.merge({
                     decoration: {},
                 })
@@ -336,11 +328,9 @@ describe('ViewTable::Header', () => {
 
                 ;(
                     component.find(EmojiSelect).props() as {
-                        onEmojiClear: (
-                            event: MouseEvent<HTMLButtonElement>
-                        ) => void
+                        onEmojiClear: () => void
                     }
-                ).onEmojiClear({} as MouseEvent<HTMLButtonElement>)
+                ).onEmojiClear()
                 expect(minProps.updateView).not.toHaveBeenCalled()
             })
         })

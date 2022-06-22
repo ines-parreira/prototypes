@@ -1,14 +1,12 @@
-import React from 'react'
+import React, {FormEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
+import {Form} from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import DEPRECATED_Modal from '../DEPRECATED_Modal'
 import {mergeTickets} from '../../../../state/mergeTickets/actions'
 import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
 import {
@@ -17,6 +15,7 @@ import {
 } from '../../../../store/middlewares/segmentTracker'
 import history from '../../../history'
 
+import css from './MergeTicketsContainer.less'
 import BuildFinalTicket from './BuildFinalTicket'
 import SelectTargetTicket from './SelectTargetTicket'
 
@@ -84,7 +83,8 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         this.setState({targetTicket, finalTicket})
     }
 
-    _handleSubmit = () => {
+    _handleSubmit = (evt: FormEvent) => {
+        evt.preventDefault()
         this.setState({isLoading: true})
 
         const {sourceTicket} = this.props
@@ -132,49 +132,59 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         }
 
         return (
-            <Modal
+            <DEPRECATED_Modal
                 isOpen={isOpen}
-                onClose={() => {
-                    this.props.toggleModal()
-                    this.setState({targetTicket: null})
-                }}
-                size="huge"
-            >
-                <ModalHeader title="Merge tickets" />
-                <ModalBody>{content}</ModalBody>
-                {targetTicket && (
-                    <ModalActionsFooter
-                        extra={
-                            <Button
-                                color="secondary"
-                                onClick={() =>
-                                    this.setState({targetTicket: null})
-                                }
-                                isDisabled={isLoading}
+                onClose={() => this.props.toggleModal()}
+                onClosed={() => this.setState({targetTicket: null})}
+                size="lg"
+                header="Merge tickets"
+                className={css.modal}
+                footerClassName={css.footer}
+                footer={
+                    targetTicket ? (
+                        <Form
+                            onSubmit={this._handleSubmit}
+                            style={{width: '100%'}}
+                        >
+                            <div className="float-left buttons-bar">
+                                <Button
+                                    color="secondary"
+                                    onClick={() =>
+                                        this.setState({targetTicket: null})
+                                    }
+                                    isDisabled={isLoading}
+                                >
+                                    <ButtonIconLabel icon="arrow_back">
+                                        Back
+                                    </ButtonIconLabel>
+                                </Button>
+                            </div>
+                            <div
+                                className="float-right buttons-bar"
+                                ref={this.buttonsRef}
                             >
-                                <ButtonIconLabel icon="arrow_back">
-                                    Back
-                                </ButtonIconLabel>
-                            </Button>
-                        }
-                    >
-                        <Button
-                            intent="secondary"
-                            onClick={this.props.toggleModal}
-                            isDisabled={isLoading}
-                        >
-                            Cancel
-                        </Button>
-                        <ConfirmButton
-                            onClick={this._handleSubmit}
-                            confirmationContent="This action is irreversible. Are you sure you want to merge these tickets?"
-                            isLoading={isLoading}
-                        >
-                            Merge tickets
-                        </ConfirmButton>
-                    </ModalActionsFooter>
-                )}
-            </Modal>
+                                <Button
+                                    intent="secondary"
+                                    className="mr-2"
+                                    onClick={this.props.toggleModal}
+                                    isDisabled={isLoading}
+                                >
+                                    Cancel
+                                </Button>
+                                <ConfirmButton
+                                    type="submit"
+                                    confirmationContent="This action is irreversible. Are you sure you want to merge these tickets?"
+                                    isLoading={isLoading}
+                                >
+                                    Merge tickets
+                                </ConfirmButton>
+                            </div>
+                        </Form>
+                    ) : null
+                }
+            >
+                {content}
+            </DEPRECATED_Modal>
         )
     }
 }

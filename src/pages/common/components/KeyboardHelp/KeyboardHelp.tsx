@@ -3,9 +3,7 @@ import _isUndefined from 'lodash/isUndefined'
 import classnames from 'classnames'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 
 import shortcutManager from 'services/shortcutManager/index'
 import keymap from 'config/shortcuts'
@@ -30,6 +28,10 @@ export default class KeyboardHelp extends Component<
             SHOW_HELP: {
                 action: () => this._toggle(true),
             },
+            HIDE_HELP: {
+                key: 'esc',
+                action: () => this._toggle(false),
+            },
         })
     }
 
@@ -50,15 +52,13 @@ export default class KeyboardHelp extends Component<
 
     render() {
         return (
-            <Modal
+            <DEPRECATED_Modal
                 isOpen={this.state.isOpen}
                 onClose={() => this._toggle(false)}
+                header="Keyboard shortcuts"
                 className={css.component}
-                size="large"
-                isScrollable
             >
-                <ModalHeader title="Keyboard shortcuts" />
-                <ModalBody className={css.content}>
+                <div className={css.content}>
                     {Object.keys(keymap).map((componentName, i) => {
                         const component = keymap[componentName]
                         const actions = component.actions
@@ -100,8 +100,8 @@ export default class KeyboardHelp extends Component<
                             </div>
                         )
                     })}
-                </ModalBody>
-            </Modal>
+                </div>
+            </DEPRECATED_Modal>
         )
     }
 }

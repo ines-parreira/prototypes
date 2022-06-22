@@ -1,6 +1,5 @@
 import React, {Children, ReactNode} from 'react'
 import classnames from 'classnames'
-import _isString from 'lodash/isString'
 
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 
@@ -21,11 +20,7 @@ const ModalActionsFooter = ({children, className, extra}: Props) => {
                 className
             )}
         >
-            {!!extra && (
-                <div className={classnames({[css.extra]: _isString(extra)})}>
-                    {extra}
-                </div>
-            )}
+            {!!extra && <div className={css.extra}>{extra}</div>}
             <div className={css.actions}>
                 {Children.toArray(children).map((child, index) => (
                     <div key={index} className={css.childWrapper}>

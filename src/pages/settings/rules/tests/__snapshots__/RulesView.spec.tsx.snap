@@ -59,12 +59,12 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-3"
+                    for="checkbox-1"
                   >
                     <input
                       class="input"
-                      id="checkbox-3"
-                      name="checkbox-3"
+                      id="checkbox-1"
+                      name="checkbox-1"
                       type="checkbox"
                     />
                     Select all
@@ -88,12 +88,12 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-4"
+                    for="checkbox-2"
                   >
                     <input
                       class="input"
-                      id="checkbox-4"
-                      name="checkbox-4"
+                      id="checkbox-2"
+                      name="checkbox-2"
                       type="checkbox"
                     />
                      Auto Close
@@ -104,12 +104,12 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-5"
+                    for="checkbox-3"
                   >
                     <input
                       class="input"
-                      id="checkbox-5"
-                      name="checkbox-5"
+                      id="checkbox-3"
+                      name="checkbox-3"
                       type="checkbox"
                     />
                      Auto Tag
@@ -120,12 +120,12 @@ exports[`<RulesView/> should render the rule library view 1`] = `
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-6"
+                    for="checkbox-4"
                   >
                     <input
                       class="input"
-                      id="checkbox-6"
-                      name="checkbox-6"
+                      id="checkbox-4"
+                      name="checkbox-4"
                       type="checkbox"
                     />
                      Auto Reply
@@ -151,8 +151,8 @@ exports[`<RulesView/> should render the rule library view 1`] = `
               </span>
               <input
                 class="input"
-                id="input-text-7"
-                name="input-text-7"
+                id="input-text-5"
+                name="input-text-5"
                 placeholder="Search rule library..."
                 type="text"
                 value=""

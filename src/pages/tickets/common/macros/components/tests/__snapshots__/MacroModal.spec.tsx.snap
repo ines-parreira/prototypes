@@ -2,123 +2,24 @@
 
 exports[`<MacroModal /> should render MacroModal 1`] = `
 <div>
-  <div>
-    Manage Macros
-  </div>
-  <div>
-    <div
-      class="container-fluid"
-    >
-      <div
-        class="row"
-      >
-        <div
-          class="list content col-3"
-        >
-          <div>
-            MacroModalList
-          </div>
-        </div>
-        <div
-          class="content col-9"
-        >
-          <div>
-            MacroEdit
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
   <div
-    class="wrapper footer"
+    class="container-fluid"
   >
     <div
-      class="container-fluid"
+      class="row"
     >
       <div
-        class="row"
+        class="list content col-3"
       >
-        <div
-          class="primaryAction col-3"
-        >
-          <button
-            class="wrapper fill secondary medium"
-            type="button"
-          >
-            <span
-              class="wrapper"
-            >
-              <i
-                class="material-icons icon isLeft medium"
-              >
-                add
-              </i>
-              Create macro
-            </span>
-          </button>
+        <div>
+          MacroModalList
         </div>
-        <div
-          class="col-9"
-        >
-          <div>
-            <div
-              class="d-inline-block"
-            >
-              <button
-                class="wrapper fill destructive medium"
-                id="confirm-1611509400000"
-                type="button"
-              >
-                <span
-                  class="wrapper"
-                >
-                  <i
-                    class="material-icons icon isLeft medium"
-                  >
-                    delete
-                  </i>
-                  Delete macro
-                </span>
-              </button>
-            </div>
-            <div
-              class="float-right"
-            >
-              <form
-                class="d-inline-block mr-1"
-                id="discard_macro_form"
-              >
-                <button
-                  class="wrapper fill secondary medium"
-                  type="submit"
-                >
-                  Discard Changes
-                </button>
-              </form>
-              <form
-                class="d-inline-block mr-1"
-                id="duplicate_macro_form"
-              >
-                <button
-                  class="wrapper fill secondary medium"
-                  type="submit"
-                >
-                  Duplicate
-                </button>
-              </form>
-              <form
-                class="d-inline-block"
-                id="update_macro_form"
-              >
-                <button
-                  class="wrapper fill primary medium"
-                  type="submit"
-                >
-                  Update
-                </button>
-              </form>
-            </div>
-          </div>
+      </div>
+      <div
+        class="content col-9"
+      >
+        <div>
+          MacroEdit
         </div>
       </div>
     </div>

@@ -54,35 +54,3 @@ exports[`<ModalActionsFooter /> should render with extra info on footer 1`] = `
   </div>
 </div>
 `;
-
-exports[`<ModalActionsFooter /> should render with no extra style if extra is not a string 1`] = `
-<div
-  class="wrapper wrapper hasExtraInfo custom-class"
->
-  <div
-    class=""
-  >
-    <button>
-      Foo
-    </button>
-  </div>
-  <div
-    class="actions"
-  >
-    <div
-      class="childWrapper"
-    >
-      <button>
-        Cancel
-      </button>
-    </div>
-    <div
-      class="childWrapper"
-    >
-      <button>
-        OK
-      </button>
-    </div>
-  </div>
-</div>
-`;

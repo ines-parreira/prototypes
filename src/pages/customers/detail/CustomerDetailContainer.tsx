@@ -7,6 +7,7 @@ import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
 import Loader from 'pages/common/components/Loader/Loader'
 import CustomerForm from 'pages/customers/common/components/CustomerForm.js'
 import Timeline from 'pages/common/components/timeline/Timeline'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import {Customer} from 'state/customers/types'
 import {
     DEPRECATED_getActiveCustomer,
@@ -16,8 +17,6 @@ import {
 import * as customersHelpers from 'state/customers/helpers'
 import {RootState} from 'state/types'
 import Button from 'pages/common/components/button/Button'
-import Modal from 'pages/common/components/modal/Modal'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
 import css from './CustomerDetailContainer.less'
 
@@ -91,20 +90,18 @@ export const CustomerDetailContainer = ({
                 </div>
             )}
 
-            <Modal
+            <DEPRECATED_Modal
                 isOpen={isCustomerFormOpen}
                 onClose={() => setIsCustomerFormOpen(false)}
+                header={`Update customer: ${
+                    activeCustomer.get('name') as string
+                }`}
             >
-                <ModalHeader
-                    title={`Update customer: ${
-                        activeCustomer.get('name') as string
-                    }`}
-                />
                 <CustomerForm
                     customer={activeCustomer}
                     closeModal={() => setIsCustomerFormOpen(false)}
                 />
-            </Modal>
+            </DEPRECATED_Modal>
         </div>
     )
 }

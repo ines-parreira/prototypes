@@ -197,6 +197,9 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
                 </div>
               </div>
             </div>
+            <form
+              class=""
+            />
           </div>
           <button
             class="wrapper mt-4 mb-4 fill primary medium isDisabled"
@@ -438,6 +441,9 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                 </div>
               </div>
             </div>
+            <form
+              class=""
+            />
           </div>
           <button
             class="wrapper mt-4 mb-4 fill primary medium"
@@ -649,6 +655,9 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
                 </div>
               </div>
             </div>
+            <form
+              class=""
+            />
           </div>
           <button
             class="wrapper mt-4 mb-4 fill primary medium isDisabled"

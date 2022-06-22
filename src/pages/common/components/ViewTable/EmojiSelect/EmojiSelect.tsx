@@ -1,10 +1,4 @@
-import React, {
-    ComponentProps,
-    MouseEvent,
-    RefObject,
-    useRef,
-    useState,
-} from 'react'
+import React, {ComponentProps, RefObject, useRef, useState} from 'react'
 import {Popover} from 'reactstrap'
 import {EmojiData, BaseEmoji} from 'emoji-mart'
 import classNames from 'classnames'
@@ -18,11 +12,8 @@ import css from './EmojiSelect.less'
 type Props = {
     className?: string
     emoji: Maybe<string>
-    onEmojiClear: (event: MouseEvent<HTMLButtonElement>) => void
-    onEmojiSelect: (
-        emoji: BaseEmoji['native'],
-        event: MouseEvent<HTMLElement>
-    ) => void
+    onEmojiClear: () => void
+    onEmojiSelect: (emoji: BaseEmoji['native']) => void
 } & Pick<ComponentProps<typeof Popover>, 'container'>
 
 const EmojiSelect = ({
@@ -64,13 +55,10 @@ const EmojiSelect = ({
                     <div className={css.popover}>
                         <EmojiPicker
                             style={{border: 'none'}}
-                            onClick={(
-                                emoji: EmojiData,
-                                event: MouseEvent<HTMLElement>
-                            ) => {
+                            onClick={(emoji: EmojiData) => {
                                 setIsOpen(false)
                                 if ('native' in emoji) {
-                                    onEmojiSelect(emoji.native, event)
+                                    onEmojiSelect(emoji.native)
                                 }
                             }}
                         />
@@ -79,10 +67,8 @@ const EmojiSelect = ({
                                 fillStyle="ghost"
                                 intent="primary"
                                 className={css.clearButton}
-                                onClick={(
-                                    event: MouseEvent<HTMLButtonElement>
-                                ) => {
-                                    onEmojiClear(event)
+                                onClick={() => {
+                                    onEmojiClear()
                                     setIsOpen(false)
                                 }}
                             >
