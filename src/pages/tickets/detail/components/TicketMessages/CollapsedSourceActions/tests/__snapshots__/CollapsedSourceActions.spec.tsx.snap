@@ -1,0 +1,486 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CollapsedSourceActions content should be intents if no other option is available 1`] = `
+<div
+  class="dropdown dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="btn btn-secondary hidden-sm-down dropdownToggle btn btn-secondary"
+    type="button"
+  >
+    <i
+      class="material-icons"
+      title="More"
+    >
+      more_vert
+    </i>
+  </button>
+  <div
+    aria-hidden="true"
+    class="menuWrapper dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <div
+      class="menu"
+    >
+      <div>
+        <div
+          class="header"
+        >
+          Message intents
+        </div>
+        <div
+          class="options"
+        >
+          <h6
+            class="subheader dropdown-header"
+            tabindex="-1"
+          >
+            foo/intent
+          </h6>
+          <div
+            class="dropdownItemWrapper"
+          >
+            <div
+              class="dropdownItemLabel"
+            >
+              <span
+                class="label"
+              >
+                Foo/intent
+              </span>
+            </div>
+            <div
+              class="description"
+              title="foo intent description"
+            >
+              foo intent description
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CollapsedSourceActions content should move between intents and all options 1`] = `
+<div
+  class="dropdown dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="btn btn-secondary hidden-sm-down dropdownToggle btn btn-secondary"
+    type="button"
+  >
+    <i
+      class="material-icons"
+      title="More"
+    >
+      more_vert
+    </i>
+  </button>
+  <div
+    aria-hidden="true"
+    class="menuWrapper dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <div
+      class="menu"
+    >
+      <div>
+        <div
+          class="header"
+        >
+          <i
+            class="material-icons mr-1 cursor-pointer"
+          >
+            arrow_back
+          </i>
+          Message intents
+        </div>
+        <div
+          class="options"
+        >
+          <h6
+            class="subheader dropdown-header"
+            tabindex="-1"
+          >
+            foo/intent
+          </h6>
+          <div
+            class="dropdownItemWrapper"
+          >
+            <div
+              class="dropdownItemLabel"
+            >
+              <span
+                class="label"
+              >
+                Foo/intent
+              </span>
+            </div>
+            <div
+              class="description"
+              title="foo intent description"
+            >
+              foo intent description
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CollapsedSourceActions content should move between intents and all options 2`] = `
+<div
+  class="dropdown dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="btn btn-secondary hidden-sm-down dropdownToggle btn btn-secondary"
+    type="button"
+  >
+    <i
+      class="material-icons"
+      title="More"
+    >
+      more_vert
+    </i>
+  </button>
+  <div
+    aria-hidden="true"
+    class="menuWrapper dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <div
+      class="menu"
+    >
+      <div
+        class="actions"
+      >
+        <button
+          class="dropdownItem dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="icon"
+          >
+            <i
+              class="material-icons"
+            >
+              visibility_off
+            </i>
+          </div>
+          <div
+            class="content"
+          >
+            <div
+              class="title"
+            >
+              Unhide comment
+            </div>
+            <div
+              class="description"
+            >
+              Unhide the comment in Instagram
+            </div>
+          </div>
+        </button>
+        <button
+          class="dropdownItem dropdown-item"
+          id="private-reply-button-1"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="icon"
+          >
+            <img
+              alt="private message icon"
+              class="instagramDirectMessageIcon"
+              src="test-file-stub"
+            />
+          </div>
+          <div
+            class="content"
+          >
+            <div
+              class="title"
+            >
+              Message
+            </div>
+            <div
+              class="description"
+            >
+              Respond with a direct message
+            </div>
+          </div>
+        </button>
+        <button
+          class="dropdownItem dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="icon"
+          >
+            <i
+              class="material-icons"
+            >
+              auto_awesome
+            </i>
+          </div>
+          <div
+            class="content"
+          >
+            <div
+              class="title"
+            >
+              All intents
+            </div>
+            <div
+              class="description"
+            >
+              See detected intents
+            </div>
+          </div>
+          <div
+            class="forwardIcon"
+          >
+            <i
+              class="material-icons"
+            >
+              arrow_forward_ios
+            </i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CollapsedSourceActions content should move between intents and all options 3`] = `
+<div
+  class="dropdown dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="btn btn-secondary hidden-sm-down dropdownToggle btn btn-secondary"
+    type="button"
+  >
+    <i
+      class="material-icons"
+      title="More"
+    >
+      more_vert
+    </i>
+  </button>
+  <div
+    aria-hidden="true"
+    class="menuWrapper dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <div
+      class="menu"
+    >
+      <div>
+        <div
+          class="header"
+        >
+          <i
+            class="material-icons mr-1 cursor-pointer"
+          >
+            arrow_back
+          </i>
+          Message intents
+        </div>
+        <div
+          class="options"
+        >
+          <h6
+            class="subheader dropdown-header"
+            tabindex="-1"
+          >
+            foo/intent
+          </h6>
+          <div
+            class="dropdownItemWrapper"
+          >
+            <div
+              class="dropdownItemLabel"
+            >
+              <span
+                class="label"
+              >
+                Foo/intent
+              </span>
+            </div>
+            <div
+              class="description"
+              title="foo intent description"
+            >
+              foo intent description
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CollapsedSourceActions content should move between intents and all options 4`] = `
+<div
+  class="dropdown dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="btn btn-secondary hidden-sm-down dropdownToggle btn btn-secondary"
+    type="button"
+  >
+    <i
+      class="material-icons"
+      title="More"
+    >
+      more_vert
+    </i>
+  </button>
+  <div
+    aria-hidden="true"
+    class="menuWrapper dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <div
+      class="menu"
+    >
+      <div
+        class="actions"
+      >
+        <button
+          class="dropdownItem dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="icon"
+          >
+            <i
+              class="material-icons"
+            >
+              visibility_off
+            </i>
+          </div>
+          <div
+            class="content"
+          >
+            <div
+              class="title"
+            >
+              Unhide comment
+            </div>
+            <div
+              class="description"
+            >
+              Unhide the comment in Instagram
+            </div>
+          </div>
+        </button>
+        <button
+          class="dropdownItem dropdown-item"
+          id="private-reply-button-1"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="icon"
+          >
+            <img
+              alt="private message icon"
+              class="instagramDirectMessageIcon"
+              src="test-file-stub"
+            />
+          </div>
+          <div
+            class="content"
+          >
+            <div
+              class="title"
+            >
+              Message
+            </div>
+            <div
+              class="description"
+            >
+              Respond with a direct message
+            </div>
+          </div>
+        </button>
+        <button
+          class="dropdownItem dropdown-item"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="icon"
+          >
+            <i
+              class="material-icons"
+            >
+              auto_awesome
+            </i>
+          </div>
+          <div
+            class="content"
+          >
+            <div
+              class="title"
+            >
+              All intents
+            </div>
+            <div
+              class="description"
+            >
+              See detected intents
+            </div>
+          </div>
+          <div
+            class="forwardIcon"
+          >
+            <i
+              class="material-icons"
+            >
+              arrow_forward_ios
+            </i>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CollapsedSourceActions should not render any options 1`] = `null`;
+
+exports[`CollapsedSourceActions should not render any options if only intents are allowed but not yet collapsed 1`] = `null`;

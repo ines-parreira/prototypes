@@ -1,4 +1,4 @@
-import classNamesBind from 'classnames/bind'
+import classNames from 'classnames'
 import React from 'react'
 
 import {
@@ -15,8 +15,6 @@ import Errors from './Errors'
 import css from './Message.less'
 import SourceDetailsHeader from './SourceDetailsHeader'
 
-const classNames = classNamesBind.bind(css)
-
 type Props = {
     message: TicketMessage
     ticketId: number
@@ -32,15 +30,16 @@ export default function Message(props: Props) {
 
     const contentToRender = (
         <div
-            className={classNames('wrapper', {
-                hasSourceDetails: props.showSourceDetails,
+            className={classNames(css.wrapper, {
+                [css.hasSourceDetails]: props.showSourceDetails,
             })}
         >
             {props.showSourceDetails && (
                 <SourceDetailsHeader
-                    className={classNames('sourceDetails', {
+                    className={classNames(css.sourceDetails, {
                         internal: !message.public,
                     })}
+                    contentClassName={css.sourceDetailsContent}
                     message={message}
                     timezone={props.timezone}
                     isLastRead={props.isLastRead}

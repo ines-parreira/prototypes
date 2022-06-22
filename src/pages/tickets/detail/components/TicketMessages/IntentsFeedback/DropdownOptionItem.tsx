@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React from 'react'
 import classnames from 'classnames'
 
 import type {Option} from '../../../../../common/components/RichDropdown/types'
@@ -10,38 +10,29 @@ type Props = {
     disabled?: boolean
     hoverable?: boolean
     onClick?: () => void
-    renderAction?: () => ReactNode
-    renderInfo?: () => ReactNode
 }
 
 export const DropdownOptionItem = ({
-    option,
+    option: {label, key, description},
     disabled = false,
     hoverable = false,
     onClick = () => null,
-    renderAction = () => null,
-    renderInfo = () => null,
-}: Props) => {
-    const {label, key, description} = option
-    return (
-        <div
-            key={key}
-            className={classnames(css.dropdownItemWrapper, {
-                [css.disabled]: disabled,
-                [css.hoverable]: hoverable,
-            })}
-            onClick={onClick}
-        >
-            <div className={css.dropdownItemLabel}>
-                <span className={css.info}>{renderInfo()}</span>
-                <span className={css.action}>{renderAction()}</span>
-                <span className={css.label}>{label}</span>
-            </div>
-            {description && (
-                <div className={css.description} title={description}>
-                    {description}
-                </div>
-            )}
+}: Props) => (
+    <div
+        key={key}
+        className={classnames(css.dropdownItemWrapper, {
+            [css.disabled]: disabled,
+            [css.hoverable]: hoverable,
+        })}
+        onClick={onClick}
+    >
+        <div className={css.dropdownItemLabel}>
+            <span className={css.label}>{label}</span>
         </div>
-    )
-}
+        {description && (
+            <div className={css.description} title={description}>
+                {description}
+            </div>
+        )}
+    </div>
+)

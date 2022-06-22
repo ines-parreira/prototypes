@@ -1,0 +1,55 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .dropdownItem {
+        display: flex;
+        align-items: stretch;
+        color: @classic-neutral-grey-6;
+        padding: 7px;
+        font-size: 12px;
+    }
+
+    .disabled {
+        background: @modern-neutral-neutral-0 !important;
+
+        &:focus {
+            outline: none;
+        }
+
+        * {
+            cursor: not-allowed;
+            color: @classic-neutral-grey-3 !important;
+        }
+
+        img {
+            opacity: 0.2;
+        }
+    }
+
+    .icon {
+        width: 26px;
+        font-size: 18px;
+        margin-top: 2px;
+    }
+
+    .content {
+        flex-grow: 1;
+    }
+
+    .title {
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 20px;
+    }
+
+    .description {
+        color: @classic-neutral-grey-4;
+        line-height: 16px;
+    }
+
+    .forwardIcon {
+        display: flex;
+        align-items: center;
+        color: @classic-neutral-grey-4;
+    }
+}

@@ -17,16 +17,14 @@ export const DropdownOptionButton = ({
     id,
     disabled = false,
     onClick = () => null,
-}: Props) => {
-    return (
-        <span
-            className={classnames(css.dropdownButton, {disabled})}
-            id={id}
-            onClick={onClick}
-        >
-            <i className={classnames(className, css.icon, 'material-icons')}>
-                {icon}
-            </i>
-        </span>
-    )
-}
+}: Props) => (
+    <span
+        className={classnames(css.dropdownButton, {disabled})}
+        id={id}
+        onClick={onClick}
+    >
+        <i className={classnames(className, css.icon, 'material-icons')}>
+            {icon}
+        </i>
+    </span>
+)

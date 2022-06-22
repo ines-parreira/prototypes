@@ -18,7 +18,6 @@ describe('Header', () => {
                 isLastRead={false}
                 isMessageHidden={false}
                 isMessageDeleted={false}
-                showIntents={false}
             />
         )
         expect(component).toMatchSnapshot()
@@ -33,7 +32,6 @@ describe('Header', () => {
                 isLastRead={false}
                 isMessageHidden={true}
                 isMessageDeleted={false}
-                showIntents={false}
             />
         )
         expect(component).toMatchSnapshot()
@@ -48,7 +46,6 @@ describe('Header', () => {
                 isLastRead={false}
                 isMessageHidden={true}
                 isMessageDeleted={false}
-                showIntents={false}
             />
         )
         expect(component).toMatchSnapshot()
@@ -63,7 +60,6 @@ describe('Header', () => {
                 isLastRead={false}
                 isMessageHidden={false}
                 isMessageDeleted={true}
-                showIntents={false}
             />
         )
         expect(component).toMatchSnapshot()
@@ -78,7 +74,6 @@ describe('Header', () => {
                 isLastRead={false}
                 isMessageHidden={false}
                 isMessageDeleted={false}
-                showIntents={false}
             />
         )
         const messageId = component.find(Meta).prop('messageId')
@@ -93,7 +88,6 @@ describe('Header', () => {
                 isLastRead={false}
                 isMessageHidden={false}
                 isMessageDeleted={false}
-                showIntents={true}
             />
         )
         expect(component).toMatchSnapshot()

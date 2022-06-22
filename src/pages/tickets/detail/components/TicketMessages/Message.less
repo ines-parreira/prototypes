@@ -8,19 +8,25 @@
     }
 
     .sourceDetails {
+        width: 100%;
         position: absolute;
         top: -16px;
         right: -10px;
-        visibility: hidden;
-        background: @classic-neutral-grey-1;
-        padding: 4px 10px;
+        pointer-events: none;
 
         &.internal {
             background: darken(@internalYellow, 1%);
         }
     }
 
-    &:hover .sourceDetails {
-        visibility: visible;
+    .sourceDetailsContent {
+        padding: 4px 10px;
+        background: @classic-neutral-grey-1;
+        align-items: center;
+        pointer-events: all;
+    }
+
+    &:not(:hover) .sourceDetails[data-focus='false'] {
+        display: none;
     }
 }

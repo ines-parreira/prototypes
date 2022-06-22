@@ -23,7 +23,7 @@ import {
 } from 'models/ticket/types'
 import * as infobarActions from 'state/infobar/actions'
 
-import css from './SourceActions.less'
+import css from './SourceActionsFooter.less'
 
 const classNames = classNamesBind.bind(css)
 
@@ -123,12 +123,7 @@ export class SourceActionsFooter extends Component<Props> {
 
         if (icon) {
             return (
-                <Badge
-                    color="light"
-                    pill
-                    className={css.customerReactionBadge}
-                    key="customer-reaction"
-                >
+                <Badge color="light" pill key="customer-reaction">
                     {customerName}
                     <span className="ml-1">
                         <img

@@ -1,0 +1,33 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .widgets {
+        display: flex;
+        background: @classic-neutral-grey-1;
+
+        .ticket-message:not(:hover) & {
+            display: none;
+        }
+    }
+
+    .actionButton {
+        cursor: pointer;
+        padding: 0;
+        margin-right: 5px;
+        height: 26px;
+
+        .hideAction {
+            width: 26px;
+        }
+    }
+
+    .replyButton {
+        padding: 0px 7px;
+    }
+
+    .visibilityButton {
+        width: 26px;
+        line-height: 24px;
+        margin-right: 5px;
+    }
+}

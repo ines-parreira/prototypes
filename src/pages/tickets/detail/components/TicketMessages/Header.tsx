@@ -11,7 +11,6 @@ import css from './Header.less'
 import Meta from './Meta'
 import Source from './Source'
 import SourceDetailsHeader from './SourceDetailsHeader'
-import Intents from './IntentsFeedback/IntentsFeedback'
 
 const classNames = classNamesBind.bind(css)
 
@@ -20,7 +19,6 @@ type Props = {
     message: TicketMessage
     timezone: string
     isLastRead: boolean
-    showIntents: boolean
     hasError?: boolean
     isMessageHidden?: boolean
     isMessageDeleted?: boolean
@@ -31,7 +29,6 @@ export default function Header(props: Props) {
         message,
         timezone,
         isLastRead,
-        showIntents,
         hasError,
         isMessageHidden,
         isMessageDeleted,
@@ -106,11 +103,6 @@ export default function Header(props: Props) {
                 )}
                 {metaContent}
             </div>
-            {showIntents && (
-                <div className={css.intents}>
-                    <Intents message={message} />
-                </div>
-            )}
             <SourceDetailsHeader
                 className={css.sourceDetails}
                 message={message}

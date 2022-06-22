@@ -5,9 +5,6 @@ exports[`<IntentsFeedbackDropdown/> should display all the intents available wit
   class="wrapper"
 >
   <div
-    id="intent-tooltip-1"
-  />
-  <div
     class="dropdown"
   >
     <button
@@ -37,12 +34,6 @@ exports[`<IntentsFeedbackDropdown/> should display all the intents available wit
         class="header"
       >
         Message intents
-        <i
-          class="material-icons ml-2 info"
-          id="intent-info-1"
-        >
-          info_outline
-        </i>
       </div>
       <div
         class="options"
@@ -55,19 +46,6 @@ exports[`<IntentsFeedbackDropdown/> should display all the intents available wit
         </h6>
         <div>
           foo/baz
-        </div>
-        <div
-          class="dropdown-divider"
-          tabindex="-1"
-        />
-        <h6
-          class="subheader dropdown-header"
-          tabindex="-1"
-        >
-          Other intents
-        </h6>
-        <div>
-          foo/bar
         </div>
       </div>
     </div>
@@ -79,73 +57,10 @@ exports[`<IntentsFeedbackDropdown/> should display all the intents available wit
 <div
   class="wrapper"
 >
-  <div
-    id="intent-tooltip-1"
-  />
-  <div
-    class="dropdown"
+  <button
+    class="toggleMenu btn btn-secondary btn-frozen pe-none"
   >
-    <button
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="toggleMenu btn btn-secondary"
-      type="button"
-    >
-      <span
-        class="mr-1 menuLabel"
-      >
-        no intent detected
-      </span>
-      <span
-        class="caret material-icons"
-      >
-        arrow_drop_down
-      </span>
-    </button>
-    <div
-      aria-hidden="true"
-      class="menu dropdown-menu dropdown-menu-right"
-      role="menu"
-      tabindex="-1"
-    >
-      <div
-        class="header"
-      >
-        Message intents
-        <i
-          class="material-icons ml-2 info"
-          id="intent-info-1"
-        >
-          info_outline
-        </i>
-      </div>
-      <div
-        class="options"
-      >
-        <h6
-          class="subheader dropdown-header"
-          tabindex="-1"
-        >
-          no intent detected
-        </h6>
-        <div
-          class="dropdown-divider"
-          tabindex="-1"
-        />
-        <h6
-          class="subheader dropdown-header"
-          tabindex="-1"
-        >
-          Other intents
-        </h6>
-        <div>
-          foo/bar
-        </div>
-        <div>
-          foo/baz
-        </div>
-      </div>
-    </div>
-  </div>
+    no intent detected
+  </button>
 </div>
 `;

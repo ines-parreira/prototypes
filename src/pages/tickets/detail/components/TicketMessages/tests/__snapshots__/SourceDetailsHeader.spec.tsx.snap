@@ -3,128 +3,200 @@
 exports[`<SourceDetailsHeader/> should render a \`go to ticket\` link instead of the date because the message is duplicated and should not render the SourceActionsHeader because the message is deleted 1`] = `
 <div
   className="wrapper"
+  data-focus={false}
 >
-  <From
-    key="ref-widget"
-    label="go to"
+  <div
+    className="content"
   >
-    <a
-      href={1234}
-      rel="noopener noreferrer"
-      target="_blank"
+    <From
+      key="ref-widget"
+      label="go to"
     >
-      ticket
-    </a>
-  </From>
+      <a
+        href={1234}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        ticket
+      </a>
+    </From>
+  </div>
 </div>
 `;
 
 exports[`<SourceDetailsHeader/> should render a \`go to ticket\` link instead of the date because the message is duplicated and should render the SourceActionsHeader because the message is not deleted 1`] = `
 <div
   className="wrapper"
+  data-focus={false}
 >
-  <Connect(SourceActionsHeader)
-    fromAgent={false}
-    messageCreatedDatetime=""
-    meta={
-      Object {
-        "hidden_datetime": "2020-06-18T14:10:14.291746",
-        "is_duplicated": true,
-        "private_reply": Object {
-          "original_ticket_id": 1234,
-        },
-      }
-    }
-    sender={
-      Object {
-        "email": "john.doe@example.com",
-        "firstname": "John",
-        "id": 1,
-        "lastname": "Doe",
-        "name": "John Doe",
-      }
-    }
-    senderId={1}
-    source={
-      Object {
-        "from": Object {
-          "address": "657788504429455-657788504429455",
-          "name": "Page",
-        },
-        "to": Array [
-          Object {
-            "address": "657788504429455-4135481299826174",
-            "name": "Cust Omer",
-          },
-        ],
-        "type": "facebook-comment",
-      }
-    }
-    ticketMessageId={1}
-  />
-  <From
-    key="ref-widget"
-    label="go to"
+  <div
+    className="content"
   >
-    <a
-      href={1234}
-      rel="noopener noreferrer"
-      target="_blank"
+    <ContextProvider
+      value={
+        Object {
+          "setFocus": [Function],
+        }
+      }
     >
-      ticket
-    </a>
-  </From>
+      <Connect(SourceActionsHeader)
+        collapseActions={true}
+        collapseIntents={true}
+        message={
+          Object {
+            "channel": "facebook",
+            "created_datetime": "",
+            "from_agent": false,
+            "id": 1,
+            "isMessage": true,
+            "meta": Object {
+              "hidden_datetime": "2020-06-18T14:10:14.291746",
+              "is_duplicated": true,
+              "private_reply": Object {
+                "original_ticket_id": 1234,
+              },
+            },
+            "public": true,
+            "receiver": Object {
+              "email": "mary.poppins@example.com",
+              "firstname": "Mary",
+              "id": 2,
+              "lastname": "Poppins",
+              "name": "Mary Poppins",
+            },
+            "sender": Object {
+              "email": "john.doe@example.com",
+              "firstname": "John",
+              "id": 1,
+              "lastname": "Doe",
+              "name": "John Doe",
+            },
+            "source": Object {
+              "from": Object {
+                "address": "657788504429455-657788504429455",
+                "name": "Page",
+              },
+              "to": Array [
+                Object {
+                  "address": "657788504429455-4135481299826174",
+                  "name": "Cust Omer",
+                },
+              ],
+              "type": "facebook-comment",
+            },
+            "subject": "Some subject",
+            "uri": "http://example.com/messages/1",
+            "via": "facebook",
+          }
+        }
+      />
+    </ContextProvider>
+    <From
+      key="ref-widget"
+      label="go to"
+    >
+      <a
+        href={1234}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        ticket
+      </a>
+    </From>
+  </div>
 </div>
 `;
 
 exports[`<SourceDetailsHeader/> should render a DatetimeLabel and the SourceActionsHeader because the message is not duplicated and is not deleted 1`] = `
 <div
   className="wrapper"
+  data-focus={false}
 >
-  <Connect(SourceActionsHeader)
-    fromAgent={false}
-    integrationId={null}
-    messageCreatedDatetime=""
-    meta={null}
-    sender={
-      Object {
-        "email": "john.doe@example.com",
-        "firstname": "John",
-        "id": 1,
-        "lastname": "Doe",
-        "name": "John Doe",
+  <div
+    className="content"
+  >
+    <ContextProvider
+      value={
+        Object {
+          "setFocus": [Function],
+        }
       }
-    }
-    senderId={1}
-    source={
-      Object {
-        "from": Object {
-          "address": "657788504429455-657788504429455",
-          "name": "Page",
-        },
-        "to": Array [
+    >
+      <Connect(SourceActionsHeader)
+        collapseActions={true}
+        collapseIntents={true}
+        message={
           Object {
-            "address": "657788504429455-4135481299826174",
-            "name": "Cust Omer",
-          },
-        ],
-        "type": "facebook-comment",
-      }
-    }
-    ticketMessageId={1}
-  />
-  <Connect(DatetimeLabelContainer)
-    dateTime=""
-  />
+            "actions": null,
+            "attachments": Array [],
+            "channel": "facebook",
+            "created_datetime": "",
+            "external_id": null,
+            "failed_datetime": null,
+            "from_agent": false,
+            "id": 1,
+            "integration_id": null,
+            "isMessage": true,
+            "is_retriable": false,
+            "meta": null,
+            "opened_datetime": null,
+            "public": true,
+            "receiver": Object {
+              "email": "mary.poppins@example.com",
+              "firstname": "Mary",
+              "id": 2,
+              "lastname": "Poppins",
+              "name": "Mary Poppins",
+            },
+            "rule_id": null,
+            "sender": Object {
+              "email": "john.doe@example.com",
+              "firstname": "John",
+              "id": 1,
+              "lastname": "Doe",
+              "name": "John Doe",
+            },
+            "source": Object {
+              "from": Object {
+                "address": "657788504429455-657788504429455",
+                "name": "Page",
+              },
+              "to": Array [
+                Object {
+                  "address": "657788504429455-4135481299826174",
+                  "name": "Cust Omer",
+                },
+              ],
+              "type": "facebook-comment",
+            },
+            "stripped_html": null,
+            "stripped_signature": null,
+            "stripped_text": null,
+            "subject": "Some subject",
+            "uri": "http://example.com/messages/1",
+            "via": "facebook",
+          }
+        }
+      />
+    </ContextProvider>
+    <Connect(DatetimeLabelContainer)
+      dateTime=""
+    />
+  </div>
 </div>
 `;
 
 exports[`<SourceDetailsHeader/> should render a DatetimeLabel because the message is not duplicated and should not render the SourceActionsHeader because the message is deleted 1`] = `
 <div
   className="wrapper"
+  data-focus={false}
 >
-  <Connect(DatetimeLabelContainer)
-    dateTime=""
-  />
+  <div
+    className="content"
+  >
+    <Connect(DatetimeLabelContainer)
+      dateTime=""
+    />
+  </div>
 </div>
 `;

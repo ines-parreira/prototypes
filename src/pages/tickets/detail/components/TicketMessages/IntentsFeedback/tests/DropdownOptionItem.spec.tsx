@@ -9,8 +9,6 @@ const minProps: ComponentProps<typeof DropdownOptionItem> = {
         label: 'discount/request',
         description: 'A request for a discount',
     },
-    renderAction: () => null,
-    renderInfo: () => null,
 }
 
 describe('<DropdownnOptionItem/>', () => {

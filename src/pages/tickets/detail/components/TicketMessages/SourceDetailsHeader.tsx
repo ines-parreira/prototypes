@@ -1,5 +1,8 @@
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
+import React, {ReactNode, useState, createContext} from 'react'
+import {useMeasure} from 'react-use'
+
+import _noop from 'lodash/noop'
 
 import {TicketMessage} from 'models/ticket/types'
 import {DatetimeLabel} from 'pages/common/utils/labels'
@@ -13,7 +16,9 @@ type Props = {
     isLastRead: boolean
     timezone: string
     className?: string
+    contentClassName?: string
     isMessageDeleted?: boolean
+    showIntents?: boolean
 }
 
 const From = ({label, children}: {label: string; children?: ReactNode}) => (
@@ -23,26 +28,29 @@ const From = ({label, children}: {label: string; children?: ReactNode}) => (
     </span>
 )
 
+export const SourceDetailsContext = createContext({setFocus: _noop})
+
 export default function SourceDetailsHeader(props: Props) {
+    const [focus, setFocus] = useState(false)
+
+    const [ref, {width}] = useMeasure()
+
+    const collapseActions = width < 400
+    const collapseIntents = width < 300
+
     const {message, isLastRead, timezone, isMessageDeleted} = props
     let actionHeader: ReactNode
     let infoWidget: ReactNode
 
     if (!isMessageDeleted) {
         actionHeader = (
-            <SourceActionsHeader
-                source={message.source}
-                meta={message.meta!}
-                integrationId={message.integration_id}
-                messageId={message.message_id}
-                fromAgent={message.from_agent}
-                senderId={message.sender.id}
-                ticketMessageId={message.id!}
-                ticketId={message.ticket_id}
-                bodyText={message.body_text}
-                sender={message.sender}
-                messageCreatedDatetime={message.created_datetime}
-            />
+            <SourceDetailsContext.Provider value={{setFocus}}>
+                <SourceActionsHeader
+                    message={message}
+                    collapseActions={collapseActions}
+                    collapseIntents={collapseIntents}
+                />
+            </SourceDetailsContext.Provider>
         )
     }
 
@@ -63,15 +71,21 @@ export default function SourceDetailsHeader(props: Props) {
     }
 
     return (
-        <div className={classnames(css.wrapper, props.className)}>
-            {actionHeader}
-            {message.from_agent && isLastRead && (
-                <SeenIndicator
-                    openedDatetime={message.opened_datetime}
-                    timezone={timezone}
-                />
-            )}
-            {infoWidget}
+        <div
+            className={classnames(css.wrapper, props.className)}
+            data-focus={focus}
+            ref={ref as React.LegacyRef<HTMLDivElement>}
+        >
+            <div className={classnames(css.content, props.contentClassName)}>
+                {actionHeader}
+                {message.from_agent && isLastRead && (
+                    <SeenIndicator
+                        openedDatetime={message.opened_datetime}
+                        timezone={timezone}
+                    />
+                )}
+                {infoWidget}
+            </div>
         </div>
     )
 }
