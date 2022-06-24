@@ -42,6 +42,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
 >
   <div
     class="nav-dropdown dropdown"
+    data-candu-id="navbar-dropdown"
   >
     <button
       aria-expanded="false"
@@ -58,11 +59,6 @@ exports[`<Navbar /> should render the navbar 1`] = `
         </i>
       </div>
     </button>
-    <div
-      class="hiddenLink"
-      data-candu-id="navbar-dropdown"
-      data-testid="candu-hidden-link"
-    />
     <div
       aria-hidden="true"
       class="dropdown-menu dropdown-menu"
@@ -330,6 +326,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
 >
   <div
     class="nav-dropdown dropdown"
+    data-candu-id="navbar-dropdown"
   >
     <button
       aria-expanded="false"
@@ -346,11 +343,6 @@ exports[`<Navbar /> should render the opened panel 1`] = `
         </i>
       </div>
     </button>
-    <div
-      class="hiddenLink"
-      data-candu-id="navbar-dropdown"
-      data-testid="candu-hidden-link"
-    />
     <div
       aria-hidden="true"
       class="dropdown-menu dropdown-menu"
@@ -618,6 +610,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
 >
   <div
     class="nav-dropdown dropdown"
+    data-candu-id="navbar-dropdown"
   >
     <button
       aria-expanded="false"
@@ -634,11 +627,6 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
         </i>
       </div>
     </button>
-    <div
-      class="hiddenLink"
-      data-candu-id="navbar-dropdown"
-      data-testid="candu-hidden-link"
-    />
     <div
       aria-hidden="true"
       class="dropdown-menu dropdown-menu"

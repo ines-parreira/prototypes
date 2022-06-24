@@ -56,9 +56,6 @@ declare global {
         GORGIAS_LAUNCHDARKLY_CLIENT_ID: string
         SENTRY_DSN: string
         devToolsExtension: () => Middleware
-        Candu?: {
-            elementCanduRootMap?: Map<any, any>
-        }
     }
 
     function jestSetTimeout(

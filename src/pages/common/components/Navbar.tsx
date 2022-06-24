@@ -13,7 +13,6 @@ import {
 } from 'reactstrap'
 import * as Sentry from '@sentry/react'
 
-import HomePageLink from 'pages/common/components/HomePageLink'
 import shortcutManager from '../../../services/shortcutManager/index'
 import {DEPRECATED_getCurrentPlan} from '../../../state/billing/selectors'
 import {isTrialing} from '../../../state/currentAccount/selectors'
@@ -230,7 +229,10 @@ export class Navbar extends React.Component<Props, State> {
                     [css['hidden-panel']]: !this.props.isOpenedPanel,
                 })}
             >
-                <UncontrolledDropdown className={css['nav-dropdown']}>
+                <UncontrolledDropdown
+                    className={css['nav-dropdown']}
+                    data-candu-id="navbar-dropdown"
+                >
                     <DropdownToggle
                         color="transparent"
                         className={css['dropdown-toggle']}
@@ -247,9 +249,6 @@ export class Navbar extends React.Component<Props, State> {
                             </i>
                         </div>
                     </DropdownToggle>
-
-                    <HomePageLink />
-
                     <DropdownMenu className={css['dropdown-menu']}>
                         {mainMenu.map((item) => {
                             return (
