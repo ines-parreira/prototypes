@@ -271,15 +271,67 @@ describe('TicketDetailContainer component', () => {
         const activeCustomer = fromJS({
             id: 1,
             name: 'Pizza Pepperoni',
-            email: 'pizza@pepperoni.com',
+            channels: [{type: 'email', address: 'pizza@pepperoni.com'}],
         }) as Map<any, any>
+
         const expectedReceiver = {
-            name: activeCustomer.get('name'),
-            address: activeCustomer.get('email'),
+            name: 'Pizza Pepperoni',
+            address: 'pizza@pepperoni.com',
         }
 
         const props = {
             ...minProps,
+            activeCustomer,
+        }
+
+        const {rerender} = renderWithRouter(
+            <TicketDetailContainer {...props} />,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/new?customer=1',
+            }
+        )
+
+        rerender(
+            <TicketDetailContainer
+                {...props}
+                ticket={minProps.ticket.set(
+                    'customer',
+                    activeCustomer.set('address', activeCustomer.get('email'))
+                )}
+            />
+        )
+
+        expect(minProps.setCustomer).toBeCalledWith(
+            activeCustomer.set('address', activeCustomer.get('email'))
+        )
+        expect(minProps.setReceivers).toBeCalledWith({
+            to: [expectedReceiver],
+        })
+    })
+
+    it('should set activeCustomer as receiver using the phone number as address', () => {
+        const activeCustomer = fromJS({
+            id: 1,
+            name: 'Pizza Pepperoni',
+            channels: [
+                {
+                    type: 'phone',
+                    address: '+12345',
+                },
+            ],
+        }) as Map<any, any>
+
+        const expectedReceiver = {
+            name: 'Pizza Pepperoni',
+            address: '+12345',
+        }
+
+        const props = {
+            ...minProps,
+            newMessageSource: fromJS({
+                type: 'sms',
+            }),
             activeCustomer,
         }
 

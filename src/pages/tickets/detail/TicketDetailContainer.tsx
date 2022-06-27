@@ -6,7 +6,7 @@ import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
 import {useAsyncFn, usePrevious} from 'react-use'
 import DocumentTitle from 'react-document-title'
-import {TicketMessageSourceType} from 'business/types/ticket'
+import {TicketMessageSourceType, TicketChannel} from 'business/types/ticket'
 import useSearch from 'hooks/useSearch'
 import {RootState} from 'state/types'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
@@ -48,6 +48,7 @@ import {
 } from 'state/ticket/actions'
 import {updateCursor} from 'state/tickets/actions'
 import {getActiveView} from 'state/views/selectors'
+import {CustomerChannel} from 'models/customerChannel/types'
 
 import Loader from '../../common/components/Loader/Loader'
 
@@ -436,14 +437,36 @@ export const TicketDetailContainer = ({
                 })
                 setReceivers(newReceivers)
             } else {
-                const customerName = ticket.getIn(['customer', 'name'])
-                const customerEmail = ticket.getIn(['customer', 'email'])
-                if (customerName && customerEmail) {
+                const customerChannels: CustomerChannel[] =
+                    (
+                        ticket.getIn([
+                            'customer',
+                            'channels',
+                        ]) as List<CustomerChannel>
+                    )?.toJS() || []
+                const sourceType: TicketChannel =
+                    newMessageSource.get('type') ?? TicketChannel.Email
+                const sourceTypeToSearch =
+                    sourceType === TicketChannel.Sms
+                        ? TicketChannel.Phone
+                        : sourceType
+                const customerChannel = customerChannels.find(
+                    (channel: CustomerChannel) =>
+                        channel.type === sourceTypeToSearch
+                )
+
+                const address = customerChannel
+                    ? customerChannel.address
+                    : ticket.getIn(['customer', 'email'])
+
+                const name = ticket.getIn(['customer', 'name'])
+
+                if (name && address) {
                     const newReceivers = _merge(newMessageReceivers, {
                         to: [
                             {
-                                name: customerName,
-                                address: customerEmail,
+                                name,
+                                address,
                             },
                         ],
                     })
