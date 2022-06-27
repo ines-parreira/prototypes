@@ -335,6 +335,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                           "reply": "reply-shortly",
                         },
                         "enable_contact_form": true,
+                        "offline_mode_enabled_datetime": null,
                       },
                     },
                   },

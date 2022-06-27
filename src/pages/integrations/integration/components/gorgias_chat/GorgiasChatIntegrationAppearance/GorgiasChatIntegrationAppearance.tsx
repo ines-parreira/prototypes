@@ -28,6 +28,7 @@ import {
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_OPTIONS,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
+    GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from 'config/integrations'
 import {Language} from 'constants/languages'
@@ -256,6 +257,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     },
                     enable_contact_form:
                         GORGIAS_CHAT_CONTACT_FORM_ENABLED_DEFAULT,
+                    offline_mode_enabled_datetime:
+                        GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
                 },
             },
         }
