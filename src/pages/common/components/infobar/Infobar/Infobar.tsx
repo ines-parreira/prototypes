@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import React, {KeyboardEvent, useEffect, useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {useLocation} from 'react-router-dom'
@@ -241,7 +241,11 @@ export const Infobar = ({
         setIsFetchingCustomer(false)
     }
 
-    const onSearch = async (query: string) => {
+    const handleKeyDown = async (event: KeyboardEvent, query: string) => {
+        if (event.key !== 'Enter') {
+            return
+        }
+
         searchRank.endScenario()
         if (query) {
             searchRank.registerResultsRequest({
@@ -348,9 +352,8 @@ export const Infobar = ({
                         tabIndex={10}
                         placeholder="Search for customers by email, order number, etc."
                         bindKey
-                        onChange={onSearch}
+                        onKeyDown={handleKeyDown}
                         style={{maxWidth: 'none'}}
-                        searchDebounceTime={1000}
                         ref={searchRef}
                     />
                     <IconButton

@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import React, {ComponentProps, useState as mockUseState} from 'react'
 import {fireEvent, waitFor} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
@@ -21,14 +21,21 @@ import {Infobar} from '../Infobar'
 jest.mock(
     '../../../Search.tsx',
     () =>
-        ({onChange, ...other}: ComponentProps<typeof Search>) =>
-            (
+        ({onChange, onKeyDown, ...other}: ComponentProps<typeof Search>) => {
+            const [value, setValue] = mockUseState('')
+
+            return (
                 <input
                     data-testid="Search"
                     {...other}
-                    onChange={(e) => onChange(e.target.value)}
+                    onChange={(e) => {
+                        setValue(e.target.value)
+                        onChange && onChange(e.target.value)
+                    }}
+                    onKeyDown={(e) => onKeyDown && onKeyDown(e, value)}
                 />
             )
+        }
 )
 
 jest.mock(
@@ -182,6 +189,7 @@ describe('<Infobar/>', () => {
         )
 
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -196,6 +204,7 @@ describe('<Infobar/>', () => {
         )
 
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
 
         await waitFor(() => getByText(/Failed to do the search/i))
         expect(container.firstChild).toMatchSnapshot()
@@ -213,6 +222,7 @@ describe('<Infobar/>', () => {
             />
         )
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
 
         const InfobarSearchResultsList = await waitFor(() =>
             getByTestId('InfobarSearchResultsList')
@@ -238,6 +248,7 @@ describe('<Infobar/>', () => {
             />
         )
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
 
         const InfobarSearchResultsList = await waitFor(() =>
             getByTestId('InfobarSearchResultsList')
@@ -260,6 +271,7 @@ describe('<Infobar/>', () => {
             />
         )
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
 
         await waitFor(() => getByTestId('InfobarSearchResultsList'))
         expect(container.firstChild).toMatchSnapshot()
@@ -324,6 +336,7 @@ describe('<Infobar/>', () => {
                 />
             )
             fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+            fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
 
             await waitFor(() =>
                 fireEvent.click(getByTestId('InfobarSearchResultsList'))
@@ -378,6 +391,8 @@ describe('<Infobar/>', () => {
         )
 
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
+
         await waitFor(() =>
             fireEvent.click(getByTestId('InfobarSearchResultsList'))
         )
@@ -405,6 +420,8 @@ describe('<Infobar/>', () => {
         )
 
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
+
         await waitFor(() => fireEvent.click(getByText('Back')))
 
         expect(mockSearchRank.endScenario).toHaveBeenCalledWith()
@@ -422,8 +439,11 @@ describe('<Infobar/>', () => {
         )
 
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
+
         await waitFor(() => findByTestId('InfobarSearchResultsList'))
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+        fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
 
         expect(mockSearchRank.endScenario).toHaveBeenCalledWith()
     })

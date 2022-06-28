@@ -98,12 +98,18 @@ describe('ViewTable::Header', () => {
         expect(minProps.fetchViewItems).toHaveBeenCalled()
     })
 
-    it('should not update view on search change when not in search mode', () => {
+    it('should not update view on search submit when not in search mode', () => {
         const component = shallow(
             <HeaderContainer {...minProps} isSearch={false} config={config} />
         )
+        const onKeyDown = component.find(Search).props().onKeyDown
 
-        component.find(Search).props().onChange('foo search')
+        if (onKeyDown) {
+            onKeyDown(
+                new KeyboardEvent('keydown', {key: 'enter'}) as any,
+                'foo search'
+            )
+        }
 
         expect(minProps.updateView).not.toHaveBeenCalled()
     })
@@ -120,13 +126,19 @@ describe('ViewTable::Header', () => {
             expect(component).toMatchSnapshot()
         })
 
-        it('should update search of the active view and not fetch view items on search input change', () => {
+        it('should update search of the active view and not fetch view items on search input submit', () => {
             const component = shallow(
                 <HeaderContainer {...minProps} config={config} isSearch />
             )
             const searchTerm = 'term1'
-            const searchOnChange = component.find(Search).props().onChange
-            searchOnChange(searchTerm)
+            const searchOnKeyDown = component.find(Search).props().onKeyDown
+
+            if (searchOnKeyDown) {
+                searchOnKeyDown(
+                    new KeyboardEvent('keydown', {key: 'Enter'}) as any,
+                    searchTerm
+                )
+            }
             expect(minProps.updateView).toHaveBeenLastCalledWith(
                 (fromJS(fixtureView) as Map<any, any>).set(
                     'search',

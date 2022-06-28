@@ -15,8 +15,8 @@ import shortcutManager from 'services/shortcutManager/shortcutManager'
 import css from './Search.less'
 
 type Props = {
-    onChange: (searchQuery: string) => void
-    onKeyDown?: (event: KeyboardEvent) => void
+    onChange?: (searchQuery: string) => void
+    onKeyDown?: (event: KeyboardEvent, searchQuery: string) => void
     onFocus?: () => void
     forcedQuery?: string
     shouldResetInput?: boolean
@@ -29,7 +29,7 @@ type Props = {
     // location is an identifier, if it changes it's like if the Search unmounted then mounted again (ex: changing page)
     location?: string
     style: CSSProperties
-} & Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'>
+} & Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onKeyDown'>
 
 export default class Search extends Component<Props> {
     private isInitialized: boolean
@@ -107,7 +107,10 @@ export default class Search extends Component<Props> {
 
     // search every XXXms
     _debouncedSearch = _debounce(() => {
-        return this.props.onChange(this.state.search)
+        const {onChange} = this.props
+        if (onChange) {
+            return onChange(this.state.search)
+        }
     }, this.props.searchDebounceTime)
 
     _handleChange = (search: string) => {
@@ -121,8 +124,10 @@ export default class Search extends Component<Props> {
 
     handleKeyDown = (e: KeyboardEvent) => {
         const {onKeyDown} = this.props
+        const {search} = this.state
+
         if (onKeyDown) {
-            onKeyDown(e)
+            onKeyDown(e, search)
         }
         if (e.key === 'Escape' && this.searchInputRef) {
             this.searchInputRef.blur()

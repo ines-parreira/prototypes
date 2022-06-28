@@ -176,10 +176,10 @@ exports[`ViewTable::Header default view displays 1`] = `
         disabled={false}
         forcedQuery=""
         location="7"
-        onChange={[Function]}
         onFocus={[Function]}
+        onKeyDown={[Function]}
         placeholder="Search tickets..."
-        searchDebounceTime={1000}
+        searchDebounceTime={0}
         style={Object {}}
       />
     </div>
@@ -363,10 +363,10 @@ exports[`ViewTable::Header default view get search query from active view 1`] = 
         disabled={false}
         forcedQuery="term1"
         location="7"
-        onChange={[Function]}
         onFocus={[Function]}
+        onKeyDown={[Function]}
         placeholder="Search tickets..."
-        searchDebounceTime={1000}
+        searchDebounceTime={0}
         style={Object {}}
       />
     </div>
@@ -529,10 +529,10 @@ exports[`ViewTable::Header empty view 1`] = `
         disabled={false}
         forcedQuery=""
         location="undefined"
-        onChange={[Function]}
         onFocus={[Function]}
+        onKeyDown={[Function]}
         placeholder="Search tickets..."
-        searchDebounceTime={1000}
+        searchDebounceTime={0}
         style={Object {}}
       />
     </div>
@@ -556,10 +556,10 @@ exports[`ViewTable::Header search view 1`] = `
         disabled={false}
         forcedQuery="term1"
         location="7(s)"
-        onChange={[Function]}
         onFocus={[Function]}
+        onKeyDown={[Function]}
         placeholder="Search tickets..."
-        searchDebounceTime={1000}
+        searchDebounceTime={0}
         style={Object {}}
       />
       <Link

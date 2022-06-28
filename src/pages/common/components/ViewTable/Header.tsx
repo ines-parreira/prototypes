@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {KeyboardEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
@@ -64,8 +64,12 @@ export class HeaderContainer extends React.Component<Props, State> {
         return url
     }
 
-    _search = (searchQuery: string) => {
+    handleKeyDown = (event: KeyboardEvent, searchQuery: string) => {
         const {updateView, activeView, isSearch} = this.props
+
+        if (event.key !== 'Enter') {
+            return
+        }
 
         if (isSearch && searchQuery !== activeView.get('search')) {
             updateView(
@@ -232,11 +236,10 @@ export class HeaderContainer extends React.Component<Props, State> {
                         >
                             <Search
                                 bindKey
-                                onChange={this._search}
+                                onKeyDown={this.handleKeyDown}
                                 placeholder={`Search ${
                                     config.get('plural') as string
                                 }...`}
-                                searchDebounceTime={1000}
                                 location={`${
                                     activeView.get('id') as unknown as string
                                 }${isSearch ? '(s)' : ''}`}
