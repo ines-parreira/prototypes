@@ -8,7 +8,6 @@ import {
 } from 'business/twilio'
 import {setCall, setIsDialing} from 'state/twilio/actions'
 import client from 'models/api/resources'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {RootState} from 'state/types'
@@ -16,7 +15,6 @@ import {
     sendTwilioSocketEvent,
     gatherCallContext,
 } from 'hooks/integrations/phone/utils'
-import {PHONE_EVENTS_LOGGING_ACCOUNTS} from 'hooks/integrations/phone/constants'
 
 import {usePhoneError} from './usePhoneError'
 
@@ -32,10 +30,6 @@ type Options = {
 export function useOutboundCall(): (options: Options) => void {
     const dispatch = useAppDispatch()
     const device = useAppSelector((state: RootState) => state.twilio.device)
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const shouldLogEvents = PHONE_EVENTS_LOGGING_ACCOUNTS.includes(
-        currentAccount.get('domain')
-    )
 
     const {onError, onTwilioError} = usePhoneError({
         // Twilio throws this error when the customer doesn't pick up the call
@@ -74,90 +68,82 @@ export function useOutboundCall(): (options: Options) => void {
                 return
             }
 
-            shouldLogEvents &&
-                sendTwilioSocketEvent({
-                    type: TwilioSocketEventType.CallOutgoing,
-                    data: gatherCallContext(call),
-                })
+            sendTwilioSocketEvent({
+                type: TwilioSocketEventType.CallOutgoing,
+                data: gatherCallContext(call),
+            })
 
             call.on('accept', () => {
                 dispatch(setIsDialing(false))
-                shouldLogEvents &&
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallAccepted,
-                        data: gatherCallContext(call),
-                    })
+                sendTwilioSocketEvent({
+                    type: TwilioSocketEventType.CallAccepted,
+                    data: gatherCallContext(call),
+                })
             })
 
             call.on('cancel', () => {
                 dispatch(setIsDialing(false))
                 dispatch(setCall(null))
                 void onDisconnect(onError)
-                shouldLogEvents &&
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallCancelled,
-                        data: gatherCallContext(call),
-                    })
+                sendTwilioSocketEvent({
+                    type: TwilioSocketEventType.CallCancelled,
+                    data: gatherCallContext(call),
+                })
             })
 
             call.on('disconnect', () => {
                 dispatch(setIsDialing(false))
                 dispatch(setCall(null))
                 void onDisconnect(onError)
-                shouldLogEvents &&
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallDisconnected,
-                        data: gatherCallContext(call),
-                    })
+                sendTwilioSocketEvent({
+                    type: TwilioSocketEventType.CallDisconnected,
+                    data: gatherCallContext(call),
+                })
             })
 
             call.on('reconnected', () => {
-                shouldLogEvents &&
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallReconnected,
-                        data: gatherCallContext(call),
-                    })
+                sendTwilioSocketEvent({
+                    type: TwilioSocketEventType.CallReconnected,
+                    data: gatherCallContext(call),
+                })
             })
 
             call.on('error', (error: TwilioError.TwilioError) => {
                 onTwilioError(error, 'Outgoing phone call error')
-                shouldLogEvents &&
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallError,
-                        data: {
-                            ...gatherCallContext(call),
-                            error,
-                        },
-                    })
+                sendTwilioSocketEvent({
+                    type: TwilioSocketEventType.CallError,
+                    data: {
+                        ...gatherCallContext(call),
+                        error,
+                    },
+                })
             })
 
             call.on('warning', (metricName: string) => {
-                shouldLogEvents &&
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallWarningStarted,
-                        data: {
-                            ...gatherCallContext(call),
-                            metric_name: metricName,
-                        },
-                    })
+                sendTwilioSocketEvent({
+                    type: TwilioSocketEventType.CallWarningStarted,
+                    data: {
+                        ...gatherCallContext(call),
+                        metric_name: metricName,
+                    },
+                })
             })
 
             call.on('warning-ended', (metricName: string) => {
-                shouldLogEvents &&
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallWarningEnded,
-                        data: {
-                            ...gatherCallContext(call),
-                            metric_name: metricName,
-                        },
-                    })
+                sendTwilioSocketEvent({
+                    type: TwilioSocketEventType.CallWarningEnded,
+                    data: {
+                        ...gatherCallContext(call),
+                        metric_name: metricName,
+                    },
+                })
             })
 
             dispatch(setIsDialing(true))
             dispatch(setCall(call))
             await onConnect(onError)
         },
-        [device, dispatch, onError, onTwilioError, shouldLogEvents]
+        [device, dispatch, onError, onTwilioError]
     )
 }
 

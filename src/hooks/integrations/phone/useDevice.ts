@@ -11,7 +11,6 @@ import client from 'models/api/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {notify} from 'state/notifications/actions'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {NotificationStatus} from 'state/notifications/types'
 import {usePhoneError} from 'hooks/integrations/phone/usePhoneError'
 import {TwilioErrorCode, TwilioSocketEventType} from 'business/twilio'
@@ -20,7 +19,6 @@ import {
     sendTwilioSocketEvent,
     gatherCallContext,
 } from 'hooks/integrations/phone/utils'
-import {PHONE_EVENTS_LOGGING_ACCOUNTS} from 'hooks/integrations/phone/constants'
 
 export function useDevice() {
     const dispatch = useAppDispatch()
@@ -68,10 +66,6 @@ export function useDevice() {
 
 function useInstantiateDevice() {
     const dispatch = useAppDispatch()
-    const currentAccount = useAppSelector(getCurrentAccountState)
-    const shouldLogEvents = PHONE_EVENTS_LOGGING_ACCOUNTS.includes(
-        currentAccount.get('domain')
-    )
     const {onErrorMessage, onError, onTwilioError} = usePhoneError({
         ignoredErrorCodes: [
             TwilioErrorCode.AuthorizationAccessTokenExpired, // we refresh the token when it expires
@@ -161,23 +155,21 @@ function useInstantiateDevice() {
 
             device.on(Device.EventName.Registered, () => {
                 reconnectionAttempts = 0
-                shouldLogEvents &&
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.DeviceRegistered,
-                    })
+                sendTwilioSocketEvent({
+                    type: TwilioSocketEventType.DeviceRegistered,
+                })
             })
 
             device.on(
                 Device.EventName.Error,
                 (error: TwilioError.TwilioError) => {
                     onTwilioError(error, 'Phone device error')
-                    shouldLogEvents &&
-                        sendTwilioSocketEvent({
-                            type: TwilioSocketEventType.DeviceError,
-                            data: {
-                                error,
-                            },
-                        })
+                    sendTwilioSocketEvent({
+                        type: TwilioSocketEventType.DeviceError,
+                        data: {
+                            error,
+                        },
+                    })
                 }
             )
 
@@ -192,10 +184,9 @@ function useInstantiateDevice() {
                 const timeout = 1000 * reconnectionAttempts
                 reconnectionAttempts++
 
-                shouldLogEvents &&
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.DeviceUnregistered,
-                    })
+                sendTwilioSocketEvent({
+                    type: TwilioSocketEventType.DeviceUnregistered,
+                })
 
                 setTimeout(() => {
                     getToken()
@@ -214,105 +205,92 @@ function useInstantiateDevice() {
                 dispatch(setIsRinging(true))
                 dispatch(setCall(call))
 
-                shouldLogEvents &&
-                    sendTwilioSocketEvent({
-                        type: TwilioSocketEventType.CallIncoming,
-                        data: gatherCallContext(call),
-                    })
+                sendTwilioSocketEvent({
+                    type: TwilioSocketEventType.CallIncoming,
+                    data: gatherCallContext(call),
+                })
 
                 call.on('accept', () => {
                     dispatch(setIsRinging(false))
                     void onAccept(call)
-                    shouldLogEvents &&
-                        sendTwilioSocketEvent({
-                            type: TwilioSocketEventType.CallAccepted,
-                            data: gatherCallContext(call),
-                        })
+
+                    sendTwilioSocketEvent({
+                        type: TwilioSocketEventType.CallAccepted,
+                        data: gatherCallContext(call),
+                    })
                 })
 
                 call.on('reject', () => {
-                    shouldLogEvents &&
-                        sendTwilioSocketEvent({
-                            type: TwilioSocketEventType.CallRejected,
-                            data: gatherCallContext(call),
-                        })
+                    sendTwilioSocketEvent({
+                        type: TwilioSocketEventType.CallRejected,
+                        data: gatherCallContext(call),
+                    })
                 })
 
                 call.on('cancel', () => {
                     dispatch(setCall(null))
                     dispatch(setIsRinging(false))
                     void onCancel()
-                    shouldLogEvents &&
-                        sendTwilioSocketEvent({
-                            type: TwilioSocketEventType.CallCancelled,
-                            data: gatherCallContext(call),
-                        })
+
+                    sendTwilioSocketEvent({
+                        type: TwilioSocketEventType.CallCancelled,
+                        data: gatherCallContext(call),
+                    })
                 })
 
                 call.on('disconnect', () => {
                     dispatch(setCall(null))
                     dispatch(setIsRinging(false))
-                    shouldLogEvents &&
-                        sendTwilioSocketEvent({
-                            type: TwilioSocketEventType.CallDisconnected,
-                            data: gatherCallContext(call),
-                        })
+
+                    sendTwilioSocketEvent({
+                        type: TwilioSocketEventType.CallDisconnected,
+                        data: gatherCallContext(call),
+                    })
                 })
 
                 call.on('reconnected', () => {
-                    shouldLogEvents &&
-                        sendTwilioSocketEvent({
-                            type: TwilioSocketEventType.CallReconnected,
-                            data: gatherCallContext(call),
-                        })
+                    sendTwilioSocketEvent({
+                        type: TwilioSocketEventType.CallReconnected,
+                        data: gatherCallContext(call),
+                    })
                 })
 
                 call.on('error', (error: TwilioError.TwilioError) => {
                     onTwilioError(error, 'Phone call error')
-                    shouldLogEvents &&
-                        sendTwilioSocketEvent({
-                            type: TwilioSocketEventType.CallError,
-                            data: {
-                                ...gatherCallContext(call),
-                                error,
-                            },
-                        })
+
+                    sendTwilioSocketEvent({
+                        type: TwilioSocketEventType.CallError,
+                        data: {
+                            ...gatherCallContext(call),
+                            error,
+                        },
+                    })
                 })
 
                 call.on('warning', (metricName: string) => {
-                    shouldLogEvents &&
-                        sendTwilioSocketEvent({
-                            type: TwilioSocketEventType.CallWarningStarted,
-                            data: {
-                                ...gatherCallContext(call),
-                                metric_name: metricName,
-                            },
-                        })
+                    sendTwilioSocketEvent({
+                        type: TwilioSocketEventType.CallWarningStarted,
+                        data: {
+                            ...gatherCallContext(call),
+                            metric_name: metricName,
+                        },
+                    })
                 })
 
                 call.on('warning-ended', (metricName: string) => {
-                    shouldLogEvents &&
-                        sendTwilioSocketEvent({
-                            type: TwilioSocketEventType.CallWarningEnded,
-                            data: {
-                                ...gatherCallContext(call),
-                                metric_name: metricName,
-                            },
-                        })
+                    sendTwilioSocketEvent({
+                        type: TwilioSocketEventType.CallWarningEnded,
+                        data: {
+                            ...gatherCallContext(call),
+                            metric_name: metricName,
+                        },
+                    })
                 })
             })
 
             return device
         },
-        [
-            dispatch,
-            onAccept,
-            onCancel,
-            onError,
-            onErrorMessage,
-            onTwilioError,
-            shouldLogEvents,
-        ]
+        [dispatch, onAccept, onCancel, onError, onErrorMessage, onTwilioError]
     )
 }
 
