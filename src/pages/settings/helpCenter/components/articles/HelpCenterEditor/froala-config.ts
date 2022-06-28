@@ -265,6 +265,24 @@ const config = {
     // Font size plugin
     fontSizeSelection: true,
 
+    fontSize: [
+        '8',
+        '9',
+        '10',
+        '11',
+        '12',
+        '14',
+        '16',
+        '18',
+        '24',
+        '30',
+        '36',
+        '48',
+        '60',
+        '72',
+        '96',
+    ],
+
     // Image plugin
     imageMaxSize: MAX_IMAGE_SIZE,
 
