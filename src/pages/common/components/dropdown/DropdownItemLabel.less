@@ -1,0 +1,32 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .wrapper {
+        display: flex;
+        padding: 8px 0;
+    }
+
+    .content {
+        flex-grow: 1;
+    }
+
+    .caption {
+        color: @classic-neutral-grey-5;
+    }
+
+    .affix {
+        font-size: 20px;
+
+        & > * {
+            vertical-align: top;
+        }
+    }
+
+    .prefix {
+        margin-right: 8px;
+    }
+
+    .suffix {
+        margin-left: 8px;
+    }
+}

@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropdownItemLabel /> should render 1`] = `
+<div
+  class="wrapper"
+>
+  <span
+    class="affix prefix"
+  >
+    <i
+      class="material-icons"
+    >
+      add
+    </i>
+  </span>
+  <span
+    class="content"
+  >
+    Foo
+    <div
+      class="caption caption-regular"
+    >
+      Bar
+    </div>
+  </span>
+  <span
+    class="affix suffix"
+  >
+    <i
+      class="material-icons"
+    >
+      chevron_right
+    </i>
+  </span>
+</div>
+`;
