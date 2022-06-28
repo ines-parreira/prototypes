@@ -96,17 +96,18 @@ export default function PhoneNumberCreateForm(): JSX.Element {
             <Row>
                 <Col lg={6}>
                     <p>
-                        Create a new phone number in Gorgias or forward calls
-                        from an existing number to a Gorgias internal number. To
-                        learn more about forwarding existing calls, check out{' '}
+                        Create a new phone number in Gorgias to make and receive
+                        phone calls and text messages. If you have an existing
+                        number, set up call forwarding to forward calls to a
+                        Gorgias internal number. Check out our{' '}
                         <a
-                            href="https://docs.gorgias.com/voice-and-phone/gorgias-phone-integration"
+                            href="https://docs.gorgias.com/en-US/phone-integration-81798"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
-                            our phone docs
-                        </a>
-                        .
+                            phone docs
+                        </a>{' '}
+                        to learn more.
                     </p>
                 </Col>
             </Row>
