@@ -6,6 +6,9 @@ import {Provider} from 'react-redux'
 import {Call} from '@twilio/voice-sdk'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
+import {TwilioSocketEventType} from 'business/twilio'
+
+import * as utils from 'hooks/integrations/phone/utils'
 
 import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
@@ -22,6 +25,8 @@ describe('<OngoingPhoneCall/>', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
+
+    const sendTwilioSocketEvent = jest.spyOn(utils, 'sendTwilioSocketEvent')
 
     const integration = {
         id: integrationId,
@@ -75,7 +80,24 @@ describe('<OngoingPhoneCall/>', () => {
         )
 
         fireEvent.click(getByTestId('mute-call-button'))
-        expect(call.mute).toHaveBeenCalled()
+        expect(call.mute).toHaveBeenCalledWith(true)
+        expect(sendTwilioSocketEvent).toHaveBeenCalledWith({
+            type: TwilioSocketEventType.CallMuted,
+            data: {
+                call_sid: 'fake-call-sid',
+                id: '8fa8cf4781de72d0e14a34f0fce1b953d8d59bf41e5b7fec05de8088b54de687',
+            },
+        })
+
+        fireEvent.click(getByTestId('mute-call-button'))
+        expect(call.mute).toHaveBeenCalledWith(false)
+        expect(sendTwilioSocketEvent).toHaveBeenCalledWith({
+            type: TwilioSocketEventType.CallUnmuted,
+            data: {
+                call_sid: 'fake-call-sid',
+                id: '8fa8cf4781de72d0e14a34f0fce1b953d8d59bf41e5b7fec05de8088b54de687',
+            },
+        })
     })
 
     it('should end call', () => {
@@ -111,6 +133,13 @@ describe('<OngoingPhoneCall/>', () => {
         await waitFor(() => {
             expect(mockedServer.history).toMatchObject({
                 put: [{url}],
+            })
+            expect(sendTwilioSocketEvent).toHaveBeenCalledWith({
+                type: TwilioSocketEventType.CallRecordingStarted,
+                data: {
+                    call_sid: 'fake-call-sid',
+                    id: '8fa8cf4781de72d0e14a34f0fce1b953d8d59bf41e5b7fec05de8088b54de687',
+                },
             })
         })
     })

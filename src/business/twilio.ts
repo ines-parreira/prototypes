@@ -75,6 +75,10 @@ export enum TwilioSocketEventType {
     CallWarningStarted = 'call-warning-started',
     CallWarningEnded = 'call-warning-ended',
     CallError = 'call-error',
+    CallRecordingStarted = 'call-recording-started',
+    CallRecordingPaused = 'call-recording-paused',
+    CallMuted = 'call-muted',
+    CallUnmuted = 'call-unmuted',
 }
 
 export type TwilioSocketEvent =
@@ -106,6 +110,10 @@ export type TwilioSocketEvent =
               | TwilioSocketEventType.CallDisconnected
               | TwilioSocketEventType.CallReconnected
               | TwilioSocketEventType.CallCancelled
+              | TwilioSocketEventType.CallRecordingStarted
+              | TwilioSocketEventType.CallRecordingPaused
+              | TwilioSocketEventType.CallMuted
+              | TwilioSocketEventType.CallUnmuted
           data: {
               id: string
               call_sid: Maybe<string>

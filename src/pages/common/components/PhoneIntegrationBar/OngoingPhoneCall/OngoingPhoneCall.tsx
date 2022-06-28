@@ -4,23 +4,28 @@ import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
 import classNames from 'classnames'
 
-import IconButton from 'pages/common/components/button/IconButton'
-
-import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
-import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
-import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
-import {useConnectionParameters} from '../hooks'
-
-import client from '../../../../../models/api/resources'
-import {CallRecordingStatus, TWILIO_CURRENT_ITEM} from '../constants'
-import {RootState} from '../../../../../state/types'
-import {setIsRecording} from '../../../../../state/twilio/actions'
-import * as integrationsSelectors from '../../../../../state/integrations/selectors'
-import {notify as notifyAction} from '../../../../../state/notifications/actions'
+import {TwilioSocketEventType} from 'business/twilio'
 import {
-    Notification,
-    NotificationStatus,
-} from '../../../../../state/notifications/types'
+    sendTwilioSocketEvent,
+    gatherCallContext,
+} from 'hooks/integrations/phone/utils'
+
+import IconButton from 'pages/common/components/button/IconButton'
+import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
+import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
+import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
+import {useConnectionParameters} from 'pages/common/components/PhoneIntegrationBar/hooks'
+import {
+    CallRecordingStatus,
+    TWILIO_CURRENT_ITEM,
+} from 'pages/common/components/PhoneIntegrationBar/constants'
+
+import client from 'models/api/resources'
+import {RootState} from 'state/types'
+import {setIsRecording} from 'state/twilio/actions'
+import * as integrationsSelectors from 'state/integrations/selectors'
+import {notify as notifyAction} from 'state/notifications/actions'
+import {Notification, NotificationStatus} from 'state/notifications/types'
 
 import DialPad from './DialPad/DialPad'
 import css from './OngoingPhoneCall.less'
@@ -118,6 +123,13 @@ function useMute(call: Call) {
     const onToggleMute = useCallback(() => {
         call.mute(!isMuted)
         setIsMuted(!isMuted)
+        const muteEvent = isMuted
+            ? TwilioSocketEventType.CallUnmuted
+            : TwilioSocketEventType.CallMuted
+        sendTwilioSocketEvent({
+            type: muteEvent,
+            data: gatherCallContext(call),
+        })
     }, [call, isMuted])
 
     return {isMuted, onToggleMute}
@@ -161,6 +173,14 @@ function useRecording(
                 {status}
             )
             setIsRecording(!isRecording)
+            const recordingEvent =
+                status === CallRecordingStatus.Paused
+                    ? TwilioSocketEventType.CallRecordingPaused
+                    : TwilioSocketEventType.CallRecordingStarted
+            sendTwilioSocketEvent({
+                type: recordingEvent,
+                data: gatherCallContext(call),
+            })
         } catch (error) {
             const {response} = error as AxiosError<{error: {msg: string}}>
 
