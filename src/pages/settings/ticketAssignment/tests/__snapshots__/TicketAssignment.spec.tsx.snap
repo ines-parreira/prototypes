@@ -145,14 +145,14 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
         <div
           class="col"
         >
+          <h3
+            class="heading-section-semibold mb8"
+          >
+            Team auto-assignment settings
+          </h3>
           <div
             class="mb16 form-group"
           >
-            <h3
-              class="heading-section-semibold mb8"
-            >
-              Team auto-assignment settings
-            </h3>
             <div>
               <label
                 class="label label"
@@ -417,6 +417,164 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
 </div>
 `;
 
+exports[`<TicketAssignment/> should render the create team cta when no team exists 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <h1
+      class="align-items-center"
+    >
+      <span>
+        Ticket assignment
+      </span>
+      <button
+        class="wrapper wrapper ml-3 fill secondary medium"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            info_outline
+          </i>
+          Learn
+        </span>
+      </button>
+    </h1>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <form
+      class=""
+    >
+      <div
+        class="contentWrapper row"
+      >
+        <div
+          class="col"
+        >
+          <h3
+            class="heading-section-semibold mb8"
+          >
+            Team auto-assignment settings
+          </h3>
+          <div
+            class="alert info missingTeamAlert"
+          >
+            <div
+              class="iconContainer"
+            >
+              <img
+                alt="icon"
+                src="test-file-stub"
+              />
+            </div>
+            <div
+              class="content"
+            >
+              <span
+                class="label"
+              >
+                You haven't set up any teams yet. Create your first team to configure auto assignment.
+              </span>
+              <div
+                class="customActions"
+              >
+                <button
+                  class="wrapper ghost primary medium"
+                  type="button"
+                >
+                  Create team
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="mb40 form-group"
+          >
+            <h3
+              class="heading-section-semibold"
+            >
+              Unassignment settings
+            </h3>
+            <div>
+              <label
+                class="label label"
+                for="unassign_on_reply"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  id="unassign_on_reply"
+                  name="unassign_on_reply"
+                  type="checkbox"
+                />
+                Unassign on reply
+                 
+                <i
+                  class="material-icons infoIcon"
+                  id="unassign-info"
+                >
+                  info_outline
+                </i>
+              </label>
+            </div>
+          </div>
+          <div
+            class="mb40 form-group"
+          >
+            <h3
+              class="heading-section-semibold mb8"
+            >
+              Channels
+            </h3>
+            <p
+              class="body-regular description mb8"
+            >
+              Apply ticket assignment settings to the following channels
+            </p>
+            <ul
+              aria-label="MultiSelectOptionField mock"
+            >
+              <li>
+                chat
+                <button
+                  type="button"
+                >
+                  Remove 
+                  chat
+                </button>
+              </li>
+              <li>
+                facebook-messenger
+                <button
+                  type="button"
+                >
+                  Remove 
+                  facebook-messenger
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <button
+        class="wrapper fill primary medium"
+        type="submit"
+      >
+        Save changes
+      </button>
+    </form>
+  </div>
+</div>
+`;
+
 exports[`<TicketAssignment/> should render the store data 1`] = `
 <div
   class="full-width"
@@ -459,14 +617,14 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
         <div
           class="col"
         >
+          <h3
+            class="heading-section-semibold mb8"
+          >
+            Team auto-assignment settings
+          </h3>
           <div
             class="mb16 form-group"
           >
-            <h3
-              class="heading-section-semibold mb8"
-            >
-              Team auto-assignment settings
-            </h3>
             <div>
               <label
                 class="label label"

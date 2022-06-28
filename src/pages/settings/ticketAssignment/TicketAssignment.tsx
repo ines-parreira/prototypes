@@ -20,7 +20,10 @@ import {RootState} from 'state/types'
 import Label from 'pages/common/forms/Label/Label'
 import settingsCss from 'pages/settings/settings.less'
 import NumberInput from 'pages/common/forms/input/NumberInput'
+import Alert from 'pages/common/components/Alert/Alert'
 import Tooltip from 'pages/common/components/Tooltip'
+import TeamCreationModal from 'pages/settings/teams/TeamCreationModal'
+import {getTeams} from 'state/teams/selectors'
 
 import css from './TicketAssignment.less'
 
@@ -28,6 +31,7 @@ type Props = ConnectedProps<typeof connector>
 
 type State = {
     isLoading: boolean
+    isTeamCreationModalOpen: boolean
     unassignOnReply: boolean
     autoAssignToTeams: boolean
     assignmentChannels: TicketChannel[]
@@ -52,6 +56,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
         ]) as List<any>
         this.state = {
             isLoading: false,
+            isTeamCreationModalOpen: false,
             unassignOnReply: ticketAssignmentSettings.getIn(
                 ['data', 'unassign_on_reply'],
                 true
@@ -148,11 +153,13 @@ export class TicketAssignmentContainer extends Component<Props, State> {
     }
 
     render() {
+        const {teams} = this.props
         const {
             unassignOnReply,
             assignmentChannels,
             autoAssignToTeams,
             isLoading,
+            isTeamCreationModalOpen,
             chatTicketsLimit,
             nonChatTicketsLimit,
         } = this.state
@@ -174,135 +181,192 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                     <Form onSubmit={this._onSubmit}>
                         <Row className={settingsCss.contentWrapper}>
                             <Col>
-                                <FormGroup className={settingsCss.mb16}>
-                                    <h3
-                                        className={classNames(
-                                            'heading-section-semibold',
-                                            settingsCss.mb8
-                                        )}
-                                    >
-                                        Team auto-assignment settings
-                                    </h3>
-                                    <CheckBox
-                                        name="auto_assign_to_teams"
-                                        isChecked={autoAssignToTeams}
-                                        onChange={(value: boolean) =>
-                                            this.setState({
-                                                autoAssignToTeams: value,
-                                            })
+                                <h3
+                                    className={classNames(
+                                        'heading-section-semibold',
+                                        settingsCss.mb8
+                                    )}
+                                >
+                                    Team auto-assignment settings
+                                </h3>
+
+                                {teams.size === 0 ? (
+                                    <Alert
+                                        className={css.missingTeamAlert}
+                                        customActions={
+                                            <Button
+                                                fillStyle="ghost"
+                                                onClick={() =>
+                                                    this.setState({
+                                                        isTeamCreationModalOpen:
+                                                            true,
+                                                    })
+                                                }
+                                            >
+                                                Create team
+                                            </Button>
                                         }
-                                        caption={
-                                            <span>
-                                                When a ticket is assigned to a
-                                                team, it will automatically be
-                                                assigned to an{' '}
-                                                <strong
-                                                    className={
-                                                        css.labelBoldText
-                                                    }
-                                                >
-                                                    eligible member
-                                                </strong>{' '}
-                                                of that team
-                                            </span>
-                                        }
+                                        icon
                                     >
-                                        Auto-assign tickets
-                                    </CheckBox>
-                                </FormGroup>
-                                <FormGroup className={settingsCss.mb32}>
-                                    <Label
-                                        className={classNames(
-                                            'body-semibold',
-                                            css.limitsHeader
-                                        )}
-                                    >
-                                        Auto-assignment limits
-                                        <i
-                                            id="limits-info"
-                                            className={classNames(
-                                                'material-icons',
-                                                css.infoIcon
-                                            )}
-                                        >
-                                            info_outline
-                                        </i>
-                                        <Tooltip target="limits-info">
-                                            An agent is eligible for
-                                            auto-assignment if they are
-                                            “online”, set to "available" and
-                                            have fewer open tickets assigned to
-                                            them than the limits defined below
-                                        </Tooltip>
-                                    </Label>
-                                    <div className={css.limits}>
-                                        <div className={css.limitsSection}>
-                                            <label className={css.limitLabel}>
-                                                <NumberInput
-                                                    className={css.limitInput}
-                                                    min={0}
-                                                    max={500}
-                                                    isRequired
-                                                    value={chatTicketsLimit}
-                                                    onChange={(
-                                                        chatTicketsLimit
-                                                    ) => {
-                                                        this.setState({
-                                                            chatTicketsLimit,
-                                                        })
-                                                    }}
-                                                />
-                                                <strong
-                                                    id="chat-messaging-tooltip"
+                                        You haven't set up any teams yet. Create
+                                        your first team to configure auto
+                                        assignment.
+                                    </Alert>
+                                ) : (
+                                    <>
+                                        <FormGroup className={settingsCss.mb16}>
+                                            <CheckBox
+                                                name="auto_assign_to_teams"
+                                                isChecked={autoAssignToTeams}
+                                                onChange={(value: boolean) =>
+                                                    this.setState({
+                                                        autoAssignToTeams:
+                                                            value,
+                                                    })
+                                                }
+                                                caption={
+                                                    <span>
+                                                        When a ticket is
+                                                        assigned to a team, it
+                                                        will automatically be
+                                                        assigned to an{' '}
+                                                        <strong
+                                                            className={
+                                                                css.labelBoldText
+                                                            }
+                                                        >
+                                                            eligible member
+                                                        </strong>{' '}
+                                                        of that team
+                                                    </span>
+                                                }
+                                            >
+                                                Auto-assign tickets
+                                            </CheckBox>
+                                        </FormGroup>
+                                        <FormGroup className={settingsCss.mb32}>
+                                            <Label
+                                                className={classNames(
+                                                    'body-semibold',
+                                                    css.limitsHeader
+                                                )}
+                                            >
+                                                Auto-assignment limits
+                                                <i
+                                                    id="limits-info"
+                                                    className={classNames(
+                                                        'material-icons',
+                                                        css.infoIcon
+                                                    )}
+                                                >
+                                                    info_outline
+                                                </i>
+                                                <Tooltip target="limits-info">
+                                                    An agent is eligible for
+                                                    auto-assignment if they are
+                                                    “online”, set to "available"
+                                                    and have fewer open tickets
+                                                    assigned to them than the
+                                                    limits defined below
+                                                </Tooltip>
+                                            </Label>
+                                            <div className={css.limits}>
+                                                <div
                                                     className={
-                                                        css.limitsTooltip
+                                                        css.limitsSection
                                                     }
                                                 >
-                                                    Chat & Messaging
-                                                </strong>{' '}
-                                                tickets
-                                            </label>
-                                            <Tooltip target="chat-messaging-tooltip">
-                                                Includes chat, Facebook
-                                                messenger, Instagram DM or any
-                                                1-1 instant messaging channels
-                                            </Tooltip>
-                                        </div>
-                                        <div className={css.limitsSection}>
-                                            <label className={css.limitLabel}>
-                                                <NumberInput
-                                                    className={css.limitInput}
-                                                    min={0}
-                                                    max={500}
-                                                    isRequired
-                                                    value={nonChatTicketsLimit}
-                                                    onChange={(
-                                                        nonChatTicketsLimit
-                                                    ) => {
-                                                        this.setState({
-                                                            nonChatTicketsLimit,
-                                                        })
-                                                    }}
-                                                />
-                                                <strong
-                                                    id="other-text-tooltip"
+                                                    <label
+                                                        className={
+                                                            css.limitLabel
+                                                        }
+                                                    >
+                                                        <NumberInput
+                                                            className={
+                                                                css.limitInput
+                                                            }
+                                                            min={0}
+                                                            max={500}
+                                                            isRequired
+                                                            value={
+                                                                chatTicketsLimit
+                                                            }
+                                                            onChange={(
+                                                                chatTicketsLimit
+                                                            ) => {
+                                                                this.setState({
+                                                                    chatTicketsLimit,
+                                                                })
+                                                            }}
+                                                        />
+                                                        <strong
+                                                            id="chat-messaging-tooltip"
+                                                            className={
+                                                                css.limitsTooltip
+                                                            }
+                                                        >
+                                                            Chat & Messaging
+                                                        </strong>{' '}
+                                                        tickets
+                                                    </label>
+                                                    <Tooltip target="chat-messaging-tooltip">
+                                                        Includes chat, Facebook
+                                                        messenger, Instagram DM
+                                                        or any 1-1 instant
+                                                        messaging channels
+                                                    </Tooltip>
+                                                </div>
+                                                <div
                                                     className={
-                                                        css.limitsTooltip
+                                                        css.limitsSection
                                                     }
                                                 >
-                                                    Other text
-                                                </strong>{' '}
-                                                tickets
-                                            </label>
-                                            <Tooltip target="other-text-tooltip">
-                                                Includes email, Facebook and
-                                                Instagram comments or any other
-                                                asynchronous channels. Does not
-                                                include Phone
-                                            </Tooltip>
-                                        </div>
-                                    </div>
-                                </FormGroup>
+                                                    <label
+                                                        className={
+                                                            css.limitLabel
+                                                        }
+                                                    >
+                                                        <NumberInput
+                                                            className={
+                                                                css.limitInput
+                                                            }
+                                                            min={0}
+                                                            max={500}
+                                                            isRequired
+                                                            value={
+                                                                nonChatTicketsLimit
+                                                            }
+                                                            onChange={(
+                                                                nonChatTicketsLimit
+                                                            ) => {
+                                                                this.setState({
+                                                                    nonChatTicketsLimit,
+                                                                })
+                                                            }}
+                                                        />
+                                                        <strong
+                                                            id="other-text-tooltip"
+                                                            className={
+                                                                css.limitsTooltip
+                                                            }
+                                                        >
+                                                            Other text
+                                                        </strong>{' '}
+                                                        tickets
+                                                    </label>
+                                                    <Tooltip target="other-text-tooltip">
+                                                        Includes email, Facebook
+                                                        and Instagram comments
+                                                        or any other
+                                                        asynchronous channels.
+                                                        Does not include Phone
+                                                    </Tooltip>
+                                                </div>
+                                            </div>
+                                        </FormGroup>
+                                    </>
+                                )}
+
                                 <FormGroup className={settingsCss.mb40}>
                                     <h3 className="heading-section-semibold">
                                         Unassignment settings
@@ -375,6 +439,13 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                             Save changes
                         </Button>
                     </Form>
+
+                    <TeamCreationModal
+                        isOpen={isTeamCreationModalOpen}
+                        onClose={() =>
+                            this.setState({isTeamCreationModalOpen: false})
+                        }
+                    />
                 </Container>
             </div>
         )
@@ -383,6 +454,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
 
 const connector = connect(
     (state: RootState) => ({
+        teams: getTeams(state),
         ticketAssignmentSettings: getTicketAssignmentSettings(state),
     }),
     {

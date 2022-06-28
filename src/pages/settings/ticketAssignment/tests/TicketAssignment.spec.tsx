@@ -1,6 +1,7 @@
 import {fromJS, Map} from 'immutable'
 import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
+import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -8,6 +9,7 @@ import thunk from 'redux-thunk'
 
 import {RootState} from 'state/types'
 import {account} from 'fixtures/account'
+import {teams} from 'fixtures/teams'
 import {
     AccountSettingTicketAssignment,
     AccountSettingType,
@@ -82,6 +84,7 @@ const defaultState = {
         ...account,
         settings: [ticketAssignmentSetting],
     }) as Map<any, any>,
+    teams: fromJS({all: _keyBy(teams, 'id')}),
 } as RootState
 
 const mockStore = configureMockStore<RootState>([thunk])
@@ -285,6 +288,18 @@ describe('<TicketAssignment/>', () => {
         )
 
         fireEvent.click(getByText('Save changes'))
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render the create team cta when no team exists', () => {
+        const {container} = render(
+            <Provider
+                store={mockStore({...defaultState, teams: fromJS({all: {}})})}
+            >
+                <TicketAssignment />
+            </Provider>
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })

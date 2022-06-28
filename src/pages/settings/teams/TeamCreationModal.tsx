@@ -48,7 +48,7 @@ import RuleCreationModalContent from './RuleCreationModalContent'
 type Props = {
     isOpen: boolean
     onClose: () => void
-    onTeamCreated: (team: Team) => void
+    onTeamCreated?: (team: Team) => void
 }
 
 const steps = ['teamCreation', 'ruleCreation']
@@ -149,7 +149,7 @@ export default function TeamCreationModal({
                 setTeam(createdTeam)
                 resetForm()
                 setActiveStep('ruleCreation')
-                onTeamCreated(createdTeam)
+                onTeamCreated && onTeamCreated(createdTeam)
             }
         },
         [description, emoji, memberIds, name, resetForm]
