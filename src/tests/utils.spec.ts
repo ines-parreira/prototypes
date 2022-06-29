@@ -333,9 +333,6 @@ describe('global utils', () => {
             expect(utils.resolvePropertyName('IntegrationMapping')).toEqual(
                 'IntegrationMapping'
             )
-            expect(utils.resolvePropertyName('IntegrationFacebook')).toEqual(
-                'IntegrationFacebook'
-            )
             expect(utils.resolvePropertyName('Event')).toEqual('Event')
             expect(utils.resolvePropertyName('Tag')).toEqual('Tag')
             expect(utils.resolvePropertyName('Source')).toEqual('Source')

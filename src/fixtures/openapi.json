@@ -2084,24 +2084,6 @@
                     "format": "date-time"
                 },
                 "deleted_datetime": {"type": "string", "format": "date-time"},
-                "facebook": {
-                    "description": "*Obsolete field! Will be removed in the future.*",
-                    "example": {
-                        "picture": {
-                            "data": {
-                                "is_silhouette": false,
-                                "url": "https://facebook.com/images/4645646453.jpg"
-                            }
-                        },
-                        "page_id": "8a7f8s7f6",
-                        "callback_url": "https://acme.gorgias.io/incoming/facebook/",
-                        "name": "My Facebook Integration",
-                        "category": "",
-                        "settings": {},
-                        "about": ""
-                    },
-                    "$ref": "#/definitions/IntegrationFacebook"
-                },
                 "user": {
                     "description": "User which created this integration.",
                     "$ref": "#/definitions/DEPRECATED_User"
@@ -3264,28 +3246,6 @@
                     "description": "URI of the object - auto-generated",
                     "type": "string"
                 }
-            },
-            "type": "object"
-        },
-        "IntegrationFacebook": {
-            "description": "(Obsolete) - This object will be removed soon. Please do not use it.",
-            "properties": {
-                "picture": {"type": "string"},
-                "id": {
-                    "description": "Primary key of the object",
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "page_id": {"type": "string"},
-                "callback_url": {"type": "string"},
-                "name": {"type": "string"},
-                "uri": {
-                    "description": "URI of the object - auto-generated",
-                    "type": "string"
-                },
-                "about": {"type": "string"},
-                "settings": {"type": "string"},
-                "category": {"type": "string"}
             },
             "type": "object"
         },
