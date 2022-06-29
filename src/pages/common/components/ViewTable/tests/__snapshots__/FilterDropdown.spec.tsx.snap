@@ -1,0 +1,269 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilterDropdown should apply a special style to the language filter 1`] = `
+<div
+  class="dropdown show"
+>
+  <span
+    aria-expanded="true"
+    aria-haspopup="true"
+    class=""
+  >
+    <span
+      class="sr-only"
+    >
+      Toggle Dropdown
+    </span>
+  </span>
+  <div
+    aria-hidden="false"
+    class="dropdown-menu show"
+    role="menu"
+    style="height: 230px; overflow: scroll; position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+    tabindex="-1"
+  >
+    <div>
+      <button
+        data-testid="search-start"
+      />
+      <button
+        data-testid="search-success"
+      />
+      <button
+        data-testid="search-error"
+      />
+    </div>
+    <div>
+      <span
+        data-testid="is-loading"
+      >
+        false
+      </span>
+      <span
+        data-testid="items"
+      >
+        [
+  "af",
+  "ar",
+  "bg",
+  "ca",
+  "cs",
+  "cy",
+  "da",
+  "de",
+  "el",
+  "en",
+  "es",
+  "et",
+  "fa",
+  "fi",
+  "fr",
+  "gu",
+  "he",
+  "hi",
+  "hr",
+  "hu",
+  "id",
+  "it",
+  "ja",
+  "kn",
+  "ko",
+  "lt",
+  "lv",
+  "mk",
+  "ml",
+  "mr",
+  "ne",
+  "nl",
+  "no",
+  "pa",
+  "pl",
+  "pt",
+  "ro",
+  "ru",
+  "sk",
+  "sl",
+  "so",
+  "sq",
+  "sv",
+  "sw",
+  "ta",
+  "te",
+  "tl",
+  "tr",
+  "uk",
+  "ur",
+  "vi",
+  "zh-cn",
+  "zh-tw"
+]
+      </span>
+      <button
+        data-testid="me-item"
+      />
+      <button
+        data-testid="item"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`FilterDropdown should call updateFieldFilter on item click 1`] = `
+Array [
+  Array [
+    1,
+  ],
+]
+`;
+
+exports[`FilterDropdown should call updateFieldFilter on me item click 1`] = `
+Array [
+  Array [
+    "{{current_user.id}}",
+  ],
+]
+`;
+
+exports[`FilterDropdown should render custom menu 1`] = `
+<div
+  class="dropdown show"
+>
+  <span
+    aria-expanded="true"
+    aria-haspopup="true"
+    class=""
+  >
+    <span
+      class="sr-only"
+    >
+      Toggle Dropdown
+    </span>
+  </span>
+  <div>
+    Custom menu
+  </div>
+</div>
+`;
+
+exports[`FilterDropdown should render items from filter enum 1`] = `
+<div
+  class="dropdown show"
+>
+  <span
+    aria-expanded="true"
+    aria-haspopup="true"
+    class=""
+  >
+    <span
+      class="sr-only"
+    >
+      Toggle Dropdown
+    </span>
+  </span>
+  <div
+    aria-hidden="false"
+    class="dropdown-menu show"
+    role="menu"
+    style="width: 230px; position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+    tabindex="-1"
+  >
+    <div>
+      <button
+        data-testid="search-start"
+      />
+      <button
+        data-testid="search-success"
+      />
+      <button
+        data-testid="search-error"
+      />
+    </div>
+    <div>
+      <span
+        data-testid="is-loading"
+      >
+        false
+      </span>
+      <span
+        data-testid="items"
+      >
+        [
+  {
+    "id": 1,
+    "name": "Foo",
+    "email": "foo@example.com"
+  }
+]
+      </span>
+      <button
+        data-testid="me-item"
+      />
+      <button
+        data-testid="item"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`FilterDropdown should render the search results 1`] = `
+<div
+  class="dropdown show"
+>
+  <span
+    aria-expanded="true"
+    aria-haspopup="true"
+    class=""
+  >
+    <span
+      class="sr-only"
+    >
+      Toggle Dropdown
+    </span>
+  </span>
+  <div
+    aria-hidden="false"
+    class="dropdown-menu show"
+    role="menu"
+    style="width: 230px; position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+    tabindex="-1"
+  >
+    <div>
+      <button
+        data-testid="search-start"
+      />
+      <button
+        data-testid="search-success"
+      />
+      <button
+        data-testid="search-error"
+      />
+    </div>
+    <div>
+      <span
+        data-testid="is-loading"
+      >
+        false
+      </span>
+      <span
+        data-testid="items"
+      >
+        [
+  {
+    "id": 1,
+    "name": "Foo",
+    "email": "foo@example.com"
+  }
+]
+      </span>
+      <button
+        data-testid="me-item"
+      />
+      <button
+        data-testid="item"
+      />
+    </div>
+  </div>
+</div>
+`;

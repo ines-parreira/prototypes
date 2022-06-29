@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilterDropdownItems it should render items 1`] = `
+<div>
+  <button
+    class="dropdownItem dropdown-item"
+    role="menuitem"
+    tabindex="0"
+    type="button"
+  >
+    Foo
+  </button>
+</div>
+`;
+
+exports[`FilterDropdownItems should render "me" item for assignee field 1`] = `
+<div>
+  <button
+    class="dropdown-item"
+    role="menuitem"
+    tabindex="0"
+    type="button"
+  >
+    Me (current user)
+  </button>
+  <div
+    class="dropdown-divider"
+    tabindex="-1"
+  />
+  <button
+    class="dropdownItem dropdown-item"
+    role="menuitem"
+    tabindex="0"
+    type="button"
+  >
+    <span>
+      Foo
+    </span>
+  </button>
+</div>
+`;
+
+exports[`FilterDropdownItems should render a message when items array is empty 1`] = `
+<h6
+  class="dropdown-header"
+  tabindex="-1"
+>
+  Could not find anything like this
+</h6>
+`;
+
+exports[`FilterDropdownItems should render loader when loading 1`] = `
+<button
+  class="disabled dropdown-item"
+  disabled=""
+  tabindex="-1"
+  type="button"
+>
+  <i
+    class="material-icons md-spin mr-2"
+  >
+    refresh
+  </i>
+  Loading...
+</button>
+`;

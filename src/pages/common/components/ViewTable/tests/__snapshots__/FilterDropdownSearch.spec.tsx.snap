@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FilterDropdownSearch should render the search bar 1`] = `
+<h6
+  class="dropdown-item-input dropdown-header"
+  tabindex="-1"
+>
+  <div>
+    <span
+      data-testid="auto-focus"
+    >
+      true
+    </span>
+    <span
+      data-testid="search-debounce-time"
+    >
+      1000
+    </span>
+    <button
+      data-testid="search-change"
+    />
+  </div>
+</h6>
+`;
