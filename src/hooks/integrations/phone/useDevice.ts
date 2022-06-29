@@ -82,16 +82,32 @@ function useInstantiateDevice() {
         )
     }, [dispatch])
 
-    const onCancel = useCallback(async () => {
-        try {
-            await client.post('/integrations/phone/call/canceled')
-        } catch (error) {
-            const message = "Couldn't mark phone call as canceled"
-            error instanceof Error
-                ? onError(error, message)
-                : onError(new Error(message), message)
-        }
-    }, [onError])
+    const onCancel = useCallback(
+        async (call?: Call) => {
+            try {
+                if (call === undefined) {
+                    await client.post('/integrations/phone/call/canceled')
+                } else {
+                    const ticketId = parseInt(
+                        call.customParameters.get('ticket_id') as string
+                    )
+                    const callSid = call.customParameters.get(
+                        'call_sid'
+                    ) as string
+                    await client.post('/integrations/phone/call/canceled', {
+                        ticket_id: ticketId,
+                        call_sid: callSid,
+                    })
+                }
+            } catch (error) {
+                const message = "Couldn't mark phone call as canceled"
+                error instanceof Error
+                    ? onError(error, message)
+                    : onError(new Error(message), message)
+            }
+        },
+        [onError]
+    )
 
     const onAccept = useCallback(
         async (call: Call) => {
@@ -230,7 +246,7 @@ function useInstantiateDevice() {
                 call.on('cancel', () => {
                     dispatch(setCall(null))
                     dispatch(setIsRinging(false))
-                    void onCancel()
+                    void onCancel(call)
 
                     sendTwilioSocketEvent({
                         type: TwilioSocketEventType.CallCancelled,
