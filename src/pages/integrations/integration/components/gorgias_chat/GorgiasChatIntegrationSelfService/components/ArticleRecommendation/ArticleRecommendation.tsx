@@ -3,14 +3,31 @@ import classNames from 'classnames'
 
 import {Label} from 'reactstrap'
 
+import warningIcon from 'assets/img/icons/warning2.svg'
+
 import Button from 'pages/common/components/button/Button'
-import {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 
 import css from './ArticleRecommendation.less'
+
+const getClosestMatchingHelpCenter = (
+    helpCenterList: (SelectableOption & {id: number})[],
+    associatedShopifyStoreName: string
+) => {
+    const closestMatchingHelpCenter =
+        helpCenterList.find((el) =>
+            el.value
+                .toString()
+                .toLowerCase()
+                .includes(associatedShopifyStoreName.toLowerCase())
+        ) ?? helpCenterList[0]
+
+    return closestMatchingHelpCenter.value.toString()
+}
 
 type Props = {
     isLoading?: boolean
@@ -21,6 +38,7 @@ type Props = {
     helpCenterList: (SelectableOption & {id: number})[]
     onToggleEnabled?: (enabled: boolean) => void
     onSaveChanges: (isEnabled: boolean, helpCenterId: number) => void
+    associatedShopifyStoreName: string
 }
 
 // TODO: Add "Read more" anchor
@@ -33,6 +51,7 @@ const ArticleRecommendation: FC<Props> = ({
     },
     onToggleEnabled,
     onSaveChanges,
+    associatedShopifyStoreName,
 }) => {
     const [isEnabled, setEnabled] = useState(initialValues.isEnabled ?? false)
     const [selectedHelpCenter, setSelectedHelpCenter] = useState(
@@ -90,11 +109,25 @@ const ArticleRecommendation: FC<Props> = ({
         if (
             isEnabled &&
             selectedHelpCenter === '' &&
-            helpCenterList.length === 1
+            helpCenterList.length > 0
         ) {
-            setSelectedHelpCenter(helpCenterList[0].value.toString())
+            if (helpCenterList.length === 1) {
+                setSelectedHelpCenter(helpCenterList[0].value.toString())
+            } else {
+                setSelectedHelpCenter(
+                    getClosestMatchingHelpCenter(
+                        helpCenterList,
+                        associatedShopifyStoreName
+                    )
+                )
+            }
         }
-    }, [helpCenterList, selectedHelpCenter, isEnabled])
+    }, [
+        helpCenterList,
+        selectedHelpCenter,
+        isEnabled,
+        associatedShopifyStoreName,
+    ])
 
     return (
         <div>
@@ -140,6 +173,17 @@ const ArticleRecommendation: FC<Props> = ({
             </div>
             {isEnabled && (
                 <div>
+                    {helpCenterList.length > 1 && (
+                        <Alert type={AlertType.Warning} className={css.alert}>
+                            <div className={css.alertContent}>
+                                <img src={warningIcon} alt="warning icon" />
+                                <p className={css.alertMessage}>
+                                    You have more than 1 help center. Ensure the
+                                    desired help center is selected below.
+                                </p>
+                            </div>
+                        </Alert>
+                    )}
                     <Label
                         htmlFor="help-center-select"
                         className="control-label"

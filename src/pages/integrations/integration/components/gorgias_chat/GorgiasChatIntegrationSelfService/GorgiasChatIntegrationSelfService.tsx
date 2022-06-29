@@ -288,6 +288,10 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                             }}
                             onToggleEnabled={setArticleReccEnabled}
                             onSaveChanges={handleSaveArticleRecommendation}
+                            associatedShopifyStoreName={integration.getIn(
+                                ['meta', 'shop_name'],
+                                ''
+                            )}
                         />
                     </>
                 </GorgiasChatIntegrationPreviewContainer>
