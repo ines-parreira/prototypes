@@ -37,11 +37,9 @@ describe('withUserRoleRequired', () => {
     const stateWithoutAdequateRole: Partial<RootState> = {
         currentUser: fromJS({
             ...user,
-            roles: [
-                {
-                    name: UserRole.ObserverAgent,
-                },
-            ],
+            role: {
+                name: UserRole.ObserverAgent,
+            },
         }),
     }
 

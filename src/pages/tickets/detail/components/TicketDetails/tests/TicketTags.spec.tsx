@@ -44,10 +44,7 @@ describe('TicketTags component', () => {
         const {getByText, getByPlaceholderText} = render(
             <TicketTags
                 {...minProps}
-                currentUser={user.setIn(
-                    ['roles', 0, 'name'],
-                    UserRole.BasicAgent
-                )}
+                currentUser={user.setIn(['role', 'name'], UserRole.BasicAgent)}
             />
         )
 

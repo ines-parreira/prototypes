@@ -240,13 +240,7 @@ describe('global utils', () => {
 
     describe('hasRole', () => {
         it('should determine if user has required role (observer agent)', () => {
-            const user = fromJS({
-                roles: [
-                    {
-                        name: OBSERVER_AGENT_ROLE,
-                    },
-                ],
-            })
+            const user = fromJS({role: {name: OBSERVER_AGENT_ROLE}})
             expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(false)
             expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(false)
@@ -254,13 +248,7 @@ describe('global utils', () => {
             expect(utils.hasRole(user, ADMIN_ROLE)).toEqual(false)
         })
         it('should determine if user has required role (agent)', () => {
-            const user = fromJS({
-                roles: [
-                    {
-                        name: AGENT_ROLE,
-                    },
-                ],
-            })
+            const user = fromJS({role: {name: AGENT_ROLE}})
             expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(true)
@@ -269,13 +257,7 @@ describe('global utils', () => {
         })
 
         it('should determine if user has required role (admin)', () => {
-            const user = fromJS({
-                roles: [
-                    {
-                        name: ADMIN_ROLE,
-                    },
-                ],
-            })
+            const user = fromJS({role: {name: ADMIN_ROLE}})
             expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(true)

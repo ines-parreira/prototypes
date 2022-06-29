@@ -36,7 +36,6 @@ import {
     deleteAgent,
     createAgent,
 } from 'state/agents/actions'
-import * as helpers from 'state/agents/helpers'
 import {updateAccountOwner} from 'state/currentAccount/actions'
 import {RootState} from 'state/types'
 import {toJS} from 'utils'
@@ -92,13 +91,12 @@ export class FormContainer extends Component<Props, State> {
         this.setState({isFetching: true})
         return this.props.fetchAgent(id).then((resp) => {
             const agent: User = toJS(resp)
-            const role = helpers.getHighestRole(resp)
             this.setState({
                 agent: resp,
                 email: agent.email,
                 isFetching: false,
                 name: agent.name,
-                role: role!,
+                role: agent.role.name,
             })
         })
     }
@@ -121,7 +119,7 @@ export class FormContainer extends Component<Props, State> {
     _onSubmit = (e: SyntheticEvent) => {
         const {email, name, role} = this.state
         e.preventDefault()
-        const form: UserDraft = {email, name, roles: [{name: role}]}
+        const form: UserDraft = {email, name, role: {name: role}}
         this.setState({isSubmitting: true})
         const promise = (
             this._isUpdate()

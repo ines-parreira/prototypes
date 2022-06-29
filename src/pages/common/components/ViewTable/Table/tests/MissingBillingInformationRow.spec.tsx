@@ -25,7 +25,7 @@ describe('<MissingBillingInformationRow />', () => {
     ])
     const initialState = {
         currentUser: fromJS({
-            roles: [{name: UserRole.Admin}],
+            role: {name: UserRole.Admin},
         }) as Map<any, any>,
         currentAccount: fromJS({
             meta: {hasCreditCard: true},
@@ -66,7 +66,7 @@ describe('<MissingBillingInformationRow />', () => {
             {
                 ...initialState,
                 currentUser: initialState.currentUser.setIn(
-                    ['roles', 0, 'name'],
+                    ['role', 'name'],
                     UserRole.Agent
                 ),
             },

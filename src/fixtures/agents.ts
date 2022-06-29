@@ -11,11 +11,7 @@ export const agents: User[] = [
         id: 1,
         firstname: 'Acme',
         email: 'support@acme.gorgias.io',
-        roles: [
-            {
-                name: UserRole.Agent,
-            },
-        ],
+        role: {name: UserRole.Agent},
         updated_datetime: '2017-07-31T21:43:05.502541+00:00',
         settings: [],
         bio: null,
@@ -35,11 +31,7 @@ export const agents: User[] = [
         id: 2,
         firstname: 'Bob',
         email: 'agent-smith@gorgias.io',
-        roles: [
-            {
-                name: UserRole.Agent,
-            },
-        ],
+        role: {name: UserRole.Agent},
         updated_datetime: '2017-07-31T21:43:08.033390+00:00',
         bio: null,
         meta: {},

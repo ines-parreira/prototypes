@@ -237,11 +237,9 @@ describe('<TicketHeader />', () => {
                     ...defaultStore,
                     currentUser: fromJS({
                         ...user,
-                        roles: [
-                            {
-                                name: UserRole.LiteAgent,
-                            },
-                        ],
+                        role: {
+                            name: UserRole.LiteAgent,
+                        },
                     }),
                 })}
             >
@@ -261,11 +259,9 @@ describe('<TicketHeader />', () => {
                     ...defaultStore,
                     currentUser: fromJS({
                         ...user,
-                        roles: [
-                            {
-                                name: UserRole.LiteAgent,
-                            },
-                        ],
+                        role: {
+                            name: UserRole.LiteAgent,
+                        },
                     }),
                 })}
             >

@@ -48,7 +48,7 @@ const RestrictedPage = ({requiredRole, page}: Props) => {
             {!!config?.pageHeader && <PageHeader title={config.pageHeader} />}
             <div className={css.content}>
                 <div className={css.badge}>
-                    <RoleLabel roles={requiredRole} />
+                    <RoleLabel role={{name: requiredRole}} />
                 </div>
                 <h2 className={css.heading}>Restricted access</h2>
                 <p className={css.description}>

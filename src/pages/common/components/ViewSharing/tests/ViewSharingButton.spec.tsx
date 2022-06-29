@@ -78,13 +78,13 @@ describe('<ViewSharingButton/>', () => {
         })
 
         it('should render as disabled because user is not allowed', () => {
-            const roles = fromJS([{name: BASIC_AGENT_ROLE}])
+            const role = fromJS({name: BASIC_AGENT_ROLE})
             const component = shallow(
                 <ViewSharingButtonContainer
                     {...minProps}
                     currentUser={(fromJS(user) as Map<any, any>).set(
-                        'roles',
-                        roles
+                        'role',
+                        role
                     )}
                     view={fromJS({visibility: ViewVisibility.Public})}
                 />

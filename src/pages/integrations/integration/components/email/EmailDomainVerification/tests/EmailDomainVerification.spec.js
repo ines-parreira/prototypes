@@ -24,13 +24,16 @@ describe('<EmailDomainVerificationContainer/>', () => {
             createEmailDomain: jest.fn(),
             deleteEmailDomain: jest.fn(),
         },
+        currentUser: fromJS({
+            role: {
+                name: UserRole.BasicAgent,
+            },
+        }),
     }
     const adminUser = {
-        roles: [
-            {
-                name: UserRole.Admin,
-            },
-        ],
+        role: {
+            name: UserRole.Admin,
+        },
     }
 
     describe('render()', () => {
@@ -111,8 +114,8 @@ describe('<EmailDomainVerificationContainer/>', () => {
                             sending_dns_records: [],
                         },
                     })}
-                    currentUser={fromJS(adminUser)}
                     {...commonProps}
+                    currentUser={fromJS(adminUser)}
                 />
             )
 
@@ -131,8 +134,8 @@ describe('<EmailDomainVerificationContainer/>', () => {
                             sending_dns_records: [],
                         },
                     })}
-                    currentUser={fromJS(adminUser)}
                     {...commonProps}
+                    currentUser={fromJS(adminUser)}
                 />
             )
 

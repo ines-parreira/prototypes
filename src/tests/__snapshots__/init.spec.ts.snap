@@ -72,17 +72,15 @@ Object {
         "name": "Alex Plugaru",
         "external_id": "2",
         "created_datetime": "2016-12-22T19:36:12.487448+00:00",
+        "role": Immutable.Map {
+          "name": "admin",
+        },
         "country": "US",
         "language": "en",
         "timezone": "EST",
         "id": 2,
         "firstname": "Alex",
         "email": "alex@gorgias.io",
-        "roles": Immutable.List [
-          Immutable.Map {
-            "name": "admin",
-          },
-        ],
         "updated_datetime": "2016-12-22T19:36:12.489432+00:00",
       },
     ],
@@ -335,17 +333,15 @@ Object {
     "name": "Alex Plugaru",
     "external_id": "2",
     "created_datetime": "2016-12-22T19:36:12.487448+00:00",
+    "role": Immutable.Map {
+      "name": "admin",
+    },
     "country": "US",
     "language": "en",
     "timezone": "EST",
     "id": 2,
     "firstname": "Alex",
     "email": "alex@gorgias.io",
-    "roles": Immutable.List [
-      Immutable.Map {
-        "name": "admin",
-      },
-    ],
     "updated_datetime": "2016-12-22T19:36:12.489432+00:00",
   },
   "entities": Object {

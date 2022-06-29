@@ -2,12 +2,14 @@ import {render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
+import {fromJS} from 'immutable'
 
 import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
 import {view} from '../../../../fixtures/views'
 import ViewCount from '../../../common/components/ViewCount/ViewCount'
 import ViewName from '../../../common/components/ViewName/ViewName'
 import {TicketNavbarViewContainer} from '../TicketNavbarView'
+import {user as currentUserFixture} from '../../../../fixtures/users'
 
 jest.mock(
     '../../../common/components/ViewName/ViewName',
@@ -33,6 +35,7 @@ describe('<TicketNavbarView/>', () => {
             4: 100,
             7: MAX_TICKET_COUNT_PER_VIEW,
         },
+        currentUser: fromJS(currentUserFixture),
     } as unknown as ComponentProps<typeof TicketNavbarViewContainer>
 
     it('should render', () => {

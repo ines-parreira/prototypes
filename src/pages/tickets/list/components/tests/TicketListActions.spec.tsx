@@ -163,7 +163,7 @@ describe('TicketListActions component', () => {
                 currentUser={fromJS({
                     id: 1,
                     name: 'Peter Parker',
-                    roles: [{id: 1, name: UserRole.Agent}],
+                    role: {id: 1, name: UserRole.Agent},
                 })}
             />
         )
@@ -179,7 +179,7 @@ describe('TicketListActions component', () => {
                 currentUser={fromJS({
                     id: 1,
                     name: 'Peter Parker',
-                    roles: [{id: 1, name: UserRole.Agent}],
+                    role: {id: 1, name: UserRole.Agent},
                 })}
             />
         )
@@ -194,7 +194,7 @@ describe('TicketListActions component', () => {
                 currentUser={fromJS({
                     id: 1,
                     name: 'Peter Parker',
-                    roles: [{id: 1, name: UserRole.LiteAgent}],
+                    role: {id: 1, name: UserRole.LiteAgent},
                 })}
             />
         )
@@ -210,7 +210,7 @@ describe('TicketListActions component', () => {
                 currentUser={fromJS({
                     id: 1,
                     name: 'Peter Parker',
-                    roles: [{id: 1, name: AGENT_ROLE}],
+                    role: {id: 1, name: AGENT_ROLE},
                 })}
             />
         )
@@ -226,7 +226,7 @@ describe('TicketListActions component', () => {
                 currentUser={fromJS({
                     id: 1,
                     name: 'Peter Parker',
-                    roles: [{id: 2, name: LITE_AGENT_ROLE}],
+                    role: {id: 2, name: LITE_AGENT_ROLE},
                 })}
             />
         )
@@ -426,7 +426,7 @@ describe('TicketListActions component', () => {
                 currentUser={fromJS({
                     id: 1,
                     name: 'Peter Parker',
-                    roles: [{id: 1, name: UserRole.LiteAgent}],
+                    role: {id: 1, name: UserRole.LiteAgent},
                 })}
             />
         )
@@ -1037,7 +1037,7 @@ describe('TicketListActions component', () => {
                 currentUser={fromJS({
                     id: 1,
                     name: 'Peter Parker',
-                    roles: [{id: 1, name: UserRole.Agent}],
+                    role: {id: 1, name: UserRole.Agent},
                 })}
             />
         )
@@ -1058,7 +1058,7 @@ describe('TicketListActions component', () => {
                 currentUser={fromJS({
                     id: 1,
                     name: 'Peter Parker',
-                    roles: [{id: 1, name: UserRole.BasicAgent}],
+                    role: {id: 1, name: UserRole.BasicAgent},
                 })}
             />
         )

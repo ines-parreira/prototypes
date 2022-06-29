@@ -28,7 +28,7 @@ describe('segmentTracker', () => {
                     name: user.name,
                     email: user.email,
                     country: user.country,
-                    role: user.roles[0].name,
+                    role: user.role.name,
                     created_at: user.created_datetime,
                     notification_permission: 'granted',
                 }

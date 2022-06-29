@@ -11,12 +11,10 @@ const agent = {
     id: 2,
     name: 'Acme Support',
     email: 'hello@acme.gorgias.io',
-    roles: [
-        {
-            id: 7,
-            name: 'admin',
-        },
-    ],
+    role: {
+        id: 7,
+        name: 'admin',
+    },
     has_2fa_enabled: true,
 }
 const minProps = {

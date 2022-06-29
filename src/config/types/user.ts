@@ -19,7 +19,7 @@ export type UserDraft = {
     id?: Maybe<number>
     email: string
     name: string
-    roles: {name: UserRole}[]
+    role: {name: UserRole}
 }
 
 export type User = UserDraft & {
@@ -35,7 +35,6 @@ export type User = UserDraft & {
     lastname: string
     meta: MetaByAgentRole
     updated_datetime: string
-    roles: [{name: UserRole}]
     settings: UserSetting[]
     timezone: string | null
     has_2fa_enabled: boolean

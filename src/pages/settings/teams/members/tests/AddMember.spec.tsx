@@ -37,12 +37,10 @@ const minProps = {
             id: 1,
             firstname: 'Acme',
             email: 'hello@acme.gorgias.io',
-            roles: [
-                {
-                    id: 7,
-                    name: 'admin',
-                },
-            ],
+            role: {
+                id: 7,
+                name: 'admin',
+            },
             updated_datetime: '2021-05-06T16:11:10.990319+00:00',
         },
         {
@@ -62,12 +60,10 @@ const minProps = {
             id: 2,
             firstname: 'Alex',
             email: 'alex@gorgias.io',
-            roles: [
-                {
-                    id: 7,
-                    name: 'admin',
-                },
-            ],
+            role: {
+                id: 7,
+                name: 'admin',
+            },
             updated_datetime: '2021-05-06T16:11:13.959994+00:00',
         },
     ]) as List<any>,

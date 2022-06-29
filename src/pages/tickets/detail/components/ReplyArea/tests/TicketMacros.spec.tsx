@@ -78,7 +78,7 @@ describe('<TicketMacros />', () => {
             <TicketMacrosContainer
                 {...minProps}
                 currentUser={minProps.currentUser.setIn(
-                    ['roles', 0, 'name'],
+                    ['role', 'name'],
                     UserRole.BasicAgent
                 )}
                 macros={macros}

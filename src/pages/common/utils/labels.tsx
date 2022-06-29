@@ -25,7 +25,7 @@ import * as customersHelpers from 'state/customers/helpers'
 import {getTeams} from 'state/teams/selectors'
 import {parseTimedelta} from 'state/ticket/utils'
 import {RootState} from 'state/types'
-import {formatDatetime, humanizeString, isImmutable, toJS} from 'utils'
+import {formatDatetime, humanizeString, isImmutable} from 'utils'
 
 import css from './labels.less'
 
@@ -314,55 +314,41 @@ export const IntegrationsDetailLabel = ({
 IntegrationsDetailLabel.displayName = 'IntegrationsDetailLabel'
 
 type Role = {
-    id: number
-    name: string
+    id?: number
+    name: UserRole
 }
 
 /**
  * ROLE
  */
-export const RoleLabel = ({
-    roles = 'user',
-}: {
-    roles: string | Role | List<any>
-}) => {
-    const rolesJS = toJS(roles as List<any>)
-    let userRoles = (Array.isArray(rolesJS) ? rolesJS : [rolesJS]) as
-        | Role[]
-        | string[]
+export class RoleLabel extends Component<{
+    role: Role
+}> {
+    render() {
+        const {role} = this.props
+        let color: ColorType | undefined
+        let label = null
 
-    if (
-        userRoles.length &&
-        typeof userRoles[0] === 'object' &&
-        userRoles[0].name
-    ) {
-        userRoles = (userRoles as Role[]).map((v) => v.name)
+        if (role.name === UserRole.Admin) {
+            color = ColorType.Error
+            label = _capitalize(UserRole.Admin)
+        } else if (role.name === UserRole.Agent) {
+            color = ColorType.Warning
+            label = 'Lead agent'
+        } else if (role.name === UserRole.BasicAgent) {
+            color = ColorType.DarkGrey
+            label = _capitalize(humanizeString(UserRole.BasicAgent))
+        } else if (role.name === UserRole.LiteAgent) {
+            color = ColorType.Classic
+            label = _capitalize(humanizeString(UserRole.LiteAgent))
+        } else if (role.name === UserRole.ObserverAgent) {
+            color = ColorType.Grey
+            label = _capitalize(humanizeString(UserRole.ObserverAgent))
+        }
+
+        return <Badge type={color}>{label}</Badge>
     }
-
-    let color: ColorType | undefined
-    let role = null
-
-    if ((userRoles as string[]).includes(UserRole.Admin)) {
-        color = ColorType.Error
-        role = _capitalize(UserRole.Admin)
-    } else if ((userRoles as string[]).includes(UserRole.Agent)) {
-        color = ColorType.Warning
-        role = 'Lead agent'
-    } else if ((userRoles as string[]).includes(UserRole.BasicAgent)) {
-        color = ColorType.DarkGrey
-        role = _capitalize(humanizeString(UserRole.BasicAgent))
-    } else if ((userRoles as string[]).includes(UserRole.LiteAgent)) {
-        color = ColorType.Classic
-        role = _capitalize(humanizeString(UserRole.LiteAgent))
-    } else if ((userRoles as string[]).includes(UserRole.ObserverAgent)) {
-        color = ColorType.Grey
-        role = _capitalize(humanizeString(UserRole.ObserverAgent))
-    }
-
-    return <Badge type={color}>{role}</Badge>
 }
-
-RoleLabel.displayName = 'RoleLabel'
 
 /**
  * DATETIME
@@ -563,10 +549,10 @@ export class RenderLabel extends Component<RenderLabelProps> {
                 )
             case 'customer':
                 return <CustomerLabel customer={value} />
-            case 'roles':
+            case 'role':
                 return (
                     <RoleLabel
-                        roles={
+                        role={
                             isImmutable(value)
                                 ? (value as Map<any, any>).toJS()
                                 : value

@@ -37,7 +37,6 @@ import {ViewsState} from './state/views/types'
 import {ActionTemplate, Attachment, Schemas} from './types'
 import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {UserRole} from './config/types/user'
-import {getHighestRole} from './state/agents/helpers'
 import {RootState} from './state/types'
 import {sanitizeHtmlDefault} from './utils/html'
 import {isProduction} from './utils/environment'
@@ -582,7 +581,7 @@ export const isAdmin = (user: Map<any, any>): boolean => {
 
 // Check if a user has a role
 export function hasRole(user: Map<any, any>, requiredRole: UserRole): boolean {
-    const userRole = getHighestRole(user) as UserRole
+    const userRole = user.getIn(['role', 'name'])
     return (
         USER_ROLES_ORDERED_BY_PRIVILEGES.indexOf(userRole) >=
         USER_ROLES_ORDERED_BY_PRIVILEGES.indexOf(requiredRole)

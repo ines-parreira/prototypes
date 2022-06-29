@@ -138,12 +138,10 @@ describe('<TicketNavbar/>', () => {
         activeViewIdSet: jest.fn(),
         currentUser: fromJS({
             ...user,
-            roles: [
-                {
-                    id: 1,
-                    name: UserRole.LiteAgent,
-                },
-            ],
+            role: {
+                id: 1,
+                name: UserRole.LiteAgent,
+            },
         }),
         fetchViewsSuccess: jest.fn(),
         notify: jest.fn(),

@@ -167,7 +167,7 @@ class FilterDropdown extends Component<Props, State> {
                 renderValue = getLanguageDisplayName(value as string)
             } else if (
                 typeof value === 'object' ||
-                field.get('name') === 'roles'
+                field.get('name') === 'role'
             ) {
                 renderValue = <RenderLabel field={field} value={value} />
             }

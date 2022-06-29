@@ -8,6 +8,7 @@ import Avatar from 'pages/common/components/Avatar/Avatar'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import IconButton from 'pages/common/components/button/IconButton'
 import {RoleLabel} from 'pages/common/utils/labels'
+import {toJS} from '../../../../utils'
 
 import css from './Row.less'
 
@@ -62,7 +63,7 @@ export default class Row extends Component<Props, State> {
                         </p>
                     </span>
                     <span className={css.role}>
-                        <RoleLabel roles={member.get('roles')} />
+                        <RoleLabel role={toJS(member.get('role'))} />
                         {isAccountOwner && (
                             <Badge type={ColorType.Dark}>Account Owner</Badge>
                         )}

@@ -44,7 +44,7 @@ describe('agents actions', () => {
         const data = {
             name: 'Alex',
             email: 'alex@gorgias.io',
-            roles: [{name: UserRole.Agent}],
+            role: {name: UserRole.Agent},
         }
 
         mockServer.onPost('/api/users/').reply(200, {data})
@@ -115,7 +115,7 @@ describe('agents actions', () => {
             id: 2,
             name: 'Alex',
             email: 'alex@gorgias.io',
-            roles: [{name: UserRole.Agent}],
+            role: {name: UserRole.Agent},
         }
 
         mockServer.onPut('/api/users/2/').reply(200, {data})

@@ -7,11 +7,9 @@ Array [
       "data": Immutable.Map {
         "name": "Alex",
         "email": "alex@gorgias.io",
-        "roles": Immutable.List [
-          Immutable.Map {
-            "name": "agent",
-          },
-        ],
+        "role": Immutable.Map {
+          "name": "agent",
+        },
       },
     },
     "type": "CREATE_AGENT_SUCCESS",
@@ -72,11 +70,9 @@ Array [
         "id": 2,
         "name": "Alex",
         "email": "alex@gorgias.io",
-        "roles": Immutable.List [
-          Immutable.Map {
-            "name": "agent",
-          },
-        ],
+        "role": Immutable.Map {
+          "name": "agent",
+        },
       },
     },
     "type": "UPDATE_AGENT_SUCCESS",

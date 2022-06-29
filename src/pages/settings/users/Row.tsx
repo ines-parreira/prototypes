@@ -10,6 +10,7 @@ import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPop
 import {RoleLabel} from 'pages/common/utils/labels'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {fetchPagination, deleteAgent} from 'state/agents/actions'
+import {toJS} from 'utils'
 
 import css from './Row.less'
 
@@ -56,7 +57,7 @@ export class RowContainer extends Component<Props> {
                         )}
                     </span>
                     <span className={css.role}>
-                        <RoleLabel roles={agent.get('roles')} />
+                        <RoleLabel role={toJS(agent.get('role'))} />
                         {isAccountOwner && (
                             <Badge type={ColorType.Dark}>Account Owner</Badge>
                         )}

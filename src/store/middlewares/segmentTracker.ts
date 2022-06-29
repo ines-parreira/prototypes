@@ -34,7 +34,7 @@ export const identifyUser = (user: User) => {
         name: user.name,
         email: user.email,
         country: user.country,
-        role: user.roles[0].name,
+        role: user.role.name,
         created_at: user.created_datetime,
         notification_permission: notification.Permission.get(),
     })

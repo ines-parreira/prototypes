@@ -50,7 +50,7 @@ describe('<MacroNoResults />', () => {
             <Provider
                 store={mockStore({
                     currentUser: (fromJS(user) as Map<any, any>).setIn(
-                        ['roles', 0, 'name'],
+                        ['role', 'name'],
                         UserRole.BasicAgent
                     ),
                 })}
