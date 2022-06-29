@@ -17,15 +17,8 @@ export function initLaunchDarkly(
 
     if (user && account) {
         LDUser = {
-            key: user.id.toString(),
-            firstName: user.firstname,
-            lastName: user.lastname,
-            email: user.email,
-            country: user.country ?? undefined,
+            key: account.domain,
             custom: {
-                roles: Array.isArray(user?.roles)
-                    ? user.roles.map((role) => role.name)
-                    : [],
                 plan: account?.current_subscription?.plan,
                 domain: account.domain,
             },
