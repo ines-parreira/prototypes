@@ -1,3 +1,5 @@
+@import (reference) '~css/new/colorTokens';
+
 :local {
     .form {
         display: grid;
@@ -21,5 +23,41 @@
     .label {
         display: inline-block;
         padding-bottom: 7px;
+    }
+
+    .select-option {
+        display: flex;
+        align-items: center;
+    }
+
+    .shopify-icon {
+        width: 20px;
+        margin-right: 10px;
+    }
+
+    .select-connected-chats {
+        margin-left: auto;
+        color: @classic-neutral-grey-4;
+    }
+
+    .connected-store {
+        background: @classic-neutral-grey-1;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+    }
+
+    .disconnect-button {
+        color: @classic-neutral-grey-4;
+        cursor: pointer;
+
+        &:hover {
+            color: @classic-feedback-error;
+        }
+    }
+
+    .store-name {
+        color: @classic-neutral-grey-6;
+        font-weight: bold;
     }
 }

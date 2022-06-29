@@ -1,4 +1,5 @@
 import React from 'react'
+import {fromJS} from 'immutable'
 import {act, screen, fireEvent, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,7 +13,13 @@ import HelpCenterNewView from '../HelpCenterNewView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
-const defaultState: Partial<RootState> = {}
+const defaultState: Partial<RootState> = {
+    billing: fromJS({
+        plans: fromJS({
+            ['AutomationAddon']: {automation_addon_included: true},
+        }),
+    }),
+}
 const store = mockStore(defaultState)
 
 jest.mock('../../hooks/useHelpCenterApi', () => {
@@ -25,6 +32,14 @@ jest.mock('../../hooks/useHelpCenterApi', () => {
                     .mockReturnValue(Promise.resolve({})),
             },
         }),
+    }
+})
+
+jest.mock('../../hooks/useShopifyStoreWithChatConnectionsOptions', () => {
+    return {
+        useShopifyStoreWithChatConnectionsOptions: jest
+            .fn()
+            .mockReturnValue([]),
     }
 })
 

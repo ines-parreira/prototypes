@@ -1,6 +1,5 @@
 import React, {useMemo, useRef, useState} from 'react'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
-import {Map} from 'immutable'
 import classNames from 'classnames'
 
 import shopify from 'assets/img/integrations/shopify.png'
@@ -9,12 +8,12 @@ import Button from 'pages/common/components/button/Button'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {IntegrationType} from 'models/integration/types'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {Option} from 'pages/common/forms/SelectField/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
+
+import {useShopifyStoreWithChatConnectionsOptions} from '../../hooks/useShopifyStoreWithChatConnectionsOptions'
 
 import css from './ConnectToShopSection.less'
 
@@ -62,42 +61,13 @@ export const ConnectToShopSection = ({
 
     const disconnectButtonRef = useRef<HTMLSpanElement>(null)
 
-    const shopifyIntegrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.Shopify)
-    )
-
-    const chatIntegrations = useAppSelector(
-        getIntegrationsByTypes(IntegrationType.GorgiasChat)
-    )
+    const shopifyShopsOptions = useShopifyStoreWithChatConnectionsOptions({
+        option: css['select-option'],
+        icon: css['shopify-icon'],
+        connectedChatsCount: css['select-connected-chats'],
+    })
 
     const shopsOptions: Option[] = useMemo(() => {
-        const options = shopifyIntegrations
-            .valueSeq()
-            .map<Option>((integration: Map<any, any>) => {
-                const shopName: string = integration.getIn([
-                    'meta',
-                    'shop_name',
-                ])
-
-                const connectedChats = chatIntegrations
-                    .toArray()
-                    .filter((chat: Map<any, any>) => {
-                        const chatShopName: string | undefined = chat.getIn(
-                            ['meta', 'shop_name'],
-                            undefined
-                        )
-
-                        return chatShopName === shopName
-                    }).length
-
-                return {
-                    value: shopName,
-                    label: optionLabel(shopName, connectedChats),
-                    text: shopName,
-                }
-            })
-            .toArray()
-
         if (selectedShop === NO_SELECTED_SHOP) {
             return [
                 {
@@ -108,12 +78,12 @@ export const ConnectToShopSection = ({
                         </span>
                     ),
                 },
-                ...options,
+                ...shopifyShopsOptions,
             ]
         }
 
-        return options
-    }, [chatIntegrations, selectedShop, shopifyIntegrations])
+        return shopifyShopsOptions
+    }, [shopifyShopsOptions, selectedShop])
 
     return (
         <section>

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import axios from 'axios'
 import classnames from 'classnames'
 import produce from 'immer'
@@ -7,17 +7,22 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 
+import shopify from 'assets/img/integrations/shopify.png'
+
 import Button from 'pages/common/components/button/Button'
+import useAppSelector from 'hooks/useAppSelector'
 
 import {CreateHelpCenterDto} from 'models/helpCenter/types'
 import {validLocaleCode} from 'models/helpCenter/utils'
 import {helpCenterCreated} from 'state/entities/helpCenter/helpCenters/actions'
+import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import InputField from 'pages/common/forms/input/InputField'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import Tooltip from 'pages/common/components/Tooltip'
 import Label from 'pages/common/forms/Label/Label'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {SubdomainInput} from '../components/SubdomainSection'
@@ -37,6 +42,9 @@ import {
     getSubdomainValidationError,
     isValidSubdomain,
 } from '../utils/validations'
+
+import {useShopifyStoreWithChatConnectionsOptions} from '../hooks/useShopifyStoreWithChatConnectionsOptions'
+
 import settingsCss from '../../settings.less'
 
 import {ThemeSwitch} from './ThemeSwitch'
@@ -56,6 +64,7 @@ const initialFormState: CreateHelpCenterPayload = {
     default_locale: HELP_CENTER_DEFAULT_LOCALE,
     theme: HELP_CENTER_DEFAULT_THEME,
     primary_color: HELP_CENTER_DEFAULT_COLOR,
+    shop_name: undefined,
 }
 
 export const HelpCenterNewView = ({
@@ -65,12 +74,19 @@ export const HelpCenterNewView = ({
     const history = useHistory()
     const location = useLocation()
     const locales = useSupportedLocales()
+    const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const shopifyShopsOptions = useShopifyStoreWithChatConnectionsOptions({
+        option: css['select-option'],
+        icon: css['shopify-icon'],
+        connectedChatsCount: css['select-connected-chats'],
+    })
     const {client} = useHelpCenterApi()
     const [newHelpCenter, setNewHelpCenter] =
         useState<CreateHelpCenterPayload>(initialFormState)
     const [isLoading, setIsLoading] = useState(false)
     const [isPristineSubdomain, setPristineSubdomain] = useState(true)
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
+    const disconnectButtonRef = useRef<HTMLSpanElement>(null)
 
     const localeOptions = useMemo(
         () => locales.map(localeToSelectOption),
@@ -123,6 +139,27 @@ export const HelpCenterNewView = ({
             }
         }, 500),
         [newHelpCenter.subdomain]
+    )
+
+    const handleChangeShopifyStore = useCallback(
+        (value: string) => {
+            if (value) {
+                setNewHelpCenter((prevNewHelpCenter) => ({
+                    ...prevNewHelpCenter,
+                    shop_name: value,
+                    self_service_deactivated: !hasAutomationAddOn,
+                }))
+
+                return
+            }
+
+            setNewHelpCenter((prevNewHelpCenter) => ({
+                ...prevNewHelpCenter,
+                shop_name: undefined,
+                self_service_deactivated: undefined,
+            }))
+        },
+        [setNewHelpCenter, hasAutomationAddOn]
     )
 
     const navigateToStartView = () =>
@@ -305,6 +342,65 @@ export const HelpCenterNewView = ({
                                 }))
                             }}
                         />
+                    </section>
+
+                    <section>
+                        <h3 style={{marginBottom: 4}}>
+                            Connect to Shopify store
+                        </h3>
+                        <p>
+                            Connect this Help Center to a Shopify store to
+                            enable Self-service flows.
+                            {hasAutomationAddOn && (
+                                <span>
+                                    {' '}
+                                    Note that this will automatically enable
+                                    Self-service.
+                                </span>
+                            )}
+                        </p>
+
+                        {newHelpCenter?.shop_name ? (
+                            <div className={css['connected-store']}>
+                                <img
+                                    src={shopify}
+                                    className={css['shopify-icon']}
+                                    alt="shopify logo"
+                                />
+
+                                <span className={css['store-name']}>
+                                    {newHelpCenter.shop_name}
+                                </span>
+
+                                <span
+                                    className={classnames(
+                                        'ml-auto',
+                                        css['disconnect-button']
+                                    )}
+                                    ref={disconnectButtonRef}
+                                    onClick={() => handleChangeShopifyStore('')}
+                                >
+                                    <i className="material-icons">delete</i>
+                                </span>
+
+                                <Tooltip
+                                    placement="top"
+                                    target={disconnectButtonRef}
+                                >
+                                    Disconnect help center from this store
+                                </Tooltip>
+                            </div>
+                        ) : (
+                            <SelectField
+                                fullWidth
+                                options={shopifyShopsOptions}
+                                value={newHelpCenter?.shop_name}
+                                onChange={(value) => {
+                                    // this type cast is safe as all values are string
+                                    handleChangeShopifyStore(value as string)
+                                }}
+                            />
+                        )}
                     </section>
 
                     <div className="d-flex">
