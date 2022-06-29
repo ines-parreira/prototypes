@@ -14,7 +14,7 @@ describe('<HomePageLink />', () => {
     it('should render the link if candu has some nodes injected', () => {
         const canduNodes = new Map()
         const canduRoot = document.createElement('div')
-        canduRoot.appendChild(document.createElement('div'))
+        canduRoot.appendChild(document.createElement('img'))
         canduNodes.set(canduRoot, {shadowChild: canduRoot})
         window.Candu = {
             elementCanduRootMap: canduNodes,

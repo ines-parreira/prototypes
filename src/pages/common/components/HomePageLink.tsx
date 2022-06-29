@@ -21,15 +21,14 @@ export const HomePageLink = () => {
             return
         }
 
-        const homeButton = latestNode.shadowChild?.querySelector('div')
+        const homeButton = latestNode.shadowChild?.querySelector('img')
         return !!homeButton
     })
 
     const canduContent = useRef<HTMLDivElement>(null)
-    const currentCanduContent = canduContent.current
 
     useEffect(() => {
-        if (hasHomePage || !currentCanduContent) {
+        if (hasHomePage || !canduContent.current) {
             return
         }
 
@@ -49,22 +48,19 @@ export const HomePageLink = () => {
             if (nodeShadowRoot) {
                 observer.observe(nodeShadowRoot, {childList: true})
             }
-
-            if (
-                element.getAttribute('data-candu-content') ===
-                'Content-content-home-cta'
-            ) {
+            const imageButton = element.querySelector('img')
+            if (imageButton) {
                 setHasHomePage(true)
             }
         })
 
-        observer.observe(currentCanduContent, {
+        observer.observe(canduContent.current, {
             childList: true,
             subtree: true,
         })
 
         return () => observer.disconnect()
-    }, [currentCanduContent, hasHomePage])
+    }, [canduContent, hasHomePage])
 
     return (
         <>
