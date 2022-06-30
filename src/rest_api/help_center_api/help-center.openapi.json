@@ -225,6 +225,24 @@
                         "schema": {"type": "string"}
                     },
                     {
+                        "name": "shop_name",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    },
+                    {
+                        "name": "account_id",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    },
+                    {
+                        "name": "active",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"type": "boolean"}
+                    },
+                    {
                         "name": "fields",
                         "required": false,
                         "in": "query",
@@ -243,12 +261,6 @@
                         "required": false,
                         "in": "query",
                         "description": "The index of the page to retrieve. E.g: 3",
-                        "schema": {}
-                    },
-                    {
-                        "name": "account_id",
-                        "required": false,
-                        "in": "query",
                         "schema": {}
                     }
                 ],

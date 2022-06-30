@@ -2178,20 +2178,24 @@ declare namespace Paths {
   }
   namespace ListHelpCenters {
     namespace Parameters {
-      export type AccountId = any;
+      export type AccountId = string;
+      export type Active = boolean;
       export type CustomDomain = string;
       export type Fields = string[];
       export type Page = any;
       export type PerPage = any;
+      export type ShopName = string;
       export type Subdomain = string;
     }
     export interface QueryParameters {
       subdomain?: Parameters.Subdomain;
       custom_domain?: Parameters.CustomDomain;
+      shop_name?: Parameters.ShopName;
+      account_id?: Parameters.AccountId;
+      active?: Parameters.Active;
       fields?: Parameters.Fields;
       per_page?: Parameters.PerPage;
       page?: Parameters.Page;
-      account_id?: Parameters.AccountId;
     }
     namespace Responses {
       export type $200 = Components.Schemas.HelpCentersListPageDto;
