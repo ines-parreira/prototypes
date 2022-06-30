@@ -17,6 +17,8 @@ import css from './CustomerForm.less'
 import Button from 'pages/common/components/button/Button.tsx'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import {submitCustomer} from 'state/customers/actions.ts'
 
 const defaultContent = {
@@ -195,56 +197,57 @@ class CustomerForm extends React.Component {
 
         return (
             <Form onSubmit={this._handleSubmit}>
-                <div className="mb-2">
-                    <InputField
-                        className={css.field}
-                        id="name"
-                        label="Name"
-                        placeholder="John Doe"
-                        caption="Give a name to the customer to make it easier to identify"
-                        isRequired
-                        value={this.state.name}
-                        onChange={(name) => this._updateField({name})}
-                        error={this.state.errors.name}
-                    />
-                    <TextArea
-                        className={css.field}
-                        id="note"
-                        label="Note"
-                        placeholder="This customer is nice."
-                        rows="3"
-                        value={this.state.note}
-                        onChange={(note) => this._updateField({note})}
-                    />
-                    <p>
-                        <b>
-                            Please set below at least one contact information
-                            for this customer :
-                        </b>
-                    </p>
-                    <CustomerChannelFieldArray
-                        name="email"
-                        type="email"
-                        label="Emails"
-                        placeholder="john@snow.com"
-                        addLabel="Add an email address"
-                        meta={{}}
-                        fields={this.state.email}
-                        onChange={(email) => this._updateField({email})}
-                    />
-                    <CustomerChannelFieldArray
-                        name="phone"
-                        label="Phone numbers"
-                        placeholder="+1 111 111 1111"
-                        addLabel="Add a phone number"
-                        meta={{}}
-                        fields={this.state.phone}
-                        onChange={(phone) => this._updateField({phone})}
-                        errors={this.state.errors.phone}
-                    />
-                </div>
-
-                <div className="float-right">
+                <ModalBody>
+                    <div className="mb-2">
+                        <InputField
+                            className={css.field}
+                            id="name"
+                            label="Name"
+                            placeholder="John Doe"
+                            caption="Give a name to the customer to make it easier to identify"
+                            isRequired
+                            value={this.state.name}
+                            onChange={(name) => this._updateField({name})}
+                            error={this.state.errors.name}
+                        />
+                        <TextArea
+                            className={css.field}
+                            id="note"
+                            label="Note"
+                            placeholder="This customer is nice."
+                            rows="3"
+                            value={this.state.note}
+                            onChange={(note) => this._updateField({note})}
+                        />
+                        <p>
+                            <b>
+                                Please set below at least one contact
+                                information for this customer :
+                            </b>
+                        </p>
+                        <CustomerChannelFieldArray
+                            name="email"
+                            type="email"
+                            label="Emails"
+                            placeholder="john@snow.com"
+                            addLabel="Add an email address"
+                            meta={{}}
+                            fields={this.state.email}
+                            onChange={(email) => this._updateField({email})}
+                        />
+                        <CustomerChannelFieldArray
+                            name="phone"
+                            label="Phone numbers"
+                            placeholder="+1 111 111 1111"
+                            addLabel="Add a phone number"
+                            meta={{}}
+                            fields={this.state.phone}
+                            onChange={(phone) => this._updateField({phone})}
+                            errors={this.state.errors.phone}
+                        />
+                    </div>
+                </ModalBody>
+                <ModalActionsFooter>
                     <Button
                         type="submit"
                         isDisabled={this.state.submitting || invalid}
@@ -252,7 +255,7 @@ class CustomerForm extends React.Component {
                     >
                         {isUpdate ? 'Update customer' : 'Add customer'}
                     </Button>
-                </div>
+                </ModalActionsFooter>
             </Form>
         )
     }

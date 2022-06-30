@@ -5,9 +5,11 @@ import {MemoryRouter} from 'react-router-dom'
 import overviewStatsPaywall from 'assets/img/paywalls/screens/live-overview-statistic.png'
 import gorgiasChatSSPaywall from 'assets/img/paywalls/screens/gorgias_chat_ssp_automation.png'
 
+import Button from 'pages/common/components/button/Button'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
 import {testimonial as testimonialFixture} from 'fixtures/paywall'
-import Button from '../button/Button'
-import DEPRECATED_Modal from '../DEPRECATED_Modal'
+
 import Paywall from './Paywall'
 
 const storyConfig: Meta = {
@@ -108,12 +110,12 @@ const WithModalTemplate: Story<ComponentProps<typeof Paywall>> = (props) => {
             {...props}
             customCta={<Button onClick={toggle}>Upgrade me !</Button>}
             modal={
-                <DEPRECATED_Modal
+                <Modal
                     isOpen={isModalOpened}
                     onClose={() => setModalOpened(false)}
                 >
-                    Hi there !
-                </DEPRECATED_Modal>
+                    <ModalBody>Hi there !</ModalBody>
+                </Modal>
             }
         />
     )

@@ -1,8 +1,9 @@
 import React from 'react'
 
-import DEPRECATED_Modal from '../DEPRECATED_Modal'
-
-import css from './ConfirmModalAction.less'
+import Modal from 'pages/common/components/modal/Modal'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 
 type Props = {
     actions: (onClose: () => void) => React.ReactNode
@@ -30,16 +31,13 @@ export const ConfirmModalAction = ({
     return (
         <>
             {children(handleOnOpen)}
-            <DEPRECATED_Modal
-                isOpen={isOpen}
-                className={css['modal-centered']}
-                header={title}
-                footer={actions(handleOnClose)}
-                style={{width: 380}}
-                onClose={handleOnClose}
-            >
-                {content}
-            </DEPRECATED_Modal>
+            <Modal isOpen={isOpen} onClose={handleOnClose} size="small">
+                <ModalHeader title={title as string} />
+                <ModalBody>{content}</ModalBody>
+                <ModalActionsFooter>
+                    {actions(handleOnClose)}
+                </ModalActionsFooter>
+            </Modal>
         </>
     )
 }

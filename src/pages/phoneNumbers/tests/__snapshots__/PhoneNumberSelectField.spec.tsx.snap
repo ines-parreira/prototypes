@@ -74,9 +74,6 @@ exports[`<PhoneNumberSelectField/> render() should hide phone numbers that have 
       </div>
     </div>
   </div>
-  <form
-    class=""
-  />
 </div>
 `;
 
@@ -176,16 +173,11 @@ exports[`<PhoneNumberSelectField/> render() should hide phone numbers that have 
       </div>
     </div>
   </div>
-  <form
-    class=""
-  />
 </div>
 `;
 
 exports[`<PhoneNumberSelectField/> render() should open a modal form when selecting the create option 1`] = `
-<body
-  class="modal-open"
->
+<body>
   <div>
     <div>
       <div
@@ -247,244 +239,237 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
         </div>
       </div>
     </div>
-    <form
-      class=""
-    />
   </div>
   <div
-    style="position: relative; z-index: 1050; display: block;"
-    tabindex="-1"
+    aria-describedby="modal-2-desc"
+    aria-labelledby="modal-2-title"
+    aria-modal="true"
+    class="modal default"
+    role="dialog"
   >
     <div
-      class=""
+      class="dialog"
     >
       <div
-        class="modal"
-        role="dialog"
-        style="display: block;"
-        tabindex="-1"
+        class="modalContent default"
       >
         <div
-          class="modal-dialog modal modal-dialog-centered"
-          role="document"
+          class="wrapper"
         >
-          <div
-            class="modal-content"
-          >
+          <div>
             <div
-              class="modal-header"
+              class="title"
+              id="modal-2-title"
             >
-              <h5
-                class="modal-title"
-              >
-                Create Phone Number
-              </h5>
-              <button
-                aria-label="Close"
-                class="close"
-                type="button"
-              >
-                <span
-                  aria-hidden="true"
-                >
-                  ×
-                </span>
-              </button>
+              Create Phone Number
             </div>
             <div
-              class="body modal-body"
+              class="subtitle"
+            />
+          </div>
+          <i
+            class="material-icons icon"
+          >
+            close
+          </i>
+        </div>
+        <form
+          class=""
+        >
+          <div
+            class="wrapper"
+            id="modal-2-desc"
+          >
+            <div
+              class="row"
             >
               <div
-                class="row"
+                class="col"
               >
                 <div
-                  class="col"
+                  class="form-group"
                 >
                   <div
-                    class="form-group"
+                    class="InputField required form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-3"
+                    >
+                      Title
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <input
+                        class="field form-control"
+                        id="id-input-3"
+                        placeholder="Ex: Company Support Line"
+                        required=""
+                        type="text"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="row"
+                >
+                  <div
+                    class="col"
                   >
                     <div
-                      class="InputField required form-group"
-                      color=""
+                      class="form-group"
                     >
                       <label
                         class="control-label"
-                        for="id-input-1"
+                        for="country"
                       >
-                        Title
+                        Country
                       </label>
-                      <div
-                        class=""
-                      >
-                        <input
-                          class="field form-control"
-                          id="id-input-1"
-                          placeholder="Ex: Company Support Line"
-                          required=""
-                          type="text"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div
-                    class="row"
-                  >
-                    <div
-                      class="col"
-                    >
-                      <div
-                        class="form-group"
-                      >
-                        <label
-                          class="control-label"
-                          for="country"
+                      <div>
+                        <div
+                          class="dropdown"
                         >
-                          Country
-                        </label>
-                        <div>
                           <div
-                            class="dropdown"
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class=""
+                            data-toggle="dropdown"
                           >
                             <div
-                              aria-expanded="false"
-                              aria-haspopup="true"
-                              class=""
-                              data-toggle="dropdown"
+                              class="select dropdown-toggle selectFullWidth"
                             >
-                              <div
-                                class="select dropdown-toggle selectFullWidth"
+                              <span
+                                class="label placeholder"
+                                style="min-width: 10px; opacity: 1;"
                               >
-                                <span
-                                  class="label placeholder"
-                                  style="min-width: 10px; opacity: 1;"
-                                >
-                                  Select an option
-                                </span>
-                                <input
-                                  autocomplete="chrome-off"
-                                  class="input"
-                                  id="country"
-                                  required=""
-                                  style="min-width: 10px;"
-                                  type="text"
-                                  value=""
-                                />
-                              </div>
+                                Select an option
+                              </span>
+                              <input
+                                autocomplete="chrome-off"
+                                class="input"
+                                id="country"
+                                required=""
+                                style="min-width: 10px;"
+                                type="text"
+                                value=""
+                              />
                             </div>
-                            <div
-                              aria-hidden="true"
-                              class="options optionsFullWidth dropdown-menu"
-                              role="menu"
-                              tabindex="-1"
+                          </div>
+                          <div
+                            aria-hidden="true"
+                            class="options optionsFullWidth dropdown-menu"
+                            role="menu"
+                            tabindex="-1"
+                          >
+                            
+                            <button
+                              class="option option--focused dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
                             >
-                              
-                              <button
-                                class="option option--focused dropdown-item"
-                                role="menuitem"
-                                tabindex="0"
-                                type="button"
-                              >
-                                <span>
-                                  Canada
-                                </span>
-                              </button>
-                              <button
-                                class="option dropdown-item"
-                                role="menuitem"
-                                tabindex="0"
-                                type="button"
-                              >
-                                <span>
-                                  United States
-                                </span>
-                              </button>
-                              <button
-                                class="option dropdown-item"
-                                role="menuitem"
-                                tabindex="0"
-                                type="button"
-                              >
-                                <span>
-                                  Australia
-                                </span>
-                              </button>
-                              <button
-                                class="option dropdown-item"
-                                role="menuitem"
-                                tabindex="0"
-                                type="button"
-                              >
-                                <span>
-                                  United Kingdom
-                                </span>
-                              </button>
-                              <button
-                                class="option dropdown-item"
-                                role="menuitem"
-                                tabindex="0"
-                                type="button"
-                              >
-                                <span>
-                                  France
-                                </span>
-                              </button>
-                            </div>
+                              <span>
+                                Canada
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                United States
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                Australia
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                United Kingdom
+                              </span>
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <span>
+                                France
+                              </span>
+                            </button>
                           </div>
                         </div>
                       </div>
-                      <div
-                        class="form-group"
+                    </div>
+                    <div
+                      class="form-group"
+                    >
+                      <label
+                        class="control-label"
+                        for="area-code"
                       >
-                        <label
-                          class="control-label"
-                          for="area-code"
+                        Area code
+                      </label>
+                      <div>
+                        <div
+                          class="dropdown"
                         >
-                          Area code
-                        </label>
-                        <div>
                           <div
-                            class="dropdown"
+                            aria-expanded="false"
+                            aria-haspopup="true"
+                            class=""
+                            data-toggle="dropdown"
                           >
                             <div
-                              aria-expanded="false"
-                              aria-haspopup="true"
-                              class=""
-                              data-toggle="dropdown"
+                              class="select dropdown-toggle selectFullWidth"
                             >
-                              <div
-                                class="select dropdown-toggle selectFullWidth"
+                              <span
+                                class="label placeholder"
+                                style="min-width: 10px; opacity: 1;"
                               >
-                                <span
-                                  class="label placeholder"
-                                  style="min-width: 10px; opacity: 1;"
-                                >
-                                  Select an option
-                                </span>
-                                <input
-                                  autocomplete="chrome-off"
-                                  class="input"
-                                  id="area-code"
-                                  required=""
-                                  style="min-width: 10px;"
-                                  type="text"
-                                  value=""
-                                />
-                              </div>
+                                Select an option
+                              </span>
+                              <input
+                                autocomplete="chrome-off"
+                                class="input"
+                                id="area-code"
+                                required=""
+                                style="min-width: 10px;"
+                                type="text"
+                                value=""
+                              />
                             </div>
-                            <div
-                              aria-hidden="true"
-                              class="options optionsFullWidth dropdown-menu"
-                              role="menu"
+                          </div>
+                          <div
+                            aria-hidden="true"
+                            class="options optionsFullWidth dropdown-menu"
+                            role="menu"
+                            tabindex="-1"
+                          >
+                            <h6
+                              class="dropdown-header"
                               tabindex="-1"
                             >
-                              <h6
-                                class="dropdown-header"
-                                tabindex="-1"
-                              >
-                                No result
-                              </h6>
-                            </div>
+                              No result
+                            </h6>
                           </div>
                         </div>
                       </div>
@@ -493,22 +478,27 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                 </div>
               </div>
             </div>
+          </div>
+          <div
+            class="wrapper wrapper"
+          >
             <div
-              class="footer modal-footer"
+              class="actions"
             >
-              <button
-                class="wrapper fill primary medium"
-                type="button"
+              <div
+                class="childWrapper"
               >
-                Create phone number
-              </button>
+                <button
+                  class="wrapper fill primary medium"
+                  type="button"
+                >
+                  Create phone number
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
-      <div
-        class="modal-backdrop show"
-      />
     </div>
   </div>
 </body>

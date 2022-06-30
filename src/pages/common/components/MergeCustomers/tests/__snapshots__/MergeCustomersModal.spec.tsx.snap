@@ -1,260 +1,261 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MergeCustomersModal/> render() should render 1`] = `
-<DEPRECATED_Modal
-  dismissible={true}
-  header="Merge customers"
+<Modal
   isOpen={true}
   onClose={[Function]}
-  size="lg"
+  size="large"
 >
   <Form
     onSubmit={[Function]}
     tag="form"
   >
-    <div
-      className="content"
-    >
-      <p
-        className="merge-instructions"
+    <ModalHeader
+      title="Merge customers"
+    />
+    <ModalBody>
+      <div
+        className="content"
       >
-        Select what data you want to keep, then click the "Merge Customers" button. The fields in blue will be kept.
-      </p>
-      <BinaryChoiceField
-        label="Name"
-        onChange={[Function]}
-        options={
-          Array [
-            Object {
-              "label": <span>
-                <i
-                  className="material-icons mr-2"
-                >
-                  person
-                </i>
-                Pierre
-              </span>,
-              "value": "Pierre",
-            },
-            Object {
-              "label": <span>
-                <i
-                  className="material-icons mr-2"
-                >
-                  person
-                </i>
-                Pierre
-              </span>,
-              "value": "Pierre",
-            },
-          ]
-        }
-        value="Pierre"
-      />
-      <BinaryChoiceField
-        label="Note"
-        onChange={[Function]}
-        options={
-          Array [
-            Object {
-              "label": <span>
-                <i
-                  className="material-icons mr-2"
-                >
-                  note
-                </i>
-              </span>,
-              "value": "",
-            },
-            Object {
-              "label": <span>
-                <i
-                  className="material-icons mr-2"
-                >
-                  note
-                </i>
-              </span>,
-              "value": "",
-            },
-          ]
-        }
-        value={null}
-      />
-      <BinaryChoiceField
-        label="Primary email"
-        onChange={[Function]}
-        options={
-          Array [
-            Object {
-              "label": <span>
-                <SourceIcon
-                  className="mr-2"
-                  type="email"
-                />
-                pierre@gorgias.io
-              </span>,
-              "value": "pierre@gorgias.io",
-            },
-            Object {
-              "label": <span>
-                <SourceIcon
-                  className="mr-2"
-                  type="email"
-                />
-                Pierre@gorgias.io
-              </span>,
-              "value": "Pierre@gorgias.io",
-            },
-          ]
-        }
-        tooltip={
-          <span>
-            <i
-              className="material-icons ml-2"
-              id="merge-primary-email"
-            >
-              help
-            </i>
-            <Tooltip
-              placement="top"
-              target="merge-primary-email"
-            >
-              This is the email address which will be used to fetch data for the customer
-            </Tooltip>
-          </span>
-        }
-        value="pierre@gorgias.io"
-      />
-      <MultiSelectBinaryChoiceField
-        label="Contact info"
-        onChange={[Function]}
-        options={
-          Array [
+        <p
+          className="merge-instructions"
+        >
+          Select what data you want to keep, then click the "Merge Customers" button. The fields in blue will be kept.
+        </p>
+        <BinaryChoiceField
+          label="Name"
+          onChange={[Function]}
+          options={
             Array [
               Object {
-                "label": <div>
+                "label": <span>
+                  <i
+                    className="material-icons mr-2"
+                  >
+                    person
+                  </i>
+                  Pierre
+                </span>,
+                "value": "Pierre",
+              },
+              Object {
+                "label": <span>
+                  <i
+                    className="material-icons mr-2"
+                  >
+                    person
+                  </i>
+                  Pierre
+                </span>,
+                "value": "Pierre",
+              },
+            ]
+          }
+          value="Pierre"
+        />
+        <BinaryChoiceField
+          label="Note"
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "label": <span>
+                  <i
+                    className="material-icons mr-2"
+                  >
+                    note
+                  </i>
+                </span>,
+                "value": "",
+              },
+              Object {
+                "label": <span>
+                  <i
+                    className="material-icons mr-2"
+                  >
+                    note
+                  </i>
+                </span>,
+                "value": "",
+              },
+            ]
+          }
+          value={null}
+        />
+        <BinaryChoiceField
+          label="Primary email"
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "label": <span>
                   <SourceIcon
                     className="mr-2"
                     type="email"
                   />
                   pierre@gorgias.io
-                </div>,
-                "value": Object {
-                  "address": "pierre@gorgias.io",
-                  "customer": Object {
-                    "id": 1,
-                    "name": "Pierre",
-                  },
-                  "preferred": true,
-                  "type": "email",
-                },
+                </span>,
+                "value": "pierre@gorgias.io",
               },
-            ],
-            Array [
               Object {
-                "label": <div>
+                "label": <span>
                   <SourceIcon
                     className="mr-2"
                     type="email"
                   />
                   Pierre@gorgias.io
-                </div>,
-                "value": Object {
-                  "address": "Pierre@gorgias.io",
-                  "customer": Object {
-                    "id": 2,
-                    "name": "Pierre",
+                </span>,
+                "value": "Pierre@gorgias.io",
+              },
+            ]
+          }
+          tooltip={
+            <span>
+              <i
+                className="material-icons ml-2"
+                id="merge-primary-email"
+              >
+                help
+              </i>
+              <Tooltip
+                placement="top"
+                target="merge-primary-email"
+              >
+                This is the email address which will be used to fetch data for the customer
+              </Tooltip>
+            </span>
+          }
+          value="pierre@gorgias.io"
+        />
+        <MultiSelectBinaryChoiceField
+          label="Contact info"
+          onChange={[Function]}
+          options={
+            Array [
+              Array [
+                Object {
+                  "label": <div>
+                    <SourceIcon
+                      className="mr-2"
+                      type="email"
+                    />
+                    pierre@gorgias.io
+                  </div>,
+                  "value": Object {
+                    "address": "pierre@gorgias.io",
+                    "customer": Object {
+                      "id": 1,
+                      "name": "Pierre",
+                    },
+                    "preferred": true,
+                    "type": "email",
                   },
-                  "preferred": false,
-                  "type": "email",
                 },
+              ],
+              Array [
+                Object {
+                  "label": <div>
+                    <SourceIcon
+                      className="mr-2"
+                      type="email"
+                    />
+                    Pierre@gorgias.io
+                  </div>,
+                  "value": Object {
+                    "address": "Pierre@gorgias.io",
+                    "customer": Object {
+                      "id": 2,
+                      "name": "Pierre",
+                    },
+                    "preferred": false,
+                    "type": "email",
+                  },
+                },
+              ],
+            ]
+          }
+          propertiesToCompare={
+            Array [
+              "address",
+              "type",
+            ]
+          }
+          requiredValues={
+            Array [
+              Object {
+                "address": "pierre@gorgias.io",
+                "customer": Object {
+                  "id": 1,
+                  "name": "Pierre",
+                },
+                "preferred": true,
+                "type": "email",
               },
-            ],
-          ]
-        }
-        propertiesToCompare={
-          Array [
-            "address",
-            "type",
-          ]
-        }
-        requiredValues={
-          Array [
-            Object {
-              "address": "pierre@gorgias.io",
-              "customer": Object {
-                "id": 1,
-                "name": "Pierre",
+            ]
+          }
+          tooltip={
+            <span>
+              <i
+                className="material-icons ml-2"
+                id="merge-contact-info"
+              >
+                help
+              </i>
+              <Tooltip
+                placement="top"
+                target="merge-contact-info"
+              >
+                You can not deselect the contact info associated with the primary email
+              </Tooltip>
+            </span>
+          }
+          value={
+            Array [
+              Object {
+                "address": "pierre@gorgias.io",
+                "customer": Object {
+                  "id": 1,
+                  "name": "Pierre",
+                },
+                "preferred": true,
+                "type": "email",
               },
-              "preferred": true,
-              "type": "email",
-            },
-          ]
-        }
-        tooltip={
-          <span>
-            <i
-              className="material-icons ml-2"
-              id="merge-contact-info"
-            >
-              help
-            </i>
-            <Tooltip
-              placement="top"
-              target="merge-contact-info"
-            >
-              You can not deselect the contact info associated with the primary email
-            </Tooltip>
-          </span>
-        }
-        value={
-          Array [
-            Object {
-              "address": "pierre@gorgias.io",
-              "customer": Object {
-                "id": 1,
-                "name": "Pierre",
+              Object {
+                "address": "Pierre@gorgias.io",
+                "customer": Object {
+                  "id": 2,
+                  "name": "Pierre",
+                },
+                "preferred": false,
+                "type": "email",
               },
-              "preferred": true,
-              "type": "email",
-            },
-            Object {
-              "address": "Pierre@gorgias.io",
-              "customer": Object {
-                "id": 2,
-                "name": "Pierre",
+            ]
+          }
+        />
+        <BinaryChoiceField
+          label="Customer data"
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "label": <JSONTree
+                  data={Immutable.Map {}}
+                />,
+                "value": Object {},
               },
-              "preferred": false,
-              "type": "email",
-            },
-          ]
-        }
-      />
-      <BinaryChoiceField
-        label="Customer data"
-        onChange={[Function]}
-        options={
-          Array [
-            Object {
-              "label": <JSONTree
-                data={Immutable.Map {}}
-              />,
-              "value": Object {},
-            },
-            Object {
-              "label": <JSONTree
-                data={Immutable.Map {}}
-              />,
-              "value": Object {},
-            },
-          ]
-        }
-        value={Object {}}
-      />
-    </div>
-    <div
-      className="float-right buttons-bar"
-    >
+              Object {
+                "label": <JSONTree
+                  data={Immutable.Map {}}
+                />,
+                "value": Object {},
+              },
+            ]
+          }
+          value={Object {}}
+        />
+      </div>
+    </ModalBody>
+    <ModalActionsFooter>
       <ForwardRef
         className="mr-2"
         intent="secondary"
@@ -269,7 +270,7 @@ exports[`<MergeCustomersModal/> render() should render 1`] = `
       >
         Merge customers
       </ConfirmButton>
-    </div>
+    </ModalActionsFooter>
   </Form>
-</DEPRECATED_Modal>
+</Modal>
 `;
