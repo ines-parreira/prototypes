@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 import {size} from 'lodash'
 
 import {RootState} from '../../types'
@@ -27,6 +27,7 @@ import {
     hasAtLeastOneEmailIntegration,
     getMessagingIntegrations,
     DEPRECATED_getPhoneIntegrations,
+    getActiveIntegrations,
 } from '../selectors'
 import {integrationsState} from '../../../fixtures/integrations'
 import {
@@ -89,6 +90,7 @@ describe('integrations selectors', () => {
                         IntegrationType.Phone,
                         IntegrationType.Twitter,
                         IntegrationType.GorgiasChat,
+                        IntegrationType.SelfService,
                     ].includes(integration.type)
             )
 
@@ -686,5 +688,21 @@ describe('integrations selectors', () => {
                 )
             }
         )
+    })
+
+    it('should get active and non self-service integrations', () => {
+        const integrations = getActiveIntegrations(state)
+
+        const expected = (
+            DEPRECATED_getIntegrationsState(state).get(
+                'integrations'
+            ) as List<any>
+        ).filter(
+            (integration: Map<any, any>) =>
+                !integration.get('deactivated_datetime') &&
+                integration.get('type') !== IntegrationType.SelfService
+        )
+
+        expect(integrations).toEqual(expected)
     })
 })

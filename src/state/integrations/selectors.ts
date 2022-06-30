@@ -110,7 +110,9 @@ export const getActiveIntegrations = createSelector<
     DEPRECATED_getIntegrations,
     (state) =>
         state.filter(
-            (i: Map<any, any>) => !i.get('deactivated_datetime')
+            (i: Map<any, any>) =>
+                !i.get('deactivated_datetime') &&
+                i.get('type') !== IntegrationType.SelfService
         ) as List<any>
 )
 

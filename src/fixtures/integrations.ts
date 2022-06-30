@@ -310,6 +310,23 @@ export const integrationsState = {
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
         },
+        {
+            deleted_datetime: null,
+            meta: {
+                shop_name: 'My shop',
+            },
+            http: null,
+            deactivated_datetime: null,
+            name: 'help center',
+            uri: '/api/integrations/188/',
+            decoration: null,
+            locked_datetime: null,
+            created_datetime: '2017-02-07T06:07:43.481450+00:00',
+            type: 'self_service',
+            id: 188,
+            description: null,
+            updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+        },
     ],
     state: {
         loading: {
