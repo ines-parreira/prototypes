@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropdownHeader /> should render 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="prefix"
+  >
+    <i
+      class="material-icons"
+    >
+      arrow_back
+    </i>
+  </div>
+  <div
+    class="content"
+  >
+    Back
+  </div>
+</div>
+`;

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DropdownSection /> should render 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="title"
+  >
+    Foo
+  </div>
+  <div>
+    Bar
+  </div>
+</div>
+`;

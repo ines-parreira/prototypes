@@ -1,0 +1,27 @@
+@import '~css/new/colorTokens';
+@import (reference) '~css/typography';
+
+:local {
+    .wrapper.hasBorder {
+        margin-top: 8px;
+
+        & .title {
+            border-top: 1px solid @classic-neutral-grey-3;
+        }
+    }
+
+    .wrapper:not(.hasBorder) .title {
+        padding-top: 0;
+    }
+
+    .wrapper.isHidden {
+        display: none;
+    }
+
+    .title {
+        .caption-allcaps();
+        color: @classic-main-primary;
+        margin: 0 8px;
+        padding: 8px 0 4px 0;
+    }
+}
