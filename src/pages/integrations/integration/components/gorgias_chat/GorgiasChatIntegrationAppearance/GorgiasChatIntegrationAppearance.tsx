@@ -559,6 +559,26 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             />
                             <DEPRECATED_InputField
                                 className={css.formGroup}
+                                type="select"
+                                value={language}
+                                options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
+                                onChange={setLanguage}
+                                label="Language"
+                            >
+                                {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
+                                    (option) => {
+                                        const value = option?.get('value')
+                                        const label = option?.get('label')
+                                        return (
+                                            <option key={value} value={value}>
+                                                {label}
+                                            </option>
+                                        )
+                                    }
+                                )}
+                            </DEPRECATED_InputField>
+                            <DEPRECATED_InputField
+                                className={css.formGroup}
                                 type="text"
                                 value={introductionText}
                                 onFocus={() =>
@@ -805,26 +825,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     />
                                 </div>
                             </div>
-                            <DEPRECATED_InputField
-                                className={css.formGroup}
-                                type="select"
-                                value={language}
-                                options={GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS()}
-                                onChange={setLanguage}
-                                label="Language"
-                            >
-                                {GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
-                                    (option) => {
-                                        const value = option?.get('value')
-                                        const label = option?.get('label')
-                                        return (
-                                            <option key={value} value={value}>
-                                                {label}
-                                            </option>
-                                        )
-                                    }
-                                )}
-                            </DEPRECATED_InputField>
                         </div>
                         <div>
                             <Button

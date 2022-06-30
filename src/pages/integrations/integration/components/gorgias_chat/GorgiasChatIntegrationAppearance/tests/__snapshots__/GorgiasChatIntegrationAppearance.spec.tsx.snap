@@ -229,6 +229,82 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="control-label"
                     for="id-input-42"
                   >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
                     Introduction text during business hours
                   </label>
                   <div
@@ -478,82 +554,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField formGroup form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-42"
-                  >
-                    Language
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <select
-                      class="field form-control"
-                      id="id-input-42"
-                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
-                    >
-                      <option
-                        value="en-US"
-                      >
-                        English (US)
-                      </option>
-                      <option
-                        value="fr-FR"
-                      >
-                        French (France)
-                      </option>
-                      <option
-                        value="fr-CA"
-                      >
-                        French (Canada)
-                      </option>
-                      <option
-                        value="es"
-                      >
-                        Spanish
-                      </option>
-                      <option
-                        value="da"
-                      >
-                        Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
-                      </option>
-                      <option
-                        value="nl"
-                      >
-                        Dutch
-                      </option>
-                      <option
-                        value="de"
-                      >
-                        German
-                      </option>
-                      <option
-                        value="no"
-                      >
-                        Norwegian
-                      </option>
-                      <option
-                        value="cz"
-                      >
-                        Czech
-                      </option>
-                    </select>
                   </div>
                 </div>
               </div>
@@ -899,6 +899,82 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="control-label"
                     for="id-input-42"
                   >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
                     Introduction text during business hours
                   </label>
                   <div
@@ -1196,82 +1272,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField formGroup form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-42"
-                  >
-                    Language
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <select
-                      class="field form-control"
-                      id="id-input-42"
-                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
-                    >
-                      <option
-                        value="en-US"
-                      >
-                        English (US)
-                      </option>
-                      <option
-                        value="fr-FR"
-                      >
-                        French (France)
-                      </option>
-                      <option
-                        value="fr-CA"
-                      >
-                        French (Canada)
-                      </option>
-                      <option
-                        value="es"
-                      >
-                        Spanish
-                      </option>
-                      <option
-                        value="da"
-                      >
-                        Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
-                      </option>
-                      <option
-                        value="nl"
-                      >
-                        Dutch
-                      </option>
-                      <option
-                        value="de"
-                      >
-                        German
-                      </option>
-                      <option
-                        value="no"
-                      >
-                        Norwegian
-                      </option>
-                      <option
-                        value="cz"
-                      >
-                        Czech
-                      </option>
-                    </select>
                   </div>
                 </div>
               </div>
@@ -1646,6 +1646,82 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                     class="control-label"
                     for="id-input-42"
                   >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
                     Introduction text during business hours
                   </label>
                   <div
@@ -1943,82 +2019,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField formGroup form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-42"
-                  >
-                    Language
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <select
-                      class="field form-control"
-                      id="id-input-42"
-                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
-                    >
-                      <option
-                        value="en-US"
-                      >
-                        English (US)
-                      </option>
-                      <option
-                        value="fr-FR"
-                      >
-                        French (France)
-                      </option>
-                      <option
-                        value="fr-CA"
-                      >
-                        French (Canada)
-                      </option>
-                      <option
-                        value="es"
-                      >
-                        Spanish
-                      </option>
-                      <option
-                        value="da"
-                      >
-                        Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
-                      </option>
-                      <option
-                        value="nl"
-                      >
-                        Dutch
-                      </option>
-                      <option
-                        value="de"
-                      >
-                        German
-                      </option>
-                      <option
-                        value="no"
-                      >
-                        Norwegian
-                      </option>
-                      <option
-                        value="cz"
-                      >
-                        Czech
-                      </option>
-                    </select>
                   </div>
                 </div>
               </div>
@@ -2363,6 +2363,82 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                     class="control-label"
                     for="id-input-42"
                   >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
                     Introduction text during business hours
                   </label>
                   <div
@@ -2668,82 +2744,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField formGroup form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-42"
-                  >
-                    Language
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <select
-                      class="field form-control"
-                      id="id-input-42"
-                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
-                    >
-                      <option
-                        value="en-US"
-                      >
-                        English (US)
-                      </option>
-                      <option
-                        value="fr-FR"
-                      >
-                        French (France)
-                      </option>
-                      <option
-                        value="fr-CA"
-                      >
-                        French (Canada)
-                      </option>
-                      <option
-                        value="es"
-                      >
-                        Spanish
-                      </option>
-                      <option
-                        value="da"
-                      >
-                        Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
-                      </option>
-                      <option
-                        value="nl"
-                      >
-                        Dutch
-                      </option>
-                      <option
-                        value="de"
-                      >
-                        German
-                      </option>
-                      <option
-                        value="no"
-                      >
-                        Norwegian
-                      </option>
-                      <option
-                        value="cz"
-                      >
-                        Czech
-                      </option>
-                    </select>
                   </div>
                 </div>
               </div>
@@ -3088,6 +3088,82 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="control-label"
                     for="id-input-42"
                   >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
                     Introduction text during business hours
                   </label>
                   <div
@@ -3385,82 +3461,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField formGroup form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-42"
-                  >
-                    Language
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <select
-                      class="field form-control"
-                      id="id-input-42"
-                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
-                    >
-                      <option
-                        value="en-US"
-                      >
-                        English (US)
-                      </option>
-                      <option
-                        value="fr-FR"
-                      >
-                        French (France)
-                      </option>
-                      <option
-                        value="fr-CA"
-                      >
-                        French (Canada)
-                      </option>
-                      <option
-                        value="es"
-                      >
-                        Spanish
-                      </option>
-                      <option
-                        value="da"
-                      >
-                        Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
-                      </option>
-                      <option
-                        value="nl"
-                      >
-                        Dutch
-                      </option>
-                      <option
-                        value="de"
-                      >
-                        German
-                      </option>
-                      <option
-                        value="no"
-                      >
-                        Norwegian
-                      </option>
-                      <option
-                        value="cz"
-                      >
-                        Czech
-                      </option>
-                    </select>
                   </div>
                 </div>
               </div>
@@ -3805,6 +3805,82 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                     class="control-label"
                     for="id-input-42"
                   >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
                     Introduction text during business hours
                   </label>
                   <div
@@ -4116,82 +4192,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField formGroup form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-42"
-                  >
-                    Language
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <select
-                      class="field form-control"
-                      id="id-input-42"
-                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
-                    >
-                      <option
-                        value="en-US"
-                      >
-                        English (US)
-                      </option>
-                      <option
-                        value="fr-FR"
-                      >
-                        French (France)
-                      </option>
-                      <option
-                        value="fr-CA"
-                      >
-                        French (Canada)
-                      </option>
-                      <option
-                        value="es"
-                      >
-                        Spanish
-                      </option>
-                      <option
-                        value="da"
-                      >
-                        Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
-                      </option>
-                      <option
-                        value="nl"
-                      >
-                        Dutch
-                      </option>
-                      <option
-                        value="de"
-                      >
-                        German
-                      </option>
-                      <option
-                        value="no"
-                      >
-                        Norwegian
-                      </option>
-                      <option
-                        value="cz"
-                      >
-                        Czech
-                      </option>
-                    </select>
                   </div>
                 </div>
               </div>
@@ -4674,6 +4674,82 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                     class="control-label"
                     for="id-input-42"
                   >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
                     Introduction text during business hours
                   </label>
                   <div
@@ -4923,82 +4999,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div
-                  class="InputField formGroup form-group"
-                  color=""
-                >
-                  <label
-                    class="control-label"
-                    for="id-input-42"
-                  >
-                    Language
-                  </label>
-                  <div
-                    class=""
-                  >
-                    <select
-                      class="field form-control"
-                      id="id-input-42"
-                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
-                    >
-                      <option
-                        value="en-US"
-                      >
-                        English (US)
-                      </option>
-                      <option
-                        value="fr-FR"
-                      >
-                        French (France)
-                      </option>
-                      <option
-                        value="fr-CA"
-                      >
-                        French (Canada)
-                      </option>
-                      <option
-                        value="es"
-                      >
-                        Spanish
-                      </option>
-                      <option
-                        value="da"
-                      >
-                        Danish
-                      </option>
-                      <option
-                        value="sv"
-                      >
-                        Swedish
-                      </option>
-                      <option
-                        value="it"
-                      >
-                        Italian
-                      </option>
-                      <option
-                        value="nl"
-                      >
-                        Dutch
-                      </option>
-                      <option
-                        value="de"
-                      >
-                        German
-                      </option>
-                      <option
-                        value="no"
-                      >
-                        Norwegian
-                      </option>
-                      <option
-                        value="cz"
-                      >
-                        Czech
-                      </option>
-                    </select>
                   </div>
                 </div>
               </div>
