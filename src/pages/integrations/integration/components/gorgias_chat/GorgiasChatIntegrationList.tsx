@@ -1,4 +1,4 @@
-import React, {MouseEvent, useMemo} from 'react'
+import React, {MouseEvent, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
@@ -6,6 +6,8 @@ import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
 
 import shopifyLogo from 'assets/img/integrations/shopify.png'
 import warningIcon from 'assets/img/icons/warning.svg'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {isOfflineModeFeatureEnabled} from 'utils'
 
 import {getIntegrationConfig} from 'state/integrations/helpers'
 
@@ -44,12 +46,28 @@ function GorgiasChatIntegrationList({
     loading,
     actions: {activateIntegration, deactivateIntegration},
 }: Props) {
+    const [calloutDisplayed, setCalloutDisplayed] = useState<boolean>(
+        isOfflineModeFeatureEnabled()
+    )
+
     const longTypeDescription = (
         <div>
             Live chat with your customers by adding our Chat widget on your
             website. Every time a customer starts a conversation on your
             website, it opens a ticket in Gorgias.
         </div>
+    )
+
+    const toggleMovedToInstallationTabInfoCallout = (
+        <Alert
+            className="mb-4"
+            type={AlertType.Info}
+            icon
+            onClose={() => setCalloutDisplayed(false)}
+        >
+            We moved the toggle to temporarily remove the chat from your website
+            to the <b>Installation tab</b> in the integration's page.
+        </Alert>
     )
 
     const chats = useMemo(
@@ -94,14 +112,16 @@ function GorgiasChatIntegrationList({
 
         return (
             <TableBodyRow onClick={goToChat}>
-                <BodyCell>
-                    <ToggleInput
-                        isToggled={isEnabled}
-                        onClick={toggleIntegration}
-                        isLoading={isLoading}
-                        isDisabled={!!loading.get('updateIntegration')}
-                    />
-                </BodyCell>
+                {!isOfflineModeFeatureEnabled() && (
+                    <BodyCell>
+                        <ToggleInput
+                            isToggled={isEnabled}
+                            onClick={toggleIntegration}
+                            isLoading={isLoading}
+                            isDisabled={!!loading.get('updateIntegration')}
+                        />
+                    </BodyCell>
+                )}
                 <BodyCell innerClassName={css.chatName}>
                     {chat.get('name')}
                 </BodyCell>
@@ -187,6 +207,9 @@ function GorgiasChatIntegrationList({
                 )}
             >
                 <div className="mb-3">{longTypeDescription}</div>
+                {calloutDisplayed && (
+                    <div>{toggleMovedToInstallationTabInfoCallout}</div>
+                )}
 
                 {integrations.isEmpty() && (
                     <div className="mt-3">
@@ -198,13 +221,12 @@ function GorgiasChatIntegrationList({
             </Container>
 
             {!chats.isEmpty() && (
-                <TableWrapper>
-                    <TableHead className={css.tableHead}>
-                        <HeaderCell size="smallest" />
-                        <HeaderCellProperty
-                            className={css.chatNameHeader}
-                            title="Chat name"
-                        />
+                <TableWrapper className={css.table}>
+                    <TableHead className={css.header}>
+                        {!isOfflineModeFeatureEnabled() && (
+                            <HeaderCell size="smallest" />
+                        )}
+                        <HeaderCellProperty title="Chat name" />
                         <HeaderCellProperty title="Store" />
                         <HeaderCellProperty title="Language" />
                         <HeaderCell />

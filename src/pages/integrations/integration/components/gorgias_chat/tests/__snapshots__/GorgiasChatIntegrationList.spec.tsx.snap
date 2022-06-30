@@ -60,16 +60,28 @@ exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat 
         Live chat with your customers by adding our Chat widget on your website. Every time a customer starts a conversation on your website, it opens a ticket in Gorgias.
       </div>
     </div>
+    <div>
+      <Alert
+        className="mb-4"
+        icon={true}
+        onClose={[Function]}
+        type="info"
+      >
+        We moved the toggle to temporarily remove the chat from your website to the 
+        <b>
+          Installation tab
+        </b>
+         in the integration's page.
+      </Alert>
+    </div>
   </Container>
-  <TableWrapper>
+  <TableWrapper
+    className="table"
+  >
     <TableHead
-      className="tableHead"
+      className="header"
     >
-      <HeaderCell
-        size="smallest"
-      />
       <HeaderCellProperty
-        className="chatNameHeader"
         title="Chat name"
       />
       <HeaderCellProperty
@@ -84,14 +96,6 @@ exports[`<GorgiasChatIntegrationList/> should display correcty the list of chat 
       <ForwardRef(TableBodyRow)
         onClick={[Function]}
       >
-        <ForwardRef>
-          <ToggleInput
-            isDisabled={false}
-            isLoading={false}
-            isToggled={true}
-            onClick={[Function]}
-          />
-        </ForwardRef>
         <ForwardRef
           innerClassName="chatName"
         >

@@ -7,22 +7,23 @@
         margin-left: 25px;
     }
 
-    .tableHead td {
-        &:first-child {
-            padding-left: 30px;
+    .table {
+        .header {
+            tr {
+                height: 56px;
+            }
         }
 
-        &:last-child {
-            padding-right: 30px;
+        tr {
+            height: 80px;
+            td {
+                width: auto;
+            }
         }
     }
 
     .chatName {
         font-weight: bold;
-        width: max-content;
-    }
-
-    .chatNameHeader {
         width: max-content;
     }
 
@@ -41,6 +42,7 @@
         .warningIcon {
             height: 16px;
             width: 16px;
+            margin-left: 4px;
         }
 
         .shopifyStoreName {

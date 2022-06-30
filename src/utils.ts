@@ -1031,3 +1031,8 @@ export function unreachable(v: never): never {
 export function objKeys<T>(value: T): (keyof T)[] {
     return Object.keys(value) as (keyof T)[]
 }
+
+// Feature flag to silently prepare the feature before actual release.
+export const isOfflineModeFeatureEnabled = () => {
+    return !isProduction()
+}
