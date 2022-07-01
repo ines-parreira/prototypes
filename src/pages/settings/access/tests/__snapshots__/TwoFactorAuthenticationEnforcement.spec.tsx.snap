@@ -36,7 +36,7 @@ exports[`<TwoFactorAuthenticationEnforcement /> render() should render turned on
         <div
           class="slider"
         />
-        Enforce 2FA for all users
+        Require 2FA for all users
       </label>
     </div>
   </div>
@@ -78,7 +78,7 @@ exports[`<TwoFactorAuthenticationEnforcement /> render() should render turned on
         <div
           class="slider"
         />
-        Enforce 2FA for all users
+        Require 2FA for all users
       </label>
     </div>
   </div>

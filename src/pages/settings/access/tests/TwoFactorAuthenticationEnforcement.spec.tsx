@@ -76,7 +76,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                 </Provider>
             )
 
-            const toggle = screen.getByLabelText('Enforce 2FA for all users')
+            const toggle = screen.getByLabelText('Require 2FA for all users')
 
             fireEvent.click(toggle)
 
@@ -96,7 +96,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                 </Provider>
             )
 
-            const toggle = screen.getByLabelText('Enforce 2FA for all users')
+            const toggle = screen.getByLabelText('Require 2FA for all users')
 
             fireEvent.click(toggle)
 

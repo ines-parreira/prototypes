@@ -188,7 +188,7 @@ exports[`<Access/> should render properly 1`] = `
                 <div
                   class="slider"
                 />
-                Enforce 2FA for all users
+                Require 2FA for all users
               </label>
             </div>
           </div>
@@ -415,7 +415,7 @@ gorgias.io
                 <div
                   class="slider"
                 />
-                Enforce 2FA for all users
+                Require 2FA for all users
               </label>
             </div>
           </div>
@@ -645,7 +645,7 @@ exports[`<Access/> should show an error and block submit when using a generic do
                 <div
                   class="slider"
                 />
-                Enforce 2FA for all users
+                Require 2FA for all users
               </label>
             </div>
           </div>

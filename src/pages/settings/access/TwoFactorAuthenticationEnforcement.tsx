@@ -52,7 +52,7 @@ export default function TwoFactorAuthenticationEnforcement({
                     isDisabled={disabled}
                     onClick={handleToggle}
                 >
-                    Enforce 2FA for all users
+                    Require 2FA for all users
                 </ToggleInput>
             </div>
             {twoFAModalVisible && (
