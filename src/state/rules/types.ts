@@ -127,6 +127,11 @@ export type ManagedRuleEmptySettings = {
 export type ManagedRuleSettings<T = ManagedRuleEmptySettings> =
     ManagedRuleEmptySettings & T
 
+export type AnyManagedRuleSettings =
+    | ManagedRuleSettings<AutoCloseSpamSettings>
+    | ManagedRuleSettings<AutoReplyFAQSettings>
+    | ManagedRuleSettings<AutoReplyWismoSettings>
+
 export type AutoCloseSpamSettings = {
     allow_list?: string[]
     block_list?: string[]
@@ -142,6 +147,11 @@ export type AutoReplyWismoSettings = {
 
 export type AutoReplyFAQSettings = {
     block_list?: string[]
+    body_text?: string
+    body_html?: string
+    signature_text?: string
+    signature_html?: string
+    help_center_id?: number
 }
 
 export type ManagedRule<T = ManagedRuleEmptySettings> = Rule & {

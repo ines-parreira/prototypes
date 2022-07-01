@@ -9,6 +9,7 @@ import history from 'pages/history'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {
+    AnyManagedRuleSettings,
     ManagedRule,
     Rule,
     RuleLimitStatus,
@@ -74,6 +75,9 @@ function RuleRecipeCard({
     const limitStatus = useAppSelector(getRulesLimitStatus)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const rules = useAppSelector(getSortedRules)
+    const [extraDefaultSettings, setExtraDefaultSettings] = useState<
+        Partial<AnyManagedRuleSettings>
+    >({})
     const [isModalOpen, setModalOpen] = useState(isModalOpenOnLoad)
     const {rule, tags, recipe_tag, views_per_section} = recipe
 
@@ -281,7 +285,19 @@ function RuleRecipeCard({
             ? `[${recipe_tag}] ${rule.name}`
             : rule.name
         try {
-            const newRule = await createRule({...rule, name: newRuleName})
+            const newRuleDraft = {
+                ...rule,
+                name: newRuleName,
+            }
+
+            if (newRuleDraft.settings) {
+                newRuleDraft.settings = {
+                    ...newRuleDraft.settings,
+                    ...extraDefaultSettings,
+                }
+            }
+
+            const newRule = await createRule(newRuleDraft)
             void dispatch(ruleCreated(newRule))
             onInstall(newRule)
             void dispatch(
@@ -362,6 +378,7 @@ function RuleRecipeCard({
                     onToggle={handleModalToggle}
                     shouldInstall={shouldInstall}
                     managedRuleId={managedRuleId}
+                    handleDefaultSettings={setExtraDefaultSettings}
                 />
             </div>
         </div>

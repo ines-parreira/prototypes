@@ -1,5 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
+import _noop from 'lodash/noop'
 
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -17,6 +18,8 @@ describe('<AutoReplyWismoModal/>', () => {
         isBehindPaywall: false,
         renderTags: () => <></>,
         viewCreationCheckbox: () => <></>,
+        handleInstallationError: _noop,
+        handleDefaultSettings: _noop,
     }
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
@@ -25,6 +28,9 @@ describe('<AutoReplyWismoModal/>', () => {
         integrations: fromJS({
             integrations: fromJS([{type: IntegrationType.Shopify}]),
         }),
+        entities: {
+            helpCenter: {articles: {}, categories: {}, helpCenters: {}},
+        } as unknown as RootState['entities'],
     })
     it('should render the autoclose spam body when automation add-on is subscribed', () => {
         const {container} = render(

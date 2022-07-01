@@ -5,8 +5,10 @@ import {
     ManagedRulesSlugs,
     ManagedRule,
     RuleType,
+    AnyManagedRuleSettings,
 } from 'state/rules/types'
 import {RuleItemActions} from '../../types'
+import {InstallationError} from '../constants'
 import {DefaultModal} from './installationModals/DefaultModal'
 import {AutoCloseSpamModal} from './installationModals/AutoCloseSpamModal'
 import {AutoReplyWismoModal} from './installationModals/AutoReplyWismoModal'
@@ -19,6 +21,8 @@ type Props = {
     isBehindPaywall: boolean
     renderTags: () => React.ReactNode
     viewCreationCheckbox: () => React.ReactNode
+    handleInstallationError: (errors: InstallationError | null) => void
+    handleDefaultSettings: (settings: Partial<AnyManagedRuleSettings>) => void
 }
 
 export type DefaultModalProps = Omit<Props, 'isBehindPaywall' & 'renderTags'>

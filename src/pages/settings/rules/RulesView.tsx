@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {useDebounce, useAsyncFn} from 'react-use'
+import {useDebounce, useAsyncFn, useEffectOnce} from 'react-use'
 import classnames from 'classnames'
 import {Container} from 'reactstrap'
 import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
@@ -34,6 +34,7 @@ import settingsCss from 'pages/settings/settings.less'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import SelectFilter from 'pages/stats/common/SelectFilter'
+import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
 import RulesList from './accountRules/RulesList'
 import RuleLibrary from './ruleLibrary/RuleLibrary'
@@ -54,8 +55,9 @@ export function RulesViewContainer({
     const ruleRecipes = useAppSelector(getSortedRuleRecipes)
     const limitStatus = useAppSelector(getRulesLimitStatus)
     const currentAccount = useAppSelector(getCurrentAccountState)
-
     const recipeTags = Object.values(RuleRecipeTag)
+
+    useHelpCenterList({per_page: 900})
 
     const [{loading: isFetchingRules}, handleFetchRules] = useAsyncFn(
         async () => {
@@ -123,11 +125,10 @@ export function RulesViewContainer({
 
     useDebounce(() => setDebouncedSearchTerm(searchTerm), 200, [searchTerm])
 
-    useEffect(() => {
+    useEffectOnce(() => {
         void handleFetchRules()
         void handleFetchRecipes()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    })
 
     useEffect(() => {
         if (activeTab === RuleTabs.AccountRules) {

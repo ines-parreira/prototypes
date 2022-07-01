@@ -9,7 +9,11 @@ import {initialState as articlesState} from 'state/entities/helpCenter/articles/
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 
-import {getCurrentHelpCenter, getHelpCenterList} from '../selectors'
+import {
+    getActiveHelpCenterList,
+    getCurrentHelpCenter,
+    getHelpCenterList,
+} from '../selectors'
 
 describe('Entities/Help Center', () => {
     describe('getCurrentHelpCenter', () => {
@@ -68,6 +72,28 @@ describe('Entities/Help Center', () => {
 
             expect(getHelpCenterList(dataStore as StoreState)).toEqual(
                 getHelpCentersResponseFixture.data
+            )
+        })
+    })
+    describe('getActiveHelpCenterList', () => {
+        it('returns the list of active help centers', () => {
+            const dataStore: Partial<StoreState> = {
+                entities: {
+                    helpCenter: {
+                        helpCenters: {
+                            helpCentersById: _keyBy(
+                                getHelpCentersResponseFixture.data,
+                                'id'
+                            ),
+                        },
+                    },
+                } as any,
+            }
+
+            expect(getActiveHelpCenterList(dataStore as StoreState)).toEqual(
+                getHelpCentersResponseFixture.data.filter(
+                    (helpCenter) => !helpCenter.deactivated_datetime
+                )
             )
         })
     })

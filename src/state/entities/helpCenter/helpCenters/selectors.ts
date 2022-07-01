@@ -22,3 +22,9 @@ export const getCurrentHelpCenter = createSelector(
 export const getHelpCenterList = createSelector(getHelpCenters, (helpCenters) =>
     Object.values(helpCenters)
 )
+
+export const getActiveHelpCenterList = createSelector(
+    getHelpCenterList,
+    (helpCenters) =>
+        helpCenters.filter((helpCenter) => !helpCenter.deactivated_datetime)
+)

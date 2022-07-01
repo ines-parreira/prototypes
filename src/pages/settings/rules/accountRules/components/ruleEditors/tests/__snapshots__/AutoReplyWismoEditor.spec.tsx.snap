@@ -965,7 +965,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
           </div>
         </div>
         <div
-          class="orderDemo"
+          class="container orderTracking"
         >
           <div
             class="orderTitleContainer"

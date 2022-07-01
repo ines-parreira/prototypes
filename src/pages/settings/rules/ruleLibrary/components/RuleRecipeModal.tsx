@@ -1,7 +1,8 @@
 import React, {ReactNode, useState} from 'react'
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
+import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 
+import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
 import {RuleRecipe} from 'models/ruleRecipe/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -9,12 +10,14 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import history from 'pages/history'
 import Alert from 'pages/common/components/Alert/Alert'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
-import {RuleType} from 'state/rules/types'
+import {AnyManagedRuleSettings, RuleType} from 'state/rules/types'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import AutomationSubscriptionFeatures from 'pages/settings/billing/automation/AutomationSubscriptionFeatures'
 
+import Tooltip from 'pages/common/components/Tooltip'
 import {RuleItemActions} from '../../types'
 
+import {InstallationError, InstallationErrorMessage} from '../constants'
 import InstallRuleModalBody from './InstallRuleModalBody'
 
 import css from './RuleRecipeModal.less'
@@ -31,6 +34,7 @@ type Props = {
     onToggle: () => void
     shouldInstall: boolean
     managedRuleId?: number
+    handleDefaultSettings: (settings: Partial<AnyManagedRuleSettings>) => void
 }
 
 export const RuleRecipeModal = ({
@@ -42,12 +46,16 @@ export const RuleRecipeModal = ({
     onToggle,
     shouldInstall,
     managedRuleId,
+    handleDefaultSettings,
 }: Props) => {
-    const {rule, triggered_count, views_per_section} = recipe
+    const {rule, slug, triggered_count, views_per_section} = recipe
     const [shouldCreateviews, setShouldCreateViews] = useState(true)
     const [showAutomationModal, setShowAutomationModal] = useState(false)
     const [isSubscribing, setIsSubscribing] = useState(false)
+    const [installationError, setInstallationError] =
+        useState<InstallationError | null>()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+
     const isBehindPaywall =
         rule.type === RuleType.Managed && !hasAutomationAddOn
 
@@ -61,29 +69,66 @@ export const RuleRecipeModal = ({
         }
     }
 
+    const installButtonId = `${slug}-install-button`
+    const isInstallationDisabled = !shouldInstall || !!installationError
+
     const InstallButton = () =>
         isBehindPaywall ? (
-            <Button
-                color="primary"
-                onClick={() => setShowAutomationModal(true)}
-            >
-                <i className="material-icons mr-2">auto_awesome</i>
-                Subscribe to automation add-on
-            </Button>
+            <>
+                <span id={installButtonId}>
+                    <Button
+                        intent="primary"
+                        onClick={() => setShowAutomationModal(true)}
+                        isDisabled={isInstallationDisabled}
+                        className={classnames({
+                            [css.disabledButton]: isInstallationDisabled,
+                        })}
+                        id={installButtonId}
+                    >
+                        <i className="material-icons mr-2">auto_awesome</i>
+                        Subscribe to automation add-on
+                    </Button>
+                </span>
+                {!!installationError && (
+                    <Tooltip
+                        trigger={['hover']}
+                        target={`#${installButtonId}`}
+                        className={css.tooltip}
+                    >
+                        {InstallationErrorMessage[installationError]}
+                    </Tooltip>
+                )}
+            </>
         ) : (
-            <Button
-                color="primary"
-                onClick={() => {
-                    void handleInstall(
-                        shouldCreateviews,
-                        rule.type === 'managed'
-                    )
-                    onToggle()
-                }}
-                disabled={!shouldInstall}
-            >
-                Install rule
-            </Button>
+            <>
+                <span id={installButtonId}>
+                    <Button
+                        intent="primary"
+                        onClick={() => {
+                            void handleInstall(
+                                shouldCreateviews,
+                                rule.type === 'managed'
+                            )
+                            onToggle()
+                        }}
+                        isDisabled={isInstallationDisabled}
+                        className={classnames({
+                            [css.disabledButton]: isInstallationDisabled,
+                        })}
+                    >
+                        Install rule
+                    </Button>
+                </span>
+                {!!installationError && (
+                    <Tooltip
+                        trigger={['hover']}
+                        target={`#${installButtonId}`}
+                        className={css.tooltip}
+                    >
+                        {InstallationErrorMessage[installationError]}
+                    </Tooltip>
+                )}
+            </>
         )
 
     const ViewsCreationCheckbox = () => {
@@ -151,11 +196,15 @@ export const RuleRecipeModal = ({
                         isBehindPaywall={isBehindPaywall}
                         renderTags={renderTags}
                         viewCreationCheckbox={ViewsCreationCheckbox}
+                        handleInstallationError={setInstallationError}
+                        handleDefaultSettings={handleDefaultSettings}
                     />
                 </ModalBody>
             )}
             <ModalFooter className={css.modalFooter}>
-                <Button onClick={onToggle}>Cancel</Button>
+                <Button intent="secondary" onClick={onToggle}>
+                    Cancel
+                </Button>
                 <InstallButton />
             </ModalFooter>
         </Modal>

@@ -392,6 +392,102 @@ exports[`<HelpCenterTable /> should display the table correctly when not loading
           </div>
         </td>
       </tr>
+      <tr
+        class="row tableBodyRow isClickable"
+      >
+        <td
+          class="wrapper actions smallest"
+        >
+          <div
+            class="cellContent"
+          >
+            <div>
+              <label
+                aria-checked="false"
+                class="label label"
+                for="toggle-button-4"
+                role="switch"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="toggle-button-4"
+                  name="toggle-button-4"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+              </label>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper helpCenterName normal"
+        >
+          <div
+            class="cellContent"
+          >
+            ACME Help Center 4
+          </div>
+        </td>
+        <td
+          class="wrapper small"
+        >
+          <div
+            class="cellContent"
+          >
+            <div
+              class="language-bullet-list"
+            >
+              <div
+                class="language-bullet-item"
+                data-testid="locale-bullet-en-US"
+              >
+                <img
+                  alt="en-US"
+                  class="flag-emoji"
+                  data-testid="flag-en-US"
+                  src="test-file-stub"
+                />
+              </div>
+              <div
+                class="language-bullet-item"
+                data-testid="locale-bullet-fr-FR"
+              >
+                <img
+                  alt="fr-FR"
+                  class="flag-emoji"
+                  data-testid="flag-fr-FR"
+                  src="test-file-stub"
+                />
+              </div>
+            </div>
+          </div>
+        </td>
+        <td
+          class="wrapper normal"
+        >
+          <div
+            class="cellContent"
+          >
+            05/17/2021
+          </div>
+        </td>
+        <td
+          class="wrapper smallest actions normal"
+        >
+          <div
+            class="cellContent"
+          >
+            <i
+              class="material-icons forwardIcon"
+            >
+              keyboard_arrow_right
+            </i>
+          </div>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

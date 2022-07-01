@@ -35,6 +35,7 @@ describe('<AutoReplyWismoEditor/>', () => {
             [ManagedRulesSlugs.AutoReplyWismo as string]:
                 emptyRuleRecipeFixture,
         },
+        helpCenter: {articles: {}, categories: {}, helpCenters: {}},
     }
 
     beforeEach(() => {

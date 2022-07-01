@@ -33,6 +33,7 @@
         p {
             color: @classic-neutral-grey-5;
         }
+        line-height: 20px;
     }
 
     .example {
@@ -75,7 +76,8 @@
         }
     }
 
-    &.autoReplyWismo {
+    &.autoReplyWismo,
+    &.autoReplyFAQ {
         .addendum {
             &::before {
                 content: '*';
@@ -92,7 +94,6 @@
                 padding-left: 0.4em;
             }
         }
-
         .exampleContainer {
             background-color: @classic-neutral-grey-1;
             max-height: 400px;

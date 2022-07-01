@@ -38,6 +38,9 @@ const populateStore = (length: number): RootState => {
     const defaultState: RootState = {
         entities: {
             rules: rules,
+            helpCenter: {
+                helpCenters: {},
+            },
         },
     } as any
     return defaultState

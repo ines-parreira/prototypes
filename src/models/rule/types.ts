@@ -1,6 +1,9 @@
 import esprima from 'esprima'
 
-import {ObjectExpressionPropertyKey} from '../../state/rules/types'
+import {
+    AnyManagedRuleSettings,
+    ObjectExpressionPropertyKey,
+} from '../../state/rules/types'
 
 export enum IdentifierCategoryKey {
     Message = 'message',
@@ -105,6 +108,7 @@ export type RuleDraft = {
     event_types: RuleEvent | string
     name: string
     type?: RuleType
+    settings?: AnyManagedRuleSettings
 }
 
 export type Rule = RuleDraft & {

@@ -1,5 +1,6 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
+import _noop from 'lodash/noop'
 
 import {emptyManagedRule} from 'fixtures/rule'
 import {AutoCloseSpamModal} from '../AutoCloseSpamModal'
@@ -11,6 +12,8 @@ describe('<AutoCloseSpamModal/>', () => {
         isBehindPaywall: false,
         renderTags: () => <>tags</>,
         viewCreationCheckbox: () => <>view creation checkbox</>,
+        handleInstallationError: _noop,
+        handleDefaultSettings: _noop,
     }
     it('should render the autoclose spam body when automation add-on is subscribed', () => {
         const {container} = render(<AutoCloseSpamModal {...minProps} />)

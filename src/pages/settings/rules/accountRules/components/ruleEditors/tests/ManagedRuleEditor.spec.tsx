@@ -39,6 +39,7 @@ describe('<ManagedRuleEditor/>', () => {
                 [ManagedRulesSlugs.AutoCloseSpam as string]:
                     emptyRuleRecipeFixture,
             },
+            helpCenter: {articles: {}, categories: {}, helpCenters: {}},
         },
         billing: fromJS({plans: []}),
     } as RootState)

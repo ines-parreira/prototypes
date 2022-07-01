@@ -980,44 +980,46 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
 
 export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
     return (
-        <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        RulesView,
-                        AGENT_ROLE,
-                        PageSection.Rules
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/new`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        RuleDetailForm,
-                        AGENT_ROLE,
-                        PageSection.Rules
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:ruleId`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        RuleDetailForm,
-                        AGENT_ROLE,
-                        PageSection.Rules
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-        </Switch>
+        <HelpCenterApiClientProvider>
+            <Switch>
+                <Route
+                    path={`${path}/`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            RulesView,
+                            AGENT_ROLE,
+                            PageSection.Rules
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/new`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            RuleDetailForm,
+                            AGENT_ROLE,
+                            PageSection.Rules
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/:ruleId`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            RuleDetailForm,
+                            AGENT_ROLE,
+                            PageSection.Rules
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+            </Switch>
+        </HelpCenterApiClientProvider>
     )
 }
 

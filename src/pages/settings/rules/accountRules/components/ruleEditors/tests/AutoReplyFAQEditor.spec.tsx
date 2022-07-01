@@ -31,6 +31,7 @@ describe('<AutoReplyFAQEditor/>', () => {
         ruleRecipes: {
             [ManagedRulesSlugs.AutoReplyFAQ as string]: emptyRuleRecipeFixture,
         },
+        helpCenter: {articles: {}, categories: {}, helpCenters: {}},
     }
 
     beforeEach(() => {

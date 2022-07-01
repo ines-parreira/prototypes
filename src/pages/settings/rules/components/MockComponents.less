@@ -1,0 +1,73 @@
+@import '~css/new/colorTokens';
+
+:local .container {
+    margin: 24px 0px;
+    border: 1px solid @classic-neutral-grey-3;
+    border-radius: 4px;
+    background-color: #fff;
+
+    &.orderTracking {
+        & {
+            border-bottom: 0px;
+        }
+        .orderTitleContainer {
+            border-bottom: 1px dashed @classic-neutral-grey-3;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px;
+
+            .orderTitle {
+                font-weight: 600;
+                font-size: 16px;
+            }
+            .orderPrice {
+                color: @classic-neutral-grey-5;
+            }
+        }
+
+        .fulfillmentContainer {
+            border-bottom: 1px solid @classic-neutral-grey-3;
+            padding: 0px 8px;
+
+            .product {
+                margin: 12px 0px;
+                .productTitle {
+                    font-size: 14px;
+                    font-weight: 600;
+                }
+                .productPrice {
+                    color: @classic-neutral-grey-5;
+                }
+            }
+            .trackingLink {
+                padding: 8px;
+                color: @classic-main-primary;
+                cursor: pointer;
+            }
+        }
+    }
+    &.FAQArticle {
+        padding: 12px;
+
+        .articleTitle {
+            color: @classic-neutral-grey-6;
+            font-weight: 600;
+            flex-direction: row;
+            font-size: 16;
+        }
+        .articleDescription {
+            color: @classic-neutral-grey-5;
+            line-height: 18px;
+            margin-bottom: 0px;
+            & > p {
+                margin-bottom: 0px;
+            }
+        }
+        .articleLink {
+            color: @classic-main-primary;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+    }
+}

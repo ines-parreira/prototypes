@@ -1,9 +1,10 @@
 import React from 'react'
-import css from './FakeOrderTracking.less'
+import classnames from 'classnames'
+import css from './MockComponents.less'
 
 export const FakeOrderTracking = () => {
     return (
-        <div className={css.orderDemo}>
+        <div className={classnames(css.container, css.orderTracking)}>
             <div className={css.orderTitleContainer}>
                 <div className={css.orderTitle}>Order number</div>
                 <div className={css.orderPrice}>Price</div>

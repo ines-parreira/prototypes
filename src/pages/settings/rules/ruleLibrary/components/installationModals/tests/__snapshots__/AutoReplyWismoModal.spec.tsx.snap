@@ -170,7 +170,7 @@ exports[`<AutoReplyWismoModal/> should render an alert when there are no shopify
                 We detected that your request might be about tracking an order status. Is that tracking information useful?
               </p>
               <div
-                class="orderDemo"
+                class="container orderTracking"
               >
                 <div
                   class="orderTitleContainer"
@@ -429,7 +429,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
                 We detected that your request might be about tracking an order status. Is that tracking information useful?
               </p>
               <div
-                class="orderDemo"
+                class="container orderTracking"
               >
                 <div
                   class="orderTitleContainer"
@@ -679,7 +679,7 @@ exports[`<AutoReplyWismoModal/> should render the autoclose spam body when autom
                 We detected that your request might be about tracking an order status. Is that tracking information useful?
               </p>
               <div
-                class="orderDemo"
+                class="container orderTracking"
               >
                 <div
                   class="orderTitleContainer"
