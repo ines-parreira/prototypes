@@ -5,12 +5,13 @@ Object {
   "autoResponderEnabled": false,
   "autoResponderReply": "reply-shortly",
   "emailCaptureEnforcement": "optional",
-  "enableContactForm": false,
+  "enableContactForm": true,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": false,
   "isUpdating": false,
   "linkedEmailIntegration": null,
+  "offlineModeEnabledDatetime": null,
   "preview": "email-capture",
 }
 `;
@@ -20,12 +21,13 @@ Object {
   "autoResponderEnabled": false,
   "autoResponderReply": "reply-shortly",
   "emailCaptureEnforcement": "optional",
-  "enableContactForm": false,
+  "enableContactForm": true,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": false,
   "isUpdating": false,
   "linkedEmailIntegration": 234,
+  "offlineModeEnabledDatetime": null,
   "preview": "email-capture",
 }
 `;
@@ -47,7 +49,8 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "linked_email_integration": null,
             "hide_on_mobile": false,
             "hide_outside_business_hours": false,
-            "enable_contact_form": false,
+            "enable_contact_form": true,
+            "offline_mode_enabled_datetime": null,
           },
         },
       },
@@ -78,7 +81,8 @@ exports[`<GorgiasChatIntegrationPreferences/> _submitPreferences() should submit
             "linked_email_integration": null,
             "hide_on_mobile": false,
             "hide_outside_business_hours": false,
-            "enable_contact_form": false,
+            "enable_contact_form": true,
+            "offline_mode_enabled_datetime": null,
           },
           "language": "en-US",
         },
@@ -99,12 +103,13 @@ Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
-  "enableContactForm": false,
+  "enableContactForm": true,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": true,
   "isUpdating": false,
   "linkedEmailIntegration": null,
+  "offlineModeEnabledDatetime": null,
   "preview": "email-capture",
 }
 `;
@@ -114,12 +119,13 @@ Object {
   "autoResponderEnabled": true,
   "autoResponderReply": "reply-in-minutes",
   "emailCaptureEnforcement": "always-required",
-  "enableContactForm": false,
+  "enableContactForm": true,
   "hideOnMobile": false,
   "hideOutsideBusinessHours": false,
   "isInitialized": true,
   "isUpdating": false,
   "linkedEmailIntegration": null,
+  "offlineModeEnabledDatetime": null,
   "preview": "email-capture",
 }
 `;
@@ -266,27 +272,54 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
         <div
           className="formSection"
         >
-          <h4>
-            Contact form
-          </h4>
-          <p
-            className="mb16"
+          <h4
+            className="title"
           >
-            Display a contact form while outside business hours and get messages via email.
-          </p>
+            Chat conversations
+          </h4>
           <div
             className="formGroup d-flex"
           >
             <ToggleInput
-              isToggled={false}
+              isToggled={true}
               onClick={[Function]}
             />
             <div
               className="ml-2"
             >
               <b>
-                Enable contact form
+                Live chat
               </b>
+              <div
+                className="form-text text-muted"
+              >
+                Let customers start live conversations with agents. When disabled, customers can interact with self-service features and fill the contact form.
+              </div>
+            </div>
+          </div>
+          <div
+            className="formGroup d-flex"
+          >
+            <div
+              id="contact-form-toggle-help"
+            >
+              <ToggleInput
+                isDisabled={false}
+                isToggled={true}
+                onClick={[Function]}
+              />
+            </div>
+            <div
+              className="ml-2"
+            >
+              <b>
+                Contact form
+              </b>
+              <div
+                className="form-text text-muted"
+              >
+                Display a contact form when live chat is disabled and while outside business hours and reply to customers via email.
+              </div>
             </div>
           </div>
         </div>
@@ -644,27 +677,54 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
         <div
           className="formSection"
         >
-          <h4>
-            Contact form
-          </h4>
-          <p
-            className="mb16"
+          <h4
+            className="title"
           >
-            Display a contact form while outside business hours and get messages via email.
-          </p>
+            Chat conversations
+          </h4>
           <div
             className="formGroup d-flex"
           >
             <ToggleInput
-              isToggled={false}
+              isToggled={true}
               onClick={[Function]}
             />
             <div
               className="ml-2"
             >
               <b>
-                Enable contact form
+                Live chat
               </b>
+              <div
+                className="form-text text-muted"
+              >
+                Let customers start live conversations with agents. When disabled, customers can interact with self-service features and fill the contact form.
+              </div>
+            </div>
+          </div>
+          <div
+            className="formGroup d-flex"
+          >
+            <div
+              id="contact-form-toggle-help"
+            >
+              <ToggleInput
+                isDisabled={false}
+                isToggled={true}
+                onClick={[Function]}
+              />
+            </div>
+            <div
+              className="ml-2"
+            >
+              <b>
+                Contact form
+              </b>
+              <div
+                className="form-text text-muted"
+              >
+                Display a contact form when live chat is disabled and while outside business hours and reply to customers via email.
+              </div>
             </div>
           </div>
         </div>

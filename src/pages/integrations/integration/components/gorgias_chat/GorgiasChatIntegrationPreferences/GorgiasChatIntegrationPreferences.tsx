@@ -6,6 +6,7 @@ import _omitBy from 'lodash/omitBy'
 import {fromJS, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
+import {isOfflineModeFeatureEnabled} from 'utils'
 
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -75,6 +76,7 @@ type State = {
     preview: string
     linkedEmailIntegration: number | null
     enableContactForm: boolean
+    offlineModeEnabledDatetime: Date | null
 }
 
 export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
@@ -95,13 +97,15 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         isInitialized: false,
         isUpdating: false,
         preview: PREVIEW_EMAIL_CAPTURE,
-        enableContactForm: false,
+        enableContactForm: true,
+        offlineModeEnabledDatetime: null,
     }
 
     _initState = (integration: Map<any, any>) => {
         this.setState(
             _omitBy(
                 {
+                    isInitialized: true,
                     autoResponderEnabled: integration.getIn([
                         'meta',
                         'preferences',
@@ -135,11 +139,15 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'preferences',
                         'linked_email_integration',
                     ]),
-                    isInitialized: true,
                     enableContactForm: integration.getIn([
                         'meta',
                         'preferences',
                         'enable_contact_form',
+                    ]),
+                    offlineModeEnabledDatetime: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'offline_mode_enabled_datetime',
                     ]),
                 },
                 _isUndefined
@@ -202,6 +210,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         })
     }
 
+    _setOfflineModeEnabledDatetime = (value: Date | null) => {
+        this.setState({
+            offlineModeEnabledDatetime: value,
+        })
+    }
+
     _submitPreferences = async (event: React.SyntheticEvent) => {
         const {updateOrCreateIntegration, integration} = this.props
         event.preventDefault()
@@ -226,6 +240,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     hide_outside_business_hours:
                         this.state.hideOutsideBusinessHours,
                     enable_contact_form: this.state.enableContactForm,
+                    offline_mode_enabled_datetime:
+                        this.state.offlineModeEnabledDatetime,
                 },
             }),
         })
@@ -246,6 +262,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             preview,
             linkedEmailIntegration,
             enableContactForm,
+            offlineModeEnabledDatetime,
         } = this.state
         const {integration, emailIntegrations} = this.props
 
@@ -405,24 +422,107 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             </div>
 
                             <div className={css.formSection}>
-                                <h4>Contact form</h4>
-                                <p className={css.mb16}>
-                                    Display a contact form while outside
-                                    business hours and get messages via email.
-                                </p>
+                                <h4 className={css.title}>
+                                    Chat conversations
+                                </h4>
+                                {isOfflineModeFeatureEnabled() && (
+                                    <div
+                                        className={classnames(
+                                            css.formGroup,
+                                            'd-flex'
+                                        )}
+                                    >
+                                        <ToggleInput
+                                            onClick={() =>
+                                                this._setOfflineModeEnabledDatetime(
+                                                    offlineModeEnabledDatetime ===
+                                                        null
+                                                        ? new Date()
+                                                        : null
+                                                )
+                                            }
+                                            isToggled={
+                                                offlineModeEnabledDatetime ===
+                                                null
+                                            }
+                                        />
+
+                                        <div className="ml-2">
+                                            <b>Live chat</b>
+                                            <div className="form-text text-muted">
+                                                Let customers start live
+                                                conversations with agents. When
+                                                disabled, customers can interact
+                                                with self-service features and
+                                                fill the contact form.
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                                 <div
                                     className={classnames(
                                         css.formGroup,
                                         'd-flex'
                                     )}
                                 >
-                                    <ToggleInput
-                                        onClick={this._setEnableContactForm}
-                                        isToggled={enableContactForm}
-                                    />
+                                    {isOfflineModeFeatureEnabled() && (
+                                        <>
+                                            <div id="contact-form-toggle-help">
+                                                <ToggleInput
+                                                    onClick={
+                                                        this
+                                                            ._setEnableContactForm
+                                                    }
+                                                    isToggled={
+                                                        offlineModeEnabledDatetime !==
+                                                        null
+                                                            ? true
+                                                            : enableContactForm
+                                                    }
+                                                    isDisabled={
+                                                        offlineModeEnabledDatetime !==
+                                                        null
+                                                    }
+                                                />
+                                            </div>
+                                            {offlineModeEnabledDatetime !==
+                                                null && (
+                                                <Tooltip
+                                                    autohide={false}
+                                                    delay={100}
+                                                    target="contact-form-toggle-help"
+                                                    placement="top-start"
+                                                    popperClassName={
+                                                        css.tooltip
+                                                    }
+                                                    innerClassName={
+                                                        css['tooltip-inner']
+                                                    }
+                                                    arrowClassName={
+                                                        css['tooltip-arrow']
+                                                    }
+                                                >
+                                                    Contact form is enabled when
+                                                    Live chat is off.
+                                                </Tooltip>
+                                            )}
+                                        </>
+                                    )}
+                                    {!isOfflineModeFeatureEnabled() && (
+                                        <ToggleInput
+                                            onClick={this._setEnableContactForm}
+                                            isToggled={enableContactForm}
+                                        />
+                                    )}
 
                                     <div className="ml-2">
-                                        <b>Enable contact form</b>
+                                        <b>Contact form</b>
+                                        <div className="form-text text-muted">
+                                            Display a contact form when live
+                                            chat is disabled and while outside
+                                            business hours and reply to
+                                            customers via email.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
