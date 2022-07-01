@@ -73,6 +73,21 @@ function useInstantiateDevice() {
         ],
     })
 
+    const refreshToken = useCallback(
+        (device: Device) => {
+            getToken()
+                .then((token) => {
+                    if (token) {
+                        device.updateToken(token)
+                    }
+                })
+                .catch((error: Error) => {
+                    onError(error, "Couldn't refresh phone token")
+                })
+        },
+        [onError]
+    )
+
     const onCallAlreadyAccepted = useCallback(() => {
         void dispatch(
             notify({
@@ -161,6 +176,7 @@ function useInstantiateDevice() {
             const device = new Device(token, {
                 closeProtection: true,
                 codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
+                tokenRefreshMs: 30 * 1000,
                 logLevel: 'debug',
             })
 
@@ -205,16 +221,12 @@ function useInstantiateDevice() {
                 })
 
                 setTimeout(() => {
-                    getToken()
-                        .then((token) => {
-                            if (token) {
-                                device.updateToken(token)
-                            }
-                        })
-                        .catch((error: Error) => {
-                            onError(error, "Couldn't refresh phone token")
-                        })
+                    refreshToken(device)
                 }, timeout)
+            })
+
+            device.on(Device.EventName.TokenWillExpire, () => {
+                refreshToken(device)
             })
 
             device.on(Device.EventName.Incoming, (call: Call) => {
@@ -306,7 +318,14 @@ function useInstantiateDevice() {
 
             return device
         },
-        [dispatch, onAccept, onCancel, onError, onErrorMessage, onTwilioError]
+        [
+            dispatch,
+            onAccept,
+            onCancel,
+            onErrorMessage,
+            onTwilioError,
+            refreshToken,
+        ]
     )
 }
 
