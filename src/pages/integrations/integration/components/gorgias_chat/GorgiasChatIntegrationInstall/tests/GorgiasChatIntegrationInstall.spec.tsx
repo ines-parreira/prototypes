@@ -68,6 +68,8 @@ describe('<GorgiasChatIntegrationInstall/>', () => {
         actions: {
             updateOrCreateIntegration: jest.fn(() => Promise.resolve()),
             deleteIntegration: jest.fn(),
+            activateIntegration: jest.fn(),
+            deactivateIntegration: jest.fn(),
         },
         loading: fromJS({}),
         notify: jest.fn(),

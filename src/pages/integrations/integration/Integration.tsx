@@ -423,6 +423,7 @@ export const IntegrationDetail = ({
                             actions={actions}
                             integration={integration}
                             isUpdate={isUpdate}
+                            loading={loading}
                         />
                     )
                 }

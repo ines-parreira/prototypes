@@ -3,11 +3,18 @@ import {connect} from 'react-redux'
 import {List, Map, fromJS} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
+import classnames from 'classnames'
 
 import {getHasAutomationAddOn} from 'state/billing/selectors'
-import {deleteIntegration} from 'state/integrations/actions'
+import {
+    deleteIntegration,
+    activateIntegration,
+    deactivateIntegration,
+} from 'state/integrations/actions'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {isOfflineModeFeatureEnabled} from 'utils'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -31,8 +38,11 @@ type OwnProps = {
     actions: {
         updateOrCreateIntegration: any
         deleteIntegration: typeof deleteIntegration
+        activateIntegration: typeof activateIntegration
+        deactivateIntegration: typeof deactivateIntegration
     }
     isUpdate: boolean
+    loading: Map<any, any>
 }
 
 const mapStateToProps = (state: RootState) => {
@@ -59,6 +69,7 @@ function GorgiasChatIntegrationInstall({
     gorgiasChatExtraState,
     hasAutomationAddOn,
     isUpdate,
+    loading,
 }: OwnProps & ReturnType<typeof mapStateToProps>) {
     // During the chat creation, the user associated this chat to a shopify store.
     // This chat can only be installed on this specific store
@@ -84,6 +95,19 @@ function GorgiasChatIntegrationInstall({
     )
 
     const isShopifyChat = isAssociatedToShopifyStore || hasShopifyInstallation
+
+    const isDisabled = integration.get('deactivated_datetime')
+
+    const toggleActivationState = () => {
+        const integrationId = integration.get('id') as number
+        if (isDisabled) {
+            actions.activateIntegration(integrationId)
+        } else {
+            actions.deactivateIntegration(integrationId)
+        }
+    }
+
+    const isLoading = loading.get('updateIntegration') === integration.get('id')
 
     return (
         <div className="full-width">
@@ -147,22 +171,42 @@ function GorgiasChatIntegrationInstall({
                             })}
                             integrationId={integration.get('id')}
                         />
-                        {isUpdate && (
-                            <ConfirmButton
-                                className="float-right"
-                                onConfirm={() =>
-                                    actions.deleteIntegration(
-                                        integration
-                                    ) as unknown as Promise<any>
-                                }
-                                confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-                                intent="destructive"
-                            >
-                                <ButtonIconLabel icon="delete">
-                                    Delete chat
-                                </ButtonIconLabel>
-                            </ConfirmButton>
-                        )}
+                        <div className={css.installationOptions}>
+                            {isOfflineModeFeatureEnabled() && (
+                                <div
+                                    className={classnames(
+                                        css.formGroup,
+                                        'd-flex'
+                                    )}
+                                >
+                                    <ToggleInput
+                                        onClick={() => toggleActivationState()}
+                                        isToggled={isDisabled}
+                                        isLoading={isLoading}
+                                        isDisabled={isLoading}
+                                    />
+                                    <div className="ml-2">
+                                        <b>Hide chat temporary</b>
+                                    </div>
+                                </div>
+                            )}
+                            {isUpdate && (
+                                <ConfirmButton
+                                    className=""
+                                    onConfirm={() =>
+                                        actions.deleteIntegration(
+                                            integration
+                                        ) as unknown as Promise<any>
+                                    }
+                                    confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
+                                    intent="destructive"
+                                >
+                                    <ButtonIconLabel icon="delete">
+                                        Delete chat
+                                    </ButtonIconLabel>
+                                </ConfirmButton>
+                            )}
+                        </div>
                     </Col>
                 </Row>
             </Container>
