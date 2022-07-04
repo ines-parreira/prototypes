@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, fireEvent, act} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -10,10 +10,7 @@ import {
     ShopType,
 } from 'models/selfServiceConfiguration/types'
 import {RootState, StoreDispatch} from 'state/types'
-import {
-    fetchSelfServiceConfigurations,
-    updateSelfServiceConfiguration,
-} from 'models/selfServiceConfiguration/resources'
+import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfigurationsState} from 'state/entities/selfServiceConfigurations/types'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {SelfServiceView} from '../SelfServiceView'
@@ -22,10 +19,6 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const fetchSelfServiceConfigurationsMock =
     fetchSelfServiceConfigurations as jest.MockedFunction<
         typeof fetchSelfServiceConfigurations
-    >
-const updateSelfServiceConfigurationMock =
-    updateSelfServiceConfiguration as jest.MockedFunction<
-        typeof updateSelfServiceConfiguration
     >
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
@@ -169,150 +162,6 @@ describe('<SelfServiceView/>', () => {
 
             await findByTestId('table-integrations')
             expect(container).toMatchSnapshot()
-        })
-    })
-
-    describe('ToggleInput.onChange()', () => {
-        it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 1 when it gets deactivated', async () => {
-            const shopifyIntegrations = createShopifyIntegrationFixtures(4)
-            const selfServiceConfigurations =
-                createSelfServiceConfigurationFixtures(4)
-
-            const {container, findByTestId} = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        integrations: fromJS({
-                            integrations: shopifyIntegrations,
-                        }),
-                        entities: {
-                            ...defaultState.entities,
-                            selfServiceConfigurations:
-                                selfServiceConfigurations.reduce(
-                                    (
-                                        configurations: SelfServiceConfigurationsState,
-                                        configuration: SelfServiceConfiguration
-                                    ) => ({
-                                        ...configurations,
-                                        [configuration.id]: configuration,
-                                    }),
-                                    {} as Partial<SelfServiceConfiguration>
-                                ),
-                        },
-                    })}
-                >
-                    <SelfServiceView />
-                </Provider>
-            )
-
-            await findByTestId('table-integrations')
-            expect(container).toMatchSnapshot()
-
-            act(() => {
-                fireEvent.click(document.getElementsByClassName('input')[0]) // selecting the 1st store (id = 1)
-            })
-            expect(updateSelfServiceConfigurationMock.mock.calls[0])
-                .toMatchInlineSnapshot(`
-                Array [
-                  Object {
-                    "cancel_order_policy": Object {
-                      "eligibilities": Array [],
-                      "enabled": false,
-                      "exceptions": Array [],
-                    },
-                    "created_datetime": "2021-01-26T00:29:00Z",
-                    "deactivated_datetime": "2021-01-26T00:30:00Z",
-                    "id": 1,
-                    "quick_response_policies": Array [],
-                    "report_issue_policy": Object {
-                      "cases": Array [],
-                      "enabled": false,
-                    },
-                    "return_order_policy": Object {
-                      "eligibilities": Array [],
-                      "enabled": false,
-                      "exceptions": Array [],
-                    },
-                    "shop_name": "mystore1",
-                    "track_order_policy": Object {
-                      "enabled": false,
-                    },
-                    "type": "shopify",
-                    "updated_datetime": "2021-01-26T00:29:30Z",
-                  },
-                ]
-            `)
-        })
-
-        it('should send an updateSelfServiceConfigurations action and the ssp for the store with id 2 when it gets activated', async () => {
-            const shopifyIntegrations = createShopifyIntegrationFixtures(4)
-            const selfServiceConfigurations =
-                createSelfServiceConfigurationFixtures(4)
-
-            const {container, findByTestId} = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        integrations: fromJS({
-                            integrations: shopifyIntegrations,
-                        }),
-                        entities: {
-                            ...defaultState.entities,
-                            selfServiceConfigurations:
-                                selfServiceConfigurations.reduce(
-                                    (
-                                        configurations: SelfServiceConfigurationsState,
-                                        configuration: SelfServiceConfiguration
-                                    ) => ({
-                                        ...configurations,
-                                        [configuration.id]: configuration,
-                                    }),
-                                    {} as Partial<SelfServiceConfiguration>
-                                ),
-                        },
-                    })}
-                >
-                    <SelfServiceView />
-                </Provider>
-            )
-
-            await findByTestId('table-integrations')
-            expect(container).toMatchSnapshot()
-
-            act(() => {
-                fireEvent.click(document.getElementsByClassName('input')[1]) // selecting the 2nd store (id = 2)
-            })
-            expect(updateSelfServiceConfigurationMock.mock.calls[0])
-                .toMatchInlineSnapshot(`
-                Array [
-                  Object {
-                    "cancel_order_policy": Object {
-                      "eligibilities": Array [],
-                      "enabled": false,
-                      "exceptions": Array [],
-                    },
-                    "created_datetime": "2021-01-26T00:29:00Z",
-                    "deactivated_datetime": null,
-                    "id": 2,
-                    "quick_response_policies": Array [],
-                    "report_issue_policy": Object {
-                      "cases": Array [],
-                      "enabled": false,
-                    },
-                    "return_order_policy": Object {
-                      "eligibilities": Array [],
-                      "enabled": false,
-                      "exceptions": Array [],
-                    },
-                    "shop_name": "mystore2",
-                    "track_order_policy": Object {
-                      "enabled": false,
-                    },
-                    "type": "shopify",
-                    "updated_datetime": "2021-01-26T00:29:30Z",
-                  },
-                ]
-            `)
         })
     })
 })

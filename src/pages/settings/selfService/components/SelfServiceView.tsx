@@ -7,8 +7,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Tooltip from 'pages/common/components/Tooltip'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
-import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
@@ -27,18 +25,6 @@ import {IntegrationRow} from './IntegrationRow'
 import css from './SelfServiceView.less'
 
 const selfServiceMock = getIconFromUrl('integrations/self_service.png')
-
-const _findConfiguration = (
-    selfServiceConfigurations: SelfServiceConfiguration[],
-    shopifyIntegration: Map<any, any>
-): SelfServiceConfiguration | undefined => {
-    return selfServiceConfigurations.find((configuration) => {
-        return (
-            configuration.shop_name ===
-            shopifyIntegration.getIn(['meta', 'shop_name'])
-        )
-    })
-}
 
 const _findSelfServiceIntegration = (
     selfServiceIntegrations: List<Map<any, any>>,
@@ -61,9 +47,6 @@ export const SelfServiceView = () => {
     )
     const selfServiceIntegrations = useAppSelector(
         getIntegrationsByTypes(IntegrationType.SelfService)
-    )
-    const selfServiceConfigurations = useAppSelector(
-        getSelfServiceConfigurations
     )
 
     const [loading, setLoading] = useState(true)
@@ -164,10 +147,6 @@ export const SelfServiceView = () => {
                                                             }
                                                             selfServiceIntegration={_findSelfServiceIntegration(
                                                                 selfServiceIntegrations,
-                                                                shopifyIntegration
-                                                            )}
-                                                            configuration={_findConfiguration(
-                                                                selfServiceConfigurations,
                                                                 shopifyIntegration
                                                             )}
                                                         />
