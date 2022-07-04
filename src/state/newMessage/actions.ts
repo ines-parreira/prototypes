@@ -573,12 +573,15 @@ export const updatePotentialCustomers =
             cancelToken,
         }).then(
             (resp) => {
-                return resp.data.map((result) => {
-                    return {
-                        ...result,
-                        ...result.user,
-                    }
-                })
+                return {
+                    ...resp,
+                    data: resp.data.map((result) => {
+                        return {
+                            ...result,
+                            ...result.user,
+                        }
+                    }),
+                }
             },
             (error: AxiosError) => {
                 if (axios.isCancel(error)) {

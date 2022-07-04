@@ -34,6 +34,7 @@ type Props = {
         callback: (options: ReceiverValue[]) => void
     ) => Promise<void> // async function returning search results when typing
     autoFocus?: boolean
+    onOptionSelect: (value: ReceiverValue, index: number) => void
 }
 
 type State = {
@@ -125,10 +126,12 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
     }
 
     selectOption = (index: number) => {
+        const {onOptionSelect} = this.props
         const {options} = this.state
 
         if (options.length) {
             if (options.length > index) {
+                onOptionSelect(options[index], index)
                 this.addValues([options[index]])
                 this.emptyOptions()
             }
@@ -213,7 +216,9 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
             return !_find(value, {value: item.value})
         })
 
-        onChange(value.concat(filteredItems as ReceiverValue[]))
+        const newValue = value.concat(filteredItems as ReceiverValue[])
+
+        onChange(newValue)
     }
 
     removeValue = (index: number) => {

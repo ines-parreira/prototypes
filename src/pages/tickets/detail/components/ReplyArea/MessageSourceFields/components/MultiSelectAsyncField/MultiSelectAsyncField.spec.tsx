@@ -15,6 +15,7 @@ describe('MultiSelectAsyncField component', () => {
         allowCreate: true,
         allowCreateConstraint: isEmail,
         placeholder: 'I am the placeholder',
+        onOptionSelect: jest.fn(),
     }
 
     it('empty items', () => {
@@ -142,5 +143,32 @@ describe('MultiSelectAsyncField component', () => {
             {value: 'alex@gorgias.io'},
             {value: 'romain@gorgias.io', name: 'Romain'},
         ])
+    })
+
+    it('should call onOptionSelect on option click', () => {
+        const receiver: ReceiverValue = {
+            name: 'john',
+            label: 'john',
+            value: 'john.doe@example.com',
+        }
+        minProps.loadOptions.mockImplementation(
+            (value, cb: (receivers: ReceiverValue[]) => void) => cb([receiver])
+        )
+        const component = shallow(<MultiSelectAsyncField {...minProps} />)
+
+        component
+            .children()
+            .first()
+            .find('div > input')
+            .simulate('change', {
+                preventDefault: jest.fn(),
+                stopPropagation: jest.fn(),
+                target: {
+                    value: 'john',
+                },
+            })
+        component.find('.suggestion').simulate('click')
+
+        expect(minProps.onOptionSelect).toHaveBeenLastCalledWith(receiver, 0)
     })
 })

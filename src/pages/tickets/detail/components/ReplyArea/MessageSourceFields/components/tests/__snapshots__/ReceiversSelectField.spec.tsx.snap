@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ReceiversSelectField /> should display an empty field 1`] = `
+<div
+  class="field"
+>
+  <div
+    class="values"
+  >
+    <input
+      class="input"
+      placeholder="Search a customer..."
+      tabindex="2"
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    class="suggestions suggestions--hidden"
+  />
+</div>
+`;
+
+exports[`<ReceiversSelectField /> should display the selected value 1`] = `
+<div
+  class="field"
+>
+  <div
+    class="values"
+  >
+    <div
+      class="item"
+      tabindex="999999"
+    >
+      <span>
+        Acme (hello@acme.io)
+      </span>
+      <span
+        class="item-remove-button"
+      >
+        <i
+          class="material-icons"
+        >
+          close
+        </i>
+      </span>
+    </div>
+    <input
+      class="input"
+      placeholder=""
+      tabindex="2"
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    class="suggestions suggestions--hidden"
+  />
+</div>
+`;

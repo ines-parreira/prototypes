@@ -2677,20 +2677,25 @@ Array [
 exports[`actions updatePotentialCustomers should resolve when cancelled 1`] = `undefined`;
 
 exports[`actions updatePotentialCustomers should return a list of potential customer on success 1`] = `
-Array [
-  Object {
-    "address": "marie@gorgias.io",
-    "customer": Object {
+Object {
+  "data": Array [
+    Object {
+      "address": "marie@gorgias.io",
+      "customer": Object {
+        "id": 4,
+        "name": "Marie Curie",
+      },
       "id": 4,
       "name": "Marie Curie",
+      "type": "email",
+      "user": Object {
+        "id": 4,
+        "name": "Marie Curie",
+      },
     },
-    "id": 4,
-    "name": "Marie Curie",
-    "type": "email",
-    "user": Object {
-      "id": 4,
-      "name": "Marie Curie",
-    },
-  },
-]
+  ],
+  "meta": Object {},
+  "object": "list",
+  "uri": "",
+}
 `;

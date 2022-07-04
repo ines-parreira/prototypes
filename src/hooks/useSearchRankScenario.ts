@@ -8,6 +8,8 @@ import {SearchEngine} from 'models/search/types'
 
 export enum SearchRankSource {
     CustomerProfile = 'customer_profile',
+    CustomerChannelEmail = 'customer_channel_email',
+    CustomerChannelPhone = 'customer_channel_phone',
 }
 
 export type SearchRankRequest = {

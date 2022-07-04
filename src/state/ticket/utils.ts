@@ -37,6 +37,7 @@ export type Receiver = {
     name: string
     address: string
     value?: string
+    id?: number
 }
 
 export type Receivers = {
@@ -48,6 +49,7 @@ export type ReceiverValue = {
     name: string
     label: string
     value: string
+    id?: number
 }
 
 export type ReceiversValue = {
@@ -364,6 +366,7 @@ export function receiversValueFromState(
             name: receiver.name || '',
             label: getPersonLabelFromSource(receiver, sourceType),
             value: receiver.address || '',
+            id: receiver.id,
         }))
         return acc
     }, {} as ReceiversValue)

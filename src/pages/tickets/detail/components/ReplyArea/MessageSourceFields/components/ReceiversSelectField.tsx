@@ -6,6 +6,9 @@ import {isValidPhoneNumber} from 'libphonenumber-js'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useCancellableRequest from 'hooks/useCancellableRequest'
+import useSearchRankScenario, {
+    SearchRankSource,
+} from 'hooks/useSearchRankScenario'
 import {
     getValuePropFromSourceType,
     receiversValueFromState,
@@ -16,7 +19,7 @@ import {
 } from 'state/ticket/utils'
 import {updatePotentialCustomers} from 'state/newMessage/actions'
 import {isEmail} from 'utils'
-import {SearchType} from 'models/search/types'
+import {SearchResponse, SearchType} from 'models/search/types'
 
 import MultiSelectAsyncField from './MultiSelectAsyncField/MultiSelectAsyncField'
 
@@ -46,6 +49,10 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
             sourceType === TicketMessageSourceType.Sms
                 ? SearchType.UserChannelPhone
                 : SearchType.UserChannelEmail
+        const searchRankSource =
+            searchType === SearchType.UserChannelPhone
+                ? SearchRankSource.CustomerChannelPhone
+                : SearchRankSource.CustomerChannelEmail
 
         const [cancellableUpdatePotentialCustomers] = useCancellableRequest(
             (cancelToken: CancelToken) =>
@@ -59,6 +66,8 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
                     )
         )
 
+        const searchRank = useSearchRankScenario(searchRankSource)
+
         const valueFromState = (options: Receiver[]) =>
             receiversValueFromState({to: options}, sourceType).to
 
@@ -69,25 +78,49 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
             )
         }
 
+        const handleOptionSelect = (option: ReceiverValue, index: number) => {
+            searchRank.registerResultSelection({
+                index,
+                id: option.id!,
+            })
+            searchRank.endScenario()
+        }
+
         const search = _debounce(
             async (
                 input: string,
                 callback: (options: ReceiverValue[]) => void
             ) => {
+                searchRank.endScenario()
                 const queryText = input.toLowerCase()
+
+                if (!!input) {
+                    searchRank.registerResultsRequest({
+                        query: queryText,
+                        requestTime: Date.now(),
+                    })
+                }
 
                 if (!queryText) {
                     callback([])
                 }
 
-                const data = (await cancellableUpdatePotentialCustomers(
+                const resp = (await cancellableUpdatePotentialCustomers(
                     queryText,
                     searchType
-                )) as Receiver[]
-                if (!data) {
+                )) as SearchResponse<Receiver>
+                if (!resp?.data) {
                     return
                 }
-                callback(valueFromState(data))
+
+                if (!!input) {
+                    searchRank.registerResultsResponse({
+                        responseTime: Date.now(),
+                        numberOfResults: resp.data.length,
+                        searchEngine: resp.searchEngine,
+                    })
+                    callback(valueFromState(resp.data))
+                }
             },
             1000
         )
@@ -116,6 +149,7 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
                 allowCreate={allowCreate}
                 allowCreateConstraint={allowCreateConstraint}
                 placeholder={placeholder}
+                onOptionSelect={handleOptionSelect}
             />
         )
     }
