@@ -398,11 +398,11 @@ export class HTTPIntegrationOverview extends Component<Props, State> {
                                     to pass the email of the ticket customer.
                                     See other{' '}
                                     <a
-                                        href="https://developers.gorgias.com/reference#the-customer-object"
+                                        href="https://docs.gorgias.com/macros/macro-variables"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        vars
+                                        variables
                                     </a>
                                     .
                                 </div>

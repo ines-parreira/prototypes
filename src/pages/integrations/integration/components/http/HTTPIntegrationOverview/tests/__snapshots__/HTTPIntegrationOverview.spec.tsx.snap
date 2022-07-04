@@ -105,11 +105,11 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
             to pass the email of the ticket customer. See other
              
             <a
-              href="https://developers.gorgias.com/reference#the-customer-object"
+              href="https://docs.gorgias.com/macros/macro-variables"
               rel="noopener noreferrer"
               target="_blank"
             >
-              vars
+              variables
             </a>
             .
           </div>
@@ -361,11 +361,11 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
             to pass the email of the ticket customer. See other
              
             <a
-              href="https://developers.gorgias.com/reference#the-customer-object"
+              href="https://docs.gorgias.com/macros/macro-variables"
               rel="noopener noreferrer"
               target="_blank"
             >
-              vars
+              variables
             </a>
             .
           </div>
@@ -627,11 +627,11 @@ exports[`HTTPIntegrationOverview should display default values because there is 
             to pass the email of the ticket customer. See other
              
             <a
-              href="https://developers.gorgias.com/reference#the-customer-object"
+              href="https://docs.gorgias.com/macros/macro-variables"
               rel="noopener noreferrer"
               target="_blank"
             >
-              vars
+              variables
             </a>
             .
           </div>

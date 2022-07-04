@@ -110,7 +110,7 @@ export default class JSONBody extends React.Component<Props, State> {
                         <FormText color="muted">
                             See full list of variables{' '}
                             <a
-                                href="https://developers.gorgias.com/reference#the-customer-object"
+                                href="https://docs.gorgias.com/macros/macro-variables"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
