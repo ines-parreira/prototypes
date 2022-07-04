@@ -34,14 +34,10 @@
         margin-top: 26px;
         margin-bottom: 26px;
     }
-    &.autoReplyWismo {
+    &.autoReplyWismo,
+    &.autoReplyFAQ {
         display: flex;
         gap: 20px;
-
-        .shopifyIcon {
-            width: 14px;
-            margin-right: 10px;
-        }
 
         .listWrapper :global(.editor-wrapper) {
             height: 92px;
@@ -87,14 +83,14 @@
         .demo {
             flex-basis: 40%;
             .topbar {
-                background-color: @modern-neutral-neutral-2;
+                background-color: @classic-neutral-grey-1;
                 height: 27px;
                 border-radius: 8px 8px 0px 0px;
                 display: flex;
                 align-items: center;
                 .circle {
                     border-radius: 50%;
-                    background-color: white;
+                    background-color: @classic-neutral-grey-3;
                     height: 14px;
                     width: 14px;
                     display: inline-block;
@@ -102,8 +98,7 @@
                 }
             }
             .demoContent {
-                height: 735px;
-                background-color: #f6f7f8;
+                background-color: @classic-neutral-grey-2;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -116,6 +111,23 @@
                     padding: 18px;
                 }
             }
+        }
+    }
+
+    &.autoReplyFAQ {
+        .demo .demoContent {
+            height: fit-content;
+            padding: 16px 0px;
+        }
+    }
+
+    &.autoReplyWismo {
+        .demo .demoContent {
+            height: 735px;
+        }
+        .shopifyIcon {
+            width: 14px;
+            margin-right: 10px;
         }
     }
 }

@@ -39,7 +39,7 @@ describe('<AutoReplyFAQEditor/>', () => {
     })
     it('should render correctly', () => {
         const store = mockStore({
-            entities: entities,
+            entities,
         } as RootState)
         const {container} = render(
             <Provider store={store}>
@@ -47,5 +47,34 @@ describe('<AutoReplyFAQEditor/>', () => {
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+    it('should render a <SelectField/> and an alert if there are multiple help centers', () => {
+        const store = mockStore({
+            entities: {
+                ...entities,
+                helpCenter: {
+                    articles: {},
+                    categories: {},
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': {id: 1, name: 'help center 1'},
+                            '2': {id: 2, name: 'help center 2'},
+                        },
+                    },
+                },
+            },
+        } as unknown as RootState)
+        const {getByText} = render(
+            <Provider store={store}>
+                <AutoReplyFAQEditor {...minProps} />
+            </Provider>
+        )
+        expect(getByText('help center 1'))
+        expect(getByText('help center 2'))
+        expect(
+            getByText(
+                'You have more than 1 help center. Ensure the desired help center is selected below.'
+            )
+        )
     })
 })
