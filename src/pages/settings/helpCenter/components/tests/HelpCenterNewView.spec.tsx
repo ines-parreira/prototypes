@@ -46,6 +46,10 @@ jest.mock('../../hooks/useShopifyStoreWithChatConnectionsOptions', () => {
 jest.mock('../../providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
+jest.mock('../../hooks/useEnableArticleRecommendation', () => ({
+    useEnableArticleRecommendation: () => jest.fn(),
+}))
+
 describe('<HelpCenterNewView />', () => {
     const props = {}
 

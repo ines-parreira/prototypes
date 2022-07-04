@@ -47,6 +47,7 @@ import {useShopifyStoreWithChatConnectionsOptions} from '../hooks/useShopifyStor
 
 import settingsCss from '../../settings.less'
 
+import {useEnableArticleRecommendation} from '../hooks/useEnableArticleRecommendation'
 import {ThemeSwitch} from './ThemeSwitch'
 
 import css from './HelpCenterNewView.less'
@@ -87,6 +88,7 @@ export const HelpCenterNewView = ({
     const [isPristineSubdomain, setPristineSubdomain] = useState(true)
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const disconnectButtonRef = useRef<HTMLSpanElement>(null)
+    const enableArticleRecommendation = useEnableArticleRecommendation(notify)
 
     const localeOptions = useMemo(
         () => locales.map(localeToSelectOption),
@@ -192,6 +194,7 @@ export const HelpCenterNewView = ({
                 navigateToHelpCenterArticles(createdHelpCenter.id)
             }
 
+            void enableArticleRecommendation(createdHelpCenter)
             void notify({
                 message: 'Help Center created with success',
                 status: NotificationStatus.Success,
