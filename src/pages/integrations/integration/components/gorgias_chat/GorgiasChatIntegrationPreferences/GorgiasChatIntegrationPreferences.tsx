@@ -7,6 +7,7 @@ import {fromJS, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
 import {isOfflineModeFeatureEnabled} from 'utils'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -225,30 +226,35 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const existingMeta: Map<any, any> =
             integration.get('meta') || fromJS({})
 
+        const preferences = {
+            auto_responder: {
+                enabled: this.state.autoResponderEnabled,
+                reply: this.state.autoResponderReply,
+            },
+            email_capture_enforcement: this.state.emailCaptureEnforcement,
+            linked_email_integration: this.state.linkedEmailIntegration,
+            hide_on_mobile: this.state.hideOnMobile,
+            hide_outside_business_hours: this.state.hideOutsideBusinessHours,
+            enable_contact_form: this.state.enableContactForm,
+            offline_mode_enabled_datetime:
+                this.state.offlineModeEnabledDatetime,
+        }
+
         const payload = fromJS({
             id: integration.get('id'),
             meta: existingMeta.mergeDeep({
-                preferences: {
-                    auto_responder: {
-                        enabled: this.state.autoResponderEnabled,
-                        reply: this.state.autoResponderReply,
-                    },
-                    email_capture_enforcement:
-                        this.state.emailCaptureEnforcement,
-                    linked_email_integration: this.state.linkedEmailIntegration,
-                    hide_on_mobile: this.state.hideOnMobile,
-                    hide_outside_business_hours:
-                        this.state.hideOutsideBusinessHours,
-                    enable_contact_form: this.state.enableContactForm,
-                    offline_mode_enabled_datetime:
-                        this.state.offlineModeEnabledDatetime,
-                },
+                preferences: preferences,
             }),
         })
 
         await updateOrCreateIntegration(payload)
 
         this.setState({isUpdating: false})
+
+        logEvent(SegmentEvent.ChatPreferencesUpdated, {
+            id: integration.get('id'),
+            preferences: preferences,
+        })
     }
 
     render() {

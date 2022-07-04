@@ -192,6 +192,7 @@ export enum SegmentEvent {
     TeamWizardEntry = 'team-wizard-entry',
     TeamWizardCreatedTeam = 'team-wizard-created-team',
     TeamWizardCreatedRule = 'team-wizard-created-rule',
+    ChatPreferencesUpdated = 'chat-preferences-updated',
 }
 
 export enum StatViewLinkClickedStat {
