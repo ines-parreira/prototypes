@@ -11,14 +11,20 @@ import {
     LocaleCode,
     UpdateCategoryTranslationDto,
 } from 'models/helpCenter/types'
-import {getCategoryById} from 'state/entities/helpCenter/categories'
+import {
+    getCategoryById,
+    updateCategoryTranslation,
+} from 'state/entities/helpCenter/categories'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {MODALS} from 'pages/settings/helpCenter/constants'
+import {
+    HELP_CENTER_DEFAULT_LOCALE,
+    MODALS,
+} from 'pages/settings/helpCenter/constants'
 import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
 import {HelpCenterCategoryEdit} from 'pages/settings/helpCenter/components/HelpCenterCategoryEdit'
-import {changeViewLanguage} from 'state/ui/helpCenter'
+import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
 
 import {useSearchContext} from '../../providers/SearchContext'
 
@@ -37,6 +43,8 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
     const category = useAppSelector(getCategoryById(params?.id))
     const categoriesActions = useCategoriesActions()
     const {setSearchInput} = useSearchContext()
+    const viewLanguage =
+        useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
     const [{loading, value: translation}, getCategoryTranslation] = useAsyncFn(
         (categoryId: number, locale: LocaleCode) => {
@@ -59,6 +67,29 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
         void getCategoryTranslation(category.id, category.translation.locale)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [category])
+
+    useEffect(() => {
+        async function loadTranslation() {
+            if (!category?.id || !category.translation) {
+                return
+            }
+
+            if (category.translation.locale !== viewLanguage) {
+                const translation = await getCategoryTranslation(
+                    category.id,
+                    viewLanguage
+                )
+
+                if (translation !== undefined) {
+                    dispatch(updateCategoryTranslation(translation))
+                }
+            }
+        }
+
+        void loadTranslation()
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [viewLanguage, category])
 
     const handleOnSave = async (
         payload: UpdateCategoryTranslationDto,

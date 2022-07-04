@@ -503,10 +503,6 @@ export const HelpCenterArticlesView: React.FC = () => {
                 unreachable(action)
             }
         }
-
-        if (action === 'copyToClipboard') {
-            onCopyLinkToClipboard(article, isArticleOrAncestorUnlisted)
-        }
     }
 
     const onCopyLinkToClipboard = (article: Article, isUnlisted: boolean) => {
@@ -815,6 +811,7 @@ export const HelpCenterArticlesView: React.FC = () => {
          * whilst it is not the case.
          */
         if (previousIsSearching && !isSearching) {
+            dispatch(changeViewLanguage(helpCenter.default_locale))
             dispatch(resetCategories())
             dispatch(resetArticles())
         }

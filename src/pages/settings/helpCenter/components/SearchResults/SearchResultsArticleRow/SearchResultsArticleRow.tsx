@@ -1,7 +1,7 @@
-import React, {FC, useMemo} from 'react'
+import React, {FC, useCallback, useMemo} from 'react'
 import _keyBy from 'lodash/keyBy'
 
-import {Article} from 'models/helpCenter/types'
+import {Article, LocaleCode} from 'models/helpCenter/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -12,6 +12,8 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import {useLimitations} from 'hooks/helpCenter/useLimitations'
 import {sanitizeHtmlDefault} from 'utils/html'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {changeViewLanguage} from 'state/ui/helpCenter/actions'
 
 import up from '../../../../../../../img/icons/rating-up-white.svg'
 import down from '../../../../../../../img/icons/rating-down-white.svg'
@@ -75,6 +77,7 @@ export const SearchResultsArticleRow: FC<Props> = ({
     onArticleClick,
     onArticleClickSettings,
 }) => {
+    const dispatch = useAppDispatch()
     const locales = useSupportedLocales()
 
     const entity = isLoading(article.article) ? null : article.article
@@ -98,11 +101,38 @@ export const SearchResultsArticleRow: FC<Props> = ({
         entity !== null &&
         isResultOrAncestorUnlisted(article, entity.translation.locale)
 
+    const loadSearchResultTranslationIfMissing = useCallback(() => {
+        if (entity === null) {
+            return
+        }
+
+        const searchResultsLocales = Object.keys(article.algoliaHits)
+
+        const loadedTranslationNotASearchResult =
+            !searchResultsLocales.includes(entity.translation.locale)
+
+        if (loadedTranslationNotASearchResult) {
+            // the type assertion is safe as algoliaHits keys are LocaleCode
+            const firstMatchingLocale: LocaleCode =
+                searchResultsLocales[0] as LocaleCode
+
+            dispatch(changeViewLanguage(firstMatchingLocale))
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [entity, article])
+
+    const onRowClick = useCallback(() => {
+        if (entity !== null) {
+            loadSearchResultTranslationIfMissing()
+            onArticleClick(entity)
+        }
+    }, [entity, loadSearchResultTranslationIfMissing, onArticleClick])
+
     return (
         <TableBodyRow
             aria-label="open article"
             className={css.row}
-            onClick={() => entity !== null && onArticleClick(entity)}
+            onClick={onRowClick}
         >
             <BodyCell>{''}</BodyCell>
             <BodyCell className={nestingCss[`nesting-level-${level}`]}>
@@ -193,6 +223,10 @@ export const SearchResultsArticleRow: FC<Props> = ({
                     ) => {
                         ev.stopPropagation()
                         if (entity !== null) {
+                            if (name === 'articleSettings') {
+                                loadSearchResultTranslationIfMissing()
+                            }
+
                             onArticleClickSettings(
                                 name,
                                 entity,

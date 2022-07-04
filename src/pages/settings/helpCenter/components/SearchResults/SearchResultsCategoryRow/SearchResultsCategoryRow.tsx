@@ -2,7 +2,7 @@ import React, {FC, useCallback, useMemo} from 'react'
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 
-import {Article, NonRootCategory} from 'models/helpCenter/types'
+import {Article, LocaleCode, NonRootCategory} from 'models/helpCenter/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
@@ -14,6 +14,8 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {useModalManager} from 'hooks/useModalManager'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {changeViewLanguage} from 'state/ui/helpCenter/actions'
 
 import {isSearchResultArticle, isLoading, SearchResultCategory} from '../types'
 import {SearchResultsArticleRow} from '../SearchResultsArticleRow'
@@ -70,6 +72,7 @@ type Props = {
         article: Article,
         isArticleOrAncestorUnlisted: boolean
     ) => void
+    viewLanguage: LocaleCode
 }
 
 export const SearchResultsCategoryRow: FC<Props> = ({
@@ -77,7 +80,9 @@ export const SearchResultsCategoryRow: FC<Props> = ({
     level,
     onArticleClick,
     onArticleClickSettings,
+    viewLanguage,
 }) => {
+    const dispatch = useAppDispatch()
     const locales = useSupportedLocales()
     const hasChildren = category.children.length > 0
     const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
@@ -112,11 +117,35 @@ export const SearchResultsCategoryRow: FC<Props> = ({
             }
 
             if (name === 'categorySettings') {
+                const searchResultsLocales = Object.keys(category.algoliaHits)
+                const loadedTranslationNotInSearchResults =
+                    !searchResultsLocales.includes(
+                        category.category.translation.locale
+                    )
+
                 categoryModal.openModal(
                     MODALS.CATEGORY,
                     false,
                     category.category
                 )
+
+                if (searchResultsLocales.length === 0) {
+                    dispatch(
+                        changeViewLanguage(category.category.translation.locale)
+                    )
+                } else if (
+                    loadedTranslationNotInSearchResults ||
+                    viewLanguage !== category.category.translation.locale
+                ) {
+                    // the type assertion is safe as algoliaHits keys are LocaleCode
+                    const firstMatchingLocale: LocaleCode | undefined =
+                        Object.keys(category.algoliaHits)[0] as LocaleCode
+
+                    if (firstMatchingLocale !== undefined) {
+                        dispatch(changeViewLanguage(firstMatchingLocale))
+                    }
+                }
+
                 return
             }
             if (name === 'createNestedCategory') {
@@ -132,6 +161,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
                 })
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [articleModal, categoryModal, category]
     )
 
@@ -230,6 +260,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
                             key={index}
                             onArticleClick={onArticleClick}
                             onArticleClickSettings={onArticleClickSettings}
+                            viewLanguage={viewLanguage}
                         />
                     )
                 )}

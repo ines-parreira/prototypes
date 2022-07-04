@@ -127,6 +127,7 @@ export const SearchResults: FC<Props> = ({
                         key={index}
                         onArticleClick={onArticleClick}
                         onArticleClickSettings={onArticleClickSettings}
+                        viewLanguage={viewLanguage}
                     />
                 ))}
             </TableBody>
