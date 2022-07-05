@@ -21,8 +21,10 @@ describe('<AutoReplyFAQEditor/>', () => {
         settings: {
             slug: ManagedRulesSlugs.AutoReplyWismo,
             block_list: [],
+            help_center_id: 1,
         },
         onChange: jest.fn(),
+        handleInstallationError: jest.fn(),
     }
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
@@ -76,5 +78,38 @@ describe('<AutoReplyFAQEditor/>', () => {
                 'You have more than 1 help center. Ensure the desired help center is selected below.'
             )
         )
+    })
+    it('should render an <Alert/> if the helpCenter is no longer available', () => {
+        const store = mockStore({
+            entities: {
+                ...entities,
+                helpCenter: {
+                    articles: {},
+                    categories: {},
+                    helpCenters: {
+                        helpCentersById: {
+                            '1': {
+                                id: 1,
+                                name: 'help center 1',
+                                deactivated_datetime: '2022-01-01',
+                            },
+                            '2': {id: 2, name: 'help center 2'},
+                        },
+                    },
+                },
+            },
+        } as unknown as RootState)
+        const {getByText} = render(
+            <Provider store={store}>
+                <AutoReplyFAQEditor {...minProps} />
+            </Provider>
+        )
+        expect(getByText('help center 2'))
+        expect(
+            getByText(
+                'Your previously selected help center was deleted or deactivated. Please select a new one to reactivate this rule.'
+            )
+        )
+        expect(minProps.handleInstallationError).toHaveBeenCalled()
     })
 })

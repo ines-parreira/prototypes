@@ -18,6 +18,30 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
         Link
       </p>
       <div
+        class="alert error"
+      >
+        <div
+          class="iconContainer"
+        >
+          <img
+            alt="icon"
+            src="test-file-stub"
+          />
+        </div>
+        <div
+          class="content"
+        >
+          <span
+            class="label"
+          >
+            Your previously selected help center was deleted or deactivated. Please
+             
+            create
+             a new one to reactivate this rule.
+          </span>
+        </div>
+      </div>
+      <div
         class="listWrapper"
       >
         <h4>

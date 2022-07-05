@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import {Map, fromJS} from 'immutable'
@@ -13,6 +13,8 @@ import {Option, Value} from 'pages/common/forms/SelectField/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import {InstallationError} from 'pages/settings/rules/ruleLibrary/constants'
 import LinkToRecipeView from './LinkToRecipeView'
 
 import {ManagedRuleDetailProps} from './ManagedRuleEditor'
@@ -48,12 +50,19 @@ const HelpCenterSelectField = ({
     )
 }
 
+type Props = ManagedRuleDetailProps<AutoReplyFAQSettings> & {
+    handleInstallationError: (error: InstallationError | null) => void
+}
+
 export const AutoReplyFAQEditor = ({
     settings,
     onChange,
-}: ManagedRuleDetailProps<AutoReplyFAQSettings>) => {
+    handleInstallationError,
+}: Props) => {
     const handleChange = onChange()
     const helpCenters = useAppSelector(getActiveHelpCenterList)
+    const [initialHelpCenterId] = useState(settings.help_center_id)
+    useHelpCenterList({per_page: 900})
 
     const handleBlocklist = (block_list: string[]) => {
         if (!handleChange) {
@@ -94,6 +103,23 @@ export const AutoReplyFAQEditor = ({
         })
     }
 
+    const isHelpCenterAvailable = !!helpCenters.find(
+        (helpCenter) => helpCenter.id === settings.help_center_id
+    )
+
+    const shouldDisplayHelpCenterList =
+        helpCenters.length > 1 ||
+        (!!helpCenters.length && !isHelpCenterAvailable) ||
+        initialHelpCenterId !== settings.help_center_id
+
+    useEffect(
+        () =>
+            !isHelpCenterAvailable
+                ? handleInstallationError(InstallationError.NoHelpCenter)
+                : handleInstallationError(null),
+        [isHelpCenterAvailable, handleInstallationError]
+    )
+
     return (
         <div className={classnames(css.container, css.autoReplyFAQ)}>
             <div className={css.descriptionWrapper}>
@@ -110,13 +136,21 @@ export const AutoReplyFAQEditor = ({
                         this link
                     </LinkToRecipeView>
                 </p>
-                {helpCenters.length > 1 && (
+                {helpCenters.length > 1 && isHelpCenterAvailable && (
                     <Alert type={AlertType.Warning} icon>
                         You have more than 1 help center. Ensure the desired
                         help center is selected below.
                     </Alert>
                 )}
-                {helpCenters.length > 1 && (
+                {!isHelpCenterAvailable && (
+                    <Alert type={AlertType.Error} icon>
+                        Your previously selected help center was deleted or
+                        deactivated. Please{' '}
+                        {helpCenters.length ? 'select' : 'create'} a new one to
+                        reactivate this rule.
+                    </Alert>
+                )}
+                {shouldDisplayHelpCenterList && (
                     <div className={css.listWrapper}>
                         <h4>Help Center</h4>
                         <HelpCenterSelectField

@@ -9,7 +9,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {ManagedRulesSlugs} from 'state/rules/types'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
 import {emptyManagedRule} from 'fixtures/rule'
-
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import ManagedRuleEditor from '../ManagedRuleEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -39,7 +39,7 @@ describe('<ManagedRuleEditor/>', () => {
                 [ManagedRulesSlugs.AutoCloseSpam as string]:
                     emptyRuleRecipeFixture,
             },
-            helpCenter: {articles: {}, categories: {}, helpCenters: {}},
+            helpCenter: helpCenterInitialState,
         },
         billing: fromJS({plans: []}),
     } as RootState)

@@ -16,6 +16,7 @@ import {NotificationStatus} from 'state/notifications/types'
 
 import {ManagedRuleSettings, ManagedRulesSlugs} from 'state/rules/types'
 
+import {InstallationError} from 'pages/settings/rules/ruleLibrary/constants'
 import type {ManagedRuleEditorProps} from '../RuleFormEditor'
 import AutoCloseSpamEditor from './AutoCloseSpamEditor'
 import AutoReplyWismoEditor from './AutoReplyWismoEditor'
@@ -28,6 +29,7 @@ type Props = {slug: ManagedRulesSlugs} & ManagedRuleEditorProps
 export type ManagedRuleDetailProps<T> = {
     settings: ManagedRuleSettings<T>
     onChange: () => ((settings: ManagedRuleSettings<T>) => void) | undefined
+    handleInstallationError?: (error: InstallationError | null) => void
 }
 
 export const ManagedRuleEditor = ({
@@ -50,6 +52,8 @@ export const ManagedRuleEditor = ({
     const [deactivatedDatetime, setDeactivatedDatetime] = useState(
         rule.deactivated_datetime
     )
+    const [installationError, setInstallationError] =
+        useState<InstallationError | null>()
 
     const dispatch = useAppDispatch()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
@@ -133,7 +137,11 @@ export const ManagedRuleEditor = ({
 
     return (
         <div>
-            <Editor onChange={handleChange} settings={settings} />
+            <Editor
+                onChange={handleChange}
+                settings={settings}
+                handleInstallationError={setInstallationError}
+            />
             <div className={css.toggleButtonContainer}>
                 <span>
                     <ToggleInput
@@ -150,7 +158,9 @@ export const ManagedRuleEditor = ({
 
             <RuleItemButtons
                 ruleId={rule.id}
-                canSubmit={!isSubmitting && hasAutomationAddOn}
+                canSubmit={
+                    !isSubmitting && hasAutomationAddOn && !installationError
+                }
                 canDuplicate={false}
                 isDeleting={isDeleting}
                 onDelete={handleDelete}

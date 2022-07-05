@@ -19,6 +19,30 @@ exports[`<AutoReplyFAQEditor/> should render correctly 1`] = `
       </p>
     </p>
     <div
+      class="alert error"
+    >
+      <div
+        class="iconContainer"
+      >
+        <img
+          alt="icon"
+          src="test-file-stub"
+        />
+      </div>
+      <div
+        class="content"
+      >
+        <span
+          class="label"
+        >
+          Your previously selected help center was deleted or deactivated. Please
+           
+          create
+           a new one to reactivate this rule.
+        </span>
+      </div>
+    </div>
+    <div
       class="listWrapper"
     >
       <h4>
