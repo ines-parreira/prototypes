@@ -47,6 +47,7 @@ describe('<RuleRow />', () => {
         canDuplicate: true,
         handleUpgrade: jest.fn(),
         onActivate: jest.fn(),
+        shouldDisplayError: false,
     }
 
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -99,6 +100,7 @@ describe('<RuleRow />', () => {
                             help_center_id: 1,
                         },
                     }}
+                    shouldDisplayError={true}
                 />
             </Provider>
         )

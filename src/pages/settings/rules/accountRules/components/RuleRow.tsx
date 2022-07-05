@@ -49,6 +49,7 @@ type Props = {
     canDuplicate: boolean
     handleUpgrade: (id: number) => void
     onActivate: (id: number) => Promise<void>
+    shouldDisplayError?: boolean
 }
 
 export function RuleRow({
@@ -56,6 +57,7 @@ export function RuleRow({
     canDuplicate,
     handleUpgrade,
     onActivate,
+    shouldDisplayError = false,
 }: Props) {
     const dispatch = useAppDispatch()
     const [error, setError] = useState<string>()
@@ -78,7 +80,7 @@ export function RuleRow({
     }, [rule, ruleRecipes])
 
     useEffect(() => {
-        if (rule.type === RuleType.Managed) {
+        if (rule.type === RuleType.Managed && shouldDisplayError) {
             const settings = (rule as ManagedRule).settings
             if (settings.slug === ManagedRulesSlugs.AutoReplyFAQ) {
                 const helpCenterId = (
@@ -95,7 +97,7 @@ export function RuleRow({
                 }
             }
         }
-    }, [rule, helpCenters])
+    }, [rule, helpCenters, shouldDisplayError])
 
     const handleDuplicate = async () => {
         if (canDuplicate) {

@@ -25,9 +25,15 @@ type Props = {
     rules: Rule[]
     limitStatus: RuleLimitStatus
     handleGoToLibrary: () => void
+    shouldDisplayError?: boolean
 }
 
-export function RulesList({rules, limitStatus, handleGoToLibrary}: Props) {
+export function RulesList({
+    rules,
+    limitStatus,
+    handleGoToLibrary,
+    shouldDisplayError = false,
+}: Props) {
     const dispatch = useAppDispatch()
     const handleReordering = async (orders: string[]) => {
         const priorities = orders.map(
@@ -129,6 +135,7 @@ export function RulesList({rules, limitStatus, handleGoToLibrary}: Props) {
                                 }
                                 handleUpgrade={setManagedRuleUpgradeID}
                                 onActivate={handleActivate}
+                                shouldDisplayError={shouldDisplayError}
                             />
                         ))}
                     </ReactSortable>

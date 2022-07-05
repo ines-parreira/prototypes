@@ -57,7 +57,7 @@ export function RulesViewContainer({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const recipeTags = Object.values(RuleRecipeTag)
 
-    useHelpCenterList({per_page: 900})
+    const {isLoading: isHelpCenterLoading} = useHelpCenterList({per_page: 900})
 
     const [{loading: isFetchingRules}, handleFetchRules] = useAsyncFn(
         async () => {
@@ -314,6 +314,7 @@ export function RulesViewContainer({
                             rules={rules}
                             limitStatus={limitStatus}
                             handleGoToLibrary={goToLibrary}
+                            shouldDisplayError={!isHelpCenterLoading}
                         />
                     )}
                 </>
