@@ -21,6 +21,7 @@ import {
 } from 'state/entities/rules/actions'
 
 import {ManagedRulesSlugs} from 'state/rules/types'
+import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
 import {RuleRow} from '../RuleRow'
 
 jest.mock('models/rule/resources')
@@ -57,6 +58,7 @@ describe('<RuleRow />', () => {
             ruleRecipes: {
                 [emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture,
             },
+            helpCenter: helpCenterInitialState,
         },
     } as RootState)
 
@@ -79,6 +81,23 @@ describe('<RuleRow />', () => {
                     rule={{
                         ...emptyManagedRule,
                         settings: {slug: ManagedRulesSlugs.AutoCloseSpam},
+                    }}
+                />
+            </Provider>
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
+    it('should render a row with an error', () => {
+        const {container} = render(
+            <Provider store={store}>
+                <RuleRow
+                    {...minProps}
+                    rule={{
+                        ...emptyManagedRule,
+                        settings: {
+                            slug: ManagedRulesSlugs.AutoReplyFAQ,
+                            help_center_id: 1,
+                        },
                     }}
                 />
             </Provider>

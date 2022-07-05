@@ -1,4 +1,10 @@
-import React, {MouseEvent, useCallback, useMemo, useState} from 'react'
+import React, {
+    MouseEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 import {useAsyncFn} from 'react-use'
 import moment from 'moment'
 import classnames from 'classnames'
@@ -25,12 +31,21 @@ import {
 import {getSortedRuleRecipes} from 'state/entities/ruleRecipes/selectors'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
-import {ManagedRule, Rule, RuleType} from 'state/rules/types'
+import {
+    AnyManagedRuleSettings,
+    AutoReplyFAQSettings,
+    ManagedRule,
+    ManagedRuleSettings,
+    ManagedRulesSlugs,
+    Rule,
+    RuleType,
+} from 'state/rules/types'
 
+import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
 import css from './RuleRow.less'
 
 type Props = {
-    rule: Rule | ManagedRule
+    rule: Rule | ManagedRule<AnyManagedRuleSettings>
     canDuplicate: boolean
     handleUpgrade: (id: number) => void
     onActivate: (id: number) => Promise<void>
@@ -43,8 +58,10 @@ export function RuleRow({
     onActivate,
 }: Props) {
     const dispatch = useAppDispatch()
+    const [error, setError] = useState<string>()
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
     const ruleRecipes = useAppSelector(getSortedRuleRecipes)
+    const helpCenters = useAppSelector(getActiveHelpCenterList)
 
     const [isDescriptionOpen, setDescriptionOpen] = useState(false)
     const isFromLibrary = useMemo(() => {
@@ -59,6 +76,26 @@ export function RuleRow({
             )
         })
     }, [rule, ruleRecipes])
+
+    useEffect(() => {
+        if (rule.type === RuleType.Managed) {
+            const settings = (rule as ManagedRule).settings
+            if (settings.slug === ManagedRulesSlugs.AutoReplyFAQ) {
+                const helpCenterId = (
+                    settings as ManagedRuleSettings<AutoReplyFAQSettings>
+                ).help_center_id
+                if (
+                    !helpCenters.find(
+                        (helpCenter) => helpCenter.id === helpCenterId
+                    )
+                ) {
+                    setError('No help center selected')
+                } else {
+                    setError('')
+                }
+            }
+        }
+    }, [rule, helpCenters])
 
     const handleDuplicate = async () => {
         if (canDuplicate) {
@@ -270,6 +307,14 @@ export function RuleRow({
                                 </i>
                                 Managed Rule
                             </Badge>
+                        )}
+                        {error && (
+                            <span className={classnames('ml-2', css.error)}>
+                                <span className="material-icons mr-1">
+                                    error_outline
+                                </span>
+                                {error}
+                            </span>
                         )}
                     </div>
                 </Link>
