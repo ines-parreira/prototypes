@@ -1,26 +1,27 @@
-import React, {ReactNode, useEffect, useMemo, useState} from 'react'
+import React, {ReactNode, useContext, useEffect, useMemo, useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {usePrevious} from 'react-use'
 
 import CheckBox from 'pages/common/forms/CheckBox'
-import Loader from '../Loader/Loader'
-import BlankState from '../BlankState/index.js'
-import Navigation from '../Navigation/index.js'
-import {RootState} from '../../../../state/types'
-import shortcutManager from '../../../../services/shortcutManager'
-import {moveIndex, MoveIndexDirection} from '../../../common/utils/keyboard'
+import Loader from 'pages/common/components/Loader/Loader'
+import BlankState from 'pages/common/components/BlankState/index.js'
+import Navigation from 'pages/common/components/Navigation/index.js'
+import {RootState} from 'state/types'
+import shortcutManager from 'services/shortcutManager'
+import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
 import {
     toggleViewSelection,
     toggleIdInSelectedItemsIds,
     updateSelectedItemsIds,
     resetView,
     fetchViewItems,
-} from '../../../../state/views/actions'
-import {areAllActiveViewItemsSelected} from '../../../../state/views/selectors'
-import {ViewImmutable, ViewNavDirection} from '../../../../state/views/types'
-import history from '../../../history'
+} from 'state/views/actions'
+import {areAllActiveViewItemsSelected} from 'state/views/selectors'
+import {ViewImmutable, ViewNavDirection} from 'state/views/types'
+import history from 'pages/history'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 
 import css from './Table.less'
 import HeaderCell from './Table/HeaderCell'
@@ -73,6 +74,7 @@ const TableContainer = ({
 }: Props) => {
     const prevItems = usePrevious(items)
     const [rowCursor, setRowCursor] = useState(0)
+    const searchRank = useContext(SearchRankScenarioContext)
 
     const areAllSelected = useMemo(
         () => !!selectedItemsIds && items.size === selectedItemsIds.size,
@@ -111,7 +113,7 @@ const TableContainer = ({
             return
         }
 
-        void fetchViewItems(direction)
+        void fetchViewItems(direction, null, null, searchRank)
     }
 
     useEffect(() => {
@@ -143,6 +145,10 @@ const TableContainer = ({
                     if (!item) {
                         return
                     }
+                    searchRank?.registerResultSelection({
+                        id: (item as Map<any, any>).get('id'),
+                        index: rowCursor,
+                    })
                     if (onItemClick) {
                         onItemClick(item)
                     } else if (getItemUrl) {
@@ -306,7 +312,13 @@ const TableContainer = ({
                                 }
                                 type={type}
                                 hasCursor={rowCursor === index}
-                                onItemClick={onItemClick}
+                                onItemClick={(item) => {
+                                    searchRank?.registerResultSelection({
+                                        id: item.get('id'),
+                                        index: index as number,
+                                    })
+                                    onItemClick?.(item)
+                                }}
                                 itemUrl={getItemUrl ? getItemUrl(item) : null}
                             />
                         )
@@ -318,8 +330,22 @@ const TableContainer = ({
                 className={css.navigation}
                 hasNextItems={!!navigation.get('next_items')}
                 hasPrevItems={!!navigation.get('prev_items')}
-                fetchNextItems={() => fetchViewItems(ViewNavDirection.NextView)}
-                fetchPrevItems={() => fetchViewItems(ViewNavDirection.PrevView)}
+                fetchNextItems={() =>
+                    fetchViewItems(
+                        ViewNavDirection.NextView,
+                        null,
+                        null,
+                        searchRank
+                    )
+                }
+                fetchPrevItems={() =>
+                    fetchViewItems(
+                        ViewNavDirection.PrevView,
+                        null,
+                        null,
+                        searchRank
+                    )
+                }
             />
         </div>
     )

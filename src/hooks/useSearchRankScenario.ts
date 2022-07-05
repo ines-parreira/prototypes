@@ -10,6 +10,7 @@ export enum SearchRankSource {
     CustomerProfile = 'customer_profile',
     CustomerChannelEmail = 'customer_channel_email',
     CustomerChannelPhone = 'customer_channel_phone',
+    TicketsView = 'tickets_view',
 }
 
 export type SearchRankRequest = {
@@ -28,6 +29,14 @@ export type SearchRankSelectedItem = {
     index: number
 }
 
+export type SearchRank = {
+    isRunning: boolean
+    registerResultsRequest: (req: SearchRankRequest) => void
+    registerResultsResponse: (res: SearchRankResponse) => void
+    registerResultSelection: (item: SearchRankSelectedItem) => void
+    endScenario: () => void
+}
+
 const DATABASE_TYPE: Record<SearchEngine, string> = {
     [SearchEngine.ES]: 'elasticsearch',
     [SearchEngine.PG]: 'postgres',
@@ -36,12 +45,12 @@ const DATABASE_TYPE: Record<SearchEngine, string> = {
 export default function useSearchRankScenario(
     source: SearchRankSource,
     scenarioTimeout = 60000
-) {
+): SearchRank {
     const request = useRef<SearchRankRequest | undefined>()
     const response = useRef<SearchRankResponse | undefined>()
     const selectedItem = useRef<SearchRankSelectedItem | undefined>()
     const timeout = useRef<NodeJS.Timeout | undefined>()
-    const [isLive, setIsLive] = useState(false)
+    const [isRunning, setIsRunning] = useState(false)
     const currentAccount = useAppSelector(getCurrentAccountState)
 
     const endScenario = useCallback(() => {
@@ -70,7 +79,7 @@ export default function useSearchRankScenario(
         if (timeout.current) {
             clearTimeout(timeout.current)
         }
-        setIsLive(false)
+        setIsRunning(false)
         selectedItem.current = undefined
     }, [source, currentAccount])
 
@@ -82,14 +91,10 @@ export default function useSearchRankScenario(
         [endScenario]
     )
 
-    const registerResultsResponse = useCallback(
-        (res: SearchRankResponse) => {
-            endScenario()
-            response.current = res
-            setIsLive(true)
-        },
-        [endScenario]
-    )
+    const registerResultsResponse = useCallback((res: SearchRankResponse) => {
+        response.current = res
+        setIsRunning(true)
+    }, [])
 
     const registerResultSelection = useCallback(
         ({index, id}: SearchRankSelectedItem) => {
@@ -102,27 +107,27 @@ export default function useSearchRankScenario(
         if (timeout.current) {
             clearTimeout(timeout.current)
         }
-        if (isLive) {
+        if (isRunning) {
             if (response.current?.numberOfResults) {
                 timeout.current = setTimeout(endScenario, scenarioTimeout)
             } else {
                 endScenario()
             }
         }
-    }, [isLive, endScenario, scenarioTimeout])
+    }, [isRunning, endScenario, scenarioTimeout])
 
     useUnmount(endScenario)
 
     return useMemo(() => {
         return {
-            isRunning: isLive,
+            isRunning,
             registerResultsRequest,
             registerResultsResponse,
             registerResultSelection,
             endScenario,
         }
     }, [
-        isLive,
+        isRunning,
         registerResultsRequest,
         registerResultsResponse,
         registerResultSelection,

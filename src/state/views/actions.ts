@@ -6,7 +6,7 @@ import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 
-import {search} from 'models/search/resources'
+import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
 import * as viewsConfig from 'config/views'
 import {BASE_VIEW_ID} from 'constants/view'
 import {OrderDirection, ApiListResponsePagination} from 'models/api/types'
@@ -28,7 +28,8 @@ import {buildJobMessage} from 'utils/notificationUtils'
 import {getMoment} from 'utils/date'
 import {StoreDispatch, RootState} from 'state/types'
 import client from 'models/api/resources'
-import {SearchType} from 'models/search/types'
+import {SearchEngine, SearchType} from 'models/search/types'
+import {SearchRank} from 'hooks/useSearchRankScenario'
 
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
@@ -371,6 +372,7 @@ export function fetchViewItems(
     direction: Maybe<ViewNavDirection> = null,
     cursor?: Maybe<string>,
     isPolling: Maybe<boolean> = false,
+    searchRank?: SearchRank | null,
     cancelToken?: CancelToken
 ) {
     return (
@@ -383,6 +385,7 @@ export function fetchViewItems(
         const activeViewType = activeView.get('type')
         const viewConfig = viewsConfig.getConfigByType(activeViewType)
         const navigation = viewsSelectors.getNavigation(state)
+        const shouldRegisterSearchRankRequest = !direction && !cursor
 
         const viewId = activeView.get('id') as number
 
@@ -443,49 +446,68 @@ export function fetchViewItems(
             )
         }
 
-        return promise
-            .then((json) => json?.data)
-            .then(
-                (data) => {
-                    state = getState()
-
-                    // If it's a background polling, or we're not on the first page, don't update displayed items because
-                    // polling is only enabled on the first page.
-                    if (isPolling && !viewsSelectors.isOnFirstPage(state)) {
-                        return
-                    }
-
-                    const viewHasChanged =
-                        viewsSelectors.getActiveView(state).get('id') !==
-                            viewId ||
-                        filtersHash !==
-                            getHashOfObj(
-                                viewsSelectors.getActiveViewFilters(state)
-                            )
-
-                    if (viewHasChanged) {
-                        return
-                    }
-
-                    dispatch({
-                        type: types.FETCH_LIST_VIEW_SUCCESS,
-                        viewType: activeViewType,
-                        data,
+        searchRank?.endScenario()
+        if (shouldRegisterSearchRankRequest) {
+            searchRank?.registerResultsRequest({
+                query: activeView.get('search'),
+                requestTime: Date.now(),
+            })
+        }
+        return promise.then(
+            (resp) => {
+                if (shouldRegisterSearchRankRequest) {
+                    searchRank?.registerResultsResponse({
+                        numberOfResults: resp.data.data.length,
+                        responseTime: Date.now(),
+                        searchEngine:
+                            resp.headers &&
+                            (
+                                resp.headers as Partial<
+                                    Record<
+                                        typeof SEARCH_ENGINE_HEADER,
+                                        SearchEngine
+                                    >
+                                >
+                            )[SEARCH_ENGINE_HEADER],
                     })
-                },
-                (error: AxiosError) => {
-                    if (axios.isCancel(error)) {
-                        return Promise.resolve()
-                    }
-                    return dispatch({
-                        type: types.FETCH_LIST_VIEW_ERROR,
-                        error,
-                        reason: `Failed to fetch list of ${
-                            viewConfig.get('plural') as string
-                        }`,
-                    }) as unknown as Promise<ReturnType<StoreDispatch>>
                 }
-            )
+
+                state = getState()
+
+                // If it's a background polling, or we're not on the first page, don't update displayed items because
+                // polling is only enabled on the first page.
+                if (isPolling && !viewsSelectors.isOnFirstPage(state)) {
+                    return
+                }
+
+                const viewHasChanged =
+                    viewsSelectors.getActiveView(state).get('id') !== viewId ||
+                    filtersHash !==
+                        getHashOfObj(viewsSelectors.getActiveViewFilters(state))
+
+                if (viewHasChanged) {
+                    return
+                }
+
+                dispatch({
+                    type: types.FETCH_LIST_VIEW_SUCCESS,
+                    viewType: activeViewType,
+                    data: resp.data,
+                })
+            },
+            (error: AxiosError) => {
+                if (axios.isCancel(error)) {
+                    return Promise.resolve()
+                }
+                return dispatch({
+                    type: types.FETCH_LIST_VIEW_ERROR,
+                    error,
+                    reason: `Failed to fetch list of ${
+                        viewConfig.get('plural') as string
+                    }`,
+                }) as unknown as Promise<ReturnType<StoreDispatch>>
+            }
+        )
     }
 }
 

@@ -42,4 +42,19 @@ describe('ViewTable::Table::Cell', () => {
         )
         expect(component).toMatchSnapshot()
     })
+
+    it('it should call onClick handler when itemUrl is passed', () => {
+        const onClick = jest.fn()
+        const component = shallow(
+            <CellContainer
+                {...minProps}
+                itemUrl="/app/ticket/123"
+                onClick={onClick}
+            />
+        )
+
+        component.find('Link').simulate('click')
+
+        expect(onClick).toHaveBeenLastCalledWith(minProps.item)
+    })
 })

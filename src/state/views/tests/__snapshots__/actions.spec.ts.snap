@@ -645,6 +645,45 @@ Object {
 }
 `;
 
+exports[`actions fetchViewItems should register the rank scenario request and response 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "query": undefined,
+        "requestTime": 1487076708000,
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`actions fetchViewItems should register the rank scenario request and response 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "numberOfResults": 2,
+        "responseTime": 1487076708000,
+        "searchEngine": undefined,
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
 exports[`actions fieldEnumSearch() should dispatch results 1`] = `
 Immutable.List [
   Immutable.Map {

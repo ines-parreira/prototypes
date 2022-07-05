@@ -322,4 +322,38 @@ describe('useSearchRankScenario', () => {
             })
         )
     })
+
+    it('should log rank once when two requests are registered', () => {
+        const {result} = renderHook(
+            () =>
+                useSearchRankScenario(
+                    SearchRankSource.CustomerProfile,
+                    defaultScenarioTimeout
+                ),
+            {
+                wrapper: (({children}) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                )) as ComponentType,
+            }
+        )
+
+        act(() => {
+            const {
+                registerResultsRequest,
+                registerResultsResponse,
+                registerResultSelection,
+                endScenario,
+            } = result.current
+            registerResultsRequest(defaultResultsRequest)
+            registerResultsRequest(defaultResultsRequest)
+            registerResultsResponse(defaultResultsResponse)
+            registerResultsResponse(defaultResultsResponse)
+            registerResultSelection({index: 1, id: 'foo'})
+            endScenario()
+        })
+
+        expect(logEventMock.mock.calls).toMatchSnapshot()
+    })
 })

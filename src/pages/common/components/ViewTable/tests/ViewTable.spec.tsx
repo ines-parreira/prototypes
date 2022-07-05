@@ -6,20 +6,21 @@ import {Location} from 'history'
 import _identity from 'lodash/identity'
 import {stringify} from 'qs'
 
-import * as ticketFixtures from '../../../../../fixtures/ticket'
-import {ViewVisibility} from '../../../../../models/view/types'
-import * as viewsActions from '../../../../../state/views/actions'
-import {view as fixtureView} from '../../../../../fixtures/views'
-import {activeViewIdSet} from '../../../../../state/ui/views/actions'
-import history from '../../../../history'
+import * as ticketFixtures from 'fixtures/ticket'
+import {ViewVisibility} from 'models/view/types'
+import * as viewsActions from 'state/views/actions'
+import {view as fixtureView} from 'fixtures/views'
+import {activeViewIdSet} from 'state/ui/views/actions'
+import history from 'pages/history'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import {mockSearchRank} from 'fixtures/searchRank'
+
 import {ViewTableContainer} from '../ViewTable'
 
 jest.addMatchers(immutableMatchers)
 
-jest.mock('../../../../../state/views/actions', () => {
-    const {updateView} = require.requireActual(
-        '../../../../../state/views/actions'
-    )
+jest.mock('state/views/actions', () => {
+    const {updateView} = require.requireActual('state/views/actions')
     return {
         fetchViewItems: jest.fn().mockReturnValue(() => Promise.resolve()),
         setViewActive: jest.fn().mockReturnValue(() => Promise.resolve()),
@@ -27,7 +28,7 @@ jest.mock('../../../../../state/views/actions', () => {
     }
 })
 
-jest.mock('../../../../../state/ui/views/actions')
+jest.mock('state/ui/views/actions')
 ;(
     activeViewIdSet as jest.MockedFunction<typeof activeViewIdSet>
 ).mockImplementation((() => _identity) as any)
@@ -109,7 +110,9 @@ describe('<ViewTable />', () => {
             )
             expect(minProps.fetchViewItems).toHaveBeenLastCalledWith(
                 null,
-                cursor
+                cursor,
+                null,
+                null
             )
         })
 
@@ -126,7 +129,9 @@ describe('<ViewTable />', () => {
             )
             expect(minProps.fetchViewItems).toHaveBeenLastCalledWith(
                 null,
-                undefined
+                undefined,
+                null,
+                null
             )
         })
 
@@ -138,14 +143,24 @@ describe('<ViewTable />', () => {
                 />
             )
             expect(minProps.setViewActive).toBeCalledWith(minProps.activeView)
-            expect(minProps.fetchViewItems).toBeCalledWith(null, undefined)
+            expect(minProps.fetchViewItems).toBeCalledWith(
+                null,
+                undefined,
+                null,
+                null
+            )
         })
 
         it('should fetch items and not set the active view when active view is not empty and no urlViewId', () => {
             render(<ViewTableContainer {...minProps} urlViewId={null} />)
             expect(minProps.updateView).not.toBeCalled()
             expect(minProps.setViewActive).not.toBeCalled()
-            expect(minProps.fetchViewItems).toBeCalledWith(null, undefined)
+            expect(minProps.fetchViewItems).toBeCalledWith(
+                null,
+                undefined,
+                null,
+                null
+            )
         })
 
         it('should redirect to the app when suggested view id does not match urlViewId', () => {
@@ -215,6 +230,23 @@ describe('<ViewTable />', () => {
                 ...state,
             })
             expect(minProps.fetchViewItemsCancellable).toHaveBeenCalledTimes(1)
+        })
+
+        it('should fetch view items with the searchRank from the context', () => {
+            render(
+                <SearchRankScenarioContext.Provider value={mockSearchRank}>
+                    <ViewTableContainer
+                        {...minProps}
+                        urlViewId={minProps.activeView.get('id')}
+                    />
+                </SearchRankScenarioContext.Provider>
+            )
+            expect(minProps.fetchViewItems).toBeCalledWith(
+                null,
+                undefined,
+                null,
+                mockSearchRank
+            )
         })
     })
 
@@ -320,6 +352,7 @@ describe('<ViewTable />', () => {
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
                 null,
                 cursor,
+                null,
                 null
             )
         })
@@ -340,6 +373,7 @@ describe('<ViewTable />', () => {
                 expect(minProps.fetchViewItemsCancellable).toBeCalledWith(
                     null,
                     null,
+                    null,
                     null
                 )
             }
@@ -357,6 +391,7 @@ describe('<ViewTable />', () => {
                 false
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
+                null,
                 null,
                 null,
                 null
@@ -385,7 +420,7 @@ describe('<ViewTable />', () => {
                 expect(minProps.updateView).toHaveBeenLastCalledWith(newView)
                 expect(
                     minProps.fetchViewItemsCancellable
-                ).toHaveBeenLastCalledWith(null, null, null)
+                ).toHaveBeenLastCalledWith(null, null, null, null)
             }
         )
 
@@ -411,7 +446,7 @@ describe('<ViewTable />', () => {
                 )
                 expect(
                     minProps.fetchViewItemsCancellable
-                ).toHaveBeenLastCalledWith(null, null, null)
+                ).toHaveBeenLastCalledWith(null, null, null, null)
             }
         )
 
@@ -437,7 +472,7 @@ describe('<ViewTable />', () => {
                 )
                 expect(
                     minProps.fetchViewItemsCancellable
-                ).toHaveBeenLastCalledWith(null, null, null)
+                ).toHaveBeenLastCalledWith(null, null, null, null)
             }
         )
 
@@ -460,7 +495,7 @@ describe('<ViewTable />', () => {
                 expect(minProps.setViewActive).toHaveBeenCalledTimes(1)
                 expect(
                     minProps.fetchViewItemsCancellable
-                ).toHaveBeenLastCalledWith(null, null, null)
+                ).toHaveBeenLastCalledWith(null, null, null, null)
             }
         )
 
@@ -485,6 +520,7 @@ describe('<ViewTable />', () => {
                 />
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
+                null,
                 null,
                 null,
                 null
@@ -585,7 +621,35 @@ describe('<ViewTable />', () => {
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
                 null,
                 null,
+                null,
                 null
+            )
+        })
+
+        it('should fetch items with the searchRank from the context', () => {
+            const {rerender} = render(
+                <SearchRankScenarioContext.Provider value={mockSearchRank}>
+                    <ViewTableContainer {...minProps} isSearch={true} />
+                </SearchRankScenarioContext.Provider>
+            )
+            jest.clearAllMocks()
+            rerender(
+                <SearchRankScenarioContext.Provider value={mockSearchRank}>
+                    <ViewTableContainer
+                        {...minProps}
+                        isSearch={true}
+                        activeView={minProps.activeView.set(
+                            'search',
+                            'foo search query'
+                        )}
+                    />
+                </SearchRankScenarioContext.Provider>
+            )
+            expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
+                null,
+                null,
+                null,
+                mockSearchRank
             )
         })
     })

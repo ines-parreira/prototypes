@@ -1,13 +1,14 @@
-import React, {ComponentProps} from 'react'
+import React, {ComponentProps, ReactNode} from 'react'
 import {fromJS} from 'immutable'
 
-import {renderWithRouter} from '../../../../utils/testing'
-import {view as fixtureView} from '../../../../fixtures/views'
-import ViewTable from '../../../common/components/ViewTable/ViewTable'
+import {renderWithRouter} from 'utils/testing'
+import {view as fixtureView} from 'fixtures/views'
+import ViewTable from 'pages/common/components/ViewTable/ViewTable'
+
 import {TicketListContainer} from '../TicketListContainer'
 
 jest.mock(
-    '../../../common/components/ViewTable/ViewTable',
+    'pages/common/components/ViewTable/ViewTable',
     () =>
         ({
             items,
@@ -32,6 +33,13 @@ jest.mock(
                     </div>
                 </div>
             )
+)
+
+jest.mock(
+    'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider',
+    () =>
+        ({children}: {children: ReactNode}) =>
+            <div data-testid="search-rank-scenario-provider">{children}</div>
 )
 
 describe('<TicketListContainer />', () => {
@@ -76,5 +84,16 @@ describe('<TicketListContainer />', () => {
             route: 'app/tickets/search',
         })
         expect(document.title).toEqual('Search')
+    })
+
+    it('should render SearchRankProvider on search url', () => {
+        const {container} = renderWithRouter(
+            <TicketListContainer {...minProps} />,
+            {
+                path: 'app/tickets/',
+                route: 'app/tickets/search',
+            }
+        )
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

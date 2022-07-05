@@ -1,6 +1,7 @@
 import React, {
     MouseEvent,
     useCallback,
+    useContext,
     useEffect,
     useRef,
     useState,
@@ -66,6 +67,7 @@ import {fieldPath, getDefaultOperator, slugify} from 'utils'
 import {reportError} from 'utils/errors'
 import {JobType} from 'models/job/types'
 import history from 'pages/history'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
@@ -111,6 +113,7 @@ export const FilterTopbar = ({
     const suggestedPreviousViewId = useAppSelector(
         getViewIdToDisplay(ViewType.TicketList, lastViewId?.toString())
     )
+    const searchRank = useContext(SearchRankScenarioContext)
 
     useEffect(
         () => () => {
@@ -129,7 +132,12 @@ export const FilterTopbar = ({
             previousActiveView.get('filters') !== activeView.get('filters')
 
         if (isSameView && filtersHaveChanged && areFiltersValid) {
-            void fetchViewItemsCancellable(undefined, undefined, undefined)
+            void fetchViewItemsCancellable(
+                undefined,
+                undefined,
+                undefined,
+                searchRank
+            )
         }
     }, [activeView, areFiltersValid, previousActiveView])
 

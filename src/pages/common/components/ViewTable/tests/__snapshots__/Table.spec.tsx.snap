@@ -24,29 +24,34 @@ exports[`<Table /> should display a default view 1`] = `
             </label>
           </div>
         </td>
-        <div>
+        <td>
           HeaderCell
-        </div>
-        <div>
+        </td>
+        <td>
           HeaderCell
-        </div>
-        <div>
+        </td>
+        <td>
           HeaderCell
-        </div>
+        </td>
       </tr>
     </thead>
     <tbody>
-      <div>
-        Row:
-        <div>
-          selectable: 
-          true
-        </div>
-        <div>
-          isSelected: 
-          false
-        </div>
-      </div>
+      <tr>
+        <td>
+          Row:
+          <div>
+            selectable: 
+            true
+          </div>
+          <div>
+            isSelected: 
+            false
+          </div>
+          <button
+            data-testid="click-item-152"
+          />
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -71,29 +76,34 @@ exports[`<Table /> should display a default view with option selectable set to f
   >
     <thead>
       <tr>
-        <div>
+        <td>
           HeaderCell
-        </div>
-        <div>
+        </td>
+        <td>
           HeaderCell
-        </div>
-        <div>
+        </td>
+        <td>
           HeaderCell
-        </div>
+        </td>
       </tr>
     </thead>
     <tbody>
-      <div>
-        Row:
-        <div>
-          selectable: 
-          false
-        </div>
-        <div>
-          isSelected: 
-          false
-        </div>
-      </div>
+      <tr>
+        <td>
+          Row:
+          <div>
+            selectable: 
+            false
+          </div>
+          <div>
+            isSelected: 
+            false
+          </div>
+          <button
+            data-testid="click-item-152"
+          />
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -135,17 +145,22 @@ exports[`<Table /> should display a view with no fields 1`] = `
       </tr>
     </thead>
     <tbody>
-      <div>
-        Row:
-        <div>
-          selectable: 
-          true
-        </div>
-        <div>
-          isSelected: 
-          false
-        </div>
-      </div>
+      <tr>
+        <td>
+          Row:
+          <div>
+            selectable: 
+            true
+          </div>
+          <div>
+            isSelected: 
+            false
+          </div>
+          <button
+            data-testid="click-item-152"
+          />
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

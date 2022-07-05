@@ -11,6 +11,7 @@ import {WidgetContextType} from 'state/widgets/types'
 import {account} from 'fixtures/account'
 import {SearchEngine} from 'models/search/types'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
+import {mockSearchRank} from 'fixtures/searchRank'
 
 import Search from '../../../Search'
 import InfobarLayout from '../../InfobarLayout'
@@ -87,13 +88,6 @@ jest.mock(
 )
 
 jest.mock('hooks/useSearchRankScenario')
-const mockSearchRank = {
-    registerResultsRequest: jest.fn(),
-    registerResultsResponse: jest.fn(),
-    registerResultSelection: jest.fn(),
-    endScenario: jest.fn(),
-    isRunning: false,
-}
 ;(
     useSearchRankScenario as jest.MockedFunction<typeof useSearchRankScenario>
 ).mockImplementation(() => mockSearchRank)
@@ -398,13 +392,13 @@ describe('<Infobar/>', () => {
         )
 
         expect(
-            mockSearchRank.registerResultsRequest.mock.calls
+            (mockSearchRank.registerResultsRequest as jest.Mock).mock.calls
         ).toMatchSnapshot()
         expect(
-            mockSearchRank.registerResultsResponse.mock.calls
+            (mockSearchRank.registerResultsResponse as jest.Mock).mock.calls
         ).toMatchSnapshot()
         expect(
-            mockSearchRank.registerResultSelection.mock.calls
+            (mockSearchRank.registerResultSelection as jest.Mock).mock.calls
         ).toMatchSnapshot()
     })
 

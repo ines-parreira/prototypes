@@ -6,18 +6,15 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import history from 'pages/history'
-import {view as viewFixture} from '../../../../../fixtures/views'
-import {RootState, StoreDispatch} from '../../../../../state/types'
-import * as utils from '../../../../../utils'
-import {
-    viewCreated,
-    viewUpdated,
-} from '../../../../../state/entities/views/actions'
-import * as viewsActions from '../../../../../state/ui/views/actions'
+import {view as viewFixture} from 'fixtures/views'
+import {RootState, StoreDispatch} from 'state/types'
+import * as utils from 'utils'
+import {viewCreated, viewUpdated} from 'state/entities/views/actions'
+import * as viewsActions from 'state/ui/views/actions'
 import {
     SUBMIT_NEW_VIEW_ERROR,
     SUBMIT_UPDATE_VIEW_ERROR,
-} from '../../../../../state/views/constants'
+} from 'state/views/constants'
 import {
     addFieldFilter,
     createJob,
@@ -25,16 +22,19 @@ import {
     fetchViewItems,
     resetView,
     submitView,
-} from '../../../../../state/views/actions'
-import * as viewSelectors from '../../../../../state/views/selectors'
+} from 'state/views/actions'
+import * as viewSelectors from 'state/views/selectors'
+import {JobType} from 'models/job/types'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import {mockSearchRank} from 'fixtures/searchRank'
+
 import {FilterTopbar} from '../FilterTopbar'
-import {JobType} from '../../../../../models/job/types'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
 
 jest.spyOn(viewsActions, 'activeViewIdSet')
-jest.mock('../../../../../state/entities/views/actions')
-jest.mock('../../../../../state/views/actions')
+jest.mock('state/entities/views/actions')
+jest.mock('state/views/actions')
 
 const createViewWithFilters = (filters: string) =>
     fromJS({
@@ -252,7 +252,39 @@ describe('<FilterTopbar />', () => {
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
                 undefined,
                 undefined,
-                undefined
+                undefined,
+                null
+            )
+        })
+
+        it('should fetch view items with searchRank from the context', () => {
+            const {rerender} = render(
+                <SearchRankScenarioContext.Provider value={mockSearchRank}>
+                    <Provider store={mockStore(defaultState)}>
+                        <FilterTopbar {...minProps} />
+                    </Provider>
+                </SearchRankScenarioContext.Provider>
+            )
+            rerender(
+                <SearchRankScenarioContext.Provider value={mockSearchRank}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultState,
+                            views: defaultState.views!.set(
+                                'active',
+                                createViewWithFilters('')
+                            ),
+                        })}
+                    >
+                        <FilterTopbar {...minProps} />
+                    </Provider>
+                </SearchRankScenarioContext.Provider>
+            )
+            expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
+                undefined,
+                undefined,
+                undefined,
+                mockSearchRank
             )
         })
 

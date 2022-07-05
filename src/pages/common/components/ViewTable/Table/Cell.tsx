@@ -43,17 +43,17 @@ export class CellContainer extends Component<Props> {
             <RenderLabel field={field} value={this._labelValue()} />
         )
 
-        if (onClick) {
+        if (itemUrl) {
+            content = (
+                <Link to={itemUrl} onClick={() => onClick?.(item)}>
+                    <div className="cell-wrapper">{children}</div>
+                </Link>
+            )
+        } else if (onClick) {
             content = (
                 <div className="cell-wrapper" onClick={() => onClick(item)}>
                     {children}
                 </div>
-            )
-        } else if (itemUrl) {
-            content = (
-                <Link to={itemUrl}>
-                    <div className="cell-wrapper">{children}</div>
-                </Link>
             )
         } else {
             content = <div className="cell-wrapper">{children}</div>

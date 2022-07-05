@@ -16,6 +16,7 @@ import {JobType} from 'models/job/types'
 import {MoveIndexDirection} from 'pages/common/utils/keyboard'
 import {getAST} from 'utils'
 import {SEARCH_ENDPOINT} from 'models/search/resources'
+import {mockSearchRank} from 'fixtures/searchRank'
 
 import {ViewNavDirection} from '../types'
 import * as viewsSelectors from '../selectors'
@@ -43,10 +44,20 @@ const store = mockStore({
 })
 const mockServer = new MockAdapter(client)
 
+let dateNowSpy: jest.SpiedFunction<typeof Date.now>
+const defaultDateNowValue = 1487076708000
+
 beforeEach(() => {
     store.clearActions()
     mockServer.reset()
     jest.clearAllMocks()
+    dateNowSpy = jest
+        .spyOn(Date, 'now')
+        .mockImplementation(() => defaultDateNowValue)
+})
+
+afterEach(() => {
+    dateNowSpy.mockRestore()
 })
 
 describe('actions', () => {
@@ -555,7 +566,7 @@ describe('actions', () => {
                 .onPut(`/api/views/${viewId}/items/`)
                 .reply(200, baseReply)
             void store.dispatch(
-                actions.fetchViewItems(null, null, null, source.token)
+                actions.fetchViewItems(null, null, null, null, source.token)
             )
             source.cancel()
 
@@ -564,6 +575,76 @@ describe('actions', () => {
                 done()
             })
         })
+
+        it('should end the search rank scenario', async () => {
+            const store = mockStore({
+                views: fromJS({
+                    active: view,
+                }),
+            })
+
+            mockServer
+                .onGet(`/api/views/${viewId}/items/`)
+                .reply(200, baseReply)
+
+            await store.dispatch(
+                actions.fetchViewItems(null, null, null, mockSearchRank)
+            )
+
+            expect(mockSearchRank.endScenario).toHaveBeenLastCalledWith()
+        })
+
+        it('should register the rank scenario request and response', async () => {
+            const store = mockStore({
+                views: fromJS({
+                    active: view,
+                }),
+            })
+
+            mockServer
+                .onGet(`/api/views/${viewId}/items/`)
+                .reply(200, baseReply)
+
+            await store.dispatch(
+                actions.fetchViewItems(null, null, null, mockSearchRank)
+            )
+
+            expect(mockSearchRank.registerResultsRequest).toMatchSnapshot()
+            expect(mockSearchRank.registerResultsResponse).toMatchSnapshot()
+        })
+
+        it.each<[string, Parameters<typeof actions.fetchViewItems>]>([
+            [
+                'fetching next page',
+                [ViewNavDirection.NextView, null, null, mockSearchRank],
+            ],
+            [
+                'fetching prev page',
+                [ViewNavDirection.PrevView, null, null, mockSearchRank],
+            ],
+            ['fetching cursor', [null, 'foo_cursor', null, mockSearchRank]],
+        ])(
+            'should end the scenario but not register request nor response when %s',
+            async (testName, args) => {
+                const store = mockStore({
+                    views: fromJS({
+                        active: view,
+                    }),
+                })
+
+                mockServer
+                    .onGet(`/api/views/${viewId}/items/`)
+                    .reply(200, baseReply)
+
+                await store.dispatch(actions.fetchViewItems(...args))
+
+                expect(mockSearchRank.endScenario).toHaveBeenLastCalledWith()
+                expect(mockSearchRank.registerResultsRequest).not.toBeCalled()
+                expect(
+                    mockSearchRank.registerResultsResponse
+                ).not.toHaveBeenCalled()
+            }
+        )
     })
 
     describe('bulkUpdate()', () => {

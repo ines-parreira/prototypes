@@ -5,13 +5,17 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import * as viewsConfig from '../../../../../config/views'
-import * as ticketFixtures from '../../../../../fixtures/ticket'
-import BlankState from '../../BlankState/index.js'
+import * as viewsConfig from 'config/views'
+import * as ticketFixtures from 'fixtures/ticket'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {RootState, StoreDispatch} from 'state/types'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
+import {mockSearchRank} from 'fixtures/searchRank'
+import BlankState from 'pages/common/components/BlankState/index.js'
+import Row from 'pages/common/components/ViewTable/Table/Row'
+import {ViewNavDirection} from 'state/views/types'
+
 import Table from '../Table'
-import Row from '../Table/Row'
-import shortcutManager from '../../../../../services/shortcutManager/shortcutManager'
-import {RootState, StoreDispatch} from '../../../../../state/types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
@@ -21,16 +25,31 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
 jest.mock(
     '../Table/Row',
     () =>
-        ({isSelected, selectable}: ComponentProps<typeof Row>) =>
+        ({
+            isSelected,
+            selectable,
+            item,
+            onItemClick,
+        }: ComponentProps<typeof Row>) =>
             (
-                <div>
-                    Row:
-                    <div>selectable: {selectable?.toString()}</div>
-                    <div>isSelected: {isSelected?.toString()}</div>
-                </div>
+                <tr>
+                    <td>
+                        Row:
+                        <div>selectable: {selectable?.toString()}</div>
+                        <div>isSelected: {isSelected?.toString()}</div>
+                        {item && (
+                            <button
+                                data-testid={`click-item-${
+                                    item?.get('id') as string
+                                }`}
+                                onClick={() => onItemClick?.(item)}
+                            />
+                        )}
+                    </td>
+                </tr>
             )
 )
-jest.mock('../Table/HeaderCell', () => () => <div>HeaderCell</div>)
+jest.mock('../Table/HeaderCell', () => () => <td>HeaderCell</td>)
 jest.mock(
     '../../BlankState/index.js',
     () =>
@@ -171,4 +190,112 @@ describe('<Table />', () => {
 
         expect(minProps.getItemUrl).not.toBeCalled()
     })
+
+    it('should register search rank item selection on item click', () => {
+        const {getByTestId} = render(
+            <SearchRankScenarioContext.Provider value={mockSearchRank}>
+                <Provider store={mockStore(defaultState)}>
+                    <Table {...minProps} />
+                </Provider>
+            </SearchRankScenarioContext.Provider>
+        )
+
+        fireEvent.click(
+            getByTestId(
+                `click-item-${minProps.items.getIn(['0', 'id']) as string}`
+            )
+        )
+
+        expect(mockSearchRank.registerResultSelection).toHaveBeenLastCalledWith(
+            {id: minProps.items.getIn(['0', 'id']), index: 0}
+        )
+    })
+
+    it('should register search rank item selection on open item shortcut', () => {
+        const {container} = render(
+            <SearchRankScenarioContext.Provider value={mockSearchRank}>
+                <Provider store={mockStore(defaultState)}>
+                    <Table {...minProps} />
+                </Provider>
+            </SearchRankScenarioContext.Provider>
+        )
+
+        const boundShortcuts = (
+            shortcutManager.bind as jest.MockedFunction<
+                typeof shortcutManager.bind
+            >
+        ).mock.calls[0][1]
+        boundShortcuts!['OPEN_ITEM'].action!(createEvent.keyDown(container))
+
+        expect(mockSearchRank.registerResultSelection).toHaveBeenLastCalledWith(
+            {id: minProps.items.getIn(['0', 'id']), index: 0}
+        )
+    })
+
+    it.each([
+        ['next page', ViewNavDirection.NextView, 'GO_NEXT_PAGE'],
+        ['prev page', ViewNavDirection.PrevView, 'GO_PREV_PAGE'],
+    ])(
+        'should fetch items with the search rank from the context on the %s shortcut',
+        (testName, direction, shortcut) => {
+            const {container} = render(
+                <SearchRankScenarioContext.Provider value={mockSearchRank}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Table
+                            {...minProps}
+                            navigation={fromJS({
+                                prev_items: true,
+                                next_items: true,
+                            })}
+                        />
+                    </Provider>
+                </SearchRankScenarioContext.Provider>
+            )
+
+            const boundShortcuts = (
+                shortcutManager.bind as jest.MockedFunction<
+                    typeof shortcutManager.bind
+                >
+            ).mock.calls[0][1]
+            boundShortcuts![shortcut].action!(createEvent.keyDown(container))
+
+            expect(minProps.fetchViewItems).toHaveBeenLastCalledWith(
+                direction,
+                null,
+                null,
+                mockSearchRank
+            )
+        }
+    )
+
+    it.each([
+        ['next page', ViewNavDirection.NextView, 'keyboard_arrow_right'],
+        ['prev page', ViewNavDirection.PrevView, 'keyboard_arrow_left'],
+    ])(
+        'should fetch items with the search rank from the context on %s navigation button click',
+        (testName, direction, buttonText) => {
+            const {getByText} = render(
+                <SearchRankScenarioContext.Provider value={mockSearchRank}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Table
+                            {...minProps}
+                            navigation={fromJS({
+                                prev_items: true,
+                                next_items: true,
+                            })}
+                        />
+                    </Provider>
+                </SearchRankScenarioContext.Provider>
+            )
+
+            fireEvent.click(getByText(buttonText))
+
+            expect(minProps.fetchViewItems).toHaveBeenLastCalledWith(
+                direction,
+                null,
+                null,
+                mockSearchRank
+            )
+        }
+    )
 })

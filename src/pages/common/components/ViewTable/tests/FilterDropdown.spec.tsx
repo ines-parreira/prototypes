@@ -7,6 +7,7 @@ import {ViewField} from 'models/view/types'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import FilterDropdownSearch from 'pages/common/components/ViewTable/FilterDropdownSearch'
 import FilterDropdownItems from 'pages/common/components/ViewTable/FilterDropdownItems'
+import {mockSearchRank} from 'fixtures/searchRank'
 
 import FilterDropdown from '../FilterDropdown'
 
@@ -63,13 +64,6 @@ jest.mock('pages/common/components/ViewTable/FilterDropdownItems', () => {
 })
 
 jest.mock('hooks/useSearchRankScenario')
-const mockSearchRank = {
-    registerResultsRequest: jest.fn(),
-    registerResultsResponse: jest.fn(),
-    registerResultSelection: jest.fn(),
-    endScenario: jest.fn(),
-    isRunning: false,
-}
 const useSearchRankScenarioMock = useSearchRankScenario as jest.MockedFunction<
     typeof useSearchRankScenario
 >

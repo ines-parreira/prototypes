@@ -33,3 +33,41 @@ exports[`<TicketListContainer /> should display with default props 1`] = `
   </div>
 </div>
 `;
+
+exports[`<TicketListContainer /> should render SearchRankProvider on search url 1`] = `
+<div
+  class="d-flex flex-column"
+  style="width: 100%;"
+>
+  <div
+    data-testid="search-rank-scenario-provider"
+  >
+    <div>
+      ViewTable:
+      <div>
+        items: 
+        []
+      </div>
+      <div>
+        isUpdate: 
+        true
+      </div>
+      <div>
+        isSearch: 
+        true
+      </div>
+      <div>
+        urlViewId: 
+      </div>
+      <div>
+        ActionsComponent:
+        function _class() {
+      _classCallCheck(this, _class);
+
+      return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
+    }
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -39,6 +39,7 @@ exports[`ViewTable::Table::Cell default cell with a url passed 1`] = `
   className="limit-overflow"
 >
   <Link
+    onClick={[Function]}
     to="/app/ticket/123"
   >
     <div

@@ -1,7 +1,7 @@
 import React, {ComponentType} from 'react'
 import {renderHook} from 'react-hooks-testing-library'
 
-import useSearchRankScenario from 'hooks/useSearchRankScenario'
+import {SearchRank} from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 
 import useSearchRankScenarioContext from '../useSearchRankScenarioContext'
@@ -15,7 +15,7 @@ describe('useSearchRankScenario', () => {
     })
 
     it('should return the context', () => {
-        const contextValue = {} as ReturnType<typeof useSearchRankScenario>
+        const contextValue = {} as SearchRank
 
         const {result} = renderHook(() => useSearchRankScenarioContext(), {
             wrapper: (({children}) => (

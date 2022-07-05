@@ -5,18 +5,20 @@ import {Link, useLocation, useParams} from 'react-router-dom'
 import decorateComponentWithProps from 'decorate-component-with-props'
 
 import Button from 'pages/common/components/button/Button'
-import {RootState} from '../../../state/types'
-import {fetchTags} from '../../../state/tags/actions'
-import {getTickets} from '../../../state/tickets/selectors'
+import {RootState} from 'state/types'
+import {fetchTags} from 'state/tags/actions'
+import {getTickets} from 'state/tickets/selectors'
 import {
     getActiveView,
     hasActiveView,
     getSelectedItemsIds,
-} from '../../../state/views/selectors'
-import {compactInteger} from '../../../utils'
-import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
-import ViewTable from '../../common/components/ViewTable/ViewTable'
-import MacroContainer from '../common/macros/MacroContainer'
+} from 'state/views/selectors'
+import {compactInteger} from 'utils'
+import {isCreationUrl, isSearchUrl} from 'pages/common/utils/url'
+import ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
+import SearchRankScenarioProvider from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider'
+import {SearchRankSource} from 'hooks/useSearchRankScenario'
 
 import TicketListActions from './components/TicketListActions'
 import css from './TicketListContainer.less'
@@ -68,6 +70,32 @@ export const TicketListContainer = ({
         return title
     }, [activeView, hasActiveView, isSearch, isUpdate])
 
+    const viewTable = (
+        <ViewTable
+            className={css.table}
+            type="ticket"
+            items={tickets}
+            isUpdate={isUpdate}
+            isSearch={isSearch}
+            urlViewId={params.viewId}
+            ActionsComponent={decorateComponentWithProps<
+                ComponentProps<typeof TicketListActions>,
+                {openMacroModal: () => void}
+            >(TicketListActions, {
+                openMacroModal: () => setIsMacroModalOpen(true),
+            })}
+            viewButtons={
+                !isEditMode && (
+                    <div className="d-inline-flex align-items-center">
+                        <Link to="/app/ticket/new">
+                            <Button>Create ticket</Button>
+                        </Link>
+                    </div>
+                )
+            }
+        />
+    )
+
     return (
         <DocumentTitle title={title}>
             <div
@@ -76,29 +104,16 @@ export const TicketListContainer = ({
                     width: '100%',
                 }}
             >
-                <ViewTable
-                    className={css.table}
-                    type="ticket"
-                    items={tickets}
-                    isUpdate={isUpdate}
-                    isSearch={isSearch}
-                    urlViewId={params.viewId}
-                    ActionsComponent={decorateComponentWithProps<
-                        ComponentProps<typeof TicketListActions>,
-                        {openMacroModal: () => void}
-                    >(TicketListActions, {
-                        openMacroModal: () => setIsMacroModalOpen(true),
-                    })}
-                    viewButtons={
-                        !isEditMode && (
-                            <div className="d-inline-flex align-items-center">
-                                <Link to="/app/ticket/new">
-                                    <Button>Create ticket</Button>
-                                </Link>
-                            </div>
-                        )
-                    }
-                />
+                {isSearch ? (
+                    <SearchRankScenarioProvider
+                        source={SearchRankSource.TicketsView}
+                    >
+                        {viewTable}
+                    </SearchRankScenarioProvider>
+                ) : (
+                    viewTable
+                )}
+
                 {isMacroModalOpen && (
                     <MacroContainer
                         activeView={activeView}

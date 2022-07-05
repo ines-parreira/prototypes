@@ -1,22 +1,23 @@
-import React, {Component, ComponentType, ReactNode} from 'react'
+import React, {Component, ComponentType, ContextType, ReactNode} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import {withRouter, RouteComponentProps} from 'react-router-dom'
 import classnames from 'classnames'
 import {parse, stringify} from 'qs'
 
-import Loader from '../Loader/Loader'
+import Loader from 'pages/common/components/Loader/Loader'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
-} from '../../../common/utils/withCancellableRequest'
-import {ViewVisibility} from '../../../../models/view/types'
-import {activeViewIdSet} from '../../../../state/ui/views/actions'
-import * as viewsActions from '../../../../state/views/actions'
-import * as viewsSelectors from '../../../../state/views/selectors'
-import * as viewsConfig from '../../../../config/views'
-import {RootState} from '../../../../state/types'
-import history from '../../../history'
-import {isCreationUrl} from '../../utils/url'
+} from 'pages/common/utils/withCancellableRequest'
+import {ViewVisibility} from 'models/view/types'
+import {activeViewIdSet} from 'state/ui/views/actions'
+import * as viewsActions from 'state/views/actions'
+import * as viewsSelectors from 'state/views/selectors'
+import * as viewsConfig from 'config/views'
+import {RootState} from 'state/types'
+import history from 'pages/history'
+import {isCreationUrl} from 'pages/common/utils/url'
+import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 
 import Header from './Header'
 import Table from './Table'
@@ -59,6 +60,9 @@ export class ViewTableContainer extends Component<Props> {
         type: 'ticket',
     }
 
+    static contextType = SearchRankScenarioContext
+    context!: ContextType<typeof SearchRankScenarioContext>
+
     componentDidMount() {
         const {
             getViewIdToDisplay,
@@ -93,7 +97,7 @@ export class ViewTableContainer extends Component<Props> {
                     location.state?.filters
                 )
             )
-            void fetchViewItemsCancellable(null, null, null)
+            void fetchViewItemsCancellable(null, null, null, this.context)
         } else if (activeView.isEmpty() || urlViewId) {
             const suggestedViewId = getViewIdToDisplay(
                 config.get('type'),
@@ -115,7 +119,9 @@ export class ViewTableContainer extends Component<Props> {
 
         void fetchViewItems(
             null,
-            parse(location.search, {ignoreQueryPrefix: true}).cursor as string
+            parse(location.search, {ignoreQueryPrefix: true}).cursor as string,
+            null,
+            this.context
         )
     }
 
@@ -214,12 +220,17 @@ export class ViewTableContainer extends Component<Props> {
                 // This happens when loading a page directly with a cursor in the URL.
                 // It can also happen when switching between two non-first pages, but in this case we don't want to
                 // trigger a fetch until the current fetch is over
-                return fetchViewItemsCancellable(null, urlCursor, null)
+                return fetchViewItemsCancellable(
+                    null,
+                    urlCursor,
+                    null,
+                    this.context
+                )
             }
         }
 
         if (shouldFetchViewItems) {
-            return fetchViewItemsCancellable(null, null, null)
+            return fetchViewItemsCancellable(null, null, null, this.context)
         }
     }
 
