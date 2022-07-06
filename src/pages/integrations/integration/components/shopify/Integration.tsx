@@ -1,24 +1,24 @@
-import React, {useCallback, useState, FormEvent} from 'react'
+import React, {FormEvent, useCallback, useState} from 'react'
 import {Map} from 'immutable'
 import {Col, Container, Row} from 'reactstrap'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     deleteIntegration,
     updateOrCreateIntegrationRequest,
 } from 'state/integrations/actions'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import useAppDispatch from 'hooks/useAppDispatch'
+import css from 'pages/settings/settings.less'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Button from 'pages/common/components/button/Button'
-import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import Label from 'pages/common/forms/Label/Label'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import settingsCss from 'pages/settings/settings.less'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
 
@@ -28,21 +28,19 @@ type Props = {
     redirectUri: string
 }
 
-const Integration = ({integration, loading, redirectUri}: Props) => {
+export default function Integration({
+    integration,
+    loading,
+    redirectUri,
+}: Props) {
     const dispatch = useAppDispatch()
     useQueryNotify()
-    const isAuthenticationPending = useAuthenticationPolling(integration)
 
+    const isAuthenticationPending = useAuthenticationPolling(integration)
     const [mustSyncCustomerNotes, setSyncCustomerNotes] = useState<boolean>(
         integration.getIn(['meta', 'sync_customer_notes'], true)
     )
-
-    const retriggerOAuthFlow = useCallback(() => {
-        window.location.href = redirectUri.replace(
-            '{shop_id}',
-            integration.getIn(['meta', 'shop_id'], '')
-        )
-    }, [integration, redirectUri])
+    const shopName = integration.getIn(['meta', 'shop_name'])
 
     const handleUpdate = useCallback(
         (evt: FormEvent<HTMLFormElement>) => {
@@ -61,7 +59,11 @@ const Integration = ({integration, loading, redirectUri}: Props) => {
         [dispatch, integration, mustSyncCustomerNotes]
     )
 
-    const isActive = !integration.get('deactivated_datetime', null)
+    const retriggerOAuthFlow = useCallback(() => {
+        window.location.href = redirectUri.replace('{shop_name}', shopName)
+    }, [shopName, redirectUri])
+
+    const isActive = !integration.get('deactivated_datetime')
     const isSubmitting = Boolean(loading.get('updateIntegration'))
     const isCustomersImportOver = integration.getIn([
         'meta',
@@ -70,12 +72,16 @@ const Integration = ({integration, loading, redirectUri}: Props) => {
         'is_over',
     ])
 
+    const needScopeUpdate = Boolean(
+        integration.getIn(['meta', 'need_scope_update'], false)
+    )
+
     if (loading.get('integration')) {
         return <Loader />
     }
 
     return (
-        <Container fluid className={settingsCss.pageContainer}>
+        <Container fluid className={css.pageContainer}>
             <Row>
                 <Col md="8">
                     {isCustomersImportOver ? (
@@ -84,13 +90,14 @@ const Integration = ({integration, loading, redirectUri}: Props) => {
                             actionLabel="Review your customers."
                             actionHref="/app/customers"
                         >
-                            All your BigCommerce customers have been imported.
-                            You can now see their info in the sidebar.
+                            All your Shopify customers have been imported. You
+                            can now see their info in the sidebar.
                         </LinkAlert>
                     ) : (
                         <Alert className="mb-4" type={AlertType.Loading} icon>
-                            Import in progress. We will send you an email once
-                            it is done. Feel free to leave this page.
+                            Import in progress. We typically sync 3,000
+                            customers an hour.We will send you an email once it
+                            is done. Feel free to leave this page.
                         </Alert>
                     )}
 
@@ -106,9 +113,9 @@ const Integration = ({integration, loading, redirectUri}: Props) => {
                             <TextInput
                                 id="disabled-store-field"
                                 name="store-name"
-                                value={integration.get('name')}
+                                value={shopName}
                             />
-                            <GroupAddon>.mybigcommerce.com</GroupAddon>
+                            <GroupAddon>.myshopify.com</GroupAddon>
                         </InputGroup>
 
                         <div className="mb-4">
@@ -124,16 +131,26 @@ const Integration = ({integration, loading, redirectUri}: Props) => {
                                         <br />
                                         Notes will not be synchronized for
                                         customers who are associated with more
-                                        than one BigCommerce store.
+                                        than one Shopify store.
                                     </>
                                 }
                             >
                                 Synchronize customer notes between Gorgias and
-                                BigCommerce
+                                Shopify
                             </ToggleInput>
                         </div>
 
                         <div>
+                            {needScopeUpdate && (
+                                <Button
+                                    className="mr-2"
+                                    isLoading={isSubmitting}
+                                    onClick={retriggerOAuthFlow}
+                                >
+                                    Update app permissions
+                                </Button>
+                            )}
+
                             <Button
                                 type="submit"
                                 className="mr-2"
@@ -152,14 +169,12 @@ const Integration = ({integration, loading, redirectUri}: Props) => {
                             </Button>
                             {!isAuthenticationPending && !isActive && (
                                 <Button
-                                    type="button"
                                     isLoading={isSubmitting}
                                     onClick={retriggerOAuthFlow}
                                 >
                                     Reconnect
                                 </Button>
                             )}
-
                             <ConfirmButton
                                 className="float-right"
                                 id="integration-deletion-confirm-button"
@@ -180,5 +195,3 @@ const Integration = ({integration, loading, redirectUri}: Props) => {
         </Container>
     )
 }
-
-export default Integration

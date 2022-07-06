@@ -9,5 +9,5 @@ export default function useSearch<T extends Record<string, unknown>>() {
         [search]
     )
 
-    return parsedSearch as T
+    return parsedSearch as Partial<T>
 }

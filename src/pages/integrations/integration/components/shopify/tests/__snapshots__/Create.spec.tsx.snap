@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Create/> should render a create view 1`] = `
+<div
+  class="pageContainer container-fluid"
+>
+  <div
+    class="row"
+  >
+    <div
+      class="col-md-8"
+    >
+      <p>
+        Let’s connect your store to Gorgias. We'll import your Shopify customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Shopify information next to tickets.
+      </p>
+      <form
+        class=""
+      >
+        <div
+          class="mb-4"
+        >
+          <label
+            class="label mb-2"
+            for="store-field"
+          >
+            Store name
+          </label>
+          <span
+            class="wrapper group horizontal"
+          >
+            <div
+              class="wrapper left isNested"
+            >
+              <input
+                class="input"
+                id="store-field"
+                name="store-name"
+                placeholder="ex: \\"acme\\" for acme.myshopify.com"
+                type="text"
+                value=""
+              />
+            </div>
+            <span
+              class="groupAddon right"
+            >
+              .myshopify.com
+            </span>
+          </span>
+        </div>
+        <div>
+          <button
+            class="wrapper fill primary medium"
+            type="submit"
+          >
+            Add integration
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+`;

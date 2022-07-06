@@ -11,9 +11,7 @@ exports[`<RechargeIntegration/> render() should display a list of shopify stores
       <div
         class="col-md-8"
       >
-        <div
-          class="shopifyIntegrationsList"
-        >
+        <div>
           <label
             class="control-label"
           >
@@ -70,40 +68,6 @@ exports[`<RechargeIntegration/> render() should render a loader because the inte
 </div>
 `;
 
-exports[`<RechargeIntegration/> render() should render a small paragraph because the import is over 1`] = `
-<p>
-  All your Recharge customers have been imported. You can now see their info in the sidebar.
-   
-  <a
-    to="/app/customers"
-  >
-    Review your customers.
-  </a>
-</p>
-`;
-
-exports[`<RechargeIntegration/> render() should render an alert because the import is in progress 1`] = `
-<span
-  class="label"
->
-  <p>
-    <b
-      class="alert-heading"
-    >
-      <i
-        class="material-icons md-spin mr-2"
-      >
-        autorenew
-      </i>
-      Importing your Recharge customers
-    </b>
-  </p>
-  <span>
-    We're currently importing all your Recharge customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done.
-  </span>
-</span>
-`;
-
 exports[`<RechargeIntegration/> render() should render an integration with a delete button 1`] = `
 <div>
   <div
@@ -115,37 +79,33 @@ exports[`<RechargeIntegration/> render() should render an integration with a del
       <div
         class="col-md-8"
       >
-        <div
-          class="InputField form-group"
-          color=""
+        <label
+          class="mb-2"
+          for="disabled-store-field"
         >
-          <label
-            class="control-label"
-            for="id-name"
-          >
-            Shopify store name
-          </label>
+          Store name
+        </label>
+        <span
+          class="mb-4 wrapper group horizontal"
+        >
           <div
-            class="input-group"
+            class="wrapper left isDisabled isNested"
           >
             <input
-              class="field form-control"
+              class="input"
               disabled=""
-              id="id-name"
+              id="disabled-store-field"
+              name="store-name"
               type="text"
               value=""
             />
-            <span
-              class="input-group-append"
-            >
-              <span
-                class="input-group-text"
-              >
-                .myshopify.com
-              </span>
-            </span>
           </div>
-        </div>
+          <span
+            class="groupAddon right isDisabled"
+          >
+            .myshopify.com
+          </span>
+        </span>
         <div>
           <button
             class="wrapper float-right fill destructive medium"

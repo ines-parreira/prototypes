@@ -2,7 +2,6 @@ import React from 'react'
 import {List as ImmutableList, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
-import {Props as BannerProps} from 'pages/common/components/BannerNotifications/BannerNotification'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -17,8 +16,6 @@ type Props = {
     redirectUri: string
     connectUrl: string
     isExternalConnectUrl: boolean
-    notification?: BannerProps
-    isConnectionDisabled?: boolean
 }
 
 function List({
@@ -27,8 +24,6 @@ function List({
     redirectUri,
     connectUrl,
     isExternalConnectUrl,
-    isConnectionDisabled = false,
-    notification,
 }: Props) {
     if (loading.get('integrations', false)) {
         return <Loader />
@@ -38,20 +33,21 @@ function List({
             {!integrations.isEmpty() && (
                 <ul className={css.list}>
                     {integrations.valueSeq().map((integration) => {
-                        const editLink = `/app/settings/integrations/recharge/${
+                        const editLink = `/app/settings/integrations/shopify/${
                             integration?.get('id') as number
                         }`
-                        const shopifyShopName = integration?.getIn([
-                            'meta',
-                            'store_name',
-                        ])
-                        const reconnectUrl = redirectUri
-                            .concat('?store_name=')
-                            .concat(shopifyShopName)
                         const isDisabled = integration?.get(
                             'deactivated_datetime'
                         )
-                        const isSubmitting = loading.get('updateIntegration')
+                        const isSubmitting =
+                            loading.get('updateIntegration') ===
+                            integration?.get('id')
+
+                        const reconnectUrl = redirectUri.replace(
+                            '{shop_name}',
+                            integration?.getIn(['meta', 'shop_name'], '')
+                        )
+
                         return (
                             <li
                                 className={css.listItem}
@@ -90,15 +86,11 @@ function List({
                 <ConnectLink
                     connectUrl={connectUrl}
                     isExternal={isExternalConnectUrl}
-                    isDisabled={isConnectionDisabled}
-                    integrationTitle={IntegrationType.Recharge}
-                    disabledMessage={
-                        (isConnectionDisabled && notification?.message) || ''
-                    }
+                    integrationTitle={IntegrationType.Shopify}
                 >
-                    <Button isDisabled={isConnectionDisabled}>
+                    <Button>
                         <ButtonIconLabel icon="add">
-                            Connect Recharge
+                            Connect Shopify
                         </ButtonIconLabel>
                     </Button>
                 </ConnectLink>

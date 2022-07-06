@@ -257,85 +257,97 @@ exports[`<IntegrationDetail /> should render the list of campaigns of a specific
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for aircall 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for aircall 1`] = `
 <div>
   AircallIntegrationList
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for email 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for bigcommerce 1`] = `
+<div>
+  BigCommerceIntegration
+</div>
+`;
+
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for email 1`] = `
 <div>
   EmailIntegrationList
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for facebook 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for facebook 1`] = `
 <div>
   FacebookIntegrationList
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for gorgias_chat 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for gorgias_chat 1`] = `
 <div>
   GorgiasChatIntegrationList
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for http 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for http 1`] = `
 <div>
   HTTPIntegrationList
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for klaviyo 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for klaviyo 1`] = `
 <div>
   KlaviyoIntegrationList
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for magento2 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for magento2 1`] = `
 <div>
   Magento2Integration
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for phone 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for phone 1`] = `
 <div>
   PhoneIntegrationsList
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for shopify 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for recharge 1`] = `
 <div>
-  ShopifyIntegrationList
+  RechargeIntegration
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for smile 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for shopify 1`] = `
+<div>
+  ShopifyIntegration
+</div>
+`;
+
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for smile 1`] = `
 <div>
   SmileIntegrationList
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for smooch 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for smooch 1`] = `
 <div>
   SmoochIntegrationList
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for smooch_inside 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for smooch_inside 1`] = `
 <div>
   ChatIntegrationList
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for sms 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for sms 1`] = `
 <div>
   SmsIntegrationsList
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the list of integrations for yotpo 1`] = `
+exports[`<IntegrationDetail /> should render the list or detail page of integrations for yotpo 1`] = `
 <div>
   YotpoIntegrationList
 </div>
@@ -490,6 +502,12 @@ exports[`<IntegrationDetail /> should render the page of a specific integration 
 </div>
 `;
 
+exports[`<IntegrationDetail /> should render the page of a specific integration for magento2 1`] = `
+<div>
+  Magento2Integration
+</div>
+`;
+
 exports[`<IntegrationDetail /> should render the page of a specific integration for recharge 1`] = `
 <div>
   RechargeIntegration
@@ -498,7 +516,7 @@ exports[`<IntegrationDetail /> should render the page of a specific integration 
 
 exports[`<IntegrationDetail /> should render the page of a specific integration for shopify 1`] = `
 <div>
-  ShopifyIntegrationDetail
+  ShopifyIntegration
 </div>
 `;
 

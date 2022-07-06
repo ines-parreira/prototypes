@@ -272,9 +272,40 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             'Display customer profiles & orders next to tickets. Edit orders with macros.',
         image: 'shopify.png',
         categories: [Category.ECOMMERCE],
-        longDescription:
-            '<p>Instantly connect to Shopify in under a minute to have customer and order history at your agents’ fingertips.</p><p><br></p><p>Here are the things you can do with Shopify integration:&nbsp;</p><ul><li>Stop asking for information you already have<ul><li>View your customer’s order history as you close out their ticket to ensure speed and accuracy. No more switching between tabs or cutting and pasting</li></ul></li><li>Actual personalization at scale<ul><li>We make it easy to insert customer data provided by Shopify. From first name to shipping address, directly into each customer interaction. It’s an automatic and accurate way to get a more personal customer experience.</li></ul></li><li>Update Shopify orders directly from your helpdesk<ul><li>Update a shipping address or even issue a partial refund from directly within Gorgias. You can even create and send a draft order without opening a new tab or window.</li></ul></li><li>Automate your most common tasks<ul><li>From looking up the most recent orders to sending out an update to some of your most common questions, we make it easy to automate up to 20% of your customer support tasks.</li></ul></li><li>Detect the intent of what your customers are asking<ul><li>Gorgias uses advanced machine learning to detect the intents and sentiments of each message. By learning about tracking updates, return policies, and urgency, we help you set priorities and categorize tickets based on what they’re about.</li></ul></li></ul>',
-        screenshots: ['shopify-1.png', 'shopify-2.png', 'shopify-3.png'],
+        longDescription: `
+            <p>Instantly connect to Shopify in under a minute to have customer and order history at your agents’ fingertips. Here are the things you can do with Shopify integration:</p>
+            <ul>
+                <li>
+                    <strong>Stop asking for information you already have.</strong><br />
+                    View your customer’s order history as you close out their ticket to ensure speed and accuracy. No more switching between tabs or cutting and pasting
+                    <br /><br />
+                </li>
+                <li>
+                    <strong>Actual personalization at scale.</strong><br />
+                    We make it easy to insert customer data provided by Shopify. From first name to shipping address, directly into each customer interaction. It’s an automatic and accurate way to get a more personal customer experience.
+                    <br /><br />
+                </li>
+                <li>
+                    <strong>Update Shopify orders directly from your helpdesk.</strong><br />
+                    Update a shipping address or even issue a partial refund from directly within Gorgias. You can even create and send a draft order without opening a new tab or window.
+                    <br /><br />
+                </li>
+                <li>
+                    <strong>Automate your most common tasks.</strong><br />
+                    From looking up the most recent orders to sending out an update to some of your most common questions, we make it easy to automate up to 20% of your customer support tasks.
+                    <br /><br />
+                </li>
+                <li>
+                    <strong>Detect the intent of what your customers are asking.</strong><br />
+                    Gorgias uses advanced machine learning to detect the intents and sentiments of each message. By learning about tracking updates, return policies, and urgency, we help you set priorities and categorize tickets based on what they’re about.
+                </li>
+            </ul>`,
+        screenshots: [
+            'shopify-1.png',
+            'shopify-2.png',
+            'shopify-3.png',
+            'shopify-4.png',
+        ],
         pricingPlan: PricingPlan.RECURRING,
         pricingDetails: '',
         pricingLink: 'https://www.shopify.com/pricing',

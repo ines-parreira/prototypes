@@ -17,6 +17,10 @@ jest.mock('../components/aircall/AircallIntegrationCreate.js', () => () => (
     <div>AircallIntegrationCreate</div>
 ))
 
+jest.mock('../components/bigcommerce/BigCommerce', () => () => (
+    <div>BigCommerceIntegration</div>
+))
+
 jest.mock('../components/email/EmailIntegrationList', () => () => (
     <div>EmailIntegrationList</div>
 ))
@@ -184,11 +188,8 @@ jest.mock('../components/smooch/SmoochIntegrationPreferences', () => () => (
     <div>SmoochIntegrationPreferences</div>
 ))
 
-jest.mock('../components/shopify/ShopifyIntegrationList', () => () => (
-    <div>ShopifyIntegrationList</div>
-))
-jest.mock('../components/shopify/ShopifyIntegrationDetail', () => () => (
-    <div>ShopifyIntegrationDetail</div>
+jest.mock('../components/shopify/Shopify', () => () => (
+    <div>ShopifyIntegration</div>
 ))
 
 jest.mock('../components/klaviyo/KlaviyoIntegrationList', () => () => (
@@ -274,6 +275,7 @@ describe('<IntegrationDetail />', () => {
 
     it.each([
         [IntegrationType.Aircall],
+        [IntegrationType.BigCommerce],
         [IntegrationType.Email],
         [IntegrationType.Facebook],
         [IntegrationType.GorgiasChat],
@@ -282,23 +284,27 @@ describe('<IntegrationDetail />', () => {
         [IntegrationType.Phone],
         [IntegrationType.Sms],
         [IntegrationType.Magento2],
+        [IntegrationType.Recharge],
         [IntegrationType.Shopify],
         [IntegrationType.Smile],
         [IntegrationType.SmoochInside],
         [IntegrationType.Smooch],
         [IntegrationType.Yotpo],
-    ])('should render the list of integrations for %s', (integrationType) => {
-        const {container} = renderWithRouter(
-            <Provider store={store}>
-                <IntegrationDetail {...minProps} />
-            </Provider>,
-            {
-                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                route: `/integrations/${integrationType}`,
-            }
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
+    ])(
+        'should render the list or detail page of integrations for %s',
+        (integrationType) => {
+            const {container} = renderWithRouter(
+                <Provider store={store}>
+                    <IntegrationDetail {...minProps} />
+                </Provider>,
+                {
+                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                    route: `/integrations/${integrationType}`,
+                }
+            )
+            expect(container.firstChild).toMatchSnapshot()
+        }
+    )
 
     it(`should display not available message if ${IntegrationType.Twitter} integration not included in plan`, () => {
         const basicPlan = {
@@ -367,6 +373,7 @@ describe('<IntegrationDetail />', () => {
         [IntegrationType.Klaviyo],
         [IntegrationType.Recharge],
         [IntegrationType.Shopify],
+        [IntegrationType.Magento2],
         [IntegrationType.Smile],
         [IntegrationType.SmoochInside],
         [IntegrationType.Smooch],

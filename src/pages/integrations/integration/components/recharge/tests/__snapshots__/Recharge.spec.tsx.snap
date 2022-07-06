@@ -281,37 +281,33 @@ exports[`<Recharge/> Integration should render 1`] = `
       <div
         class="col-md-8"
       >
-        <div
-          class="InputField form-group"
-          color=""
+        <label
+          class="mb-2"
+          for="disabled-store-field"
         >
-          <label
-            class="control-label"
-            for="id-name"
-          >
-            Shopify store name
-          </label>
+          Store name
+        </label>
+        <span
+          class="mb-4 wrapper group horizontal"
+        >
           <div
-            class="input-group"
+            class="wrapper left isDisabled isNested"
           >
             <input
-              class="field form-control"
+              class="input"
               disabled=""
-              id="id-name"
+              id="disabled-store-field"
+              name="store-name"
               type="text"
               value=""
             />
-            <span
-              class="input-group-append"
-            >
-              <span
-                class="input-group-text"
-              >
-                .myshopify.com
-              </span>
-            </span>
           </div>
-        </div>
+          <span
+            class="groupAddon right isDisabled"
+          >
+            .myshopify.com
+          </span>
+        </span>
         <div>
           <button
             class="wrapper float-right fill destructive medium"
@@ -386,9 +382,7 @@ exports[`<Recharge/> Integration should render shopify integrations list 1`] = `
       <div
         class="col-md-8"
       >
-        <div
-          class="shopifyIntegrationsList"
-        >
+        <div>
           <label
             class="control-label"
           >
@@ -493,7 +487,7 @@ exports[`<Recharge/> List should render 1`] = `
       to="/app/settings/integrations/recharge/new"
     >
       <button
-        class="wrapper actionButton fill primary medium"
+        class="wrapper fill primary medium"
         type="button"
       >
         <span

@@ -531,10 +531,6 @@ export const getShopifyIntegrationByShopName = (shopName: string) =>
             ) as Map<any, any>) || fromJS({})
     )
 
-export const makeGetShopifyIntegrationByShopName =
-    (state: RootState) => (shopName: string) =>
-        getShopifyIntegrationByShopName(shopName)(state)
-
 export const getMagento2IntegrationByStoreUrl = (storeUrl: string) =>
     createSelector<RootState, Map<any, any>, List<any>>(
         getIntegrationsByTypes([IntegrationType.Magento2]),

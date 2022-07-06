@@ -3,8 +3,6 @@ import {Link, useParams, NavLink} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {List as ImmutableList, Map} from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
-import {getEligibleShopifyIntegrationsFor} from 'state/integrations/selectors'
 import {getIntegrationConfig} from 'state/integrations/helpers'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -12,6 +10,7 @@ import {IntegrationType} from 'models/integration/types'
 
 import Detail from '../../../components/Detail/Detail'
 import Integration from './Integration'
+import Create from './Create'
 import List from './List'
 
 const connectionsPath = 'connections'
@@ -23,43 +22,24 @@ type Props = {
     redirectUri: string
 }
 
-function Recharge({integration, integrations, loading, redirectUri}: Props) {
-    const availableShopifyIntegrations = useAppSelector((state) =>
-        getEligibleShopifyIntegrationsFor(state)(IntegrationType.Recharge)
-    )
-
+function Shopify({integration, integrations, loading, redirectUri}: Props) {
     const {integrationId} = useParams<{integrationId: string}>()
 
     const isNew = integrationId === 'new'
     const isIntegration = integrationId && integrationId !== connectionsPath
     const isConnections = integrationId === connectionsPath
-    const hasNoAvailableShopifyIntegrations = !availableShopifyIntegrations.size
-    const notification = hasNoAvailableShopifyIntegrations
-        ? {
-              message: integrations.size
-                  ? `You are all set! All your Shopify stores have Recharge connected.`
-                  : `To connect the Recharge app you need to have at least one Shopify store connected to Gorgias.`,
-              actionHTML: !integrations.size ? (
-                  <Link to="/app/settings/integrations/shopify">
-                      Connect Shopify
-                  </Link>
-              ) : undefined,
-          }
-        : undefined
 
-    const rechargeConfig = getIntegrationConfig(IntegrationType.Recharge)
+    const shopifyConfig = getIntegrationConfig(IntegrationType.Shopify)
 
-    const baseURL = `/app/settings/integrations/recharge`
+    const baseURL = `/app/settings/integrations/shopify`
     const links = [
         [`${baseURL}/`, 'App Details'],
         [`${baseURL}/${connectionsPath}`, 'Connections'],
     ]
 
     const connectProps = {
-        connectUrl: '/app/settings/integrations/recharge/new',
-        isExternalConnectUrl: false,
-        notification: notification,
-        isConnectionDisabled: hasNoAvailableShopifyIntegrations,
+        connectUrl: 'https://apps.shopify.com/helpdesk',
+        isExternalConnectUrl: true,
     }
 
     return (
@@ -75,12 +55,12 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
                         <BreadcrumbItem active={!isIntegration}>
                             {isIntegration ? (
                                 <Link
-                                    to={`/app/settings/integrations/recharge/${connectionsPath}`}
+                                    to={`/app/settings/integrations/shopify/${connectionsPath}`}
                                 >
-                                    {rechargeConfig?.title}
+                                    {shopifyConfig?.title}
                                 </Link>
                             ) : (
-                                rechargeConfig?.title
+                                shopifyConfig?.title
                             )}
                         </BreadcrumbItem>
                         {isIntegration && (
@@ -95,12 +75,15 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
             />
 
             {isIntegration ? (
-                <Integration
-                    integration={integration}
-                    availableShopifyIntegrations={availableShopifyIntegrations}
-                    loading={loading}
-                    redirectUri={redirectUri}
-                />
+                isNew ? (
+                    <Create redirectUri={redirectUri} />
+                ) : (
+                    <Integration
+                        integration={integration}
+                        loading={loading}
+                        redirectUri={redirectUri}
+                    />
+                )
             ) : (
                 <>
                     <SecondaryNavbar>
@@ -110,8 +93,8 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
                             </NavLink>
                         ))}
                     </SecondaryNavbar>
-                    {!isConnections && rechargeConfig ? (
-                        <Detail {...rechargeConfig} {...connectProps} />
+                    {!isConnections && shopifyConfig ? (
+                        <Detail {...shopifyConfig} {...connectProps} />
                     ) : (
                         <List
                             integrations={integrations}
@@ -126,4 +109,4 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
     )
 }
 
-export default Recharge
+export default Shopify

@@ -1,11 +1,5 @@
 import React from 'react'
-import {
-    Link,
-    RouteComponentProps,
-    withRouter,
-    useParams,
-    NavLink,
-} from 'react-router-dom'
+import {Link, useParams, NavLink} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {List as ImmutableList, Map} from 'immutable'
 
@@ -25,7 +19,7 @@ type Props = {
     integration: Map<any, any>
     loading: Map<any, any>
     redirectUri: string
-} & RouteComponentProps
+}
 
 function BigCommerce({integration, integrations, loading, redirectUri}: Props) {
     const {integrationId} = useParams<{integrationId: string}>()
@@ -108,4 +102,4 @@ function BigCommerce({integration, integrations, loading, redirectUri}: Props) {
     )
 }
 
-export default withRouter(BigCommerce)
+export default BigCommerce

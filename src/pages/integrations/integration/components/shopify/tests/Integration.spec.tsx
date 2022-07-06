@@ -18,7 +18,7 @@ const updateOrCreateIntegrationRequest =
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})
 
-describe('<BigCommerceIntegration/>', () => {
+describe('<ShopifyIntegration/>', () => {
     const minProps: ComponentProps<typeof Integration> = {
         integration: fromJS({}),
         loading: fromJS({}),
@@ -70,7 +70,7 @@ describe('<BigCommerceIntegration/>', () => {
                 </Provider>
             )
 
-            expect(screen.getByText(/All your BigCommerce customers/))
+            expect(screen.getByText(/All your Shopify customers/))
         })
 
         it('should render an integration with a delete button that deletes the integration', async () => {
@@ -95,6 +95,28 @@ describe('<BigCommerceIntegration/>', () => {
             expect(deleteIntegration.mock.calls).toMatchSnapshot()
         })
 
+        it('should have a update button that redirects to the Oauth flow because the integration has outdated permissions', () => {
+            renderWithRouter(
+                <Provider store={store}>
+                    <Integration
+                        {...minProps}
+                        integration={fromJS({
+                            meta: {
+                                shop_name: 'kumquat',
+                                need_scope_update: true,
+                            },
+                        })}
+                        redirectUri="okok{shop_name}"
+                    />
+                </Provider>
+            )
+
+            fireEvent.click(
+                screen.getByRole('button', {name: 'Update app permissions'})
+            )
+            expect(window.location.href).toBe('okokkumquat')
+        })
+
         it('should have a reconnect button that redirects to the Oauth flow because the integration is deactivated', () => {
             renderWithRouter(
                 <Provider store={store}>
@@ -102,15 +124,15 @@ describe('<BigCommerceIntegration/>', () => {
                         {...minProps}
                         integration={fromJS({
                             deactivated_datetime: '2018-01-01 10:12',
-                            meta: {shop_id: 'kumbawa'},
+                            meta: {shop_name: 'kumquat'},
                         })}
-                        redirectUri="okok{shop_id}"
+                        redirectUri="okok{shop_name}"
                     />
                 </Provider>
             )
 
             fireEvent.click(screen.getByRole('button', {name: 'Reconnect'}))
-            expect(window.location.href).toBe('okokkumbawa')
+            expect(window.location.href).toBe('okokkumquat')
         })
 
         it('should have a disabled update button that gets enabled when synchronization is changed and trigger an update', () => {

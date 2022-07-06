@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<BigCommerce/> Detail should render a detail view 1`] = `
+exports[`<Shopify/> Detail should render a detail view 1`] = `
 <div
   class="full-width"
 >
@@ -27,7 +27,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           aria-current="page"
           class="active breadcrumb-item"
         >
-          BigCommerce
+          Shopify
         </li>
       </ol>
     </nav>
@@ -38,14 +38,14 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/bigcommerce/"
+      to="/app/settings/integrations/shopify/"
     >
       App Details
     </a>
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/bigcommerce/connections"
+      to="/app/settings/integrations/shopify/connections"
     >
       Connections
     </a>
@@ -54,20 +54,20 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
     class="hero"
   >
     <img
-      alt="BigCommerce's logo"
+      alt="Shopify's logo"
       class="heroImage"
-      src="/static/private/js/assets/img/integrations/bigcommerce.svg"
+      src="/static/private/js/assets/img/integrations/shopify.png"
     />
     <div>
       <h1
         class="heroHeading"
       >
-        BigCommerce
+        Shopify
       </h1>
       <p
         class="heroDescription"
       >
-        Display customer BigCommerce profile & orders next to their ticket.
+        Display customer profiles & orders next to tickets. Edit orders with macros.
       </p>
       <div
         class="heroMeta"
@@ -80,7 +80,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
         <span
           class="badge badge badge-success badge-pill"
         >
-          FREE TRIAL
+          14 DAYS FREE TRIAL
         </span>
         <span
           class="by"
@@ -110,19 +110,97 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
         About
       </h2>
       <div>
+        
+            
         <p>
-          BigCommerce is an ecommerce platform that provides 'software as a service' services to retailers. The company’s platform includes online store creation, search engine optimization, hosting, marketing and security.
+          Instantly connect to Shopify in under a minute to have customer and order history at your agents’ fingertips. Here are the things you can do with Shopify integration:
         </p>
-        <p>
-          With Gorgias, you can:
-        </p>
+        
+            
         <ul>
+          
+                
           <li>
-            View BigCommerce customer and order information in a customer's ticket.
+            
+                    
+            <strong>
+              Stop asking for information you already have.
+            </strong>
+            <br />
+            
+                    View your customer’s order history as you close out their ticket to ensure speed and accuracy. No more switching between tabs or cutting and pasting
+                    
+            <br />
+            <br />
+            
+                
           </li>
+          
+                
           <li>
-            Easily access links to customer and order profile.
+            
+                    
+            <strong>
+              Actual personalization at scale.
+            </strong>
+            <br />
+            
+                    We make it easy to insert customer data provided by Shopify. From first name to shipping address, directly into each customer interaction. It’s an automatic and accurate way to get a more personal customer experience.
+                    
+            <br />
+            <br />
+            
+                
           </li>
+          
+                
+          <li>
+            
+                    
+            <strong>
+              Update Shopify orders directly from your helpdesk.
+            </strong>
+            <br />
+            
+                    Update a shipping address or even issue a partial refund from directly within Gorgias. You can even create and send a draft order without opening a new tab or window.
+                    
+            <br />
+            <br />
+            
+                
+          </li>
+          
+                
+          <li>
+            
+                    
+            <strong>
+              Automate your most common tasks.
+            </strong>
+            <br />
+            
+                    From looking up the most recent orders to sending out an update to some of your most common questions, we make it easy to automate up to 20% of your customer support tasks.
+                    
+            <br />
+            <br />
+            
+                
+          </li>
+          
+                
+          <li>
+            
+                    
+            <strong>
+              Detect the intent of what your customers are asking.
+            </strong>
+            <br />
+            
+                    Gorgias uses advanced machine learning to detect the intents and sentiments of each message. By learning about tracking updates, return policies, and urgency, we help you set priorities and categorize tickets based on what they’re about.
+                
+          </li>
+          
+            
         </ul>
       </div>
       <ul
@@ -134,7 +212,34 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           <img
             alt="Screenshot number 1 of things this app allows you to do in Gorgias"
             class="screenshot"
-            src="/static/private/js/assets/img/integrations/screenshots/bigcommerce-1.png"
+            src="/static/private/js/assets/img/integrations/screenshots/shopify-1.png"
+          />
+        </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 2 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="/static/private/js/assets/img/integrations/screenshots/shopify-2.png"
+          />
+        </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 3 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="/static/private/js/assets/img/integrations/screenshots/shopify-3.png"
+          />
+        </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 4 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="/static/private/js/assets/img/integrations/screenshots/shopify-4.png"
           />
         </li>
       </ul>
@@ -150,7 +255,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
         >
           <a
             class="connectButtonWrapper"
-            href="https://store-pk360c6roo.mybigcommerce.com/manage/marketplace/apps/38723"
+            href="https://apps.shopify.com/helpdesk"
           >
             <button
               class="wrapper actionButton fill primary medium"
@@ -166,7 +271,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           Pricing
         </h2>
         <div>
-          Contact BigCommerce for pricing details.
+          Contact Gorgias for pricing details.
         </div>
         <h2
           class="categoryTitle cardTitle"
@@ -179,7 +284,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           <li>
             <a
               class="actionLink"
-              href="https://docs.gorgias.com/ecommerce-integrations"
+              href="https://docs.gorgias.com/ecommerce-integrations/shopify"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -194,7 +299,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           <li>
             <a
               class="actionLink"
-              href="https://www.bigcommerce.com/privacy/"
+              href="https://www.shopify.com/legal/privacy"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -213,7 +318,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
 </div>
 `;
 
-exports[`<BigCommerce/> Integration should render 1`] = `
+exports[`<Shopify/> Integration should render 1`] = `
 <div
   class="full-width"
 >
@@ -240,9 +345,9 @@ exports[`<BigCommerce/> Integration should render 1`] = `
           class="breadcrumb-item"
         >
           <a
-            to="/app/settings/integrations/bigcommerce/connections"
+            to="/app/settings/integrations/shopify/connections"
           >
-            BigCommerce
+            Shopify
           </a>
         </li>
         <li
@@ -307,7 +412,7 @@ exports[`<BigCommerce/> Integration should render 1`] = `
             <span
               class="label"
             >
-              Import in progress. We will send you an email once it is done. Feel free to leave this page.
+              Import in progress. We typically sync 3,000 customers an hour.We will send you an email once it is done. Feel free to leave this page.
             </span>
           </div>
         </div>
@@ -336,7 +441,7 @@ exports[`<BigCommerce/> Integration should render 1`] = `
             <span
               class="groupAddon right isDisabled"
             >
-              .mybigcommerce.com
+              .myshopify.com
             </span>
           </span>
           <div
@@ -360,14 +465,14 @@ exports[`<BigCommerce/> Integration should render 1`] = `
                 <div
                   class="slider"
                 />
-                Synchronize customer notes between Gorgias and BigCommerce
+                Synchronize customer notes between Gorgias and Shopify
               </label>
               <div
                 class="caption caption"
               >
                 When editing notes in both places at the same time, the first one saved will be synchronized.
                 <br />
-                Notes will not be synchronized for customers who are associated with more than one BigCommerce store.
+                Notes will not be synchronized for customers who are associated with more than one Shopify store.
               </div>
             </div>
           </div>
@@ -402,7 +507,7 @@ exports[`<BigCommerce/> Integration should render 1`] = `
 </div>
 `;
 
-exports[`<BigCommerce/> List should render 1`] = `
+exports[`<Shopify/> List should render 1`] = `
 <div
   class="full-width"
 >
@@ -429,7 +534,7 @@ exports[`<BigCommerce/> List should render 1`] = `
           aria-current="page"
           class="active breadcrumb-item"
         >
-          BigCommerce
+          Shopify
         </li>
       </ol>
     </nav>
@@ -440,14 +545,14 @@ exports[`<BigCommerce/> List should render 1`] = `
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/bigcommerce/"
+      to="/app/settings/integrations/shopify/"
     >
       App Details
     </a>
     <a
       activeclassname="active"
       class="link"
-      to="/app/settings/integrations/bigcommerce/connections"
+      to="/app/settings/integrations/shopify/connections"
     >
       Connections
     </a>
@@ -460,7 +565,7 @@ exports[`<BigCommerce/> List should render 1`] = `
     >
       <a
         class="link"
-        to="/app/settings/integrations/bigcommerce/1"
+        to="/app/settings/integrations/shopify/1"
       >
         <span>
           myShop1
@@ -478,10 +583,10 @@ exports[`<BigCommerce/> List should render 1`] = `
   >
     <a
       class="connectButtonWrapper"
-      href="https://store-pk360c6roo.mybigcommerce.com/manage/marketplace/apps/38723"
+      href="https://apps.shopify.com/helpdesk"
     >
       <button
-        class="wrapper actionButton fill primary medium"
+        class="wrapper fill primary medium"
         type="button"
       >
         <span
@@ -492,7 +597,7 @@ exports[`<BigCommerce/> List should render 1`] = `
           >
             add
           </i>
-          Connect BigCommerce
+          Connect Shopify
         </span>
       </button>
     </a>

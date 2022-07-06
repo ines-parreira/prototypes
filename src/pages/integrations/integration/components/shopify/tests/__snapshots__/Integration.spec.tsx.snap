@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<BigCommerceIntegration/> render() should have a disabled update button that gets enabled when synchronization is changed and trigger an update 1`] = `
+exports[`<ShopifyIntegration/> render() should have a disabled update button that gets enabled when synchronization is changed and trigger an update 1`] = `
 Array [
   Array [
     Immutable.Map {
@@ -12,7 +12,7 @@ Array [
 ]
 `;
 
-exports[`<BigCommerceIntegration/> render() should render a loader because the integration is loading 1`] = `
+exports[`<ShopifyIntegration/> render() should render a loader because the integration is loading 1`] = `
 <div>
   <div
     class="container"
@@ -30,7 +30,7 @@ exports[`<BigCommerceIntegration/> render() should render a loader because the i
 </div>
 `;
 
-exports[`<BigCommerceIntegration/> render() should render an integration with a delete button that deletes the integration 1`] = `
+exports[`<ShopifyIntegration/> render() should render an integration with a delete button that deletes the integration 1`] = `
 <div>
   <div
     class="pageContainer container-fluid"
@@ -87,7 +87,7 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
             <span
               class="label"
             >
-              Import in progress. We will send you an email once it is done. Feel free to leave this page.
+              Import in progress. We typically sync 3,000 customers an hour.We will send you an email once it is done. Feel free to leave this page.
             </span>
           </div>
         </div>
@@ -116,7 +116,7 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
             <span
               class="groupAddon right isDisabled"
             >
-              .mybigcommerce.com
+              .myshopify.com
             </span>
           </span>
           <div
@@ -140,14 +140,14 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
                 <div
                   class="slider"
                 />
-                Synchronize customer notes between Gorgias and BigCommerce
+                Synchronize customer notes between Gorgias and Shopify
               </label>
               <div
                 class="caption caption"
               >
                 When editing notes in both places at the same time, the first one saved will be synchronized.
                 <br />
-                Notes will not be synchronized for customers who are associated with more than one BigCommerce store.
+                Notes will not be synchronized for customers who are associated with more than one Shopify store.
               </div>
             </div>
           </div>
@@ -182,7 +182,7 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
 </div>
 `;
 
-exports[`<BigCommerceIntegration/> render() should render an integration with a delete button that deletes the integration 2`] = `
+exports[`<ShopifyIntegration/> render() should render an integration with a delete button that deletes the integration 2`] = `
 Array [
   Array [
     Immutable.Map {},

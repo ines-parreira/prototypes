@@ -57,8 +57,7 @@ import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail
 import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
 import SmoochIntegrationPreferences from './components/smooch/SmoochIntegrationPreferences'
 
-import ShopifyIntegrationList from './components/shopify/ShopifyIntegrationList'
-import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDetail'
+import Shopify from './components/shopify/Shopify'
 
 import BigCommerce from './components/bigcommerce/BigCommerce'
 
@@ -494,7 +493,11 @@ export const IntegrationDetail = ({
                 if (!isUpdate) {
                     return (
                         <PhoneIntegrationCreate
-                            selectedPhoneNumberId={parseInt(phoneNumberId)}
+                            selectedPhoneNumberId={
+                                phoneNumberId
+                                    ? Number.parseInt(phoneNumberId, 10)
+                                    : undefined
+                            }
                         />
                     )
                 }
@@ -540,7 +543,11 @@ export const IntegrationDetail = ({
 
                 return (
                     <SmsIntegrationCreate
-                        selectedPhoneNumberId={parseInt(phoneNumberId)}
+                        selectedPhoneNumberId={
+                            phoneNumberId
+                                ? Number.parseInt(phoneNumberId, 10)
+                                : undefined
+                        }
                     />
                 )
             }
@@ -633,20 +640,14 @@ export const IntegrationDetail = ({
             )
 
         case IntegrationType.Shopify:
-            if (!!integrationId) {
-                return (
-                    <ShopifyIntegrationDetail
-                        integration={integration}
-                        isUpdate={isUpdate}
-                        loading={loading}
-                        redirectUri={redirectUri}
-                    />
-                )
-            }
-
             return (
-                <ShopifyIntegrationList
-                    integrations={integrationsProp}
+                <Shopify
+                    integration={integration}
+                    integrations={
+                        integrationsProp.filter(
+                            (v) => v!.get('type') === IntegrationType.Shopify
+                        ) as List<Map<any, any>>
+                    }
                     loading={loading}
                     redirectUri={redirectUri}
                 />
