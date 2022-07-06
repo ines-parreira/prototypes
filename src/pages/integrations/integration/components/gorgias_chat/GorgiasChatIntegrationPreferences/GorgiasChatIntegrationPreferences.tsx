@@ -6,7 +6,6 @@ import _omitBy from 'lodash/omitBy'
 import {fromJS, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
-import {isOfflineModeFeatureEnabled} from 'utils'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 import {
@@ -431,96 +430,82 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 <h4 className={css.title}>
                                     Chat conversations
                                 </h4>
-                                {isOfflineModeFeatureEnabled() && (
-                                    <div
-                                        className={classnames(
-                                            css.formGroup,
-                                            'd-flex'
-                                        )}
-                                    >
-                                        <ToggleInput
-                                            onClick={() =>
-                                                this._setOfflineModeEnabledDatetime(
-                                                    offlineModeEnabledDatetime ===
-                                                        null
-                                                        ? new Date()
-                                                        : null
-                                                )
-                                            }
-                                            isToggled={
-                                                offlineModeEnabledDatetime ===
-                                                null
-                                            }
-                                        />
-
-                                        <div className="ml-2">
-                                            <b>Live chat</b>
-                                            <div className="form-text text-muted">
-                                                Let customers start live
-                                                conversations with agents. When
-                                                disabled, customers can interact
-                                                with self-service features and
-                                                fill the contact form.
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
                                 <div
                                     className={classnames(
                                         css.formGroup,
                                         'd-flex'
                                     )}
                                 >
-                                    {isOfflineModeFeatureEnabled() && (
-                                        <>
-                                            <div id="contact-form-toggle-help">
-                                                <ToggleInput
-                                                    onClick={
-                                                        this
-                                                            ._setEnableContactForm
-                                                    }
-                                                    isToggled={
-                                                        offlineModeEnabledDatetime !==
-                                                        null
-                                                            ? true
-                                                            : enableContactForm
-                                                    }
-                                                    isDisabled={
-                                                        offlineModeEnabledDatetime !==
-                                                        null
-                                                    }
-                                                />
-                                            </div>
-                                            {offlineModeEnabledDatetime !==
-                                                null && (
-                                                <Tooltip
-                                                    autohide={false}
-                                                    delay={100}
-                                                    target="contact-form-toggle-help"
-                                                    placement="top-start"
-                                                    popperClassName={
-                                                        css.tooltip
-                                                    }
-                                                    innerClassName={
-                                                        css['tooltip-inner']
-                                                    }
-                                                    arrowClassName={
-                                                        css['tooltip-arrow']
-                                                    }
-                                                >
-                                                    Contact form is enabled when
-                                                    Live chat is off.
-                                                </Tooltip>
-                                            )}
-                                        </>
-                                    )}
-                                    {!isOfflineModeFeatureEnabled() && (
-                                        <ToggleInput
-                                            onClick={this._setEnableContactForm}
-                                            isToggled={enableContactForm}
-                                        />
-                                    )}
+                                    <ToggleInput
+                                        onClick={() =>
+                                            this._setOfflineModeEnabledDatetime(
+                                                offlineModeEnabledDatetime ===
+                                                    null
+                                                    ? new Date()
+                                                    : null
+                                            )
+                                        }
+                                        isToggled={
+                                            offlineModeEnabledDatetime === null
+                                        }
+                                    />
 
+                                    <div className="ml-2">
+                                        <b>Live chat</b>
+                                        <div className="form-text text-muted">
+                                            Let customers start live
+                                            conversations with agents. When
+                                            disabled, customers can interact
+                                            with self-service features and fill
+                                            the contact form.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    className={classnames(
+                                        css.formGroup,
+                                        'd-flex'
+                                    )}
+                                >
+                                    <>
+                                        <div id="contact-form-toggle-help">
+                                            <ToggleInput
+                                                onClick={
+                                                    this._setEnableContactForm
+                                                }
+                                                isToggled={
+                                                    offlineModeEnabledDatetime !==
+                                                    null
+                                                        ? true
+                                                        : enableContactForm
+                                                }
+                                                isDisabled={
+                                                    offlineModeEnabledDatetime !==
+                                                    null
+                                                }
+                                            />
+                                        </div>
+                                        {offlineModeEnabledDatetime !==
+                                            null && (
+                                            <Tooltip
+                                                autohide={false}
+                                                delay={100}
+                                                target="contact-form-toggle-help"
+                                                placement="top-start"
+                                                popperClassName={css.tooltip}
+                                                innerClassName={
+                                                    css['tooltip-inner']
+                                                }
+                                                arrowClassName={
+                                                    css['tooltip-arrow']
+                                                }
+                                            >
+                                                Contact form is enabled when
+                                                Live chat is off.
+                                            </Tooltip>
+                                        )}
+                                    </>
                                     <div className="ml-2">
                                         <b>Contact form</b>
                                         <div className="form-text text-muted">

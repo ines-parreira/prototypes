@@ -14,7 +14,6 @@ import {
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {isOfflineModeFeatureEnabled} from 'utils'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -172,24 +171,19 @@ function GorgiasChatIntegrationInstall({
                             integrationId={integration.get('id')}
                         />
                         <div className={css.installationOptions}>
-                            {isOfflineModeFeatureEnabled() && (
-                                <div
-                                    className={classnames(
-                                        css.formGroup,
-                                        'd-flex'
-                                    )}
-                                >
-                                    <ToggleInput
-                                        onClick={() => toggleActivationState()}
-                                        isToggled={isDisabled}
-                                        isLoading={isLoading}
-                                        isDisabled={isLoading}
-                                    />
-                                    <div className="ml-2">
-                                        <b>Hide chat temporary</b>
-                                    </div>
+                            <div
+                                className={classnames(css.formGroup, 'd-flex')}
+                            >
+                                <ToggleInput
+                                    onClick={() => toggleActivationState()}
+                                    isToggled={isDisabled}
+                                    isLoading={isLoading}
+                                    isDisabled={isLoading}
+                                />
+                                <div className="ml-2">
+                                    <b>Hide chat temporarily</b>
                                 </div>
-                            )}
+                            </div>
                             {isUpdate && (
                                 <ConfirmButton
                                     className=""

@@ -482,7 +482,6 @@ export const IntegrationDetail = ({
 
             return (
                 <GorgiasChatIntegrationList
-                    actions={actions}
                     integrations={integrationsProp}
                     loading={loading}
                 />

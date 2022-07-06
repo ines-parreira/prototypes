@@ -1,4 +1,4 @@
-import React, {MouseEvent, useMemo, useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
@@ -7,11 +7,9 @@ import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
 import shopifyLogo from 'assets/img/integrations/shopify.png'
 import warningIcon from 'assets/img/icons/warning.svg'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {isOfflineModeFeatureEnabled} from 'utils'
 
 import {getIntegrationConfig} from 'state/integrations/helpers'
 
-import ToggleInput from '../../../../common/forms/ToggleInput'
 import Tooltip from '../../../../common/components/Tooltip'
 import history from '../../../../history'
 import {IntegrationType} from '../../../../../models/integration/types'
@@ -35,20 +33,10 @@ import css from './GorgiasChatIntegrationList.less'
 type Props = {
     integrations: List<Map<any, any>>
     loading: Map<any, any>
-    actions: {
-        activateIntegration: (id: number) => unknown
-        deactivateIntegration: (id: number) => unknown
-    }
 }
 
-function GorgiasChatIntegrationList({
-    integrations,
-    loading,
-    actions: {activateIntegration, deactivateIntegration},
-}: Props) {
-    const [calloutDisplayed, setCalloutDisplayed] = useState<boolean>(
-        isOfflineModeFeatureEnabled()
-    )
+function GorgiasChatIntegrationList({integrations, loading}: Props) {
+    const [calloutDisplayed, setCalloutDisplayed] = useState<boolean>(true)
 
     const longTypeDescription = (
         <div>
@@ -81,19 +69,7 @@ function GorgiasChatIntegrationList({
 
     const chatToRow = (chat: Map<any, any>) => {
         const integrationId: number = chat.get('id')
-        const toggleIntegration = (
-            isToggled: boolean,
-            event?: MouseEvent<HTMLLabelElement>
-        ) => {
-            event?.stopPropagation()
-            isToggled
-                ? activateIntegration(integrationId)
-                : deactivateIntegration(integrationId)
-        }
-
         const editLink = `/app/settings/integrations/${IntegrationType.GorgiasChat}/${integrationId}/campaigns`
-        const isEnabled = !chat.get('deactivated_datetime')
-        const isLoading = loading.get('updateIntegration') === integrationId
         const shopifyStoreName: string | null = chat.getIn(
             ['meta', 'shop_name'],
             null
@@ -112,16 +88,6 @@ function GorgiasChatIntegrationList({
 
         return (
             <TableBodyRow onClick={goToChat}>
-                {!isOfflineModeFeatureEnabled() && (
-                    <BodyCell>
-                        <ToggleInput
-                            isToggled={isEnabled}
-                            onClick={toggleIntegration}
-                            isLoading={isLoading}
-                            isDisabled={!!loading.get('updateIntegration')}
-                        />
-                    </BodyCell>
-                )}
                 <BodyCell innerClassName={css.chatName}>
                     {chat.get('name')}
                 </BodyCell>
@@ -223,9 +189,6 @@ function GorgiasChatIntegrationList({
             {!chats.isEmpty() && (
                 <TableWrapper className={css.table}>
                     <TableHead className={css.header}>
-                        {!isOfflineModeFeatureEnabled() && (
-                            <HeaderCell size="smallest" />
-                        )}
                         <HeaderCellProperty title="Chat name" />
                         <HeaderCellProperty title="Store" />
                         <HeaderCellProperty title="Language" />

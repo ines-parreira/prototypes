@@ -1946,7 +1946,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                         className="ml-2"
                       >
                         <b>
-                          Hide chat temporary
+                          Hide chat temporarily
                         </b>
                       </div>
                     </div>
@@ -2935,7 +2935,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                         className="ml-2"
                       >
                         <b>
-                          Hide chat temporary
+                          Hide chat temporarily
                         </b>
                       </div>
                     </div>
@@ -4283,7 +4283,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                         className="ml-2"
                       >
                         <b>
-                          Hide chat temporary
+                          Hide chat temporarily
                         </b>
                       </div>
                     </div>
