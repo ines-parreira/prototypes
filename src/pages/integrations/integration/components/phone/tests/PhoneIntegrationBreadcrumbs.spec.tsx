@@ -9,6 +9,7 @@ import {
     PhoneIntegration,
     IntegrationType,
     VoiceMessageType,
+    PhoneRingingBehaviour,
 } from 'models/integration/types'
 import {phoneNumbers} from 'fixtures/phoneNumber'
 
@@ -53,6 +54,7 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
                 record_inbound_calls: false,
                 record_outbound_calls: false,
                 voicemail_outside_business_hours: false,
+                ringing_behaviour: PhoneRingingBehaviour.RoundRobin,
             },
             greeting_message: {
                 voice_message_type: VoiceMessageType.None,

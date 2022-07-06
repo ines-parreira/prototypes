@@ -9,11 +9,13 @@ import PageHeader from 'pages/common/components/PageHeader'
 import {
     PhoneIntegration,
     PhoneIntegrationPreferences,
+    PhoneRingingBehaviour,
     isPhoneIntegration,
 } from 'models/integration/types'
 import {getPhoneNumber} from 'state/entities/phoneNumbers/selectors'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import CheckBox from 'pages/common/forms/CheckBox'
+import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -26,6 +28,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {PhoneFunction} from 'business/twilio'
 import settingsCss from 'pages/settings/settings.less'
 import useAppSelector from 'hooks/useAppSelector'
+import {useFeatureFlags} from 'hooks/useFeatureFlags'
+import {FlagKey} from 'providers/FeatureFlags'
 
 import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
 import PhoneIntegrationBreadcrumbs from './PhoneIntegrationBreadcrumbs'
@@ -44,11 +48,12 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
             record_inbound_calls: false,
             voicemail_outside_business_hours: false,
             record_outbound_calls: false,
+            ringing_behaviour: PhoneRingingBehaviour.RoundRobin,
         }
     )
     const phoneNumberId = integration?.meta?.twilio_phone_number_id
     const phoneNumber = useAppSelector(getPhoneNumber(phoneNumberId))
-
+    const {getFlag} = useFeatureFlags()
     const dispatch = useAppDispatch()
 
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
@@ -205,7 +210,7 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
                             </Row>
 
                             {!isIvr && (
-                                <Row className="mb-3">
+                                <Row className="mt-3">
                                     <Col>
                                         <h4 className="mb-3">Outbound calls</h4>
                                         <FormGroup>
@@ -225,6 +230,45 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
                                             >
                                                 Start recording automatically
                                             </CheckBox>
+                                        </FormGroup>
+                                    </Col>
+                                </Row>
+                            )}
+                            {getFlag(FlagKey.NewPhoneAutoAssignment) && (
+                                <Row>
+                                    <Col>
+                                        <h4 className="mt-3 mb-3">
+                                            Set ringing behavior for teams
+                                        </h4>
+                                        <FormGroup>
+                                            <RadioFieldSet
+                                                options={[
+                                                    {
+                                                        label: 'Round-robin ringing',
+                                                        value: PhoneRingingBehaviour.RoundRobin,
+                                                        caption:
+                                                            'Calls assigned to a team will ring available agents one-by-one, ordered by the time since an agent last received a call',
+                                                    },
+                                                    {
+                                                        label: 'Broadcast ringing',
+                                                        value: PhoneRingingBehaviour.Broadcast,
+                                                        caption:
+                                                            'Calls assigned to a team will ring all available agents simultaneously',
+                                                    },
+                                                ]}
+                                                onChange={(value) =>
+                                                    setPreferences(
+                                                        (preferences) => ({
+                                                            ...preferences,
+                                                            ringing_behaviour:
+                                                                value as PhoneRingingBehaviour,
+                                                        })
+                                                    )
+                                                }
+                                                selectedValue={
+                                                    preferences.ringing_behaviour
+                                                }
+                                            />
                                         </FormGroup>
                                     </Col>
                                 </Row>

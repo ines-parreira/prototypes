@@ -32,10 +32,16 @@ export type PhoneIntegrationMeta = {
     ivr?: PhoneIntegrationIvrSettings
 }
 
+export enum PhoneRingingBehaviour {
+    RoundRobin = 'round_robin',
+    Broadcast = 'broadcast',
+}
+
 export type PhoneIntegrationPreferences = {
     record_inbound_calls: boolean
     record_outbound_calls: boolean
     voicemail_outside_business_hours: boolean
+    ringing_behaviour: PhoneRingingBehaviour
 }
 
 export type PhoneIntegrationVoicemailSettings = VoiceMessage & {

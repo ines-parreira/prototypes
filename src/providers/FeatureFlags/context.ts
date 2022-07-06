@@ -4,6 +4,7 @@ export enum FlagKey {
     SelfServiceArticleRecommendation = 'self-service-article-recommendation',
     EarlyAdopter = 'early-adopter',
     DefaultMacroToSearch = 'default-macro-to-search',
+    NewPhoneAutoAssignment = 'new-phone-auto-assignment',
 }
 
 type ContextSchema = {
