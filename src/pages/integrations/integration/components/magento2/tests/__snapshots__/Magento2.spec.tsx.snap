@@ -1,0 +1,676 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Magento2/> Detail should render a detail view 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Magento 2
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/magento2/"
+    >
+      App Details
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/magento2/connections"
+    >
+      Connections
+    </a>
+  </nav>
+  <header
+    class="hero"
+  >
+    <img
+      alt="Magento 2's logo"
+      class="heroImage"
+      src="/static/private/js/assets/img/integrations/magento.png"
+    />
+    <div>
+      <h1
+        class="heroHeading"
+      >
+        Magento 2
+      </h1>
+      <p
+        class="heroDescription"
+      >
+        Display customer profiles & orders next to tickets. Edit orders with macros.
+      </p>
+      <div
+        class="heroMeta"
+      >
+        <span
+          class="badge badge badge-secondary badge-pill"
+        >
+          ECOMM PLATFORMS
+        </span>
+        <span
+          class="by"
+        >
+          by
+           
+          <a
+            href="https://www.gorgias.com/"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Gorgias
+          </a>
+        </span>
+      </div>
+    </div>
+  </header>
+  <main
+    class="main"
+  >
+    <section
+      class="longDescription"
+    >
+      <h2
+        class="categoryTitle"
+      >
+        About
+      </h2>
+      <div>
+        <p>
+          Securely connect with Magento to have your customers’ order history at your agents’ fingertips.
+        </p>
+        <p>
+          <br />
+        </p>
+        <p>
+          Magento is an ecommerce platform built on open source technology which provides online merchants with a flexible shopping cart system, as well as control over the look, content and functionality of their online store.
+        </p>
+        <p>
+          <br />
+        </p>
+        <p>
+          The Gorgias plugin for Magento is currently compatible with Magento 2.2, 2.3 and 2.4 for all Magento versions: Open Source (CE), Commerce using on prem (EE), Commerce on Cloud (ECE).
+        </p>
+        <p>
+          <br />
+        </p>
+        <p>
+          <span
+            data-mce-style="text-decoration: underline;"
+            style="text-decoration: underline;"
+          >
+            <strong>
+              Integration benefits
+            </strong>
+          </span>
+        </p>
+        <ul>
+          <li>
+            Display customer profiles next to tickets
+          </li>
+          <li>
+            Display orders, shipments and credit memos
+          </li>
+          <li>
+            Insert Magento 2 variables in macros
+          </li>
+          <li>
+            Use Magento 2 variables as filters in rules
+          </li>
+        </ul>
+      </div>
+      <ul
+        class="screenshotList"
+      >
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 1 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="/static/private/js/assets/img/integrations/screenshots/magento-1.png"
+          />
+        </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 2 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="/static/private/js/assets/img/integrations/screenshots/magento-2.png"
+          />
+        </li>
+        <li
+          class="screenshotListItem"
+        >
+          <img
+            alt="Screenshot number 3 of things this app allows you to do in Gorgias"
+            class="screenshot"
+            src="/static/private/js/assets/img/integrations/screenshots/magento-3.png"
+          />
+        </li>
+      </ul>
+    </section>
+    <div
+      class="infoCard card"
+    >
+      <div
+        class="card-body"
+      >
+        <div
+          class="connectWrapper"
+        >
+          <a
+            class="connectButtonWrapper"
+            to="/app/settings/integrations/magento2/new"
+          >
+            <button
+              class="wrapper actionButton fill primary medium"
+              type="button"
+            >
+              Connect App
+            </button>
+          </a>
+        </div>
+        <h2
+          class="categoryTitle cardTitle"
+        >
+          Pricing
+        </h2>
+        <div>
+          Free
+        </div>
+        <h2
+          class="categoryTitle cardTitle"
+        >
+          Resources
+        </h2>
+        <ul
+          class="cardList"
+        >
+          <li>
+            <a
+              class="actionLink"
+              href="https://docs.gorgias.com/ecommerce-integrations/magento-2"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                description
+              </i>
+              Documentation
+            </a>
+          </li>
+          <li>
+            <a
+              class="actionLink"
+              href="https://magento.com/"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <i
+                class="material-icons-outlined actionIcon actionIconBigger"
+              >
+                privacy_tip
+              </i>
+              Privacy Policy
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+</div>
+`;
+
+exports[`<Magento2/> Integration should render 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/magento2/connections"
+          >
+            Magento 2
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        />
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-8"
+      >
+        <div
+          class="alert loading mb-4"
+        >
+          <div
+            class="iconContainer"
+          >
+            <span
+              class="loadingIcon"
+            >
+              <svg
+                class="spinner dark"
+                preserveAspectRatio="xMidYMid meet"
+                role="status"
+                viewBox="0 0 20 20"
+                width="100%"
+              >
+                <circle
+                  class="dot"
+                  cx="10"
+                  cy="10"
+                  fill="none"
+                  r="6"
+                  stroke-width="2"
+                />
+                <circle
+                  class="circle"
+                  cx="10"
+                  cy="10"
+                  fill="none"
+                  r="6"
+                  stroke-width="2"
+                />
+                <span
+                  class="sr-only"
+                >
+                  Loading...
+                </span>
+              </svg>
+            </span>
+          </div>
+          <div
+            class="content"
+          >
+            <span
+              class="label"
+            >
+              Import in progress. We typically sync 3,000 customers an hour.We will send you an email once it is done. Feel free to leave this page.
+            </span>
+          </div>
+        </div>
+        <form
+          class=""
+        >
+          <label
+            class="label mb-2"
+            for="store-field"
+          >
+            Store admin URL
+          </label>
+          <span
+            class="mb-4 wrapper group horizontal"
+          >
+            <span
+              class="groupAddon left"
+            >
+              https:///
+            </span>
+            <div
+              class="wrapper right isNested"
+            >
+              <input
+                class="input"
+                id="store-field"
+                name="admin-url-suffix"
+                placeholder="ex: admin_45f1c"
+                required=""
+                type="text"
+                value=""
+              />
+            </div>
+          </span>
+          <div>
+            <button
+              class="wrapper mr-2 fill primary medium isDisabled"
+              disabled=""
+              type="submit"
+            >
+              Update integration
+            </button>
+            <button
+              class="wrapper float-right fill destructive medium"
+              id="delete-integration"
+              type="button"
+            >
+              <span
+                class="wrapper"
+              >
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  delete
+                </i>
+                Delete integration
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<Magento2/> List should render 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Magento 2
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/magento2/"
+    >
+      App Details
+    </a>
+    <a
+      activeclassname="active"
+      class="link"
+      to="/app/settings/integrations/magento2/connections"
+    >
+      Connections
+    </a>
+  </nav>
+  <ul
+    class="list"
+  >
+    <li
+      class="listItem"
+    >
+      <a
+        class="link"
+        to="/app/settings/integrations/magento2/1"
+      >
+        <span>
+          myShop1
+        </span>
+        <i
+          class="material-icons md-3"
+        >
+          keyboard_arrow_right
+        </i>
+      </a>
+    </li>
+  </ul>
+  <div
+    class="wrapper"
+  >
+    <a
+      class="connectButtonWrapper"
+      to="/app/settings/integrations/magento2/new"
+    >
+      <button
+        class="wrapper actionButton fill primary medium"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft medium"
+          >
+            add
+          </i>
+          Connect Magento2
+        </span>
+      </button>
+    </a>
+  </div>
+</div>
+`;
+
+exports[`<Magento2/> New should render 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/magento2/connections"
+          >
+            Magento 2
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Add integration
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-8"
+      >
+        <div>
+          <p>
+            Let's connect your store to Gorgias. We'll import your Magento 2 customers in Gorgias, along with their order information. This way, when they contact you, you'll be able to see their Magento 2 information next to tickets.
+          </p>
+          <div
+            class="alert warning mb16"
+          >
+            <div
+              class="content"
+            >
+              <span
+                class="label"
+              >
+                To add a Magento 2 integration to Gorgias, you will need to have installed the
+                 
+                <a
+                  href="https://marketplace.magento.com/gorgias-module-magento-connect.html"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Gorgias plugin
+                </a>
+                 
+                on your store first. Please follow instructions
+                 
+                <a
+                  href="https://docs.gorgias.com/ecommerce-integrations/magento-2"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  here
+                </a>
+                 
+                for more details about how to do that.
+              </span>
+            </div>
+          </div>
+        </div>
+        <span>
+          How do you want to add this integration?
+        </span>
+        <div
+          class="selection-button-group mt4"
+        >
+          <span
+            class="selection-button selected-button"
+          >
+            <i
+              class="selection-button-icon material-icons blue"
+            >
+              storefront
+            </i>
+            One-click installation
+          </span>
+          <span
+            class="selection-button"
+          >
+            <i
+              class="selection-button-icon material-icons blue"
+            >
+              build
+            </i>
+            Manual installation
+          </span>
+        </div>
+        <form
+          class=""
+        >
+          <label
+            class="label mb-2"
+            for="store-field"
+          >
+            Store admin URL
+          </label>
+          <span
+            class="mb-4 wrapper group horizontal"
+          >
+            <span
+              class="groupAddon left"
+            >
+              https://
+            </span>
+            <div
+              class="wrapper right isNested"
+            >
+              <input
+                class="input"
+                id="store-field"
+                name="admin-url"
+                pattern="^[a-z.0-9-]*\\\\.[a-z0-9]*\\\\/(index\\\\.php)?[\\\\/\\\\w\\\\d_-]*$"
+                placeholder="ex: acme.com/admin_45f1c"
+                required=""
+                type="text"
+                value=""
+              />
+            </div>
+          </span>
+          <div>
+            <button
+              class="wrapper mr-2 fill primary medium"
+              type="submit"
+            >
+              Add integration
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -545,10 +545,6 @@ export const getMagento2IntegrationByStoreUrl = (storeUrl: string) =>
             ) as Map<any, any>) || fromJS({})
     )
 
-export const makeGetMagento2IntegrationByStoreUrl =
-    (state: RootState) => (storeUrl: string) =>
-        getMagento2IntegrationByStoreUrl(storeUrl)(state)
-
 export const getChatIntegrationCampaigns = (id: number) =>
     createSelector<RootState, List<any>, Map<any, any>>(
         getIntegrationById(id),

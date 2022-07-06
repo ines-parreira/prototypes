@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 
-import css from './Magento2ManualSelectionButton.less'
+import css from './ModeSelectionButton.less'
 
 type Props = {
     text: string

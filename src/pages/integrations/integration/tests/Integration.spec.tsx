@@ -216,11 +216,8 @@ jest.mock('../components/yotpo/YotpoIntegrationDetail', () => () => (
     <div>YotpoIntegrationDetail</div>
 ))
 
-jest.mock('../components/magento2/Magento2IntegrationDetail', () => () => (
-    <div>Magento2IntegrationDetail</div>
-))
-jest.mock('../components/magento2/Magento2IntegrationList', () => () => (
-    <div>Magento2IntegrationList</div>
+jest.mock('../components/magento2/Magento2', () => () => (
+    <div>Magento2Integration</div>
 ))
 
 beforeEach(() => {
@@ -262,9 +259,6 @@ describe('<IntegrationDetail />', () => {
         integrations: fromJS([]),
         currentPlan: {
             features: {
-                magento_integration: {
-                    enabled: true,
-                },
                 twitter_integration: {
                     enabled: true,
                 },
@@ -306,35 +300,29 @@ describe('<IntegrationDetail />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it.each([IntegrationType.Magento2, IntegrationType.Twitter])(
-        'should display not available message if %s integration not included in plan',
-        (integrationType) => {
-            const basicPlan = {
-                features: {
-                    twitter_integration: {
-                        enabled: false,
-                    },
-                    magento_integration: {
-                        enabled: false,
-                    },
+    it(`should display not available message if ${IntegrationType.Twitter} integration not included in plan`, () => {
+        const basicPlan = {
+            features: {
+                twitter_integration: {
+                    enabled: false,
                 },
-            }
-            const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail
-                        {...minProps}
-                        currentPlan={basicPlan as Plan}
-                    />
-                </Provider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${integrationType}`,
-                }
-            )
-
-            expect(container.firstChild).toMatchSnapshot()
+            },
         }
-    )
+        const {container} = renderWithRouter(
+            <Provider store={store}>
+                <IntegrationDetail
+                    {...minProps}
+                    currentPlan={basicPlan as Plan}
+                />
+            </Provider>,
+            {
+                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
+                route: `/integrations/${IntegrationType.Twitter}`,
+            }
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
 
     it.each([
         [IntegrationType.Aircall],
@@ -377,7 +365,6 @@ describe('<IntegrationDetail />', () => {
         [IntegrationType.GorgiasChat],
         [IntegrationType.Http],
         [IntegrationType.Klaviyo],
-        [IntegrationType.Magento2],
         [IntegrationType.Recharge],
         [IntegrationType.Shopify],
         [IntegrationType.Smile],

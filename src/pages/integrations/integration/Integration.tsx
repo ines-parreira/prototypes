@@ -51,8 +51,7 @@ import GorgiasChatIntegrationSelfService from './components/gorgias_chat/Gorgias
 
 import HTTPIntegrationList from './components/http/HTTPIntegrationList'
 
-import Magento2IntegrationDetail from './components/magento2/Magento2IntegrationDetail'
-import Magento2IntegrationList from './components/magento2/Magento2IntegrationList'
+import Magento2 from './components/magento2/Magento2'
 
 import SmoochIntegrationDetail from './components/smooch/SmoochIntegrationDetail'
 import SmoochIntegrationList from './components/smooch/SmoochIntegrationList'
@@ -774,36 +773,14 @@ export const IntegrationDetail = ({
             )
 
         case IntegrationType.Magento2:
-            if (
-                !currentPlan ||
-                !isFeatureEnabled(
-                    currentPlan.features[AccountFeature.MagentoIntegration]
-                )
-            ) {
-                // TODO: This should be replaced with a Paywall component when design available
-                return (
-                    <Container fluid>
-                        <h3 className={classNames('text-center', 'mt-5')}>
-                            Feature not available on your current plan.
-                        </h3>
-                    </Container>
-                )
-            }
-
-            if (!!integrationId) {
-                return (
-                    <Magento2IntegrationDetail
-                        integration={integration}
-                        isUpdate={isUpdate}
-                        loading={loading}
-                        redirectUri={redirectUri}
-                    />
-                )
-            }
-
             return (
-                <Magento2IntegrationList
-                    integrations={integrationsProp}
+                <Magento2
+                    integration={integration}
+                    integrations={
+                        integrationsProp.filter(
+                            (v) => v!.get('type') === IntegrationType.Magento2
+                        ) as List<Map<any, any>>
+                    }
                     loading={loading}
                     redirectUri={redirectUri}
                 />
