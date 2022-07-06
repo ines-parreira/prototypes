@@ -1,10 +1,13 @@
 import classnames from 'classnames'
-import React, {KeyboardEvent as KeyboardEventReact} from 'react'
+import React, {KeyboardEvent as KeyboardEventReact, useRef} from 'react'
 
 import {fetchMacrosParamsTypes} from 'state/macro/actions'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
+import OnbordingMacroPopover from 'pages/tickets/common/macros/components/OnbordingMacroPopover'
+import {useFeatureFlags} from 'hooks/useFeatureFlags'
+import {FlagKey} from 'providers/FeatureFlags'
 import css from './TicketMacrosSearch.less'
 
 type Props = {
@@ -28,6 +31,9 @@ const TicketMacrosSearch = ({
     onClearMacro,
     requireCustomerSelection,
 }: Props) => {
+    const {getFlag} = useFeatureFlags()
+    const ref = useRef<HTMLElement | null>(null)
+
     return (
         <div className={classnames(css.component, 'd-flex align-items-center')}>
             <TextInput
@@ -60,7 +66,9 @@ const TicketMacrosSearch = ({
                     onChange={searchMacros}
                 />
             )}
+
             <i
+                ref={ref}
                 className={classnames(
                     'material-icons md-2 mr-3 clickable',
                     css.closeButton
@@ -69,6 +77,10 @@ const TicketMacrosSearch = ({
             >
                 {macrosVisible ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
             </i>
+
+            {getFlag(FlagKey.DefaultMacroToSearch) && (
+                <OnbordingMacroPopover target={ref} />
+            )}
         </div>
     )
 }

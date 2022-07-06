@@ -1,0 +1,216 @@
+import React, {
+    ReactElement,
+    useState,
+    useRef,
+    ComponentProps,
+    MutableRefObject,
+} from 'react'
+import {useLocalStorage, useClickAway, useEffectOnce} from 'react-use'
+import {Popover, PopoverBody} from 'reactstrap'
+import classnames from 'classnames'
+import Button from 'pages/common/components/button/Button'
+import {GroupPositionContext} from 'pages/common/components/layout/Group'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {getPreferences} from 'state/currentUser/selectors'
+import {getTicket} from 'state/ticket/selectors'
+import {submitSetting} from 'state/currentUser/actions'
+import css from './OnbordingMacroPopover.less'
+
+type Stages = 'info' | 'prompt'
+type ButtonProps = {
+    label: string
+    onClick: () => void
+    buttonsProp?: ComponentProps<typeof Button>
+}
+interface StageProp {
+    content: ReactElement
+    buttons: Array<ButtonProps>
+}
+
+interface Props {
+    target: MutableRefObject<HTMLElement | null>
+}
+
+export default function OnbordingMacroPopover({target}: Props) {
+    const dispatch = useAppDispatch()
+    const [stage, setStage] = useState<Stages>('info')
+    const [showPopover, setShowPopover] = useState(false)
+    const ticket = useAppSelector(getTicket)
+
+    const currentUserPreferences = useAppSelector(getPreferences)
+
+    const [closedCount, setClosedCount] = useLocalStorage(
+        'default-macro-popover-closed',
+        0
+    )
+
+    useEffectOnce(() => {
+        const showMacrosSetting: undefined | boolean =
+            currentUserPreferences.getIn(['data', 'show_macros'])
+
+        const showPopoverSetting: undefined | boolean =
+            currentUserPreferences.getIn([
+                'data',
+                'macros_default_to_search_popover',
+            ])
+
+        if (
+            showPopoverSetting &&
+            showMacrosSetting &&
+            ticket.channel === 'email'
+        ) {
+            setShowPopover(true)
+        }
+    })
+
+    const setShowMacroByDefault = async (showMacro?: boolean) => {
+        setShowPopover(false)
+        let updatedCurrentUserPreferences = currentUserPreferences.setIn(
+            ['data', 'macros_default_to_search_popover'],
+            false
+        )
+
+        if (showMacro !== undefined) {
+            updatedCurrentUserPreferences = updatedCurrentUserPreferences.setIn(
+                ['data', 'show_macros'],
+                showMacro
+            )
+        }
+        await dispatch(
+            submitSetting(updatedCurrentUserPreferences.toJS(), false)
+        )
+    }
+
+    const handleClose = async () => {
+        setShowPopover(false)
+        const nextClosedCount = closedCount === undefined ? 0 : closedCount + 1
+        setClosedCount(nextClosedCount)
+
+        if (nextClosedCount >= 3) {
+            await setShowMacroByDefault()
+        }
+    }
+
+    const handleKeepSearch = async () => {
+        await setShowMacroByDefault()
+    }
+
+    const handleRevertBack = async () => {
+        await setShowMacroByDefault(false)
+    }
+
+    const popoverData: Record<Stages, StageProp> = {
+        info: {
+            content: (
+                <p>
+                    This is the macro search view.{' '}
+                    <b>You can compose your message from scratch </b> by
+                    clicking here.
+                </p>
+            ),
+            buttons: [
+                {
+                    label: 'Got it',
+                    onClick: () => setStage('prompt'),
+                    buttonsProp: {intent: 'secondary', fillStyle: 'fill'},
+                },
+            ],
+        },
+        prompt: {
+            content: (
+                <p>
+                    You’re now defaulted to the macro search to better optimise
+                    your workflow.
+                </p>
+            ),
+            buttons: [
+                {
+                    label: 'Keep search',
+                    onClick: handleKeepSearch,
+                    buttonsProp: {intent: 'primary'},
+                },
+                {
+                    label: 'Revert back',
+                    onClick: handleRevertBack,
+                    buttonsProp: {intent: 'secondary'},
+                },
+            ],
+        },
+    }
+
+    return (
+        <>
+            {showPopover && (
+                <MacroPopOver
+                    target={target}
+                    onClose={handleClose}
+                    content={popoverData[stage].content}
+                    buttons={popoverData[stage].buttons}
+                />
+            )}
+        </>
+    )
+}
+
+function MacroPopOver({
+    content,
+    buttons,
+    target,
+    onClose,
+}: {
+    onClose: () => void
+    content: ReactElement
+    buttons: Array<ButtonProps>
+    target: MutableRefObject<HTMLElement | null>
+}) {
+    const popoverBodyRef = useRef(null)
+
+    useClickAway(popoverBodyRef, () => {
+        onClose()
+    })
+
+    return (
+        <>
+            {target && (
+                <Popover
+                    target={target}
+                    isOpen={true}
+                    placement="top-start"
+                    onClick={(event) => {
+                        event.stopPropagation()
+                    }}
+                    trigger="legacy"
+                >
+                    <div ref={popoverBodyRef}>
+                        <PopoverBody>
+                            <div
+                                className={classnames(
+                                    'd-md-block p-1',
+                                    css.popoverContent
+                                )}
+                            >
+                                {content}
+                            </div>
+                            <GroupPositionContext.Provider value={null}>
+                                {buttons.map((button) => {
+                                    return (
+                                        <Button
+                                            {...button.buttonsProp}
+                                            className="mx-1"
+                                            onClick={button.onClick}
+                                            key={button.label}
+                                        >
+                                            {button.label}
+                                        </Button>
+                                    )
+                                })}
+                            </GroupPositionContext.Provider>
+                        </PopoverBody>
+                    </div>
+                </Popover>
+            )}
+        </>
+    )
+}

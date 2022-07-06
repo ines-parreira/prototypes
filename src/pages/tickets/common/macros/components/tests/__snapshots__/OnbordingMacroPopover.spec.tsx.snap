@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OnbordingMacroPopover /> should display popover 1`] = `
+<body>
+  <div>
+    <div
+      data-testid="parent"
+      style="width: 800px;"
+    />
+  </div>
+  <div>
+    <div
+      class="fade"
+    >
+      <div
+        class="popover show bs-popover-auto"
+        style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+      >
+        <div
+          class="popover-inner"
+          role="tooltip"
+        >
+          <div>
+            <div
+              class="popover-body"
+            >
+              <div
+                class="d-md-block p-1 popoverContent"
+              >
+                <p>
+                  This is the macro search view.
+                   
+                  <b>
+                    You can compose your message from scratch 
+                  </b>
+                   by clicking here.
+                </p>
+              </div>
+              <button
+                class="wrapper mx-1 fill secondary medium"
+                type="button"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+        <span
+          class="arrow"
+        />
+      </div>
+    </div>
+  </div>
+</body>
+`;
