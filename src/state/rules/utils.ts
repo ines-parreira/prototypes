@@ -491,7 +491,7 @@ export function updateCallExpression(
     let secondArg = null
     if (firstArg && firstArg.includes('self_service_flow')) {
         // TODO(@VictorXunS): Remove this when self_service_flow variables are in schemas
-        callee = 'eq'
+        callee = callExpression.getIn(['callee', 'name'], '') as string
         secondArg = "''"
     } else {
         callee = resolveCallee(callExpression, firstArgSchema as Map<any, any>)
