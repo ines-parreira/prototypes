@@ -37,7 +37,7 @@ export type SearchRank = {
     endScenario: () => void
 }
 
-const DATABASE_TYPE: Record<SearchEngine, string> = {
+export const DATABASE_TYPE: Record<SearchEngine, string> = {
     [SearchEngine.ES]: 'elasticsearch',
     [SearchEngine.PG]: 'postgres',
 }
@@ -69,9 +69,7 @@ export default function useSearchRankScenario(
                     ? selectedItem.current.index + 1
                     : -1,
                 result_object_id: selectedItem?.current?.id,
-                database_type: searchEngine
-                    ? DATABASE_TYPE[searchEngine]
-                    : SearchEngine.PG,
+                database_type: DATABASE_TYPE[searchEngine || SearchEngine.PG],
             })
             request.current = undefined
             response.current = undefined

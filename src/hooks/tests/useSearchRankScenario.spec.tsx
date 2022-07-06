@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import useSearchRankScenario, {
+    DATABASE_TYPE,
     SearchRankRequest,
     SearchRankResponse,
     SearchRankSource,
@@ -283,7 +284,9 @@ describe('useSearchRankScenario', () => {
         )
     })
 
-    it('should log PG database type by default', () => {
+    it(`should log ${
+        DATABASE_TYPE[SearchEngine.PG]
+    } database type by default`, () => {
         const {result} = renderHook(
             () =>
                 useSearchRankScenario(
@@ -318,7 +321,7 @@ describe('useSearchRankScenario', () => {
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.SearchQueryRanked,
             expect.objectContaining({
-                database_type: SearchEngine.PG,
+                database_type: DATABASE_TYPE[SearchEngine.PG],
             })
         )
     })
