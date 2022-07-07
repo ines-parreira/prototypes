@@ -55,6 +55,7 @@ type Props = {
     recipe: RuleRecipe
     onInstall: (rule: Rule) => void
     isModalOpenOnLoad?: boolean
+    isReady: boolean
 }
 
 const tagColors: {[key: string]: string} = {
@@ -65,6 +66,7 @@ const tagColors: {[key: string]: string} = {
 
 function RuleRecipeCard({
     recipe,
+    isReady,
     isModalOpenOnLoad = false,
     onInstall = _noop,
 }: Props) {
@@ -379,6 +381,7 @@ function RuleRecipeCard({
                     shouldInstall={shouldInstall}
                     managedRuleId={managedRuleId}
                     handleDefaultSettings={setExtraDefaultSettings}
+                    shouldHandleError={isReady}
                 />
             </div>
         </div>

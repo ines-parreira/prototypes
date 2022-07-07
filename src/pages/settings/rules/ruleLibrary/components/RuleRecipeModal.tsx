@@ -1,4 +1,4 @@
-import React, {ReactNode, useState} from 'react'
+import React, {ReactNode, useCallback, useState} from 'react'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 
@@ -10,11 +10,16 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import history from 'pages/history'
 import Alert from 'pages/common/components/Alert/Alert'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
-import {AnyManagedRuleSettings, RuleType} from 'state/rules/types'
+import {
+    AnyManagedRuleSettings,
+    RuleLimitStatus,
+    RuleType,
+} from 'state/rules/types'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import AutomationSubscriptionFeatures from 'pages/settings/billing/automation/AutomationSubscriptionFeatures'
 
 import Tooltip from 'pages/common/components/Tooltip'
+import {getRulesLimitStatus} from 'state/entities/rules/selectors'
 import {RuleItemActions} from '../../types'
 
 import {InstallationError, InstallationErrorMessage} from '../constants'
@@ -35,6 +40,7 @@ type Props = {
     shouldInstall: boolean
     managedRuleId?: number
     handleDefaultSettings: (settings: Partial<AnyManagedRuleSettings>) => void
+    shouldHandleError: boolean
 }
 
 export const RuleRecipeModal = ({
@@ -47,13 +53,20 @@ export const RuleRecipeModal = ({
     shouldInstall,
     managedRuleId,
     handleDefaultSettings,
+    shouldHandleError,
 }: Props) => {
     const {rule, slug, triggered_count, views_per_section} = recipe
     const [shouldCreateviews, setShouldCreateViews] = useState(true)
     const [showAutomationModal, setShowAutomationModal] = useState(false)
     const [isSubscribing, setIsSubscribing] = useState(false)
-    const [installationError, setInstallationError] =
-        useState<InstallationError | null>()
+    const ruleLimitStatus = useAppSelector(getRulesLimitStatus)
+    const [installationErrors, setInstallationErrors] = useState<
+        InstallationError[]
+    >(
+        ruleLimitStatus === RuleLimitStatus.Reached
+            ? [InstallationError.MaxRulesReached]
+            : []
+    )
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     const isBehindPaywall =
@@ -70,7 +83,32 @@ export const RuleRecipeModal = ({
     }
 
     const installButtonId = `${slug}-install-button`
-    const isInstallationDisabled = !shouldInstall || !!installationError
+    const isInstallationDisabled = !shouldInstall || !!installationErrors.length
+    const handleInstallationErrors = useCallback(
+        (installationError: InstallationError) => {
+            if (
+                shouldHandleError &&
+                !installationErrors.find((error) => error === installationError)
+            ) {
+                setInstallationErrors([
+                    ...installationErrors,
+                    installationError,
+                ])
+            }
+        },
+        [installationErrors, shouldHandleError]
+    )
+    const ErrorTooltip = () => (
+        <Tooltip
+            trigger={['hover']}
+            target={`#${installButtonId}`}
+            className={css.tooltip}
+        >
+            {installationErrors
+                .map((error) => InstallationErrorMessage[error])
+                .join(' ')}
+        </Tooltip>
+    )
 
     const InstallButton = () =>
         isBehindPaywall ? (
@@ -89,15 +127,7 @@ export const RuleRecipeModal = ({
                         Subscribe to automation add-on
                     </Button>
                 </span>
-                {!!installationError && (
-                    <Tooltip
-                        trigger={['hover']}
-                        target={`#${installButtonId}`}
-                        className={css.tooltip}
-                    >
-                        {InstallationErrorMessage[installationError]}
-                    </Tooltip>
-                )}
+                {!!installationErrors.length && <ErrorTooltip />}
             </>
         ) : (
             <>
@@ -119,15 +149,7 @@ export const RuleRecipeModal = ({
                         Install rule
                     </Button>
                 </span>
-                {!!installationError && (
-                    <Tooltip
-                        trigger={['hover']}
-                        target={`#${installButtonId}`}
-                        className={css.tooltip}
-                    >
-                        {InstallationErrorMessage[installationError]}
-                    </Tooltip>
-                )}
+                {!!installationErrors.length && <ErrorTooltip />}
             </>
         )
 
@@ -196,7 +218,7 @@ export const RuleRecipeModal = ({
                         isBehindPaywall={isBehindPaywall}
                         renderTags={renderTags}
                         viewCreationCheckbox={ViewsCreationCheckbox}
-                        handleInstallationError={setInstallationError}
+                        handleInstallationError={handleInstallationErrors}
                         handleDefaultSettings={handleDefaultSettings}
                     />
                 </ModalBody>

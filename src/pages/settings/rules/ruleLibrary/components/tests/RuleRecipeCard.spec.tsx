@@ -63,6 +63,7 @@ describe('<RuleRecipeCard/>', () => {
         recipe: emptyRuleRecipeFixture,
         onInstall: _noop,
         isModalOpenOnLoad: false,
+        isReady: true,
     }
 
     beforeEach(() => {

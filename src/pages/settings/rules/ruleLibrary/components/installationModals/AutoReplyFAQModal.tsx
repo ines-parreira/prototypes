@@ -28,7 +28,6 @@ export const AutoReplyFAQModal = ({
             handleInstallationError(InstallationError.NoHelpCenter)
         } else {
             handleDefaultSettings({help_center_id: helpCenters[0].id})
-            handleInstallationError(null)
         }
     }, [helpCenters, handleDefaultSettings, handleInstallationError])
 

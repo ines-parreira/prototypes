@@ -33,6 +33,7 @@ describe('<RuleLibrary/>', () => {
         selectedTags: [],
         searchTerm: '',
         onInstall: _noop,
+        isReady: true,
     }
     describe('render', () => {
         it('should render cards for the library', () => {

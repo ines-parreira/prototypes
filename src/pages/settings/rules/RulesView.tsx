@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useDebounce, useAsyncFn, useEffectOnce} from 'react-use'
 import classnames from 'classnames'
 import {Container} from 'reactstrap'
@@ -58,6 +58,7 @@ export function RulesViewContainer({
     const recipeTags = Object.values(RuleRecipeTag)
 
     const {isLoading: isHelpCenterLoading} = useHelpCenterList({per_page: 900})
+    const isReady = useMemo(() => !isHelpCenterLoading, [isHelpCenterLoading])
 
     const [{loading: isFetchingRules}, handleFetchRules] = useAsyncFn(
         async () => {
@@ -314,7 +315,7 @@ export function RulesViewContainer({
                             rules={rules}
                             limitStatus={limitStatus}
                             handleGoToLibrary={goToLibrary}
-                            shouldDisplayError={!isHelpCenterLoading}
+                            shouldDisplayError={isReady}
                         />
                     )}
                 </>
@@ -329,6 +330,7 @@ export function RulesViewContainer({
                             selectedTags={selectedTags}
                             onInstall={(rule) => setHasUnseenRules(!!rule)}
                             activeSlug={slug}
+                            isReady={isReady}
                         />
                     )}
                 </>

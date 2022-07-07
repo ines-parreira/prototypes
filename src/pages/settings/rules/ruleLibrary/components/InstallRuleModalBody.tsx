@@ -21,7 +21,7 @@ type Props = {
     isBehindPaywall: boolean
     renderTags: () => React.ReactNode
     viewCreationCheckbox: () => React.ReactNode
-    handleInstallationError: (errors: InstallationError | null) => void
+    handleInstallationError: (errors: InstallationError) => void
     handleDefaultSettings: (settings: Partial<AnyManagedRuleSettings>) => void
 }
 

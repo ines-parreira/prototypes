@@ -15,12 +15,14 @@ export type Props = {
     selectedTags: string[]
     activeSlug?: string
     onInstall: (rule: Rule) => void
+    isReady: boolean
 }
 
 export function RuleLibrary({
     recipes,
     selectedTags,
     searchTerm,
+    isReady,
     activeSlug = '',
     onInstall = _noop,
 }: Props) {
@@ -62,6 +64,7 @@ export function RuleLibrary({
                             key={recipe.slug}
                             onInstall={onInstall}
                             isModalOpenOnLoad={activeSlug === recipe.slug}
+                            isReady={isReady}
                         />
                     ))
                 ) : (
