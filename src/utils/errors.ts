@@ -20,6 +20,7 @@ const IGNORED_ERRORS = [
     'TypeError: NetworkError when attempting to fetch resource.', // https://linear.app/gorgias/issue/COR-1014/typeerror-failed-to-fetch
     'Error: Network Error', // https://linear.app/gorgias/issue/COR-1223/ignore-all-axios-network-errors
     /^Error: timeout of \d+ms exceeded$/, // https://linear.app/gorgias/issue/COR-1223/ignore-all-axios-network-errors
+    'ResizeObserver loop limit exceeded', // https://linear.app/gorgias/issue/PLTCO-2300/mute-or-ignore-resizeobserver-warning
 ]
 
 export type InitErrorReporterParams = {

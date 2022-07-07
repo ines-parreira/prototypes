@@ -19,6 +19,7 @@ Array [
         "TypeError: NetworkError when attempting to fetch resource.",
         "Error: Network Error",
         /\\^Error: timeout of \\\\d\\+ms exceeded\\$/,
+        "ResizeObserver loop limit exceeded",
       ],
       "integrations": Array [
         BrowserTracing {
