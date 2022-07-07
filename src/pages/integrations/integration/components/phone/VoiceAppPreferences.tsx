@@ -234,7 +234,7 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
                                     </Col>
                                 </Row>
                             )}
-                            {getFlag(FlagKey.NewPhoneAutoAssignment) && (
+                            {!isIvr && getFlag(FlagKey.NewPhoneAutoAssignment) && (
                                 <Row>
                                     <Col>
                                         <h4 className="mt-3 mb-3">
