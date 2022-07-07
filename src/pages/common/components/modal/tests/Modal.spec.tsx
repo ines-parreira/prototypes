@@ -67,4 +67,52 @@ describe('<Modal />', () => {
 
         expect(minProps.onClose).toHaveBeenCalled()
     })
+
+    it('should trigger onClose callback when pressing esc because modal is open', () => {
+        const {container} = render(
+            <Modal {...minProps} isOpen={true}>
+                <ModalHeader title="Did you know?" />
+                <ModalBody>
+                    Ares is the Greek god of courage and war. He is one of the
+                    Twelve Olympians, and the son of Zeus and Hera
+                </ModalBody>
+            </Modal>
+        )
+
+        fireEvent.keyDown(container, {key: 'Escape'})
+
+        expect(minProps.onClose).toHaveBeenCalled()
+    })
+
+    it('should not trigger onClose callback when pressing esc because modal is closed', () => {
+        const {container} = render(
+            <Modal {...minProps} isOpen={false}>
+                <ModalHeader title="Did you know?" />
+                <ModalBody>
+                    Ares is the Greek god of courage and war. He is one of the
+                    Twelve Olympians, and the son of Zeus and Hera
+                </ModalBody>
+            </Modal>
+        )
+
+        fireEvent.keyDown(container, {key: 'Escape'})
+
+        expect(minProps.onClose).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger onClose callback when pressing esc because modal is not closable', () => {
+        const {container} = render(
+            <Modal {...minProps} isClosable={false} isOpen={true}>
+                <ModalHeader title="Did you know?" />
+                <ModalBody>
+                    Ares is the Greek god of courage and war. He is one of the
+                    Twelve Olympians, and the son of Zeus and Hera
+                </ModalBody>
+            </Modal>
+        )
+
+        fireEvent.keyDown(container, {key: 'Escape'})
+
+        expect(minProps.onClose).not.toHaveBeenCalled()
+    })
 })

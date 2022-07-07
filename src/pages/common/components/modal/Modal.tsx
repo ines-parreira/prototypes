@@ -59,14 +59,16 @@ const Modal = ({
     const labelId = `${modalId}-title`
 
     const handleCloseRequest = useCallback(() => {
-        if (isClosable) {
-            onClose()
-        } else {
-            setBounceModal(true)
+        if (isOpen) {
+            if (isClosable) {
+                onClose()
+            } else {
+                setBounceModal(true)
+            }
         }
-    }, [isClosable, onClose])
+    }, [isClosable, isOpen, onClose])
 
-    useKey('Escape', handleCloseRequest, undefined, [isClosable])
+    useKey('Escape', handleCloseRequest, undefined, [handleCloseRequest])
 
     const handleClose = useCallback(
         (event: MouseEvent) => {
