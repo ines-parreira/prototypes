@@ -3,8 +3,8 @@ import io from 'socket.io-client'
 import {BROADCAST_CHANNEL_EVENTS, MESSAGE_PORT_EVENTS} from '../constants'
 import {
     DISCONNECTED_NOTIFICATION_DELAY,
+    HEALTH_CHECK_SEND_INTERVAL,
     HEALTH_CHECK_INTERVAL,
-    HEALTH_CHECK_TIMEOUT,
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
     SOCKET_EVENTS,
     WebsocketSharedWorker,
@@ -27,6 +27,8 @@ class MockMessagePort {
     onmessage = null
 }
 
+const mockDateTimeStamp = 1657187815188
+
 describe('WebsocketSharedWorker', () => {
     let worker
 
@@ -42,73 +44,103 @@ describe('WebsocketSharedWorker', () => {
 
             expect(setInterval).toHaveBeenCalledWith(
                 worker.sendHealthCheck,
+                HEALTH_CHECK_SEND_INTERVAL * 1000
+            )
+        })
+
+        it('should set an interval for disconnecting tabs', () => {
+            worker.startHealthCheck()
+
+            expect(setInterval).toHaveBeenCalledWith(
+                worker.disconnectTabs,
                 HEALTH_CHECK_INTERVAL * 1000
             )
         })
     })
 
     describe('sendHealthCheck()', () => {
-        it(
-            'should set all tabs from `connectedTabs` into `pendingTabs`, send a `HEALTH_CHECK` message to each ' +
-                'connected tab, and set a timeout for the `disconnectTabs` function',
-            () => {
-                const tab1 = new MockMessagePort()
-                const tab2 = new MockMessagePort()
-
-                worker.connectedTabs = {clientId1: tab1, clientId2: tab2}
-                expect(worker.pendingTabs).toEqual({})
-
-                worker.sendHealthCheck()
-
-                expect(worker.pendingTabs).toEqual(worker.connectedTabs)
-                expect(setTimeout).toHaveBeenCalledWith(
-                    worker.disconnectTabs,
-                    HEALTH_CHECK_TIMEOUT * 1000
-                )
-                expect(tab1.postMessage).toHaveBeenCalledWith({
-                    type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
-                })
-                expect(tab2.postMessage).toHaveBeenCalledWith({
-                    type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
-                })
-            }
-        )
-    })
-
-    describe('onHealthCheck()', () => {
-        it('should delete the tab associated with the passed clientId from the list of pending tabs', () => {
+        it('send a `HEALTH_CHECK` message to each connected tab', () => {
             const tab1 = new MockMessagePort()
             const tab2 = new MockMessagePort()
 
-            worker.pendingTabs = {clientId1: tab1, clientId2: tab2}
+            worker.connectedTabs = {
+                clientId1: {
+                    messagePort: tab1,
+                    lastHealthCheck: mockDateTimeStamp,
+                },
+                clientId2: {
+                    messagePort: tab2,
+                    lastHealthCheck: mockDateTimeStamp,
+                },
+            }
+
+            worker.sendHealthCheck()
+
+            expect(tab1.postMessage).toHaveBeenCalledWith({
+                type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
+            })
+            expect(tab2.postMessage).toHaveBeenCalledWith({
+                type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
+            })
+        })
+    })
+
+    describe('onHealthCheck()', () => {
+        it('should update the tab associated with the passed clientId with a new `lastHealthCheck` timestamp', () => {
+            const tab1 = new MockMessagePort()
+            const tab2 = new MockMessagePort()
+
+            worker.connectedTabs = {
+                clientId1: {
+                    messagePort: tab1,
+                    lastHealthCheck: mockDateTimeStamp,
+                },
+                clientId2: {
+                    messagePort: tab2,
+                    lastHealthCheck: mockDateTimeStamp,
+                },
+            }
 
             worker.onHealthCheck('clientId1')
 
-            expect(worker.pendingTabs).toEqual({clientId2: tab2})
+            expect(
+                worker.connectedTabs['clientId1'].lastHealthCheck
+            ).not.toEqual(mockDateTimeStamp)
         })
     })
 
     describe('disconnectTabs()', () => {
         it(
-            "should send a `CLIENT_DISCONNECTED` message to the worker's socket for each tab in `pendingTabs`, " +
-                'empty the `pendinTabs` object and delete those tabs from the list of connected tabs',
+            "should send a `CLIENT_DISCONNECTED` message to the worker's socket for each tab in `connectedTabs`" +
+                'that has a `lastHealthCheck` older than 5s and delete those tabs from the list of connected tabs',
             () => {
                 const tab1 = new MockMessagePort()
                 const tab2 = new MockMessagePort()
                 const tab3 = new MockMessagePort()
 
-                worker.pendingTabs = {clientId1: tab1, clientId2: tab2}
-                worker.connectedTabs = {
-                    clientId1: tab1,
-                    clientId2: tab2,
-                    clientId3: tab3,
+                const mockConnectedTabs = {
+                    clientId1: {
+                        messagePort: tab1,
+                        lastHealthCheck: Date.now() - 6 * 1000,
+                    },
+                    clientId2: {
+                        messagePort: tab2,
+                        lastHealthCheck: Date.now() - 7 * 1000,
+                    },
+                    clientId3: {
+                        messagePort: tab3,
+                        lastHealthCheck: Date.now() - 1 * 1000,
+                    },
                 }
+
+                worker.connectedTabs = mockConnectedTabs
                 worker.socket = io()
 
                 worker.disconnectTabs()
 
-                expect(worker.pendingTabs).toEqual({})
-                expect(worker.connectedTabs).toEqual({clientId3: tab3})
+                expect(worker.connectedTabs).toEqual({
+                    clientId3: mockConnectedTabs.clientId3,
+                })
 
                 expect(worker.socket.send).toHaveBeenCalledTimes(2)
                 expect(worker.socket.send).toHaveBeenCalledWith({
@@ -259,7 +291,10 @@ describe('WebsocketSharedWorker', () => {
             )
 
             expect(worker.connectedTabs).toEqual({
-                [message.clientId]: messagePort,
+                [message.clientId]: {
+                    messagePort,
+                    lastHealthCheck: expect.any(Number),
+                },
             })
             expect(worker.socket.send).toHaveBeenCalledWith({
                 event: SOCKET_EVENTS.CLIENT_CONNECTED,
@@ -281,7 +316,10 @@ describe('WebsocketSharedWorker', () => {
                 type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
             })
             expect(worker.connectedTabs).toEqual({
-                [message.clientId]: messagePort,
+                [message.clientId]: {
+                    messagePort,
+                    lastHealthCheck: expect.any(Number),
+                },
             })
             expect(worker.socket.send).toHaveBeenCalledWith({
                 event: SOCKET_EVENTS.CLIENT_CONNECTED,

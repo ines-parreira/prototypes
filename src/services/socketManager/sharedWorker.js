@@ -13,11 +13,12 @@
  * There is no way to know, after a tab has been connected to this worker, if it is still opened or not. In order
  * to have this information, we've created a health check:
  * - every second, the worker send a HEALTH_CHECK message to all connected tabs (`connectedTabs`)
- * - the worker then set all connected tabs in the list of disconnected tabs (`pendingTabs`)
  * - when tabs receive this message, they reply with the same HEALTH_CHECK message
- * - once the worker receive a reply from a tab, it removes it from the list of disconnected tabs
- * - after 500ms, the worker considers all tabs still in the list of pending tabs as disconnected, removes them
- * from the list of connected tabs, and sends a message to the server indicating this specific client was disconnected
+ * - once the worker receives a reply from a tab, it is registered with a `lastHealthCheck` timestamp
+ * - this timestamp is updated every second
+ * - every 10 seconds, the worker considers all tabs that have a `lastHealthCheck` timestamp older than 5 seconds as
+ * disconnected, removes them from the list of connected tabs, and sends a message to the server indicating
+ * this specific client was disconnected
  *
  *
  * Inspired by https://ayushgp.github.io/scaling-websockets-using-sharedworkers/
@@ -37,8 +38,9 @@ export const SOCKET_EVENTS = Object.freeze({
 })
 export const MAX_INCREMENTAL_RECONNECT_BACKOFF = 30
 export const DISCONNECTED_NOTIFICATION_DELAY = 10
-export const HEALTH_CHECK_TIMEOUT = 0.5
-export const HEALTH_CHECK_INTERVAL = 1
+export const HEALTH_CHECK_INTERVAL = 10
+export const HEALTH_CHECK_RECEIVE_TIMEOUT = 5
+export const HEALTH_CHECK_SEND_INTERVAL = 1
 
 export class WebsocketSharedWorker {
     wsUrl = null
@@ -52,38 +54,40 @@ export class WebsocketSharedWorker {
     sendDisconnectedNotificationTask = null
 
     connectedTabs = {}
-    pendingTabs = {}
 
     startHealthCheck() {
-        setInterval(this.sendHealthCheck, HEALTH_CHECK_INTERVAL * 1000)
+        setInterval(this.sendHealthCheck, HEALTH_CHECK_SEND_INTERVAL * 1000)
+        setInterval(this.disconnectTabs, HEALTH_CHECK_INTERVAL * 1000)
     }
 
     sendHealthCheck = () => {
-        this.pendingTabs = Object.assign({}, this.connectedTabs)
-
         Object.keys(this.connectedTabs).forEach((clientId) => {
-            this.connectedTabs[clientId].postMessage({
+            this.connectedTabs[clientId].messagePort.postMessage({
                 type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
             })
         })
-
-        setTimeout(this.disconnectTabs, HEALTH_CHECK_TIMEOUT * 1000)
     }
 
     onHealthCheck = (clientId) => {
-        delete this.pendingTabs[clientId]
+        if (this.connectedTabs[clientId]) {
+            this.connectedTabs[clientId].lastHealthCheck = Date.now()
+        }
     }
 
     disconnectTabs = () => {
-        Object.keys(this.pendingTabs).forEach((clientId) => {
-            this.socket.send({
-                event: SOCKET_EVENTS.CLIENT_DISCONNECTED,
-                clientId,
-            })
-            delete this.connectedTabs[clientId]
+        const currentTime = Date.now()
+        Object.entries(this.connectedTabs).forEach(([clientId, tab]) => {
+            if (
+                tab.lastHealthCheck <
+                currentTime - HEALTH_CHECK_RECEIVE_TIMEOUT * 1000
+            ) {
+                this.socket.send({
+                    event: SOCKET_EVENTS.CLIENT_DISCONNECTED,
+                    clientId,
+                })
+                delete this.connectedTabs[clientId]
+            }
         })
-
-        this.pendingTabs = {}
     }
 
     incrementalReconnect = () => {
@@ -171,7 +175,10 @@ export class WebsocketSharedWorker {
             })
         }
 
-        this.connectedTabs[message.clientId] = messagePort
+        this.connectedTabs[message.clientId] = {
+            messagePort,
+            lastHealthCheck: Date.now(),
+        }
 
         this.socket.send({
             event: SOCKET_EVENTS.CLIENT_CONNECTED,
