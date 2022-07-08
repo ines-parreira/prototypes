@@ -330,9 +330,6 @@ describe('global utils', () => {
             expect(utils.resolvePropertyName('SourceAddress')).toEqual(
                 'SourceAddress'
             )
-            expect(utils.resolvePropertyName('IntegrationMapping')).toEqual(
-                'IntegrationMapping'
-            )
             expect(utils.resolvePropertyName('Event')).toEqual('Event')
             expect(utils.resolvePropertyName('Tag')).toEqual('Tag')
             expect(utils.resolvePropertyName('Source')).toEqual('Source')

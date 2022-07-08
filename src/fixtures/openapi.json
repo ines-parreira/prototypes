@@ -2124,19 +2124,6 @@
                 "type": {
                     "description": "Type of the integration. Possible values are email, gmail, outlook, aircall, smooch_inside, smooch, facebook, http, shopify, recharge, smile, zendesk.",
                     "type": "string"
-                },
-                "mappings": {
-                    "description": "*Obsolete field! Will be removed in the future.*",
-                    "many": true,
-                    "example": [
-                        {
-                            "order": 1,
-                            "source_key": "data.orders",
-                            "destination_key": "customer.data.orders"
-                        }
-                    ],
-                    "type": "array",
-                    "items": {"$ref": "#/definitions/IntegrationMapping"}
                 }
             },
             "type": "object"
@@ -4296,21 +4283,6 @@
                         "email": "agent-smith@gorgias.io"
                     },
                     "$ref": "#/definitions/DEPRECATED_User"
-                }
-            },
-            "type": "object"
-        },
-        "IntegrationMapping": {
-            "description": "(Obsolete) - This object will be removed soon. Please do not use it.",
-            "properties": {
-                "id": {
-                    "description": "Primary key of the object",
-                    "type": "integer",
-                    "format": "int32"
-                },
-                "uri": {
-                    "description": "URI of the object - auto-generated",
-                    "type": "string"
                 }
             },
             "type": "object"
