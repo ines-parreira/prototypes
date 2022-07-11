@@ -6,8 +6,13 @@ import {IntentsFeedbackDropdown} from '../IntentsFeedbackDropdown'
 
 const minProps: ComponentProps<typeof IntentsFeedbackDropdown> = {
     label: 'no intent detected',
+    messageId: 1,
+    availableIntentsNames: [],
     activeIntentsNames: [],
     onToggle: _noop,
+    renderAvailableIntent: (intent: string) => {
+        return <div key={intent}>{intent}</div>
+    },
     renderActiveIntent: (intent: string) => {
         return <div key={intent}>{intent}</div>
     },

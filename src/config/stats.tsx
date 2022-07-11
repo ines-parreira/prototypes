@@ -1187,9 +1187,9 @@ export const stats = toImmutable<
             },
             {
                 name: 'percentage_message_with_feedback',
-                label: 'Percentage of feedback',
+                label: 'Percentage of correction',
                 tooltip:
-                    'Percentage of messages with a feedback on the detected intents',
+                    'Percentage of messages with a correction on the detected intents',
             },
         ],
     },

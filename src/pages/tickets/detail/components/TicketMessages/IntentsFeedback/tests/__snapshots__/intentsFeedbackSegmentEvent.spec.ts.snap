@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Intents feedback segment utils should log a dropdown open event 1`] = `
+Array [
+  Array [
+    "intent-feedback-user-submission",
+    Object {
+      "account_domain": "acme",
+      "message_id": 314,
+      "next_state": Array [
+        "other/no_reply",
+      ],
+      "previous_state": Array [],
+      "sub_events": Array [
+        Object {
+          "event_type": "add-intent",
+          "intent": "other/no_reply",
+        },
+      ],
+      "ticket_id": 42,
+      "user_id": 1,
+    },
+  ],
+  Array [
+    "intent-feedback-dropdown-open",
+    Object {
+      "account_domain": "acme",
+      "message_id": 314,
+      "ticket_id": 42,
+      "user_id": 1,
+    },
+  ],
+]
+`;
+
+exports[`Intents feedback segment utils should log a submission event 1`] = `
+Array [
+  Array [
+    "intent-feedback-user-submission",
+    Object {
+      "account_domain": "acme",
+      "message_id": 314,
+      "next_state": Array [
+        "other/no_reply",
+      ],
+      "previous_state": Array [],
+      "sub_events": Array [
+        Object {
+          "event_type": "add-intent",
+          "intent": "other/no_reply",
+        },
+      ],
+      "ticket_id": 42,
+      "user_id": 1,
+    },
+  ],
+]
+`;

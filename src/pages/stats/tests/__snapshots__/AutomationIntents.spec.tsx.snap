@@ -346,7 +346,7 @@ exports[`AutomationIntents should render the filters and stats when stats filter
             <div
               class="label"
             >
-              Percentage of feedback
+              Percentage of correction
               <span>
                 <i
                   class="material-icons ml-2 helpIcon info-icon"

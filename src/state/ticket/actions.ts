@@ -26,7 +26,12 @@ import * as viewsSelectors from 'state/views/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isCurrentlyOnTicket, isTabActive} from 'utils'
 
-import {Action, Ticket, TicketMessage} from 'models/ticket/types'
+import {
+    Action,
+    Ticket,
+    TicketMessage,
+    TicketMessageIntent,
+} from 'models/ticket/types'
 import {View} from 'models/view/types'
 
 import {
@@ -1131,3 +1136,8 @@ export const findAndSetCustomer =
         })
 
 export const messageDeleted = createAction<string>(types.TICKET_MESSAGE_DELETED)
+
+export const sendIntentFeedbackSuccess = createAction<{
+    messageId: number
+    intents: TicketMessageIntent[]
+}>(types.SEND_INTENT_FEEDBACK_SUCCESS)

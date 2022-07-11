@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AvailableIntentItem/> should display the available intent with a disabled add button and a tooltip 1`] = `
+<div
+  class="dropdownItemWrapper disabled hoverable"
+>
+  <div
+    class="dropdownItemLabel"
+  >
+    <span
+      class="action"
+    >
+      <span
+        class="dropdownButton"
+        id="add-discount-request-1"
+      >
+        <i
+          class="icon material-icons"
+        >
+          add
+        </i>
+      </span>
+    </span>
+    <span
+      class="label"
+    >
+      discount/request
+    </span>
+  </div>
+  <div
+    class="description"
+    title="A request for a discount"
+  >
+    A request for a discount
+  </div>
+</div>
+`;
+
+exports[`<AvailableIntentItem/> should display the available intent with an enable add button 1`] = `
+<div
+  class="dropdownItemWrapper hoverable"
+>
+  <div
+    class="dropdownItemLabel"
+  >
+    <span
+      class="action"
+    >
+      <span
+        class="dropdownButton"
+        id="add-discount-request-1"
+      >
+        <i
+          class="icon material-icons"
+        >
+          add
+        </i>
+      </span>
+    </span>
+    <span
+      class="label"
+    >
+      discount/request
+    </span>
+  </div>
+  <div
+    class="description"
+    title="A request for a discount"
+  >
+    A request for a discount
+  </div>
+</div>
+`;

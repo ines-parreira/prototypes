@@ -28,9 +28,18 @@ exports[`CollapsedSourceActions content should be intents if no other option is 
     >
       <div>
         <div
+          id="intent-tooltip-1"
+        />
+        <div
           class="header"
         >
           Message intents
+          <i
+            class="material-icons ml-2 info"
+            id="intent-info-1"
+          >
+            info_outline
+          </i>
         </div>
         <div
           class="options"
@@ -48,6 +57,19 @@ exports[`CollapsedSourceActions content should be intents if no other option is 
               class="dropdownItemLabel"
             >
               <span
+                class="action"
+              >
+                <span
+                  class="dropdownButton"
+                >
+                  <i
+                    class="reject icon material-icons"
+                  >
+                    close
+                  </i>
+                </span>
+              </span>
+              <span
                 class="label"
               >
                 Foo/intent
@@ -60,6 +82,16 @@ exports[`CollapsedSourceActions content should be intents if no other option is 
               foo intent description
             </div>
           </div>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <h6
+            class="subheader dropdown-header"
+            tabindex="-1"
+          >
+            Other intents
+          </h6>
         </div>
       </div>
     </div>
@@ -95,6 +127,9 @@ exports[`CollapsedSourceActions content should move between intents and all opti
     >
       <div>
         <div
+          id="intent-tooltip-1"
+        />
+        <div
           class="header"
         >
           <i
@@ -103,6 +138,12 @@ exports[`CollapsedSourceActions content should move between intents and all opti
             arrow_back
           </i>
           Message intents
+          <i
+            class="material-icons ml-2 info"
+            id="intent-info-1"
+          >
+            info_outline
+          </i>
         </div>
         <div
           class="options"
@@ -120,6 +161,19 @@ exports[`CollapsedSourceActions content should move between intents and all opti
               class="dropdownItemLabel"
             >
               <span
+                class="action"
+              >
+                <span
+                  class="dropdownButton"
+                >
+                  <i
+                    class="reject icon material-icons"
+                  >
+                    close
+                  </i>
+                </span>
+              </span>
+              <span
                 class="label"
               >
                 Foo/intent
@@ -132,6 +186,16 @@ exports[`CollapsedSourceActions content should move between intents and all opti
               foo intent description
             </div>
           </div>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <h6
+            class="subheader dropdown-header"
+            tabindex="-1"
+          >
+            Other intents
+          </h6>
         </div>
       </div>
     </div>
@@ -302,6 +366,9 @@ exports[`CollapsedSourceActions content should move between intents and all opti
     >
       <div>
         <div
+          id="intent-tooltip-1"
+        />
+        <div
           class="header"
         >
           <i
@@ -310,6 +377,12 @@ exports[`CollapsedSourceActions content should move between intents and all opti
             arrow_back
           </i>
           Message intents
+          <i
+            class="material-icons ml-2 info"
+            id="intent-info-1"
+          >
+            info_outline
+          </i>
         </div>
         <div
           class="options"
@@ -327,6 +400,19 @@ exports[`CollapsedSourceActions content should move between intents and all opti
               class="dropdownItemLabel"
             >
               <span
+                class="action"
+              >
+                <span
+                  class="dropdownButton"
+                >
+                  <i
+                    class="reject icon material-icons"
+                  >
+                    close
+                  </i>
+                </span>
+              </span>
+              <span
                 class="label"
               >
                 Foo/intent
@@ -339,6 +425,16 @@ exports[`CollapsedSourceActions content should move between intents and all opti
               foo intent description
             </div>
           </div>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <h6
+            class="subheader dropdown-header"
+            tabindex="-1"
+          >
+            Other intents
+          </h6>
         </div>
       </div>
     </div>

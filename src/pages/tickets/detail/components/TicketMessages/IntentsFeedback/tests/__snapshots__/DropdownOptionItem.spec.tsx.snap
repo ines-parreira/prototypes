@@ -8,6 +8,9 @@ exports[`<DropdownnOptionItem/> should display the default dropdown option 1`] =
     class="dropdownItemLabel"
   >
     <span
+      class="action"
+    />
+    <span
       class="label"
     >
       discount/request

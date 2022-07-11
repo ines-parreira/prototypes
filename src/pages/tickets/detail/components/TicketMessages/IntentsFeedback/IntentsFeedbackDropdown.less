@@ -5,10 +5,20 @@
         color: @classic-neutral-grey-6;
         margin-right: 5px;
 
-        .menu {
-            line-height: 0.8em;
-            padding: 0em;
+        .menuWrapper {
+            border: none;
+            background: none;
+            box-shadow: none;
             margin-top: -1px;
+            padding: 4px 0 0 0;
+            line-height: 0.8em;
+        }
+
+        .menu {
+            border: 1px solid @classic-neutral-grey-3;
+            background: @modern-neutral-neutral-0;
+            box-shadow: 0 2px 4px fade(@modern-neutral-neutral-6, 16%);
+            border-radius: 4px;
         }
 
         .toggleMenu {
@@ -52,6 +62,7 @@
         overflow-y: scroll;
         padding: 8px 0px 8px 8px;
         width: 312px;
+        height: 440px;
     }
 
     .headerTooltip :global .tooltip {

@@ -26,26 +26,49 @@ exports[`<IntentsFeedbackDropdown/> should display all the intents available wit
     </button>
     <div
       aria-hidden="true"
-      class="menu dropdown-menu dropdown-menu-right"
+      class="menuWrapper dropdown-menu dropdown-menu-right"
       role="menu"
       tabindex="-1"
     >
       <div
-        class="header"
+        class="menu"
       >
-        Message intents
-      </div>
-      <div
-        class="options"
-      >
-        <h6
-          class="subheader dropdown-header"
-          tabindex="-1"
+        <div
+          id="intent-tooltip-1"
+        />
+        <div
+          class="header"
         >
-          no intent detected
-        </h6>
-        <div>
-          foo/baz
+          Message intents
+          <i
+            class="material-icons ml-2 info"
+            id="intent-info-1"
+          >
+            info_outline
+          </i>
+        </div>
+        <div
+          class="options"
+        >
+          <h6
+            class="subheader dropdown-header"
+            tabindex="-1"
+          >
+            no intent detected
+          </h6>
+          <div>
+            foo/baz
+          </div>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <h6
+            class="subheader dropdown-header"
+            tabindex="-1"
+          >
+            Other intents
+          </h6>
         </div>
       </div>
     </div>
@@ -57,10 +80,71 @@ exports[`<IntentsFeedbackDropdown/> should display all the intents available wit
 <div
   class="wrapper"
 >
-  <button
-    class="toggleMenu btn btn-secondary btn-frozen pe-none"
+  <div
+    class="dropdown"
   >
-    no intent detected
-  </button>
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="toggleMenu btn btn-secondary"
+      type="button"
+    >
+      <span
+        class="mr-1 menuLabel"
+      >
+        no intent detected
+      </span>
+      <span
+        class="caret material-icons"
+      >
+        arrow_drop_down
+      </span>
+    </button>
+    <div
+      aria-hidden="true"
+      class="menuWrapper dropdown-menu dropdown-menu-right"
+      role="menu"
+      tabindex="-1"
+    >
+      <div
+        class="menu"
+      >
+        <div
+          id="intent-tooltip-1"
+        />
+        <div
+          class="header"
+        >
+          Message intents
+          <i
+            class="material-icons ml-2 info"
+            id="intent-info-1"
+          >
+            info_outline
+          </i>
+        </div>
+        <div
+          class="options"
+        >
+          <h6
+            class="subheader dropdown-header"
+            tabindex="-1"
+          >
+            no intent detected
+          </h6>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <h6
+            class="subheader dropdown-header"
+            tabindex="-1"
+          >
+            Other intents
+          </h6>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
