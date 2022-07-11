@@ -1505,7 +1505,7 @@
         "/api/help-center/help-centers/{help_center_id}/categories/{parent_category_id}/tree": {
             "get": {
                 "operationId": "getCategoryTree",
-                "summary": "Retrieve the category and its sub-categories in a tree structure",
+                "summary": "Retrieve the category, its subcategories and subarticles in a tree structure",
                 "parameters": [
                     {
                         "name": "help_center_id",
@@ -1548,6 +1548,13 @@
                         "in": "query",
                         "description": "If not provided, all the category levels will be returned. If a negative number is provided, the whole tree will be returned",
                         "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "fields",
+                        "required": false,
+                        "in": "query",
+                        "description": "List of field names among `[articles]` in the form of `fields=name1&fields=name2`. If not provided, the default value will be `\"\"`",
+                        "schema": {"type": "array", "items": {"type": "string"}}
                     },
                     {
                         "name": "order_by",
@@ -3152,6 +3159,10 @@
                         "type": "boolean",
                         "description": "Boolean indicating if self service is deactivated for this Help center.",
                         "example": false
+                    },
+                    "source": {
+                        "enum": ["manual", "automation"],
+                        "type": "string"
                     }
                 },
                 "required": ["name", "default_locale"]
@@ -3250,6 +3261,11 @@
                     "hotswap_session_token": {
                         "type": "string",
                         "nullable": true
+                    },
+                    "source": {
+                        "nullable": false,
+                        "type": "string",
+                        "enum": ["manual", "automation"]
                     }
                 },
                 "required": [
@@ -3271,7 +3287,8 @@
                     "theme",
                     "shop_name",
                     "self_service_deactivated_datetime",
-                    "hotswap_session_token"
+                    "hotswap_session_token",
+                    "source"
                 ]
             },
             "AccountInfoDto": {
@@ -3631,6 +3648,11 @@
                         "type": "string",
                         "nullable": true
                     },
+                    "source": {
+                        "nullable": false,
+                        "type": "string",
+                        "enum": ["manual", "automation"]
+                    },
                     "translations": {
                         "minItems": 1,
                         "type": "array",
@@ -3662,7 +3684,8 @@
                     "theme",
                     "shop_name",
                     "self_service_deactivated_datetime",
-                    "hotswap_session_token"
+                    "hotswap_session_token",
+                    "source"
                 ]
             },
             "HelpCentersListPageDto": {
@@ -4442,6 +4465,156 @@
                     }
                 }
             },
+            "ArticleTranslationSeoMeta": {
+                "type": "object",
+                "properties": {
+                    "title": {"type": "string", "nullable": true},
+                    "description": {"type": "string", "nullable": true}
+                },
+                "required": ["title", "description"]
+            },
+            "OmitTypeClass": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "title": {"type": "string"},
+                    "excerpt": {"type": "string"},
+                    "slug": {"type": "string"},
+                    "locale": {
+                        "enum": [
+                            "en-US",
+                            "fr-FR",
+                            "fr-CA",
+                            "es-ES",
+                            "de-DE",
+                            "nl-NL",
+                            "cs-CZ",
+                            "da-DK",
+                            "no-NO",
+                            "it-IT",
+                            "sv-SE"
+                        ],
+                        "type": "string"
+                    },
+                    "article_id": {"type": "number"},
+                    "category_id": {"type": "number", "nullable": true},
+                    "article_unlisted_id": {"type": "string"},
+                    "seo_meta": {
+                        "nullable": false,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ArticleTranslationSeoMeta"
+                            }
+                        ]
+                    },
+                    "visibility_status": {
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
+                    "is_current": {"type": "boolean"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "title",
+                    "excerpt",
+                    "slug",
+                    "locale",
+                    "article_id",
+                    "category_id",
+                    "article_unlisted_id",
+                    "seo_meta",
+                    "visibility_status",
+                    "is_current"
+                ]
+            },
+            "CategoryTreeArticleTranslationVersion": {
+                "type": "object",
+                "properties": {
+                    "current": {
+                        "nullable": true,
+                        "allOf": [
+                            {"$ref": "#/components/schemas/OmitTypeClass"}
+                        ]
+                    },
+                    "draft": {
+                        "allOf": [
+                            {"$ref": "#/components/schemas/OmitTypeClass"}
+                        ]
+                    }
+                },
+                "required": ["current", "draft"]
+            },
+            "CategoryTreeArticleDto": {
+                "type": "object",
+                "properties": {
+                    "created_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "updated_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "deleted_datetime": {
+                        "format": "date-time",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "unlisted_id": {"type": "string"},
+                    "category_id": {"type": "number", "nullable": true},
+                    "help_center_id": {"type": "number"},
+                    "available_locales": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "en-US",
+                                "fr-FR",
+                                "fr-CA",
+                                "es-ES",
+                                "de-DE",
+                                "nl-NL",
+                                "cs-CZ",
+                                "da-DK",
+                                "no-NO",
+                                "it-IT",
+                                "sv-SE"
+                            ]
+                        }
+                    },
+                    "translation_versions": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CategoryTreeArticleTranslationVersion"
+                            }
+                        ]
+                    },
+                    "id": {"type": "number"}
+                },
+                "required": [
+                    "created_datetime",
+                    "updated_datetime",
+                    "unlisted_id",
+                    "category_id",
+                    "help_center_id",
+                    "available_locales",
+                    "translation_versions",
+                    "id"
+                ]
+            },
             "CategoryTreeDto": {
                 "type": "object",
                 "properties": {
@@ -4494,6 +4667,12 @@
                             "$ref": "#/components/schemas/CategoryTreeDto"
                         }
                     },
+                    "articles": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CategoryTreeArticleDto"
+                        }
+                    },
                     "id": {"type": "number"}
                 },
                 "required": [
@@ -4514,14 +4693,6 @@
                     "down": {"type": "number"}
                 },
                 "required": ["up", "down"]
-            },
-            "ArticleTranslationSeoMeta": {
-                "type": "object",
-                "properties": {
-                    "title": {"type": "string", "nullable": true},
-                    "description": {"type": "string", "nullable": true}
-                },
-                "required": ["title", "description"]
             },
             "ArticleListDataTranslationDto": {
                 "type": "object",

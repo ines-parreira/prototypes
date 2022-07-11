@@ -262,6 +262,92 @@ declare namespace Components {
       object: "list";
       data: CategoryTranslationDto[];
     }
+    export interface CategoryTreeArticleDto {
+      created_datetime: string; // date-time
+      updated_datetime: string; // date-time
+      deleted_datetime?: string | null; // date-time
+      unlisted_id: string;
+      category_id: number | null;
+      help_center_id: number;
+      available_locales: ("en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE")[];
+      translation_versions: {
+        current: {
+          created_datetime: string; // date-time
+          updated_datetime: string; // date-time
+          deleted_datetime?: string | null; // date-time
+          title: string;
+          excerpt: string;
+          slug: string;
+          locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+          article_id: number;
+          category_id: number | null;
+          article_unlisted_id: string;
+          seo_meta: {
+            title: string | null;
+            description: string | null;
+          };
+          visibility_status: "PUBLIC" | "UNLISTED";
+          is_current: boolean;
+        } | null;
+        draft: {
+          created_datetime: string; // date-time
+          updated_datetime: string; // date-time
+          deleted_datetime?: string | null; // date-time
+          title: string;
+          excerpt: string;
+          slug: string;
+          locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+          article_id: number;
+          category_id: number | null;
+          article_unlisted_id: string;
+          seo_meta: {
+            title: string | null;
+            description: string | null;
+          };
+          visibility_status: "PUBLIC" | "UNLISTED";
+          is_current: boolean;
+        };
+      };
+      id: number;
+    }
+    export interface CategoryTreeArticleTranslationVersion {
+      current: {
+        created_datetime: string; // date-time
+        updated_datetime: string; // date-time
+        deleted_datetime?: string | null; // date-time
+        title: string;
+        excerpt: string;
+        slug: string;
+        locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+        article_id: number;
+        category_id: number | null;
+        article_unlisted_id: string;
+        seo_meta: {
+          title: string | null;
+          description: string | null;
+        };
+        visibility_status: "PUBLIC" | "UNLISTED";
+        is_current: boolean;
+      } | null;
+      draft: {
+        created_datetime: string; // date-time
+        updated_datetime: string; // date-time
+        deleted_datetime?: string | null; // date-time
+        title: string;
+        excerpt: string;
+        slug: string;
+        locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+        article_id: number;
+        category_id: number | null;
+        article_unlisted_id: string;
+        seo_meta: {
+          title: string | null;
+          description: string | null;
+        };
+        visibility_status: "PUBLIC" | "UNLISTED";
+        is_current: boolean;
+      };
+    }
     export interface CategoryTreeDto {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
@@ -287,6 +373,7 @@ declare namespace Components {
         slug: string;
       } | null;
       children: CategoryTreeDto[];
+      articles?: CategoryTreeArticleDto[];
       id: number;
     }
     export interface CategoryWithLocalTranslationDto {
@@ -690,6 +777,7 @@ declare namespace Components {
        * false
        */
       self_service_deactivated?: boolean;
+      source?: "manual" | "automation";
     }
     export interface CreateHelpCenterTranslationDto {
       /**
@@ -872,6 +960,7 @@ declare namespace Components {
       shop_name: string | null;
       self_service_deactivated_datetime: string | null; // date-time
       hotswap_session_token: string | null;
+      source: "manual" | "automation";
       translations?: HelpCenterTranslationDto[];
       redirects?: RedirectDto[];
     }
@@ -899,6 +988,7 @@ declare namespace Components {
       shop_name: string | null;
       self_service_deactivated_datetime: string | null; // date-time
       hotswap_session_token: string | null;
+      source: "manual" | "automation";
     }
     export interface HelpCenterTranslationDto {
       created_datetime: string; // date-time
@@ -1047,6 +1137,24 @@ declare namespace Components {
       meta: PageMetaDto;
       object: "list";
       data: NavigationLinkDto[];
+    }
+    export interface OmitTypeClass {
+      created_datetime: string; // date-time
+      updated_datetime: string; // date-time
+      deleted_datetime?: string | null; // date-time
+      title: string;
+      excerpt: string;
+      slug: string;
+      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      article_id: number;
+      category_id: number | null;
+      article_unlisted_id: string;
+      seo_meta: {
+        title: string | null;
+        description: string | null;
+      };
+      visibility_status: "PUBLIC" | "UNLISTED";
+      is_current: boolean;
     }
     export interface PageMetaDto {
       /**
@@ -1868,6 +1976,7 @@ declare namespace Paths {
   namespace GetCategoryTree {
     namespace Parameters {
       export type Depth = number;
+      export type Fields = string[];
       export type HelpCenterId = number;
       export type Locale = "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
       export type OrderBy = "position";
@@ -1881,6 +1990,7 @@ declare namespace Paths {
     export interface QueryParameters {
       locale: Parameters.Locale;
       depth?: Parameters.Depth;
+      fields?: Parameters.Fields;
       order_by?: Parameters.OrderBy;
       order_dir?: Parameters.OrderDir;
     }
@@ -2798,7 +2908,7 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
-   * getCategoryTree - Retrieve the category and its sub-categories in a tree structure
+   * getCategoryTree - Retrieve the category, its subcategories and subarticles in a tree structure
    */
   'getCategoryTree'(
     parameters?: Parameters<Paths.GetCategoryTree.PathParameters & Paths.GetCategoryTree.QueryParameters> | null,
@@ -3460,7 +3570,7 @@ export interface PathsDictionary {
   }
   ['/api/help-center/help-centers/{help_center_id}/categories/{parent_category_id}/tree']: {
     /**
-     * getCategoryTree - Retrieve the category and its sub-categories in a tree structure
+     * getCategoryTree - Retrieve the category, its subcategories and subarticles in a tree structure
      */
     'get'(
       parameters?: Parameters<Paths.GetCategoryTree.PathParameters & Paths.GetCategoryTree.QueryParameters> | null,

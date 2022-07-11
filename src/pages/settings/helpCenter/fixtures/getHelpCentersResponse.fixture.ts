@@ -5,6 +5,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
     data: [
         {
             id: 1,
+            source: 'manual',
             subdomain: 'acme',
             name: 'ACME Help Center',
             deactivated_datetime: null,
@@ -27,6 +28,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
         },
         {
             id: 2,
+            source: 'manual',
             subdomain: 'acme2',
             name: 'ACME Help Center 2',
             deactivated_datetime: null,
@@ -49,6 +51,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
         },
         {
             id: 3,
+            source: 'manual',
             subdomain: 'acme3',
             name: 'ACME Help Center 3',
             deactivated_datetime: null,
@@ -71,6 +74,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
         },
         {
             id: 4,
+            source: 'manual',
             subdomain: 'acme4',
             name: 'ACME Help Center 4',
             deactivated_datetime: '2021-05-17T18:23:42.022Z',
@@ -105,6 +109,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
 export const getSingleHelpCenterResponseFixture: Components.Schemas.HelpCenterDto =
     {
         id: 1,
+        source: 'manual',
         subdomain: 'acme',
         name: 'ACME Help Center',
         deactivated_datetime: null,
