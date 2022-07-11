@@ -91,6 +91,8 @@ export const AutoReplyWismoEditor = ({
                             values={settings.block_list}
                             onChange={handleBlocklist}
                             className={css.blockList}
+                            singular="email"
+                            plural="emails"
                         />
                     </div>
                     <div className={css.listWrapper}>

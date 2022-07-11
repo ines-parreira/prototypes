@@ -74,7 +74,7 @@ exports[`<AutoReplyWismoEditor/> should render correctly 1`] = `
               >
                 <input
                   class="input"
-                  placeholder="Add items..."
+                  placeholder="Add emails..."
                   value=""
                 />
               </div>

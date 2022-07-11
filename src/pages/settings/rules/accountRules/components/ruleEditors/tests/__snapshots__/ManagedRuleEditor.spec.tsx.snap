@@ -70,7 +70,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                 >
                   <input
                     class="input"
-                    placeholder="Add items..."
+                    placeholder="Add emails..."
                     value=""
                   />
                 </div>
@@ -102,6 +102,120 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           class="field"
         >
           <div
+            class="textarea-toolbar"
+          >
+            <div
+              class="btn-group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                Ticket customer
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  First name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Last name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Full name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Email
+                </button>
+              </div>
+            </div>
+            <div
+              class="btn-group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                Current agent
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  First name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Last name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Full name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Email
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Bio
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
             class="rich-textarea-wrapper"
           >
             <div
@@ -267,120 +381,6 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                 >
                   Add files as attachments
                 </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="textarea-toolbar"
-          >
-            <div
-              class="btn-group"
-            >
-              <button
-                aria-expanded="false"
-                aria-haspopup="true"
-                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
-                type="button"
-              >
-                Ticket customer
-              </button>
-              <div
-                aria-hidden="true"
-                class="dropdown-menu"
-                role="menu"
-                tabindex="-1"
-              >
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  First name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Last name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Full name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Email
-                </button>
-              </div>
-            </div>
-            <div
-              class="btn-group"
-            >
-              <button
-                aria-expanded="false"
-                aria-haspopup="true"
-                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
-                type="button"
-              >
-                Current agent
-              </button>
-              <div
-                aria-hidden="true"
-                class="dropdown-menu"
-                role="menu"
-                tabindex="-1"
-              >
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  First name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Last name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Full name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Email
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Bio
-                </button>
               </div>
             </div>
           </div>
@@ -396,6 +396,120 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
           class="field"
         >
           <div
+            class="textarea-toolbar"
+          >
+            <div
+              class="btn-group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                Ticket customer
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  First name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Last name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Full name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Email
+                </button>
+              </div>
+            </div>
+            <div
+              class="btn-group"
+            >
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
+                type="button"
+              >
+                Current agent
+              </button>
+              <div
+                aria-hidden="true"
+                class="dropdown-menu"
+                role="menu"
+                tabindex="-1"
+              >
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  First name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Last name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Full name
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Email
+                </button>
+                <button
+                  class="dropdown-item"
+                  role="menuitem"
+                  tabindex="0"
+                  type="button"
+                >
+                  Bio
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
             class="rich-textarea-wrapper"
           >
             <div
@@ -561,120 +675,6 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
                 >
                   Add files as attachments
                 </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="textarea-toolbar"
-          >
-            <div
-              class="btn-group"
-            >
-              <button
-                aria-expanded="false"
-                aria-haspopup="true"
-                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
-                type="button"
-              >
-                Ticket customer
-              </button>
-              <div
-                aria-hidden="true"
-                class="dropdown-menu"
-                role="menu"
-                tabindex="-1"
-              >
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  First name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Last name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Full name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Email
-                </button>
-              </div>
-            </div>
-            <div
-              class="btn-group"
-            >
-              <button
-                aria-expanded="false"
-                aria-haspopup="true"
-                class="dropdown-toggle btn-sm mr-2 dropdown-toggle btn btn-secondary"
-                type="button"
-              >
-                Current agent
-              </button>
-              <div
-                aria-hidden="true"
-                class="dropdown-menu"
-                role="menu"
-                tabindex="-1"
-              >
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  First name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Last name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Full name
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Email
-                </button>
-                <button
-                  class="dropdown-item"
-                  role="menuitem"
-                  tabindex="0"
-                  type="button"
-                >
-                  Bio
-                </button>
               </div>
             </div>
           </div>
@@ -1201,7 +1201,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
                 >
                   <input
                     class="input"
-                    placeholder="Add items..."
+                    placeholder="Add emails..."
                     value=""
                   />
                 </div>
@@ -2384,7 +2384,7 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
               >
                 <input
                   class="input"
-                  placeholder="Add items..."
+                  placeholder="Add emails..."
                   value=""
                 />
               </div>
@@ -2435,7 +2435,7 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
               >
                 <input
                   class="input"
-                  placeholder="Add items..."
+                  placeholder="Add emails..."
                   value=""
                 />
               </div>

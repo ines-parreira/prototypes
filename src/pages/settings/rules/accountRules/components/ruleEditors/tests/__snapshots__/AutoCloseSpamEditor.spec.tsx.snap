@@ -45,7 +45,7 @@ exports[`<AutoCloseSpamEditor/> should render correctly 1`] = `
             >
               <input
                 class="input"
-                placeholder="Add items..."
+                placeholder="Add emails..."
                 value=""
               />
             </div>
@@ -96,7 +96,7 @@ exports[`<AutoCloseSpamEditor/> should render correctly 1`] = `
             >
               <input
                 class="input"
-                placeholder="Add items..."
+                placeholder="Add emails..."
                 value=""
               />
             </div>

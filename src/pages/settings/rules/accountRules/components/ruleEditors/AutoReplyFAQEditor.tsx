@@ -171,6 +171,8 @@ export const AutoReplyFAQEditor = ({
                         values={settings.block_list}
                         onChange={handleBlocklist}
                         className={css.blockList}
+                        singular="email"
+                        plural="emails"
                     />
                 </div>
                 <div className={css.listWrapper}>
@@ -184,7 +186,8 @@ export const AutoReplyFAQEditor = ({
                         })}
                         index={0}
                         updateActionArgs={handleBodyChange}
-                        ignoredVariables={['shopify']}
+                        ignoredVariables={['shopify', 'recharge', 'smile']}
+                        toolbarOnTop
                     />
                 </div>
                 <div className={css.listWrapper}>
@@ -198,7 +201,8 @@ export const AutoReplyFAQEditor = ({
                         })}
                         index={1}
                         updateActionArgs={handleSignatureChange}
-                        ignoredVariables={['shopify']}
+                        ignoredVariables={['shopify', 'recharge', 'smile']}
+                        toolbarOnTop
                     />
                 </div>
             </div>

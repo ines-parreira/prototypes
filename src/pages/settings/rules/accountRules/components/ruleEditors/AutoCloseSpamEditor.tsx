@@ -94,6 +94,8 @@ export const AutoCloseSpamEditor = ({
                         )
                     }
                     className={css.allowList}
+                    singular="email"
+                    plural="emails"
                 />
             </div>
             <div className={css.listWrapper}>
@@ -113,6 +115,8 @@ export const AutoCloseSpamEditor = ({
                         )
                     }
                     className={css.blockList}
+                    singular="email"
+                    plural="emails"
                 />
             </div>
         </div>
