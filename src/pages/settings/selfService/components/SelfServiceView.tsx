@@ -94,7 +94,7 @@ export const SelfServiceView = () => {
                                     handle.
                                 </p>
                                 <h5 className={css.enableSelfServiceTitle}>
-                                    Enable Self-service{' '}
+                                    Configure Self-service{' '}
                                     <i
                                         id="enable-self-service-icon"
                                         className={`material-icons-outlined ${css.enableSelfServiceIcon}`}

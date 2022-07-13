@@ -35,7 +35,7 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
             <h5
               class="enableSelfServiceTitle"
             >
-              Enable Self-service
+              Configure Self-service
                
               <i
                 class="material-icons-outlined enableSelfServiceIcon"
@@ -212,7 +212,7 @@ exports[`<SelfServiceView/> render() should render the default message when ther
             <h5
               class="enableSelfServiceTitle"
             >
-              Enable Self-service
+              Configure Self-service
                
               <i
                 class="material-icons-outlined enableSelfServiceIcon"

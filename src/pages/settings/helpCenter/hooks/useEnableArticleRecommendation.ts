@@ -25,17 +25,24 @@ export const useEnableArticleRecommendation = (
     )
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
-    return async (helpCenter: HelpCenter) => {
-        if (!hasAutomationAddOn || helpCenterList.length > 0) {
+    return async (newHelpCenter: HelpCenter) => {
+        const hasHelpCenterWithSameStore = helpCenterList.find(
+            (helpCenter) => helpCenter.shop_name === newHelpCenter.shop_name
+        )
+
+        if (
+            !hasAutomationAddOn ||
+            !newHelpCenter.shop_name ||
+            hasHelpCenterWithSameStore
+        ) {
             return
         }
 
         const chatHelpCenterConfigurationsPromises = chatIntegrations.map(
             async (chatIntegration: Map<any, any>) => {
                 const areNotRelatedToSameShop =
-                    !helpCenter.shop_name ||
-                    helpCenter.shop_name !==
-                        (chatIntegration.getIn(['meta', 'shop_name']) as string)
+                    newHelpCenter.shop_name !==
+                    (chatIntegration.getIn(['meta', 'shop_name']) as string)
 
                 if (areNotRelatedToSameShop) return
 
@@ -64,7 +71,7 @@ export const useEnableArticleRecommendation = (
 
                 try {
                     return await createChatHelpCenterConfiguration({
-                        helpCenterId: helpCenter.id,
+                        helpCenterId: newHelpCenter.id,
                         chatApplicationId: chatApplicationId,
                     })
                 } catch (err) {

@@ -23,7 +23,13 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     entities: {
         helpCenter: {
-            helpCenters: {helpCentersById: {}},
+            helpCenters: {
+                helpCentersById: {
+                    1: {
+                        shop_name: 'test-shop-with-another-name',
+                    },
+                },
+            },
         },
     } as any,
     integrations: fromJS({
@@ -86,7 +92,7 @@ describe('useEnableArticleRecommendation', () => {
             status: 'success',
         })
     })
-    it('Should not call if there is multiple help-centers', async () => {
+    it('Should not call if there is already a help-center with the same store', async () => {
         ;(getHasAutomationAddOn as jest.Mock).mockReturnValue(true)
 
         const {result} = renderHook(useEnableArticleRecommendation, {
@@ -104,14 +110,14 @@ describe('useEnableArticleRecommendation', () => {
             }),
         })
 
-        void result.current({id: 999} as HelpCenter)
+        void result.current({id: 999, shop_name: 'test-shop'} as HelpCenter)
 
         await waitFor(() => {
             expect(fetchChatHelpCenterConfiguration).not.toHaveBeenCalled()
         })
         expect(createChatHelpCenterConfiguration).not.toHaveBeenCalled()
     })
-    it('Not call if AutomationAddOn is not enabled', async () => {
+    it('Should not call if AutomationAddOn is not enabled', async () => {
         ;(getHasAutomationAddOn as jest.Mock).mockReturnValue(false)
 
         const {result} = renderHook(useEnableArticleRecommendation, {
