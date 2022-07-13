@@ -12,8 +12,6 @@ import Integration from '../Integration'
 jest.spyOn(actions, 'deleteIntegration')
 jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
 const deleteIntegration = actions.deleteIntegration as jest.Mock
-const updateOrCreateIntegrationRequest =
-    actions.updateOrCreateIntegrationRequest as jest.Mock
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})
@@ -111,37 +109,6 @@ describe('<BigCommerceIntegration/>', () => {
 
             fireEvent.click(screen.getByRole('button', {name: 'Reconnect'}))
             expect(window.location.href).toBe('okokkumbawa')
-        })
-
-        it('should have a disabled update button that gets enabled when synchronization is changed and trigger an update', () => {
-            renderWithRouter(
-                <Provider store={store}>
-                    <Integration
-                        {...minProps}
-                        integration={fromJS({
-                            meta: {sync_customer_notes: true},
-                        })}
-                    />
-                </Provider>
-            )
-
-            expect(
-                screen
-                    .getByRole('button', {name: 'Update Connection'})
-                    .hasAttribute('disabled')
-            ).toBeTruthy()
-            fireEvent.click(screen.getByRole('checkbox'))
-            expect(
-                screen
-                    .getByRole('button', {name: 'Update Connection'})
-                    .hasAttribute('disabled')
-            ).toBeFalsy()
-            fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
-            )
-            expect(
-                updateOrCreateIntegrationRequest.mock.calls
-            ).toMatchSnapshot()
         })
     })
 })

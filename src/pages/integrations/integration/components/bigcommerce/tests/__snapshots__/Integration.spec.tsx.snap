@@ -1,17 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<BigCommerceIntegration/> render() should have a disabled update button that gets enabled when synchronization is changed and trigger an update 1`] = `
-Array [
-  Array [
-    Immutable.Map {
-      "meta": Immutable.Map {
-        "sync_customer_notes": false,
-      },
-    },
-  ],
-]
-`;
-
 exports[`<BigCommerceIntegration/> render() should render a loader because the integration is loading 1`] = `
 <div>
   <div
@@ -119,45 +107,7 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
               .mybigcommerce.com
             </span>
           </span>
-          <div
-            class="mb-4"
-          >
-            <div>
-              <label
-                aria-checked="true"
-                class="label label"
-                for="sync_customer_notes"
-                role="switch"
-              >
-                <input
-                  checked=""
-                  class="input"
-                  disabled=""
-                  id="sync_customer_notes"
-                  name="sync_customer_notes"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-                Synchronize customer notes between Gorgias and BigCommerce
-              </label>
-              <div
-                class="caption caption"
-              >
-                When editing notes in both places at the same time, the first one saved will be synchronized.
-                <br />
-                Notes will not be synchronized for customers who are associated with more than one BigCommerce store.
-              </div>
-            </div>
-          </div>
           <div>
-            <button
-              class="wrapper mr-2 fill primary medium"
-              type="submit"
-            >
-              Update Connection
-            </button>
             <button
               class="wrapper float-right fill destructive medium"
               id="integration-deletion-confirm-button"

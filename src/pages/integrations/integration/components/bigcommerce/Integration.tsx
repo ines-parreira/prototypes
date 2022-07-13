@@ -1,4 +1,4 @@
-import React, {useCallback, useState, FormEvent} from 'react'
+import React, {useCallback, FormEvent} from 'react'
 import {Map} from 'immutable'
 import {Col, Container, Row} from 'reactstrap'
 
@@ -17,7 +17,6 @@ import Label from 'pages/common/forms/Label/Label'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'
-import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
@@ -33,33 +32,12 @@ const Integration = ({integration, loading, redirectUri}: Props) => {
     useQueryNotify()
     const isAuthenticationPending = useAuthenticationPolling(integration)
 
-    const [mustSyncCustomerNotes, setSyncCustomerNotes] = useState<boolean>(
-        integration.getIn(['meta', 'sync_customer_notes'], true)
-    )
-
     const retriggerOAuthFlow = useCallback(() => {
         window.location.href = redirectUri.replace(
             '{shop_id}',
             integration.getIn(['meta', 'shop_id'], '')
         )
     }, [integration, redirectUri])
-
-    const handleUpdate = useCallback(
-        (evt: FormEvent<HTMLFormElement>) => {
-            evt.preventDefault()
-
-            void dispatch(
-                updateOrCreateIntegrationRequest(
-                    integration.mergeDeep({
-                        meta: {
-                            sync_customer_notes: mustSyncCustomerNotes,
-                        },
-                    })
-                )
-            )
-        },
-        [dispatch, integration, mustSyncCustomerNotes]
-    )
 
     const isActive = !integration.get('deactivated_datetime', null)
     const isSubmitting = Boolean(loading.get('updateIntegration'))
@@ -69,6 +47,15 @@ const Integration = ({integration, loading, redirectUri}: Props) => {
         'customers',
         'is_over',
     ])
+
+    const handleUpdate = useCallback(
+        (evt: FormEvent<HTMLFormElement>) => {
+            evt.preventDefault()
+
+            void dispatch(updateOrCreateIntegrationRequest(integration))
+        },
+        [dispatch, integration]
+    )
 
     if (loading.get('integration')) {
         return <Loader />
@@ -111,45 +98,7 @@ const Integration = ({integration, loading, redirectUri}: Props) => {
                             <GroupAddon>.mybigcommerce.com</GroupAddon>
                         </InputGroup>
 
-                        <div className="mb-4">
-                            <ToggleInput
-                                name="sync_customer_notes"
-                                isToggled={mustSyncCustomerNotes}
-                                onClick={(value) => setSyncCustomerNotes(value)}
-                                caption={
-                                    <>
-                                        When editing notes in both places at the
-                                        same time, the first one saved will be
-                                        synchronized.
-                                        <br />
-                                        Notes will not be synchronized for
-                                        customers who are associated with more
-                                        than one BigCommerce store.
-                                    </>
-                                }
-                            >
-                                Synchronize customer notes between Gorgias and
-                                BigCommerce
-                            </ToggleInput>
-                        </div>
-
                         <div>
-                            <Button
-                                type="submit"
-                                className="mr-2"
-                                isDisabled={
-                                    isSubmitting ||
-                                    integration.getIn([
-                                        'meta',
-                                        'sync_customer_notes',
-                                    ]) === mustSyncCustomerNotes
-                                }
-                                isLoading={
-                                    isSubmitting || isAuthenticationPending
-                                }
-                            >
-                                Update Connection
-                            </Button>
                             {!isAuthenticationPending && !isActive && (
                                 <Button
                                     type="button"
