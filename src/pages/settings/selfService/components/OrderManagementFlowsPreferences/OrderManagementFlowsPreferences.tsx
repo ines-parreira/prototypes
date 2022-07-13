@@ -10,6 +10,7 @@ import {
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 
+import warningIcon from 'assets/img/icons/warning2.svg'
 import upgradeIcon from 'assets/img/icons/upgrade-icon.svg'
 import useAppSelector from 'hooks/useAppSelector'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -18,7 +19,10 @@ import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import {PolicyEnum} from 'models/selfServiceConfiguration/types'
-import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
+import {
+    getCurrentAccountState,
+    hasAutomationLegacyFeatures,
+} from 'state/currentAccount/selectors'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {GorgiasChatIntegrationSelfServicePaywall} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationSelfServicePaywall'
 import {openChat} from 'utils'
@@ -26,6 +30,17 @@ import settingsCss from 'pages/settings/settings.less'
 import SelfServicePreferencesNavbar from 'pages/settings/selfService/components/SelfServicePreferencesNavbar'
 import {useConfigurationData} from 'pages/settings/selfService/components/hooks'
 
+import {notify} from '../../../../../state/notifications/actions'
+import {NotificationStatus} from '../../../../../state/notifications/types'
+import {updateSelfServiceConfiguration} from '../../../../../models/selfServiceConfiguration/resources'
+import useAppDispatch from '../../../../../hooks/useAppDispatch'
+import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
+import {selfServiceConfigurationUpdated} from '../../../../../state/entities/selfServiceConfigurations/actions'
+import {
+    logEvent,
+    SegmentEvent,
+} from '../../../../../store/middlewares/segmentTracker'
+import {CurrentAccountState} from '../../../../../state/currentAccount/types'
 import {PolicyRow} from './components/PolicyRow'
 import css from './OrderManagementFlowsPreferences.less'
 
@@ -34,13 +49,68 @@ export const OrderManagementFlowsPreferences = () => {
         isLoadingConfig: loading,
         integration,
         configuration,
+        selfServiceIntegration,
     } = useConfigurationData()
 
     const hasSelfServiceV1Features = useAppSelector(hasAutomationLegacyFeatures)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
+    const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
+    const dispatch = useAppDispatch()
 
     if (!(hasSelfServiceV1Features || hasAutomationAddOn)) {
         return <GorgiasChatIntegrationSelfServicePaywall />
+    }
+
+    const activateSelfService = async () => {
+        if (!configuration) {
+            return
+        }
+
+        const segmentEvent = {
+            name: SegmentEvent.SelfServiceActivatedViaBanner,
+            props: {
+                domain: account.get('domain'),
+                shop_name: selfServiceIntegration.getIn(['meta', 'shop_name']),
+            },
+        }
+
+        try {
+            const [res] = await Promise.all([
+                updateSelfServiceConfiguration({
+                    ...configuration,
+                    deactivated_datetime: null,
+                }),
+                selfServiceIntegration
+                    ? dispatch(
+                          updateOrCreateIntegration(
+                              selfServiceIntegration.set(
+                                  'deactivated_datetime',
+                                  null
+                              )
+                          )
+                      )
+                    : null,
+            ])
+
+            void dispatch(selfServiceConfigurationUpdated(res))
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Self-service configuration successfully updated.',
+                })
+            )
+            logEvent(segmentEvent.name, segmentEvent.props)
+        } catch (error) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Could not update Self-service configuration, please try again later.',
+                })
+            )
+        }
+
+        return null
     }
 
     return (
@@ -110,14 +180,24 @@ export const OrderManagementFlowsPreferences = () => {
                             ) : (
                                 <>
                                     {configuration.deactivated_datetime ? (
-                                        <Alert
-                                            type={AlertType.Warning}
+                                        <LinkAlert
                                             className={settingsCss.mb16}
+                                            onAction={activateSelfService}
+                                            actionLabel="Activate it"
+                                            type={AlertType.Warning}
+                                            icon={
+                                                <img
+                                                    src={warningIcon}
+                                                    alt="warning-icon"
+                                                    className={classnames(
+                                                        css.warningIcon
+                                                    )}
+                                                />
+                                            }
                                         >
                                             Self-service is inactive for this
-                                            store. Go to the main Self-service
-                                            page to activate it.
-                                        </Alert>
+                                            store
+                                        </LinkAlert>
                                     ) : null}
                                     {!hasAutomationAddOn ? (
                                         <LinkAlert

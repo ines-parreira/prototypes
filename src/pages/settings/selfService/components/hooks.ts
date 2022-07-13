@@ -22,6 +22,9 @@ export const useConfigurationData = () => {
     const shopifyIntegrations = useAppSelector(
         getIntegrationsByTypes(IntegrationType.Shopify)
     )
+    const selfServiceIntegrations = useAppSelector(
+        getIntegrationsByTypes(IntegrationType.SelfService)
+    )
     const selfServiceConfigurations = useAppSelector(
         getSelfServiceConfigurations
     )
@@ -32,14 +35,14 @@ export const useConfigurationData = () => {
         const foundConfigurationIndex = selfServiceConfigurations.findIndex(
             (configuration) =>
                 configuration.shop_name ===
-                integration.getIn(['meta', 'shop_name'])
+                shopifyIntegration.getIn(['meta', 'shop_name'])
         )
 
         if (foundConfigurationIndex === -1) {
             void (async () => {
                 try {
                     const res = await fetchSelfServiceConfiguration(
-                        integration.get('id')
+                        shopifyIntegration.get('id')
                     )
                     void dispatch(selfServiceConfigurationFetched(res))
                     setIsLoadingConfig(false)
@@ -61,7 +64,7 @@ export const useConfigurationData = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const integration: Map<any, any> = shopifyIntegrations.find(
+    const shopifyIntegration: Map<any, any> = shopifyIntegrations.find(
         (shopifyIntegration: Map<any, any>) => {
             return (
                 integrationType === shopifyIntegration.get('type') &&
@@ -69,17 +72,28 @@ export const useConfigurationData = () => {
             )
         }
     )
+
     const configuration: SelfServiceConfiguration | undefined =
         selfServiceConfigurations.find((configuration) => {
             return (
                 configuration.shop_name ===
-                integration.getIn(['meta', 'shop_name'])
+                shopifyIntegration.getIn(['meta', 'shop_name'])
             )
         })
+
+    const selfServiceIntegration: Map<any, any> = selfServiceIntegrations.find(
+        (integration: Map<any, any>) => {
+            return (
+                integration.getIn(['meta', 'shop_name']) ===
+                shopifyIntegration.getIn(['meta', 'shop_name'])
+            )
+        }
+    )
 
     return {
         isLoadingConfig,
         configuration,
-        integration,
+        integration: shopifyIntegration,
+        selfServiceIntegration,
     }
 }
