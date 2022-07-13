@@ -64,6 +64,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                             },
                             use_gmail_categories: false,
                             enable_gmail_sending: true,
+                            enable_gmail_threading: true,
                         },
                     }),
                 },

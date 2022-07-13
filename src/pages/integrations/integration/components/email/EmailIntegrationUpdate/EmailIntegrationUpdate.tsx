@@ -56,6 +56,7 @@ type State = {
     name: string
     use_gmail_categories: boolean
     enable_gmail_sending: boolean
+    enable_gmail_threading: boolean
     signature_text: string
     signature_html: string
 }
@@ -70,6 +71,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         name: '',
         use_gmail_categories: false,
         enable_gmail_sending: true,
+        enable_gmail_threading: true,
         signature_text: '',
         signature_html: '',
     }
@@ -113,6 +115,13 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                 integration.get('type') === IntegrationType.Gmail
                     ? integration.getIn(['meta', 'enable_gmail_sending'], true)
                     : true,
+            enable_gmail_threading:
+                integration.get('type') === IntegrationType.Gmail
+                    ? integration.getIn(
+                          ['meta', 'enable_gmail_threading'],
+                          true
+                      )
+                    : true,
             use_gmail_categories:
                 integration.get('type') === IntegrationType.Gmail
                     ? integration.getIn(['meta', 'use_gmail_categories']) ||
@@ -139,6 +148,10 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                 .setIn(
                     ['meta', 'enable_gmail_sending'],
                     this.state.enable_gmail_sending
+                )
+                .setIn(
+                    ['meta', 'enable_gmail_threading'],
+                    this.state.enable_gmail_threading
                 )
         }
 
@@ -427,8 +440,13 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const isDeleting = loading.get('delete') === integration.get('id')
         const isGmail = integration.get('type') === IntegrationType.Gmail
 
-        const {errors, name, use_gmail_categories, enable_gmail_sending} =
-            this.state
+        const {
+            errors,
+            name,
+            use_gmail_categories,
+            enable_gmail_sending,
+            enable_gmail_threading,
+        } = this.state
 
         const hasErrors = Object.values(errors).some((val) => val != null)
 
@@ -454,6 +472,14 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                 </a>
                 . Also, if you disable this option, your emails will not be
                 synchronized in the Sent folder of your Gmail inbox anymore.
+            </div>
+        )
+
+        const enableGmailThreadingHelp = (
+            <div>
+                Disable this option if you experience issues with contact form
+                responses from different customers being merged into the same
+                ticket.
             </div>
         )
 
@@ -523,6 +549,18 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                                 }
                             >
                                 Enable sending emails with Gmail
+                            </CheckBox>
+                            <CheckBox
+                                name="enable_gmail_threading"
+                                caption={enableGmailThreadingHelp}
+                                isChecked={enable_gmail_threading}
+                                onChange={(value: boolean) =>
+                                    this.setState({
+                                        enable_gmail_threading: value,
+                                    })
+                                }
+                            >
+                                Enable Gmail conversation grouping
                             </CheckBox>
                         </FormGroup>
                     )}
