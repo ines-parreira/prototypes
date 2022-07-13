@@ -9,13 +9,13 @@ import {
     FormGroup,
     Breadcrumb,
     BreadcrumbItem,
-    Button,
     Container,
 } from 'reactstrap'
 
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
 import warningIcon from 'assets/img/icons/warning2.svg'
 import {IntegrationType} from 'models/integration/types'
+import Button from 'pages/common/components/button/Button'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -848,8 +848,8 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
                         <div>
                             <Button
                                 type="submit"
-                                color="success"
-                                disabled={selectedIntegrations.isEmpty()}
+                                intent="primary"
+                                isDisabled={selectedIntegrations.isEmpty()}
                                 className={classnames({
                                     'btn-loading':
                                         loading.get('updateIntegration'),

@@ -1,7 +1,6 @@
 import React, {Component, ReactNode} from 'react'
-import {Button} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
-
+import Button from 'pages/common/components/button/Button'
 import {getFacebookRedirectUri} from '../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../state/types'
 
@@ -20,6 +19,11 @@ export class FacebookLoginButtonContainer extends Component<Props> {
         children: null,
     }
 
+    _handleSubmit = (e: React.SyntheticEvent, redirectUri: string) => {
+        e.preventDefault()
+        window.open(redirectUri)
+    }
+
     renderLink() {
         const {redirectUri, children} = this.props
 
@@ -30,7 +34,11 @@ export class FacebookLoginButtonContainer extends Component<Props> {
         const {redirectUri, children} = this.props
 
         return (
-            <Button tag="a" color="success" href={redirectUri}>
+            <Button
+                type="submit"
+                intent="primary"
+                onClick={(e) => this._handleSubmit(e, redirectUri)}
+            >
                 {children || 'Reconnect'}
             </Button>
         )

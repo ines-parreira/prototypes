@@ -69,20 +69,19 @@ exports[`FacebookLoginButton component should render a reconnect button 1`] = `
       }
     }
   >
-    <Button
-      color="success"
-      href="https://.../?reconnect"
-      tag="a"
+    <ForwardRef
+      intent="primary"
+      onClick={[Function]}
+      type="submit"
     >
-      <a
-        aria-label={null}
-        className="btn btn-success"
-        href="https://.../?reconnect"
+      <button
+        className="wrapper fill primary medium"
         onClick={[Function]}
+        type="submit"
       >
         Reconnect
-      </a>
-    </Button>
+      </button>
+    </ForwardRef>
   </FacebookLoginButtonContainer>
 </Connect(FacebookLoginButtonContainer)>
 `;

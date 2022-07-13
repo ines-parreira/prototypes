@@ -14,9 +14,10 @@ import css from './PrivateReplyButton.less'
 type ComponentProps = {
     className?: string
     onClick?: React.MouseEventHandler
-    disabled?: boolean
+    isDisabled?: boolean
     id?: string
     href?: string
+    type?: 'button' | 'reset' | 'submit'
 }
 
 type Component =
@@ -62,9 +63,10 @@ export default function PrivateReplyButton({
     return (
         <>
             <Component
+                type="submit"
                 className={classnames(css.container, className)}
                 onClick={onClick}
-                disabled={isAlreadySent || isMessageTooOld}
+                isDisabled={isAlreadySent || isMessageTooOld}
                 id={`private-reply-button-${ticketMessageId}`}
                 href="#"
             >

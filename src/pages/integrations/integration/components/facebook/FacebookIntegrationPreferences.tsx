@@ -5,13 +5,14 @@ import {Link} from 'react-router-dom'
 import {fromJS, Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
-import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Container, Form} from 'reactstrap'
 
 import {
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     getAutoResponderReplyOptions,
 } from 'config/integrations/index'
+import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -206,11 +207,11 @@ export class FacebookIntegrationPreferences extends Component<Props, State> {
                         <div>
                             <Button
                                 type="submit"
-                                color="success"
+                                intent="primary"
                                 className={classnames({
                                     'btn-loading': isUpdating,
                                 })}
-                                disabled={isUpdating}
+                                isDisabled={isUpdating}
                             >
                                 Save changes
                             </Button>

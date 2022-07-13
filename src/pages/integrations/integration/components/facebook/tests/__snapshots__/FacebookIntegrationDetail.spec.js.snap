@@ -316,16 +316,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -662,16 +661,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -1048,16 +1046,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -1394,16 +1391,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration for:
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -1761,16 +1757,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -2133,16 +2128,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -2505,16 +2499,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -2877,16 +2870,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -3249,16 +3241,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -3616,16 +3607,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -3983,16 +3973,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -4350,16 +4339,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -4718,16 +4706,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -5079,16 +5066,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -5451,16 +5437,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -5823,16 +5808,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -6195,16 +6179,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2 btn-loading"
-        color="success"
-        disabled={true}
+        intent="primary"
+        isDisabled={true}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -6563,16 +6546,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -6931,16 +6913,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -7299,16 +7280,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -7667,16 +7647,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -8035,16 +8014,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -8403,16 +8381,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -8771,16 +8748,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -9139,16 +9115,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -9507,16 +9482,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -9875,16 +9849,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -10243,16 +10216,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -10611,16 +10583,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -10979,16 +10950,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -11347,16 +11317,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -11715,16 +11684,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -12083,16 +12051,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2"
-        color="success"
-        disabled={false}
+        intent="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />
@@ -12407,16 +12374,15 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       </option>
     </InputField>
     <div>
-      <Button
+      <ForwardRef
         className="mr-2 btn-loading"
-        color="success"
-        disabled={true}
+        intent="primary"
+        isDisabled={true}
         onClick={[Function]}
-        tag="button"
         type="submit"
       >
         Save changes
-      </Button>
+      </ForwardRef>
       <Connect(FacebookLoginButtonContainer)
         reconnect={true}
       />

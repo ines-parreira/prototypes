@@ -3,13 +3,7 @@ import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import _truncate from 'lodash/truncate'
-import {
-    FormGroup,
-    Button,
-    Breadcrumb,
-    BreadcrumbItem,
-    Container,
-} from 'reactstrap'
+import {FormGroup, Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
@@ -32,6 +26,7 @@ import {
 } from 'state/integrations/actions'
 import {RootState} from 'state/types'
 
+import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
@@ -611,11 +606,11 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                     <div>
                         <Button
                             type="submit"
-                            color="success"
+                            intent="primary"
                             className={classNames('mr-2', {
                                 'btn-loading': isSubmitting,
                             })}
-                            disabled={isSubmitting}
+                            isDisabled={isSubmitting}
                             onClick={this._handleSubmit}
                         >
                             Save changes

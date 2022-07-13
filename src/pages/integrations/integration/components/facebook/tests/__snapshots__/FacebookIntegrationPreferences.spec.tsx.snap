@@ -159,15 +159,14 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
         </div>
       </div>
       <div>
-        <Button
+        <ForwardRef
           className="btn-loading"
-          color="success"
-          disabled={true}
-          tag="button"
+          intent="primary"
+          isDisabled={true}
           type="submit"
         >
           Save changes
-        </Button>
+        </ForwardRef>
       </div>
     </Form>
   </Container>
@@ -315,15 +314,14 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
         </div>
       </div>
       <div>
-        <Button
+        <ForwardRef
           className=""
-          color="success"
-          disabled={false}
-          tag="button"
+          intent="primary"
+          isDisabled={false}
           type="submit"
         >
           Save changes
-        </Button>
+        </ForwardRef>
       </div>
     </Form>
   </Container>

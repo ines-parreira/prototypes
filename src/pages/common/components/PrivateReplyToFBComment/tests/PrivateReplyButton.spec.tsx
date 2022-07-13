@@ -1,9 +1,6 @@
 import React from 'react'
-
-import {Button} from 'reactstrap'
-
 import {render} from '@testing-library/react'
-
+import Button from 'pages/common/components/button/Button'
 import PrivateReplyButton from '../PrivateReplyButton'
 import {TicketMessageSourceType} from '../../../../../business/types/ticket'
 import * as infobarActions from '../../../../../state/infobar/actions'

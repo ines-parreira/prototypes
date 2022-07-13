@@ -1,9 +1,10 @@
 import React, {useCallback, useState} from 'react'
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
-
+import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 
 import {connect, ConnectedProps} from 'react-redux'
+
+import Button from 'pages/common/components/button/Button'
 
 import {FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH} from '../../../../../config/integrations/facebook'
 import {Actor, Meta, Source} from '../../../../../models/ticket/types'
@@ -106,19 +107,19 @@ function PrivateReplyModal({
             </ModalBody>
             <ModalFooter className={css.modalFooter}>
                 <Button
-                    color="success"
+                    intent="primary"
                     id="private-reply-submit"
                     className={classnames(css.submit, css.send)}
-                    disabled={!canSend || isSending}
+                    isDisabled={!canSend || isSending}
                     onClick={() => sendPrivateReply(false)}
                 >
                     Send
                 </Button>
                 <Button
-                    color="secondary"
+                    intent="secondary"
                     id="send-private-reply-and-close-button"
                     className={classnames(css.submit, css.sendAndClose)}
-                    disabled={!canSend || isSending}
+                    isDisabled={!canSend || isSending}
                     onClick={() => sendPrivateReply(true)}
                 >
                     Send &amp; Close

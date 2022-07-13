@@ -1,11 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<PrivateReplyButton/> render should render a disabled button 1`] = `
-<a
-  class="container btn btn-secondary disabled"
+<button
+  class="wrapper container fill primary medium isDisabled"
   disabled=""
   href="#"
   id="private-reply-button-1"
+  type="submit"
 >
   <img
     alt="private message icon"
@@ -13,15 +14,16 @@ exports[`<PrivateReplyButton/> render should render a disabled button 1`] = `
     src="test-file-stub"
   />
   Message
-</a>
+</button>
 `;
 
 exports[`<PrivateReplyButton/> render should render a disabled button 2`] = `
-<a
-  class="container btn btn-secondary disabled"
+<button
+  class="wrapper container fill primary medium isDisabled"
   disabled=""
   href="#"
   id="private-reply-button-1"
+  type="submit"
 >
   <img
     alt="private message icon"
@@ -29,14 +31,15 @@ exports[`<PrivateReplyButton/> render should render a disabled button 2`] = `
     src="test-file-stub"
   />
   Message
-</a>
+</button>
 `;
 
 exports[`<PrivateReplyButton/> render should render the button 1`] = `
-<a
-  class="container btn btn-secondary"
+<button
+  class="wrapper container fill primary medium"
   href="#"
   id="private-reply-button-1"
+  type="submit"
 >
   <img
     alt="private message icon"
@@ -44,5 +47,5 @@ exports[`<PrivateReplyButton/> render should render the button 1`] = `
     src="test-file-stub"
   />
   Message
-</a>
+</button>
 `;
