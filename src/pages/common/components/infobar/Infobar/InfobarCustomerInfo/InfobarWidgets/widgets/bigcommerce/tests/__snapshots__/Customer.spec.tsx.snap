@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Customer TitleWrapper should render default link 1`] = `
+<div>
+  <img
+    alt="BigCommerce"
+    class="container"
+    src="test-file-stub"
+    style="background-color: rgba(0, 0, 0, 0);"
+  />
+  <span
+    class="container"
+  >
+    BigCommerce
+  </span>
+  <span
+    class="container"
+  >
+    <a
+      href="https://store-pk360c6roo.mybigcommerce.com/manage/customers/1/edit"
+      rel="noopener noreferrer"
+      target="_blank"
+    />
+  </span>
+  <span
+    class="container expand-all"
+  >
+    <img
+      alt="Expand all"
+      src="test-file-stub"
+    />
+  </span>
+   
+</div>
+`;

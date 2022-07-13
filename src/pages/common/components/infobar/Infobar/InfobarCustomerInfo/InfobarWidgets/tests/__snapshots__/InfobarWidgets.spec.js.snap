@@ -115,6 +115,29 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
           },
           "order": 3,
         },
+        Immutable.Map {
+          "id": 7,
+          "type": "bigcommerce",
+          "template": Immutable.Map {
+            "type": "wrapper",
+            "widgets": Immutable.List [
+              Immutable.Map {
+                "path": "",
+                "type": "card",
+                "title": "Baz container",
+                "widgets": Immutable.List [
+                  Immutable.Map {
+                    "path": "baz",
+                    "type": "text",
+                    "title": "Baz",
+                    "order": 1,
+                  },
+                ],
+              },
+            ],
+          },
+          "order": 4,
+        },
       ]
     }
   >
@@ -149,6 +172,11 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
             "id": 3,
             "type": "recharge",
             "name": "my little recharge integration",
+          },
+          Immutable.Map {
+            "id": 4,
+            "type": "bigcommerce",
+            "name": "my little bigcommerce integration",
           },
         ]
       }
@@ -239,6 +267,29 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
               ],
             },
             "order": 3,
+          },
+          Immutable.Map {
+            "id": 7,
+            "type": "bigcommerce",
+            "template": Immutable.Map {
+              "type": "wrapper",
+              "widgets": Immutable.List [
+                Immutable.Map {
+                  "path": "",
+                  "type": "card",
+                  "title": "Baz container",
+                  "widgets": Immutable.List [
+                    Immutable.Map {
+                      "path": "baz",
+                      "type": "text",
+                      "title": "Baz",
+                      "order": 1,
+                    },
+                  ],
+                },
+              ],
+            },
+            "order": 4,
           },
         ]
       }
@@ -1996,7 +2047,7 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
 </Provider>
 `;
 
-exports[`InfobarWidgets component should display http and shopify data, + recharge placeholder, in editing mode 1`] = `
+exports[`InfobarWidgets component should display http and shopify data, recharge, bigcommerce placeholder, in editing mode 1`] = `
 <Provider
   store={
     Object {
@@ -2110,6 +2161,29 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
           },
           "order": 3,
         },
+        Immutable.Map {
+          "id": 7,
+          "type": "bigcommerce",
+          "template": Immutable.Map {
+            "type": "wrapper",
+            "widgets": Immutable.List [
+              Immutable.Map {
+                "path": "",
+                "type": "card",
+                "title": "Baz container",
+                "widgets": Immutable.List [
+                  Immutable.Map {
+                    "path": "baz",
+                    "type": "text",
+                    "title": "Baz",
+                    "order": 1,
+                  },
+                ],
+              },
+            ],
+          },
+          "order": 4,
+        },
       ]
     }
   >
@@ -2143,6 +2217,11 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
             "id": 3,
             "type": "recharge",
             "name": "my little recharge integration",
+          },
+          Immutable.Map {
+            "id": 4,
+            "type": "bigcommerce",
+            "name": "my little bigcommerce integration",
           },
         ]
       }
@@ -2233,6 +2312,29 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
               ],
             },
             "order": 3,
+          },
+          Immutable.Map {
+            "id": 7,
+            "type": "bigcommerce",
+            "template": Immutable.Map {
+              "type": "wrapper",
+              "widgets": Immutable.List [
+                Immutable.Map {
+                  "path": "",
+                  "type": "card",
+                  "title": "Baz container",
+                  "widgets": Immutable.List [
+                    Immutable.Map {
+                      "path": "baz",
+                      "type": "text",
+                      "title": "Baz",
+                      "order": 1,
+                    },
+                  ],
+                },
+              ],
+            },
+            "order": 4,
           },
         ]
       }
@@ -4815,6 +4917,208 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                   </Card>
                 </PlaceholderWidgetContainer>
               </Connect(PlaceholderWidgetContainer)>
+              <Connect(PlaceholderWidgetContainer)
+                editing={
+                  Object {
+                    "actions": Object {
+                      "foo": [Function],
+                      "removeEditedWidget": [Function],
+                    },
+                    "canDrop": [Function],
+                    "isDragging": false,
+                    "isEditing": true,
+                  }
+                }
+                isEditing={true}
+                key="ticket,customer,integrations-3"
+                open={false}
+                source={
+                  Immutable.Map {
+                    "ticket": Immutable.Map {
+                      "customer": Immutable.Map {
+                        "integrations": Immutable.Map {
+                          "1": Immutable.Map {
+                            "foo": "1",
+                          },
+                          "2": Immutable.Map {
+                            "bar": "2",
+                          },
+                        },
+                      },
+                    },
+                  }
+                }
+                template={
+                  Immutable.Map {
+                    "type": "wrapper",
+                    "widgets": Immutable.List [
+                      Immutable.Map {
+                        "path": "",
+                        "type": "card",
+                        "title": "Baz container",
+                        "widgets": Immutable.List [
+                          Immutable.Map {
+                            "path": "baz",
+                            "type": "text",
+                            "title": "Baz",
+                            "order": 1,
+                          },
+                        ],
+                      },
+                    ],
+                    "path": Array [
+                      "ticket",
+                      "customer",
+                      "integrations",
+                    ],
+                    "templatePath": "4.template",
+                  }
+                }
+                widget={
+                  Immutable.Map {
+                    "id": 7,
+                    "type": "bigcommerce",
+                    "template": Immutable.Map {
+                      "type": "wrapper",
+                      "widgets": Immutable.List [
+                        Immutable.Map {
+                          "path": "",
+                          "type": "card",
+                          "title": "Baz container",
+                          "widgets": Immutable.List [
+                            Immutable.Map {
+                              "path": "baz",
+                              "type": "text",
+                              "title": "Baz",
+                              "order": 1,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                    "order": 4,
+                  }
+                }
+              >
+                <PlaceholderWidgetContainer
+                  dispatch={[Function]}
+                  editing={
+                    Object {
+                      "actions": Object {
+                        "foo": [Function],
+                        "removeEditedWidget": [Function],
+                      },
+                      "canDrop": [Function],
+                      "isDragging": false,
+                      "isEditing": true,
+                    }
+                  }
+                  integration={null}
+                  isEditing={true}
+                  open={false}
+                  source={
+                    Immutable.Map {
+                      "ticket": Immutable.Map {
+                        "customer": Immutable.Map {
+                          "integrations": Immutable.Map {
+                            "1": Immutable.Map {
+                              "foo": "1",
+                            },
+                            "2": Immutable.Map {
+                              "bar": "2",
+                            },
+                          },
+                        },
+                      },
+                    }
+                  }
+                  template={
+                    Immutable.Map {
+                      "type": "wrapper",
+                      "widgets": Immutable.List [
+                        Immutable.Map {
+                          "path": "",
+                          "type": "card",
+                          "title": "Baz container",
+                          "widgets": Immutable.List [
+                            Immutable.Map {
+                              "path": "baz",
+                              "type": "text",
+                              "title": "Baz",
+                              "order": 1,
+                            },
+                          ],
+                        },
+                      ],
+                      "path": Array [
+                        "ticket",
+                        "customer",
+                        "integrations",
+                      ],
+                      "templatePath": "4.template",
+                    }
+                  }
+                  widget={
+                    Immutable.Map {
+                      "id": 7,
+                      "type": "bigcommerce",
+                      "template": Immutable.Map {
+                        "type": "wrapper",
+                        "widgets": Immutable.List [
+                          Immutable.Map {
+                            "path": "",
+                            "type": "card",
+                            "title": "Baz container",
+                            "widgets": Immutable.List [
+                              Immutable.Map {
+                                "path": "baz",
+                                "type": "text",
+                                "title": "Baz",
+                                "order": 1,
+                              },
+                            ],
+                          },
+                        ],
+                      },
+                      "order": 4,
+                    }
+                  }
+                >
+                  <Card
+                    className="component placeholder wrapper transparent draggable"
+                    tag="div"
+                  >
+                    <div
+                      className="component placeholder wrapper transparent draggable card"
+                    >
+                      <CardBody
+                        className="clearfix"
+                        tag="div"
+                      >
+                        <div
+                          className="clearfix card-body"
+                        >
+                          <span
+                            className="tools"
+                          >
+                            <i
+                              className="material-icons text-danger clickable"
+                              onClick={[Function]}
+                            >
+                              close
+                            </i>
+                          </span>
+                          <h5
+                            className="title"
+                          >
+                            Widget for Bigcommerce data
+                          </h5>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </PlaceholderWidgetContainer>
+              </Connect(PlaceholderWidgetContainer)>
             </div>
           </ReactSortable>
         </DragWrapper>
@@ -4896,6 +5200,11 @@ exports[`InfobarWidgets component should not display anything if there's no widg
           "id": 3,
           "type": "recharge",
           "name": "my little recharge integration",
+        },
+        Immutable.Map {
+          "id": 4,
+          "type": "bigcommerce",
+          "name": "my little bigcommerce integration",
         },
       ]
     }

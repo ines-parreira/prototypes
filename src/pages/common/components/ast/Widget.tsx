@@ -225,6 +225,10 @@ export class Widget extends Component<Props, State> {
             variableTypes.push('magento2')
         }
 
+        if (hasIntegrationOfTypes(IntegrationType.BigCommerce)) {
+            variableTypes.push('bigcommerce')
+        }
+
         return (
             <RichFieldWithVariables
                 allowExternalChanges

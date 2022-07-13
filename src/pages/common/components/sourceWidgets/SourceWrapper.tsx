@@ -121,6 +121,22 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
+        type: IntegrationType.BigCommerce,
+        title: 'BigCommerce data',
+        description: (
+            <div>
+                The following data comes from your{' '}
+                <Link
+                    to="/app/settings/integrations/bigcommerce"
+                    target="_blank"
+                >
+                    <b>BigCommerce integrations</b>
+                </Link>
+                .
+            </div>
+        ),
+    },
+    {
         type: 'custom',
         title: 'Customer data',
         description: (

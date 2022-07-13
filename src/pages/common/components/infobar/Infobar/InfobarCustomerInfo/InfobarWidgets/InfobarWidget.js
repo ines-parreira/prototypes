@@ -20,6 +20,7 @@ import smile from './widgets/smile/index.ts'
 import smoochInside from './widgets/smoochInside/index.ts'
 import yotpo from './widgets/yotpo/index.ts'
 import klaviyo from './widgets/klaviyo'
+import bigcommerce from './widgets/bigcommerce'
 import {WidgetContext} from './WidgetContext.ts'
 import {infobarWidgetShouldRender} from './predicates.ts'
 
@@ -32,6 +33,7 @@ import {
     SMOOCH_INSIDE_WIDGET_TYPE,
     YOTPO_WIDGET_TYPE,
     KLAVIYO_WIDGET_TYPE,
+    BIGCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants.ts'
 
 export default class InfobarWidget extends React.Component {
@@ -78,6 +80,7 @@ export default class InfobarWidget extends React.Component {
             [HTTP_WIDGET_TYPE]: http,
             [YOTPO_WIDGET_TYPE]: yotpo,
             [KLAVIYO_WIDGET_TYPE]: klaviyo,
+            [BIGCOMMERCE_WIDGET_TYPE]: bigcommerce,
         }
 
         const passedData = {

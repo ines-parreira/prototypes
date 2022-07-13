@@ -10,6 +10,7 @@ import {
     RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
+    BIGCOMMERCE_INTEGRATION_TYPE,
 } from '../../../../../../../constants/integration.ts'
 
 import InfobarCustomerInfo, {
@@ -273,6 +274,7 @@ describe('<InfobarCustomerInfo/>', () => {
         RECHARGE_INTEGRATION_TYPE,
         SHOPIFY_INTEGRATION_TYPE,
         SMILE_INTEGRATION_TYPE,
+        BIGCOMMERCE_INTEGRATION_TYPE,
     ])(
         'should pass `hasIntegrations=true` because there is an active integration of type %s',
         (integrationType) => {

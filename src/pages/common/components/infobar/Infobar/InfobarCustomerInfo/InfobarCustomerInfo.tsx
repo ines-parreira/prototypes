@@ -317,6 +317,7 @@ const connector = connect((state: RootState) => ({
             IntegrationType.Recharge,
             IntegrationType.Shopify,
             IntegrationType.Smile,
+            IntegrationType.BigCommerce,
         ])(state)
         .isEmpty(),
 }))

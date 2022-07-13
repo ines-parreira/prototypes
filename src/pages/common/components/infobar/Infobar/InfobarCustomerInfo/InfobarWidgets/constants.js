@@ -7,6 +7,7 @@ import {
     SMOOCH_INSIDE_WIDGET_TYPE,
     YOTPO_WIDGET_TYPE,
     KLAVIYO_WIDGET_TYPE,
+    BIGCOMMERCE_WIDGET_TYPE,
 } from '../../../../../../../state/widgets/constants.ts'
 
 export const WIDGET_COLOR_SUPPORTED_TYPES = [
@@ -18,4 +19,5 @@ export const WIDGET_COLOR_SUPPORTED_TYPES = [
     SMOOCH_INSIDE_WIDGET_TYPE,
     YOTPO_WIDGET_TYPE,
     KLAVIYO_WIDGET_TYPE,
+    BIGCOMMERCE_WIDGET_TYPE,
 ]

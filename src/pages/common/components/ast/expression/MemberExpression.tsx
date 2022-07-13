@@ -1,6 +1,6 @@
 import classnames from 'classnames'
-import {List, fromJS} from 'immutable'
-import React, {useMemo, useState, Fragment} from 'react'
+import {fromJS, List} from 'immutable'
+import React, {Fragment, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import _camelCase from 'lodash/camelCase'
 
@@ -14,9 +14,9 @@ import {
     IdentifierElement,
 } from '../../../../../models/rule/types'
 import {
+    generateExpression,
     getAstPath,
     getCategoryFromPath,
-    generateExpression,
 } from '../../../../../models/rule/utils'
 import {RootState} from '../../../../../state/types'
 import {
@@ -49,6 +49,7 @@ export function MemberExpressionContainer({
         IntegrationType.Recharge,
         IntegrationType.Smile,
         IntegrationType.SelfService,
+        IntegrationType.BigCommerce,
     ],
     actions,
 }: OwnProps & ConnectedProps<typeof connector>) {
@@ -102,6 +103,8 @@ export function MemberExpressionContainer({
             ? IntegrationType.Magento2
             : displayedValue.value.includes('smile')
             ? IntegrationType.Smile
+            : displayedValue.value.includes('bigcommerce')
+            ? IntegrationType.BigCommerce
             : null
         const integrationUrl = integrationName
             ? getIconFromUrl(`integrations/${integrationName}-mono.svg`)

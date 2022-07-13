@@ -17,6 +17,7 @@ describe('InfobarWidgets component', () => {
     const httpIntegrationId = 1
     const shopifyIntegrationId = 2
     const rechargeIntegrationId = 3
+    const bigcommerceIntegrationId = 4
 
     const baseEditing = {
         actions: {
@@ -116,6 +117,29 @@ describe('InfobarWidgets component', () => {
             },
             order: 3,
         },
+        {
+            id: 7,
+            type: 'bigcommerce',
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: '',
+                        type: 'card',
+                        title: 'Baz container',
+                        widgets: [
+                            {
+                                path: 'baz',
+                                type: 'text',
+                                title: 'Baz',
+                                order: 1,
+                            },
+                        ],
+                    },
+                ],
+            },
+            order: 4,
+        },
     ])
 
     beforeEach(() => {
@@ -136,6 +160,11 @@ describe('InfobarWidgets component', () => {
                         id: rechargeIntegrationId,
                         type: 'recharge',
                         name: 'my little recharge integration',
+                    },
+                    {
+                        id: bigcommerceIntegrationId,
+                        type: 'bigcommerce',
+                        name: 'my little bigcommerce integration',
                     },
                 ],
             }),
@@ -178,7 +207,7 @@ describe('InfobarWidgets component', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should display http and shopify data, + recharge placeholder, in editing mode', () => {
+    it('should display http and shopify data, recharge, bigcommerce placeholder, in editing mode', () => {
         const editing = Object.assign({}, baseEditing, {isEditing: true})
         const component = mount(
             <Provider store={store}>

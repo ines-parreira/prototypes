@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Order <AfterTitle/> should match snapshot 1`] = `
+<div>
+  <div
+    class="badge ml-1"
+  >
+    Completed
+  </div>
+  <div
+    class="container"
+  >
+    <span
+      class="container"
+    >
+      <span
+        class="label"
+      >
+        Created
+        : 
+      </span>
+      <strong />
+    </span>
+    <span
+      class="container"
+    >
+      <span
+        class="label"
+      >
+        Total
+        : 
+      </span>
+      <strong>
+        —
+      </strong>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Order <AfterTitle/> should not render because no integration id was provided 1`] = `<div />`;
+
+exports[`Order <AfterTitle/> should not render because widgets are being edited 1`] = `<div />`;
+
+exports[`Order <TitleWrapper/> should render default link 1`] = `
+<a
+  href="https://store-pk360c6roo.mybigcommerce.com/manage/orders/2345/edit"
+  rel="noopener noreferrer"
+  target="_blank"
+/>
+`;

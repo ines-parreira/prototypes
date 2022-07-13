@@ -6,6 +6,64 @@ exports[`InfobarWidget card widget should display the widget if isEditing=true 1
 </ContextProvider>"
 `;
 
+exports[`InfobarWidget card widget should display the widget with BigCommerce extension because the widget type is BigCommerce 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "data_source": "",
+      "widget_resource_ids": Object {},
+    }
+  }
+>
+  <CardInfobarWidget
+    AfterTitle={null}
+    BeforeContent={null}
+    TitleWrapper={null}
+    Wrapper={null}
+    extensionUsed="bigcommerce"
+    isEditing={true}
+    isParentList={false}
+    open={true}
+    source={
+      Immutable.Map {
+        "foo": "bar",
+      }
+    }
+    template={
+      Immutable.Map {
+        "type": "card",
+        "path": Array [
+          "ticket",
+          "customer",
+          "integrations",
+          "0",
+        ],
+        "title": "Duh",
+        "widgets": Immutable.List [
+          Immutable.Map {
+            "path": "",
+            "type": "card",
+            "title": "Foo container",
+            "widgets": Immutable.List [],
+          },
+        ],
+        "absolutePath": Array [
+          "ticket",
+          "customer",
+          "integrations",
+          "0",
+        ],
+      }
+    }
+    widget={
+      Immutable.Map {
+        "type": "bigcommerce",
+      }
+    }
+  />
+</ContextProvider>
+`;
+
 exports[`InfobarWidget card widget should display the widget with Magento2 extension because the widget type is Magento2 1`] = `
 <ContextProvider
   value={

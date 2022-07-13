@@ -6,6 +6,7 @@ import {
     MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
+    BIGCOMMERCE_INTEGRATION_TYPE,
 } from '../../../../../../../../constants/integration.ts'
 
 import InfobarWidget from '../InfobarWidget'
@@ -60,6 +61,12 @@ jest.mock('../widgets/recharge', () => {
 jest.mock('../widgets/magento2', () => {
     return () => {
         return {extensionUsed: 'magento2'}
+    }
+})
+
+jest.mock('../widgets/bigcommerce', () => {
+    return () => {
+        return {extensionUsed: 'bigcommerce'}
     }
 })
 
@@ -123,6 +130,18 @@ describe('InfobarWidget', () => {
                 <InfobarWidget
                     {...defaultProps}
                     widget={fromJS({type: MAGENTO2_INTEGRATION_TYPE})}
+                    isEditing={true}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should display the widget with BigCommerce extension because the widget type is BigCommerce', () => {
+            const component = shallow(
+                <InfobarWidget
+                    {...defaultProps}
+                    widget={fromJS({type: BIGCOMMERCE_INTEGRATION_TYPE})}
                     isEditing={true}
                 />
             )

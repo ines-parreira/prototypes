@@ -42,6 +42,48 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=false\` because th
 </ContextProvider>
 `;
 
+exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type bigcommerce 1`] = `
+<ContextProvider
+  value={null}
+>
+  <InfobarCustomerInfoContainer
+    actions={
+      Object {
+        "generateAndSetWidgets": [MockFunction],
+        "resetWidgets": [MockFunction],
+        "setEditedWidgets": [MockFunction],
+        "setEditionAsDirty": [MockFunction],
+      }
+    }
+    customer={
+      Immutable.Map {
+        "id": 1,
+        "name": "foo",
+      }
+    }
+    dispatch={[Function]}
+    hasIntegrations={true}
+    isEditing={false}
+    sources={Immutable.Map {}}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    widgets={
+      Immutable.Map {
+        "currentContext": "ticket",
+      }
+    }
+  />
+</ContextProvider>
+`;
+
 exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type http 1`] = `
 <ContextProvider
   value={null}

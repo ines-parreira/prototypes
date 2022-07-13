@@ -113,6 +113,7 @@ exports[`ast Widget should render RichFieldWithVariables 1`] = `
       "shopify",
       "recharge",
       "magento2",
+      "bigcommerce",
     ]
   }
 />
