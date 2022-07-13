@@ -357,7 +357,7 @@ describe('global utils', () => {
                 (
                     schemas.getIn([
                         'definitions',
-                        'Tag',
+                        'DEPRECATED_Tag',
                         'properties',
                         'name',
                     ]) as Map<any, any>

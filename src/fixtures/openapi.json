@@ -791,10 +791,10 @@
         "/api/tags/{destination_tag_id}/merge/{id}/": {
             "put": {
                 "consumes": ["application/json"],
-                "tags": ["Tag"],
+                "tags": ["DEPRECATED_Tag"],
                 "responses": {
                     "400": {"description": "Bad request."},
-                    "202": {"schema": {"$ref": "#/definitions/Tag"}},
+                    "202": {"schema": {"$ref": "#/definitions/DEPRECATED_Tag"}},
                     "404": {"description": "Not found."}
                 },
                 "produces": ["application/json"],
@@ -936,7 +936,7 @@
                                             "type": "array",
                                             "items": {
                                                 "schema": {
-                                                    "$ref": "#/definitions/Tag"
+                                                    "$ref": "#/definitions/DEPRECATED_Tag"
                                                 }
                                             }
                                         },
@@ -2364,7 +2364,7 @@
             "type": "object"
         },
         "Macro": {
-            "description": "A macro (aka canned responses) is a collection of [Action](#Action-object) objects that can\n        be applied on a ticket.\n\nFor example a macro can set the body text and add a [Tag](#Tag-object) to a [Ticket](Ticket-object).\nIn this case a macro would have 2 Actions: A `setBodyText` action and a `addTag` action.\n",
+            "description": "A macro (aka canned responses) is a collection of [Action](#Action-object) objects that can\n        be applied on a ticket.\n\nFor example a macro can set the body text and add a [Tag](#DEPRECATED_Tag-object) to a [Ticket](Ticket-object).\nIn this case a macro would have 2 Actions: A `setBodyText` action and a `addTag` action.\n",
             "required": ["name", "actions"],
             "properties": {
                 "created_datetime": {
@@ -3504,7 +3504,7 @@
             },
             "type": "object"
         },
-        "Tag": {
+        "DEPRECATED_Tag": {
             "description": "A `Tag` (or label) is used to mark [Tickets](#Ticket-object) with a certain topic or category.\nThey are used in (Views)[#View-object], (Rules)[#Rule-object] and in Statistics.\n\nFor example you can have a 'Refund' ticket [View](#View-object) that displays all tickets that have `refund` tag which\n could then be reviewed by a manager at the end of the day.\n",
             "required": ["name"],
             "properties": {
@@ -4084,7 +4084,7 @@
                 },
                 "tags": {
                     "many": true,
-                    "items": {"$ref": "#/definitions/Tag"},
+                    "items": {"$ref": "#/definitions/DEPRECATED_Tag"},
                     "description": "The tags associated with the ticket.",
                     "meta": {
                         "operators": {
