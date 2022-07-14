@@ -1,13 +1,15 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import moment from 'moment-timezone'
 
-import DatePicker from '../DatePicker.tsx'
+import {Options} from 'daterangepicker'
+
+import DatePicker from '../DatePicker'
 
 describe('DatePicker', () => {
     const datetime = moment('2021-05-12')
 
-    const minProps = {
+    const minProps: ComponentProps<typeof DatePicker> = {
         initialSettings: {
             applyButtonClasses: 'btn-success mr-2',
             cancelButtonClasses: 'btn-secondary',
@@ -17,22 +19,23 @@ describe('DatePicker', () => {
             showCustomRangeLabel: false,
             singleDatePicker: true,
         },
+        onSubmit: jest.fn(),
     }
 
     beforeEach(() => {
         const mockDate = new Date('2021-05-14T12:34:56.000Z')
-        global.Date.now = jest.fn(() => mockDate)
+        global.Date.now = jest.fn(() => mockDate.getTime())
     })
 
     it('should render a date range picker', () => {
-        const ranges = {
+        const ranges: Options['ranges'] = {
             tomorrow: [datetime.add(1, 'days'), datetime.add(1, 'days')],
         }
         const {container} = render(
             <DatePicker
+                {...minProps}
                 isOpen={true}
-                toggle={null}
-                onSubmit={null}
+                toggle={jest.fn()}
                 initialSettings={{
                     ...minProps.initialSettings,
                     ranges,
@@ -52,8 +55,9 @@ describe('DatePicker', () => {
             </DatePicker>
         )
 
-        const [dateRangePickerElement] =
-            document.getElementsByClassName('daterangepicker')
+        const [dateRangePickerElement] = document.getElementsByClassName(
+            'daterangepicker'
+        ) as unknown as HTMLDivElement[]
 
         expect(dateRangePickerElement.classList).toContain('displayed')
         expect(getByText('May 2021')).toBeTruthy()

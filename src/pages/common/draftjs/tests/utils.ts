@@ -1,7 +1,7 @@
-export const isOccupied = (array) => {
+export const isOccupied = (array: any[]) => {
     return array.every((character) => character !== null)
 }
 
-export const isEntirelyNull = (array) => {
+export const isEntirelyNull = (array: any[]) => {
     return array.every((character) => character === null)
 }

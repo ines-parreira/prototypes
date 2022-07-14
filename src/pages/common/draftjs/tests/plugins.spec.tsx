@@ -5,12 +5,12 @@ import {ContentState, EditorState} from 'draft-js'
 import {convertFromHTML} from '../../../../utils/editor'
 import createToolbarPlugin from '../plugins/toolbar/index'
 import {Config} from '../plugins/toolbar/types'
-import {variable as variableDecorator} from '../plugins/variables/decorators.js'
-import {attachEntitiesToVariables} from '../plugins/variables/utils.js'
+import {variable as variableDecorator} from '../plugins/variables/decorators'
+import {attachEntitiesToVariables} from '../plugins/variables/utils'
 import {Plugin} from '../plugins/types'
 
 import TestEditor from './TestEditor'
-import * as utils from './utils.js'
+import * as utils from './utils'
 import {
     createCompositeDecorator,
     createEditorStateFromHtml,

@@ -66,4 +66,10 @@ declare global {
         second: number,
         test: () => void
     ): void
+
+    namespace JSX {
+        interface IntrinsicElements {
+            'grammarly-extension': any
+        }
+    }
 }

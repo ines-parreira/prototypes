@@ -12,7 +12,7 @@ import classNames from 'classnames'
 import {insertText} from 'utils'
 import {getVariables} from 'config/ticket'
 import Button from 'pages/common/components/button/Button'
-import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
+import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import DEPRECATED_RichField from './RichField/DEPRECATED_RichField'

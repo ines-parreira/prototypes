@@ -1,59 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DEPRECATED_RichField display alert 1`] = `
-<ContextProvider
-  value={
-    Object {
-      "store": Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      },
-      "subscription": Subscription {
-        "handleChangeWrapper": [Function],
-        "listeners": Object {
-          "notify": [Function],
-        },
-        "onStateChange": [Function],
-        "parentSub": undefined,
-        "store": Object {
-          "clearActions": [Function],
-          "dispatch": [Function],
-          "getActions": [Function],
-          "getState": [Function],
-          "replaceReducer": [Function],
-          "subscribe": [Function],
-        },
-        "unsubscribe": null,
-      },
-    }
-  }
->
-  <RichField
-    alertMode="warning"
-    alertText="alert"
-    createToolbarPlugin={[Function]}
-    linkIsOpen={false}
-    linkText=""
-    linkUrl=""
-    onChange={[Function]}
-    onLinkClose={[Function]}
-    onLinkOpen={[Function]}
-    onLinkTextChange={[Function]}
-    onLinkUrlChange={[Function]}
-    value={
-      Object {
-        "html": "html",
-        "text": "text",
-      }
-    }
-  />
-</ContextProvider>
-`;
-
 exports[`DEPRECATED_RichField should render a MentionSuggestions component to the DOM if in internal-note mode 1`] = `
 <ContextProvider
   value={
@@ -87,15 +33,10 @@ exports[`DEPRECATED_RichField should render a MentionSuggestions component to th
   }
 >
   <RichField
-    createToolbarPlugin={[Function]}
+    canAddMention={true}
     linkIsOpen={false}
     linkText=""
     linkUrl=""
-    mentionProps={
-      Object {
-        "canAddMention": true,
-      }
-    }
     onChange={[Function]}
     onLinkClose={[Function]}
     onLinkOpen={[Function]}
@@ -144,7 +85,6 @@ exports[`DEPRECATED_RichField should render a basic input 1`] = `
   }
 >
   <RichField
-    createToolbarPlugin={[Function]}
     linkIsOpen={false}
     linkText=""
     linkUrl=""
@@ -177,7 +117,6 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
   }
 >
   <RichField
-    createToolbarPlugin={[Function]}
     defaultContentState={
       Immutable.Record {
         "entityMap": Object {
@@ -251,7 +190,6 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
     }
   >
     <Wrapper
-      createToolbarPlugin={[Function]}
       defaultContentState={
         Immutable.Record {
           "entityMap": Object {
@@ -451,7 +389,6 @@ exports[`DEPRECATED_RichField should render default content state 1`] = `
       }
     >
       <Wrapper
-        createToolbarPlugin={[Function]}
         defaultContentState={
           Immutable.Record {
             "entityMap": Object {
@@ -3324,7 +3261,6 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
   }
 >
   <RichField
-    createToolbarPlugin={[Function]}
     linkIsOpen={false}
     linkText=""
     linkUrl=""
@@ -3341,7 +3277,6 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
     }
   >
     <Wrapper
-      createToolbarPlugin={[Function]}
       editorState={
         EditorState {
           "_immutable": Immutable.Record {
@@ -3527,7 +3462,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
             "forceSelection": false,
             "inCompositionMode": false,
             "inlineStyleOverride": null,
-            "lastChangeType": "attach-entity-variables",
+            "lastChangeType": "apply-entity",
             "nativelyRenderedContent": null,
             "redoStack": Immutable.Stack [],
             "selection": Immutable.Record {
@@ -3777,7 +3712,6 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
       }
     >
       <Wrapper
-        createToolbarPlugin={[Function]}
         detectGrammarly={[Function]}
         editorState={
           EditorState {
@@ -3964,7 +3898,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
               "forceSelection": false,
               "inCompositionMode": false,
               "inlineStyleOverride": null,
-              "lastChangeType": "attach-entity-variables",
+              "lastChangeType": "apply-entity",
               "nativelyRenderedContent": null,
               "redoStack": Immutable.Stack [],
               "selection": Immutable.Record {
@@ -4401,7 +4335,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                 "forceSelection": false,
                 "inCompositionMode": false,
                 "inlineStyleOverride": null,
-                "lastChangeType": "attach-entity-variables",
+                "lastChangeType": "apply-entity",
                 "nativelyRenderedContent": null,
                 "redoStack": Immutable.Stack [],
                 "selection": Immutable.Record {
@@ -4841,7 +4775,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                   "forceSelection": false,
                   "inCompositionMode": false,
                   "inlineStyleOverride": null,
-                  "lastChangeType": "attach-entity-variables",
+                  "lastChangeType": "apply-entity",
                   "nativelyRenderedContent": null,
                   "redoStack": Immutable.Stack [],
                   "selection": Immutable.Record {
@@ -5298,7 +5232,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                           "forceSelection": false,
                           "inCompositionMode": false,
                           "inlineStyleOverride": null,
-                          "lastChangeType": "attach-entity-variables",
+                          "lastChangeType": "apply-entity",
                           "nativelyRenderedContent": null,
                           "redoStack": Immutable.Stack [],
                           "selection": Immutable.Record {
@@ -5941,7 +5875,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                             "forceSelection": false,
                             "inCompositionMode": false,
                             "inlineStyleOverride": null,
-                            "lastChangeType": "attach-entity-variables",
+                            "lastChangeType": "apply-entity",
                             "nativelyRenderedContent": null,
                             "redoStack": Immutable.Stack [],
                             "selection": Immutable.Record {
@@ -6655,7 +6589,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                                     "forceSelection": false,
                                     "inCompositionMode": false,
                                     "inlineStyleOverride": null,
-                                    "lastChangeType": "attach-entity-variables",
+                                    "lastChangeType": "apply-entity",
                                     "nativelyRenderedContent": null,
                                     "redoStack": Immutable.Stack [],
                                     "selection": Immutable.Record {
@@ -8205,7 +8139,7 @@ exports[`DEPRECATED_RichField should render immutable variable 1`] = `
                       "forceSelection": false,
                       "inCompositionMode": false,
                       "inlineStyleOverride": null,
-                      "lastChangeType": "attach-entity-variables",
+                      "lastChangeType": "apply-entity",
                       "nativelyRenderedContent": null,
                       "redoStack": Immutable.Stack [],
                       "selection": Immutable.Record {
@@ -9279,7 +9213,6 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
   }
 >
   <RichField
-    createToolbarPlugin={[Function]}
     linkIsOpen={false}
     linkText=""
     linkUrl=""
@@ -9296,7 +9229,6 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
     }
   >
     <Wrapper
-      createToolbarPlugin={[Function]}
       editorState={
         EditorState {
           "_immutable": Immutable.Record {
@@ -9486,7 +9418,6 @@ exports[`DEPRECATED_RichField should render mutable variable 1`] = `
       }
     >
       <Wrapper
-        createToolbarPlugin={[Function]}
         detectGrammarly={[Function]}
         editorState={
           EditorState {

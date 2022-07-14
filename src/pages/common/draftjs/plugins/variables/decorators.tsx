@@ -1,11 +1,21 @@
-import React from 'react'
+import React, {ReactNode, SyntheticEvent} from 'react'
 import classnames from 'classnames'
+import {ContentBlock, ContentState} from 'draft-js'
 
-import * as integrationsHelpers from '../../../../../state/integrations/helpers.ts'
+import {IntegrationType} from 'models/integration/constants'
+import {Variable} from 'config/ticket'
+
+import {DecoratorComponentProps, DecoratorStrategyCallback} from '../types'
+import * as integrationsHelpers from '../../../../../state/integrations/helpers'
 
 import {setVariableEditable} from './utils'
 
-const placeholderRender = (entity) => {
+type Entity = Variable & {
+    immutable: boolean
+    result: string
+}
+
+const placeholderRender = (entity: Entity): ReactNode => {
     const {fullName, type, integration} = entity
     const entityIsIntegration = type && integration
 
@@ -15,7 +25,9 @@ const placeholderRender = (entity) => {
                 <img
                     alt="integration icon"
                     className="badge-variable-icon"
-                    src={integrationsHelpers.getIconFromType(type)}
+                    src={integrationsHelpers.getIconFromType(
+                        type as IntegrationType
+                    )}
                 />
                 {fullName}
             </span>
@@ -39,7 +51,11 @@ const placeholderRender = (entity) => {
 
 // VARIABLE
 export const variable = {
-    strategy: (contentBlock, callback, contentState) => {
+    strategy: (
+        contentBlock: ContentBlock,
+        callback: DecoratorStrategyCallback,
+        contentState: ContentState
+    ) => {
         contentBlock.findEntityRanges((character) => {
             const entityKey = character.getEntity()
             return (
@@ -48,38 +64,29 @@ export const variable = {
             )
         }, callback)
     },
-    component: ({
-        offsetKey, // eslint-disable-line react/prop-types
-        children, // eslint-disable-line react/prop-types
-        entityKey, // eslint-disable-line react/prop-types
-        getEditorState, // eslint-disable-line react/prop-types
-        contentState, // eslint-disable-line react/prop-types
-        setEditorState, // eslint-disable-line react/prop-types
-    }) => {
-        const entity = contentState.getEntity(entityKey).getData()
+    component: (props: DecoratorComponentProps) => {
+        const {contentState, entityKey, children} = props
+        const entity: Entity = contentState.getEntity(entityKey).getData()
         const {fullName, type, integration, immutable} = entity
         const entityIsIntegration = type && integration
-        let title = fullName
+        let title = fullName as string
 
         if (entityIsIntegration) {
-            const config = integrationsHelpers.getIntegrationConfig(type)
-            title = `${config.title}: ${title}`
+            const config = integrationsHelpers.getIntegrationConfig(
+                type as IntegrationType
+            )
+            title = `${config!.title}: ${title}`
         }
 
-        const _preventDefault = (e) => {
+        const _preventDefault = (e: SyntheticEvent) => {
             // don't steal focus when clicking the edit button
             e.preventDefault()
         }
 
-        const _makeVariableEditable = (e) => {
+        const _makeVariableEditable = (e: SyntheticEvent): any => {
             _preventDefault(e)
 
-            return setVariableEditable({
-                entityKey,
-                offsetKey,
-                getEditorState,
-                setEditorState,
-            })
+            return setVariableEditable(props)
         }
 
         if (!immutable) {

@@ -4,7 +4,7 @@ import _isEqual from 'lodash/isEqual'
 import React, {Component} from 'react'
 
 import {contentStateFromTextOrHTML, convertToHTML} from 'utils/editor'
-import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
+import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 
 import RichFieldEditor, {Props as RichFieldEditorProps} from './RichFieldEditor'
 

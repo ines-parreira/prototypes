@@ -10,7 +10,7 @@ import {
 import {Map} from 'immutable'
 
 import {insertText} from 'utils'
-import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
+import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 import {convertToHTML, getPlainText} from 'utils/editor'
 import {getVariables} from 'config/ticket'
 import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'

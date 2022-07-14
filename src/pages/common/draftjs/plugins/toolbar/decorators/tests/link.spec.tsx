@@ -1,9 +1,12 @@
 import {shallow} from 'enzyme'
 import * as React from 'react'
 
-import createLink from '../link.tsx'
-import {convertFromHTML} from '../../../../../../../utils/editor.tsx'
-import LinkPopover from '../../components/LinkPopover.tsx'
+import {ContentState} from 'draft-js'
+import {convertFromHTML} from 'utils/editor'
+
+import createLink from '../link'
+import {DecoratorComponentProps} from '../../../types'
+import LinkPopover from '../../components/LinkPopover'
 
 describe('link decorator', () => {
     describe('strategy', () => {
@@ -28,6 +31,14 @@ describe('link decorator', () => {
     describe('component', () => {
         const html = '<a href="http://google.com">link</a>'
         const contentState = convertFromHTML(html)
+        const minProps: DecoratorComponentProps = {
+            entityKey: '',
+            contentState: ContentState.createFromText(''),
+            decoratedText: '',
+            getEditorState: jest.fn(),
+            setEditorState: jest.fn(),
+            offsetKey: '',
+        }
 
         it('should render component with onEdit prop if active', () => {
             const editSpy = jest.fn()
@@ -37,6 +48,7 @@ describe('link decorator', () => {
             })
             const component = shallow(
                 <link.component
+                    {...minProps}
                     contentState={contentState}
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
                 />
@@ -53,6 +65,7 @@ describe('link decorator', () => {
             })
             const component = shallow(
                 <link.component
+                    {...minProps}
                     contentState={contentState}
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
                 />
@@ -71,13 +84,16 @@ describe('link decorator', () => {
             })
             const component = shallow(
                 <link.component
-                    contentState={{
-                        getEntity: () => ({
-                            getData: () => ({
-                                url,
+                    {...minProps}
+                    contentState={
+                        {
+                            getEntity: () => ({
+                                getData: () => ({
+                                    url,
+                                }),
                             }),
-                        }),
-                    }}
+                        } as unknown as ContentState
+                    }
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
                     decoratedText={url}
                 />

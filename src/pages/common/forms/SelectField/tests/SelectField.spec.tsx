@@ -1,6 +1,5 @@
-import React from 'react'
+import React, {ChangeEvent, ComponentProps, SyntheticEvent} from 'react'
 import {shallow, mount} from 'enzyme'
-import _noop from 'lodash/noop'
 
 // refs are not passed by enzyme to popper.js
 // https://github.com/facebook/react/issues/9244
@@ -14,11 +13,11 @@ jest.mock('popper.js', () => {
     }
 })
 
-import SelectField from '../SelectField.tsx'
+import SelectField from '../SelectField'
 
 describe('SelectField', () => {
     const minProps = {
-        onChange: _noop,
+        onChange: jest.fn(),
     }
 
     const props = {
@@ -35,12 +34,15 @@ describe('SelectField', () => {
                 label: 'Second',
             },
         ],
-        onChange: _noop,
+        onChange: jest.fn(),
         placeholder: 'placeholder',
         style: {
             background: 'red',
         },
     }
+    const searchChangeEvent = {
+        currentTarget: {value: 'hello'},
+    } as unknown as ChangeEvent<HTMLInputElement>
 
     it('should use default props', () => {
         const component = mount(<SelectField {...minProps} />)
@@ -91,19 +93,17 @@ describe('SelectField', () => {
             },
         ]
 
-        const wrapper = shallow(
+        const wrapper = shallow<SelectField>(
             <SelectField {...minProps} options={options} allowCustomValue />
         )
         const component = wrapper.instance()
 
-        component._onSearchChange({
-            currentTarget: {value: 'hello'},
-        })
+        component._onSearchChange(searchChangeEvent)
         expect(wrapper.state()).toMatchSnapshot()
 
         component._onSearchChange({
             currentTarget: {value: ''},
-        })
+        } as unknown as ChangeEvent<HTMLInputElement>)
         expect(wrapper.state()).toMatchSnapshot()
     })
 
@@ -119,16 +119,16 @@ describe('SelectField', () => {
             },
         ]
 
-        const wrapper = mount(<SelectField {...minProps} options={options} />)
+        const wrapper = mount<SelectField>(
+            <SelectField {...minProps} options={options} />
+        )
         const component = wrapper.instance()
-        component._onSearchChange({
-            currentTarget: {value: 'hello'},
-        })
+        component._onSearchChange(searchChangeEvent)
         expect(wrapper.state()).toMatchSnapshot()
 
         component._onSearchChange({
             currentTarget: {value: ''},
-        })
+        } as unknown as ChangeEvent<HTMLInputElement>)
         expect(wrapper.state()).toMatchSnapshot()
     })
 
@@ -141,8 +141,11 @@ describe('SelectField', () => {
             ],
         }
 
-        const wrapper = shallow(<SelectField {...props} allowCustomValue />)
-        wrapper.instance()._onSearchChange({currentTarget: {value: 'hello'}})
+        const wrapper = shallow<SelectField>(
+            <SelectField {...props} allowCustomValue />
+        )
+        const component = wrapper.instance()
+        component._onSearchChange(searchChangeEvent)
         wrapper.setProps(props)
         expect(wrapper.state()).toMatchSnapshot()
     })
@@ -160,11 +163,11 @@ describe('SelectField', () => {
             },
         ]
 
-        const wrapper = mount(<SelectField {...minProps} options={options} />)
-
-        wrapper.instance()._onSearchChange({
-            currentTarget: {value: 'hello'},
-        })
+        const wrapper = mount<SelectField>(
+            <SelectField {...minProps} options={options} />
+        )
+        const component = wrapper.instance()
+        component._onSearchChange(searchChangeEvent)
         wrapper.update()
 
         const items = wrapper.find('DropdownItem')
@@ -173,13 +176,13 @@ describe('SelectField', () => {
     })
 
     it('should reset state on blur', () => {
-        const wrapper = mount(<SelectField {...minProps} {...props} />)
+        const wrapper = mount<SelectField>(
+            <SelectField {...minProps} {...props} />
+        )
         const component = wrapper.instance()
 
         component._focusInput()
-        component._onSearchChange({
-            currentTarget: {value: ''},
-        })
+        component._onSearchChange(searchChangeEvent)
         component._blurInput()
         expect(wrapper.state()).toMatchSnapshot()
     })
@@ -190,8 +193,10 @@ describe('SelectField', () => {
         const event = {
             stopPropagation: stopPropagationSpy,
             preventDefault: preventDefaultSpy,
-        }
-        const wrapper = mount(<SelectField {...minProps} {...props} />)
+        } as unknown as SyntheticEvent
+        const wrapper = mount<SelectField>(
+            <SelectField {...minProps} {...props} />
+        )
         const component = wrapper.instance()
 
         component._stopPropagation(event)
@@ -202,7 +207,7 @@ describe('SelectField', () => {
     it('should handle click on option (custom value NOT allowed)', () => {
         const stopPropagationSpy = jest.fn()
         const onChangeSpy = jest.fn()
-        const wrapper = mount(
+        const wrapper = mount<SelectField>(
             <SelectField
                 {...minProps}
                 {...props}
@@ -214,15 +219,14 @@ describe('SelectField', () => {
 
         component._stopPropagation = stopPropagationSpy
         wrapper.find('button').first().simulate('click')
-
         expect(stopPropagationSpy.mock.calls.length).toBe(1)
-        expect(onChangeSpy.mock.calls[0][0]).toEqual(1)
+        expect((onChangeSpy.mock.calls[0] as number[])[0]).toEqual(1)
     })
 
     it('should handle click on option (custom value allowed)', () => {
         const stopPropagationSpy = jest.fn()
         const onChangeSpy = jest.fn()
-        const wrapper = mount(
+        const wrapper = mount<SelectField>(
             <SelectField
                 {...minProps}
                 {...props}
@@ -232,27 +236,25 @@ describe('SelectField', () => {
             />
         )
         const component = wrapper.instance()
-        component._onSearchChange({
-            currentTarget: {value: 'hello'},
-        })
+        component._onSearchChange(searchChangeEvent)
         component._stopPropagation = stopPropagationSpy
         wrapper.update()
         wrapper.find('button').first().simulate('click')
 
         expect(stopPropagationSpy.mock.calls.length).toBe(1)
-        expect(onChangeSpy.mock.calls[0][0]).toEqual('hello')
+        expect((onChangeSpy.mock.calls[0] as number[])[0]).toEqual('hello')
     })
 
     describe('should handle key down event', () => {
         const addKeys = ['Enter', 'Tab']
 
         it('Escape', () => {
-            const wrapper = mount(<SelectField {...minProps} {...props} />)
+            const wrapper = mount<SelectField>(
+                <SelectField {...minProps} {...props} />
+            )
             const component = wrapper.instance()
 
-            component._onSearchChange({
-                currentTarget: {value: 'hello'},
-            })
+            component._onSearchChange(searchChangeEvent)
 
             component._toggleDropdown()
             wrapper.find('input').simulate('keyDown', {key: 'Escape'})
@@ -260,7 +262,7 @@ describe('SelectField', () => {
         })
 
         it('ArrowUp/ArrowDown', () => {
-            const wrapper = mount(
+            const wrapper = mount<SelectField>(
                 <SelectField {...minProps} {...props} value={undefined} />
             )
             const component = wrapper.instance()
@@ -286,7 +288,7 @@ describe('SelectField', () => {
         })
 
         it('ArrowUp/ArrowDown (custom value allowed)', () => {
-            const wrapper = mount(
+            const wrapper = mount<SelectField>(
                 <SelectField
                     {...minProps}
                     {...props}
@@ -311,7 +313,7 @@ describe('SelectField', () => {
         it('Enter/tab (custom value)', () => {
             addKeys.forEach((key) => {
                 const onChangeSpy = jest.fn()
-                const wrapper = mount(
+                const wrapper = mount<SelectField>(
                     <SelectField
                         {...minProps}
                         {...props}
@@ -323,18 +325,20 @@ describe('SelectField', () => {
 
                 component._onSearchChange({
                     currentTarget: {value: 'custom value'},
-                })
+                } as unknown as ChangeEvent<HTMLInputElement>)
                 wrapper.find('input').simulate('keyDown', {key})
 
                 expect(wrapper.state()).toMatchSnapshot()
-                expect(onChangeSpy.mock.calls[0][0]).toEqual('custom value')
+                expect((onChangeSpy.mock.calls[0] as number[])[0]).toEqual(
+                    'custom value'
+                )
             })
         })
 
         it('Enter/Tab (existing value)', () => {
             addKeys.forEach((key) => {
                 const onChangeSpy = jest.fn()
-                const wrapper = mount(
+                const wrapper = mount<SelectField>(
                     <SelectField
                         {...minProps}
                         {...props}
@@ -348,7 +352,7 @@ describe('SelectField', () => {
                 wrapper.find('input').simulate('keyDown', {key})
 
                 expect(wrapper.state()).toMatchSnapshot()
-                expect(onChangeSpy.mock.calls[0][0]).toEqual(
+                expect((onChangeSpy.mock.calls[0] as number[])[0]).toEqual(
                     props.options[0].value
                 )
             })
@@ -389,7 +393,7 @@ describe('SelectField', () => {
             const keys = ['ArrowUp', 'ArrowDown', 'Enter', 'Tab']
             keys.forEach((key) => {
                 const stopPropagationSpy = jest.fn()
-                const wrapper = mount(
+                const wrapper = mount<SelectField>(
                     <SelectField {...minProps} {...props} value={undefined} />
                 )
                 const component = wrapper.instance()
@@ -405,7 +409,7 @@ describe('SelectField', () => {
     describe('select with headers, dividers and actions', () => {
         const options = [
             {label: 'Group 1', isHeader: true},
-            {node: <span>Action 1</span>, isAction: true, onClick: _noop},
+            {node: <span>Action 1</span>, isAction: true, onClick: jest.fn()},
             {label: 'Bar', value: 'bar'},
             {isDivider: true},
             {label: 'Group 2', isHeader: true},
@@ -414,24 +418,24 @@ describe('SelectField', () => {
             {label: 'Group 3', isHeader: true},
             {label: 'Lorem ipsum', value: 'loremipsum'},
             {isDivider: true},
-        ]
+        ] as ComponentProps<typeof SelectField>['options']
 
         it('should filter corresponding headers and dividers when search applied', () => {
-            const wrapper = mount(
+            const wrapper = mount<SelectField>(
                 <SelectField {...minProps} options={options} />
             )
             expect(wrapper.state()).toMatchSnapshot()
 
             wrapper.instance()._onSearchChange({
                 currentTarget: {value: 'ba'},
-            })
+            } as unknown as ChangeEvent<HTMLInputElement>)
             wrapper.update()
 
             expect(wrapper.state()).toMatchSnapshot()
         })
 
         it('ArrowUp/ArrowDown should skip dividers and headers, but not actions', () => {
-            const wrapper = mount(
+            const wrapper = mount<SelectField>(
                 <SelectField {...minProps} options={options} />
             )
 
@@ -470,9 +474,9 @@ describe('SelectField', () => {
                     onClick: onClickSpy,
                 },
                 {label: 'Bar', value: 'bar'},
-            ]
+            ] as ComponentProps<typeof SelectField>['options']
 
-            const wrapper = mount(
+            const wrapper = mount<SelectField>(
                 <SelectField
                     {...minProps}
                     options={optionsWithSpy}

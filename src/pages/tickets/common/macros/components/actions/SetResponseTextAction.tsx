@@ -11,7 +11,7 @@ import {EditorState} from 'draft-js'
 
 import Button from 'pages/common/components/button/Button'
 import {insertText} from 'utils'
-import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils.js'
+import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 import {getVariables} from 'config/ticket'
 import {convertToHTML, getPlainText} from 'utils/editor'
 import {RootState} from 'state/types'

@@ -1,12 +1,12 @@
 import decorateComponentWithProps from 'decorate-component-with-props'
 
-import InlineStyle from './InlineStyle.tsx'
+import InlineStyle from './InlineStyle'
 
-export {default as InlineStyle} from './InlineStyle.tsx'
-export {default as AddLink} from './AddLink.tsx'
-export {default as AddImage} from './AddImage.tsx'
-export {default as AddEmoji} from './AddEmoji.tsx'
-export {default as AddProductLink} from './AddProductLink.tsx'
+export {default as InlineStyle} from './InlineStyle'
+export {default as AddLink} from './AddLink'
+export {default as AddImage} from './AddImage'
+export {default as AddEmoji} from './AddEmoji'
+export {default as AddProductLink} from './AddProductLink'
 
 export const Bold = decorateComponentWithProps(InlineStyle, {
     icon: 'format_bold',

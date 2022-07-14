@@ -110,7 +110,7 @@ export const USABLE_SOURCE_TYPES = [
 
 export const DEFAULT_SOURCE_TYPE = TicketMessageSourceType.Email
 
-type Variable = {
+export type Variable = {
     type: string
     name: string
     children?: VariableChild[]

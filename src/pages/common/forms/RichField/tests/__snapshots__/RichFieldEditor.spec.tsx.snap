@@ -118,6 +118,7 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
         }
         handleKeyCommand={[Function]}
         handlePastedText={[Function]}
+        onBlur={[MockFunction]}
         onChange={[Function]}
         onFocus={[Function]}
         plugins={
@@ -262,6 +263,8 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
       />
       <Decorated(MentionSuggestions)
         canAddMention={false}
+        onSearchChange={[MockFunction]}
+        suggestions={Immutable.Map {}}
       />
     </div>
   </div>
@@ -370,16 +373,20 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
     }
     emailExtraEnabled={false}
     isFocused={false}
+    isRequired={false}
     linkIsOpen={false}
     linkText=""
     linkUrl=""
+    mentionSearchResults={Immutable.Map {}}
     notify={[Function]}
+    onBlur={[MockFunction]}
     onChange={[MockFunction]}
     onFocus={[MockFunction]}
     onLinkClose={[Function]}
     onLinkOpen={[Function]}
     onLinkTextChange={[Function]}
     onLinkUrlChange={[Function]}
+    onMentionSearchChange={[MockFunction]}
     productCardsEnabled={true}
   />
 </div>

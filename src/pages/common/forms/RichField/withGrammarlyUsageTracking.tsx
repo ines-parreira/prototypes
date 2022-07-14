@@ -1,10 +1,7 @@
 import React, {ComponentType, Component} from 'react'
 
-import {tryLocalStorage} from '../../../../services/common/utils'
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../store/middlewares/segmentTracker'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {tryLocalStorage} from 'services/common/utils'
 
 export type InjectedProps = {
     detectGrammarly: () => void

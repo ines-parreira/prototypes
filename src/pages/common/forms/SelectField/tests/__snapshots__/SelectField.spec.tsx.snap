@@ -12,7 +12,7 @@ Object {
       "node": <span>
         Action 1
       </span>,
-      "onClick": [Function],
+      "onClick": [MockFunction],
     },
     Object {
       "label": "Bar",
@@ -60,7 +60,7 @@ Object {
       "node": <span>
         Action 1
       </span>,
-      "onClick": [Function],
+      "onClick": [MockFunction],
     },
     Object {
       "label": "Bar",
@@ -417,7 +417,7 @@ Object {
   "fixedWidth": false,
   "fullWidth": false,
   "id": null,
-  "onChange": [Function],
+  "onChange": [MockFunction],
   "onSearchChange": [Function],
   "options": Array [
     Object {
@@ -447,7 +447,7 @@ Object {
   "fixedWidth": false,
   "fullWidth": false,
   "id": null,
-  "onChange": [Function],
+  "onChange": [MockFunction],
   "onSearchChange": [Function],
   "options": Array [],
   "placeholder": "Select an option",

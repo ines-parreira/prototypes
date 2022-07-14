@@ -2,8 +2,10 @@ import {EditorState, SelectionState, Modifier} from 'draft-js'
 import findWithRegex from 'find-with-regex'
 import _get from 'lodash/get'
 
-import {templateRegex} from '../../../utils/template.ts'
-import * as ticketConfig from '../../../../../config/ticket.ts'
+import {templateRegex} from 'pages/common/utils/template'
+
+import * as ticketConfig from '../../../../../config/ticket'
+import {DecoratorComponentProps} from '../types'
 
 /**
  * Transform variables (ex: {ticket.customer.name}) in visual tag
@@ -12,32 +14,35 @@ import * as ticketConfig from '../../../../../config/ticket.ts'
  * @param immutable
  * @returns {*}
  */
-export const attachEntitiesToVariables = (editorState, immutable = false) => {
+export const attachEntitiesToVariables = (
+    editorState: EditorState,
+    immutable = false
+): EditorState => {
     const contentState = editorState.getCurrentContent()
     const blocks = contentState.getBlockMap()
     let newContentState = contentState
 
     blocks.forEach((block) => {
-        const plainText = block.getText()
+        const plainText = block!.getText()
 
         // find variables in block to remove them if invalid,
         // or turn them immutable.
         // can't use addEntityToVariable because it only loops
         // entities that match the templateRegex.
-        block.findEntityRanges(
+        block!.findEntityRanges(
             (character) => {
                 const entityKey = character.getEntity()
                 return (
                     entityKey !== null &&
-                    newContentState.getEntity(entityKey).get('type') ===
+                    newContentState.getEntity(entityKey).getType() ===
                         'variable'
                 )
             },
             (start, end) => {
                 const value = plainText.substring(start, end)
-                const entityKey = block.getEntityAt(start)
+                const entityKey = block!.getEntityAt(start)
                 const entity = newContentState.getEntity(entityKey)
-                const entityData = entity.get('data')
+                const entityData = entity.getData()
 
                 // turn variable immutable
                 if (immutable && !_get(entityData, 'immutable')) {
@@ -52,10 +57,10 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
                 // remove invalid variable
                 if (value !== _get(entityData, 'result')) {
                     const entitySelection = SelectionState.createEmpty(
-                        block.getKey()
+                        block!.getKey()
                     )
                         .set('anchorOffset', start)
-                        .set('focusOffset', end)
+                        .set('focusOffset', end) as SelectionState
 
                     newContentState = Modifier.applyEntity(
                         newContentState,
@@ -67,20 +72,20 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
         )
 
         // refresh the block pointer, in case we changed it
-        const newBlock = newContentState.getBlockForKey(block.getKey())
-        const addEntityToVariable = (start, end) => {
+        const newBlock = newContentState.getBlockForKey(block!.getKey())
+        const addEntityToVariable = (start: number, end: number) => {
             const existingEntityKey = newBlock.getEntityAt(start)
             // avoid manipulation in case the variable already has an entity
             if (existingEntityKey) {
                 const entity = newContentState.getEntity(existingEntityKey)
-                if (entity && entity.get('type') === 'variable') {
+                if (entity && entity.getType() === 'variable') {
                     return
                 }
             }
 
             const selection = SelectionState.createEmpty(newBlock.getKey())
                 .set('anchorOffset', start)
-                .set('focusOffset', end)
+                .set('focusOffset', end) as SelectionState
             const value = plainText.substring(start, end)
             const variable = ticketConfig.getVariableWithValue(value)
 
@@ -91,11 +96,11 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
             // check if there used to be a variable here, and restore immutable data.
             // fixes bug with turning an immutable variable to editable,
             // when typing one char after it.
-            const oldEntityKey = block.getEntityAt(start)
+            const oldEntityKey = block!.getEntityAt(start)
             let isImmutable = immutable
             if (oldEntityKey) {
                 const oldEntity = newContentState.getEntity(oldEntityKey)
-                const entityData = oldEntity.get('data')
+                const entityData = oldEntity.getData()
                 if (_get(entityData, 'result') === value) {
                     isImmutable = _get(entityData, 'immutable')
                 }
@@ -115,19 +120,20 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
                 newContentState,
                 selection,
                 value,
-                null,
+                undefined,
                 entityKey
             )
         }
-
+        /* eslint-disable */
         findWithRegex(templateRegex, newBlock, addEntityToVariable)
+        /* eslint-enable */
     })
 
     if (!newContentState.equals(contentState)) {
         const newEditorState = EditorState.push(
             editorState,
             newContentState,
-            'attach-entity-variables'
+            'apply-entity'
         )
         const currentSelection = editorState.getSelection()
 
@@ -145,15 +151,11 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
 }
 
 const KEY_SEPARATOR = '-'
-export const setVariableEditable = ({
-    entityKey,
-    offsetKey,
-    getEditorState,
-    setEditorState,
-}) => {
-    const editorState = getEditorState()
+export const setVariableEditable = (props: DecoratorComponentProps): any => {
+    const {entityKey, offsetKey} = props
+    const editorState = props.getEditorState()
     const contentState = editorState.getCurrentContent()
-    let newContentState = contentState.mergeEntityData(entityKey, {
+    const newContentState = contentState.mergeEntityData(entityKey, {
         immutable: false,
     })
     let offset = 0
@@ -177,17 +179,13 @@ export const setVariableEditable = ({
     // set selection at start of variable
     const selection = SelectionState.createEmpty(blockKey)
         .set('anchorOffset', offset)
-        .set('focusOffset', offset)
+        .set('focusOffset', offset) as SelectionState
 
-    return setEditorState(
+    return props.setEditorState(
         // mergeEntityData doesn't trigger a re-render,
         // so we forceSelection to force the editor re-render.
         EditorState.forceSelection(
-            EditorState.push(
-                editorState,
-                newContentState,
-                'set-variable-editable'
-            ),
+            EditorState.push(editorState, newContentState, 'apply-entity'),
             selection
         )
     )

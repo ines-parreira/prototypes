@@ -14,7 +14,7 @@ import {
     Italic,
     Underline,
     AddProductLink,
-} from './components/index.js'
+} from './components/index'
 import {ActionName, ActionInjectedProps} from './types'
 
 import css from './Toolbar.less'

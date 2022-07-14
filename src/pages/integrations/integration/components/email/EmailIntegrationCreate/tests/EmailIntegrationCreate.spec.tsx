@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from 'enzyme'
 
-import {EmailIntegrationCreate} from '../EmailIntegrationCreate.tsx'
+import {EmailIntegrationCreate} from '../EmailIntegrationCreate'
 
 describe('<EmailIntegrationCreate/>', () => {
     describe('render()', () => {
@@ -10,6 +10,7 @@ describe('<EmailIntegrationCreate/>', () => {
                 <EmailIntegrationCreate
                     gmailRedirectUri={'testGmail'}
                     outlookRedirectUri={'testOutlook'}
+                    dispatch={jest.fn()}
                 />
             )
             expect(component).toMatchSnapshot()

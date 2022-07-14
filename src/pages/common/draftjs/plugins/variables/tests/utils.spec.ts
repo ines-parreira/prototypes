@@ -17,10 +17,11 @@ describe('Variables plugin utils', () => {
 
             const newContentState = editorState.getCurrentContent()
             const entityKey = newContentState.getLastCreatedEntityKey()
+            const newContentStateData = newContentState
+                .getEntity(entityKey)
+                .getData() as Record<string, any>
 
-            expect(
-                newContentState.getEntity(entityKey).getData().immutable
-            ).toBe(false)
+            expect(newContentStateData.immutable).toBe(false)
         })
 
         it('should contain immutable variable', () => {
@@ -34,10 +35,10 @@ describe('Variables plugin utils', () => {
 
             const newContentState = editorState.getCurrentContent()
             const entityKey = newContentState.getLastCreatedEntityKey()
-
-            expect(
-                newContentState.getEntity(entityKey).getData().immutable
-            ).toBe(true)
+            const newContentStateData = newContentState
+                .getEntity(entityKey)
+                .getData() as Record<string, any>
+            expect(newContentStateData.immutable).toBe(true)
         })
     })
 
@@ -50,28 +51,31 @@ describe('Variables plugin utils', () => {
                 EditorState.createWithContent(contentState),
                 true
             )
-            let newEditorState
+            const decoratedText = ''
+            let newEditorState: EditorState
 
             const newContentState = editorState.getCurrentContent()
             const entityKey = newContentState.getLastCreatedEntityKey()
-            const blockKey = newContentState.getLastBlock().get('key')
+            const blockKey = newContentState.getLastBlock().get('key') as string
 
             editorState = setVariableEditable({
                 entityKey,
-                offsetKey: blockKey,
+                contentState,
+                decoratedText,
                 getEditorState: () => editorState,
-                setEditorState: (e) => (newEditorState = e),
+                setEditorState: (e: EditorState) => (newEditorState = e),
+                offsetKey: blockKey,
             })
 
-            const newEntityKey = newEditorState
+            const newEntityKey = newEditorState!
                 .getCurrentContent()
                 .getLastCreatedEntityKey()
-            expect(
-                newEditorState
-                    .getCurrentContent()
-                    .getEntity(newEntityKey)
-                    .getData().immutable
-            ).toBe(false)
+
+            const newEditorStateData = newEditorState!
+                .getCurrentContent()
+                .getEntity(newEntityKey)
+                .getData() as Record<string, any>
+            expect(newEditorStateData.immutable).toBe(false)
         })
     })
 })

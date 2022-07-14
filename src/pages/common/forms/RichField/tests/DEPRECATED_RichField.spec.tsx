@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {mount, shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 import {ContentState, EditorState} from 'draft-js'
@@ -6,9 +6,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import RichField from '../DEPRECATED_RichField.tsx'
-import createToolbarPlugin from '../../../draftjs/plugins/toolbar/index.ts'
-import {convertToHTML} from '../../../../../utils/editor.tsx'
+import {convertToHTML} from 'utils/editor'
+
+import RichField from '../DEPRECATED_RichField'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -16,8 +16,8 @@ jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 describe('DEPRECATED_RichField', () => {
     const mockStore = configureMockStore([thunk])
     let store = mockStore({})
-    const defaultProps = {
-        createToolbarPlugin,
+    const defaultProps: ComponentProps<typeof RichField> = {
+        value: {html: undefined},
         onChange: _noop,
         linkIsOpen: false,
         linkText: '',
@@ -44,27 +44,13 @@ describe('DEPRECATED_RichField', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('display alert', () => {
-        const component = shallow(
-            <Provider store={store}>
-                <RichField
-                    {...defaultProps}
-                    value={{text: 'text', html: 'html'}}
-                    alertMode="warning"
-                    alertText="alert"
-                />
-            </Provider>
-        )
-        expect(component).toMatchSnapshot()
-    })
-
     it('should render a MentionSuggestions component to the DOM if in internal-note mode', () => {
         const component = shallow(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
                     value={{text: 'text', html: 'html'}}
-                    mentionProps={{canAddMention: true}}
+                    canAddMention
                 />
             </Provider>
         )
@@ -94,7 +80,7 @@ describe('DEPRECATED_RichField', () => {
         const div = document.createElement('div')
         document.body.appendChild(div)
 
-        const component = mount(
+        const component = mount<RichField>(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
@@ -108,7 +94,10 @@ describe('DEPRECATED_RichField', () => {
         const editorState = EditorState.createWithContent(
             ContentState.createFromText('{{current_user.name}}')
         )
-        component.find(RichField).instance().setEditorState(editorState)
+        const compenentInstance = component
+            .find(RichField)
+            .instance() as RichField
+        compenentInstance.setEditorState(editorState)
 
         expect(component).toMatchSnapshot()
     })

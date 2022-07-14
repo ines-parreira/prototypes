@@ -1,16 +1,14 @@
 import React, {Component} from 'react'
 import {mount, shallow} from 'enzyme'
 
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+
 import withGrammarlyUsageTracking, {
     GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
-} from '../withGrammarlyUsageTracking.tsx'
+    InjectedProps,
+} from '../withGrammarlyUsageTracking'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../store/middlewares/segmentTracker.ts'
-
-jest.mock('../../../../../store/middlewares/segmentTracker.ts')
+jest.mock('../../../../../store/middlewares/segmentTracker')
 jest.useFakeTimers()
 
 describe('withGrammarlyUsageTracking', () => {
@@ -40,9 +38,9 @@ describe('withGrammarlyUsageTracking', () => {
             const Wrapped = withGrammarlyUsageTracking(Component)
             const component = shallow(<Wrapped />)
             jest.runAllTimers()
-            component.instance()._detectGrammarly()
+            component.find<InjectedProps>(Component).prop('detectGrammarly')()
             jest.runAllTimers()
-            component.instance()._detectGrammarly()
+            component.find<InjectedProps>(Component).prop('detectGrammarly')()
             jest.runAllTimers()
             expect(
                 localStorage.getItem(GRAMMARLY_FOUND_LOCAL_STORAGE_TAG)
@@ -55,7 +53,7 @@ describe('withGrammarlyUsageTracking', () => {
             const grammarlyLastFound = Date.now() - 26 * 3600 * 1000
             localStorage.setItem(
                 GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
-                grammarlyLastFound
+                grammarlyLastFound.toString()
             )
 
             mount(<grammarly-extension />, {
@@ -65,7 +63,7 @@ describe('withGrammarlyUsageTracking', () => {
             const Wrapped = withGrammarlyUsageTracking(Component)
             const component = shallow(<Wrapped />)
             jest.runAllTimers()
-            component.instance()._detectGrammarly()
+            component.find<InjectedProps>(Component).prop('detectGrammarly')()
             jest.runAllTimers()
             expect(
                 localStorage.getItem(GRAMMARLY_FOUND_LOCAL_STORAGE_TAG)
@@ -77,8 +75,9 @@ describe('withGrammarlyUsageTracking', () => {
         describe('with localStorage not working', () => {
             const realLocalStorage = localStorage
             beforeEach(() => {
+                //@ts-ignore
                 delete global.localStorage
-                global.localStorage = null
+                global.localStorage = null as unknown as Storage
             })
 
             afterEach(() => {
@@ -93,9 +92,13 @@ describe('withGrammarlyUsageTracking', () => {
                 const Wrapped = withGrammarlyUsageTracking(Component)
                 const component = shallow(<Wrapped />)
                 jest.runAllTimers()
-                component.instance()._detectGrammarly()
+                component
+                    .find<InjectedProps>(Component)
+                    .prop('detectGrammarly')()
                 jest.runAllTimers()
-                component.instance()._detectGrammarly()
+                component
+                    .find<InjectedProps>(Component)
+                    .prop('detectGrammarly')()
                 jest.runAllTimers()
                 expect(logEvent).toBeCalledTimes(1)
                 expect(logEvent).toBeCalledWith(SegmentEvent.GrammarlyEnabled)
@@ -108,7 +111,7 @@ describe('withGrammarlyUsageTracking', () => {
         const Wrapped = withGrammarlyUsageTracking(Component)
         const component = shallow(<Wrapped />)
         jest.runAllTimers()
-        component.instance()._detectGrammarly()
+        component.find<InjectedProps>(Component).prop('detectGrammarly')()
         jest.runAllTimers()
         expect(logEvent).not.toHaveBeenCalled()
         expect(

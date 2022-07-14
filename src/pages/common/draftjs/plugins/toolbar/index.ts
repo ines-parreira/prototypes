@@ -2,7 +2,7 @@ import {ReactNode, ComponentType, KeyboardEvent} from 'react'
 import decorateComponentWithProps from 'decorate-component-with-props'
 import {ContentBlock, EditorState, KeyBindingUtil} from 'draft-js'
 
-import {PluginMethods} from '../types'
+import {Plugin, PluginMethods} from '../types'
 import {removeLink} from '../utils'
 import {
     getSelectedEntityKey,
@@ -18,7 +18,7 @@ import {Config, ActionName} from './types'
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
 
-export default function toolbarPlugin(config: Config) {
+export default function toolbarPlugin(config: Config): Plugin {
     const isLinkDisplayed = () =>
         Toolbar.isDisplayedAction(ActionName.Link, config.getDisplayedActions())
 

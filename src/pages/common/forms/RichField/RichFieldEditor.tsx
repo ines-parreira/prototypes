@@ -24,7 +24,7 @@ import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks/ind
 import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
 import createMentionPlugin from '../../draftjs/plugins/mentions/index.js'
 import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
-import createVariablesPlugin from '../../draftjs/plugins/variables/index.js'
+import createVariablesPlugin from '../../draftjs/plugins/variables/index'
 import createPredictionPlugin from '../../draftjs/plugins/prediction'
 import {createQuotesPlugin} from '../../draftjs/plugins/quotes/quotesPlugin'
 

@@ -1,22 +1,33 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {mount, shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
-import {EditorState} from 'draft-js'
+import {ContentState, EditorState} from 'draft-js'
 import {convertToHTML} from 'draft-convert'
 import Editor from 'draft-js-plugins-editor'
+import {fromJS} from 'immutable'
 
-import {RichFieldEditor} from '../RichFieldEditor.tsx'
-import provideToolbarPlugin from '../provideToolbarPlugin.tsx'
-import createToolbarPlugin from '../../../draftjs/plugins/toolbar/index.ts'
-import {convertFromHTML} from '../../../../../utils/editor.tsx'
+import {convertFromHTML} from 'utils/editor'
+
+import {RichFieldEditor} from '../RichFieldEditor'
+import toolbarPlugin from '../../../draftjs/plugins/toolbar/index'
+import provideToolbarPlugin from '../provideToolbarPlugin'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 
 describe('RichFieldEditor', () => {
-    const defaultProps = {
-        createToolbarPlugin,
+    const defaultProps: ComponentProps<typeof RichFieldEditor> = {
+        createToolbarPlugin: (imageDecorator) =>
+            toolbarPlugin({
+                imageDecorator,
+                onLinkEdit: jest.fn(),
+                onLinkCreate: jest.fn(),
+                getDisplayedActions: jest.fn(),
+            }),
+        editorState: fromJS({}),
+        onFocus: jest.fn(),
+        onBlur: jest.fn(),
         detectGrammarly: _noop,
         onChange: jest.fn(),
         linkIsOpen: false,
@@ -26,9 +37,13 @@ describe('RichFieldEditor', () => {
         onLinkTextChange: _noop,
         onLinkOpen: _noop,
         onLinkClose: _noop,
+        isRequired: false,
+        isFocused: false,
+        mentionSearchResults: fromJS({}),
+        onMentionSearchChange: jest.fn(),
     }
-    let contentState
-    let editorState
+    let contentState: ContentState
+    let editorState: EditorState
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -38,21 +53,25 @@ describe('RichFieldEditor', () => {
 
     // Note: functional test candidate
     it('should keep existing content and newlines when pasting text', () => {
+        const spyOnchange = jest.fn()
         contentState = convertFromHTML('html')
         editorState = EditorState.createWithContent(contentState)
         editorState = EditorState.moveFocusToEnd(editorState)
-        const component = mount(
-            <RichFieldEditor {...defaultProps} editorState={editorState} />
+        const component = mount<RichFieldEditor>(
+            <RichFieldEditor
+                {...defaultProps}
+                editorState={editorState}
+                onChange={spyOnchange}
+            />
         )
         const text = 'a\n\nb\n\nc'
         const html = '<div>a<br><br>b<br><br>c</div>'
 
+        const instanceComponent = component.instance()
         // simulate pasted text
-        component.instance()._handlePastedText(text, html, editorState)
-        const lastCall =
-            defaultProps.onChange.mock.calls[
-                defaultProps.onChange.mock.calls.length - 1
-            ]
+        instanceComponent._handlePastedText(text, html, editorState)
+        const lastCall: EditorState[] =
+            spyOnchange.mock.calls[spyOnchange.mock.calls.length - 1]
 
         const convertedHTML = convertToHTML(lastCall[0].getCurrentContent())
         expect(convertedHTML).toBe('<p>htmla<br/><br/>b<br/><br/>c</p>')
@@ -62,28 +81,28 @@ describe('RichFieldEditor', () => {
     // https://github.com/gorgias/gorgias/pull/3373#issuecomment-392855428
     // Note: functional test candidate
     it('should not handle html when pasting draft-js-specific content', () => {
+        const onChangeSpy = jest.fn()
         contentState = convertFromHTML('html')
         editorState = EditorState.createWithContent(contentState)
         editorState = EditorState.moveFocusToEnd(editorState)
-        const component = mount(
+        const component = mount<RichFieldEditor>(
             <RichFieldEditor
                 {...defaultProps}
                 editorKey="editor"
                 editorState={editorState}
+                onChange={onChangeSpy}
             />
         )
         const text = 'a\n\nb\n\nc'
         // html copied from draft-js contains the data-editor=editorKey attribute
         const html =
             '<div data-editor="editor"><div>a<br><br>b<br><br>c</div></div>'
-
         // simulate pasted text
+
         component.instance()._handlePastedText(text, html, editorState)
 
-        const [newContentState] =
-            defaultProps.onChange.mock.calls[
-                defaultProps.onChange.mock.calls.length - 1
-            ]
+        const [newContentState]: EditorState[] =
+            onChangeSpy.mock.calls[onChangeSpy.mock.calls.length - 1]
         const convertedHTML = convertToHTML(newContentState.getCurrentContent())
         // we can't simulate the paste event, so we test for unmodified content
         expect(convertedHTML).toBe('<p>html</p>')
@@ -130,18 +149,21 @@ describe('RichFieldEditor', () => {
     })
 
     it('should handle shortcuts', () => {
+        const spyOnchange = jest.fn()
+
         const WrappedRichFieldEditor = provideToolbarPlugin(RichFieldEditor)
         const component = mount(
             <WrappedRichFieldEditor
                 {..._omit(defaultProps, 'createToolbarPlugin')}
                 editorKey="editor"
                 editorState={editorState}
+                onChange={spyOnchange}
             />
         )
 
         component
             .find('.public-DraftEditor-content')
             .simulate('keyDown', {ctrlKey: true, key: 'b', keyCode: 66})
-        expect(defaultProps.onChange.mock.calls).toMatchSnapshot()
+        expect(spyOnchange.mock.calls).toMatchSnapshot()
     })
 })
