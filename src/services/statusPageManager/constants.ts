@@ -75,7 +75,8 @@ export const INTEGRATION_COMPONENTS_TYPES: {
           '3n3zfvt8ndb4': IntegrationType.Facebook, // Instagram DM
           '2pr7qbc9c17s': IntegrationType.Shopify,
           '212dg2c2png1': IntegrationType.Shopify, // Shopify API & Mobile,
-          bsprtz3l874l: IntegrationType.Sms,
+          '3503769485p2': IntegrationType.Yotpo,
+          ccg4qppx1spl: IntegrationType.Recharge,
       })
     : Object.freeze({
           ykr08lvqnb66: IntegrationType.Aircall,

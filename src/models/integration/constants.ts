@@ -1,3 +1,5 @@
+// Update these statuspage components as well when you add a new integration here:
+// g/static/private/js/services/statusPageManager/constants.ts
 export enum IntegrationType {
     Email = 'email',
     Gmail = 'gmail',
