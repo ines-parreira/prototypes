@@ -241,6 +241,7 @@ Object {
     "status": Immutable.Map {
       "status": "active",
     },
+    "id": 1,
     "features": Immutable.Map {
       "view_sharing": Immutable.Map {
         "enabled": true,

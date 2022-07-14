@@ -17,7 +17,7 @@ export function initLaunchDarkly(
 
     if (user && account) {
         LDUser = {
-            key: account.domain,
+            key: account.id.toString(),
             custom: {
                 plan: account?.current_subscription?.plan,
                 domain: account.domain,
