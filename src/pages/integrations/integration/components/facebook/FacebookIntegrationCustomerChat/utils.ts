@@ -1,4 +1,6 @@
-export const renderFacebookCodeSnippet = (integration) => {
+import {Map} from 'immutable'
+
+export const renderFacebookCodeSnippet = (integration: Map<any, any>) => {
     return `<!-- Gorgias Messenger Widget Start -->
 <script>
   window.fbAsyncInit = function() {
@@ -21,7 +23,7 @@ export const renderFacebookCodeSnippet = (integration) => {
 </script>
 
 <div class="fb-customerchat"
-     page_id="${integration.getIn(['meta', 'page_id'])}"
+     page_id="${integration.getIn(['meta', 'page_id']) as string}"
      minimized="false"
      ref="g"
 >

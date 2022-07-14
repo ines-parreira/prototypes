@@ -1,28 +1,28 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, {Component} from 'react'
+import {Map} from 'immutable'
 import {Link} from 'react-router-dom'
 
-import FacebookLoginButton from '../FacebookLoginButton'
+import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 
-import ForwardIcon from 'pages/integrations/common/components/ForwardIcon.tsx'
+import FacebookLoginButton from '../FacebookLoginButton/FacebookLoginButton'
 
-export default class FacebookPageRow extends React.Component {
-    static propTypes = {
-        integration: PropTypes.object.isRequired,
-    }
+type Props = {
+    integration: Map<any, any>
+}
 
+export default class FacebookPageRow extends Component<Props> {
     render() {
         const {integration} = this.props
         const isDisabled = integration.get('deactivated_datetime')
-        const integrationMeta = integration.get('meta')
+        const integrationMeta: Map<any, any> = integration.get('meta')
 
         if (!integrationMeta || integrationMeta.isEmpty()) {
             return null
         }
 
-        const editLink = `/app/settings/integrations/facebook/${integration.get(
-            'id'
-        )}/overview`
+        const editLink = `/app/settings/integrations/facebook/${
+            integration.get('id') as number
+        }/overview`
 
         return (
             <tr className="FacebookPageRow">

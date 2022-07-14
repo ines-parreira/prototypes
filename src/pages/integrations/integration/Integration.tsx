@@ -34,7 +34,7 @@ import AircallIntegrationCreate from './components/aircall/AircallIntegrationCre
 import OutlookIntegrationSetup from './components/email/outlook/OutlookIntegrationSetup/OutlookIntegrationSetup'
 
 import FacebookIntegrationDetail from './components/facebook/FacebookIntegrationDetail'
-import FacebookIntegrationList from './components/facebook/FacebookIntegrationList/FacebookIntegrationList.js'
+import FacebookIntegrationList from './components/facebook/FacebookIntegrationList/FacebookIntegrationList'
 import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
 import FacebookIntegrationInstagramAds from './components/facebook/FacebookIntegrationAds/FacebookIntegrationInstagramAds'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup'
@@ -357,7 +357,6 @@ export const IntegrationDetail = ({
 
             return (
                 <FacebookIntegrationList
-                    actions={actions}
                     redirectUri={redirectUri}
                     loading={loading}
                 />

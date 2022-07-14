@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FacebookLoginButton component should render a log in link 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(FacebookLoginButtonContainer)
+    link={true}
+  >
+    <FacebookLoginButtonContainer
+      dispatch={[Function]}
+      link={true}
+      reconnect={false}
+      redirectUri="https://.../"
+    >
+      <a
+        href="https://.../"
+      >
+        Login with Facebook
+      </a>
+    </FacebookLoginButtonContainer>
+  </Connect(FacebookLoginButtonContainer)>
+</Provider>
+`;
+
+exports[`FacebookLoginButton component should render a reconnect button 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(FacebookLoginButtonContainer)
+    reconnect={true}
+  >
+    <FacebookLoginButtonContainer
+      dispatch={[Function]}
+      link={false}
+      reconnect={true}
+      redirectUri="https://.../?reconnect"
+    >
+      <ForwardRef
+        intent="primary"
+        onClick={[Function]}
+        type="submit"
+      >
+        <button
+          className="wrapper fill primary medium"
+          onClick={[Function]}
+          type="submit"
+        >
+          Reconnect
+        </button>
+      </ForwardRef>
+    </FacebookLoginButtonContainer>
+  </Connect(FacebookLoginButtonContainer)>
+</Provider>
+`;

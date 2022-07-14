@@ -1,11 +1,11 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {renderFacebookCodeSnippet} from '../utils'
 
 describe('facebook customer chat utils', () => {
     describe('renderFacebookCodeSnippet', () => {
         it('should render correctly', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 meta: {
                     page_id: 'mylittlepageid',
                 },

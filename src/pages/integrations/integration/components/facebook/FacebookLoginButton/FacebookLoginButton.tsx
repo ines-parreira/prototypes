@@ -1,5 +1,6 @@
 import React, {Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
+
 import Button from 'pages/common/components/button/Button'
 import {getFacebookRedirectUri} from '../../../../../../state/integrations/selectors'
 import {RootState} from '../../../../../../state/types'

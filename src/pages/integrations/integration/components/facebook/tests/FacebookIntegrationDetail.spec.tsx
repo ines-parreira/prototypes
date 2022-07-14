@@ -1,18 +1,17 @@
-import React from 'react'
-import {fromJS} from 'immutable'
-import {shallow} from 'enzyme'
-
+import React, {ComponentProps, SyntheticEvent} from 'react'
+import {fromJS, Map} from 'immutable'
+import {shallow, mount} from 'enzyme'
 import thunk from 'redux-thunk'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import {RootState, StoreDispatch} from 'state/types'
 
-import configureMockStore from 'redux-mock-store'
+import {FACEBOOK_LANGUAGE_DEFAULT} from 'config/integrations/facebook'
+import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
+import {DANISH_LANGUAGE, SPANISH_LANGUAGE} from 'constants/languages'
+import {FacebookIntegrationSettings} from 'models/integration/types'
 
-import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook.ts'
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
-import {
-    DANISH_LANGUAGE,
-    SPANISH_LANGUAGE,
-} from '../../../../../../constants/languages.ts'
-import {FacebookIntegrationDetail} from '../FacebookIntegrationDetail.tsx'
+import {FacebookIntegrationDetail} from '../FacebookIntegrationDetail'
 import {
     ADS_MANAGEMENT,
     ADS_READ,
@@ -35,26 +34,32 @@ import {
     PAGES_SHOW_LIST,
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
     READ_PAGE_MAILBOXES,
-} from '../utils.tsx'
+} from '../utils'
 
-const defaultProps = {
-    updateOrCreateIntegration: jest.fn(),
-    deleteIntegration: jest.fn(),
+type FacebookIntegrationDetailState = {
+    settings: FacebookIntegrationSettings
+    language: string
+    askDisableConfirmation: boolean
+}
+const minProps: ComponentProps<typeof FacebookIntegrationDetail> = {
+    integration: fromJS({}),
     loading: fromJS({
         integration: null,
         updateIntegration: null,
+    }),
+    currentAccount: fromJS({
+        domain: 'acme',
     }),
     currentPlan: fromJS({
         features: {
             instagram_dm: {enabled: true},
         },
     }),
-    currentAccount: fromJS({
-        domain: 'acme',
-    }),
+    updateOrCreateIntegration: jest.fn(),
+    deleteIntegration: jest.fn(),
 }
 
-const defaultFacebookIntegrationSettings = {
+const defaultFacebookIntegrationSettings: FacebookIntegrationSettings = {
     posts_enabled: false,
     mentions_enabled: false,
     recommendations_enabled: false,
@@ -67,35 +72,39 @@ const defaultFacebookIntegrationSettings = {
 }
 
 describe('<FacebookIntegrationDetail/>', () => {
-    let store
+    let store: MockStoreEnhanced
 
     beforeEach(() => {
         jest.resetAllMocks()
-        const middlewares = [thunk]
-        const mockStore = configureMockStore(middlewares)
+        const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
+            [thunk]
+        )
         store = mockStore({})
     })
 
     describe('componentWillMount()', () => {
         it('should not set anything in the state because no integration was passed', () => {
             const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={fromJS({})}
-                />
+                <Provider store={store}>
+                    <FacebookIntegrationDetail {...minProps} />
+                </Provider>
             )
-
-            expect(component.state('settings')).toEqual(
-                defaultFacebookIntegrationSettings
-            )
-            expect(component.state('language')).toEqual(
-                FACEBOOK_LANGUAGE_DEFAULT
-            )
+            expect(
+                component
+                    .find(FacebookIntegrationDetail)
+                    .dive()
+                    .state('settings')
+            ).toEqual(defaultFacebookIntegrationSettings)
+            expect(
+                component
+                    .find(FacebookIntegrationDetail)
+                    .dive()
+                    .state('language')
+            ).toEqual(FACEBOOK_LANGUAGE_DEFAULT)
         })
 
         it('should only set settings in the state because there is no language in the integration', () => {
-            const newSettings = {
+            const newSettings: Partial<FacebookIntegrationSettings> = {
                 posts_enabled: false,
                 mentions_enabled: false,
                 messenger_enabled: true,
@@ -107,44 +116,62 @@ describe('<FacebookIntegrationDetail/>', () => {
             }
 
             const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={fromJS({
-                        meta: {
-                            settings: newSettings,
-                        },
-                    })}
-                />
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={fromJS({
+                            meta: {
+                                settings: newSettings,
+                            },
+                        })}
+                    />
+                </Provider>
             )
 
-            expect(component.state('settings')).toEqual(newSettings)
-            expect(component.state('language')).toEqual(
-                FACEBOOK_LANGUAGE_DEFAULT
-            )
+            expect(
+                component
+                    .find(FacebookIntegrationDetail)
+                    .dive()
+                    .state('settings')
+            ).toEqual(newSettings)
+            expect(
+                component
+                    .find(FacebookIntegrationDetail)
+                    .dive()
+                    .state('language')
+            ).toEqual(FACEBOOK_LANGUAGE_DEFAULT)
         })
 
         it('should only set language in the state because there is no settings in the integration', () => {
             const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={fromJS({
-                        meta: {
-                            language: SPANISH_LANGUAGE,
-                        },
-                    })}
-                />
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={fromJS({
+                            meta: {
+                                language: SPANISH_LANGUAGE,
+                            },
+                        })}
+                    />
+                </Provider>
             )
 
-            expect(component.state('settings')).toEqual(
-                defaultFacebookIntegrationSettings
-            )
-            expect(component.state('language')).toEqual(SPANISH_LANGUAGE)
+            expect(
+                component
+                    .find(FacebookIntegrationDetail)
+                    .dive()
+                    .state('settings')
+            ).toEqual(defaultFacebookIntegrationSettings)
+            expect(
+                component
+                    .find(FacebookIntegrationDetail)
+                    .dive()
+                    .state('language')
+            ).toEqual(SPANISH_LANGUAGE)
         })
 
         it('should set both language and settings in the integration', () => {
-            const newSettings = {
+            const newSettings: Partial<FacebookIntegrationSettings> = {
                 posts_enabled: false,
                 mentions_enabled: false,
                 messenger_enabled: true,
@@ -157,26 +184,37 @@ describe('<FacebookIntegrationDetail/>', () => {
             }
 
             const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={fromJS({
-                        meta: {
-                            language: SPANISH_LANGUAGE,
-                            settings: newSettings,
-                        },
-                    })}
-                />
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={fromJS({
+                            meta: {
+                                language: SPANISH_LANGUAGE,
+                                settings: newSettings,
+                            },
+                        })}
+                    />
+                </Provider>
             )
 
-            expect(component.state('settings')).toEqual(newSettings)
-            expect(component.state('language')).toEqual(SPANISH_LANGUAGE)
+            expect(
+                component
+                    .find(FacebookIntegrationDetail)
+                    .dive()
+                    .state('settings')
+            ).toEqual(newSettings)
+            expect(
+                component
+                    .find(FacebookIntegrationDetail)
+                    .dive()
+                    .state('language')
+            ).toEqual(SPANISH_LANGUAGE)
         })
     })
 
     describe('componentWillReceiveProps()', () => {
         it('should not update the state because the new integration passed is empty', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
@@ -199,26 +237,34 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             })
 
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={integration}
-                />
+            const component = shallow<FacebookIntegrationDetail>(
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={integration}
+                    />
+                </Provider>
             )
+            const prevState = component
+                .find(FacebookIntegrationDetail)
+                .dive()
+                .state()
 
-            const prevState = component.state()
+            const instance = component
+                .find(FacebookIntegrationDetail)
+                .dive()
+                .instance() as FacebookIntegrationDetail
 
-            component.instance().componentWillReceiveProps({
-                ...defaultProps,
+            instance.componentWillReceiveProps({
+                ...minProps,
                 integration: fromJS({}),
             })
 
-            expect(component.state()).toEqual(prevState)
+            expect(instance.state).toEqual(prevState)
         })
 
         it('should update the state with the settings of the new integration object passed', () => {
-            const oldIntegration = fromJS({
+            const oldIntegration: Map<any, any> = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
@@ -262,41 +308,52 @@ describe('<FacebookIntegrationDetail/>', () => {
                 )
                 .setIn(['meta', 'language'], DANISH_LANGUAGE)
 
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={oldIntegration}
-                />
+            const component = shallow<FacebookIntegrationDetail>(
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={oldIntegration}
+                    />
+                </Provider>
             )
 
-            const prevState = component.state()
+            const prevState = component
+                .find(FacebookIntegrationDetail)
+                .dive()
+                .state() as FacebookIntegrationDetailState
 
             expect(prevState.settings).toEqual(
-                oldIntegration.getIn(['meta', 'settings']).toJS()
+                (
+                    oldIntegration.getIn(['meta', 'settings']) as Map<any, any>
+                ).toJS()
             )
             expect(prevState.language).toEqual(
                 oldIntegration.getIn(['meta', 'language'])
             )
 
-            component.instance().componentWillReceiveProps({
-                ...defaultProps,
+            const instance = component
+                .find(FacebookIntegrationDetail)
+                .dive()
+                .instance() as FacebookIntegrationDetail
+
+            instance.componentWillReceiveProps({
+                ...minProps,
                 integration: newIntegration,
             })
 
-            const expectedState = fromJS(prevState)
+            const expectedState = (fromJS(prevState) as Map<any, any>)
                 .set('settings', newIntegration.getIn(['meta', 'settings']))
                 .set('language', newIntegration.getIn(['meta', 'language']))
-                .toJS()
+                .toJS() as FacebookIntegrationDetailState
 
-            expect(component.state()).toEqual(expectedState)
+            expect(instance.state).toEqual(expectedState)
         })
     })
 
     describe('_onSettingChange()', () => {
         it('should update the `posts_enabled` setting in the state because its checkbox was toggled', () => {
             const postsEnabled = true
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
@@ -323,42 +380,55 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             })
 
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={integration}
-                />
+            const component = shallow<FacebookIntegrationDetail>(
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={integration}
+                    />
+                </Provider>
             )
 
-            const prevState = component.state()
+            const prevState = component
+                .find(FacebookIntegrationDetail)
+                .dive()
+                .state() as FacebookIntegrationDetailState
 
             expect(prevState.settings).toEqual(
-                integration.getIn(['meta', 'settings']).toJS()
+                (
+                    integration.getIn(['meta', 'settings']) as Map<any, any>
+                ).toJS()
             )
+            const instance = component
+                .find(FacebookIntegrationDetail)
+                .dive()
+                .instance() as FacebookIntegrationDetail
 
-            component
-                .instance()
-                ._onSettingChange(!postsEnabled, 'posts_enabled')
+            instance._onSettingChange(!postsEnabled, 'posts_enabled')
 
-            const expectedState = fromJS(prevState)
+            const expectedState = (fromJS(prevState) as Map<any, any>)
                 .setIn(['settings', 'posts_enabled'], !postsEnabled)
-                .toJS()
+                .toJS() as FacebookIntegrationDetailState
 
-            expect(component.state()).toEqual(expectedState)
+            expect(instance.state).toEqual(expectedState)
         })
     })
 
     describe('_handleSubmit', () => {
         it('should update the integration on form submit', () => {
-            const newSettings = {
+            const newSettings: FacebookIntegrationDetailState['settings'] = {
                 posts_enabled: true,
+                mentions_enabled: false,
+                recommendations_enabled: false,
                 messenger_enabled: false,
                 import_history_enabled: true,
                 instagram_comments_enabled: true,
+                instagram_mentions_enabled: false,
+                instagram_ads_enabled: false,
+                instagram_direct_message_enabled: false,
             }
 
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
@@ -381,25 +451,30 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
             })
 
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={integration}
-                />
+            const component = shallow<FacebookIntegrationDetail>(
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={integration}
+                    />
+                </Provider>
             )
+            const instance: FacebookIntegrationDetail = component
+                .find(FacebookIntegrationDetail)
+                .dive()
+                .instance() as FacebookIntegrationDetail
 
-            component.setState({
+            instance.setState({
                 settings: newSettings,
                 language: DANISH_LANGUAGE,
             })
 
-            component.instance()._handleSubmit({preventDefault: jest.fn()})
+            instance._handleSubmit({
+                preventDefault: jest.fn(),
+            } as unknown as SyntheticEvent)
 
-            expect(
-                defaultProps.updateOrCreateIntegration
-            ).toHaveBeenCalledTimes(1)
-            expect(defaultProps.updateOrCreateIntegration).toHaveBeenCalledWith(
+            expect(minProps.updateOrCreateIntegration).toHaveBeenCalledTimes(1)
+            expect(minProps.updateOrCreateIntegration).toHaveBeenCalledWith(
                 integration.mergeDeep({
                     meta: {language: DANISH_LANGUAGE, settings: newSettings},
                 })
@@ -409,30 +484,29 @@ describe('<FacebookIntegrationDetail/>', () => {
 
     describe('render()', () => {
         it('should render a loading state because the integration is loading', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
             })
 
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={integration}
-                    loading={fromJS({integration: integration.get('id')})}
-                />
+            const component = mount(
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={integration}
+                        loading={fromJS({integration: integration.get('id')})}
+                    />
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()
         })
 
         it('should render a loading state because the passed integration is empty', () => {
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={fromJS({})}
-                />
+            const component = mount(
+                <Provider store={store}>
+                    <FacebookIntegrationDetail {...minProps} />
+                </Provider>
             )
 
             expect(component).toMatchSnapshot()
@@ -447,7 +521,7 @@ describe('<FacebookIntegrationDetail/>', () => {
         ])(
             'should render an integration with facebookUserTypes',
             (facebookUserType) => {
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
@@ -480,19 +554,22 @@ describe('<FacebookIntegrationDetail/>', () => {
                 })
 
                 const component = shallow(
-                    <FacebookIntegrationDetail
-                        store={store}
-                        {...defaultProps}
-                        integration={integration}
-                    />
+                    <Provider store={store}>
+                        <FacebookIntegrationDetail
+                            {...minProps}
+                            integration={integration}
+                        />
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(
+                    component.find(FacebookIntegrationDetail).dive()
+                ).toMatchSnapshot()
             }
         )
 
         it('should render an integration with canModerate enabled', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
@@ -527,18 +604,21 @@ describe('<FacebookIntegrationDetail/>', () => {
             })
 
             const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={integration}
-                />
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={integration}
+                    />
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(
+                component.find(FacebookIntegrationDetail).dive()
+            ).toMatchSnapshot()
         })
 
         it('should render an integration with canModerate disabled because there is no MODERATE_ROLE', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
@@ -571,14 +651,17 @@ describe('<FacebookIntegrationDetail/>', () => {
             })
 
             const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={integration}
-                />
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={integration}
+                    />
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(
+                component.find(FacebookIntegrationDetail).dive()
+            ).toMatchSnapshot()
         })
 
         it.each([
@@ -653,7 +736,7 @@ describe('<FacebookIntegrationDetail/>', () => {
         ])(
             'should render an integration with meta settings enabled/disabled based on permissions',
             (permissions) => {
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
@@ -677,14 +760,17 @@ describe('<FacebookIntegrationDetail/>', () => {
                 })
 
                 const component = shallow(
-                    <FacebookIntegrationDetail
-                        store={store}
-                        {...defaultProps}
-                        integration={integration}
-                    />
+                    <Provider store={store}>
+                        <FacebookIntegrationDetail
+                            {...minProps}
+                            integration={integration}
+                        />
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(
+                    component.find(FacebookIntegrationDetail).dive()
+                ).toMatchSnapshot()
             }
         )
 
@@ -692,7 +778,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             'should render an integration with instagram disabled because the scope of the integration does not ' +
                 'include instagram permissions',
             () => {
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
@@ -727,14 +813,17 @@ describe('<FacebookIntegrationDetail/>', () => {
                 })
 
                 const component = shallow(
-                    <FacebookIntegrationDetail
-                        store={store}
-                        {...defaultProps}
-                        integration={integration}
-                    />
+                    <Provider store={store}>
+                        <FacebookIntegrationDetail
+                            {...minProps}
+                            integration={integration}
+                        />
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(
+                    component.find(FacebookIntegrationDetail).dive()
+                ).toMatchSnapshot()
             }
         )
 
@@ -742,7 +831,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             'should render an integration with instagram disabled because the page has no associated instagram' +
                 'account',
             () => {
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
@@ -779,19 +868,22 @@ describe('<FacebookIntegrationDetail/>', () => {
                 })
 
                 const component = shallow(
-                    <FacebookIntegrationDetail
-                        store={store}
-                        {...defaultProps}
-                        integration={integration}
-                    />
+                    <Provider store={store}>
+                        <FacebookIntegrationDetail
+                            {...minProps}
+                            integration={integration}
+                        />
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(
+                    component.find(FacebookIntegrationDetail).dive()
+                ).toMatchSnapshot()
             }
         )
 
         it('should render an integration with instagram enabled', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
@@ -824,18 +916,21 @@ describe('<FacebookIntegrationDetail/>', () => {
             })
 
             const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={integration}
-                />
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={integration}
+                    />
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(
+                component.find(FacebookIntegrationDetail).dive()
+            ).toMatchSnapshot()
         })
 
         it('should render an integration with instagram ads enabled', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
@@ -873,21 +968,24 @@ describe('<FacebookIntegrationDetail/>', () => {
             })
 
             const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    integration={integration}
-                />
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        integration={integration}
+                    />
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(
+                component.find(FacebookIntegrationDetail).dive()
+            ).toMatchSnapshot()
         })
 
         it(
             'should render an integration with instagram enabled and loading buttons because the integration ' +
                 'is being submitted',
             () => {
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
@@ -922,38 +1020,44 @@ describe('<FacebookIntegrationDetail/>', () => {
                 })
 
                 const component = shallow(
-                    <FacebookIntegrationDetail
-                        store={store}
-                        {...defaultProps}
-                        loading={fromJS({
-                            updateIntegration: integration.get('id'),
-                        })}
-                        integration={integration}
-                    />
+                    <Provider store={store}>
+                        <FacebookIntegrationDetail
+                            {...minProps}
+                            loading={fromJS({
+                                updateIntegration: integration.get('id'),
+                            })}
+                            integration={integration}
+                        />
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(
+                    component.find(FacebookIntegrationDetail).dive()
+                ).toMatchSnapshot()
             }
         )
 
         it('should render an integration without showing mentions cause the domain doesnt support it', () => {
-            const integration = fromJS({
+            const integration: Map<any, any> = fromJS({
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
             })
             const component = shallow(
-                <FacebookIntegrationDetail
-                    store={store}
-                    {...defaultProps}
-                    currentAccount={fromJS({domain: 'notacme'})}
-                    loading={fromJS({
-                        updateIntegration: integration.get('id'),
-                    })}
-                    integration={integration}
-                />
+                <Provider store={store}>
+                    <FacebookIntegrationDetail
+                        {...minProps}
+                        loading={fromJS({
+                            updateIntegration: integration.get('id'),
+                        })}
+                        integration={integration}
+                        currentAccount={fromJS({domain: 'notacme'})}
+                    />
+                </Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(
+                component.find(FacebookIntegrationDetail).dive()
+            ).toMatchSnapshot()
         })
 
         it.each([
@@ -976,7 +1080,7 @@ describe('<FacebookIntegrationDetail/>', () => {
         ])(
             'should render an integration for: %s',
             (_, [isIGAccountEligible, planHasInstagramDmFeature]) => {
-                const integration = fromJS({
+                const integration: Map<any, any> = fromJS({
                     id: 1,
                     type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
@@ -1015,28 +1119,31 @@ describe('<FacebookIntegrationDetail/>', () => {
                     },
                 })
 
-                const currentAccount = fromJS({
+                const currentAccount: Map<any, any> = fromJS({
                     domain: 'acme',
                 })
 
-                const currentPlan = fromJS({
+                const currentPlan: Map<any, any> = fromJS({
                     name: planHasInstagramDmFeature ? 'non-legacy' : 'legacy',
                     features: {
                         instagram_dm: {enabled: planHasInstagramDmFeature},
                     },
                 })
 
-                const component = shallow(
-                    <FacebookIntegrationDetail
-                        store={store}
-                        {...defaultProps}
-                        integration={integration}
-                        currentAccount={currentAccount}
-                        currentPlan={currentPlan}
-                    />
+                const component = shallow<FacebookIntegrationDetail>(
+                    <Provider store={store}>
+                        <FacebookIntegrationDetail
+                            {...minProps}
+                            integration={integration}
+                            currentAccount={currentAccount}
+                            currentPlan={currentPlan}
+                        />
+                    </Provider>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(
+                    component.find(FacebookIntegrationDetail).dive()
+                ).toMatchSnapshot()
             }
         )
     })

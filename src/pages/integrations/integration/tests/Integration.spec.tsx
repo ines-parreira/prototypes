@@ -53,7 +53,7 @@ jest.mock('../components/facebook/FacebookIntegrationDetail', () => () => (
     <div>FacebookIntegrationDetail</div>
 ))
 jest.mock(
-    '../components/facebook/FacebookIntegrationList/FacebookIntegrationList.js',
+    '../components/facebook/FacebookIntegrationList/FacebookIntegrationList',
     () => () => <div>FacebookIntegrationList</div>
 )
 jest.mock('../components/facebook/FacebookIntegrationPreferences', () => () => (

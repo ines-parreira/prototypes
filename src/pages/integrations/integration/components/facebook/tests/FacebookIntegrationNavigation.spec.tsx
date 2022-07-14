@@ -1,13 +1,13 @@
 import React from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {mount} from 'enzyme'
 
-import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation.tsx'
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
+import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation'
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 
 describe('<FacebookIntegrationNavigation/>', () => {
     it('should not display the Ads tab when ads are disabled', () => {
-        const integration = fromJS({
+        const integration: Map<any, any> = fromJS({
             id: 1,
             type: FACEBOOK_INTEGRATION_TYPE,
         })
@@ -19,7 +19,7 @@ describe('<FacebookIntegrationNavigation/>', () => {
     })
 
     it('should display the Ads tab when Instagram ads are enabled', () => {
-        const integration = fromJS({
+        const integration: Map<any, any> = fromJS({
             id: 1,
             type: FACEBOOK_INTEGRATION_TYPE,
             meta: {

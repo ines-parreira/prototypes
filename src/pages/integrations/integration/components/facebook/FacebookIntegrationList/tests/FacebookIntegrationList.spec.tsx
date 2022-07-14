@@ -8,7 +8,7 @@ import {createBrowserHistory, History} from 'history'
 import {Router, Route} from 'react-router-dom'
 
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
-import {FacebookIntegrationListContainer} from '../FacebookIntegrationList.js'
+import {FacebookIntegrationListContainer} from '../FacebookIntegrationList'
 
 const RouterWrapper = ({
     history,
@@ -68,8 +68,7 @@ describe('FacebookIntegrationList component', () => {
             <RouterWrapper>
                 <Provider store={store}>
                     <FacebookIntegrationListContainer
-                        loading={{}}
-                        actions={{}}
+                        loading={fromJS({})}
                         redirectUri="https://.../"
                         integrations={fromJS([])}
                     />

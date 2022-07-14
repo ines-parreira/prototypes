@@ -1,19 +1,145 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FacebookIntegrationDetail/> render() should render a loading state because the integration is loading 1`] = `
-<Loader
-  inline={false}
-  minHeight="500px"
-  size="40px"
-/>
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <FacebookIntegrationDetail
+    currentAccount={
+      Immutable.Map {
+        "domain": "acme",
+      }
+    }
+    currentPlan={
+      Immutable.Map {
+        "features": Immutable.Map {
+          "instagram_dm": Immutable.Map {
+            "enabled": true,
+          },
+        },
+      }
+    }
+    deleteIntegration={[MockFunction]}
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "type": "facebook",
+      }
+    }
+    loading={
+      Immutable.Map {
+        "integration": 1,
+      }
+    }
+    updateOrCreateIntegration={[MockFunction]}
+  >
+    <Loader
+      inline={false}
+      minHeight="500px"
+      size="40px"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="inner"
+          style={
+            Object {
+              "minHeight": "500px",
+            }
+          }
+        >
+          <i
+            className="icon-custom icon-circle-o-notch md-spin"
+            style={
+              Object {
+                "fontSize": "40px",
+              }
+            }
+          />
+        </div>
+      </div>
+    </Loader>
+  </FacebookIntegrationDetail>
+</Provider>
 `;
 
 exports[`<FacebookIntegrationDetail/> render() should render a loading state because the passed integration is empty 1`] = `
-<Loader
-  inline={false}
-  minHeight="500px"
-  size="40px"
-/>
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <FacebookIntegrationDetail
+    currentAccount={
+      Immutable.Map {
+        "domain": "acme",
+      }
+    }
+    currentPlan={
+      Immutable.Map {
+        "features": Immutable.Map {
+          "instagram_dm": Immutable.Map {
+            "enabled": true,
+          },
+        },
+      }
+    }
+    deleteIntegration={[MockFunction]}
+    integration={Immutable.Map {}}
+    loading={
+      Immutable.Map {
+        "integration": null,
+        "updateIntegration": null,
+      }
+    }
+    updateOrCreateIntegration={[MockFunction]}
+  >
+    <Loader
+      inline={false}
+      minHeight="500px"
+      size="40px"
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="inner"
+          style={
+            Object {
+              "minHeight": "500px",
+            }
+          }
+        >
+          <i
+            className="icon-custom icon-circle-o-notch md-spin"
+            style={
+              Object {
+                "fontSize": "40px",
+              }
+            }
+          />
+        </div>
+      </div>
+    </Loader>
+  </FacebookIntegrationDetail>
+</Provider>
 `;
 
 exports[`<FacebookIntegrationDetail/> render() should render an integration for: account eligible to IG DM and has the feature (Render an enabled IG DM setting) 1`] = `

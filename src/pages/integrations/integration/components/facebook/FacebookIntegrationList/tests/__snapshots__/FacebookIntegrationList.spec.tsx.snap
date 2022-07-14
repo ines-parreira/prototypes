@@ -40,9 +40,8 @@ exports[`FacebookIntegrationList component should render 1`] = `
       }
     >
       <FacebookIntegrationListContainer
-        actions={Object {}}
         integrations={Immutable.List []}
-        loading={Object {}}
+        loading={Immutable.Map {}}
         redirectUri="https://.../"
       />
     </Provider>

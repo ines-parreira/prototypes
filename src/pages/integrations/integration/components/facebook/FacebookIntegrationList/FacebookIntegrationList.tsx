@@ -1,46 +1,40 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import ImmutablePropsTypes from 'react-immutable-proptypes'
+import React, {Component} from 'react'
+import {List, Map} from 'immutable'
 import {connect} from 'react-redux'
 
-import IntegrationList from '../../IntegrationList.tsx'
+import {IntegrationType} from 'models/integration/constants'
+import {RootState} from 'state/types'
+import facebookLogo from 'assets/img/integrations/facebook-icon.svg'
+import * as integrationsSelectors from 'state/integrations/selectors'
 
-import FacebookPageRow from './FacebookPageRow'
+import IntegrationList from '../../IntegrationList'
 
 import css from './FacebookIntegrationList.less'
+import FacebookPageRow from './FacebookPageRow'
 
-import facebookLogo from 'assets/img/integrations/facebook-icon.svg'
+type Props = {
+    integrations: List<any>
+    loading: Map<any, any>
+    redirectUri: string
+}
 
-import * as integrationsSelectors from 'state/integrations/selectors.ts'
-
-export class FacebookIntegrationListContainer extends React.Component {
-    static propTypes = {
-        integrations: ImmutablePropsTypes.list.isRequired,
-        loading: PropTypes.object.isRequired,
-        actions: PropTypes.object.isRequired,
-        redirectUri: PropTypes.string.isRequired,
-    }
-
+export class FacebookIntegrationListContainer extends Component<Props> {
     _onLogin = () => {
-        window.location = this.props.redirectUri
+        window.location.href = this.props.redirectUri
     }
 
     render() {
-        const {integrations, actions, loading} = this.props
+        const {integrations, loading} = this.props
         const longTypeDescription = `Facebook is a popular social network where customers can interact with companies.
 This integration creates tickets when customers post on your Facebook page or send you a message on Messenger.`
 
-        const integrationToItemDisplay = (int) => (
-            <FacebookPageRow
-                key={int.get('id')}
-                integration={int}
-                actions={actions}
-            />
+        const integrationToItemDisplay = (int: Map<any, any>) => (
+            <FacebookPageRow key={int.get('id')} integration={int} />
         )
 
         return (
             <IntegrationList
-                integrationType="facebook"
+                integrationType={IntegrationType.Facebook}
                 integrations={integrations}
                 longTypeDescription={longTypeDescription}
                 createIntegration={this._onLogin}
@@ -61,7 +55,7 @@ This integration creates tickets when customers post on your Facebook page or se
     }
 }
 
-const connector = connect((state) => {
+const connector = connect((state: RootState) => {
     return {
         integrations: integrationsSelectors.getFacebookIntegrations(state),
     }

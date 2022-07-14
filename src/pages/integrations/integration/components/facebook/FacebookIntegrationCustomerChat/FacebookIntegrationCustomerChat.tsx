@@ -15,7 +15,7 @@ import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {notify} from 'state/notifications/actions'
 import {RootState} from 'state/types'
 
-import {renderFacebookCodeSnippet} from './utils.js'
+import {renderFacebookCodeSnippet} from './utils'
 import css from './FacebookIntegrationCustomerChat.less'
 
 const targetIntegrationTypes: List<any> = fromJS([IntegrationType.Shopify])

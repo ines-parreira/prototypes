@@ -1,8 +1,8 @@
-import React from 'react'
-import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {fromJS, Map, List} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {FacebookIntegrationSetupContainer} from '../FacebookIntegrationSetup.tsx'
+import {FacebookIntegrationSetupContainer} from '../FacebookIntegrationSetup'
 import {
     ADS_MANAGEMENT,
     ADS_READ,
@@ -24,7 +24,7 @@ import {
     PAGES_SHOW_LIST,
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
     READ_PAGE_MAILBOXES,
-} from '../../utils.tsx'
+} from '../../utils'
 
 const allPermissions = [
     PAGES_MANAGE_ADS,
@@ -46,13 +46,10 @@ const allPermissions = [
 ].join(',')
 
 describe('FacebookIntegrationSetup', () => {
-    const minProps = {
+    const minProps: ComponentProps<typeof FacebookIntegrationSetupContainer> = {
         loading: fromJS({
             updateIntegration: false,
         }),
-        fetchFacebookOnboardingIntegrations: () => Promise.resolve(),
-        activateFacebookOnboardingPage: () => Promise.resolve(),
-        fetchIntegrations: () => Promise.resolve(),
         integrations: fromJS([]),
         pagination: fromJS({
             page: 1,
@@ -60,17 +57,20 @@ describe('FacebookIntegrationSetup', () => {
             per_page: 1,
             item_count: 1,
         }),
+        currentAccount: fromJS({
+            domain: 'acme',
+        }),
         currentPlan: fromJS({
             features: {
                 instagram_dm: {enabled: true},
             },
         }),
-        currentAccount: fromJS({
-            domain: 'acme',
-        }),
+        fetchFacebookOnboardingIntegrations: jest.fn(() => Promise.resolve()),
+        activateOnboardingIntegrations: jest.fn(() => Promise.resolve()),
+        fetchIntegrations: jest.fn(() => Promise.resolve()),
     }
 
-    const onboardingIntegrations = fromJS([
+    const onboardingIntegrations: List<any> = fromJS([
         {
             id: 1,
             meta: {
@@ -128,9 +128,9 @@ describe('FacebookIntegrationSetup', () => {
                 integrations={integrations}
             />
         ).setState({
-            selectedIntegrations: fromJS({}).set(
+            selectedIntegrations: (fromJS({}) as Map<any, any>).set(
                 integrations.getIn([0, 'id']),
-                integrations.get(0).setIn(
+                (integrations.get(0) as Map<any, any>).setIn(
                     ['meta', 'settings'],
                     fromJS({
                         messenger_enabled: true,
@@ -194,9 +194,9 @@ describe('FacebookIntegrationSetup', () => {
                 integrations={integrations}
             />
         ).setState({
-            selectedIntegrations: fromJS({}).set(
+            selectedIntegrations: (fromJS({}) as Map<any, any>).set(
                 integrations.getIn([0, 'id']),
-                integrations.get(0).setIn(
+                (integrations.get(0) as Map<any, any>).setIn(
                     ['meta', 'settings'],
                     fromJS({
                         messenger_enabled: true,
@@ -247,9 +247,9 @@ describe('FacebookIntegrationSetup', () => {
                 integrations={integrationsWithIG}
             />
         ).setState({
-            selectedIntegrations: fromJS({}).set(
+            selectedIntegrations: (fromJS({}) as Map<any, any>).set(
                 integrationsWithIG.getIn([0, 'id']),
-                integrationsWithIG.get(0).setIn(
+                (integrationsWithIG.get(0) as Map<any, any>).setIn(
                     ['meta', 'settings'],
                     fromJS({
                         messenger_enabled: true,
@@ -360,9 +360,9 @@ describe('FacebookIntegrationSetup', () => {
                     integrations={integrations}
                 />
             ).setState({
-                selectedIntegrations: fromJS({}).set(
+                selectedIntegrations: (fromJS({}) as Map<any, any>).set(
                     onboardingIntegrations.getIn([0, 'id']),
-                    onboardingIntegrations.get(0).setIn(
+                    (onboardingIntegrations.get(0) as Map<any, any>).setIn(
                         ['meta', 'settings'],
                         fromJS({
                             messenger_enabled: true,
@@ -427,11 +427,11 @@ describe('FacebookIntegrationSetup', () => {
                     isIGAccountEligible
                 )
 
-            const currentAccount = fromJS({
+            const currentAccount: Map<any, any> = fromJS({
                 domain: 'acme',
             })
 
-            const currentPlan = fromJS({
+            const currentPlan: Map<any, any> = fromJS({
                 name: planHasInstagramDmFeature ? 'non-legacy' : 'legacy',
                 features: {
                     instagram_dm: {enabled: planHasInstagramDmFeature},

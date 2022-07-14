@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, SyntheticEvent} from 'react'
 import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
@@ -26,6 +26,7 @@ import {
 } from 'state/integrations/actions'
 import {RootState} from 'state/types'
 
+import {FacebookIntegrationSettings} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -47,23 +48,13 @@ type Props = {
 } & ConnectedProps<typeof connector>
 
 type State = {
-    settings: {
-        posts_enabled: boolean
-        mentions_enabled: boolean
-        recommendations_enabled: boolean
-        messenger_enabled: boolean
-        import_history_enabled: boolean
-        instagram_comments_enabled: boolean
-        instagram_mentions_enabled: boolean
-        instagram_ads_enabled: boolean
-        instagram_direct_message_enabled: boolean
-    }
+    settings: FacebookIntegrationSettings
     language: string
     askDisableConfirmation: boolean
 }
 
 export class FacebookIntegrationDetail extends Component<Props, State> {
-    state = {
+    state: State = {
         settings: {
             posts_enabled: false,
             mentions_enabled: false,
@@ -143,7 +134,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
         })
     }
 
-    _handleSubmit = (event: React.SyntheticEvent) => {
+    _handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
         const {integration, updateOrCreateIntegration} = this.props
         const {settings, language} = this.state
