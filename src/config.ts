@@ -1449,6 +1449,8 @@ export const SENTIMENT_TYPE_LOWER_BOUND = -0.4
 export const FROALA_KEY =
     'aLF3c1A7B5E5E3E2G2D2xROKLJKYHROLDXDRH1e1YYGRe1Bg1G3I3A2A5D6A3F2E4D2F2=='
 
+const VIDEO_STYLES = 'width="100%" aspect-ratio="16/9"'
+
 export const FROALA_VIDEO_PROVIDERS = [
     // DEFAULT PROVIDERS (with updated `provider` and `iframe` width)
     // Extracted from '/froala-editor/js/plugins/video.min.js'
@@ -1458,7 +1460,7 @@ export const FROALA_VIDEO_PROVIDERS = [
         url_regex:
             /(?:https?:\/\/)?(?:www\.)?(?:m\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/)?([0-9a-zA-Z_\-]+)(.+)?/g,
         url_text: 'https://www.youtube.com/embed/$1?$2',
-        html: '<iframe width="100%" height="360" src="{url}&wmode=opaque&rel=0" frameborder="0" allowfullscreen></iframe>',
+        html: `<iframe ${VIDEO_STYLES} src="{url}&wmode=opaque&rel=0" frameborder="0" allowfullscreen></iframe>`,
         provider: 'YouTube',
     },
     {
@@ -1467,7 +1469,7 @@ export const FROALA_VIDEO_PROVIDERS = [
         url_regex:
             /(?:https?:\/\/)?(?:www\.|player\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:[a-zA-Z0-9_\-]+)?(\/[a-zA-Z0-9_\-]+)?/i,
         url_text: 'https://player.vimeo.com/video/$1',
-        html: '<iframe width="100%" height="360" src="{url}" frameborder="0" allowfullscreen></iframe>',
+        html: `<iframe ${VIDEO_STYLES} src="{url}" frameborder="0" allowfullscreen></iframe>`,
         provider: 'Vimeo',
     },
     {
@@ -1476,14 +1478,14 @@ export const FROALA_VIDEO_PROVIDERS = [
         url_regex:
             /(?:https?:\/\/)?(?:www\.)?(?:dailymotion\.com|dai\.ly)\/(?:video|hub)?\/?(.+)/g,
         url_text: 'https://www.dailymotion.com/embed/video/$1',
-        html: '<iframe width="100%" height="360" src="{url}" frameborder="0" allowfullscreen></iframe>',
+        html: `<iframe ${VIDEO_STYLES} src="{url}" frameborder="0" allowfullscreen></iframe>`,
         provider: 'Dailymotion',
     },
     {
         test_regex: /^.+(screen.yahoo.com)\/[^_&]+/,
         url_regex: '',
         url_text: '',
-        html: '<iframe width="100%" height="360" src="{url}?format=embed" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" allowtransparency="true"></iframe>',
+        html: `<iframe ${VIDEO_STYLES} src="{url}?format=embed" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" allowtransparency="true"></iframe>`,
         provider: 'Yahoo',
     },
     {
@@ -1491,14 +1493,14 @@ export const FROALA_VIDEO_PROVIDERS = [
         url_regex:
             /(?:https?:\/\/)?(?:www\.)?(?:rutube\.ru)\/(?:video)?\/?(.+)/g,
         url_text: 'https://rutube.ru/play/embed/$1',
-        html: '<iframe width="100%" height="360" src="{url}" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" allowtransparency="true"></iframe>',
+        html: `<iframe ${VIDEO_STYLES} src="{url}" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" allowtransparency="true"></iframe>`,
         provider: 'RuTube',
     },
     {
         test_regex: /^(?:.+)vidyard.com\/(?:watch)?\/?([^.&/]+)\/?(?:[^_.&]+)?/,
         url_regex: /^(?:.+)vidyard.com\/(?:watch)?\/?([^.&/]+)\/?(?:[^_.&]+)?/g,
         url_text: 'https://play.vidyard.com/$1',
-        html: '<iframe width="100%" height="360" src="{url}" frameborder="0" allowfullscreen></iframe>',
+        html: `<iframe ${VIDEO_STYLES} src="{url}" frameborder="0" allowfullscreen></iframe>`,
         provider: 'Vidyard',
     },
 
@@ -1508,7 +1510,7 @@ export const FROALA_VIDEO_PROVIDERS = [
         url_regex:
             /(?:https?:\/\/)?(?:www\.)?(?:loom\.com)\/(?:share)?\/?(.+)/g,
         url_text: 'https://www.loom.com/embed/$1',
-        html: '<iframe width="100%" height="360" src="{url}" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>',
+        html: `<iframe ${VIDEO_STYLES} src="{url}" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>`,
         provider: 'Loom',
     },
 ]
