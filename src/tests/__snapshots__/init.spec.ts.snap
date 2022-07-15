@@ -92,6 +92,9 @@ Object {
         "cost_per_ticket": 0.23,
         "interval": "year",
         "automation_addon_discount": 0,
+        "phone_limits": Immutable.Map {
+          "billing": 50,
+        },
         "public": true,
         "name": "Pro",
         "trial_period_days": 7,
@@ -129,6 +132,9 @@ Object {
           "satisfaction_surveys": Immutable.Map {
             "enabled": true,
           },
+          "api_1st_party_rate_limit": Immutable.Map {
+            "enabled": false,
+          },
           "twitter_integration": Immutable.Map {
             "enabled": false,
             "limit": 0,
@@ -137,6 +143,9 @@ Object {
             "enabled": true,
           },
           "magento_integration": Immutable.Map {
+            "enabled": true,
+          },
+          "automation_managed_rules": Immutable.Map {
             "enabled": true,
           },
           "overview_live_statistics": Immutable.Map {
@@ -150,6 +159,9 @@ Object {
           },
           "help_center": Immutable.Map {
             "enabled": true,
+          },
+          "api_3rd_party_rate_limit": Immutable.Map {
+            "enabled": false,
           },
           "automation_return_flow": Immutable.Map {
             "enabled": false,
@@ -258,6 +270,9 @@ Object {
       "satisfaction_surveys": Immutable.Map {
         "enabled": true,
       },
+      "api_1st_party_rate_limit": Immutable.Map {
+        "enabled": true,
+      },
       "twitter_integration": Immutable.Map {
         "enabled": true,
         "limit": 2,
@@ -266,6 +281,9 @@ Object {
         "enabled": true,
       },
       "magento_integration": Immutable.Map {
+        "enabled": true,
+      },
+      "automation_managed_rules": Immutable.Map {
         "enabled": true,
       },
       "overview_live_statistics": Immutable.Map {
@@ -278,6 +296,9 @@ Object {
         "enabled": true,
       },
       "help_center": Immutable.Map {
+        "enabled": true,
+      },
+      "api_3rd_party_rate_limit": Immutable.Map {
         "enabled": true,
       },
       "automation_return_flow": Immutable.Map {

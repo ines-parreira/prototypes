@@ -18,9 +18,15 @@ exports[`convertLegacyPlanNameToPublicPlanName() should return the public name f
 
 exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Team Plan 1`] = `"Pro"`;
 
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature api_1st_party_rate_limit 1`] = `null`;
+
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature api_3rd_party_rate_limit 1`] = `null`;
+
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature auto_assignment 1`] = `"Basic"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature automation_cancellations_flow 1`] = `"Basic"`;
+
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature automation_managed_rules 1`] = `"Basic"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature automation_report_issue_flow 1`] = `"Basic"`;
 

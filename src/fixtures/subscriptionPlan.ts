@@ -14,6 +14,126 @@ const ticketLimits = {
     },
 }
 
+export const starterPlan: Plan = {
+    amount: 10000,
+    automation_addon_discount: 0,
+    automation_addon_equivalent_plan: null,
+    automation_addon_included: false,
+    cost_per_ticket: 0.4,
+    currency: 'usd',
+    features: {
+        [AccountFeature.Api1stPartyRateLimit]: {
+            enabled: true,
+            rate_limit: {
+                interval_ms: 2000,
+                max_burst: 40,
+            },
+        },
+        [AccountFeature.Api3rdPartyRateLimit]: {
+            enabled: true,
+            rate_limit: {
+                interval_ms: 20000,
+                max_burst: 40,
+            },
+        },
+        [AccountFeature.AutoAssignment]: {
+            enabled: true,
+        },
+        [AccountFeature.AutomationCancellationsFlow]: {
+            enabled: false,
+        },
+        [AccountFeature.AutomationManagedRules]: {
+            enabled: false,
+        },
+        [AccountFeature.AutomationReportIssueFlow]: {
+            enabled: false,
+        },
+        [AccountFeature.AutomationReturnFlow]: {
+            enabled: false,
+        },
+        [AccountFeature.AutomationSelfServiceStatistics]: {
+            enabled: false,
+        },
+        [AccountFeature.AutomationTrackOrderFlow]: {
+            enabled: false,
+        },
+        [AccountFeature.ChatCampaigns]: {
+            enabled: true,
+        },
+        [AccountFeature.FacebookComment]: {
+            enabled: true,
+        },
+        [AccountFeature.HelpCenter]: {
+            enabled: true,
+        },
+        [AccountFeature.InstagramComment]: {
+            enabled: true,
+        },
+        [AccountFeature.InstagramDirectMessage]: {
+            enabled: true,
+        },
+        [AccountFeature.MagentoIntegration]: {
+            enabled: false,
+        },
+        [AccountFeature.OverviewLiveStatistics]: {
+            enabled: true,
+        },
+        [AccountFeature.PhoneNumber]: {
+            enabled: false,
+            limit: 0,
+        },
+        [AccountFeature.RevenueStatistics]: {
+            enabled: false,
+        },
+        [AccountFeature.SatisfactionSurveys]: {
+            enabled: true,
+        },
+        [AccountFeature.Teams]: {
+            enabled: false,
+        },
+        [AccountFeature.TwitterIntegration]: {
+            enabled: false,
+            limit: 0,
+        },
+        [AccountFeature.UserRoles]: {
+            enabled: false,
+        },
+        [AccountFeature.UsersLiveStatistics]: {
+            enabled: true,
+        },
+        [AccountFeature.ViewSharing]: {
+            enabled: true,
+        },
+        [AccountFeature.YotpoIntegration]: {
+            enabled: true,
+        },
+    },
+    free_tickets: 600,
+    id: 'starter-yearly-usd-4',
+    integrations: 150,
+    interval: PlanInterval.Month,
+    is_legacy: false,
+    limits: {
+        messages: {
+            default: 100,
+            max: 100,
+            min: 75,
+        },
+        tickets: {
+            default: 100,
+            max: 100,
+            min: 75,
+        },
+    },
+    name: 'Starter',
+    order: 1,
+    phone_limits: {
+        billing: 50,
+    },
+    public: false,
+    trial_period_days: 7,
+}
+
 export const basicPlan: Plan = {
     id: 'basic-monthly-usd-2',
     name: 'Basic',
@@ -32,6 +152,8 @@ export const basicPlan: Plan = {
     automation_addon_equivalent_plan: 'basic-automation-monthly-usd-2',
     automation_addon_discount: 0,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -49,36 +171,14 @@ export const basicPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: true},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: false},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: false},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: false},
         [AccountFeature.AutomationReturnFlow]: {enabled: false},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    legacy_automation_addon_features: {
-        [AccountFeature.AutoAssignment]: {enabled: true},
-        [AccountFeature.ChatCampaigns]: {enabled: true},
-        [AccountFeature.FacebookComment]: {enabled: true},
-        [AccountFeature.InstagramComment]: {enabled: true},
-        [AccountFeature.InstagramDirectMessage]: {enabled: true},
-        [AccountFeature.OverviewLiveStatistics]: {enabled: false},
-        [AccountFeature.UsersLiveStatistics]: {enabled: false},
-        [AccountFeature.MagentoIntegration]: {enabled: true},
-        [AccountFeature.PhoneNumber]: {enabled: true, limit: 1},
-        [AccountFeature.TwitterIntegration]: {enabled: false, limit: 0},
-        [AccountFeature.YotpoIntegration]: {enabled: true},
-        [AccountFeature.RevenueStatistics]: {enabled: false},
-        [AccountFeature.SatisfactionSurveys]: {enabled: false},
-        [AccountFeature.Teams]: {enabled: true},
-        [AccountFeature.UserRoles]: {enabled: true},
-        [AccountFeature.ViewSharing]: {enabled: true},
-        [AccountFeature.HelpCenter]: {enabled: false},
-        [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
-        [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
-        [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
-        [AccountFeature.AutomationReturnFlow]: {enabled: true},
-        [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
-    },
+    phone_limits: {billing: 50},
 }
 
 export const proPlan: Plan = {
@@ -99,6 +199,8 @@ export const proPlan: Plan = {
     automation_addon_equivalent_plan: 'pro-automation-monthly-usd-2',
     automation_addon_discount: 0,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -116,36 +218,14 @@ export const proPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: true},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: false},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: false},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: false},
         [AccountFeature.AutomationReturnFlow]: {enabled: false},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    legacy_automation_addon_features: {
-        [AccountFeature.AutoAssignment]: {enabled: true},
-        [AccountFeature.ChatCampaigns]: {enabled: true},
-        [AccountFeature.FacebookComment]: {enabled: true},
-        [AccountFeature.InstagramComment]: {enabled: true},
-        [AccountFeature.InstagramDirectMessage]: {enabled: true},
-        [AccountFeature.UsersLiveStatistics]: {enabled: false},
-        [AccountFeature.OverviewLiveStatistics]: {enabled: true},
-        [AccountFeature.MagentoIntegration]: {enabled: true},
-        [AccountFeature.PhoneNumber]: {enabled: true, limit: 3},
-        [AccountFeature.TwitterIntegration]: {enabled: false, limit: 0},
-        [AccountFeature.YotpoIntegration]: {enabled: true},
-        [AccountFeature.RevenueStatistics]: {enabled: false},
-        [AccountFeature.SatisfactionSurveys]: {enabled: true},
-        [AccountFeature.Teams]: {enabled: true},
-        [AccountFeature.UserRoles]: {enabled: true},
-        [AccountFeature.ViewSharing]: {enabled: true},
-        [AccountFeature.HelpCenter]: {enabled: false},
-        [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
-        [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
-        [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
-        [AccountFeature.AutomationReturnFlow]: {enabled: true},
-        [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
-    },
+    phone_limits: {billing: 100},
 }
 
 export const advancedPlan: Plan = {
@@ -166,6 +246,8 @@ export const advancedPlan: Plan = {
     automation_addon_equivalent_plan: 'advanced-automation-monthly-usd-2',
     automation_addon_discount: 0,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -183,36 +265,14 @@ export const advancedPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: true},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: false},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: false},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: false},
         [AccountFeature.AutomationReturnFlow]: {enabled: false},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    legacy_automation_addon_features: {
-        [AccountFeature.AutoAssignment]: {enabled: true},
-        [AccountFeature.ChatCampaigns]: {enabled: true},
-        [AccountFeature.FacebookComment]: {enabled: true},
-        [AccountFeature.InstagramComment]: {enabled: true},
-        [AccountFeature.InstagramDirectMessage]: {enabled: true},
-        [AccountFeature.UsersLiveStatistics]: {enabled: true},
-        [AccountFeature.OverviewLiveStatistics]: {enabled: true},
-        [AccountFeature.MagentoIntegration]: {enabled: true},
-        [AccountFeature.PhoneNumber]: {enabled: true, limit: 10},
-        [AccountFeature.TwitterIntegration]: {enabled: false, limit: 0},
-        [AccountFeature.YotpoIntegration]: {enabled: true},
-        [AccountFeature.RevenueStatistics]: {enabled: true},
-        [AccountFeature.SatisfactionSurveys]: {enabled: true},
-        [AccountFeature.Teams]: {enabled: true},
-        [AccountFeature.UserRoles]: {enabled: true},
-        [AccountFeature.ViewSharing]: {enabled: true},
-        [AccountFeature.HelpCenter]: {enabled: false},
-        [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
-        [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
-        [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
-        [AccountFeature.AutomationReturnFlow]: {enabled: true},
-        [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
-    },
+    phone_limits: {billing: 750},
 }
 
 export const enterprisePlan: Plan = {
@@ -233,6 +293,8 @@ export const enterprisePlan: Plan = {
     automation_addon_included: false,
     automation_addon_discount: 0,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -250,12 +312,14 @@ export const enterprisePlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: true},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
+    phone_limits: {billing: 2000},
 }
 
 export const customPlan: Plan = {
@@ -277,6 +341,8 @@ export const customPlan: Plan = {
     automation_addon_equivalent_plan: 'custom-automation-monthly-usd-2',
     automation_addon_discount: 0,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -294,36 +360,14 @@ export const customPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: true},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: false},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: false},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: false},
         [AccountFeature.AutomationReturnFlow]: {enabled: false},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
-    legacy_automation_addon_features: {
-        [AccountFeature.AutoAssignment]: {enabled: true},
-        [AccountFeature.ChatCampaigns]: {enabled: true},
-        [AccountFeature.FacebookComment]: {enabled: true},
-        [AccountFeature.InstagramComment]: {enabled: true},
-        [AccountFeature.InstagramDirectMessage]: {enabled: true},
-        [AccountFeature.UsersLiveStatistics]: {enabled: true},
-        [AccountFeature.OverviewLiveStatistics]: {enabled: true},
-        [AccountFeature.MagentoIntegration]: {enabled: true},
-        [AccountFeature.PhoneNumber]: {enabled: true, limit: 50},
-        [AccountFeature.TwitterIntegration]: {enabled: true, limit: 10},
-        [AccountFeature.YotpoIntegration]: {enabled: true},
-        [AccountFeature.RevenueStatistics]: {enabled: false},
-        [AccountFeature.SatisfactionSurveys]: {enabled: true},
-        [AccountFeature.Teams]: {enabled: true},
-        [AccountFeature.UserRoles]: {enabled: true},
-        [AccountFeature.ViewSharing]: {enabled: true},
-        [AccountFeature.HelpCenter]: {enabled: false},
-        [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
-        [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
-        [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
-        [AccountFeature.AutomationReturnFlow]: {enabled: true},
-        [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
-    },
+    phone_limits: {billing: 5000},
 }
 
 export const legacyPlan: Plan = {
@@ -344,6 +388,8 @@ export const legacyPlan: Plan = {
     automation_addon_equivalent_plan: 'standard-automation-usd-1',
     automation_addon_discount: 0,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -361,12 +407,14 @@ export const legacyPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: false},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
+    phone_limits: {billing: 5000},
 }
 
 export const legacyAutomationPlan: Plan = {
@@ -387,6 +435,8 @@ export const legacyAutomationPlan: Plan = {
     automation_addon_equivalent_plan: 'standard-usd-1',
     automation_addon_discount: 0.5,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -404,12 +454,14 @@ export const legacyAutomationPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: false},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
+    phone_limits: {billing: 5000},
 }
 
 export const basicLegacyPlan: Plan = {
@@ -429,6 +481,8 @@ export const basicLegacyPlan: Plan = {
     automation_addon_equivalent_plan: null,
     automation_addon_discount: 0,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -446,12 +500,14 @@ export const basicLegacyPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: false},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
+    phone_limits: {billing: 50},
 }
 
 export const proLegacyPlan: Plan = {
@@ -471,6 +527,8 @@ export const proLegacyPlan: Plan = {
     automation_addon_equivalent_plan: null,
     automation_addon_discount: 0,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -488,12 +546,14 @@ export const proLegacyPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: false},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
+    phone_limits: {billing: 200},
 }
 
 export const advancedLegacyPlan: Plan = {
@@ -513,6 +573,8 @@ export const advancedLegacyPlan: Plan = {
     automation_addon_equivalent_plan: null,
     automation_addon_discount: 0,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -530,12 +592,14 @@ export const advancedLegacyPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: false},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
+    phone_limits: {billing: 750},
 }
 
 export const customLegacyPlan: Plan = {
@@ -557,6 +621,8 @@ export const customLegacyPlan: Plan = {
     automation_addon_equivalent_plan: null,
     automation_addon_discount: 0,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -574,12 +640,14 @@ export const customLegacyPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: false},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
+    phone_limits: {billing: 5000},
 }
 
 export const basicAutomationPlan: Plan = {
@@ -599,8 +667,9 @@ export const basicAutomationPlan: Plan = {
     automation_addon_included: true,
     automation_addon_equivalent_plan: 'basic-monthly-usd-2',
     automation_addon_discount: 0.5,
-
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -618,12 +687,14 @@ export const basicAutomationPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: true},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: true},
     },
+    phone_limits: {billing: 50},
 }
 export const proAutomationPlan: Plan = {
     id: 'pro-automation-monthly-usd-2',
@@ -643,6 +714,8 @@ export const proAutomationPlan: Plan = {
     automation_addon_equivalent_plan: 'pro-monthly-usd-2',
     automation_addon_discount: 0.5,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -660,12 +733,14 @@ export const proAutomationPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: true},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: true},
     },
+    phone_limits: {billing: 200},
 }
 
 export const advancedAutomationPlan: Plan = {
@@ -697,6 +772,8 @@ export const advancedAutomationPlan: Plan = {
     automation_addon_equivalent_plan: 'advanced-monthly-usd-2',
     automation_addon_discount: 0.5,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
@@ -714,10 +791,12 @@ export const advancedAutomationPlan: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: true},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
         [AccountFeature.AutomationReturnFlow]: {enabled: true},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: true},
     },
+    phone_limits: {billing: 7500},
 }

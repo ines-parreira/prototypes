@@ -18,6 +18,8 @@ export enum AccountSettingType {
 }
 
 export enum AccountFeature {
+    Api1stPartyRateLimit = 'api_1st_party_rate_limit',
+    Api3rdPartyRateLimit = 'api_3rd_party_rate_limit',
     AutoAssignment = 'auto_assignment',
     ChatCampaigns = 'chat_campaigns',
     FacebookComment = 'facebook_comment',
@@ -40,6 +42,7 @@ export enum AccountFeature {
     AutomationCancellationsFlow = 'automation_cancellations_flow',
     AutomationReturnFlow = 'automation_return_flow',
     AutomationSelfServiceStatistics = 'automation_self_service_statistics',
+    AutomationManagedRules = 'automation_managed_rules',
 }
 
 export type ViewsOrderingAccountSetting = {
@@ -116,6 +119,10 @@ export enum AccountSettingAccessSignupMode {
 export type AccountFeatureMetadata = {
     enabled: boolean
     limit?: number
+    rate_limit?: {
+        interval_ms: number
+        max_burst: number
+    }
 }
 
 export type AccountFeatures = Record<AccountFeature, AccountFeatureMetadata>

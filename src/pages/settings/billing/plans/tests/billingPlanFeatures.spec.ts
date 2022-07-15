@@ -8,6 +8,7 @@ import {
     customPlan,
     enterprisePlan,
     proPlan,
+    starterPlan,
 } from '../../../../../fixtures/subscriptionPlan'
 import {Plan} from '../../../../../models/billing/types'
 
@@ -20,6 +21,7 @@ describe('billingPlanFeatures', () => {
 
     describe('getPlanCardFeaturesForPlan', () => {
         it.each<[string, Plan]>([
+            ['Starter plan', starterPlan],
             ['Basic plan', basicPlan],
             ['Pro plan', proPlan],
             ['Advanced plan', advancedPlan],

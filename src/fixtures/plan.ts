@@ -29,6 +29,8 @@ const planFixture: Plan = {
     amount: 300000,
     integrations: 150,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: false},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: false},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -46,12 +48,14 @@ const planFixture: Plan = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: false},
         [AccountFeature.HelpCenter]: {enabled: true},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: false},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: false},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: false},
         [AccountFeature.AutomationReturnFlow]: {enabled: false},
         [AccountFeature.AutomationSelfServiceStatistics]: {enabled: false},
     },
+    phone_limits: {billing: 50},
 }
 
 export default planFixture

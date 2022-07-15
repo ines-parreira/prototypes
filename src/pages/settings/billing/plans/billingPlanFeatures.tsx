@@ -93,7 +93,7 @@ const getCommonPlanCardFeatures = ({
                   ),
                   icon: <PlanFeatureMaterialIcon icon="directions_car" />,
               }
-            : planName === 'Basic'
+            : planName === 'Basic' || planName === 'Starter'
             ? {
                   label: (
                       <>

@@ -113,11 +113,20 @@ Array [
           "currency": "usd",
           "currencySign": "$",
           "features": Object {
+            "api_1st_party_rate_limit": Object {
+              "enabled": false,
+            },
+            "api_3rd_party_rate_limit": Object {
+              "enabled": false,
+            },
             "auto_assignment": Object {
               "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": false,
+            },
+            "automation_managed_rules": Object {
+              "enabled": true,
             },
             "automation_report_issue_flow": Object {
               "enabled": false,
@@ -187,76 +196,6 @@ Array [
           "integrations": 200,
           "interval": "month",
           "is_legacy": false,
-          "legacy_automation_addon_features": Object {
-            "auto_assignment": Object {
-              "enabled": true,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "help_center": Object {
-              "enabled": false,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": true,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": true,
-            },
-            "phone_number": Object {
-              "enabled": true,
-              "limit": 10,
-            },
-            "revenue_statistics": Object {
-              "enabled": true,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": true,
-            },
-            "teams": Object {
-              "enabled": true,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": true,
-            },
-            "view_sharing": Object {
-              "enabled": true,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
           "limits": Object {
             "messages": Object {
               "default": 1000,
@@ -271,6 +210,9 @@ Array [
           },
           "name": "Advanced",
           "order": 3,
+          "phone_limits": Object {
+            "billing": 750,
+          },
           "public": true,
           "trial_period_days": 7,
         }
@@ -383,11 +325,20 @@ Array [
           "currency": "usd",
           "currencySign": "$",
           "features": Object {
+            "api_1st_party_rate_limit": Object {
+              "enabled": false,
+            },
+            "api_3rd_party_rate_limit": Object {
+              "enabled": false,
+            },
             "auto_assignment": Object {
               "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": false,
+            },
+            "automation_managed_rules": Object {
+              "enabled": true,
             },
             "automation_report_issue_flow": Object {
               "enabled": false,
@@ -457,76 +408,6 @@ Array [
           "integrations": 200,
           "interval": "month",
           "is_legacy": false,
-          "legacy_automation_addon_features": Object {
-            "auto_assignment": Object {
-              "enabled": true,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "help_center": Object {
-              "enabled": false,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": true,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": false,
-            },
-            "phone_number": Object {
-              "enabled": true,
-              "limit": 1,
-            },
-            "revenue_statistics": Object {
-              "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": false,
-            },
-            "teams": Object {
-              "enabled": true,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": false,
-            },
-            "view_sharing": Object {
-              "enabled": true,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
           "limits": Object {
             "messages": Object {
               "default": 1000,
@@ -541,6 +422,9 @@ Array [
           },
           "name": "Basic",
           "order": 1,
+          "phone_limits": Object {
+            "billing": 50,
+          },
           "public": true,
           "trial_period_days": 7,
         }
@@ -653,11 +537,20 @@ Array [
           "currencySign": "$",
           "custom": true,
           "features": Object {
+            "api_1st_party_rate_limit": Object {
+              "enabled": false,
+            },
+            "api_3rd_party_rate_limit": Object {
+              "enabled": false,
+            },
             "auto_assignment": Object {
               "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": false,
+            },
+            "automation_managed_rules": Object {
+              "enabled": true,
             },
             "automation_report_issue_flow": Object {
               "enabled": false,
@@ -727,76 +620,6 @@ Array [
           "integrations": 200,
           "interval": "month",
           "is_legacy": false,
-          "legacy_automation_addon_features": Object {
-            "auto_assignment": Object {
-              "enabled": true,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "help_center": Object {
-              "enabled": false,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": true,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": true,
-            },
-            "phone_number": Object {
-              "enabled": true,
-              "limit": 50,
-            },
-            "revenue_statistics": Object {
-              "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": true,
-            },
-            "teams": Object {
-              "enabled": true,
-            },
-            "twitter_integration": Object {
-              "enabled": true,
-              "limit": 10,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": true,
-            },
-            "view_sharing": Object {
-              "enabled": true,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
           "limits": Object {
             "messages": Object {
               "default": 1000,
@@ -811,6 +634,9 @@ Array [
           },
           "name": "Custom",
           "order": 4,
+          "phone_limits": Object {
+            "billing": 5000,
+          },
           "public": true,
           "trial_period_days": 7,
         }
@@ -1019,11 +845,20 @@ Array [
           "currency": "usd",
           "currencySign": "$",
           "features": Object {
+            "api_1st_party_rate_limit": Object {
+              "enabled": false,
+            },
+            "api_3rd_party_rate_limit": Object {
+              "enabled": false,
+            },
             "auto_assignment": Object {
               "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": false,
+            },
+            "automation_managed_rules": Object {
+              "enabled": true,
             },
             "automation_report_issue_flow": Object {
               "enabled": false,
@@ -1093,76 +928,6 @@ Array [
           "integrations": 200,
           "interval": "month",
           "is_legacy": false,
-          "legacy_automation_addon_features": Object {
-            "auto_assignment": Object {
-              "enabled": true,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "help_center": Object {
-              "enabled": false,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": true,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": true,
-            },
-            "phone_number": Object {
-              "enabled": true,
-              "limit": 3,
-            },
-            "revenue_statistics": Object {
-              "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": true,
-            },
-            "teams": Object {
-              "enabled": true,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": false,
-            },
-            "view_sharing": Object {
-              "enabled": true,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
           "limits": Object {
             "messages": Object {
               "default": 1000,
@@ -1177,6 +942,9 @@ Array [
           },
           "name": "Pro",
           "order": 2,
+          "phone_limits": Object {
+            "billing": 100,
+          },
           "public": true,
           "trial_period_days": 7,
         }
@@ -1272,6 +1040,220 @@ Array [
 ]
 `;
 
+exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for Starter plan plan 1`] = `
+Array [
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="playlist_add_check"
+    />,
+    "label": <BillableTicketsLabel
+      plan={
+        Object {
+          "amount": 10000,
+          "automation_addon_discount": 0,
+          "automation_addon_equivalent_plan": null,
+          "automation_addon_included": false,
+          "cost_per_ticket": 0.4,
+          "currency": "usd",
+          "currencySign": "$",
+          "features": Object {
+            "api_1st_party_rate_limit": Object {
+              "enabled": true,
+              "rate_limit": Object {
+                "interval_ms": 2000,
+                "max_burst": 40,
+              },
+            },
+            "api_3rd_party_rate_limit": Object {
+              "enabled": true,
+              "rate_limit": Object {
+                "interval_ms": 20000,
+                "max_burst": 40,
+              },
+            },
+            "auto_assignment": Object {
+              "enabled": true,
+            },
+            "automation_cancellations_flow": Object {
+              "enabled": false,
+            },
+            "automation_managed_rules": Object {
+              "enabled": false,
+            },
+            "automation_report_issue_flow": Object {
+              "enabled": false,
+            },
+            "automation_return_flow": Object {
+              "enabled": false,
+            },
+            "automation_self_service_statistics": Object {
+              "enabled": false,
+            },
+            "automation_track_order_flow": Object {
+              "enabled": false,
+            },
+            "chat_campaigns": Object {
+              "enabled": true,
+            },
+            "facebook_comment": Object {
+              "enabled": true,
+            },
+            "help_center": Object {
+              "enabled": true,
+            },
+            "instagram_comment": Object {
+              "enabled": true,
+            },
+            "instagram_dm": Object {
+              "enabled": true,
+            },
+            "magento_integration": Object {
+              "enabled": false,
+            },
+            "overview_live_statistics": Object {
+              "enabled": true,
+            },
+            "phone_number": Object {
+              "enabled": false,
+              "limit": 0,
+            },
+            "revenue_statistics": Object {
+              "enabled": false,
+            },
+            "satisfaction_surveys": Object {
+              "enabled": true,
+            },
+            "teams": Object {
+              "enabled": false,
+            },
+            "twitter_integration": Object {
+              "enabled": false,
+              "limit": 0,
+            },
+            "user_roles": Object {
+              "enabled": false,
+            },
+            "users_live_statistics": Object {
+              "enabled": true,
+            },
+            "view_sharing": Object {
+              "enabled": true,
+            },
+            "yotpo_integration": Object {
+              "enabled": true,
+            },
+          },
+          "free_tickets": 600,
+          "id": "starter-yearly-usd-4",
+          "integrations": 150,
+          "interval": "month",
+          "is_legacy": false,
+          "limits": Object {
+            "messages": Object {
+              "default": 100,
+              "max": 100,
+              "min": 75,
+            },
+            "tickets": Object {
+              "default": 100,
+              "max": 100,
+              "min": 75,
+            },
+          },
+          "name": "Starter",
+          "order": 1,
+          "phone_limits": Object {
+            "billing": 50,
+          },
+          "public": false,
+          "trial_period_days": 7,
+        }
+      }
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="thumb_up"
+    />,
+    "label": "Facebook, Messenger, Instagram & DMs",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="forum"
+    />,
+    "label": "Live chat",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="phone"
+    />,
+    "isDisabled": true,
+    "label": "Phone",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="auto_awesome"
+    />,
+    "label": "Macros and rules",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="insert_emoticon"
+    />,
+    "isDisabled": false,
+    "label": "Satisfaction surveys",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="web_asset"
+    />,
+    "isDisabled": false,
+    "label": <HelpCenterLabel
+      disabled={false}
+    />,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="directions_walk"
+    />,
+    "label": <React.Fragment>
+      <b>
+        Self
+      </b>
+       onboarding
+    </React.Fragment>,
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="attach_money"
+    />,
+    "isDisabled": true,
+    "label": "Revenue statistics",
+  },
+  Object {
+    "icon": <PlanFeatureVectorIcon
+      url="test-file-stub"
+    />,
+    "isDisabled": true,
+    "label": "Magento integration",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="person_pin"
+    />,
+    "isDisabled": true,
+    "label": "Dedicated success manager",
+  },
+  Object {
+    "icon": <PlanFeatureMaterialIcon
+      icon="blur_on"
+    />,
+    "isDisabled": true,
+    "label": "Custom services",
+  },
+]
+`;
+
 exports[`billingPlanFeatures getPlanCardFeaturesForPlan should return plan card features for legacy plan 1`] = `
 Array [
   Object {
@@ -1289,11 +1271,20 @@ Array [
           "currency": "usd",
           "currencySign": "$",
           "features": Object {
+            "api_1st_party_rate_limit": Object {
+              "enabled": false,
+            },
+            "api_3rd_party_rate_limit": Object {
+              "enabled": false,
+            },
             "auto_assignment": Object {
               "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": false,
+            },
+            "automation_managed_rules": Object {
+              "enabled": true,
             },
             "automation_report_issue_flow": Object {
               "enabled": false,
@@ -1363,76 +1354,6 @@ Array [
           "integrations": 200,
           "interval": "month",
           "is_legacy": false,
-          "legacy_automation_addon_features": Object {
-            "auto_assignment": Object {
-              "enabled": true,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "help_center": Object {
-              "enabled": false,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": true,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": false,
-            },
-            "phone_number": Object {
-              "enabled": true,
-              "limit": 1,
-            },
-            "revenue_statistics": Object {
-              "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": false,
-            },
-            "teams": Object {
-              "enabled": true,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": false,
-            },
-            "view_sharing": Object {
-              "enabled": true,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
           "limits": Object {
             "messages": Object {
               "default": 1000,
@@ -1447,6 +1368,9 @@ Array [
           },
           "name": "Basic",
           "order": 1,
+          "phone_limits": Object {
+            "billing": 50,
+          },
           "public": true,
           "trial_period_days": 7,
         }
@@ -1558,11 +1482,20 @@ Array [
           "currency": "usd",
           "currencySign": "$",
           "features": Object {
+            "api_1st_party_rate_limit": Object {
+              "enabled": false,
+            },
+            "api_3rd_party_rate_limit": Object {
+              "enabled": false,
+            },
             "auto_assignment": Object {
               "enabled": true,
             },
             "automation_cancellations_flow": Object {
               "enabled": false,
+            },
+            "automation_managed_rules": Object {
+              "enabled": true,
             },
             "automation_report_issue_flow": Object {
               "enabled": false,
@@ -1632,76 +1565,6 @@ Array [
           "integrations": 200,
           "interval": "month",
           "is_legacy": false,
-          "legacy_automation_addon_features": Object {
-            "auto_assignment": Object {
-              "enabled": true,
-            },
-            "automation_cancellations_flow": Object {
-              "enabled": true,
-            },
-            "automation_report_issue_flow": Object {
-              "enabled": true,
-            },
-            "automation_return_flow": Object {
-              "enabled": true,
-            },
-            "automation_self_service_statistics": Object {
-              "enabled": false,
-            },
-            "automation_track_order_flow": Object {
-              "enabled": true,
-            },
-            "chat_campaigns": Object {
-              "enabled": true,
-            },
-            "facebook_comment": Object {
-              "enabled": true,
-            },
-            "help_center": Object {
-              "enabled": false,
-            },
-            "instagram_comment": Object {
-              "enabled": true,
-            },
-            "instagram_dm": Object {
-              "enabled": true,
-            },
-            "magento_integration": Object {
-              "enabled": true,
-            },
-            "overview_live_statistics": Object {
-              "enabled": false,
-            },
-            "phone_number": Object {
-              "enabled": true,
-              "limit": 1,
-            },
-            "revenue_statistics": Object {
-              "enabled": false,
-            },
-            "satisfaction_surveys": Object {
-              "enabled": false,
-            },
-            "teams": Object {
-              "enabled": true,
-            },
-            "twitter_integration": Object {
-              "enabled": false,
-              "limit": 0,
-            },
-            "user_roles": Object {
-              "enabled": true,
-            },
-            "users_live_statistics": Object {
-              "enabled": false,
-            },
-            "view_sharing": Object {
-              "enabled": true,
-            },
-            "yotpo_integration": Object {
-              "enabled": true,
-            },
-          },
           "limits": Object {
             "messages": Object {
               "default": 1000,
@@ -1716,6 +1579,9 @@ Array [
           },
           "name": "Basic",
           "order": 1,
+          "phone_limits": Object {
+            "billing": 50,
+          },
           "public": true,
           "trial_period_days": 7,
         }

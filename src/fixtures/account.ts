@@ -45,6 +45,8 @@ export const account: Account = {
     stripe_id: 'cus_BGKUKAzUbK1bix',
     user_id: 1,
     features: {
+        [AccountFeature.Api1stPartyRateLimit]: {enabled: true},
+        [AccountFeature.Api3rdPartyRateLimit]: {enabled: true},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
         [AccountFeature.ChatCampaigns]: {enabled: true},
@@ -62,6 +64,7 @@ export const account: Account = {
         [AccountFeature.UserRoles]: {enabled: true},
         [AccountFeature.ViewSharing]: {enabled: true},
         [AccountFeature.HelpCenter]: {enabled: true},
+        [AccountFeature.AutomationManagedRules]: {enabled: true},
         [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
         [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
         [AccountFeature.AutomationCancellationsFlow]: {enabled: true},

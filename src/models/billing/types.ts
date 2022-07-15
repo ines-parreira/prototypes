@@ -40,4 +40,7 @@ export type Plan = {
         AccountFeature,
         AccountFeatureMetadata
     >
+    phone_limits: {
+        billing: number
+    }
 }
