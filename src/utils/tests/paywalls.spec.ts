@@ -4,6 +4,7 @@ import {
     proPlan,
     basicAutomationPlan,
     proAutomationPlan,
+    starterPlan,
 } from '../../fixtures/subscriptionPlan'
 import {AccountFeature} from '../../state/currentAccount/types'
 import {Plan} from '../../models/billing/types'
@@ -13,6 +14,7 @@ import {
 } from '../paywalls'
 
 const publicPlans: Record<string, Plan> = {
+    [starterPlan.id]: starterPlan,
     [basicPlan.id]: basicPlan,
     [proPlan.id]: proPlan,
     [advancedPlan.id]: advancedPlan,
@@ -38,18 +40,19 @@ describe('getCheapestPlanNameForFeature()', () => {
 })
 
 describe('convertLegacyPlanNameToPublicPlanName()', () => {
-    const legacyPlanNames = [
+    const planNames = [
         'Custom',
         'Basic',
         'Advanced',
         'Pro',
+        'Starter',
         'Basic Plan',
         'Pro Plan',
         'Advanced Plan',
         'Standard Plan',
         'Team Plan',
     ]
-    it.each(legacyPlanNames)(
+    it.each(planNames)(
         'should return the public name for the legacy name %s',
         (name) => {
             expect(

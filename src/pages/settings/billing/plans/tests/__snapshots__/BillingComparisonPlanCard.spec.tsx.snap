@@ -1113,9 +1113,7 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
       <div
         class="amountContainer"
       >
-        <i>
-          ?
-        </i>
+        <i />
       </div>
     </div>
   </div>
@@ -1349,10 +1347,26 @@ exports[`<BillingComparisonPlanCard /> should render custom plan 1`] = `
     <div
       class="row"
     >
+      <div>
+        Total
+      </div>
       <div
-        class="mx-auto font-weight-normal font-italic"
+        class="amountContainer"
       >
-        ?
+        <div
+          class="amountWrapper amount"
+        >
+          <span
+            class="amount"
+          >
+            <b>
+              $540
+            </b>
+             
+            / 
+            month
+          </span>
+        </div>
       </div>
     </div>
     <button
@@ -1415,17 +1429,13 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
       <div
         class="align-middle checkboxLabel"
       >
-        <span
-          id="automation-text-custom-monthly-usd-242"
-        >
-          Automation
-        </span>
+        Automation
       </div>
       <div
         class="amountContainer"
       >
         <i>
-          ?
+          Unavailable
         </i>
       </div>
     </div>
@@ -1653,10 +1663,26 @@ exports[`<BillingComparisonPlanCard /> should render customLegacyPlan plan 1`] =
     <div
       class="row"
     >
+      <div>
+        Total
+      </div>
       <div
-        class="mx-auto font-weight-normal font-italic"
+        class="amountContainer"
       >
-        ?
+        <div
+          class="amountWrapper amount"
+        >
+          <span
+            class="amount"
+          >
+            <b>
+              $540
+            </b>
+             
+            / 
+            month
+          </span>
+        </div>
       </div>
     </div>
     <button

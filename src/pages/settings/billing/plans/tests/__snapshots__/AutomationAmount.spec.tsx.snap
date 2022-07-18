@@ -133,6 +133,27 @@ exports[`<AutomationAmount /> should render formatted numbers as amount 1`] = `
 </div>
 `;
 
+exports[`<AutomationAmount /> should render no addon when plan doesn't include one 1`] = `
+<div>
+  <div
+    class="automationRow"
+  >
+    <div
+      class="align-middle checkboxLabel"
+    >
+      Automation
+    </div>
+    <div
+      class="amountContainer"
+    >
+      <i>
+        Unavailable
+      </i>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<AutomationAmount /> should render not editable variant 1`] = `
 <div>
   <div

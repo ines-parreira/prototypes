@@ -1,6 +1,8 @@
 import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
 
+import {starterPlan} from 'fixtures/subscriptionPlan'
+
 import {PlanInterval} from '../../../../../models/billing/types'
 import AutomationAmount from '../AutomationAmount'
 
@@ -99,6 +101,18 @@ describe('<AutomationAmount />', () => {
                 editable={false}
             />
         )
+        expect(container).toMatchSnapshot()
+    })
+
+    it("should render no addon when plan doesn't include one", () => {
+        const {container} = render(
+            <AutomationAmount
+                {...minProps}
+                addOnAmount={undefined}
+                plan={starterPlan}
+            />
+        )
+
         expect(container).toMatchSnapshot()
     })
 })

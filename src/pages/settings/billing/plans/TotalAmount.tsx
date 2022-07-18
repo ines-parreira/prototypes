@@ -21,16 +21,14 @@ const TotalAmount = ({
 }: Props) => {
     return (
         <div className={css.row}>
-            {typeof addOnAmount === 'number' &&
-            plan.amount &&
-            plan.currency &&
-            plan.interval ? (
+            {plan.amount && plan.currency && plan.interval ? (
                 <>
                     <div>Total</div>
                     <div className={css.amountContainer}>
                         <SubscriptionAmount
                             amount={
-                                (isAutomationChecked || !isEditable
+                                ((isAutomationChecked || !isEditable) &&
+                                typeof addOnAmount === 'number'
                                     ? addOnAmount
                                     : 0) + plan.amount
                             }

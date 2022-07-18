@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import classnames from 'classnames'
 
 import useId from 'hooks/useId'
@@ -20,7 +20,17 @@ type Props = {
     fullAddOnAmount?: number
     isAutomationChecked?: boolean
     onAutomationChange?: () => void
-    plan: Partial<Pick<Plan, 'amount' | 'currency' | 'id' | 'interval'>>
+    plan: Partial<
+        Pick<
+            Plan,
+            | 'amount'
+            | 'currency'
+            | 'id'
+            | 'interval'
+            | 'automation_addon_equivalent_plan'
+            | 'automation_addon_included'
+        >
+    >
     editable?: boolean
     isIntervalAbbreviated?: boolean
 }
@@ -37,9 +47,21 @@ const AutomationAmount = ({
     const id = useId()
     const checkboxId = (plan.id || '') + id
 
+    const isAutomationAvailable = useMemo(
+        () =>
+            plan.automation_addon_equivalent_plan != null ||
+            plan.automation_addon_included ||
+            addOnAmount != null,
+        [
+            plan.automation_addon_equivalent_plan,
+            plan.automation_addon_included,
+            addOnAmount,
+        ]
+    )
+
     return (
         <>
-            {editable ? (
+            {editable && isAutomationAvailable ? (
                 <div className={css.automationRow}>
                     {typeof addOnAmount === 'number' ? (
                         <CheckBox
@@ -115,7 +137,7 @@ const AutomationAmount = ({
                                 isIntervalAbbreviated={isIntervalAbbreviated}
                             />
                         ) : (
-                            <i>{addOnAmount}</i>
+                            <i>{addOnAmount || 'Unavailable'}</i>
                         )}
                     </div>
                 </div>

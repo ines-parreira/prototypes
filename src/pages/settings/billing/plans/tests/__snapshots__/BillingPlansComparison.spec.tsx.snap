@@ -1522,9 +1522,7 @@ exports[`<BillingPlansComparison /> should render a custom plan 1`] = `
           <div
             class="amountContainer"
           >
-            <i>
-              ?
-            </i>
+            <i />
           </div>
         </div>
       </div>
@@ -1767,10 +1765,26 @@ exports[`<BillingPlansComparison /> should render a custom plan 1`] = `
         <div
           class="row"
         >
+          <div>
+            Total
+          </div>
           <div
-            class="mx-auto font-weight-normal font-italic"
+            class="amountContainer"
           >
-            ?
+            <div
+              class="amountWrapper amount"
+            >
+              <span
+                class="amount"
+              >
+                <b>
+                  $540
+                </b>
+                 
+                / 
+                month
+              </span>
+            </div>
           </div>
         </div>
         <button
@@ -1898,9 +1912,7 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
           <div
             class="amountContainer"
           >
-            <i>
-              ?
-            </i>
+            <i />
           </div>
         </div>
       </div>
@@ -2132,10 +2144,26 @@ exports[`<BillingPlansComparison /> should render a legacy plan 1`] = `
         <div
           class="row"
         >
+          <div>
+            Total
+          </div>
           <div
-            class="mx-auto font-weight-normal font-italic"
+            class="amountContainer"
           >
-            ?
+            <div
+              class="amountWrapper amount"
+            >
+              <span
+                class="amount"
+              >
+                <b>
+                  $30
+                </b>
+                 
+                / 
+                month
+              </span>
+            </div>
           </div>
         </div>
         <button

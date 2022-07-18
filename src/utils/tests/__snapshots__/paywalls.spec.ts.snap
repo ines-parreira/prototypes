@@ -16,11 +16,13 @@ exports[`convertLegacyPlanNameToPublicPlanName() should return the public name f
 
 exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Standard Plan 1`] = `"Basic"`;
 
+exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Starter 1`] = `"Starter"`;
+
 exports[`convertLegacyPlanNameToPublicPlanName() should return the public name for the legacy name Team Plan 1`] = `"Pro"`;
 
-exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature api_1st_party_rate_limit 1`] = `null`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature api_1st_party_rate_limit 1`] = `"Starter"`;
 
-exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature api_3rd_party_rate_limit 1`] = `null`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature api_3rd_party_rate_limit 1`] = `"Starter"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature auto_assignment 1`] = `"Basic"`;
 
@@ -48,13 +50,13 @@ exports[`getCheapestPlanNameForFeature() should return the cheaper plan to acces
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature magento_integration 1`] = `"Basic"`;
 
-exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature overview_live_statistics 1`] = `"Pro"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature overview_live_statistics 1`] = `"Starter"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature phone_number 1`] = `"Basic"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature revenue_statistics 1`] = `"Pro"`;
 
-exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature satisfaction_surveys 1`] = `"Pro"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature satisfaction_surveys 1`] = `"Starter"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature teams 1`] = `"Basic"`;
 
@@ -62,7 +64,7 @@ exports[`getCheapestPlanNameForFeature() should return the cheaper plan to acces
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature user_roles 1`] = `"Basic"`;
 
-exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature users_live_statistics 1`] = `"Advanced"`;
+exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature users_live_statistics 1`] = `"Starter"`;
 
 exports[`getCheapestPlanNameForFeature() should return the cheaper plan to access the feature view_sharing 1`] = `"Basic"`;
 

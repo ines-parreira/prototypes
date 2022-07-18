@@ -59,7 +59,7 @@ export default function BillingComparisonPlanCard({
 
     const addOnAmount = automationPlan
         ? Math.abs(automationPlan.amount - plan.amount)
-        : '?'
+        : undefined
 
     const addOnDiscount =
         automationPlan && automationPlan.automation_addon_discount
@@ -96,13 +96,18 @@ export default function BillingComparisonPlanCard({
         hasLessFeatures
 
     const isSwitchingToAutomation =
-        isCurrentPlan && !hasAutomationAddOn && isAutomationChecked
+        isCurrentPlan &&
+        !hasAutomationAddOn &&
+        isAutomationChecked &&
+        automationPlan != null
 
     const canChoosePlan =
         !isUpdating && (isSwitchingToAutomation || !isCurrentPlan)
 
     const switchPlanButtonText = isCurrentPlan
-        ? hasAutomationAddOn || (!hasAutomationAddOn && !isAutomationChecked)
+        ? hasAutomationAddOn ||
+          (!hasAutomationAddOn && !isAutomationChecked) ||
+          automationPlan == null
             ? 'Current Plan'
             : 'Add to Plan'
         : `${

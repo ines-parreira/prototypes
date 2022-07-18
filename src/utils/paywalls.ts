@@ -4,6 +4,7 @@ import {Plan, PlanInterval} from '../models/billing/types'
 import {isFeatureEnabled} from './account'
 
 export enum PlanName {
+    Starter = 'Starter',
     Basic = 'Basic',
     Pro = 'Pro',
     Advanced = 'Advanced',
@@ -19,9 +20,12 @@ export const convertLegacyPlanNameToPublicPlanName = (
         ? PlanName.Basic
         : name === 'Team'
         ? PlanName.Pro
-        : ![PlanName.Basic, PlanName.Pro, PlanName.Advanced].includes(
-              name as PlanName
-          )
+        : ![
+              PlanName.Starter,
+              PlanName.Basic,
+              PlanName.Pro,
+              PlanName.Advanced,
+          ].includes(name as PlanName)
         ? PlanName.Enterprise
         : (name as PlanName)
 }
