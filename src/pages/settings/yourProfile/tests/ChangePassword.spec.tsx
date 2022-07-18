@@ -24,8 +24,8 @@ const defaultProps = {
 }
 
 const DEFAULT_CURRENT_PWD = 'test1234'
-const DEFAULT_NEW_PWD = 'test12345'
-const DEFAULT_CONFIRM_PWD = 'test12345'
+const DEFAULT_NEW_PWD = 'P@ssw0rd123!!!'
+const DEFAULT_CONFIRM_PWD = 'P@ssw0rd123!!!'
 
 const fillInForm = ({
     getAllByLabelText,
@@ -83,6 +83,22 @@ describe('<ChangePassword />', () => {
                 confirmNewPwd: 'test12345',
             })
             expect(getByText(/Passwords do not match/i)).toBeTruthy()
+        })
+
+        it('should display the error message when the new password does not meet the requirements', () => {
+            const {getByText, getAllByLabelText} = render(
+                <ChangePasswordContainer {...defaultProps} />
+            )
+            fillInForm({
+                getAllByLabelText,
+                newPwd: 'test12345',
+                confirmNewPwd: 'test12345',
+            })
+            expect(
+                getByText(
+                    /A password must contain a minimum of 14 characters, 1 lower case, 1 upper case and 1 number./i
+                )
+            ).toBeTruthy()
         })
     })
 
@@ -146,6 +162,33 @@ describe('<ChangePassword />', () => {
                     DEFAULT_NEW_PWD
                 )
                 expect(button).toMatchSnapshot()
+            })
+        })
+
+        it('should disable button because some fields are empty', async () => {
+            const mockChangePassword = jest.fn().mockResolvedValue({})
+
+            const {getAllByText, getAllByLabelText} = render(
+                <ChangePasswordContainer
+                    {...defaultProps}
+                    changePassword={mockChangePassword}
+                />
+            )
+
+            fillInForm({
+                getAllByLabelText,
+                currentPwd: '',
+                newPwd: '',
+                confirmNewPwd: '',
+            })
+            const button = getAllByText(/Update Password/i)[1]
+            fireEvent.click(button)
+            await waitFor(() => {
+                expect(mockChangePassword).toHaveBeenCalledTimes(0)
+                expect(getAllByText('Please fill out this field.').length).toBe(
+                    3
+                )
+                expect(button.className).toContain('isDisabled')
             })
         })
 
