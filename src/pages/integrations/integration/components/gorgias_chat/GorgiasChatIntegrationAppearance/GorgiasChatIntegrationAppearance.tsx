@@ -38,6 +38,7 @@ import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
     IntegrationType,
+    ShopifyIntegration,
 } from 'models/integration/types'
 import {RootState} from 'state/types'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -156,8 +157,30 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         if (isUpdate && !loading.get('integration')) {
             initState(integration)
         }
+
+        // Preselect store if merchant has only 1 shopify integration
+        if (
+            !isUpdate &&
+            !loading.get('integration') &&
+            shopifyIntegrations.size === 1
+        ) {
+            const shopifyIntegration: ShopifyIntegration = (
+                shopifyIntegrations.getIn(['0']) as Map<any, any>
+            ).toJS()
+
+            setStoreName(shopifyIntegration.meta?.shop_name)
+            setStoreIntegrationId(shopifyIntegration.id)
+            prefillWithStorename(shopifyIntegration.meta?.shop_name)
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [integration])
+
+    const prefillWithStorename = (shopName: string) => {
+        setState((state) => ({
+            ...state,
+            name: `${shopName} Support`,
+        }))
+    }
 
     const initState = (integration: Map<any, any>) => {
         setState(
@@ -263,6 +286,8 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             },
         }
 
+        let actionToUse = actions.createGorgiasChatIntegration
+
         if (isUpdate) {
             form.id = integration.get('id')
             const integrationMeta: Map<any, any> = integration.get('meta')
@@ -270,20 +295,20 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 .set('language', state.language)
                 .set('position', state.position)
                 .toJS()
+
+            actionToUse = actions.updateOrCreateIntegration
         }
 
-        return (
-            actions.updateOrCreateIntegration(
-                fromJS(form)
-            ) as unknown as Promise<any>
-        ).then(({error} = {}) => {
-            if (error) {
-                return
-            }
+        return (actionToUse(fromJS(form)) as unknown as Promise<any>).then(
+            ({error} = {}) => {
+                if (error) {
+                    return
+                }
 
-            // reload the integration
-            setState((prevState) => ({...prevState, isInitialized: false}))
-        })
+                // reload the integration
+                setState((prevState) => ({...prevState, isInitialized: false}))
+            }
+        )
     }
 
     const setLanguage = (language: string) => {
@@ -539,6 +564,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             setStoreIntegrationId(
                                                 storeIntegrationId
                                             )
+                                            prefillWithStorename(shopName)
                                         }}
                                     />
                                 </>

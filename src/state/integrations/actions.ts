@@ -6,7 +6,11 @@ import _sortBy from 'lodash/sortBy'
 
 import client from 'models/api/resources'
 import {ApiListResponsePagination} from 'models/api/types'
-import {Integration, IntegrationType} from 'models/integration/types'
+import {
+    GorgiasChatIntegration,
+    Integration,
+    IntegrationType,
+} from 'models/integration/types'
 import type {StoreDispatch, RootState} from 'state/types'
 import * as constants from 'state/integrations/constants'
 import * as integrationSelectors from 'state/integrations/selectors'
@@ -466,6 +470,86 @@ export function createImportIntegration(integration: Map<any, any>) {
                     })
                 }
             )
+    }
+}
+
+export function createGorgiasChatIntegration(integration: Map<any, any>) {
+    return async (
+        dispatch: StoreDispatch
+    ): Promise<ReturnType<StoreDispatch>> => {
+        dispatch({
+            type: constants.CREATE_INTEGRATION_START,
+            integration,
+        })
+
+        let savedIntegration
+        try {
+            const response = await client.post<GorgiasChatIntegration>(
+                '/api/integrations/',
+                integration.toJS()
+            )
+
+            savedIntegration = response.data
+        } catch (error) {
+            return dispatch({
+                type: constants.CREATE_INTEGRATION_ERROR,
+                error,
+                reason: 'Failed to add integration',
+                verbose: true,
+            })
+        }
+
+        // Try to install the chat to shopify store
+        if (savedIntegration.meta.shop_integration_id) {
+            try {
+                await client.put<Integration>(
+                    `/api/integrations/${savedIntegration.id}`,
+                    {
+                        id: savedIntegration.id,
+                        type: savedIntegration.type,
+                        meta: {
+                            ...savedIntegration.meta,
+                            shopify_integration_ids: [
+                                savedIntegration.meta.shop_integration_id,
+                            ],
+                        },
+                    }
+                )
+            } catch (error) {
+                dispatch({
+                    type: constants.CREATE_INTEGRATION_ERROR,
+                    error,
+                    reason: 'Failed to install the chat to the store',
+                    verbose: true,
+                })
+                history.push(
+                    `/app/settings/integrations/gorgias_chat/${
+                        savedIntegration.id || ''
+                    }/installation`
+                )
+
+                return
+            }
+        }
+
+        history.push(
+            `/app/settings/integrations/gorgias_chat/${
+                savedIntegration.id || ''
+            }/preferences`
+        )
+
+        dispatch({
+            type: constants.CREATE_INTEGRATION_SUCCESS,
+            resp: savedIntegration,
+        })
+        void dispatch(
+            notify({
+                status: NotificationStatus.Success,
+                message: 'Integration successfully installed on your website',
+            })
+        )
+
+        return
     }
 }
 

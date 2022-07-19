@@ -47,6 +47,14 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                     shop_name: 'myStore1',
                 },
             },
+            {
+                id: 2,
+                name: 'mylittleintegration2',
+                type: SHOPIFY_INTEGRATION_TYPE,
+                meta: {
+                    shop_name: 'myStore2',
+                },
+            },
         ]),
         actions: {
             updateOrCreateIntegration: jest.fn(() => Promise.resolve()),
@@ -209,8 +217,8 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             }
         )
 
-        it('should submit and call the updateOrCreateIntegration with 2nd store name option selected - myStore2 ', () => {
-            const mockUpdateOrCreateIntegration = jest.fn(() =>
+        it('should submit and call the createGorgiasChatIntegration with 2nd store name option selected - myStore2 ', () => {
+            const mockCreateGorgiasChatIntegration = jest.fn(() =>
                 Promise.resolve()
             )
 
@@ -219,8 +227,8 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                     {...minProps}
                     actions={
                         {
-                            updateOrCreateIntegration:
-                                mockUpdateOrCreateIntegration,
+                            createGorgiasChatIntegration:
+                                mockCreateGorgiasChatIntegration,
                             deleteIntegration: jest.fn(() => Promise.resolve()),
                         } as unknown as typeof IntegrationsActions
                     }
@@ -304,7 +312,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             fireEvent.change(chatTitleInput, {target: {value: 'myTestChat'}})
             fireEvent.click(addNewChatButton)
 
-            expect(mockUpdateOrCreateIntegration.mock.calls[0])
+            expect(mockCreateGorgiasChatIntegration.mock.calls[0])
                 .toMatchInlineSnapshot(`
                 Array [
                   Immutable.Map {
@@ -341,6 +349,174 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                   },
                 ]
             `)
+        })
+
+        it('should submit and call the updateOrCreateIntegration', () => {
+            const mockUpdateOrCreateIntegration = jest.fn(() =>
+                Promise.resolve()
+            )
+
+            const {container} = render(
+                <GorgiasChatIntegrationAppearanceComponent
+                    {...minProps}
+                    actions={
+                        {
+                            updateOrCreateIntegration:
+                                mockUpdateOrCreateIntegration,
+                            deleteIntegration: jest.fn(() => Promise.resolve()),
+                        } as unknown as typeof IntegrationsActions
+                    }
+                    gorgiasChatIntegrations={fromJS([
+                        {
+                            id: 1,
+                            name: 'myChat1',
+                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                            meta: {
+                                shop_name: 'myStore1',
+                                shop_type: SHOPIFY_INTEGRATION_TYPE,
+                            },
+                        },
+                        {
+                            id: 2,
+                            name: 'myChat2',
+                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                            meta: {
+                                shop_name: 'myStore2',
+                                shop_type: SHOPIFY_INTEGRATION_TYPE,
+                            },
+                        },
+                        {
+                            id: 3,
+                            name: 'myChat3',
+                            type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                            meta: {
+                                shop_name: 'myStore2',
+                                shop_type: SHOPIFY_INTEGRATION_TYPE,
+                            },
+                        },
+                    ])}
+                    shopifyIntegrations={fromJS([
+                        {
+                            id: 1,
+                            name: 'mylittleintegration',
+                            type: SHOPIFY_INTEGRATION_TYPE,
+                            meta: {
+                                shop_name: 'myStore1',
+                            },
+                        },
+                        {
+                            id: 2,
+                            name: 'mylittleintegration2',
+                            type: SHOPIFY_INTEGRATION_TYPE,
+                            meta: {
+                                shop_name: 'myStore2',
+                            },
+                        },
+                        {
+                            id: 3,
+                            deactivated_datetime: '2021-01-26T00:29:00Z',
+                            name: 'mylittleintegration3',
+                            type: SHOPIFY_INTEGRATION_TYPE,
+                            meta: {
+                                shop_name: 'myStore3',
+                            },
+                        },
+                    ])}
+                    loading={fromJS({updateIntegration: false})}
+                    integration={fromJS({
+                        id: 1,
+                        name: 'myChat1',
+                        type: GORGIAS_CHAT_INTEGRATION_TYPE,
+                        meta: {
+                            shop_name: 'myStore1',
+                            shop_type: SHOPIFY_INTEGRATION_TYPE,
+                            shop_integration_id: 2,
+                        },
+                    })}
+                    currentUser={fromJS({})}
+                    isUpdate={true}
+                />
+            )
+
+            expect(container).toMatchSnapshot()
+
+            const chatTitleInput = screen.getByLabelText('Chat title')
+            const saveChangesButton = screen.getByText(/Save changes/)
+
+            fireEvent.change(chatTitleInput, {target: {value: 'myTestChat'}})
+            fireEvent.click(saveChangesButton)
+
+            expect(mockUpdateOrCreateIntegration.mock.calls[0])
+                .toMatchInlineSnapshot(`
+                Array [
+                  Immutable.Map {
+                    "type": "gorgias_chat",
+                    "name": "myTestChat",
+                    "decoration": Immutable.Map {
+                      "conversation_color": "#0d87dd",
+                      "main_color": "#0d87dd",
+                      "introduction_text": "How can we help?",
+                      "offline_introduction_text": "We'll be back tomorrow",
+                      "avatar_type": "team-members",
+                      "avatar_team_picture_url": undefined,
+                      "position": Immutable.Map {
+                        "alignment": "bottom-right",
+                        "offsetX": 0,
+                        "offsetY": 0,
+                      },
+                    },
+                    "meta": Immutable.Map {
+                      "shop_name": "myStore1",
+                      "shop_type": "shopify",
+                      "shop_integration_id": 2,
+                      "language": "en-US",
+                      "position": Immutable.Map {
+                        "alignment": "bottom-right",
+                        "offsetX": 0,
+                        "offsetY": 0,
+                      },
+                    },
+                    "id": 1,
+                  },
+                ]
+            `)
+        })
+
+        it("should preselect shopify integration if there's only one available", () => {
+            const mockUpdateOrCreateIntegration = jest.fn(() =>
+                Promise.resolve()
+            )
+            const shopifyStoreName = 'MY ONLY SHOPIFY STORE'
+
+            const {container} = render(
+                <GorgiasChatIntegrationAppearanceComponent
+                    {...minProps}
+                    actions={
+                        {
+                            updateOrCreateIntegration:
+                                mockUpdateOrCreateIntegration,
+                            deleteIntegration: jest.fn(() => Promise.resolve()),
+                        } as unknown as typeof IntegrationsActions
+                    }
+                    gorgiasChatIntegrations={fromJS([])}
+                    shopifyIntegrations={fromJS([
+                        {
+                            id: 1,
+                            name: 'mylittleintegration',
+                            type: SHOPIFY_INTEGRATION_TYPE,
+                            meta: {
+                                shop_name: shopifyStoreName,
+                            },
+                        },
+                    ])}
+                    loading={fromJS({updateIntegration: false})}
+                    integration={fromJS({})}
+                    currentUser={fromJS({})}
+                    isUpdate={false}
+                />
+            )
+
+            expect(container).toMatchSnapshot()
         })
     })
 })

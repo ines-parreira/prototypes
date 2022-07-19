@@ -195,6 +195,28 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                           class="dropdownInfo"
                         />
                       </button>
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="2"
+                      >
+                        <div
+                          class="innerItem"
+                        >
+                          <img
+                            alt="shopifyStore"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            myStore2
+                          </span>
+                        </div>
+                        <span
+                          class="dropdownInfo"
+                        />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -4386,7 +4408,776 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
 </div>
 `;
 
-exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the updateOrCreateIntegration with 2nd store name option selected - myStore2  1`] = `
+exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify integration if there's only one available 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            New chat integration
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <div
+      class="pageContainer container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="selectStoreTypeContainer"
+            >
+              <label
+                class="bold"
+              >
+                Where will you use this chat?
+                <span
+                  class="redStar"
+                >
+                  *
+                </span>
+              </label>
+              <div
+                class="radioButtonGroup"
+              >
+                <div
+                  aria-checked="true"
+                  aria-label="Shopify store"
+                  class="wrapper selected radioButton"
+                  id="store-radio-button-42"
+                  role="radio"
+                  tabindex="0"
+                >
+                  <div>
+                    <label
+                      class="label label"
+                      for="shopify"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        id="shopify"
+                        tabindex="-1"
+                        type="radio"
+                      />
+                      Shopify store
+                    </label>
+                  </div>
+                </div>
+                <div
+                  aria-checked="false"
+                  aria-label="Any other website"
+                  class="wrapper radioButton"
+                  id="store-radio-button-42"
+                  role="radio"
+                  tabindex="0"
+                >
+                  <div>
+                    <label
+                      class="label label"
+                      for="website"
+                    >
+                      <input
+                        class="input"
+                        id="website"
+                        tabindex="-1"
+                        type="radio"
+                      />
+                      Any other website
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="form"
+            >
+              <div
+                class="fieldset formGroup"
+              >
+                <label
+                  class="bold"
+                >
+                  Select a store
+                  <span
+                    class="error"
+                  >
+                    *
+                  </span>
+                  <span
+                    id="select-store"
+                  >
+                    <i
+                      class="material-icons neutral"
+                    >
+                      info_outline
+                    </i>
+                  </span>
+                </label>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="dropdown dropdown"
+                    required=""
+                  >
+                    <button
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="dropdown-toggle btn btn-secondary"
+                      type="button"
+                    >
+                      <span
+                        class="dropdownValue"
+                      >
+                        <img
+                          alt="shopifyStore"
+                          src="test-file-stub"
+                          style="margin-right: 16px;"
+                        />
+                        MY ONLY SHOPIFY STORE
+                      </span>
+                    </button>
+                    <div
+                      aria-hidden="true"
+                      class="dropdownMenu dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <button
+                        class="storeRow dropdown-item"
+                        role="menuitem"
+                        tabindex="0"
+                        type="button"
+                        value="1"
+                      >
+                        <div
+                          class="innerItem"
+                        >
+                          <img
+                            alt="shopifyStore"
+                            src="test-file-stub"
+                          />
+                          <span>
+                            MY ONLY SHOPIFY STORE
+                          </span>
+                        </div>
+                        <span
+                          class="dropdownInfo"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="MY ONLY SHOPIFY STORE Support"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Introduction text during business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="How can we help?"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Introduction text outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="We'll be back tomorrow"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="colorPickersWrapper formGroup"
+                >
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="wrapper fill secondary medium"
+                          id="color-picker-42"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="wrapper fill secondary medium"
+                          id="color-picker-42"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="positionWrapper"
+                >
+                  <div
+                    class="InputField formGroup form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Chat position
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <select
+                        class="field form-control"
+                        id="id-input-42"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="positionInputsWrapper"
+                  >
+                    <div
+                      class="InputField formGroup form-group"
+                      color=""
+                    >
+                      <div
+                        class="label-wrapper"
+                      >
+                        <label
+                          class="control-label"
+                          for="id-input-42"
+                        >
+                          Move widget left / right
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="field form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="InputField formGroup form-group"
+                      color=""
+                    >
+                      <div
+                        class="label-wrapper"
+                      >
+                        <label
+                          class="control-label"
+                          for="id-input-42"
+                        >
+                          Move widget up / down
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="field form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button
+                  class="wrapper fill primary medium"
+                  type="submit"
+                >
+                  Add new chat
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          class="col"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="container"
+            >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  During business hours
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Outside business hours
+                </button>
+              </span>
+              <div
+                class="preview"
+              >
+                <div
+                  class="dialog"
+                >
+                  <div
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    <div
+                      class="agents"
+                    >
+                      <div
+                        class="agent first"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
+                        />
+                      </div>
+                      <div
+                        class="agent last"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="appName"
+                      >
+                        MY ONLY SHOPIFY STORE Support
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <div
+                        class="conversationTimestamp"
+                      >
+                        June 23
+                      </div>
+                      <div
+                        class="bubble primary firstMessageOfAppUser"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        Hey there
+                      </div>
+                      <div
+                        class="bubble primary lastMessage"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                      </div>
+                      <div
+                        class="messageTimestamp"
+                      >
+                        <span>
+                          6 minutes ago
+                          . 
+                        </span>
+                        <span
+                          class="messageStatus"
+                        >
+                          Delivered
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper"
+                    >
+                      <div
+                        class="component avatar"
+                        style="width: 35px; height: 35px;"
+                      >
+                        <div
+                          class="initials"
+                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        >
+                          <span
+                            style="line-height: 37px;"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="user"
+                        />
+                        <div
+                          class="bubble firstMessageOfAppMaker"
+                        >
+                          Sure, what's your email / order number?
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <div
+                      class="placeholder"
+                    >
+                      Type a message...
+                    </div>
+                    <i
+                      class="icon camera"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="button bottom-right"
+                  style="background-color: rgb(13, 135, 221);"
+                >
+                  <div
+                    class="iconWrapper"
+                  >
+                    <i
+                      class="icon"
+                    />
+                    <div
+                      class="shadow"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the createGorgiasChatIntegration with 2nd store name option selected - myStore2  1`] = `
 <div>
   <div
     class="full-width"
@@ -5093,6 +5884,730 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         class="appName"
                       >
                          
+                      </div>
+                      <div
+                        class="introductionText"
+                      >
+                        How can we help?
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <div>
+                      <div
+                        class="conversationTimestamp"
+                      >
+                        June 23
+                      </div>
+                      <div
+                        class="bubble primary firstMessageOfAppUser"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        Hey there
+                      </div>
+                      <div
+                        class="bubble primary lastMessage"
+                        style="background-color: rgb(13, 135, 221);"
+                      >
+                        I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.
+                      </div>
+                      <div
+                        class="messageTimestamp"
+                      >
+                        <span>
+                          6 minutes ago
+                          . 
+                        </span>
+                        <span
+                          class="messageStatus"
+                        >
+                          Delivered
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="appMakerMessageWrapper"
+                    >
+                      <div
+                        class="component avatar"
+                        style="width: 35px; height: 35px;"
+                      >
+                        <div
+                          class="initials"
+                          style="width: 35px; height: 35px; font-size: 14.583333333333334px;"
+                        >
+                          <span
+                            style="line-height: 37px;"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div
+                          class="user"
+                        />
+                        <div
+                          class="bubble firstMessageOfAppMaker"
+                        >
+                          Sure, what's your email / order number?
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="poweredBy"
+                  >
+                    <div>
+                      <span>
+                        Powered by
+                      </span>
+                      <img
+                        alt="powered-by"
+                        src="test-file-stub"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    class="footer"
+                  >
+                    <div
+                      class="placeholder"
+                    >
+                      Type a message...
+                    </div>
+                    <i
+                      class="icon camera"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="button bottom-right"
+                  style="background-color: rgb(13, 135, 221);"
+                >
+                  <div
+                    class="iconWrapper"
+                  >
+                    <i
+                      class="icon"
+                    />
+                    <div
+                      class="shadow"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the updateOrCreateIntegration 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <nav
+        aria-label="breadcrumb"
+        class=""
+      >
+        <ol
+          class="breadcrumb"
+        >
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations"
+            >
+              Integrations
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat"
+            >
+              Chat
+            </a>
+          </li>
+          <li
+            class="breadcrumb-item"
+          >
+            myChat1
+          </li>
+        </ol>
+      </nav>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/campaigns"
+      >
+        Campaigns
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/automation"
+      >
+        Automation
+      </a>
+      <a
+        activeclassname="active"
+        class="link"
+        to="/app/settings/integrations/gorgias_chat/1/installation"
+      >
+        Installation
+      </a>
+    </nav>
+    <div
+      class="pageContainer container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <form
+            class=""
+          >
+            <div
+              class="form"
+            >
+              <div
+                class="fieldset formGroup"
+              >
+                <div
+                  class="InputField formGroup required form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Chat title
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      placeholder="Ex: Company Support"
+                      required=""
+                      type="text"
+                      value="myChat1"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Language
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <select
+                      class="field form-control"
+                      id="id-input-42"
+                      options="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+                    >
+                      <option
+                        value="en-US"
+                      >
+                        English (US)
+                      </option>
+                      <option
+                        value="fr-FR"
+                      >
+                        French (France)
+                      </option>
+                      <option
+                        value="fr-CA"
+                      >
+                        French (Canada)
+                      </option>
+                      <option
+                        value="es"
+                      >
+                        Spanish
+                      </option>
+                      <option
+                        value="da"
+                      >
+                        Danish
+                      </option>
+                      <option
+                        value="sv"
+                      >
+                        Swedish
+                      </option>
+                      <option
+                        value="it"
+                      >
+                        Italian
+                      </option>
+                      <option
+                        value="nl"
+                      >
+                        Dutch
+                      </option>
+                      <option
+                        value="de"
+                      >
+                        German
+                      </option>
+                      <option
+                        value="no"
+                      >
+                        Norwegian
+                      </option>
+                      <option
+                        value="cz"
+                      >
+                        Czech
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Introduction text during business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="How can we help?"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="InputField formGroup form-group"
+                  color=""
+                >
+                  <label
+                    class="control-label"
+                    for="id-input-42"
+                  >
+                    Introduction text outside business hours
+                  </label>
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="field form-control"
+                      id="id-input-42"
+                      maxlength="50"
+                      type="text"
+                      value="We'll be back tomorrow"
+                    />
+                  </div>
+                </div>
+                <fieldset
+                  class="mb-3"
+                  name="type-field"
+                >
+                  <legend
+                    class="legend"
+                  >
+                    Avatar
+                  </legend>
+                  <div
+                    class="option"
+                  >
+                    <label
+                      class="label label"
+                      for="team-members"
+                    >
+                      <input
+                        checked=""
+                        class="input"
+                        id="team-members"
+                        name="type-field"
+                        type="radio"
+                      />
+                      Use team members' avatars
+                    </label>
+                  </div>
+                  <div
+                    class="option"
+                  >
+                    <label
+                      class="label label"
+                      for="team-picture"
+                    >
+                      <input
+                        class="input"
+                        id="team-picture"
+                        name="type-field"
+                        type="radio"
+                      />
+                      Use a single image for the whole team
+                    </label>
+                    <div
+                      class="caption caption"
+                    >
+                      For example, use your company's logo. The image needs to be a square of 500kb maximum.
+                    </div>
+                  </div>
+                </fieldset>
+                <div
+                  class="colorPickersWrapper formGroup"
+                >
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Main color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="wrapper fill secondary medium"
+                          id="color-picker-42"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="InputField form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Conversation color
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="d-inline-block"
+                      >
+                        <button
+                          class="wrapper fill secondary medium"
+                          id="color-picker-42"
+                          type="button"
+                        >
+                          <div
+                            class="color"
+                            style="background-color: rgb(13, 135, 221);"
+                          />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="positionWrapper"
+                >
+                  <div
+                    class="InputField formGroup form-group"
+                    color=""
+                  >
+                    <label
+                      class="control-label"
+                      for="id-input-42"
+                    >
+                      Chat position
+                    </label>
+                    <div
+                      class=""
+                    >
+                      <select
+                        class="field form-control"
+                        id="id-input-42"
+                        options="[object Object],[object Object],[object Object],[object Object]"
+                      >
+                        <option
+                          value="bottom-right"
+                        >
+                          Bottom right
+                        </option>
+                        <option
+                          value="bottom-left"
+                        >
+                          Bottom left
+                        </option>
+                        <option
+                          value="top-right"
+                        >
+                          Top right
+                        </option>
+                        <option
+                          value="top-left"
+                        >
+                          Top left
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div
+                    class="positionInputsWrapper"
+                  >
+                    <div
+                      class="InputField formGroup form-group"
+                      color=""
+                    >
+                      <div
+                        class="label-wrapper"
+                      >
+                        <label
+                          class="control-label"
+                          for="id-input-42"
+                        >
+                          Move widget left / right
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="field form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="InputField formGroup form-group"
+                      color=""
+                    >
+                      <div
+                        class="label-wrapper"
+                      >
+                        <label
+                          class="control-label"
+                          for="id-input-42"
+                        >
+                          Move widget up / down
+                        </label>
+                        <span
+                          id="id-input-42-tooltip"
+                        >
+                          <i
+                            class="material-icons-outlined tooltipIcon"
+                          >
+                            info
+                          </i>
+                        </span>
+                      </div>
+                      <div
+                        class="with-suffix"
+                      >
+                        <input
+                          class="field form-control"
+                          id="id-input-42"
+                          max="200"
+                          min="-20"
+                          suffix="px"
+                          tooltipicon="[object Object]"
+                          type="number"
+                          value="0"
+                        />
+                        <div
+                          class="input-suffix-wrapper"
+                        >
+                          <div
+                            class="spacer"
+                          >
+                            0
+                          </div>
+                          <div
+                            class="suffix"
+                          >
+                            px
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button
+                  class="wrapper fill primary medium"
+                  type="submit"
+                >
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div
+          class="col"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="container"
+            >
+              <span
+                class="mb-3 group horizontal"
+              >
+                <button
+                  class="wrapper fill primary medium left"
+                  type="button"
+                >
+                  During business hours
+                </button>
+                <button
+                  class="wrapper fill secondary medium right"
+                  type="button"
+                >
+                  Outside business hours
+                </button>
+              </span>
+              <div
+                class="preview"
+              >
+                <div
+                  class="dialog"
+                >
+                  <div
+                    class="header"
+                    style="background-color: rgb(13, 135, 221);"
+                  >
+                    <div
+                      class="agents"
+                    >
+                      <div
+                        class="agent first"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                      <div
+                        class="agent middle"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                        <div
+                          class="onlineMarker"
+                        />
+                      </div>
+                      <div
+                        class="agent last"
+                        style="border-color: #0d87dd;"
+                      >
+                        <i
+                          class="material-icons"
+                        >
+                          person
+                        </i>
+                      </div>
+                    </div>
+                    <div
+                      class="details"
+                    >
+                      <div
+                        class="appName"
+                      >
+                        myChat1
                       </div>
                       <div
                         class="introductionText"

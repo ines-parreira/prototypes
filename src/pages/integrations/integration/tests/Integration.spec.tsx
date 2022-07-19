@@ -256,6 +256,7 @@ describe('<IntegrationDetail />', () => {
             sendVerificationEmail: jest.fn(),
             verifyEmailIntegrationManually: jest.fn(),
             klaviyoSyncHistoricalEvent: jest.fn(),
+            createGorgiasChatIntegration: jest.fn(),
         },
         integrations: fromJS([]),
         currentPlan: {
