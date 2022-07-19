@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react'
 import {Call} from '@twilio/voice-sdk'
-import {Button} from 'reactstrap'
 
+import Button from 'pages/common/components/button/Button'
 import {useCallStatus} from '../../../../../hooks/integrations/phone/useCallStatus'
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
 import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
@@ -30,6 +30,7 @@ export default function OutgoingPhoneCall({call}: Props): JSX.Element {
                     phoneNumber={customerPhoneNumber}
                 />
                 <Button
+                    intent="secondary"
                     data-testid="end-call-button"
                     className={css.end}
                     onClick={onDisconnect}

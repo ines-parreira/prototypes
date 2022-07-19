@@ -1,6 +1,5 @@
 import React, {Component, FormEvent, ReactNode} from 'react'
 import {Link} from 'react-router-dom'
-import Clipboard from 'clipboard'
 import {connect, ConnectedProps} from 'react-redux'
 import _capitalize from 'lodash/capitalize'
 import classNames from 'classnames'
@@ -9,13 +8,13 @@ import {EditorState} from 'draft-js'
 import {
     Container,
     Form,
-    Button,
     InputGroup,
     InputGroupAddon,
     Input,
     FormGroup,
 } from 'reactstrap'
-
+import copy from 'copy-to-clipboard'
+import Button from 'pages/common/components/button/Button'
 import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
     OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
@@ -158,18 +157,12 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         return form
     }
 
-    _clipboardCopy = (button: HTMLButtonElement) => {
-        if (!button) {
-            return
-        }
-
-        const clipboard = new Clipboard(button)
-        clipboard.on('success', () => {
-            this.setState({isCopied: true})
-            setTimeout(() => {
-                this.setState({isCopied: false})
-            }, 1500)
-        })
+    _clipboardCopy = (text: string) => {
+        copy(text)
+        this.setState({isCopied: true})
+        setTimeout(() => {
+            this.setState({isCopied: false})
+        }, 1500)
     }
 
     _handleSubmit = (e: FormEvent) => {
@@ -369,9 +362,11 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                     />
                     <InputGroupAddon addonType="append">
                         <Button
-                            color="primary"
+                            intent="primary"
                             data-clipboard-target="#forwarding-email"
-                            innerRef={this._clipboardCopy}
+                            onClick={() =>
+                                this._clipboardCopy(forwardingEmailAddress)
+                            }
                         >
                             <i className="material-icons mr-2">file_copy</i>
                             {this.state.isCopied ? 'Copied!' : 'Copy'}
@@ -567,8 +562,8 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                     <div>
                         <Button
                             type="submit"
-                            color="success"
-                            disabled={
+                            intent="primary"
+                            isDisabled={
                                 !this.state.dirty ||
                                 isSubmitting ||
                                 isDeleting ||
@@ -583,11 +578,14 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                         {isDeactivated && isGmail && (
                             <Button
                                 className="ml-2"
-                                tag="a"
                                 color="success"
-                                href={`${gmailRedirectUri}?integration_id=${
-                                    integration.get('id') as number
-                                }`}
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    const url = `${gmailRedirectUri}?integration_id=${
+                                        integration.get('id') as number
+                                    }`
+                                    window.open(url)
+                                }}
                             >
                                 Re-activate
                             </Button>

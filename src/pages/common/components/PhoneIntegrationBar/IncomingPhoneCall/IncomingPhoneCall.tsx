@@ -1,8 +1,8 @@
 import React, {SyntheticEvent, useCallback} from 'react'
 import {Call} from '@twilio/voice-sdk'
-import {Button} from 'reactstrap'
 import {useHistory} from 'react-router-dom'
 
+import Button from 'pages/common/components/button/Button'
 import client from '../../../../../models/api/resources'
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
 import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
@@ -36,6 +36,7 @@ export default function IncomingPhoneCall({call}: Props): JSX.Element {
                 />
                 <Button
                     data-testid="accept-call-button"
+                    intent="secondary"
                     className={css.accept}
                     onClick={onAccept}
                 >
@@ -43,6 +44,7 @@ export default function IncomingPhoneCall({call}: Props): JSX.Element {
                     Accept
                 </Button>
                 <Button
+                    intent="secondary"
                     data-testid="decline-call-button"
                     className={css.decline}
                     onClick={onDecline}

@@ -1,5 +1,11 @@
 import React, {Component, FormEvent} from 'react'
-import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Container,
+    Form,
+    Button as ReactstrapButton,
+} from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import classNames from 'classnames'
@@ -24,6 +30,7 @@ import history from 'pages/history'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
+import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
@@ -152,8 +159,8 @@ export class EmailIntegrationCreateVerification extends Component<
                             />
                             <Button
                                 type="submit"
-                                color="success"
-                                disabled={this.state.isDisabled}
+                                color="primary"
+                                isDisabled={this.state.isDisabled}
                                 className={classNames({
                                     'btn-loading':
                                         this.state.isVerificationLoading,
@@ -180,8 +187,8 @@ export class EmailIntegrationCreateVerification extends Component<
                     verification email, click on the button below to re-send it.
                 </p>
                 <Button
-                    type="button"
-                    disabled={this.state.isDisabled}
+                    intent="primary"
+                    isDisabled={this.state.isDisabled}
                     className={classNames({
                         'btn-loading': isLoading,
                     })}
@@ -215,14 +222,14 @@ export class EmailIntegrationCreateVerification extends Component<
                     verify your own email address. Please check your inbox, you
                     should have received a verification email from us. If you
                     did not, you can re-send this email by{' '}
-                    <Button
+                    <ReactstrapButton
                         color="link"
                         className="p-0"
                         style={{verticalAlign: 'initial'}}
                         onClick={resendAccountVerificationEmail}
                     >
                         clicking here
-                    </Button>
+                    </ReactstrapButton>
                     .
                 </Alert>
             </div>

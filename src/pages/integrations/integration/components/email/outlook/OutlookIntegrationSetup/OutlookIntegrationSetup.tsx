@@ -3,8 +3,9 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {fromJS, List, Map} from 'immutable'
-import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Container, Form} from 'reactstrap'
 
+import Button from 'pages/common/components/button/Button'
 import Loader from '../../../../../../common/components/Loader/Loader'
 import ToggleInput from '../../../../../../common/forms/ToggleInput'
 import PageHeader from '../../../../../../common/components/PageHeader'
@@ -261,8 +262,8 @@ export class OutlookIntegrationSetupContainer extends Component<Props, State> {
                         <div>
                             <Button
                                 type="submit"
-                                color="success"
-                                disabled={selectedIntegrations.isEmpty()}
+                                intent="primary"
+                                isDisabled={selectedIntegrations.isEmpty()}
                                 className={classnames({
                                     'btn-loading':
                                         loading.get('updateIntegration'),

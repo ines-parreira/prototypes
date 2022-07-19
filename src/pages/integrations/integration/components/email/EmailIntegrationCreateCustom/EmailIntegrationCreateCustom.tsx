@@ -4,7 +4,8 @@ import {fromJS, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import _capitalize from 'lodash/capitalize'
 import classnames from 'classnames'
-import {Container, Form, Button, Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import {Container, Form, Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import Button from 'pages/common/components/button/Button'
 
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
@@ -150,12 +151,11 @@ export class EmailIntegrationCreateCustom extends Component<Props, State> {
                             <div>
                                 <Button
                                     type="submit"
-                                    block
-                                    color="success"
+                                    intent="primary"
                                     className={classnames({
                                         'btn-loading': isSubmitting,
                                     })}
-                                    disabled={
+                                    isDisabled={
                                         !this.state.dirty ||
                                         isSubmitting ||
                                         hasErrors

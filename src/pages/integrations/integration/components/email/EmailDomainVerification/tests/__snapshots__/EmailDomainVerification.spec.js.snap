@@ -253,7 +253,8 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page whe
       </div>
     </div>
     <button
-      class="btn btn-success"
+      class="wrapper fill primary medium"
+      color="primary"
       type="submit"
     >
       Add Domain
@@ -357,7 +358,8 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page wit
       </div>
     </div>
     <button
-      class="btn btn-success"
+      class="wrapper fill primary medium"
+      color="primary"
       type="submit"
     >
       Add Domain
@@ -461,7 +463,8 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page wit
       </div>
     </div>
     <button
-      class="btn btn-success"
+      class="wrapper fill primary medium"
+      color="primary"
       type="submit"
     >
       Add Domain

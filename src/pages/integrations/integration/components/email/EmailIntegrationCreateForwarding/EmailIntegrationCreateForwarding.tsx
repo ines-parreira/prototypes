@@ -4,7 +4,6 @@ import Clipboard from 'clipboard'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {
-    Button,
     Breadcrumb,
     BreadcrumbItem,
     Container,
@@ -13,12 +12,13 @@ import {
     Input,
 } from 'reactstrap'
 import {Map} from 'immutable'
-
 import outlook from 'assets/img/integrations/outlook.svg'
 import office from 'assets/img/integrations/office.svg'
 import zoho from 'assets/img/integrations/zoho.svg'
 import exchange from 'assets/img/integrations/exchange.svg'
 import groups from 'assets/img/integrations/google-groups.svg'
+
+import Button from 'pages/common/components/button/Button'
 
 import {getForwardingEmailAddress} from '../../../../../../state/integrations/selectors'
 import {notify} from '../../../../../../state/notifications/actions'
@@ -123,7 +123,7 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
                         <InputGroupAddon addonType="append">
                             <Button
                                 id="copy-forwarding-email"
-                                color="primary"
+                                intent="primary"
                                 data-clipboard-target="#forwarding-email"
                             >
                                 <i className="material-icons mr-2">file_copy</i>
@@ -143,11 +143,8 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
                         {servicesWithTutorials.map((config, idx) => (
                             <Button
                                 key={idx}
-                                color="secondary"
-                                size="lg"
-                                tag="a"
-                                href={config.link}
-                                target="_blank"
+                                intent="secondary"
+                                onClick={() => window.open(config.link)}
                                 className={css.forwardingCard}
                             >
                                 <img
@@ -158,7 +155,6 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
                             </Button>
                         ))}
                     </div>
-
                     <p>
                         Using GMail or G Suite?{' '}
                         <Link to="/app/settings/integrations/email/new">
@@ -168,9 +164,9 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
                 </div>
 
                 <Button
-                    color="success"
-                    disabled={isLoading}
-                    tag={Link}
+                    color="primary"
+                    type="submit"
+                    isDisabled={isLoading}
                     onClick={this._onSubmit}
                     className={classnames({
                         'btn-loading': isLoading,

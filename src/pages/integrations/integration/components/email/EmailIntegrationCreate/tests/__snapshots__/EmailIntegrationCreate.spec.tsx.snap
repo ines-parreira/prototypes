@@ -51,9 +51,9 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
       class="form"
       data-candu-id="email-integration-create-form"
     >
-      <a
-        class="mb-2 connectButton gmailButton btn btn-secondary btn-block"
-        href="testGmail"
+      <button
+        class="wrapper mb-2 connectButton gmailButton fill primary medium"
+        type="submit"
       >
         <img
           alt="google logo"
@@ -62,7 +62,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
         <span>
           Connect Google email account
         </span>
-      </a>
+      </button>
       <p
         class="text-muted text-center"
       >
@@ -73,9 +73,9 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
       >
         OR
       </div>
-      <a
-        class="mb-2 connectButton outlookButton btn btn-secondary btn-block"
-        href="testOutlook"
+      <button
+        class="wrapper mb-2 connectButton outlookButton fill secondary medium"
+        type="submit"
       >
         <img
           alt="office logo"
@@ -84,7 +84,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
         <span>
           Connect Office365 email account
         </span>
-      </a>
+      </button>
       <p
         class="text-muted text-center"
       >
@@ -99,7 +99,8 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
         to="/app/settings/integrations/email/new/custom"
       >
         <button
-          class="mb-2 connectButton btn btn-secondary btn-block"
+          class="wrapper mb-2 connectButton fill secondary medium"
+          type="submit"
         >
           <span>
             Connect other email provider

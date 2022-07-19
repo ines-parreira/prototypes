@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
-import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import Button from 'pages/common/components/button/Button'
 
 import {RootState} from 'state/types'
 import googleLogo from 'assets/img/integrations/google-icon.svg'
@@ -19,6 +20,11 @@ import css from './EmailIntegrationCreate.less'
 type Props = ConnectedProps<typeof connector>
 
 export class EmailIntegrationCreate extends Component<Props> {
+    _handle_submit = (e: React.SyntheticEvent, redirectUri: string) => {
+        e.preventDefault()
+        window.open(redirectUri)
+    }
+
     render() {
         const {gmailRedirectUri, outlookRedirectUri} = this.props
 
@@ -52,9 +58,11 @@ export class EmailIntegrationCreate extends Component<Props> {
                         data-candu-id="email-integration-create-form"
                     >
                         <Button
-                            tag="a"
-                            href={gmailRedirectUri}
-                            block
+                            type="submit"
+                            intent="primary"
+                            onClick={(e) =>
+                                this._handle_submit(e, gmailRedirectUri)
+                            }
                             className={classnames(
                                 'mb-2',
                                 css.connectButton,
@@ -75,9 +83,11 @@ export class EmailIntegrationCreate extends Component<Props> {
                         <div className="divider">OR</div>
 
                         <Button
-                            tag="a"
-                            href={outlookRedirectUri}
-                            block
+                            type="submit"
+                            intent="secondary"
+                            onClick={(e) =>
+                                this._handle_submit(e, outlookRedirectUri)
+                            }
                             className={classnames(
                                 'mb-2',
                                 css.connectButton,
@@ -98,7 +108,8 @@ export class EmailIntegrationCreate extends Component<Props> {
 
                         <Link to="/app/settings/integrations/email/new/custom">
                             <Button
-                                block
+                                type="submit"
+                                intent="secondary"
                                 className={classnames(
                                     'mb-2',
                                     css.connectButton

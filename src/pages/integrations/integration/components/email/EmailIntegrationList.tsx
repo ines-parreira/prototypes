@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {List, Map} from 'immutable'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
-import {Button} from 'reactstrap'
+import Button from 'pages/common/components/button/Button'
 
 import gmailImg from 'assets/img/integrations/gmail.png'
 import outlookImg from 'assets/img/integrations/outlook.png'
@@ -130,25 +130,34 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                     <div>
                         {!active && isGmail && (
                             <Button
-                                tag="a"
+                                type="submit"
                                 color="success"
-                                href={`${gmailRedirectUri}?integration_id=${
-                                    integration.get('id') as number
-                                }`}
                                 className={classnames({
                                     'btn-loading': isRowSubmitting,
                                 })}
+                                onClick={(e) => {
+                                    const uri = `${gmailRedirectUri}?
+                                    integration_id=${
+                                        integration.get('id') as number
+                                    }`
+                                    e.preventDefault()
+                                    window.open(uri)
+                                }}
                             >
                                 Reactivate
                             </Button>
                         )}
                         {!active && isOutlook && (
                             <Button
-                                tag="a"
-                                color="success"
-                                href={`${outlookRedirectUri}?integration_id=${
-                                    integration.get('id') as number
-                                }`}
+                                type="submit"
+                                color="primary"
+                                onClick={(e) => {
+                                    const uri = `${outlookRedirectUri}?integration_id=${
+                                        integration.get('id') as number
+                                    }`
+                                    e.preventDefault()
+                                    window.open(uri)
+                                }}
                                 className={classnames({
                                     'btn-loading': isRowSubmitting,
                                 })}

@@ -2,7 +2,8 @@ import React, {useLayoutEffect, useState} from 'react'
 import {RouteComponentProps, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Map} from 'immutable'
-import {Button, Container, FormGroup, Label} from 'reactstrap'
+import {Container, FormGroup, Label} from 'reactstrap'
+import Button from 'pages/common/components/button/Button'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -166,7 +167,7 @@ export const EmailDomainVerificationContainer = (props: Props) => {
                             </FormGroup>
                             <Button
                                 type="submit"
-                                color="success"
+                                color="primary"
                                 onClick={() => {
                                     void actions.createEmailDomain(
                                         domain,

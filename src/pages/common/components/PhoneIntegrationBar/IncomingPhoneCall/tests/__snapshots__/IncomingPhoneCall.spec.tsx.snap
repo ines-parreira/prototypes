@@ -68,7 +68,7 @@ exports[`<IncomingPhoneCall/> should render 1`] = `
       )
     </span>
     <button
-      class="accept btn btn-secondary"
+      class="wrapper accept fill secondary medium"
       data-testid="accept-call-button"
       type="button"
     >
@@ -80,7 +80,7 @@ exports[`<IncomingPhoneCall/> should render 1`] = `
       Accept
     </button>
     <button
-      class="decline btn btn-secondary"
+      class="wrapper decline fill secondary medium"
       data-testid="decline-call-button"
       type="button"
     >

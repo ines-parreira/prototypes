@@ -69,15 +69,14 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
         We did not find any email address associated with your account.
       </p>
       <div>
-        <Button
+        <ForwardRef
           className=""
-          color="success"
-          disabled={true}
-          tag="button"
+          intent="primary"
+          isDisabled={true}
           type="submit"
         >
           Save Changes
-        </Button>
+        </ForwardRef>
       </div>
     </Form>
   </Container>
@@ -192,15 +191,14 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
         />
       </div>
       <div>
-        <Button
+        <ForwardRef
           className=""
-          color="success"
-          disabled={true}
-          tag="button"
+          intent="primary"
+          isDisabled={true}
           type="submit"
         >
           Save Changes
-        </Button>
+        </ForwardRef>
       </div>
     </Form>
   </Container>
@@ -341,15 +339,14 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
         />
       </div>
       <div>
-        <Button
+        <ForwardRef
           className=""
-          color="success"
-          disabled={true}
-          tag="button"
+          intent="primary"
+          isDisabled={true}
           type="submit"
         >
           Save Changes
-        </Button>
+        </ForwardRef>
       </div>
     </Form>
   </Container>

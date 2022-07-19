@@ -76,11 +76,10 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             addonType="append"
             tag="div"
           >
-            <Button
-              color="primary"
+            <ForwardRef
               data-clipboard-target="#forwarding-email"
               id="copy-forwarding-email"
-              tag="button"
+              intent="primary"
             >
               <i
                 className="material-icons mr-2"
@@ -88,7 +87,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
                 file_copy
               </i>
               Copied!
-            </Button>
+            </ForwardRef>
           </InputGroupAddon>
         </InputGroup>
       </div>
@@ -101,14 +100,11 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
         <div
           className="d-flex flex-wrap"
         >
-          <Button
+          <ForwardRef
             className="forwardingCard"
-            color="secondary"
-            href="https://gorgias.page/googlegroups"
+            intent="secondary"
             key="0"
-            size="lg"
-            tag="a"
-            target="_blank"
+            onClick={[Function]}
           >
             <img
               alt="Google Groups logo"
@@ -117,15 +113,12 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             <div>
               Google Groups
             </div>
-          </Button>
-          <Button
+          </ForwardRef>
+          <ForwardRef
             className="forwardingCard"
-            color="secondary"
-            href="https://gorgias.page/outlook"
+            intent="secondary"
             key="1"
-            size="lg"
-            tag="a"
-            target="_blank"
+            onClick={[Function]}
           >
             <img
               alt="Outlook logo"
@@ -134,15 +127,12 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             <div>
               Outlook
             </div>
-          </Button>
-          <Button
+          </ForwardRef>
+          <ForwardRef
             className="forwardingCard"
-            color="secondary"
-            href="https://gorgias.page/ms365"
+            intent="secondary"
             key="2"
-            size="lg"
-            tag="a"
-            target="_blank"
+            onClick={[Function]}
           >
             <img
               alt="Office 365 logo"
@@ -151,15 +141,12 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             <div>
               Office 365
             </div>
-          </Button>
-          <Button
+          </ForwardRef>
+          <ForwardRef
             className="forwardingCard"
-            color="secondary"
-            href="https://gorgias.page/msexchange"
+            intent="secondary"
             key="3"
-            size="lg"
-            tag="a"
-            target="_blank"
+            onClick={[Function]}
           >
             <img
               alt="Microsoft Exchange logo"
@@ -168,15 +155,12 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             <div>
               Microsoft Exchange
             </div>
-          </Button>
-          <Button
+          </ForwardRef>
+          <ForwardRef
             className="forwardingCard"
-            color="secondary"
-            href="https://gorgias.page/zohomail"
+            intent="secondary"
             key="4"
-            size="lg"
-            tag="a"
-            target="_blank"
+            onClick={[Function]}
           >
             <img
               alt="Zoho Mail logo"
@@ -185,7 +169,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             <div>
               Zoho Mail
             </div>
-          </Button>
+          </ForwardRef>
         </div>
         <p>
           Using GMail or G Suite?
@@ -197,15 +181,15 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           </Link>
         </p>
       </div>
-      <Button
+      <ForwardRef
         className=""
-        color="success"
-        disabled={false}
+        color="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag={[Function]}
+        type="submit"
       >
         Verify email forwarding
-      </Button>
+      </ForwardRef>
     </div>
   </Container>
 </div>
@@ -287,11 +271,10 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             addonType="append"
             tag="div"
           >
-            <Button
-              color="primary"
+            <ForwardRef
               data-clipboard-target="#forwarding-email"
               id="copy-forwarding-email"
-              tag="button"
+              intent="primary"
             >
               <i
                 className="material-icons mr-2"
@@ -299,7 +282,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
                 file_copy
               </i>
               Copy
-            </Button>
+            </ForwardRef>
           </InputGroupAddon>
         </InputGroup>
       </div>
@@ -312,14 +295,11 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
         <div
           className="d-flex flex-wrap"
         >
-          <Button
+          <ForwardRef
             className="forwardingCard"
-            color="secondary"
-            href="https://gorgias.page/googlegroups"
+            intent="secondary"
             key="0"
-            size="lg"
-            tag="a"
-            target="_blank"
+            onClick={[Function]}
           >
             <img
               alt="Google Groups logo"
@@ -328,15 +308,12 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             <div>
               Google Groups
             </div>
-          </Button>
-          <Button
+          </ForwardRef>
+          <ForwardRef
             className="forwardingCard"
-            color="secondary"
-            href="https://gorgias.page/outlook"
+            intent="secondary"
             key="1"
-            size="lg"
-            tag="a"
-            target="_blank"
+            onClick={[Function]}
           >
             <img
               alt="Outlook logo"
@@ -345,15 +322,12 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             <div>
               Outlook
             </div>
-          </Button>
-          <Button
+          </ForwardRef>
+          <ForwardRef
             className="forwardingCard"
-            color="secondary"
-            href="https://gorgias.page/ms365"
+            intent="secondary"
             key="2"
-            size="lg"
-            tag="a"
-            target="_blank"
+            onClick={[Function]}
           >
             <img
               alt="Office 365 logo"
@@ -362,15 +336,12 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             <div>
               Office 365
             </div>
-          </Button>
-          <Button
+          </ForwardRef>
+          <ForwardRef
             className="forwardingCard"
-            color="secondary"
-            href="https://gorgias.page/msexchange"
+            intent="secondary"
             key="3"
-            size="lg"
-            tag="a"
-            target="_blank"
+            onClick={[Function]}
           >
             <img
               alt="Microsoft Exchange logo"
@@ -379,15 +350,12 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             <div>
               Microsoft Exchange
             </div>
-          </Button>
-          <Button
+          </ForwardRef>
+          <ForwardRef
             className="forwardingCard"
-            color="secondary"
-            href="https://gorgias.page/zohomail"
+            intent="secondary"
             key="4"
-            size="lg"
-            tag="a"
-            target="_blank"
+            onClick={[Function]}
           >
             <img
               alt="Zoho Mail logo"
@@ -396,7 +364,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             <div>
               Zoho Mail
             </div>
-          </Button>
+          </ForwardRef>
         </div>
         <p>
           Using GMail or G Suite?
@@ -408,15 +376,15 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           </Link>
         </p>
       </div>
-      <Button
+      <ForwardRef
         className=""
-        color="success"
-        disabled={false}
+        color="primary"
+        isDisabled={false}
         onClick={[Function]}
-        tag={[Function]}
+        type="submit"
       >
         Verify email forwarding
-      </Button>
+      </ForwardRef>
     </div>
   </Container>
 </div>

@@ -106,7 +106,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
         </div>
         <div>
           <button
-            class="btn btn-success btn-block disabled"
+            class="wrapper fill primary medium isDisabled"
             disabled=""
             type="submit"
           >
@@ -225,7 +225,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
         </div>
         <div>
           <button
-            class="btn-loading btn btn-success btn-block disabled"
+            class="wrapper btn-loading fill primary medium isDisabled"
             disabled=""
             type="submit"
           >
