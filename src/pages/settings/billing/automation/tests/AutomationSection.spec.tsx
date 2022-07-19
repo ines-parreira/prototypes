@@ -5,10 +5,10 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {account} from '../../../../../fixtures/account'
-import {billingState} from '../../../../../fixtures/billing'
-import {basicPlan} from '../../../../../fixtures/subscriptionPlan'
-import {RootState, StoreDispatch} from '../../../../../state/types'
+import {account} from 'fixtures/account'
+import {billingState} from 'fixtures/billing'
+import {basicPlan, starterPlan} from 'fixtures/subscriptionPlan'
+import {RootState, StoreDispatch} from 'state/types'
 
 import AutomationSection from '../AutomationSection'
 
@@ -37,6 +37,7 @@ describe('<AutomationSection />', () => {
                     automation_addon_included: true,
                     automation_addon_discount: 0.5,
                 },
+                [starterPlan.id]: starterPlan,
             }),
         }),
     }
@@ -106,5 +107,25 @@ describe('<AutomationSection />', () => {
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render the upgrade button for the starter plan', () => {
+        const {getByText} = render(
+            <Provider
+                store={mockStore({
+                    ...defaultState,
+                    currentAccount: fromJS({
+                        ...account,
+                        current_subscription: {
+                            ...account.current_subscription,
+                            plan: starterPlan.id,
+                        },
+                    }),
+                })}
+            >
+                <AutomationSection />
+            </Provider>
+        )
+        expect(getByText('Upgrade')).toMatchSnapshot()
     })
 })

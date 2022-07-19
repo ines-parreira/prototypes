@@ -1,0 +1,352 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RuleRecipeModal should render the modal 1`] = `
+<body
+  class="modal-open"
+>
+  <div />
+  <div
+    style="position: relative; z-index: 1050; display: block;"
+    tabindex="-1"
+  >
+    <div
+      class=""
+    >
+      <div
+        class="modal"
+        role="dialog"
+        style="display: block;"
+        tabindex="-1"
+      >
+        <div
+          class="modal-dialog modalContainer modal-lg modal-dialog-centered"
+          role="document"
+        >
+          <div
+            class="modal-content"
+          >
+            <div
+              class="modal-header"
+            >
+              <h5
+                class="modal-title"
+              >
+                Access to next level automation features 🤖
+              </h5>
+              <button
+                aria-label="Close"
+                class="close"
+                type="button"
+              >
+                <span
+                  aria-hidden="true"
+                >
+                  ×
+                </span>
+              </button>
+            </div>
+            <div
+              class="modal-body"
+            >
+              <div
+                class="automationHeader"
+              >
+                <div
+                  class="alert info"
+                >
+                  <div
+                    class="iconContainer"
+                  >
+                    <i
+                      class="icon material-icons"
+                    >
+                      auto_awesome
+                    </i>
+                  </div>
+                  <div
+                    class="content"
+                  >
+                    <span
+                      class="label"
+                    >
+                      Customers automate up to 5% of all interactions with our new automation add-on!
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="features"
+                >
+                  <li
+                    class="d-flex align-items-center featureListItem"
+                  >
+                    <span
+                      class="featureIcon mr-3"
+                    >
+                      <i
+                        class="icon material-icons"
+                      >
+                        low_priority
+                      </i>
+                    </span>
+                    <span>
+                      Track, Return, Cancel & Custom 
+                      <b>
+                        workflows
+                      </b>
+                    </span>
+                  </li>
+                  <li
+                    class="d-flex align-items-center featureListItem"
+                  >
+                    <span
+                      class="featureIcon mr-3"
+                    >
+                      <i
+                        class="icon material-icons"
+                      >
+                        slow_motion_video
+                      </i>
+                    </span>
+                    <span>
+                      Self-service portal in 
+                      <b>
+                        chat
+                      </b>
+                       and
+                       
+                      <b>
+                        help center
+                      </b>
+                    </span>
+                  </li>
+                  <li
+                    class="d-flex align-items-center featureListItem"
+                  >
+                    <span
+                      class="featureIcon mr-3"
+                    >
+                      <i
+                        class="icon material-icons"
+                      >
+                        insights
+                      </i>
+                    </span>
+                    <span>
+                      Self-service 
+                      <b>
+                        statistics
+                      </b>
+                    </span>
+                  </li>
+                </div>
+              </div>
+              <div
+                class="managedRule autoCloseSpam bordered"
+              >
+                <div
+                  class="titleWrapper"
+                >
+                  <span
+                    class="title"
+                  >
+                    my rule
+                  </span>
+                </div>
+                <div
+                  class="container"
+                >
+                  <div
+                    class="description"
+                  >
+                    <div
+                      class="count"
+                    >
+                      <div
+                        class="targetTitle"
+                      >
+                        target up to
+                      </div>
+                      <div
+                        class="targetValue"
+                      >
+                        <span
+                          class="bold"
+                        >
+                          0
+                        </span>
+                         
+                        tickets/month
+                      </div>
+                    </div>
+                    <div
+                      class="descriptionBlock"
+                    >
+                      <h4>
+                        Close unwanted emails
+                      </h4>
+                      <p>
+                        This rule automatically checks and closes emails that are not related to a customer support request (e.g. newsletters, sales outreach messages...)
+                      </p>
+                    </div>
+                    <div
+                      class="descriptionBlock"
+                    >
+                      <h4>
+                        Allow or block some email addresses
+                      </h4>
+                      <p>
+                        You'll be able to add allowed email addresses and blocked email addresses in the rules settings, allowing a more precise control on your workflow. Emails coming from the allowed or blocked lists will respectively never or always be closed by this rule.
+                      </p>
+                    </div>
+                    <div
+                      class="descriptionBlock"
+                    >
+                      <h4>
+                        Monitor closed tickets 
+                      </h4>
+                      <p>
+                        All the auto closed tickets are tagged with an "auto-close" and "non-support-related" tags. This will allow you to find them easily in case you want to monitor which tickets the rule is closing.
+                      </p>
+                    </div>
+                    <div
+                      class="descriptionBlock"
+                    >
+                      <div
+                        class="mb-1 mt-3"
+                      >
+                        <label
+                          class="label label"
+                          for="checkbox-1"
+                        >
+                          <input
+                            checked=""
+                            class="input"
+                            id="checkbox-1"
+                            name="checkbox-1"
+                            type="checkbox"
+                          />
+                          Create the views related to this rule.
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="example bordered"
+                  >
+                    <div
+                      class="fakeTicket"
+                    >
+                      <div
+                        class="fakeTicketTitleWrapper"
+                      >
+                        <span
+                          class="fakeTicketTitle"
+                        >
+                          Newsletter
+                        </span>
+                        <div
+                          class="badge fakeTicketClosed"
+                        >
+                          closed
+                        </div>
+                      </div>
+                      <div
+                        class="fakeTicketDescription"
+                      >
+                        Check out our new product!
+                      </div>
+                    </div>
+                    <div
+                      class="fakeTicket"
+                    >
+                      <div
+                        class="fakeTicketTitleWrapper"
+                      >
+                        <span
+                          class="fakeTicketTitle"
+                        >
+                          Product question
+                        </span>
+                      </div>
+                      <div
+                        class="fakeTicketDescription"
+                      >
+                        I have ordered...
+                      </div>
+                    </div>
+                    <div
+                      class="fakeTicket"
+                    >
+                      <div
+                        class="fakeTicketTitleWrapper"
+                      >
+                        <span
+                          class="fakeTicketTitle"
+                        >
+                          Promotion! -50%...
+                        </span>
+                        <div
+                          class="badge fakeTicketClosed"
+                        >
+                          closed
+                        </div>
+                      </div>
+                      <div
+                        class="fakeTicketDescription"
+                      >
+                        Until Monday all of our products...
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="modalFooter modal-footer"
+            >
+              <button
+                class="wrapper fill secondary medium"
+                type="button"
+              >
+                Cancel
+              </button>
+              <span
+                id="rule-recipe-fixture-install-button"
+              >
+                <button
+                  class="wrapper fill primary medium"
+                  id="rule-recipe-fixture-install-button"
+                  type="button"
+                >
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    auto_awesome
+                  </i>
+                  Subscribe to automation add-on
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="modal-backdrop show"
+      />
+    </div>
+  </div>
+</body>
+`;
+
+exports[`RuleRecipeModal should render the update button for starter plan 1`] = `
+<span
+  class="wrapper"
+>
+  <i
+    class="material-icons icon isLeft medium"
+  >
+    auto_awesome
+  </i>
+  Upgrade
+</span>
+`;

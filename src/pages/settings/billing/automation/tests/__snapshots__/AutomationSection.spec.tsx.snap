@@ -331,3 +331,16 @@ exports[`<AutomationSection /> should render for trialing customers 1`] = `
   </div>
 </div>
 `;
+
+exports[`<AutomationSection /> should render the upgrade button for the starter plan 1`] = `
+<span
+  class="wrapper"
+>
+  Upgrade
+  <i
+    class="material-icons icon isRight medium"
+  >
+    auto_awesome
+  </i>
+</span>
+`;

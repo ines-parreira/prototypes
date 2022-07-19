@@ -1,0 +1,238 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GorgiasChatIntegrationSelfServicePaywall should render the paywall 1`] = `
+<div
+  class="full-width pageWrapper"
+>
+  <div
+    class="page container-fluid"
+  >
+    <div
+      class="paywallContainer"
+    >
+      <div
+        class="align-items-center mx-0 row"
+      >
+        <div
+          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview default col-12 col-lg-6 col-xl-6"
+        >
+          <div
+            class="filterShadow"
+          >
+            <img
+              alt="Feature preview"
+              class="img-fluid"
+              src="test-file-stub"
+            />
+          </div>
+        </div>
+        <div
+          class="pl-lg-5 col-12 col-lg-5 col-xl-5"
+        >
+          <div
+            class="content"
+          >
+            <div
+              class="flex align-items-center"
+            >
+              <div
+                class="badge"
+              >
+                Automation Add-on
+              </div>
+            </div>
+            <h1
+              class="contentTitle"
+            >
+              Get advanced automation features
+            </h1>
+            <div
+              class="description"
+            >
+              <p>
+                Empower customers to manage their orders, find
+                <br />
+                answers to common questions and receive help center 
+                <br />
+                article recommendations based on their questions.
+              </p>
+            </div>
+            <div
+              class="upgradeButton"
+            >
+              <div>
+                <div
+                  class="d-flex align-items-center upgradeLink"
+                >
+                  <button
+                    class="wrapper fill primary medium"
+                    type="button"
+                  >
+                    <span
+                      class="wrapper"
+                    >
+                      <i
+                        class="material-icons icon isLeft medium"
+                      >
+                        auto_awesome
+                      </i>
+                      Add Automation Features
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`GorgiasChatIntegrationSelfServicePaywall should show modal on button click 1`] = `
+<div
+  class="modal fade"
+  role="dialog"
+  style="display: block;"
+  tabindex="-1"
+>
+  <div
+    class="modal-dialog modal modal-dialog-centered"
+    role="document"
+  >
+    <div
+      class="modal-content"
+    >
+      <div
+        class="modal-header"
+      >
+        <h5
+          class="modal-title"
+        >
+          Confirm automation add-on subscription
+        </h5>
+        <button
+          aria-label="Close"
+          class="close"
+          type="button"
+        >
+          <span
+            aria-hidden="true"
+          >
+            ×
+          </span>
+        </button>
+      </div>
+      <div
+        class="modalBody modal-body"
+        data-candu-id="manage-automation-addon-modal-body"
+      >
+        <div
+          class="description"
+        >
+          <div
+            class="flex"
+          >
+            <div>
+              Unlock advanced features of the self-service, and track the performance!
+              <br />
+              Questions?
+               
+              <a
+                href="mailto:undefined"
+              >
+                <b>
+                  Get in touch!
+                </b>
+              </a>
+            </div>
+          </div>
+          <div
+            class="features"
+          >
+            <li
+              class="d-flex align-items-center featureListItem"
+            >
+              <span
+                class="featureIcon mr-3"
+              >
+                <i
+                  class="icon material-icons"
+                >
+                  low_priority
+                </i>
+              </span>
+              <span>
+                Track, Return, Cancel & Custom 
+                <b>
+                  workflows
+                </b>
+              </span>
+            </li>
+            <li
+              class="d-flex align-items-center featureListItem"
+            >
+              <span
+                class="featureIcon mr-3"
+              >
+                <i
+                  class="icon material-icons"
+                >
+                  slow_motion_video
+                </i>
+              </span>
+              <span>
+                Self-service portal in 
+                <b>
+                  chat
+                </b>
+                 and
+                 
+                <b>
+                  help center
+                </b>
+              </span>
+            </li>
+            <li
+              class="d-flex align-items-center featureListItem"
+            >
+              <span
+                class="featureIcon mr-3"
+              >
+                <i
+                  class="icon material-icons"
+                >
+                  insights
+                </i>
+              </span>
+              <span>
+                Self-service 
+                <b>
+                  statistics
+                </b>
+              </span>
+            </li>
+          </div>
+        </div>
+      </div>
+      <div
+        class="footer modal-footer"
+      >
+        <button
+          class="wrapper fill secondary medium"
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          class="wrapper fill primary medium"
+          type="button"
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

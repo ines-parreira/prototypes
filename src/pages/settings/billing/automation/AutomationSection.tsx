@@ -4,9 +4,9 @@ import {Card, CardBody, CardTitle} from 'reactstrap'
 import {Link} from 'react-router-dom'
 
 import {
-    DEPRECATED_getCurrentPlan,
     getAddOnAutomationAmountCurrentPlan,
     getAddOnAutomationFullAmountCurrentPlan,
+    getCurrentPlan,
     getHasAutomationAddOn,
 } from 'state/billing/selectors'
 import {
@@ -17,12 +17,13 @@ import UpgradeButton from 'pages/common/components/UpgradeButton/UpgradeButton'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
+import {PlanName} from 'utils/paywalls'
 
 import AutomationSubscriptionModal from './AutomationSubscriptionModal'
 import css from './AutomationSection.less'
 
 const AutomationSection = () => {
-    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
+    const currentPlan = useAppSelector(getCurrentPlan)
     const addOnAmount = useAppSelector(getAddOnAutomationAmountCurrentPlan)
     const fullAddOnAmount = useAppSelector(
         getAddOnAutomationFullAmountCurrentPlan
@@ -40,11 +41,11 @@ const AutomationSection = () => {
         >
             <CardTitle className={classnames(css['card-title'])}>
                 Automation
-                {!hasAutomationAddOn && addOnAmount != null && (
+                {!hasAutomationAddOn && addOnAmount != null && currentPlan && (
                     <SubscriptionAmount
                         className={css['automation-amount']}
-                        currency={currentPlan.get('currency')}
-                        interval={currentPlan.get('interval')}
+                        currency={currentPlan.currency}
+                        interval={currentPlan.interval}
                         amount={addOnAmount}
                         fullAmount={fullAddOnAmount}
                         renderAmount={(amount) => <b>{amount}</b>}
@@ -117,6 +118,14 @@ const AutomationSection = () => {
                     >
                         Manage add-on
                     </Button>
+                ) : !currentPlan?.automation_addon_equivalent_plan ? (
+                    <UpgradeButton
+                        className={css['upgrade-button']}
+                        state={{
+                            openedPlanModal: PlanName.Basic,
+                            isAutomationAddOnChecked: true,
+                        }}
+                    />
                 ) : (
                     <UpgradeButton
                         className={css['upgrade-button']}

@@ -9,7 +9,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import history from 'pages/history'
 import Alert from 'pages/common/components/Alert/Alert'
-import {getHasAutomationAddOn} from 'state/billing/selectors'
+import {getCurrentPlan, getHasAutomationAddOn} from 'state/billing/selectors'
 import {
     AnyManagedRuleSettings,
     RuleLimitStatus,
@@ -17,6 +17,8 @@ import {
 } from 'state/rules/types'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import AutomationSubscriptionFeatures from 'pages/settings/billing/automation/AutomationSubscriptionFeatures'
+import UpgradeButton from 'pages/common/components/UpgradeButton'
+import {PlanName} from 'utils/paywalls'
 
 import Tooltip from 'pages/common/components/Tooltip'
 import {getRulesLimitStatus} from 'state/entities/rules/selectors'
@@ -60,6 +62,7 @@ export const RuleRecipeModal = ({
     const [showAutomationModal, setShowAutomationModal] = useState(false)
     const [isSubscribing, setIsSubscribing] = useState(false)
     const ruleLimitStatus = useAppSelector(getRulesLimitStatus)
+    const currentPlan = useAppSelector(getCurrentPlan)
     const [installationErrors, setInstallationErrors] = useState<
         InstallationError[]
     >(
@@ -112,23 +115,33 @@ export const RuleRecipeModal = ({
 
     const InstallButton = () =>
         isBehindPaywall ? (
-            <>
-                <span id={installButtonId}>
-                    <Button
-                        intent="primary"
-                        onClick={() => setShowAutomationModal(true)}
-                        isDisabled={isInstallationDisabled}
-                        className={classnames({
-                            [css.disabledButton]: isInstallationDisabled,
-                        })}
-                        id={installButtonId}
-                    >
-                        <i className="material-icons mr-2">auto_awesome</i>
-                        Subscribe to automation add-on
-                    </Button>
-                </span>
-                {!!installationErrors.length && <ErrorTooltip />}
-            </>
+            !currentPlan?.automation_addon_equivalent_plan ? (
+                <UpgradeButton
+                    state={{
+                        openedPlanModal: PlanName.Basic,
+                        isAutomationAddOnChecked: true,
+                    }}
+                    position="left"
+                />
+            ) : (
+                <>
+                    <span id={installButtonId}>
+                        <Button
+                            intent="primary"
+                            onClick={() => setShowAutomationModal(true)}
+                            isDisabled={isInstallationDisabled}
+                            className={classnames({
+                                [css.disabledButton]: isInstallationDisabled,
+                            })}
+                            id={installButtonId}
+                        >
+                            <i className="material-icons mr-2">auto_awesome</i>
+                            Subscribe to automation add-on
+                        </Button>
+                    </span>
+                    {!!installationErrors.length && <ErrorTooltip />}
+                </>
+            )
         ) : (
             <>
                 <span id={installButtonId}>

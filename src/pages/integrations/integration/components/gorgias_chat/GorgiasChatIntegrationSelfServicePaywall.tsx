@@ -3,12 +3,13 @@ import React, {useState} from 'react'
 import Paywall, {UpgradeType} from 'pages/common/components/Paywall/Paywall'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
-import {DEPRECATED_getCurrentPlan} from 'state/billing/selectors'
+import {getCurrentPlan} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {CurrentAccountState} from 'state/currentAccount/types'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getIconFromUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
+import {PlanName} from 'utils/paywalls'
 
 const sspAutomationAddonMock = getIconFromUrl(
     'paywalls/screens/gorgias_chat_ssp_automation.png'
@@ -18,13 +19,13 @@ export const GorgiasChatIntegrationSelfServicePaywall = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
     const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
-    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
+    const currentPlan = useAppSelector(getCurrentPlan)
 
     const segmentEventToSend = {
         name: SegmentEvent.PaywallUpgradeButtonSelected,
         props: {
             domain: account.get('domain'),
-            current_plan: currentPlan.get('id'),
+            current_plan: currentPlan?.id,
             paywall_feature: 'automation_addon',
         },
     }
@@ -44,14 +45,25 @@ export const GorgiasChatIntegrationSelfServicePaywall = () => {
             previewImage={sspAutomationAddonMock}
             renderFilterShadow
             customCta={
-                <UpgradeButton
-                    label="Add Automation Features"
-                    onClick={() => {
-                        setIsAutomationModalOpened(true)
-                    }}
-                    segmentEventToSend={segmentEventToSend}
-                    position="left"
-                />
+                !currentPlan?.automation_addon_equivalent_plan ? (
+                    <UpgradeButton
+                        state={{
+                            openedPlanModal: PlanName.Basic,
+                            isAutomationAddOnChecked: true,
+                        }}
+                        segmentEventToSend={segmentEventToSend}
+                        position="left"
+                    />
+                ) : (
+                    <UpgradeButton
+                        label="Add Automation Features"
+                        onClick={() => {
+                            setIsAutomationModalOpened(true)
+                        }}
+                        segmentEventToSend={segmentEventToSend}
+                        position="left"
+                    />
+                )
             }
             modal={
                 <AutomationSubscriptionModal
