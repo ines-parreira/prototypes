@@ -8,6 +8,7 @@ import thunk from 'redux-thunk'
 import {renderWithRouter} from 'utils/testing'
 import * as actions from 'state/integrations/actions'
 import Integration from '../Integration'
+import {getConnectUrl} from '../Utils'
 
 jest.spyOn(actions, 'deleteIntegration')
 jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
@@ -102,13 +103,13 @@ describe('<BigCommerceIntegration/>', () => {
                             deactivated_datetime: '2018-01-01 10:12',
                             meta: {shop_id: 'kumbawa'},
                         })}
-                        redirectUri="okok{shop_id}"
+                        redirectUri={getConnectUrl()}
                     />
                 </Provider>
             )
 
             fireEvent.click(screen.getByRole('button', {name: 'Reconnect'}))
-            expect(window.location.href).toBe('okokkumbawa')
+            expect(window.location.href).toBe(getConnectUrl())
         })
     })
 })

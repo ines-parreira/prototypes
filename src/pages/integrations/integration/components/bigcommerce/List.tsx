@@ -10,6 +10,7 @@ import ConnectLink from 'pages/integrations/components/Detail/ConnectLink'
 import {IntegrationType} from 'models/integration/types'
 import NoIntegration from '../NoIntegration'
 import css from './List.less'
+import {getConnectUrl} from './Utils'
 
 type Props = {
     integrations: ImmutableList<Map<any, any>>
@@ -24,7 +25,6 @@ type Props = {
 function List({
     integrations,
     loading,
-    redirectUri,
     connectUrl,
     isExternalConnectUrl,
     isConnectionDisabled = false,
@@ -41,13 +41,7 @@ function List({
                         const editLink = `/app/settings/integrations/bigcommerce/${
                             integration!.get('id') as number
                         }`
-                        const bigCommerceShopId = integration!.getIn([
-                            'meta',
-                            'shop_id',
-                        ])
-                        const reactivateUrl = redirectUri
-                            .concat('?shop_id=')
-                            .concat(bigCommerceShopId)
+                        const reactivateUrl = getConnectUrl()
                         const isDisabled = integration!.get(
                             'deactivated_datetime'
                         )
@@ -59,22 +53,25 @@ function List({
                             >
                                 <Link to={editLink} className={css.link}>
                                     <span>{integration?.get('name')}</span>
-                                    <i className="material-icons md-3">
-                                        keyboard_arrow_right
-                                    </i>
                                 </Link>
                                 {isDisabled && (
-                                    <Link
-                                        to={isSubmitting ? '#' : reactivateUrl}
-                                        className={css.actionLink}
+                                    <ConnectLink
+                                        connectUrl={
+                                            isSubmitting ? '#' : reactivateUrl
+                                        }
+                                        integrationTitle={
+                                            IntegrationType.BigCommerce
+                                        }
+                                        isExternal={true}
                                     >
                                         <Button
                                             type="button"
                                             isDisabled={isSubmitting}
+                                            className={css.actionLink}
                                         >
                                             Reconnect
                                         </Button>
-                                    </Link>
+                                    </ConnectLink>
                                 )}
                             </li>
                         )

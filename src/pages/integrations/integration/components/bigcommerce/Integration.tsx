@@ -1,4 +1,4 @@
-import React, {useCallback, FormEvent} from 'react'
+import React, {FormEvent, useCallback} from 'react'
 import {Map} from 'immutable'
 import {Col, Container, Row} from 'reactstrap'
 
@@ -20,6 +20,7 @@ import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import settingsCss from 'pages/settings/settings.less'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
+import {getConnectUrl} from './Utils'
 
 type Props = {
     integration: Map<any, any>
@@ -27,17 +28,14 @@ type Props = {
     redirectUri: string
 }
 
-const Integration = ({integration, loading, redirectUri}: Props) => {
+const Integration = ({integration, loading}: Props) => {
     const dispatch = useAppDispatch()
     useQueryNotify()
     const isAuthenticationPending = useAuthenticationPolling(integration)
 
     const retriggerOAuthFlow = useCallback(() => {
-        window.location.href = redirectUri.replace(
-            '{shop_id}',
-            integration.getIn(['meta', 'shop_id'], '')
-        )
-    }, [integration, redirectUri])
+        window.location.href = getConnectUrl()
+    }, [])
 
     const isActive = !integration.get('deactivated_datetime', null)
     const isSubmitting = Boolean(loading.get('updateIntegration'))

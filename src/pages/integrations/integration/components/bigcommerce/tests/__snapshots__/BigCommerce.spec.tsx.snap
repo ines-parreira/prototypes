@@ -427,11 +427,6 @@ exports[`<BigCommerce/> List should render 1`] = `
         <span>
           myShop1
         </span>
-        <i
-          class="material-icons md-3"
-        >
-          keyboard_arrow_right
-        </i>
       </a>
     </li>
   </ul>

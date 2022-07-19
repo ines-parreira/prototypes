@@ -9,9 +9,9 @@ import PageHeader from 'pages/common/components/PageHeader'
 import {IntegrationType} from 'models/integration/types'
 
 import Detail from '../../../components/Detail/Detail'
-import {isProduction, isStaging} from '../../../../../utils/environment'
 import Integration from './Integration'
 import List from './List'
+import {getConnectUrl} from './Utils'
 
 const connectionsPath = 'connections'
 
@@ -35,18 +35,9 @@ function BigCommerce({integration, integrations, loading, redirectUri}: Props) {
         [`${baseURL}/`, 'App Details'],
         [`${baseURL}/${connectionsPath}`, 'Connections'],
     ]
-    let connectUrl =
-        'https://store-pk360c6roo.mybigcommerce.com/manage/marketplace/apps/my-apps'
-    if (isStaging()) {
-        connectUrl =
-            'https://store-pk360c6roo.mybigcommerce.com/manage/app/39647'
-    }
-    if (isProduction()) {
-        connectUrl =
-            'https://store-pk360c6roo.mybigcommerce.com/manage/marketplace/apps/38723' // will replace with published app
-    }
+
     const connectProps = {
-        connectUrl: connectUrl,
+        connectUrl: getConnectUrl(),
         isExternalConnectUrl: true,
     }
 
