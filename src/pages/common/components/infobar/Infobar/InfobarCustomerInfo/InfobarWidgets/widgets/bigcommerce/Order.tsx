@@ -91,7 +91,7 @@ export function TitleWrapper({children, source}: TitleWrapperProps) {
 
     const orderId = (source.get('id') || '') as string
 
-    const link = `https://store-${storeHash}.mybigcommerce.com/manage/orders/${orderId}/edit`
+    const link = `https://store-${storeHash}.mybigcommerce.com/manage/orders/${orderId}`
 
     return (
         <a href={link} target="_blank" rel="noopener noreferrer">

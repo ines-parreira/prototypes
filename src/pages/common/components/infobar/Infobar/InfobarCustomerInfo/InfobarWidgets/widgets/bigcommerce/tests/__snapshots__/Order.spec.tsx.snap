@@ -44,7 +44,7 @@ exports[`Order <AfterTitle/> should not render because widgets are being edited 
 
 exports[`Order <TitleWrapper/> should render default link 1`] = `
 <a
-  href="https://store-pk360c6roo.mybigcommerce.com/manage/orders/2345/edit"
+  href="https://store-pk360c6roo.mybigcommerce.com/manage/orders/2345"
   rel="noopener noreferrer"
   target="_blank"
 />
