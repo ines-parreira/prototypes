@@ -130,7 +130,7 @@ export const starterPlan: Plan = {
     phone_limits: {
         billing: 50,
     },
-    public: false,
+    public: true,
     trial_period_days: 7,
 }
 

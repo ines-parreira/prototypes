@@ -1165,7 +1165,7 @@ Array [
           "phone_limits": Object {
             "billing": 50,
           },
-          "public": false,
+          "public": true,
           "trial_period_days": 7,
         }
       }

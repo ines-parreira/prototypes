@@ -5,6 +5,7 @@ export enum FlagKey {
     EarlyAdopter = 'early-adopter',
     DefaultMacroToSearch = 'default-macro-to-search',
     NewPhoneAutoAssignment = 'new-phone-auto-assignment',
+    StarterPlanAccess = 'starter-plan-access',
 }
 
 type ContextSchema = {
