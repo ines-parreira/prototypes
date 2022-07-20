@@ -52,7 +52,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
             },
             Object {
               "background": "#D2D7DE",
-              "name": "Live chat tickets",
+              "name": "Chat tickets",
             },
           ]
         }
@@ -179,7 +179,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
                     87,
                     9,
                   ],
-                  "label": "Live chat tickets",
+                  "label": "Chat tickets",
                 },
               ],
               "labels": Array [
@@ -377,11 +377,11 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
         </div>
         <div
           className="bar-total-data-wrapper"
-          key="Live chat tickets"
+          key="Chat tickets"
         >
           <div
             className="label mr-4 mb-2"
-            key="Live chat tickets"
+            key="Chat tickets"
           >
             <span
               className="circle mr-2"
@@ -391,7 +391,7 @@ exports[`NormalizedBarStat should render a bar with total chart and disabled lab
                 }
               }
             />
-            Live chat tickets
+            Chat tickets
           </div>
           <div
             className="data"

@@ -1439,7 +1439,7 @@ export const stats = toImmutable<
                 disabledLink: '/app/settings/self-service',
             },
             other_tickets: {
-                label: 'Live chat tickets',
+                label: 'Chat tickets',
                 color: '#D2D7DE',
             },
         },
