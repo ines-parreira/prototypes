@@ -1910,12 +1910,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                       className="formGroup d-flex"
                     >
                       <ToggleInput
+                        aria-label="Hide chat temporarily"
                         isDisabled={false}
                         isLoading={false}
                         onClick={[Function]}
                       >
                         <div>
                           <Label
+                            aria-label="Hide chat temporarily"
                             className="label"
                             htmlFor="toggle-button-6"
                             isDisabled={false}
@@ -1923,12 +1925,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                             role="switch"
                           >
                             <label
+                              aria-label="Hide chat temporarily"
                               className="label label"
                               htmlFor="toggle-button-6"
                               onClick={[Function]}
                               role="switch"
                             >
                               <input
+                                aria-label="Hide chat temporarily"
                                 className="input"
                                 disabled={true}
                                 id="toggle-button-6"
@@ -2899,12 +2903,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                       className="formGroup d-flex"
                     >
                       <ToggleInput
+                        aria-label="Hide chat temporarily"
                         isDisabled={false}
                         isLoading={false}
                         onClick={[Function]}
                       >
                         <div>
                           <Label
+                            aria-label="Hide chat temporarily"
                             className="label"
                             htmlFor="toggle-button-8"
                             isDisabled={false}
@@ -2912,12 +2918,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                             role="switch"
                           >
                             <label
+                              aria-label="Hide chat temporarily"
                               className="label label"
                               htmlFor="toggle-button-8"
                               onClick={[Function]}
                               role="switch"
                             >
                               <input
+                                aria-label="Hide chat temporarily"
                                 className="input"
                                 disabled={true}
                                 id="toggle-button-8"
@@ -4247,12 +4255,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                       className="formGroup d-flex"
                     >
                       <ToggleInput
+                        aria-label="Hide chat temporarily"
                         isDisabled={false}
                         isLoading={false}
                         onClick={[Function]}
                       >
                         <div>
                           <Label
+                            aria-label="Hide chat temporarily"
                             className="label"
                             htmlFor="toggle-button-3"
                             isDisabled={false}
@@ -4260,12 +4270,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                             role="switch"
                           >
                             <label
+                              aria-label="Hide chat temporarily"
                               className="label label"
                               htmlFor="toggle-button-3"
                               onClick={[Function]}
                               role="switch"
                             >
                               <input
+                                aria-label="Hide chat temporarily"
                                 className="input"
                                 disabled={true}
                                 id="toggle-button-3"

@@ -179,6 +179,7 @@ function GorgiasChatIntegrationInstall({
                                     isToggled={isDisabled}
                                     isLoading={isLoading}
                                     isDisabled={isLoading}
+                                    aria-label="Hide chat temporarily"
                                 />
                                 <div className="ml-2">
                                     <b>Hide chat temporarily</b>
