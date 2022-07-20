@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
-import {Button} from 'reactstrap'
 import {Map} from 'immutable'
 import parsePhoneNumber from 'libphonenumber-js'
 
+import Button from 'pages/common/components/button/Button'
 import {getNewMessageSource} from '../../../../../state/newMessage/selectors'
 import {RootState} from '../../../../../state/types'
 import {DEPRECATED_getTicket} from '../../../../../state/ticket/selectors'
@@ -35,8 +35,8 @@ function PhoneTicketSubmitButtons({
             <Button
                 data-testid="outbound-call-button"
                 type="submit"
-                color="success"
-                disabled={isDisabled}
+                intent="primary"
+                isDisabled={isDisabled}
                 onClick={onSubmit}
             >
                 Call

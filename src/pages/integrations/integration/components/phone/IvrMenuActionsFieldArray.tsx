@@ -1,7 +1,7 @@
 import React from 'react'
-import {Button} from 'reactstrap'
 import produce from 'immer'
 
+import Button from 'pages/common/components/button/Button'
 import {
     IvrMenuAction,
     IvrMenuActionType,
@@ -65,7 +65,7 @@ const IvrMenuActionsFieldArray = (props: Props): JSX.Element => {
                 )
             })}
             {value.length < 9 && (
-                <Button onClick={addAction}>
+                <Button intent="secondary" onClick={addAction}>
                     <i className="material-icons mr-2">add</i>Add option
                 </Button>
             )}

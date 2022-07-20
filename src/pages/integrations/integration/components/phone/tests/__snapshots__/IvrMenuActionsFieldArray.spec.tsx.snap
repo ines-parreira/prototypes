@@ -108,7 +108,7 @@ exports[`<IvrMenuActionsFieldArray /> should render 1`] = `
     </div>
   </div>
   <button
-    class="btn btn-secondary"
+    class="wrapper fill secondary medium"
     type="button"
   >
     <i

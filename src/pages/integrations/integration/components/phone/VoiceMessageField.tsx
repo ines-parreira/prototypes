@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react'
-import {Button, Input} from 'reactstrap'
+import {Input} from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -8,6 +8,7 @@ import {
     VoiceMessageType,
 } from 'models/integration/types'
 import RadioButton from 'pages/common/components/RadioButton'
+import Button from 'pages/common/components/button/Button'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getBase64} from 'utils/file'
@@ -153,7 +154,10 @@ const VoiceMessageField = ({
                             ref={voiceRecordingFileInput}
                             onChange={handleVoiceRecordingUpload}
                         />
-                        <Button type="button" onClick={handleUploadButtonClick}>
+                        <Button
+                            intent="secondary"
+                            onClick={handleUploadButtonClick}
+                        >
                             <i className="material-icons large">backup</i>{' '}
                             Select file
                         </Button>

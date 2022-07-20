@@ -8,7 +8,6 @@ import {
     Input,
     Label,
     FormGroup,
-    Button as ReactstrapButton,
 } from 'reactstrap'
 import {Link} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
@@ -169,16 +168,16 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                 readOnly
                             />
                             <InputGroupAddon addonType="append">
-                                <ReactstrapButton
+                                <Button
+                                    style={{height: '100%'}}
                                     className="copy-phone-number-button"
                                     data-clipboard-target="#phone-number"
-                                    type="button"
                                 >
                                     <i className="material-icons mr-2">
                                         file_copy
                                     </i>
                                     {isPhoneNumberCopied ? 'Copied!' : 'Copy'}
-                                </ReactstrapButton>
+                                </Button>
                             </InputGroupAddon>
                         </InputGroup>
                     </FormGroup>

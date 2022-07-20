@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react'
-import {Button, Row, Col, Input} from 'reactstrap'
+import {Row, Col, Input} from 'reactstrap'
 import {map} from 'lodash'
 import classNames from 'classnames'
 
@@ -13,7 +13,7 @@ import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
-
+import Button from 'pages/common/components/button/Button'
 import VoiceMessageField from './VoiceMessageField'
 import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'
 import css from './IvrMenuActionField.less'
@@ -97,7 +97,9 @@ const IvrMenuActionField = ({
                                     setEditingVoiceMessage(value.voice_message)
                                     setDrawerOpen(true)
                                 }}
-                                color="link"
+                                intent="primary"
+                                fillStyle="ghost"
+                                className={css.linkBtn}
                             >
                                 <i className="material-icons mr-2">edit</i>
                                 Edit message
@@ -105,7 +107,9 @@ const IvrMenuActionField = ({
                         ) : (
                             <Button
                                 onClick={() => setDrawerOpen(true)}
-                                color="link"
+                                intent="primary"
+                                fillStyle="ghost"
+                                className={css.linkBtn}
                             >
                                 <i className="material-icons mr-2">add</i>
                                 Add message
@@ -149,13 +153,14 @@ const IvrMenuActionField = ({
                                         )
                                         setDrawerOpen(false)
                                     }}
-                                    color="primary"
+                                    intent="primary"
                                 >
                                     Save
                                 </Button>
                                 <Button
                                     onClick={() => setDrawerOpen(false)}
                                     className="ml-2"
+                                    intent="secondary"
                                 >
                                     Cancel
                                 </Button>

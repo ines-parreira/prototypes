@@ -5,7 +5,7 @@ exports[`<PhoneTicketSubmitButtons/> should render 1`] = `
   class="component d-flex align-items-center justify-content-between"
 >
   <button
-    class="btn btn-success"
+    class="wrapper fill primary medium"
     data-testid="outbound-call-button"
     type="submit"
   >
@@ -19,7 +19,7 @@ exports[`<PhoneTicketSubmitButtons/> should render as disabled because the state
   class="component d-flex align-items-center justify-content-between"
 >
   <button
-    class="btn btn-success disabled"
+    class="wrapper fill primary medium isDisabled"
     data-testid="outbound-call-button"
     disabled=""
     type="submit"
@@ -34,7 +34,7 @@ exports[`<PhoneTicketSubmitButtons/> should render as disabled because the state
   class="component d-flex align-items-center justify-content-between"
 >
   <button
-    class="btn btn-success disabled"
+    class="wrapper fill primary medium isDisabled"
     data-testid="outbound-call-button"
     disabled=""
     type="submit"
@@ -49,7 +49,7 @@ exports[`<PhoneTicketSubmitButtons/> should render as disabled because the state
   class="component d-flex align-items-center justify-content-between"
 >
   <button
-    class="btn btn-success disabled"
+    class="wrapper fill primary medium isDisabled"
     data-testid="outbound-call-button"
     disabled=""
     type="submit"
@@ -64,7 +64,7 @@ exports[`<PhoneTicketSubmitButtons/> should render as disabled because the state
   class="component d-flex align-items-center justify-content-between"
 >
   <button
-    class="btn btn-success disabled"
+    class="wrapper fill primary medium isDisabled"
     data-testid="outbound-call-button"
     disabled=""
     type="submit"
