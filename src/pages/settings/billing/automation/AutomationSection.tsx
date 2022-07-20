@@ -9,15 +9,11 @@ import {
     getCurrentPlan,
     getHasAutomationAddOn,
 } from 'state/billing/selectors'
-import {
-    hasAutomationLegacyFeatures,
-    isTrialing,
-} from 'state/currentAccount/selectors'
-import UpgradeButton from 'pages/common/components/UpgradeButton/UpgradeButton'
+import {hasAutomationLegacyFeatures} from 'state/currentAccount/selectors'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 import Button from 'pages/common/components/button/Button'
 import useAppSelector from 'hooks/useAppSelector'
-import {PlanName} from 'utils/paywalls'
+import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
 
 import AutomationSubscriptionModal from './AutomationSubscriptionModal'
 import css from './AutomationSection.less'
@@ -31,7 +27,6 @@ const AutomationSection = () => {
 
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
-    const isOnTrial = useAppSelector(isTrialing)
     const isSelfServeLegacy = useAppSelector(hasAutomationLegacyFeatures)
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
@@ -118,24 +113,11 @@ const AutomationSection = () => {
                     >
                         Manage add-on
                     </Button>
-                ) : !currentPlan?.automation_addon_equivalent_plan ? (
-                    <UpgradeButton
-                        className={css['upgrade-button']}
-                        state={{
-                            openedPlanModal: PlanName.Basic,
-                            isAutomationAddOnChecked: true,
-                        }}
-                    />
                 ) : (
-                    <UpgradeButton
+                    <AutomationSubscriptionButton
                         className={css['upgrade-button']}
                         label="Subscribe"
-                        {...(isOnTrial
-                            ? {state: {isAutomationAddOnChecked: true}}
-                            : {
-                                  onClick: () =>
-                                      setIsAutomationModalOpened(true),
-                              })}
+                        onClick={() => setIsAutomationModalOpened(true)}
                     />
                 )}
                 <AutomationSubscriptionModal

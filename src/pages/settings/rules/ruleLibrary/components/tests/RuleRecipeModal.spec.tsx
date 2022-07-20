@@ -62,24 +62,4 @@ describe('RuleRecipeModal', () => {
         )
         expect(baseElement).toMatchSnapshot()
     })
-
-    it('should render the update button for starter plan', () => {
-        const {getByText} = render(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    currentAccount: fromJS({
-                        ...account,
-                        current_subscription: {
-                            ...account.current_subscription,
-                            plan: starterPlan.id,
-                        },
-                    }),
-                })}
-            >
-                <RuleRecipeModal {...minProps} />
-            </Provider>
-        )
-        expect(getByText('Upgrade')).toMatchSnapshot()
-    })
 })

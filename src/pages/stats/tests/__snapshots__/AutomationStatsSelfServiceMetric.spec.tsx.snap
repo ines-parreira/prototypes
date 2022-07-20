@@ -17,21 +17,25 @@ exports[`<AutomationStatsSelfServiceMetric /> should render paywall 1`] = `
         <div
           class="d-flex align-items-center upgradeLink"
         >
-          <button
-            class="wrapper fill primary medium"
-            type="button"
+          <a
+            to="[object Object]"
           >
-            <span
-              class="wrapper"
+            <button
+              class="wrapper fill primary medium"
+              type="button"
             >
-              Get Automation Features
-              <i
-                class="material-icons icon isRight medium"
+              <span
+                class="wrapper"
               >
-                auto_awesome
-              </i>
-            </span>
-          </button>
+                Upgrade
+                <i
+                  class="material-icons icon isRight medium"
+                >
+                  auto_awesome
+                </i>
+              </span>
+            </button>
+          </a>
         </div>
       </div>
     </div>
@@ -99,21 +103,25 @@ exports[`<AutomationStatsSelfServiceMetric /> should render setup and paywall 1`
         <div
           class="d-flex align-items-center upgradeLink"
         >
-          <button
-            class="wrapper fill primary medium"
-            type="button"
+          <a
+            to="[object Object]"
           >
-            <span
-              class="wrapper"
+            <button
+              class="wrapper fill primary medium"
+              type="button"
             >
-              Get Automation Features
-              <i
-                class="material-icons icon isRight medium"
+              <span
+                class="wrapper"
               >
-                auto_awesome
-              </i>
-            </span>
-          </button>
+                Upgrade
+                <i
+                  class="material-icons icon isRight medium"
+                >
+                  auto_awesome
+                </i>
+              </span>
+            </button>
+          </a>
         </div>
       </div>
     </div>
@@ -227,21 +235,25 @@ exports[`<AutomationStatsSelfServiceMetric /> should render stats and paywall 1`
         <div
           class="d-flex align-items-center upgradeLink"
         >
-          <button
-            class="wrapper fill primary medium"
-            type="button"
+          <a
+            to="[object Object]"
           >
-            <span
-              class="wrapper"
+            <button
+              class="wrapper fill primary medium"
+              type="button"
             >
-              Get Automation Features
-              <i
-                class="material-icons icon isRight medium"
+              <span
+                class="wrapper"
               >
-                auto_awesome
-              </i>
-            </span>
-          </button>
+                Upgrade
+                <i
+                  class="material-icons icon isRight medium"
+                >
+                  auto_awesome
+                </i>
+              </span>
+            </button>
+          </a>
         </div>
       </div>
     </div>

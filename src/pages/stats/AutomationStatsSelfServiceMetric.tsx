@@ -12,7 +12,6 @@ import {
     hasAutomationLegacyFeatures,
 } from 'state/currentAccount/selectors'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
-import UpgradeButton from 'pages/common/components/UpgradeButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
@@ -23,6 +22,7 @@ import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfig
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
+import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
 
 import {KeyMetricCell} from './common/components/charts/KeyMetricStat/KeyMetricCell'
 import KeyMetricCellWrapper from './common/components/charts/KeyMetricStat/KeyMetricCellWrapper'
@@ -103,7 +103,7 @@ export const AutomationStatsSelfServiceMetric = ({
                     tooltipId={`title-${id}`}
                 >
                     <div className={classnames('mt-3', css.button)}>
-                        <UpgradeButton
+                        <AutomationSubscriptionButton
                             label="Get Automation Features"
                             onClick={() => {
                                 setIsAutomationModalOpened(true)

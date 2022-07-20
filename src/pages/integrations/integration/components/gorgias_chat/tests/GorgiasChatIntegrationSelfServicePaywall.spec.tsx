@@ -53,24 +53,4 @@ describe('GorgiasChatIntegrationSelfServicePaywall', () => {
 
         expect(getByRole('dialog')).toMatchSnapshot()
     })
-
-    it('should render update button for the starter plan', () => {
-        const {getByText} = render(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    currentAccount: fromJS({
-                        ...account,
-                        current_subscription: {
-                            ...account.current_subscription,
-                            plan: starterPlan.id,
-                        },
-                    }),
-                })}
-            >
-                <GorgiasChatIntegrationSelfServicePaywall />
-            </Provider>
-        )
-        expect(getByText('Upgrade')).toBeTruthy()
-    })
 })

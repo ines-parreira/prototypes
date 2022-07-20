@@ -307,40 +307,23 @@ exports[`<AutomationSection /> should render for trialing customers 1`] = `
       <div
         class="d-flex align-items-center upgradeLink"
       >
-        <a
-          to="[object Object]"
+        <button
+          class="wrapper fill primary medium"
+          type="button"
         >
-          <button
-            class="wrapper fill primary medium"
-            type="button"
+          <span
+            class="wrapper"
           >
-            <span
-              class="wrapper"
+            Subscribe
+            <i
+              class="material-icons icon isRight medium"
             >
-              Subscribe
-              <i
-                class="material-icons icon isRight medium"
-              >
-                auto_awesome
-              </i>
-            </span>
-          </button>
-        </a>
+              auto_awesome
+            </i>
+          </span>
+        </button>
       </div>
     </div>
   </div>
 </div>
-`;
-
-exports[`<AutomationSection /> should render the upgrade button for the starter plan 1`] = `
-<span
-  class="wrapper"
->
-  Upgrade
-  <i
-    class="material-icons icon isRight medium"
-  >
-    auto_awesome
-  </i>
-</span>
 `;

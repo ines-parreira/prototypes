@@ -108,24 +108,4 @@ describe('<AutomationSection />', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
-
-    it('should render the upgrade button for the starter plan', () => {
-        const {getByText} = render(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    currentAccount: fromJS({
-                        ...account,
-                        current_subscription: {
-                            ...account.current_subscription,
-                            plan: starterPlan.id,
-                        },
-                    }),
-                })}
-            >
-                <AutomationSection />
-            </Provider>
-        )
-        expect(getByText('Upgrade')).toMatchSnapshot()
-    })
 })

@@ -313,18 +313,30 @@ exports[`RuleRecipeModal should render the modal 1`] = `
               <span
                 id="rule-recipe-fixture-install-button"
               >
-                <button
-                  class="wrapper fill primary medium"
-                  id="rule-recipe-fixture-install-button"
-                  type="button"
+                <div
+                  class=""
                 >
-                  <i
-                    class="material-icons mr-2"
+                  <div
+                    class="d-flex align-items-center upgradeLink"
                   >
-                    auto_awesome
-                  </i>
-                  Subscribe to automation add-on
-                </button>
+                    <button
+                      class="wrapper fill primary medium"
+                      id="rule-recipe-fixture-install-button"
+                      type="button"
+                    >
+                      <span
+                        class="wrapper"
+                      >
+                        <i
+                          class="material-icons icon isLeft medium"
+                        >
+                          auto_awesome
+                        </i>
+                        Subscribe to automation add-on
+                      </span>
+                    </button>
+                  </div>
+                </div>
               </span>
             </div>
           </div>
@@ -336,17 +348,4 @@ exports[`RuleRecipeModal should render the modal 1`] = `
     </div>
   </div>
 </body>
-`;
-
-exports[`RuleRecipeModal should render the update button for starter plan 1`] = `
-<span
-  class="wrapper"
->
-  <i
-    class="material-icons icon isLeft medium"
-  >
-    auto_awesome
-  </i>
-  Upgrade
-</span>
 `;

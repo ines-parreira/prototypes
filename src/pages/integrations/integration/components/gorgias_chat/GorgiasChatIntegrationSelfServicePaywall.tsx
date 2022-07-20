@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 
 import Paywall, {UpgradeType} from 'pages/common/components/Paywall/Paywall'
-import UpgradeButton from 'pages/common/components/UpgradeButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import {getCurrentPlan} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -9,7 +8,7 @@ import {CurrentAccountState} from 'state/currentAccount/types'
 import {SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getIconFromUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
-import {PlanName} from 'utils/paywalls'
+import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
 
 const sspAutomationAddonMock = getIconFromUrl(
     'paywalls/screens/gorgias_chat_ssp_automation.png'
@@ -45,25 +44,14 @@ export const GorgiasChatIntegrationSelfServicePaywall = () => {
             previewImage={sspAutomationAddonMock}
             renderFilterShadow
             customCta={
-                !currentPlan?.automation_addon_equivalent_plan ? (
-                    <UpgradeButton
-                        state={{
-                            openedPlanModal: PlanName.Basic,
-                            isAutomationAddOnChecked: true,
-                        }}
-                        segmentEventToSend={segmentEventToSend}
-                        position="left"
-                    />
-                ) : (
-                    <UpgradeButton
-                        label="Add Automation Features"
-                        onClick={() => {
-                            setIsAutomationModalOpened(true)
-                        }}
-                        segmentEventToSend={segmentEventToSend}
-                        position="left"
-                    />
-                )
+                <AutomationSubscriptionButton
+                    label="Add Automation Features"
+                    onClick={() => {
+                        setIsAutomationModalOpened(true)
+                    }}
+                    segmentEventToSend={segmentEventToSend}
+                    position="left"
+                />
             }
             modal={
                 <AutomationSubscriptionModal

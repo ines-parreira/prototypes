@@ -34,8 +34,8 @@ import {mergeStatsFilters} from 'state/stats/actions'
 import Loader from 'pages/common/components/Loader/Loader'
 import HeaderWithInfo from 'pages/common/components/HeaderWithInfo'
 import PageHeader from 'pages/common/components/PageHeader'
-import UpgradeButton from 'pages/common/components/UpgradeButton'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
+import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
 
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
 import NormalizedBarStat from '../common/components/charts/NormalizedBarStat'
@@ -190,7 +190,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                 description={paywallConfig.description}
                 previewImage={paywallConfig.preview}
                 customCta={
-                    <UpgradeButton
+                    <AutomationSubscriptionButton
                         onClick={() => {
                             setIsAutomationModalOpened(true)
                         }}
