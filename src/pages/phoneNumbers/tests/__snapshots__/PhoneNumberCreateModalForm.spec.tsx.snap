@@ -10,8 +10,8 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
 <body>
   <div />
   <div
-    aria-describedby="modal-6-desc"
-    aria-labelledby="modal-6-title"
+    aria-describedby="modal-8-desc"
+    aria-labelledby="modal-8-title"
     aria-modal="true"
     class="modal default"
     role="dialog"
@@ -28,7 +28,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
           <div>
             <div
               class="title"
-              id="modal-6-title"
+              id="modal-8-title"
             >
               Create Phone Number
             </div>
@@ -47,7 +47,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
         >
           <div
             class="wrapper"
-            id="modal-6-desc"
+            id="modal-8-desc"
           >
             <div
               class="row"
@@ -58,22 +58,27 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
                 <div
                   class="form-group"
                 >
-                  <div
-                    class="InputField required form-group"
-                    color=""
-                  >
+                  <div>
                     <label
-                      class="control-label"
-                      for="id-input-20"
+                      class="label label"
+                      for="input-text-23"
                     >
                       Title
+                      <abbr
+                        aria-label="required"
+                        class="abbr"
+                        title="required"
+                      >
+                        *
+                      </abbr>
                     </label>
                     <div
-                      class=""
+                      class="wrapper"
                     >
                       <input
-                        class="field form-control"
-                        id="id-input-20"
+                        class="input"
+                        id="input-text-23"
+                        name="input-text-23"
                         placeholder="Ex: Company Support Line"
                         required=""
                         type="text"
@@ -806,8 +811,8 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
 <body>
   <div />
   <div
-    aria-describedby="modal-4-desc"
-    aria-labelledby="modal-4-title"
+    aria-describedby="modal-5-desc"
+    aria-labelledby="modal-5-title"
     aria-modal="true"
     class="modal default"
     role="dialog"
@@ -824,7 +829,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
           <div>
             <div
               class="title"
-              id="modal-4-title"
+              id="modal-5-title"
             >
               Create Phone Number
             </div>
@@ -843,7 +848,7 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
         >
           <div
             class="wrapper"
-            id="modal-4-desc"
+            id="modal-5-desc"
           >
             <div
               class="row"
@@ -854,22 +859,27 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
                 <div
                   class="form-group"
                 >
-                  <div
-                    class="InputField required form-group"
-                    color=""
-                  >
+                  <div>
                     <label
-                      class="control-label"
-                      for="id-input-5"
+                      class="label label"
+                      for="input-text-6"
                     >
                       Title
+                      <abbr
+                        aria-label="required"
+                        class="abbr"
+                        title="required"
+                      >
+                        *
+                      </abbr>
                     </label>
                     <div
-                      class=""
+                      class="wrapper"
                     >
                       <input
-                        class="field form-control"
-                        id="id-input-5"
+                        class="input"
+                        id="input-text-6"
+                        name="input-text-6"
                         placeholder="Ex: Company Support Line"
                         required=""
                         type="text"
@@ -1690,22 +1700,27 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
                 <div
                   class="form-group"
                 >
-                  <div
-                    class="InputField required form-group"
-                    color=""
-                  >
+                  <div>
                     <label
-                      class="control-label"
-                      for="id-input-3"
+                      class="label label"
+                      for="input-text-3"
                     >
                       Title
+                      <abbr
+                        aria-label="required"
+                        class="abbr"
+                        title="required"
+                      >
+                        *
+                      </abbr>
                     </label>
                     <div
-                      class=""
+                      class="wrapper"
                     >
                       <input
-                        class="field form-control"
-                        id="id-input-3"
+                        class="input"
+                        id="input-text-3"
+                        name="input-text-3"
                         placeholder="Ex: Company Support Line"
                         required=""
                         type="text"

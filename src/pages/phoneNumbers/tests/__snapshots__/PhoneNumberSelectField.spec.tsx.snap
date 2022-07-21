@@ -289,22 +289,27 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                 <div
                   class="form-group"
                 >
-                  <div
-                    class="InputField required form-group"
-                    color=""
-                  >
+                  <div>
                     <label
-                      class="control-label"
-                      for="id-input-3"
+                      class="label label"
+                      for="input-text-3"
                     >
                       Title
+                      <abbr
+                        aria-label="required"
+                        class="abbr"
+                        title="required"
+                      >
+                        *
+                      </abbr>
                     </label>
                     <div
-                      class=""
+                      class="wrapper"
                     >
                       <input
-                        class="field form-control"
-                        id="id-input-3"
+                        class="input"
+                        id="input-text-3"
+                        name="input-text-3"
                         placeholder="Ex: Company Support Line"
                         required=""
                         type="text"

@@ -4,6 +4,7 @@ import {Col, Form, FormGroup, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 import {AxiosError} from 'axios'
 
+import InputField from 'pages/common/forms/input/InputField'
 import {
     PhoneNumber,
     PhoneNumberMeta,
@@ -16,7 +17,6 @@ import {createPhoneNumber} from 'models/phoneNumber/resources'
 import {phoneNumberCreated} from 'state/entities/phoneNumbers/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import Button from 'pages/common/components/button/Button'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -125,12 +125,12 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                             {country && shouldValidateAddress(country) && (
                                 <h4 className="mb-3">Phone number settings</h4>
                             )}
-                            <DEPRECATED_InputField
+                            <InputField
                                 label="Title"
                                 placeholder="Ex: Company Support Line"
                                 value={name}
                                 onChange={setName}
-                                required
+                                isRequired
                             />
                         </FormGroup>
                         <PhoneMetaFields value={meta} onChange={setMeta} />

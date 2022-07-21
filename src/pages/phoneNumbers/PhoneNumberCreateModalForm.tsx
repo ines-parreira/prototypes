@@ -2,6 +2,7 @@ import React, {useCallback, useState, useEffect, useMemo} from 'react'
 import {Col, Form, FormGroup, Row} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 
+import InputField from 'pages/common/forms/input/InputField'
 import {
     PhoneNumber,
     PhoneNumberMeta,
@@ -16,7 +17,6 @@ import {phoneNumberCreated} from 'state/entities/phoneNumbers/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import Button from 'pages/common/components/button/Button'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -142,12 +142,12 @@ export default function PhoneNumberCreateModalForm({
                             {step === Step.PhoneInformation && (
                                 <>
                                     <FormGroup>
-                                        <DEPRECATED_InputField
+                                        <InputField
                                             label="Title"
                                             placeholder="Ex: Company Support Line"
                                             value={name}
                                             onChange={setName}
-                                            required
+                                            isRequired
                                         />
                                     </FormGroup>
                                     <PhoneMetaFields
