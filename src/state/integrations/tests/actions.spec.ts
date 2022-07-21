@@ -182,4 +182,74 @@ describe('integrations actions', () => {
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
+
+    describe('createGorgiasChatIntegration action', () => {
+        it('should redirect to preferences page for shopify', async () => {
+            const data = fromJS({
+                type: 'gorgias_chat',
+                meta: {
+                    shop_integration_id: 1,
+                },
+            })
+            mockServer.onPost('/api/integrations/').reply(201, {
+                id: 123,
+                meta: {
+                    shop_integration_id: 1,
+                },
+            })
+            mockServer.onPut('/api/integrations/123').reply(200, {
+                id: 123,
+                meta: {
+                    shop_integration_id: 1,
+                },
+            })
+
+            await store.dispatch(actions.createGorgiasChatIntegration(data))
+
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/integrations/gorgias_chat/123/preferences'
+            )
+        })
+
+        it('should redirect to installation page if automatic install failed', async () => {
+            const data = fromJS({
+                type: 'gorgias_chat',
+                meta: {
+                    shop_integration_id: 1,
+                },
+            })
+            mockServer.onPost('/api/integrations/').reply(201, {
+                id: 123,
+                meta: {
+                    shop_integration_id: 1,
+                },
+            })
+            mockServer.onPut('/api/integrations/123').reply(400, {
+                error: {msg: 'Something went wrong'},
+            })
+
+            await store.dispatch(actions.createGorgiasChatIntegration(data))
+
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/integrations/gorgias_chat/123/installation'
+            )
+        })
+
+        it('should redirect to installation page for non-shopify', async () => {
+            const data = fromJS({
+                type: 'gorgias_chat',
+                meta: {},
+            })
+            mockServer.onPost('/api/integrations/').reply(201, {
+                id: 123,
+                meta: {},
+            })
+
+            await store.dispatch(actions.createGorgiasChatIntegration(data))
+
+            expect(history.push).toHaveBeenCalledWith(
+                '/app/settings/integrations/gorgias_chat/123/installation'
+            )
+        })
+    })
 })

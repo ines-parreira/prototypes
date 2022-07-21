@@ -1,11 +1,11 @@
-import {AxiosError} from 'axios'
+import axios, {AxiosError} from 'axios'
 import moment from 'moment'
 import {fromJS, Map} from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _sortBy from 'lodash/sortBy'
 
 import client from 'models/api/resources'
-import {ApiListResponsePagination} from 'models/api/types'
+import {ApiListResponsePagination, GorgiasApiError} from 'models/api/types'
 import {
     GorgiasChatIntegration,
     Integration,
@@ -499,6 +499,7 @@ export function createGorgiasChatIntegration(integration: Map<any, any>) {
             })
         }
 
+        let successBannerText
         // Try to install the chat to shopify store
         if (savedIntegration.meta.shop_integration_id) {
             try {
@@ -516,11 +517,24 @@ export function createGorgiasChatIntegration(integration: Map<any, any>) {
                     }
                 )
             } catch (error) {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: 'Integration successfully added',
+                    })
+                )
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message: axios.isAxiosError(error)
+                            ? (error as GorgiasApiError).response?.data.error
+                                  ?.msg
+                            : 'Failed to install the chat to the store',
+                    })
+                )
                 dispatch({
-                    type: constants.CREATE_INTEGRATION_ERROR,
-                    error,
-                    reason: 'Failed to install the chat to the store',
-                    verbose: true,
+                    type: constants.CREATE_INTEGRATION_SUCCESS,
+                    resp: savedIntegration,
                 })
                 history.push(
                     `/app/settings/integrations/gorgias_chat/${
@@ -530,13 +544,22 @@ export function createGorgiasChatIntegration(integration: Map<any, any>) {
 
                 return
             }
-        }
 
-        history.push(
-            `/app/settings/integrations/gorgias_chat/${
-                savedIntegration.id || ''
-            }/preferences`
-        )
+            history.push(
+                `/app/settings/integrations/gorgias_chat/${
+                    savedIntegration.id || ''
+                }/preferences`
+            )
+            successBannerText =
+                'Integration successfully installed on your website'
+        } else {
+            history.push(
+                `/app/settings/integrations/gorgias_chat/${
+                    savedIntegration.id || ''
+                }/installation`
+            )
+            successBannerText = 'Integration successfully added'
+        }
 
         dispatch({
             type: constants.CREATE_INTEGRATION_SUCCESS,
@@ -545,7 +568,7 @@ export function createGorgiasChatIntegration(integration: Map<any, any>) {
         void dispatch(
             notify({
                 status: NotificationStatus.Success,
-                message: 'Integration successfully installed on your website',
+                message: successBannerText,
             })
         )
 
