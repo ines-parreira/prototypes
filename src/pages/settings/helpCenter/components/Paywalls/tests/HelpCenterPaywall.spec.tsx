@@ -31,6 +31,28 @@ jest.mock('../../../../../../utils', () => {
 })
 
 describe('HelpCenterPaywall', () => {
+    it('should render the component correctly for when the plan is unavailable', () => {
+        const state: Partial<RootState> = {
+            currentAccount: fromJS({
+                current_subscription: undefined,
+            }),
+            billing: fromJS({
+                plans: fromJS({
+                    [basicLegacyPlan.id]: basicLegacyPlan,
+                    [basicPlan.id]: basicPlan,
+                }),
+            }),
+        }
+
+        const {container} = render(
+            <Provider store={mockStore(state)}>
+                <HelpCenterPaywall />
+            </Provider>
+        )
+
+        expect(container).toMatchSnapshot()
+    })
+
     it('should render the component correctly for "Basic" legacy plan', () => {
         const state: Partial<RootState> = {
             currentAccount: fromJS({

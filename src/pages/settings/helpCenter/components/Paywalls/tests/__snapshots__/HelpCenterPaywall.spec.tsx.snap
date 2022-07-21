@@ -457,3 +457,117 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
   </div>
 </div>
 `;
+
+exports[`HelpCenterPaywall should render the component correctly for when the plan is unavailable 1`] = `
+<div>
+  <div
+    class="full-width pageWrapper"
+  >
+    <div
+      class="page-header pageHeader"
+    >
+      <h1
+        class="d-flex align-items-center"
+      >
+        Help Center
+      </h1>
+    </div>
+    <div
+      class="page container-fluid"
+    >
+      <div
+        class="paywallContainer"
+      >
+        <div
+          class="align-items-center mx-0 row"
+        >
+          <div
+            class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview default col-12 col-lg-6 col-xl-6"
+          >
+            <div
+              class=""
+            >
+              <img
+                alt="Feature preview"
+                class="img-fluid"
+                src="test-file-stub"
+              />
+            </div>
+          </div>
+          <div
+            class="pl-lg-5 col-12 col-lg-5 col-xl-5"
+          >
+            <div
+              class="content"
+            >
+              <div
+                class="flex align-items-center"
+              >
+                <div
+                  class="badge"
+                >
+                  <i
+                    class="material-icons mr-1"
+                  >
+                    warning
+                  </i>
+                  Legacy plan
+                </div>
+                <i
+                  class="material-icons upgradeChevron"
+                >
+                  chevron_right
+                </i>
+                <div
+                  class="badge"
+                >
+                  Basic Plan
+                </div>
+              </div>
+              <h1
+                class="contentTitle"
+              >
+                Change plans to activate your Help Center
+              </h1>
+              <div
+                class="description"
+              >
+                <p>
+                  Create your own help center in order to help users better understand your product and answer frequently asked questions.
+                </p>
+              </div>
+              <div
+                class="upgradeButton"
+              >
+                <div
+                  class="mb-5 d-inline-block"
+                >
+                  <div
+                    class="d-flex align-items-center upgradeLink"
+                  >
+                    <button
+                      class="wrapper fill primary medium"
+                      type="button"
+                    >
+                      <span
+                        class="wrapper"
+                      >
+                        Upgrade Your Plan
+                        <i
+                          class="material-icons icon isRight medium"
+                        >
+                          auto_awesome
+                        </i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

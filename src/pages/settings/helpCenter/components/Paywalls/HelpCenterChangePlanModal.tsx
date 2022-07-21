@@ -1,6 +1,5 @@
 import React, {useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
-import {Map} from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -17,11 +16,12 @@ import {getFullPrice} from 'models/billing/utils'
 import TotalAmount from 'pages/settings/billing/plans/TotalAmount'
 import AutomationAmount from 'pages/settings/billing/plans/AutomationAmount'
 
+import {Plan} from '../../../../../models/billing/types'
 import OpenChatButton from './components/OpenChatButton'
 
 type Props = {
     isOpen: boolean
-    currentPlan: Map<any, any>
+    currentPlan: Plan
     suitablePlanWithoutAutomationAddOn: PlanWithCurrencySign
     onClose: () => void
 }
@@ -33,7 +33,7 @@ const HelpCenterChangePlanModal = ({
     onClose,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
-    const hasAutomationAddOn = !!currentPlan.get('automation_addon_included')
+    const hasAutomationAddOn = !!currentPlan.automation_addon_included
     const [isModalAutomationChecked, setModalIsAutomationChecked] =
         useState(hasAutomationAddOn)
 

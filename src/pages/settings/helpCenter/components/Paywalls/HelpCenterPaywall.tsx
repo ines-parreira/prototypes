@@ -1,15 +1,11 @@
 import React, {useState} from 'react'
-import {Map} from 'immutable'
 
 import helpCenterImagePreview from 'assets/img/paywalls/screens/helpcenter.png'
 import {PlanInterval} from 'models/billing/types'
 import Paywall, {PaywallTheme} from 'pages/common/components/Paywall/Paywall'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    DEPRECATED_getCurrentPlan,
-    DEPRECATED_getPlans,
-} from 'state/billing/selectors'
+import {getCurrentPlan, getPlans} from 'state/billing/selectors'
 import {openChat} from 'utils'
 import {convertLegacyPlanNameToPublicPlanName, PlanName} from 'utils/paywalls'
 
@@ -17,32 +13,31 @@ import HelpCenterChangePlanModal from './HelpCenterChangePlanModal'
 
 const HelpCenterPaywall = (): JSX.Element => {
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(false)
-    const plans = useAppSelector(DEPRECATED_getPlans)
-    const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
-    const planName = currentPlan.get('name') as string
-    const currentPlanName = convertLegacyPlanNameToPublicPlanName(planName)
+    const plans = useAppSelector(getPlans)
+    const currentPlan = useAppSelector(getCurrentPlan)
+    const currentPlanName = currentPlan
+        ? convertLegacyPlanNameToPublicPlanName(currentPlan.name)
+        : null
 
     const displayContactUsButton = currentPlanName === PlanName.Enterprise
-    const isEnterprisePlan = currentPlan.get('custom', false) as boolean
+    const isEnterprisePlan = !!currentPlan?.custom
     const availablePlans = plans.filter(
-        (plan: Map<any, any>) =>
-            (plan.get('interval') as string) ===
-                (currentPlan.get('interval') || PlanInterval.Month) &&
-            (plan.get('public') as boolean) &&
-            !(plan.get('custom') as boolean)
-    ) as Map<any, any>
-    const suitablePlanWithoutAutomationAddOn: Map<any, any> =
+        (plan) =>
+            plan.interval === (currentPlan?.interval || PlanInterval.Month) &&
+            plan.public &&
+            !plan.custom
+    )
+    const suitablePlanWithoutAutomationAddOn =
         !isEnterprisePlan &&
         availablePlans.find(
-            (plan: Map<any, any>) =>
-                plan.get('name') === currentPlanName &&
-                plan.get('automation_addon_included', false) === false
+            (plan) =>
+                plan.name === currentPlanName && !plan.automation_addon_included
         )
 
     return (
         <Paywall
             pageHeader="Help Center"
-            requiredUpgrade={currentPlanName}
+            requiredUpgrade={currentPlanName || PlanName.Basic}
             header="Change plans to activate your Help Center"
             description={
                 <>
@@ -56,7 +51,10 @@ const HelpCenterPaywall = (): JSX.Element => {
                         : null}
                 </>
             }
-            paywallTheme={currentPlanName as string as PaywallTheme}
+            paywallTheme={
+                (currentPlanName as unknown as PaywallTheme) ||
+                PaywallTheme.Default
+            }
             previewImage={helpCenterImagePreview}
             customCta={
                 displayContactUsButton ? (
@@ -75,10 +73,13 @@ const HelpCenterPaywall = (): JSX.Element => {
             }
             shouldKeepPlan
             modal={
+                currentPlan &&
                 suitablePlanWithoutAutomationAddOn && (
                     <HelpCenterChangePlanModal
                         currentPlan={currentPlan}
-                        suitablePlanWithoutAutomationAddOn={suitablePlanWithoutAutomationAddOn.toJS()}
+                        suitablePlanWithoutAutomationAddOn={
+                            suitablePlanWithoutAutomationAddOn
+                        }
                         isOpen={isPlanChangeModalOpen}
                         onClose={() => setIsPlanChangeModalOpen(false)}
                     />
