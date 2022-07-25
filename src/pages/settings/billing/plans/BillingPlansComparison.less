@@ -13,15 +13,29 @@
         padding-bottom: 35px;
     }
 
-    .planCard > div:first-child > div:last-child {
-        line-height: 22px;
+    .planCard {
+        &:global(.card) {
+            margin: 0 8px;
 
-        div {
-            font-size: 18px;
+            &:first-of-type {
+                margin-left: 16px;
+            }
+
+            &:last-of-type {
+                margin-right: 16px;
+            }
         }
 
-        span div {
-            font-size: 14px;
+        &.isPublicPlan > div:first-child > div:last-child {
+            line-height: 22px;
+
+            div {
+                font-size: 18px;
+            }
+
+            span div {
+                font-size: 14px;
+            }
         }
     }
 

@@ -168,8 +168,8 @@ export default function BillingPlansComparison({
                     <>
                         {accountHasLegacyPlan && (
                             <BillingComparisonPlanCard
-                                className={classNames('mt-4', {
-                                    [css.planCard]: !isCustomPlan,
+                                className={classNames(css.planCard, 'mt-4', {
+                                    [css.isPublicPlan]: !isCustomPlan,
                                 })}
                                 plan={displayedCurrentPlan.toJS()}
                                 isCurrentPlan
@@ -208,11 +208,15 @@ export default function BillingPlansComparison({
                                     planId,
                                     <BillingComparisonPlanCard
                                         key={planId.split('-')[0]}
-                                        className={classNames('mt-4', {
-                                            [css.planCard]:
-                                                accountHasLegacyPlan &&
-                                                !isCustomPlan,
-                                        })}
+                                        className={classNames(
+                                            css.planCard,
+                                            'mt-4',
+                                            {
+                                                [css.isPublicPlan]:
+                                                    accountHasLegacyPlan &&
+                                                    !isCustomPlan,
+                                            }
+                                        )}
                                         plan={plan.toJS()}
                                         isCurrentPlan={isCurrentPlan}
                                         isUpdating={isSubscriptionUpdating}
@@ -246,8 +250,8 @@ export default function BillingPlansComparison({
                     </>
                     {!isCustomPlan && (
                         <EnterpriseComparisonPlanCard
-                            className={classNames('mt-4', {
-                                [css.planCard]: accountHasLegacyPlan,
+                            className={classNames(css.planCard, 'mt-4', {
+                                [css.isPublicPlan]: accountHasLegacyPlan,
                             })}
                             isUpdating={isSubscriptionUpdating}
                             defaultIsPlanChangeModalOpen={
