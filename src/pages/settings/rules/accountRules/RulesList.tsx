@@ -82,7 +82,7 @@ export function RulesList({
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
-                    message: 'Unable to deactivate rule',
+                    message: 'Unable to activate rule',
                 })
             )
         }

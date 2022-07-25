@@ -142,9 +142,12 @@ export const RuleFormEditor = ({rule}: Props) => {
         }
     }, [rule])
 
-    const fetchRecipes = async () => {
-        const recipes = await fetchRuleRecipes()
-        dispatch(ruleRecipesFetched(recipes.data))
+    const findRecipe = async (slug: string) => {
+        const recipes = (await fetchRuleRecipes()).data
+        const recipe = recipes.find((recipe) => recipe.slug === slug)
+        if (recipe) {
+            dispatch(ruleRecipesFetched(recipes))
+        }
     }
 
     const title = useMemo(() => {
@@ -153,7 +156,7 @@ export const RuleFormEditor = ({rule}: Props) => {
         } else if (rule.type === RuleType.Managed) {
             const slug = (rule as ManagedRule).settings.slug
             if (!ruleRecipes[slug]) {
-                void fetchRecipes()
+                void findRecipe(slug)
             } else {
                 return `[${ruleRecipes[slug].recipe_tag}] ${ruleRecipes[slug].rule.name}`
             }
