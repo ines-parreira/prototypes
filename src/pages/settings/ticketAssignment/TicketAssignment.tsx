@@ -420,7 +420,11 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                     </p>
                                     <MultiSelectOptionsField
                                         options={TicketAssignmentContainer.channelsToOptions(
-                                            Object.values(TicketChannel)
+                                            Object.values(TicketChannel).filter(
+                                                (channel) =>
+                                                    channel !==
+                                                    TicketChannel.Phone
+                                            )
                                         )}
                                         selectedOptions={TicketAssignmentContainer.channelsToOptions(
                                             assignmentChannels
