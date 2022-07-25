@@ -28,8 +28,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {PhoneFunction} from 'business/twilio'
 import settingsCss from 'pages/settings/settings.less'
 import useAppSelector from 'hooks/useAppSelector'
-import {useFeatureFlags} from 'hooks/useFeatureFlags'
-import {FlagKey} from 'providers/FeatureFlags'
 
 import PhoneIntegrationNavigation from './PhoneIntegrationNavigation'
 import PhoneIntegrationBreadcrumbs from './PhoneIntegrationBreadcrumbs'
@@ -53,7 +51,6 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
     )
     const phoneNumberId = integration?.meta?.twilio_phone_number_id
     const phoneNumber = useAppSelector(getPhoneNumber(phoneNumberId))
-    const {getFlag} = useFeatureFlags()
     const dispatch = useAppDispatch()
 
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
@@ -234,7 +231,7 @@ export default function VoiceAppPreferences({integration}: Props): JSX.Element {
                                     </Col>
                                 </Row>
                             )}
-                            {!isIvr && getFlag(FlagKey.NewPhoneAutoAssignment) && (
+                            {!isIvr && (
                                 <Row>
                                     <Col>
                                         <h4 className="mt-3 mb-3">
