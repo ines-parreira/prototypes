@@ -100,7 +100,7 @@ describe('<ReceiversSelectField />', () => {
             </Provider>
         )
 
-        const inputElement = getByPlaceholderText('Search a customer...')
+        const inputElement = getByPlaceholderText('Search customers...')
         fireEvent.change(inputElement, {target: {value: query}})
         jest.runOnlyPendingTimers()
 
@@ -129,7 +129,7 @@ describe('<ReceiversSelectField />', () => {
             </Provider>
         )
 
-        const inputElement = getByPlaceholderText('Search a customer...')
+        const inputElement = getByPlaceholderText('Search customers...')
         fireEvent.change(inputElement, {target: {value: query}})
 
         jest.runOnlyPendingTimers()

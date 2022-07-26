@@ -1,11 +1,15 @@
 import React from 'react'
 import {shallow} from 'enzyme'
+import _debounce from 'lodash/debounce'
 
-import {isEmail} from '../../../../../../../../utils'
-
-import {ReceiverValue} from '../../../../../../../../state/ticket/utils'
+import {ReceiverValue} from 'state/ticket/utils'
+import {isEmail} from 'utils'
 
 import MultiSelectAsyncField from './MultiSelectAsyncField'
+
+jest.mock('lodash/debounce', () =>
+    jest.fn((fn: (...args: any[]) => void) => fn)
+)
 
 describe('MultiSelectAsyncField component', () => {
     const minProps = {
@@ -17,6 +21,10 @@ describe('MultiSelectAsyncField component', () => {
         placeholder: 'I am the placeholder',
         onOptionSelect: jest.fn(),
     }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
 
     it('empty items', () => {
         const component = shallow(<MultiSelectAsyncField {...minProps} />)
@@ -170,5 +178,51 @@ describe('MultiSelectAsyncField component', () => {
         component.find('.suggestion').simulate('click')
 
         expect(minProps.onOptionSelect).toHaveBeenLastCalledWith(receiver, 0)
+    })
+
+    it('should render a placeholder when opening the input', () => {
+        const component = shallow(<MultiSelectAsyncField {...minProps} />)
+
+        component.find('.input').simulate('focus')
+
+        expect(component.find('.emptySuggestions').text()).toBe(
+            'Type to search'
+        )
+    })
+
+    it('should display a loading skeleton when searching', () => {
+        ;(
+            _debounce as jest.MockedFunction<typeof _debounce>
+        ).mockImplementationOnce((() => (fn: (...args: any[]) => void) => {
+            setTimeout(fn)
+        }) as any)
+        const component = shallow(<MultiSelectAsyncField {...minProps} />)
+
+        component.find('.input').simulate('focus')
+        component.find('.input').simulate('change', {
+            target: {
+                value: 'john',
+            },
+        })
+
+        expect(component.find('.skeleton').length).toBe(3)
+    })
+
+    it('should render no results when the query returns no result', (done) => {
+        minProps.loadOptions.mockImplementation(
+            (value, cb: (receivers: ReceiverValue[]) => void) => cb([])
+        )
+        const component = shallow(<MultiSelectAsyncField {...minProps} />)
+
+        component
+            .find('.input')
+            .simulate('change', {target: {value: 'Something'}})
+
+        setImmediate(() => {
+            expect(component.find('.emptySuggestions').text()).toBe(
+                'No results'
+            )
+            done()
+        })
     })
 })

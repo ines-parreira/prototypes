@@ -9,7 +9,7 @@ exports[`<ReceiversSelectField /> should display an empty field 1`] = `
   >
     <input
       class="input"
-      placeholder="Search a customer..."
+      placeholder="Search customers..."
       tabindex="2"
       type="text"
       value=""
@@ -17,7 +17,14 @@ exports[`<ReceiversSelectField /> should display an empty field 1`] = `
   </div>
   <div
     class="suggestions suggestions--hidden"
-  />
+    tabindex="-1"
+  >
+    <div
+      class="emptySuggestions"
+    >
+      Type to search
+    </div>
+  </div>
 </div>
 `;
 
@@ -55,6 +62,13 @@ exports[`<ReceiversSelectField /> should display the selected value 1`] = `
   </div>
   <div
     class="suggestions suggestions--hidden"
-  />
+    tabindex="-1"
+  >
+    <div
+      class="emptySuggestions"
+    >
+      Type to search
+    </div>
+  </div>
 </div>
 `;

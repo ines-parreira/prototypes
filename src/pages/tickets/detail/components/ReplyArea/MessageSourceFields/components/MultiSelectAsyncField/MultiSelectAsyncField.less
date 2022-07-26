@@ -61,6 +61,7 @@
         background: @classic-neutral-grey-0;
         box-shadow: 0 2px 3px fade(@classic-neutral-grey-6, 20%);
         border: 1px solid @classic-neutral-grey-3;
+        padding: 8px;
 
         text-overflow: ellipsis;
 
@@ -69,7 +70,7 @@
         }
 
         & > .suggestion {
-            padding: 6px 8px;
+            padding: 8px 8px;
             cursor: pointer;
 
             color: @classic-neutral-grey-6;
@@ -82,5 +83,17 @@
                 color: @classic-neutral-grey-6;
             }
         }
+    }
+
+    .emptySuggestions {
+        color: @classic-neutral-grey-4;
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .skeleton {
+        font-size: 20px;
+        height: 20px;
+        margin-bottom: 16px;
     }
 }

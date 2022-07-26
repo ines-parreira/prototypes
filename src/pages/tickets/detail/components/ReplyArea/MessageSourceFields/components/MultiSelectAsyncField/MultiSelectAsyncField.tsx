@@ -1,5 +1,6 @@
 import React, {
     ChangeEvent,
+    createRef,
     FocusEvent,
     KeyboardEvent,
     MouseEvent,
@@ -14,6 +15,9 @@ import _min from 'lodash/min'
 import _cloneDeep from 'lodash/cloneDeep'
 import _trim from 'lodash/trim'
 import _isArray from 'lodash/isArray'
+import _debounce from 'lodash/debounce'
+import _times from 'lodash/times'
+import Skeleton from 'react-loading-skeleton'
 
 import {ReceiverValue} from 'state/ticket/utils'
 
@@ -42,6 +46,8 @@ type State = {
     options: ReceiverValue[]
     focusedOptionIndex: number
     focusedItemIndex: number | null
+    isLoading: boolean
+    isInputFocused: boolean
 }
 class MultiSelectAsyncField extends React.Component<Props, State> {
     static defaultProps: Pick<Props, 'allowCreate' | 'disabled' | 'required'> =
@@ -52,17 +58,29 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
         }
 
     inputRef?: HTMLInputElement | null
+    fieldRef = createRef<HTMLDivElement>()
 
     state: State = {
         inputValue: '',
         options: [], // displayed options when typing by async loading
         focusedOptionIndex: 0, // index of focused option (hovered by mouse or keyboard controlled)
         focusedItemIndex: null, // index of focused item (clicked by mouse)
+        isLoading: false,
+        isInputFocused: false,
     }
 
     componentDidMount() {
         if (this.props.autoFocus) {
             this.focusInput()
+        }
+    }
+
+    componentDidUpdate(prevProps: Props, prevState: State) {
+        const {inputValue} = this.state
+
+        if (inputValue !== prevState.inputValue) {
+            this.setState({isLoading: true})
+            this.handleLoadOptions()
         }
     }
 
@@ -238,18 +256,19 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
             return this.createItemsFromInputValues(splitAddresses)
         }
 
-        this.setState(
-            {
-                inputValue,
-                focusedOptionIndex: 0,
-            },
-            () => {
-                void this.props.loadOptions(inputValue, (options) => {
-                    this.setState({options})
-                })
-            }
-        )
+        this.setState({
+            inputValue,
+            focusedOptionIndex: 0,
+        })
     }
+
+    handleLoadOptions = _debounce(() => {
+        const {inputValue} = this.state
+
+        void this.props.loadOptions(inputValue, (options) => {
+            this.setState({isLoading: false, options})
+        })
+    }, 300)
 
     onInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
         const {value, onChange} = this.props
@@ -340,8 +359,13 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
     }
 
     onInputBlur = (e: FocusEvent<HTMLInputElement>) => {
+        if (this.fieldRef.current?.contains(e.relatedTarget as Node)) {
+            return
+        }
+
         this.killEvent(e)
         this.onLeaving()
+        this.setState({isInputFocused: false})
     }
 
     onItemClick = (
@@ -380,8 +404,7 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
 
     render() {
         const {value, disabled, placeholder, required} = this.props
-
-        const hasOptions = !!this.state.options.length
+        const {inputValue, isInputFocused, isLoading, options} = this.state
 
         const placeholderOnEmpty = value.length ? '' : placeholder
 
@@ -389,7 +412,7 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
         const isInputRequired = required && !value.length
 
         return (
-            <div className={css.field}>
+            <div className={css.field} ref={this.fieldRef}>
                 <div className={css.values} onClick={this.focusInput}>
                     {value.map((item, index) => (
                         <div
@@ -420,9 +443,10 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
                         type="text"
                         ref={(ref) => (this.inputRef = ref)}
                         className={css.input}
-                        value={this.state.inputValue}
+                        value={inputValue}
                         onChange={this.onInputChange}
                         onKeyDown={this.onInputKeyDown}
+                        onFocus={() => this.setState({isInputFocused: true})}
                         onBlur={this.onInputBlur}
                         disabled={disabled}
                         required={isInputRequired}
@@ -432,24 +456,39 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
                 </div>
                 <div
                     className={classnames(css.suggestions, {
-                        [css['suggestions--hidden']]: !hasOptions,
+                        [css['suggestions--hidden']]: !isInputFocused,
                     })}
+                    tabIndex={-1}
                 >
-                    {this.state.options.map((option, index) => (
-                        <div
-                            key={index}
-                            className={classnames(css.suggestion, {
-                                [css['suggestion--focused']]:
-                                    this.state.focusedOptionIndex === index,
-                            })}
-                            onMouseEnter={() =>
-                                this.setState({focusedOptionIndex: index})
-                            }
-                            onClick={(e) => this.onOptionClick(e, index)}
-                        >
-                            {option.label}
+                    {inputValue === '' ? (
+                        <div className={css.emptySuggestions}>
+                            Type to search
                         </div>
-                    ))}
+                    ) : isLoading ? (
+                        _times(3).map((value, index) => (
+                            <div key={index} className={css.skeleton}>
+                                <Skeleton />
+                            </div>
+                        ))
+                    ) : options.length === 0 ? (
+                        <div className={css.emptySuggestions}>No results</div>
+                    ) : (
+                        options.map((option, index) => (
+                            <div
+                                key={index}
+                                className={classnames(css.suggestion, {
+                                    [css['suggestion--focused']]:
+                                        this.state.focusedOptionIndex === index,
+                                })}
+                                onMouseEnter={() =>
+                                    this.setState({focusedOptionIndex: index})
+                                }
+                                onClick={(e) => this.onOptionClick(e, index)}
+                            >
+                                {option.label}
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
         )

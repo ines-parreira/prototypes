@@ -126,7 +126,7 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
         )
 
         const placeholder = valueProp
-            ? 'Search a customer...'
+            ? 'Search customers...'
             : 'Sorry, no recipient for this type of message...'
         const allowCreate =
             sourceType === TicketMessageSourceType.Email ||
