@@ -4,6 +4,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
 <div>
   <div
     class="full-width"
+    style="position: relative;"
   >
     <div
       class="page-header pageHeader"
@@ -181,36 +182,6 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         </button>
       </section>
     </div>
-    <table
-      class="table"
-    >
-      <thead
-        class=""
-      >
-        <tr
-          class="headerRow"
-        >
-          <td
-            class="wrapper headerCell normal"
-            style="width: 25px;"
-          />
-          <td
-            class="wrapper headerCell normal"
-          />
-          <td
-            class="wrapper headerCell normal"
-            style="width: 124px;"
-          />
-          <td
-            class="wrapper headerCell normal"
-            style="width: 160px;"
-          />
-        </tr>
-      </thead>
-      <tbody
-        class="tableBody main-table"
-      />
-    </table>
     <div
       class="drawer-container"
       style="z-index: -1; transition-delay: 300ms;"

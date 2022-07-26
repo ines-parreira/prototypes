@@ -63,7 +63,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
     }
 
     return (
-        <div className="full-width">
+        <div className="full-width" style={{position: 'relative'}}>
             <PageHeader
                 title={
                     <HelpCenterDetailsBreadcrumb

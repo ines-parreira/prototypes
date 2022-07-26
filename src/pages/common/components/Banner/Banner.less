@@ -1,0 +1,51 @@
+@import '~css/new/colors';
+@import '~css/new/colorTokens';
+
+@import '~css/typography';
+@import '~css/new/typographyTokens';
+
+:local {
+    .container {
+        position: relative;
+
+        display: grid;
+        grid-template-columns: 310px auto 21px;
+        column-gap: 40px;
+
+        padding: 16px;
+
+        background-color: @classic-neutral-grey-1;
+    }
+
+    .preview {
+        height: 200px;
+
+        padding: 16px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 24px rgba(153, 165, 182, 0.08);
+
+        background-color: @classic-neutral-grey-0;
+    }
+
+    .content {
+        .heading-subsection-regular();
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        color: @classic-neutral-grey-5;
+    }
+
+    .title {
+        .heading-section-semibold();
+
+        margin-bottom: 8px;
+
+        color: @classic-neutral-grey-6;
+    }
+
+    .close {
+        cursor: pointer;
+    }
+}

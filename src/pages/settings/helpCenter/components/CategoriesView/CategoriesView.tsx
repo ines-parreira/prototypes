@@ -1,6 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {Container} from 'reactstrap'
+import {NavLink} from 'react-router-dom'
+
+import standalonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
+
 import Button from 'pages/common/components/button/Button'
+import {Banner} from 'pages/common/components/Banner'
 
 import {HelpCenter} from 'models/helpCenter/types'
 import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
@@ -63,6 +68,8 @@ export const CategoriesViews = ({
         }
     }
 
+    const baseURL = `/app/settings/help-center/${helpCenter.id}`
+
     const showCreateFirst =
         !isLoading &&
         categories.length === 1 &&
@@ -90,7 +97,7 @@ export const CategoriesViews = ({
 
     return (
         <>
-            {showCreateFirst && (
+            {showCreateFirst ? (
                 <Container fluid className={settingsCss.pageContainer}>
                     <h1>
                         Start your Help Center here&nbsp;
@@ -113,13 +120,40 @@ export const CategoriesViews = ({
                     </Button>
 
                     <ImportSection className={css.importSection} />
+
+                    {helpCenter.source === 'automation' && (
+                        <div className={css.bannerContainer}>
+                            <Banner
+                                preview={<img src={standalonePreview} alt="" />}
+                                title="Not ready to add articles? Customize your help center in the meantime."
+                            >
+                                <div className={css.bannerContent}>
+                                    <div>
+                                        <div>
+                                            We created a help center to help get
+                                            you started. Customize it by adding
+                                            a logo,
+                                        </div>
+                                        <div>
+                                            background image, your brand color
+                                            and fonts, and more!
+                                        </div>
+                                    </div>
+                                    <NavLink to={`${baseURL}/appearance`} exact>
+                                        Customize Help Center
+                                    </NavLink>
+                                </div>
+                            </Banner>
+                        </div>
+                    )}
                 </Container>
+            ) : (
+                <CategoriesTable
+                    renderArticleList={renderArticleList}
+                    onReorderFinish={handleOnReorder}
+                    shouldRenderEmptyUncategorizedRow={!showCreateFirst}
+                />
             )}
-            <CategoriesTable
-                renderArticleList={renderArticleList}
-                onReorderFinish={handleOnReorder}
-                shouldRenderEmptyUncategorizedRow={!showCreateFirst}
-            />
         </>
     )
 }

@@ -4,6 +4,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
 <div>
   <div
     class="full-width"
+    style="position: relative;"
   >
     <div
       class="page-header pageHeader"

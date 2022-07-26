@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Banner /> matches the snapshot 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="preview"
+    >
+      <img
+        alt=""
+        src="test-file-stub"
+      />
+    </div>
+    <div
+      class="content"
+    >
+      <h3
+        class="title"
+      >
+        We created a help center for sfbicycles to help you get started.
+      </h3>
+      <div>
+        <span>
+          Customize your help center to look and feel like your brand by adding a logo, background image, your brand color and fonts, and more! Use your 
+          <a
+            href="#"
+          >
+            help center’s live URL
+          </a>
+           to redirect shoppers to self-service.
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
