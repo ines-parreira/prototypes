@@ -45,6 +45,9 @@ const Integration = ({integration, loading}: Props) => {
         'customers',
         'is_over',
     ])
+    const needScopeUpdate = Boolean(
+        integration.getIn(['meta', 'need_scope_update'], false)
+    )
 
     const handleUpdate = useCallback(
         (evt: FormEvent<HTMLFormElement>) => {
@@ -104,6 +107,15 @@ const Integration = ({integration, loading}: Props) => {
                                     onClick={retriggerOAuthFlow}
                                 >
                                     Reconnect
+                                </Button>
+                            )}
+                            {needScopeUpdate && (
+                                <Button
+                                    className="ml-2"
+                                    isLoading={isSubmitting}
+                                    onClick={retriggerOAuthFlow}
+                                >
+                                    Update app permissions
                                 </Button>
                             )}
 
