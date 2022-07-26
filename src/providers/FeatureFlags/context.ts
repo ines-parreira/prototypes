@@ -5,6 +5,7 @@ export enum FlagKey {
     EarlyAdopter = 'early-adopter',
     DefaultMacroToSearch = 'default-macro-to-search',
     StarterPlanAccess = 'starter-plan-access',
+    SelfServiceStandalonePortal = 'self-service-standalone-portal',
 }
 
 type ContextSchema = {

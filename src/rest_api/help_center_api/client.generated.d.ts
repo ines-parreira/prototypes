@@ -728,7 +728,41 @@ declare namespace Components {
     export interface CreateCustomDomainDto {
       hostname: string;
     }
-    export interface CreateHelpCenterDto {
+    export interface CreateHelpCenterTranslationDto {
+      /**
+       * The locale of the translation.
+       * 
+       * It should be in help center's supported locales.
+       * example:
+       * fr-FR
+       */
+      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
+      /**
+       * The SEO meta attributes of the help center in the `locale`'s translation.
+       */
+      seo_meta: {
+        /**
+         * The content of the `<title />` HTML tag for the help center translation.
+         */
+        title: string | null;
+        /**
+         * The content of the `<meta name="description">` HTML tag for the help center translation.
+         */
+        description: string | null;
+      };
+      chat_application_id?: number | null;
+    }
+    export interface CreateHelpCenterTranslationSeoMetaDto {
+      /**
+       * The content of the `<title />` HTML tag for the help center translation.
+       */
+      title: string | null;
+      /**
+       * The content of the `<meta name="description">` HTML tag for the help center translation.
+       */
+      description: string | null;
+    }
+    export interface CreateHelpCenterWithAccountIdDto {
       /**
        * example:
        * My Help Center
@@ -778,40 +812,7 @@ declare namespace Components {
        */
       self_service_deactivated?: boolean;
       source?: "manual" | "automation";
-    }
-    export interface CreateHelpCenterTranslationDto {
-      /**
-       * The locale of the translation.
-       * 
-       * It should be in help center's supported locales.
-       * example:
-       * fr-FR
-       */
-      locale: "en-US" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE";
-      /**
-       * The SEO meta attributes of the help center in the `locale`'s translation.
-       */
-      seo_meta: {
-        /**
-         * The content of the `<title />` HTML tag for the help center translation.
-         */
-        title: string | null;
-        /**
-         * The content of the `<meta name="description">` HTML tag for the help center translation.
-         */
-        description: string | null;
-      };
-      chat_application_id?: number | null;
-    }
-    export interface CreateHelpCenterTranslationSeoMetaDto {
-      /**
-       * The content of the `<title />` HTML tag for the help center translation.
-       */
-      title: string | null;
-      /**
-       * The content of the `<meta name="description">` HTML tag for the help center translation.
-       */
-      description: string | null;
+      account_id?: number;
     }
     export interface CreateNavigationLinkDto {
       /**
@@ -1716,7 +1717,7 @@ declare namespace Paths {
     }
   }
   namespace CreateHelpCenter {
-    export type RequestBody = Components.Schemas.CreateHelpCenterDto;
+    export type RequestBody = Components.Schemas.CreateHelpCenterWithAccountIdDto;
     namespace Responses {
       export type $201 = Components.Schemas.HelpCenterDto;
     }

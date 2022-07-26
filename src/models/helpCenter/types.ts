@@ -7,7 +7,10 @@ export type LocaleCode = Components.Schemas.LocaleDto['code']
 
 // HELP CENTER
 
-export type CreateHelpCenterDto = Components.Schemas.CreateHelpCenterDto
+export type CreateHelpCenterDto = Omit<
+    Components.Schemas.CreateHelpCenterWithAccountIdDto,
+    'account_id'
+>
 export type UpdateHelpCenterDto = Components.Schemas.UpdateHelpCenterDto
 export type CreateHelpCenterTranslationDto =
     Components.Schemas.CreateHelpCenterTranslationDto
