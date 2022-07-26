@@ -7,6 +7,7 @@ import * as shopify from './shopify'
 import * as smile from './smile'
 import * as smooch from './smooch'
 import * as smoochInside from './smooch_inside'
+import * as bigcommerce from './bigcommerce'
 
 const allIntegrations = [
     facebook,
@@ -16,6 +17,7 @@ const allIntegrations = [
     smile,
     smooch,
     smoochInside,
+    bigcommerce,
 ]
 
 export const CHAT_AUTO_RESPONDER_REPLY_SHORTLY = 'reply-shortly'

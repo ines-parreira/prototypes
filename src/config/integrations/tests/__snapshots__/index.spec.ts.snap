@@ -52,6 +52,33 @@ Array [
     "name": "Shopify",
     "type": "shopify",
   },
+  Object {
+    "children": Array [
+      Object {
+        "name": "Street 1",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].street_1}}",
+      },
+      Object {
+        "name": "Street 2",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].street_2}}",
+      },
+      Object {
+        "name": "Zip code",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].zip}}",
+      },
+      Object {
+        "name": "City",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].city}}",
+      },
+      Object {
+        "name": "State",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].state}}",
+      },
+    ],
+    "integration": true,
+    "name": "BigCommerce",
+    "type": "bigcommerce",
+  },
 ]
 `;
 
@@ -128,6 +155,7 @@ Array [
   "recharge",
   "shopify",
   "smile",
+  "bigcommerce",
 ]
 `;
 
@@ -271,6 +299,45 @@ Array [
     "integration": true,
     "name": "Smile",
     "type": "smile",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "name": "Number of last order",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].id}}",
+      },
+      Object {
+        "name": "Date of last order",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].date_created|datetime_format(\\"MMMM d YYYY\\")}}",
+      },
+      Object {
+        "name": "Tracking url of last order",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].bc_order_shipments[0].tracking_link}}",
+      },
+      Object {
+        "name": "Tracking number of last order",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].bc_order_shipments[0].tracking_number}}",
+      },
+      Object {
+        "name": "Status of last order",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].status}}",
+      },
+      Object {
+        "name": "Shipping date of last order",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].date_shipped|datetime_format(\\"MMMM d YYYY\\")}}",
+      },
+      Object {
+        "name": "Destination country of last order",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].country}}",
+      },
+      Object {
+        "name": "Shipping address of last order",
+        "value": "{{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].street_1}} {{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].street_2}}, {{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].zip}} {{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].city}} {{ticket.customer.integrations.bigcommerce.orders[0].bc_shipping[0].state}}",
+      },
+    ],
+    "integration": true,
+    "name": "BigCommerce",
+    "type": "bigcommerce",
   },
 ]
 `;
