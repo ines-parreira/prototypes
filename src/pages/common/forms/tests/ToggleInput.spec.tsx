@@ -1,18 +1,30 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {render, fireEvent} from '@testing-library/react'
 
 import ToggleInput from '../ToggleInput'
 
 describe('ToggleInput', () => {
+    const mockOnCall = jest.fn().mockResolvedValue(null)
     const minProps = {
-        onClick: jest.fn().mockResolvedValue(null),
+        onClick: mockOnCall,
         isToggled: true,
     }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
 
     it('should render the checkbox checked', () => {
         const {container} = render(<ToggleInput {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should be allowed to toggle, and call the onClick callback', () => {
+        const {getByRole} = render(<ToggleInput {...minProps} />)
+
+        fireEvent.click(getByRole('switch'))
+        expect(mockOnCall).toHaveBeenCalled()
     })
 
     it('should render the checkbox unchecked', () => {
@@ -23,16 +35,26 @@ describe('ToggleInput', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render the button loading', () => {
-        const {container} = render(<ToggleInput {...minProps} isLoading />)
+    it('should render the button loading, and have onClick disabled', () => {
+        const {container, getByRole} = render(
+            <ToggleInput {...minProps} isLoading />
+        )
 
         expect(container.firstChild).toMatchSnapshot()
+
+        fireEvent.click(getByRole('switch'))
+        expect(mockOnCall).not.toHaveBeenCalled()
     })
 
-    it('should render the button disabled', () => {
-        const {container} = render(<ToggleInput {...minProps} isDisabled />)
+    it('should render the button disabled, and have onClick disabled', () => {
+        const {container, getByRole} = render(
+            <ToggleInput {...minProps} isDisabled />
+        )
 
         expect(container.firstChild).toMatchSnapshot()
+
+        fireEvent.click(getByRole('switch'))
+        expect(mockOnCall).not.toHaveBeenCalled()
     })
 
     it('should render the button loading and disabled', () => {

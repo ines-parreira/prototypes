@@ -5,15 +5,15 @@ exports[`ToggleInput should render caption 1`] = `
   <label
     aria-checked="true"
     class="label label"
-    for="toggle-button-7"
+    for="toggle-button-8"
     role="switch"
   >
     <input
       checked=""
       class="input"
       disabled=""
-      id="toggle-button-7"
-      name="toggle-button-7"
+      id="toggle-button-8"
+      name="toggle-button-8"
       type="checkbox"
     />
     <div
@@ -34,15 +34,15 @@ exports[`ToggleInput should render label 1`] = `
   <label
     aria-checked="true"
     class="label label"
-    for="toggle-button-6"
+    for="toggle-button-7"
     role="switch"
   >
     <input
       checked=""
       class="input"
       disabled=""
-      id="toggle-button-6"
-      name="toggle-button-6"
+      id="toggle-button-7"
+      name="toggle-button-7"
       type="checkbox"
     />
     <div
@@ -53,20 +53,20 @@ exports[`ToggleInput should render label 1`] = `
 </div>
 `;
 
-exports[`ToggleInput should render the button disabled 1`] = `
+exports[`ToggleInput should render the button disabled, and have onClick disabled 1`] = `
 <div>
   <label
     aria-checked="true"
     class="label isDisabled label disabledLabel"
-    for="toggle-button-4"
+    for="toggle-button-5"
     role="switch"
   >
     <input
       checked=""
       class="input"
       disabled=""
-      id="toggle-button-4"
-      name="toggle-button-4"
+      id="toggle-button-5"
+      name="toggle-button-5"
       type="checkbox"
     />
     <div
@@ -76,20 +76,20 @@ exports[`ToggleInput should render the button disabled 1`] = `
 </div>
 `;
 
-exports[`ToggleInput should render the button loading 1`] = `
+exports[`ToggleInput should render the button loading and disabled 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="label label loadingLabel"
-    for="toggle-button-3"
+    class="label isDisabled label loadingLabel disabledLabel"
+    for="toggle-button-6"
     role="switch"
   >
     <input
       checked=""
       class="input"
       disabled=""
-      id="toggle-button-3"
-      name="toggle-button-3"
+      id="toggle-button-6"
+      name="toggle-button-6"
       type="checkbox"
     />
     <div
@@ -128,20 +128,20 @@ exports[`ToggleInput should render the button loading 1`] = `
 </div>
 `;
 
-exports[`ToggleInput should render the button loading and disabled 1`] = `
+exports[`ToggleInput should render the button loading, and have onClick disabled 1`] = `
 <div>
   <label
     aria-checked="true"
-    class="label isDisabled label loadingLabel disabledLabel"
-    for="toggle-button-5"
+    class="label label loadingLabel"
+    for="toggle-button-4"
     role="switch"
   >
     <input
       checked=""
       class="input"
       disabled=""
-      id="toggle-button-5"
-      name="toggle-button-5"
+      id="toggle-button-4"
+      name="toggle-button-4"
       type="checkbox"
     />
     <div
@@ -208,14 +208,14 @@ exports[`ToggleInput should render the checkbox unchecked 1`] = `
   <label
     aria-checked="false"
     class="label label"
-    for="toggle-button-2"
+    for="toggle-button-3"
     role="switch"
   >
     <input
       class="input"
       disabled=""
-      id="toggle-button-2"
-      name="toggle-button-2"
+      id="toggle-button-3"
+      name="toggle-button-3"
       type="checkbox"
     />
     <div

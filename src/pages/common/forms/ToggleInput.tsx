@@ -45,9 +45,9 @@ const ToggleInput = ({
 
     const handleClick = useCallback(
         (event: MouseEvent<HTMLLabelElement>) => {
-            !isLoading && onClick(!isToggled, event)
+            !isDisabled && !isLoading && onClick(!isToggled, event)
         },
-        [isLoading, isToggled, onClick]
+        [isDisabled, isLoading, isToggled, onClick]
     )
 
     return (
