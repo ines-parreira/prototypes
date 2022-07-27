@@ -215,6 +215,7 @@
         "axios-mock-adapter": "1.18.1",
         "babel-loader": "8.1.0",
         "chromatic": "6.2.0",
+        "commander": "9.3.0",
         "css-loader": "1.0.1",
         "enzyme": "3.10.0",
         "enzyme-adapter-react-16": "1.14.0",

@@ -1,0 +1,222 @@
+#!/usr/bin/env node
+
+const os = require('os')
+const fs = require('fs')
+const path = require('path')
+const childProcess = require('child_process')
+
+const {Command} = require('commander')
+
+const SOURCE_REPO_URL = 'git@github.com:gorgias/gorgias.git'
+const TARGET_REPO_URL = 'git@github.com:gorgias/helpdesk-web-app.git'
+
+const program = new Command()
+
+program
+    .name('migrate')
+    .description('Utility script for migrating code from our main repository')
+    .showHelpAfterError()
+
+program
+    .command('branch')
+    .description('Migrate a branch from gorgias/gorgias')
+    .argument('<name>', 'the name of the branch to migrate')
+    .option(
+        '--force',
+        'force update the branch in the destination repository',
+        false
+    )
+    .option('--target <branch>', 'the name of the target branch')
+    .action(migrateBranch)
+
+program
+    .command('pr')
+    .description('Migrate a PR from gorgias/gorgias')
+    .argument('<number>', 'the number of the PR to migrate')
+    .option(
+        '--force',
+        'force update the PR branch and metadata in the destination repository',
+        false
+    )
+    .action(migratePr)
+
+program.parse(process.argv)
+
+function migrateBranch(sourceBranch, options = {}) {
+    checkForDependency('filter-repo')
+    const targetBranch = options.target ?? sourceBranch
+
+    withTmpDir(
+        (workDir) => {
+            cloneSourceRepo(sourceBranch, workDir)
+            extractFilesAndHistory()
+            setRepoRemote()
+            pushBranch(sourceBranch, targetBranch, options.force)
+        },
+        {chdir: true}
+    )
+}
+
+function migratePr(number, options = {}) {
+    checkForDependency('gh')
+    const prMetadata = getSourcePrMetadata(number)
+    migrateBranch(prMetadata.headRefName, prMetadata.headRefName, options.force)
+    createTargetPr(prMetadata)
+}
+
+//
+//  git
+
+function extractFilesAndHistory() {
+    exec(
+        `git filter-repo \
+            --path g/static/private/js/ \
+            --path-rename g/static/private/js/README.md:README.md \
+            --path-rename g/static/private/js/KAIZEN.md:KAIZEN.md \
+            --path-rename g/static/private/js:src \
+            --path package.json \
+            --path yarn.lock \
+            --path patches \
+            --path scripts \
+            --path tsconfig.json \
+            --path jest.config.js \
+            --path webpack.config.js \
+            --path webpack.sharedWorker.config.js \
+            --path .eslintrc.js \
+            --path .prettierrc.js \
+            --path .stylelintrc.js \
+            --path .babelrc \
+            --path .storybook \
+            --path .gitignore \
+            --path .editorconfig \
+            --path .github`
+    )
+}
+
+function setRepoRemote() {
+    exec(`git remote add origin ${TARGET_REPO_URL}`)
+}
+
+function pushBranch(sourceBranch, targetBranch, force = false) {
+    force
+        ? exec(`git push --force origin ${sourceBranch}:${targetBranch}`)
+        : exec(`git push origin ${sourceBranch}:${targetBranch}`)
+}
+
+function cloneSourceRepo(branchName, directoryName) {
+    exec(
+        `git clone ${SOURCE_REPO_URL} --branch ${branchName} --single-branch ${directoryName}`
+    )
+}
+
+//
+//  github
+
+function getSourcePrMetadata(number) {
+    try {
+        const data = exec(
+            `gh pr view ${number} \
+                --repo ${repoName(SOURCE_REPO_URL)} \
+                --json number,title,body,url,headRefName`,
+            'pipe'
+        )
+        return JSON.parse(data.toString())
+    } catch (error) {
+        console.log(error.message)
+        process.exit(1)
+    }
+}
+
+function createTargetPr(metadata) {
+    try {
+        withTmpDir((tmpDir) => {
+            const body =
+                `${metadata.body}\nPR migrated from gorgias/gorgias [#${metadata.number}](${metadata.url})`
+                    .replace(
+                        /<!-- Reviewable:start -->([\s\S]+)<!-- Reviewable:end -->/,
+                        ''
+                    )
+                    .replace(
+                        repoName(SOURCE_REPO_URL),
+                        repoName(TARGET_REPO_URL)
+                    )
+            const bodyFile = path.join(tmpDir, 'body')
+            fs.writeFileSync(bodyFile, body)
+            exec(
+                `gh pr create \
+                    --repo=${repoName(TARGET_REPO_URL)} \
+                    --head=${metadata.headRefName} \
+                    --title="${metadata.title.replace(/[\""]/g, '\\"')}" \
+                    --body-file=${bodyFile}`,
+                'pipe'
+            )
+        })
+    } catch (error) {
+        console.log(error.message)
+        process.exit(1)
+    }
+}
+
+function repoName(repoUrl) {
+    return repoUrl.replace('git@github.com:', '').replace('.git', '')
+}
+
+//
+//  utils
+
+function exec(command, stdio = 'inherit') {
+    console.log(`> ${command}`)
+    return childProcess.execSync(command, {stdio})
+}
+
+function withTmpDir(callback, options = {}) {
+    const cwd = process.cwd()
+    const prefix = 'helpdesk-migrate'
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), prefix))
+    if (options.chdir) {
+        process.chdir(tmpDir)
+    }
+    callback(tmpDir)
+    process.chdir(cwd)
+    fs.rmSync(tmpDir, {recursive: true})
+}
+
+function checkForDependency(library) {
+    switch (library) {
+        case 'filter-repo': {
+            try {
+                exec('git filter-repo', 'pipe')
+                return true
+            } catch (error) {
+                if (/is not a git command/.test(error.message)) {
+                    console.log(`
+                        This script requires the git-filter-repo utility.
+                        You can install it using your package manager:
+                        brew install git-filter-repo
+                        sudo apt install git-filter-repo
+                        pacman -S git-filter-repo
+                        More details here: https://github.com/newren/git-filter-repo/blob/main/INSTALL.md
+                    `)
+                    process.exit(1)
+                }
+            }
+            break
+        }
+
+        case 'gh': {
+            try {
+                exec('gh --version', 'pipe')
+                return true
+            } catch (error) {
+                console.log(`
+                    Migrating PRs requires the gh command line utility.
+                    You can install it using your package manager:
+                    brew install gh
+                    sudo apt install github-cli
+                    More details here: https://cli.github.com/manual/installation
+                `)
+                process.exit(1)
+            }
+        }
+    }
+}
