@@ -4,8 +4,7 @@ export function getConnectUrl() {
     let connectUrl =
         'https://store-pk360c6roo.mybigcommerce.com/manage/marketplace/apps/my-apps'
     if (isStaging()) {
-        connectUrl =
-            'https://store-pk360c6roo.mybigcommerce.com/manage/app/39647'
+        connectUrl = 'https://apps.bigcommerce.com/details/39647'
     }
     if (isProduction()) {
         connectUrl =
