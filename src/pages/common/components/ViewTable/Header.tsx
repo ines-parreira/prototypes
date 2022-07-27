@@ -235,6 +235,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                             })}
                         >
                             <Search
+                                autoFocus={isSearch}
                                 bindKey
                                 onKeyDown={this.handleKeyDown}
                                 placeholder={`Search ${

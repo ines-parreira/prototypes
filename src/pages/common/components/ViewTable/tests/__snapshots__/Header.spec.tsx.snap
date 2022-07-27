@@ -171,6 +171,7 @@ exports[`ViewTable::Header default view displays 1`] = `
       className="d-flex"
     >
       <Search
+        autoFocus={false}
         bindKey={true}
         className="headerSearch mr-2"
         disabled={false}
@@ -358,6 +359,7 @@ exports[`ViewTable::Header default view get search query from active view 1`] = 
       className="d-flex"
     >
       <Search
+        autoFocus={false}
         bindKey={true}
         className="headerSearch mr-2"
         disabled={false}
@@ -524,6 +526,7 @@ exports[`ViewTable::Header empty view 1`] = `
       className="d-flex"
     >
       <Search
+        autoFocus={false}
         bindKey={true}
         className="headerSearch mr-2"
         disabled={false}
@@ -551,6 +554,7 @@ exports[`ViewTable::Header search view 1`] = `
       className="d-flex flex-grow"
     >
       <Search
+        autoFocus={true}
         bindKey={true}
         className="headerSearch mr-2 isSearching flex-grow"
         disabled={false}
