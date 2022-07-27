@@ -3100,6 +3100,23 @@
                 },
                 "required": ["progress"]
             },
+            "ContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "helpdesk_integration_email": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "helpdesk_integration_id": {
+                        "type": "number",
+                        "nullable": true
+                    }
+                },
+                "required": [
+                    "helpdesk_integration_email",
+                    "helpdesk_integration_id"
+                ]
+            },
             "CreateHelpCenterWithAccountIdDto": {
                 "type": "object",
                 "properties": {
@@ -3160,6 +3177,12 @@
                         "type": "boolean",
                         "description": "Boolean indicating if self service is deactivated for this Help center.",
                         "example": false
+                    },
+                    "contact_form": {
+                        "description": "Contains the integration email and id which will be used to create tickets from the contact form.",
+                        "allOf": [
+                            {"$ref": "#/components/schemas/ContactFormDto"}
+                        ]
                     },
                     "source": {
                         "enum": ["manual", "automation"],
@@ -3268,6 +3291,12 @@
                         "nullable": false,
                         "type": "string",
                         "enum": ["manual", "automation"]
+                    },
+                    "contact_form": {
+                        "nullable": true,
+                        "allOf": [
+                            {"$ref": "#/components/schemas/ContactFormDto"}
+                        ]
                     }
                 },
                 "required": [
@@ -3290,7 +3319,8 @@
                     "shop_name",
                     "self_service_deactivated_datetime",
                     "hotswap_session_token",
-                    "source"
+                    "source",
+                    "contact_form"
                 ]
             },
             "AccountInfoDto": {
@@ -3655,6 +3685,12 @@
                         "type": "string",
                         "enum": ["manual", "automation"]
                     },
+                    "contact_form": {
+                        "nullable": true,
+                        "allOf": [
+                            {"$ref": "#/components/schemas/ContactFormDto"}
+                        ]
+                    },
                     "translations": {
                         "minItems": 1,
                         "type": "array",
@@ -3687,7 +3723,8 @@
                     "shop_name",
                     "self_service_deactivated_datetime",
                     "hotswap_session_token",
-                    "source"
+                    "source",
+                    "contact_form"
                 ]
             },
             "HelpCentersListPageDto": {
@@ -3768,6 +3805,12 @@
                         "type": "boolean",
                         "description": "Boolean indicating if self service is deactivated for this Help center.",
                         "example": false
+                    },
+                    "contact_form": {
+                        "description": "Contains the integration email and id which will be used to create tickets from the contact form.",
+                        "allOf": [
+                            {"$ref": "#/components/schemas/ContactFormDto"}
+                        ]
                     },
                     "powered_by_deactivated": {
                         "type": "boolean",

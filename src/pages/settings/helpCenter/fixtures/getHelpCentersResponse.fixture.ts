@@ -25,6 +25,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             hotswap_session_token: null,
             self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
             shop_name: null,
+            contact_form: null,
         },
         {
             id: 2,
@@ -48,6 +49,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             hotswap_session_token: null,
             self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
             shop_name: null,
+            contact_form: null,
         },
         {
             id: 3,
@@ -71,6 +73,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             hotswap_session_token: null,
             self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
             shop_name: null,
+            contact_form: null,
         },
         {
             id: 4,
@@ -94,6 +97,7 @@ export const getHelpCentersResponseFixture: HelpCentersListPage = {
             hotswap_session_token: null,
             self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
             shop_name: null,
+            contact_form: null,
         },
     ],
     object: 'list',
@@ -132,4 +136,5 @@ export const getSingleHelpCenterResponseFixture: Components.Schemas.HelpCenterDt
         created_datetime: '2021-05-17T18:21:42.022Z',
         updated_datetime: '2021-05-17T18:21:42.022Z',
         deleted_datetime: null,
+        contact_form: null,
     }

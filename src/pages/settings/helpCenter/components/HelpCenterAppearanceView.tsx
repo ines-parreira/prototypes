@@ -12,7 +12,7 @@ import {Value} from 'pages/common/forms/SelectField/types'
 import {getViewLanguage} from 'state/ui/helpCenter'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {HelpCenter, LocaleCode} from 'models/helpCenter/types'
+import {LocaleCode, UpdateHelpCenterDto} from 'models/helpCenter/types'
 import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -203,7 +203,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const [updateResponse, saveCurrentAppearance] = useAsyncFn(async () => {
         if (client && helpCenter) {
             try {
-                const payload: Partial<HelpCenter> = {
+                const payload: UpdateHelpCenterDto = {
                     theme: selectedTheme,
                     primary_color: currentColor,
                     primary_font_family: currentPrimaryFont,
