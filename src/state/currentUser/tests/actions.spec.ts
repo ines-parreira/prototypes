@@ -142,6 +142,14 @@ describe('current user actions', () => {
         })
     })
 
+    describe('setIsAvailable()', () => {
+        it.each([true, false])('should dispatch with status', (status) => {
+            store.dispatch(actions.setIsAvailable(status))
+
+            expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
     describe('update2FAEnabled', () => {
         it.each([true, false])('should dispatch with status', (status) => {
             store = mockStore({

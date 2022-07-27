@@ -8,6 +8,7 @@ import {TicketChannel} from 'business/types/ticket'
 import browserNotification from 'services/browserNotification'
 import {advancedPlan} from 'fixtures/subscriptionPlan'
 import {PlanWithCurrencySign} from 'state/billing/types'
+import * as currentUserActions from 'state/currentUser/actions'
 import {TicketStatuses} from '../../business/ticket'
 import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats'
 
@@ -56,6 +57,7 @@ jest.mock('../../state/chats/actions')
 jest.mock('../../state/views/actions')
 jest.mock('../../state/entities/viewsCount/actions')
 jest.mock('../../state/ticket/actions')
+jest.mock('state/currentUser/actions')
 
 jest.mock('../../init', () => {
     /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
@@ -894,6 +896,24 @@ describe('Config: socketEvents', () => {
                         requireInteraction: true,
                     }
                 )
+            })
+        })
+
+        describe('agent-availability-updated', () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.AgentAvailabilityUpdated,
+            }) as socketEvents.ReceivedEvent
+
+            it('should dispatch the availability status', () => {
+                handler.onReceive({
+                    event: {type: SocketEventType.AgentAvailabilityUpdated},
+                    data: {user_id: 1, available: true},
+                })
+
+                expect(
+                    currentUserActions.setIsAvailable
+                ).toHaveBeenNthCalledWith(1, true)
+                expect(chatActions.fetchChatsThrottled).toHaveBeenCalled()
             })
         })
     })

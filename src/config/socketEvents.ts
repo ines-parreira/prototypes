@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/react'
 
 import browserNotification from 'services/browserNotification'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {setIsAvailable} from 'state/currentUser/actions'
 import {MACRO_PARAMS_UPDATED} from 'state/macro/constants'
 import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
 
@@ -31,6 +32,7 @@ import {SocketManager} from '../services/socketManager/socketManager'
 import {
     AccountUpdatedEvent,
     ActionExecutedEvent,
+    AgentAvailabilityUpdatedEvent,
     CustomerUpdatedEvent,
     EmailIntegrationVerifiedEvent,
     FacebookIntegrationsReconnected,
@@ -741,6 +743,18 @@ export const receivedEvents: ReceivedEvent[] = [
                         .parameters_options
                 ),
             })
+        },
+    },
+    {
+        name: SocketEventType.AgentAvailabilityUpdated,
+        onReceive: function (json) {
+            reduxStore.dispatch(
+                setIsAvailable(
+                    (json as AgentAvailabilityUpdatedEvent).data.available
+                )
+            )
+
+            chatsActions.fetchChatsThrottled(reduxStore.dispatch)
         },
     },
 ]

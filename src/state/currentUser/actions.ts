@@ -1,6 +1,7 @@
 import {AxiosError} from 'axios'
 import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
+import {createAction} from '@reduxjs/toolkit'
 
 import moment from 'moment-timezone'
 import {notify} from 'state/notifications/actions'
@@ -191,6 +192,8 @@ export const toggleActiveStatus =
             })
         }
     }
+
+export const setIsAvailable = createAction<boolean>(constants.SET_IS_AVAILABLE)
 
 export const update2FAEnabled =
     (status: boolean) =>

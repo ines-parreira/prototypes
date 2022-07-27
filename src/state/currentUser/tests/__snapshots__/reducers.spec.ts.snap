@@ -37,6 +37,44 @@ Object {
 }
 `;
 
+exports[`current user reducers should handle SET_IS_AVAILABLE 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": false,
+      "settings": Object {},
+    },
+  },
+  "settings": Array [
+    Object {
+      "data": Object {
+        "available": true,
+      },
+      "type": "preferences",
+    },
+  ],
+}
+`;
+
+exports[`current user reducers should handle SET_IS_AVAILABLE 2`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "currentUser": false,
+      "settings": Object {},
+    },
+  },
+  "settings": Array [
+    Object {
+      "data": Object {
+        "available": false,
+      },
+      "type": "preferences",
+    },
+  ],
+}
+`;
+
 exports[`current user reducers submit current user 1`] = `
 Object {
   "_internal": Object {

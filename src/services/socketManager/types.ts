@@ -42,6 +42,7 @@ export enum SocketEventType {
     OutboundPhoneCallInitiated = 'outbound-phone-call-initiated',
     MacroParamsUpdated = 'macro-params-updated',
     TwilioEventTriggered = 'twilio-event-triggered',
+    AgentAvailabilityUpdated = 'agent-availability-updated',
 }
 
 export enum JoinEventType {
@@ -252,6 +253,16 @@ export type MacroParamsUpdatedEvent = {
     }
 }
 
+export type AgentAvailabilityUpdatedEvent = {
+    event: {
+        type: SocketEventType.AgentAvailabilityUpdated
+    }
+    data: {
+        available: boolean
+        user_id: number
+    }
+}
+
 export type ServerMessage =
     | CustomerUpdatedEvent
     | SelfServiceConfigurationsUpdatedEvent
@@ -280,3 +291,4 @@ export type ServerMessage =
     | ViewsDeactivated
     | OutboundPhoneCallInitiated
     | MacroParamsUpdatedEvent
+    | AgentAvailabilityUpdatedEvent

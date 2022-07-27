@@ -84,6 +84,19 @@ export default function reducer(
                 _isUndefined(action.status) ? !status : action.status
             )
 
+        case constants.SET_IS_AVAILABLE:
+            return state.update('settings', (settings: List<any>) =>
+                settings.map((setting: Map<any, any>) => {
+                    if (setting.get('type') === 'preferences') {
+                        return setting.setIn(
+                            ['data', 'available'],
+                            action.payload
+                        )
+                    }
+                    return setting
+                })
+            )
+
         case constants.UPDATE_2FA_STATUS:
             return state.update('has_2fa_enabled', () => action.status)
 

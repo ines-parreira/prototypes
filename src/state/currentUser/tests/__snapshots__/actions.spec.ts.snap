@@ -34,6 +34,24 @@ Array [
 ]
 `;
 
+exports[`current user actions setIsAvailable() should dispatch with status 1`] = `
+Array [
+  Object {
+    "payload": true,
+    "type": "SET_IS_AVAILABLE",
+  },
+]
+`;
+
+exports[`current user actions setIsAvailable() should dispatch with status 2`] = `
+Array [
+  Object {
+    "payload": false,
+    "type": "SET_IS_AVAILABLE",
+  },
+]
+`;
+
 exports[`current user actions submit setting creation 1`] = `
 Array [
   Object {

@@ -164,4 +164,22 @@ describe('current user reducers', () => {
             reducer(initialState, {...action, status: false})
         ).toEqualImmutable(initialState.set('has_2fa_enabled', false))
     })
+
+    it('should handle SET_IS_AVAILABLE', () => {
+        const action = {
+            type: types.SET_IS_AVAILABLE,
+            payload: true,
+        }
+        const state = initialState.mergeDeep(
+            fromJS({
+                settings: [{type: 'preferences'}],
+            })
+        )
+
+        expect(reducer(state, action).toJS()).toMatchSnapshot()
+
+        expect(
+            reducer(state, {...action, payload: false}).toJS()
+        ).toMatchSnapshot()
+    })
 })
