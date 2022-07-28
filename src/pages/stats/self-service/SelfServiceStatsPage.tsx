@@ -10,6 +10,7 @@ import {
     SELF_SERVICE_MOST_RETURNED_PRODUCTS,
     SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION,
     SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION,
+    SELF_SERVICE_VOLUME_PER_FLOW,
 } from 'config/stats'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {
@@ -37,6 +38,8 @@ import PageHeader from 'pages/common/components/PageHeader'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
 
+import {useFeatureFlags} from 'hooks/useFeatureFlags'
+import {FlagKey} from 'providers/FeatureFlags/context'
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
 import NormalizedBarStat from '../common/components/charts/NormalizedBarStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
@@ -48,6 +51,7 @@ import useStatResource from '../useStatResource'
 
 import Paywall, {UpgradeType} from '../../common/components/Paywall/Paywall'
 import {paywallConfigs} from '../../../config/paywalls'
+import NormalizedLineStat from '../common/components/charts/NormalizedLineStat'
 import SelfServiceIntegrationsFilter from './SelfServiceIntegrationsFilter'
 import css from './SelfServiceStatsPage.less'
 
@@ -73,6 +77,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
     const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
     const statsFilters = useAppSelector(getStatsFilters)
+    const {getFlag} = useFeatureFlags()
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {period, integrations} = statsFilters
@@ -122,6 +127,13 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const immutableOverview = useMemo(() => {
         return fromJS(overview || {}) as Map<any, any>
     }, [overview])
+
+    const [volumePerFlow, isFetchingVolumePerFlow] =
+        useStatResource<TwoDimensionalChart>({
+            statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
+            resourceName: SELF_SERVICE_VOLUME_PER_FLOW,
+            statsFilters: pageStatsFilters,
+        })
 
     const [chatFlowsDistribution, isFetchingChatFlowsDistribution] =
         useStatResource<TwoDimensionalChart>({
@@ -236,42 +248,78 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             config={statsConfig.get(SELF_SERVICE_OVERVIEW)}
                         />
                     </KeyMetricStatWrapper>
-                    <StatWrapper
-                        stat={chatFlowsDistribution}
-                        isFetchingStat={isFetchingChatFlowsDistribution}
-                        resourceName={SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION}
-                        statsFilters={pageStatsFilters}
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <NormalizedBarStat
-                                data={stat.getIn(['data', 'data'])}
-                                legend={stat.getIn(['data', 'legend'], null)}
-                                config={statsConfig.get(
+                    {getFlag(FlagKey.SelfServiceStatsV2) && (
+                        <StatWrapper
+                            stat={volumePerFlow}
+                            isFetchingStat={isFetchingVolumePerFlow}
+                            resourceName={SELF_SERVICE_VOLUME_PER_FLOW}
+                            statsFilters={pageStatsFilters}
+                            isDownloadable
+                        >
+                            {(stat) => (
+                                <NormalizedLineStat
+                                    data={stat.getIn(['data', 'data'])}
+                                    legend={stat.getIn(
+                                        ['data', 'legend'],
+                                        null
+                                    )}
+                                    config={statsConfig.get(
+                                        SELF_SERVICE_VOLUME_PER_FLOW
+                                    )}
+                                />
+                            )}
+                        </StatWrapper>
+                    )}
+                    {!getFlag(FlagKey.SelfServiceStatsV2) && (
+                        <>
+                            <StatWrapper
+                                stat={chatFlowsDistribution}
+                                isFetchingStat={isFetchingChatFlowsDistribution}
+                                resourceName={
                                     SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION
+                                }
+                                statsFilters={pageStatsFilters}
+                                isDownloadable
+                            >
+                                {(stat) => (
+                                    <NormalizedBarStat
+                                        data={stat.getIn(['data', 'data'])}
+                                        legend={stat.getIn(
+                                            ['data', 'legend'],
+                                            null
+                                        )}
+                                        config={statsConfig.get(
+                                            SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION
+                                        )}
+                                    />
                                 )}
-                            />
-                        )}
-                    </StatWrapper>
-                    <StatWrapper
-                        stat={helpCenterFlowsDistribution}
-                        isFetchingStat={isFetchingHelpCenterFlowsDistribution}
-                        resourceName={
-                            SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION
-                        }
-                        statsFilters={pageStatsFilters}
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <NormalizedBarStat
-                                data={stat.getIn(['data', 'data'])}
-                                legend={stat.getIn(['data', 'legend'], null)}
-                                config={statsConfig.get(
+                            </StatWrapper>
+                            <StatWrapper
+                                stat={helpCenterFlowsDistribution}
+                                isFetchingStat={
+                                    isFetchingHelpCenterFlowsDistribution
+                                }
+                                resourceName={
                                     SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION
+                                }
+                                statsFilters={pageStatsFilters}
+                                isDownloadable
+                            >
+                                {(stat) => (
+                                    <NormalizedBarStat
+                                        data={stat.getIn(['data', 'data'])}
+                                        legend={stat.getIn(
+                                            ['data', 'legend'],
+                                            null
+                                        )}
+                                        config={statsConfig.get(
+                                            SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION
+                                        )}
+                                    />
                                 )}
-                            />
-                        )}
-                    </StatWrapper>
+                            </StatWrapper>
+                        </>
+                    )}
                     <h3 className={css.section}>Report issues flow</h3>
                     <StatWrapper
                         stat={productWithMostIssues}

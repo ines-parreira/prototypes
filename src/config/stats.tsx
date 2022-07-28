@@ -67,6 +67,7 @@ export const AUTOMATION_PER_CHANNEL = 'automation-per-channel'
 export const SELF_SERVICE_OVERVIEW = 'self-service-overview'
 export const SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION =
     'self-service-chat-flows-distribution'
+export const SELF_SERVICE_VOLUME_PER_FLOW = 'self-service-volume-per-flow'
 export const SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION =
     'self-service-help-center-flows-distribution'
 export const SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES =
@@ -1403,6 +1404,125 @@ export const stats = toImmutable<
                     'Number of automated self-service interactions divided by the total number of self-service interactions across chat and help center.',
             },
         ],
+    },
+    [SELF_SERVICE_VOLUME_PER_FLOW]: {
+        style: 'normalized-line',
+        padding: '0px 30px 30px 30px',
+        downloadable: true,
+        lines: {
+            quick_responses: {
+                label: 'Quick response',
+                backgroundColor: '#1D786B',
+                borderColor: '#1D786B',
+                borderWidth: 1,
+                fill: false,
+                pointHoverBackgroundColor: '#1D786B',
+                pointHoverBorderColor: '#1D786B',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                disabledLink: '/app/settings/self-service',
+            },
+            article_recommendation: {
+                label: 'Article recommendation',
+                backgroundColor: '#001874',
+                borderColor: '#001874',
+                borderWidth: 1,
+                fill: false,
+                pointHoverBackgroundColor: '#001874',
+                pointHoverBorderColor: '#001874',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                disabledLink: '/app/settings/self-service',
+            },
+            track: {
+                label: 'Track order',
+                backgroundColor: '#4A8DF9',
+                borderColor: '#4A8DF9',
+                borderWidth: 1,
+                fill: false,
+                pointHoverBackgroundColor: '#4A8DF9',
+                pointHoverBorderColor: '#4A8DF9',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                disabledLink: '/app/settings/self-service',
+            },
+            report_issues: {
+                label: 'Report order issue',
+                backgroundColor: '#74B510',
+                borderColor: '#74B510',
+                borderWidth: 1,
+                fill: false,
+                pointHoverBackgroundColor: '#74B510',
+                pointHoverBorderColor: '#74B510',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                disabledLink: '/app/settings/self-service',
+            },
+            returns: {
+                label: 'Return order',
+                backgroundColor: '#8F2CAF',
+                borderColor: '#8F2CAF',
+                borderWidth: 1,
+                fill: false,
+                pointHoverBackgroundColor: '#8F2CAF',
+                pointHoverBorderColor: '#8F2CAF',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                disabledLink: '/app/settings/self-service',
+            },
+            cancellations: {
+                label: 'Cancel order',
+                color: '#EB6260',
+                backgroundColor: '#EB6260',
+                borderColor: '#EB6260',
+                borderWidth: 1,
+                fill: false,
+                pointHoverBackgroundColor: '#EB6260',
+                pointHoverBorderColor: '#EB6260',
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                disabledLink: '/app/settings/self-service',
+            },
+        },
+        options: (legend: Map<any, any>) => ({
+            plugins: {
+                tooltip: {
+                    intersect: true,
+                    position: 'nearest',
+                },
+            },
+            scales: {
+                x: {
+                    grid: {
+                        ...defaultXAxeGridLines,
+                        display: true,
+                        borderDash: [2],
+                        tickBorderDash: [2],
+                    },
+                    ticks: {
+                        ...defaultTicks,
+                        callback: formatDateAxeCb,
+                    },
+                    offset: true,
+                },
+
+                y: {
+                    title: {
+                        ...defaultScaleLabel,
+                        text: legend.getIn(['axes', 'y']),
+                        display: !!legend.getIn(['axes', 'y']),
+                    },
+                    ticks: {...defaultTicks, padding: 10},
+                    min: 0,
+                    grid: {
+                        ...defaultYAxeGridLines,
+                        drawBorder: true,
+                        borderDash: [2],
+                        tickBorderDash: [2],
+                    },
+                },
+            },
+        }),
     },
     [SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION]: {
         style: 'normalized-bar',

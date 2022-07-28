@@ -6,6 +6,7 @@ export enum FlagKey {
     DefaultMacroToSearch = 'default-macro-to-search',
     StarterPlanAccess = 'starter-plan-access',
     SelfServiceStandalonePortal = 'self-service-standalone-portal',
+    SelfServiceStatsV2 = 'self-service-stats-v2',
 }
 
 type ContextSchema = {
