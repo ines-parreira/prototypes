@@ -204,7 +204,7 @@ export function RulesViewContainer({
                                 even responding. Hover a row to show the rule
                                 description. Learn more about how to setup rules{' '}
                                 <a
-                                    href="https://docs.gorgias.com/rules"
+                                    href="https://docs.gorgias.com/en-US/articles/rules-18380"
                                     rel="noopener noreferrer"
                                     target="_blank"
                                 >
@@ -218,7 +218,7 @@ export function RulesViewContainer({
                                 events and in the order they are listed on this
                                 page.{' '}
                                 <a
-                                    href="https://docs.gorgias.com/rules/rules-faq"
+                                    href="https://docs.gorgias.com/en-US/rules-faq-82011"
                                     rel="noopener noreferrer"
                                     target="_blank"
                                 >
