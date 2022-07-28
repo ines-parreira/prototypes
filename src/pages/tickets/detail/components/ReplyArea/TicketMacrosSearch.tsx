@@ -79,7 +79,10 @@ const TicketMacrosSearch = ({
             </i>
 
             {getFlag(FlagKey.DefaultMacroToSearch) && (
-                <OnbordingMacroPopover target={ref} />
+                <OnbordingMacroPopover
+                    target={ref}
+                    onClearMacro={onClearMacro}
+                />
             )}
         </div>
     )

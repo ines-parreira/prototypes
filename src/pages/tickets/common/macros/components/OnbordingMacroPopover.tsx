@@ -30,10 +30,11 @@ interface StageProp {
 }
 
 interface Props {
+    onClearMacro: () => void
     target: MutableRefObject<HTMLElement | null>
 }
 
-export default function OnbordingMacroPopover({target}: Props) {
+export default function OnbordingMacroPopover({target, onClearMacro}: Props) {
     const dispatch = useAppDispatch()
     const [stage, setStage] = useState<Stages>('info')
     const [showPopover, setShowPopover] = useState(false)
@@ -98,6 +99,7 @@ export default function OnbordingMacroPopover({target}: Props) {
     }
 
     const handleRevertBack = async () => {
+        onClearMacro()
         await setShowMacroByDefault(false)
     }
 
@@ -168,7 +170,9 @@ function MacroPopOver({
     const popoverBodyRef = useRef(null)
 
     useClickAway(popoverBodyRef, () => {
-        onClose()
+        if (buttons.every((button) => button.label !== 'Got it')) {
+            onClose()
+        }
     })
 
     return (

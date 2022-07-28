@@ -33,14 +33,21 @@ jest.mock('popper.js', () => {
 describe('<OnbordingMacroPopover />', () => {
     function OnbordingMacroPopoverTestComp({
         defaultState,
+        props,
     }: {
         defaultState: Partial<RootState>
+        props?: {
+            onClearMacro?: () => void
+        }
     }) {
         const ref = useRef<any>()
         return (
             <Provider store={mockStore(defaultState)}>
                 <div style={{width: 800}} ref={ref} data-testid="parent">
-                    <OnbordingMacroPopover target={ref} />
+                    <OnbordingMacroPopover
+                        onClearMacro={props?.onClearMacro || jest.fn()}
+                        target={ref}
+                    />
                 </div>
             </Provider>
         )
@@ -187,11 +194,54 @@ describe('<OnbordingMacroPopover />', () => {
             ticket: fromJS(ticket),
         }
 
-        render(<OnbordingMacroPopoverTestComp defaultState={defaultState} />)
+        const onClearMacro = jest.fn()
+
+        render(
+            <OnbordingMacroPopoverTestComp
+                props={{onClearMacro}}
+                defaultState={defaultState}
+            />
+        )
 
         fireEvent.click(await screen.findByText('Got it'))
         fireEvent.click(await screen.findByText('Keep search'))
 
         expect(screen.queryByText('Keep search')).toBeFalsy()
+        expect(onClearMacro).not.toHaveBeenCalled()
+    })
+
+    it("should hide TicketMacroSearch dropdown after select 'Revert Back'", async () => {
+        const userSettings: UserSetting[] = [
+            {
+                data: {
+                    show_macros: true,
+                    macros_default_to_search_popover: true,
+                    available: true,
+                },
+                id: 3,
+                type: UserSettingType.Preferences,
+            },
+        ]
+
+        user.settings = userSettings
+
+        const defaultState: Partial<RootState> = {
+            currentUser: fromJS(user),
+            ticket: fromJS(ticket),
+        }
+
+        const onClearMacro = jest.fn()
+        render(
+            <OnbordingMacroPopoverTestComp
+                props={{onClearMacro}}
+                defaultState={defaultState}
+            />
+        )
+
+        fireEvent.click(await screen.findByText('Got it'))
+        fireEvent.click(await screen.findByText('Revert back'))
+
+        expect(screen.queryByText('Revert back')).toBeFalsy()
+        expect(onClearMacro).toHaveBeenCalledTimes(1)
     })
 })
