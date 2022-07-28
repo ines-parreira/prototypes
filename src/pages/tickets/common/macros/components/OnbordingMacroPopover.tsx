@@ -13,9 +13,10 @@ import {GroupPositionContext} from 'pages/common/components/layout/Group'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getPreferences} from 'state/currentUser/selectors'
+import {getPreferences, getCurrentUser} from 'state/currentUser/selectors'
 import {getTicket} from 'state/ticket/selectors'
 import {submitSetting} from 'state/currentUser/actions'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import css from './OnbordingMacroPopover.less'
 
 type Stages = 'info' | 'prompt'
@@ -39,6 +40,7 @@ export default function OnbordingMacroPopover({target, onClearMacro}: Props) {
     const [stage, setStage] = useState<Stages>('info')
     const [showPopover, setShowPopover] = useState(false)
     const ticket = useAppSelector(getTicket)
+    const currentUser = useAppSelector(getCurrentUser)
 
     const currentUserPreferences = useAppSelector(getPreferences)
 
@@ -101,6 +103,9 @@ export default function OnbordingMacroPopover({target, onClearMacro}: Props) {
     const handleRevertBack = async () => {
         onClearMacro()
         await setShowMacroByDefault(false)
+        logEvent(SegmentEvent.MacroRevertDefaultMacroToSearch, {
+            user_id: currentUser.get('id'),
+        })
     }
 
     const popoverData: Record<Stages, StageProp> = {

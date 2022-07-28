@@ -1,5 +1,5 @@
 import React, {useRef} from 'react'
-import {fireEvent, render, screen} from '@testing-library/react'
+import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
@@ -8,8 +8,18 @@ import {user} from 'fixtures/users'
 import {RootState} from 'state/types'
 import {UserSettingType, UserSetting} from 'config/types/user'
 import {ticket} from 'fixtures/ticket'
+import {logEvent} from 'store/middlewares/segmentTracker'
 
 import OnbordingMacroPopover from '../OnbordingMacroPopover'
+
+jest.mock('store/middlewares/segmentTracker.ts')
+
+jest.mock('hooks/useAppDispatch.ts', () => {
+    return {
+        __esModule: true,
+        default: () => jest.fn(),
+    }
+})
 
 const mockStore = configureMockStore([thunk])
 
@@ -52,6 +62,10 @@ describe('<OnbordingMacroPopover />', () => {
             </Provider>
         )
     }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
 
     it('should display popover', () => {
         const userSettings: UserSetting[] = [
@@ -243,5 +257,34 @@ describe('<OnbordingMacroPopover />', () => {
 
         expect(screen.queryByText('Revert back')).toBeFalsy()
         expect(onClearMacro).toHaveBeenCalledTimes(1)
+    })
+
+    it('should log segment when user revert back', async () => {
+        const userSettings: UserSetting[] = [
+            {
+                data: {
+                    show_macros: true,
+                    macros_default_to_search_popover: true,
+                    available: true,
+                },
+                id: 3,
+                type: UserSettingType.Preferences,
+            },
+        ]
+
+        user.settings = userSettings
+
+        const defaultState: Partial<RootState> = {
+            currentUser: fromJS(user),
+            ticket: fromJS(ticket),
+        }
+
+        render(<OnbordingMacroPopoverTestComp defaultState={defaultState} />)
+
+        fireEvent.click(await screen.findByText('Got it'))
+        fireEvent.click(await screen.findByText('Revert back'))
+        await waitFor(() => expect(logEvent).toHaveBeenCalled())
+
+        expect(screen.queryByText('Revert back')).toBeFalsy()
     })
 })
