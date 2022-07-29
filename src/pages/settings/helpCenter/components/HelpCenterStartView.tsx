@@ -1,8 +1,9 @@
-import React, {useEffect, useCallback, useMemo} from 'react'
+import React, {useEffect, useCallback, useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Container} from 'reactstrap'
 import produce from 'immer'
 import _keyBy from 'lodash/keyBy'
+import moment from 'moment-timezone'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -18,6 +19,10 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Tooltip from 'pages/common/components/Tooltip'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import useAppSelector from 'hooks/useAppSelector'
+import {
+    PRODUCT_BANNER_KEY,
+    useProductBannerStorage,
+} from 'hooks/useProductBannerStorage'
 
 import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
 import {useSupportedLocales} from '../providers/SupportedLocales'
@@ -28,9 +33,12 @@ import {
 } from '../constants'
 import settingsCss from '../../settings.less'
 import {useHelpCenterList} from '../hooks/useHelpCenterList'
+import {useStandaloneHelpCenterAfterDismiss} from '../hooks/useStandaloneHelpCenterAfterDismiss'
+
+import {StandaloneBanner} from './StandaloneBanner'
+import HelpCenterTable from './HelpCenterTable'
 
 import css from './HelpCenterStartView.less'
-import HelpCenterTable from './HelpCenterTable'
 
 export const HelpCenterStartView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -42,6 +50,14 @@ export const HelpCenterStartView: React.FC = () => {
         () => _keyBy<Locale>(localeOptions, 'code'),
         [localeOptions]
     )
+    const standaloneHelpCenters = useStandaloneHelpCenterAfterDismiss(
+        helpCenterList,
+        PRODUCT_BANNER_KEY.HELP_CENTER_STANDALONE_SSP
+    )
+    const [shouldShowProductBanner, setShouldShowProductBanner] = useState(
+        standaloneHelpCenters.length > 0
+    )
+    const {getProductBanner, updateProductBanner} = useProductBannerStorage()
 
     const {isLoading, hasMore, fetchMore} = useHelpCenterList({
         per_page: HELP_CENTERS_PER_PAGE,
@@ -50,6 +66,17 @@ export const HelpCenterStartView: React.FC = () => {
     useEffect(() => {
         dispatch(changeHelpCenterId(null))
     }, [dispatch])
+
+    useEffect(() => {
+        const productBannerInfo = getProductBanner(
+            PRODUCT_BANNER_KEY.HELP_CENTER_STANDALONE_SSP
+        )
+
+        if (productBannerInfo) {
+            return
+        }
+        setShouldShowProductBanner(standaloneHelpCenters.length > 0)
+    }, [standaloneHelpCenters, setShouldShowProductBanner, getProductBanner])
 
     const navigateToArticles = useCallback(
         (helpCenterId: number) => {
@@ -111,6 +138,15 @@ export const HelpCenterStartView: React.FC = () => {
         [helpCenterList, client, dispatch]
     )
 
+    const handleCloseProductBanner = useCallback(() => {
+        const now = moment()
+
+        updateProductBanner(PRODUCT_BANNER_KEY.HELP_CENTER_STANDALONE_SSP, {
+            closedAt: now.format(),
+        })
+        setShouldShowProductBanner(false)
+    }, [updateProductBanner])
+
     const addNewButtonDisabled =
         helpCenterList.length >= HELP_CENTER_MAX_CREATION
 
@@ -165,6 +201,12 @@ export const HelpCenterStartView: React.FC = () => {
                     </a>{' '}
                     about how to set it up.
                 </p>
+                {shouldShowProductBanner && (
+                    <StandaloneBanner
+                        helpCenters={standaloneHelpCenters}
+                        onClose={handleCloseProductBanner}
+                    />
+                )}
             </Container>
             <HelpCenterTable
                 list={helpCenterList}

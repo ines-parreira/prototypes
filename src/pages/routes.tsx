@@ -815,123 +815,127 @@ export function SelfServiceSettingsRoutes({
     const hasAutomationAddOn = useAppSelector(getHasAutomationAddOn)
 
     return (
-        <Switch>
-            <Route
-                path={`${path}/`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceContainer,
-                        ADMIN_ROLE,
-                        PageSection.SelfService
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Redirect
-                exact
-                from={`${path}/:integrationType/:shopName/preferences`}
-                to={`${path}/:integrationType/:shopName/preferences/${
-                    hasAutomationAddOn ? `quick-response` : `order-management`
-                }`}
-            />
-            <Route
-                path={`${path}/:integrationType/:shopName/preferences/quick-response`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceQuickResponseFlowsPreferencesContainer,
-                        ADMIN_ROLE,
-                        PageSection.SelfService
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:integrationType/:shopName/preferences/quick-response/new`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceQuickResponseFlowNewItemContainer,
-                        ADMIN_ROLE,
-                        PageSection.SelfService
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:integrationType/:shopName/preferences/quick-response/:quickResponseId`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceQuickResponseFlowEditItemContainer,
-                        ADMIN_ROLE,
-                        PageSection.SelfService
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:integrationType/:shopName/preferences/order-management`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceOrderManagementFlowsPreferencesContainer,
-                        ADMIN_ROLE,
-                        PageSection.SelfService
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:integrationType/:shopName/preferences/cancellations`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceCancellationsPolicyContainer,
-                        ADMIN_ROLE,
-                        PageSection.SelfService
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:integrationType/:shopName/preferences/returns`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceReturnsPolicyContainer,
-                        ADMIN_ROLE,
-                        PageSection.SelfService
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:integrationType/:shopName/preferences/report-issue`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceReportIssuePolicyContainer,
-                        ADMIN_ROLE,
-                        PageSection.SelfService
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-            <Route
-                path={`${path}/:integrationType/:shopName/preferences/report-issue/:caseIndex`}
-                exact
-                render={appRender({
-                    content: withUserRoleRequired(
-                        SelfServiceReportIssueCaseEditorContainer,
-                        ADMIN_ROLE,
-                        PageSection.SelfService
-                    ),
-                    navbar: SettingsNavbarContainer,
-                })}
-            />
-        </Switch>
+        <HelpCenterApiClientProvider>
+            <Switch>
+                <Route
+                    path={`${path}/`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            SelfServiceContainer,
+                            ADMIN_ROLE,
+                            PageSection.SelfService
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Redirect
+                    exact
+                    from={`${path}/:integrationType/:shopName/preferences`}
+                    to={`${path}/:integrationType/:shopName/preferences/${
+                        hasAutomationAddOn
+                            ? `quick-response`
+                            : `order-management`
+                    }`}
+                />
+                <Route
+                    path={`${path}/:integrationType/:shopName/preferences/quick-response`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            SelfServiceQuickResponseFlowsPreferencesContainer,
+                            ADMIN_ROLE,
+                            PageSection.SelfService
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/:integrationType/:shopName/preferences/quick-response/new`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            SelfServiceQuickResponseFlowNewItemContainer,
+                            ADMIN_ROLE,
+                            PageSection.SelfService
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/:integrationType/:shopName/preferences/quick-response/:quickResponseId`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            SelfServiceQuickResponseFlowEditItemContainer,
+                            ADMIN_ROLE,
+                            PageSection.SelfService
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/:integrationType/:shopName/preferences/order-management`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            SelfServiceOrderManagementFlowsPreferencesContainer,
+                            ADMIN_ROLE,
+                            PageSection.SelfService
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/:integrationType/:shopName/preferences/cancellations`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            SelfServiceCancellationsPolicyContainer,
+                            ADMIN_ROLE,
+                            PageSection.SelfService
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/:integrationType/:shopName/preferences/returns`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            SelfServiceReturnsPolicyContainer,
+                            ADMIN_ROLE,
+                            PageSection.SelfService
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/:integrationType/:shopName/preferences/report-issue`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            SelfServiceReportIssuePolicyContainer,
+                            ADMIN_ROLE,
+                            PageSection.SelfService
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+                <Route
+                    path={`${path}/:integrationType/:shopName/preferences/report-issue/:caseIndex`}
+                    exact
+                    render={appRender({
+                        content: withUserRoleRequired(
+                            SelfServiceReportIssueCaseEditorContainer,
+                            ADMIN_ROLE,
+                            PageSection.SelfService
+                        ),
+                        navbar: SettingsNavbarContainer,
+                    })}
+                />
+            </Switch>
+        </HelpCenterApiClientProvider>
     )
 }
 

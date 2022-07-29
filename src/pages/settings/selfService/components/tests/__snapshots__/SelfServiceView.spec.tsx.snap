@@ -32,18 +32,6 @@ exports[`<SelfServiceView/> render() should render a row for each shopify integr
             <p>
               Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat or help center ticket for your team to handle.
             </p>
-            <h5
-              class="enableSelfServiceTitle"
-            >
-              Configure Self-service
-               
-              <i
-                class="material-icons-outlined enableSelfServiceIcon"
-                id="enable-self-service-icon"
-              >
-                info
-              </i>
-            </h5>
             <table
               class="table-hover table-integrations selfServiceIntegrationsTable table"
               data-testid="table-integrations"
@@ -209,18 +197,6 @@ exports[`<SelfServiceView/> render() should render the default message when ther
             <p>
               Self-service enables your customers to browse their orders and select the type of issue they are having. It will then create a chat or help center ticket for your team to handle.
             </p>
-            <h5
-              class="enableSelfServiceTitle"
-            >
-              Configure Self-service
-               
-              <i
-                class="material-icons-outlined enableSelfServiceIcon"
-                id="enable-self-service-icon"
-              >
-                info
-              </i>
-            </h5>
             <div
               class="alert warning"
             >
