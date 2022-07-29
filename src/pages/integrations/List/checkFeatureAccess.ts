@@ -14,6 +14,7 @@ export function checkBigCommerceAccess(domain: string) {
                   'lisa-t-test',
                   'pilarhelpdesk',
                   'catalinm-test',
+                  'as7testing',
               ].includes(domain) || domain.includes('.preview')
             : false
     )
