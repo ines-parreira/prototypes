@@ -1,6 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ticket message meta chat-contact-form should add a \`via contact form from https://...\` because the message was sent via chat contact form 1`] = `
+<From
+  key="from-widget"
+  label="via"
+>
+  <span>
+    <b>
+      contact form
+    </b>
+     
+    from
+     
+    <a
+      href="https://gorgias.com/best-helpdesk-ever/"
+      rel="noopener noreferrer"
+      target="_blank"
+      title="https://gorgias.com/best-helpdesk-ever/"
+    >
+      https://gorgias.com/best-helpdesk-ever/
+    </a>
+  </span>
+</From>
+`;
+
+exports[`ticket message meta chat-contact-form should add a \`via contact form\` because the message was sent via chat contact form (but no current_url metadata) 1`] = `
+<From
+  key="from-widget"
+  label="via"
+>
+  <span>
+    <b>
+      contact form
+    </b>
+  </span>
+</From>
+`;
+
 exports[`ticket message meta facebook should not display link when IDs are missing 1`] = `<Fragment />`;
+
+exports[`ticket message meta live-chat-message should add a \`from https://...\` with because the message was sent via live chat 1`] = `
+<From
+  key="from-widget"
+  label="from"
+>
+  <a
+    href="https://gorgias.com/best-helpdesk-ever/"
+    rel="noopener noreferrer"
+    target="_blank"
+    title="https://gorgias.com/best-helpdesk-ever/"
+  >
+    https://gorgias.com/best-helpdesk-ever/
+  </a>
+</From>
+`;
 
 exports[`ticket message meta should add a -sent via campaign- label because the message was sent by a campaign on a gorgias-chat integration 1`] = `
 <From

@@ -416,4 +416,61 @@ describe('ticket message meta', () => {
             expect(from.find('a').at(1).prop('href')).toEqual(tweetPermalink)
         })
     })
+
+    describe('live-chat-message', () => {
+        it('should add a `from https://...` with because the message was sent via live chat', () => {
+            const component = shallow(
+                <Meta
+                    messageId="some-id"
+                    via="something"
+                    integrationId={118}
+                    meta={{
+                        current_page: 'https://gorgias.com/best-helpdesk-ever/',
+                    }}
+                />
+            )
+            const fromVia = component.find('From')
+            expect(fromVia).toMatchSnapshot()
+        })
+    })
+
+    describe('chat-contact-form', () => {
+        it('should add a `via contact form from https://...` because the message was sent via chat contact form', () => {
+            const component = shallow(
+                <Meta
+                    messageId="some-id"
+                    via="something"
+                    integrationId={118}
+                    source={{
+                        type: TicketMessageSourceType.ChatContactForm,
+                        to: [{address: 'someAddress', name: 'someName'}],
+                    }}
+                    meta={{
+                        current_page: 'https://gorgias.com/best-helpdesk-ever/',
+                    }}
+                />
+            )
+            const fromVia = component.find('From')
+            expect(fromVia).toMatchSnapshot()
+        })
+
+        it('should add a `via contact form` because the message was sent via chat contact form (but no current_url metadata)', () => {
+            const component = shallow(
+                <Meta
+                    messageId="some-id"
+                    via="something"
+                    integrationId={118}
+                    source={{
+                        type: TicketMessageSourceType.ChatContactForm,
+                        to: [{address: 'someAddress', name: 'someName'}],
+                    }}
+                    meta={{
+                        current_page: undefined,
+                    }}
+                />
+            )
+            const fromVia = component.find('From')
+            expect(fromVia).toMatchSnapshot()
+        })
+    })
 })

@@ -42,7 +42,29 @@ export default function Meta(props: Props) {
     } = props
     const widgets = []
 
-    if (meta && meta.current_page) {
+    if (source && source.type === TicketMessageSourceType.ChatContactForm) {
+        widgets.push(
+            <From label="via" key="from-widget">
+                <span>
+                    <b>contact form</b>
+                    {meta && meta.current_page && (
+                        <>
+                            {' '}
+                            from{' '}
+                            <a
+                                target="_blank"
+                                href={meta.current_page}
+                                rel="noopener noreferrer"
+                                title={meta.current_page}
+                            >
+                                {meta.current_page}
+                            </a>
+                        </>
+                    )}
+                </span>
+            </From>
+        )
+    } else if (meta && meta.current_page) {
         widgets.push(
             <From label="from" key="from-widget">
                 <a
