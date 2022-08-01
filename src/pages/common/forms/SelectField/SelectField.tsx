@@ -52,6 +52,8 @@ type Props = {
     fullWidth?: boolean
     shouldFocus?: boolean
     positionFixed?: boolean
+    disabled?: boolean
+    icon?: string
     container?: ComponentProps<typeof DropdownMenu>['container']
 }
 
@@ -298,7 +300,11 @@ export default class SelectField extends Component<Props, State> {
 
     _toggleDropdown = () => {
         const {optionsOpen} = this.state
-        const {onDropdownToggle} = this.props
+        const {onDropdownToggle, disabled} = this.props
+
+        if (disabled) {
+            return
+        }
 
         if (!optionsOpen) {
             this._focusInput()
@@ -357,6 +363,8 @@ export default class SelectField extends Component<Props, State> {
             fullWidth,
             dropdownMenuClassName,
             positionFixed,
+            disabled,
+            icon,
             container,
         } = this.props
         const {
@@ -428,10 +436,21 @@ export default class SelectField extends Component<Props, State> {
                                         css[appendPosition || ''],
                                         {
                                             [css.selectFullWidth]: fullWidth,
+                                            [css.disabled]: disabled,
                                         }
                                     )}
                                     onClick={this._toggleDropdown}
                                 >
+                                    {!!icon && (
+                                        <i
+                                            className={classnames(
+                                                'material-icons',
+                                                css.icon
+                                            )}
+                                        >
+                                            {icon}
+                                        </i>
+                                    )}
                                     <span
                                         style={{
                                             minWidth: selectMinWidth,
@@ -454,7 +473,10 @@ export default class SelectField extends Component<Props, State> {
                                             minWidth: selectMinWidth,
                                         }}
                                         id={id!}
-                                        className={css.input}
+                                        className={classnames(css.input, {
+                                            [css.iconPadding]: !!icon,
+                                        })}
+                                        disabled={disabled}
                                         ref={this.inputRef}
                                         value={input}
                                         required={required && !value}
@@ -465,6 +487,14 @@ export default class SelectField extends Component<Props, State> {
                                         type="text"
                                         autoComplete="chrome-off"
                                     />
+                                    <i
+                                        className={classnames(
+                                            'material-icons',
+                                            css.dropdownIcon
+                                        )}
+                                    >
+                                        arrow_drop_down
+                                    </i>
                                 </div>
                             )}
                         </GroupPositionContext.Consumer>

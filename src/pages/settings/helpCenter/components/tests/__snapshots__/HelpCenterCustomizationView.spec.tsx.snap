@@ -158,6 +158,11 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
                           type="text"
                           value=""
                         />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
                       </div>
                     </div>
                     <div

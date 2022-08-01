@@ -13,7 +13,7 @@
         align-items: center;
         width: 100%;
         line-height: 20px;
-        padding: 5px 14px;
+        padding: 5px 7px 5px 14px;
         border: 1px solid @classic-neutral-grey-3;
         border-radius: 0.25rem;
         background-clip: padding-box;
@@ -25,6 +25,10 @@
         white-space: nowrap;
         box-sizing: border-box;
         cursor: pointer;
+
+        &::after {
+            display: none;
+        }
     }
 
     .status {
@@ -79,5 +83,10 @@
 
     .gotItButton {
         margin-top: 16px;
+    }
+
+    .dropdownIcon {
+        font-size: 20px;
+        color: @classic-neutral-grey-4;
     }
 }

@@ -31,6 +31,11 @@ exports[`<ReactSelect/> should add warning for selected deprecated option 1`] = 
               type="text"
               value=""
             />
+            <i
+              class="material-icons dropdownIcon"
+            >
+              arrow_drop_down
+            </i>
           </div>
         </div>
         <div
@@ -98,6 +103,11 @@ exports[`<ReactSelect/> should filter hidden options 1`] = `
             type="text"
             value=""
           />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
+          </i>
         </div>
       </div>
       <div
@@ -148,6 +158,11 @@ exports[`<ReactSelect/> should render normally as deprecated option is not selec
             type="text"
             value=""
           />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
+          </i>
         </div>
       </div>
       <div
@@ -203,6 +218,11 @@ exports[`<ReactSelect/> should render with the correct options 1`] = `
             type="text"
             value=""
           />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
+          </i>
         </div>
       </div>
       <div

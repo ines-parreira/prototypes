@@ -72,6 +72,11 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
                   type="text"
                   value=""
                 />
+                <i
+                  class="material-icons dropdownIcon"
+                >
+                  arrow_drop_down
+                </i>
               </div>
             </div>
             <div
@@ -128,6 +133,11 @@ exports[`<HelpCenterEditAdvancedArticleForm/> should display the component corre
                     Public
                   </div>
                 </div>
+                <i
+                  class="material-icons dropdownIcon"
+                >
+                  arrow_drop_down
+                </i>
               </div>
             </div>
             <div

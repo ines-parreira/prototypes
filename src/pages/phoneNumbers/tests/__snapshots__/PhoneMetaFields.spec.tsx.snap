@@ -44,6 +44,11 @@ exports[`<PhoneMetaFields /> should render 1`] = `
                 type="text"
                 value=""
               />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
             </div>
           </div>
           <div
@@ -154,6 +159,11 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
                 type="text"
                 value=""
               />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
             </div>
           </div>
           <div
@@ -243,6 +253,11 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
                 type="text"
                 value=""
               />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
             </div>
           </div>
           <div
@@ -302,6 +317,11 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
                 type="text"
                 value=""
               />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
             </div>
           </div>
           <div
@@ -822,6 +842,11 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
                 type="text"
                 value=""
               />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
             </div>
           </div>
           <div
@@ -887,6 +912,11 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
                 type="text"
                 value=""
               />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
             </div>
           </div>
           <div
@@ -976,6 +1006,11 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
                 type="text"
                 value=""
               />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
             </div>
           </div>
           <div
@@ -1036,6 +1071,11 @@ exports[`<PhoneMetaFields /> should render when a country and a state are select
                 type="text"
                 value=""
               />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
             </div>
           </div>
           <div

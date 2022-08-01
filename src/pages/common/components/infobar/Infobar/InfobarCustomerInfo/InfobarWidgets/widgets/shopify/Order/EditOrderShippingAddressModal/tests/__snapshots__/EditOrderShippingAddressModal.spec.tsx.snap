@@ -268,6 +268,11 @@ exports[`<EditOrderShippingAddressModal/> should render the modal 1`] = `
                         type="text"
                         value=""
                       />
+                      <i
+                        class="material-icons dropdownIcon"
+                      >
+                        arrow_drop_down
+                      </i>
                     </div>
                   </div>
                   <div
@@ -3047,6 +3052,11 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                         type="text"
                         value=""
                       />
+                      <i
+                        class="material-icons dropdownIcon"
+                      >
+                        arrow_drop_down
+                      </i>
                     </div>
                   </div>
                   <div
@@ -5511,6 +5521,11 @@ exports[`<EditOrderShippingAddressModal/> should render the modal with an extra 
                         type="text"
                         value=""
                       />
+                      <i
+                        class="material-icons dropdownIcon"
+                      >
+                        arrow_drop_down
+                      </i>
                     </div>
                   </div>
                   <div

@@ -1,10 +1,11 @@
 @import '~css/new/colorTokens';
 
-@select-padding: 14px;
+@select-padding: 7px;
 @base-input-width: 2px;
 
 :local .select {
-    display: block;
+    display: flex;
+    align-items: center;
     position: relative;
     width: 100%;
     line-height: 1.25;
@@ -19,19 +20,40 @@
     font-size: 1rem;
     white-space: nowrap;
     box-sizing: border-box;
+    cursor: pointer;
+
+    &:global(.dropdown-toggle)::after {
+        display: none;
+    }
 
     &.selectFullWidth {
-        padding: 0 0 0 @select-padding;
+        padding: 0 @select-padding;
 
         .label {
             box-sizing: border-box;
             width: ~'calc(100% - (@{select-padding} * 2) + @{base-input-width})';
         }
     }
+    &.disabled {
+        background-color: @classic-neutral-grey-1;
+        color: @classic-neutral-grey-4;
+        cursor: default;
+    }
+
+    .dropdownIcon {
+        font-size: 20px;
+        color: @classic-neutral-grey-4;
+    }
+
+    .icon {
+        font-size: 20px;
+        color: @classic-neutral-grey-4;
+        margin-right: 8px;
+    }
 
     .input {
         position: absolute;
-        left: 1rem;
+        left: 7px;
         height: 100%;
         line-height: 2.25;
         width: @base-input-width; // input will grow dynamically with the min width
@@ -42,6 +64,10 @@
         border: none;
         background: transparent;
         box-sizing: border-box;
+
+        &.iconPadding {
+            left: 36px;
+        }
     }
 
     .placeholder {

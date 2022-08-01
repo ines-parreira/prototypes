@@ -37,6 +37,11 @@ exports[`<FontSelectField /> matches snapshot 1`] = `
             type="text"
             value=""
           />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
+          </i>
         </div>
       </div>
       <div

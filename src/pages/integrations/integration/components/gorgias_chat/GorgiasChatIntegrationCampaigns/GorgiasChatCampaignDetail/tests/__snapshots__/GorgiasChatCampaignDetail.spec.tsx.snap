@@ -179,6 +179,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                               type="text"
                               value=""
                             />
+                            <i
+                              class="material-icons dropdownIcon"
+                            >
+                              arrow_drop_down
+                            </i>
                           </div>
                         </div>
                         <div
@@ -361,6 +366,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                               type="text"
                               value=""
                             />
+                            <i
+                              class="material-icons dropdownIcon"
+                            >
+                              arrow_drop_down
+                            </i>
                           </div>
                         </div>
                         <div
@@ -836,6 +846,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                               type="text"
                               value=""
                             />
+                            <i
+                              class="material-icons dropdownIcon"
+                            >
+                              arrow_drop_down
+                            </i>
                           </div>
                         </div>
                         <div
@@ -1057,6 +1072,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                               type="text"
                               value=""
                             />
+                            <i
+                              class="material-icons dropdownIcon"
+                            >
+                              arrow_drop_down
+                            </i>
                           </div>
                         </div>
                         <div
@@ -1563,6 +1583,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                               type="text"
                               value=""
                             />
+                            <i
+                              class="material-icons dropdownIcon"
+                            >
+                              arrow_drop_down
+                            </i>
                           </div>
                         </div>
                         <div
@@ -1784,6 +1809,11 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                               type="text"
                               value=""
                             />
+                            <i
+                              class="material-icons dropdownIcon"
+                            >
+                              arrow_drop_down
+                            </i>
                           </div>
                         </div>
                         <div

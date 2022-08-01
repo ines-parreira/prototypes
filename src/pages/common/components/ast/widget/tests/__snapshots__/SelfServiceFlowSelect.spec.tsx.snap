@@ -30,6 +30,11 @@ exports[`<SelfServiceFlowSelect /> should render component with no selected item
             type="text"
             value=""
           />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
+          </i>
         </div>
       </div>
       <div
@@ -80,6 +85,11 @@ exports[`<SelfServiceFlowSelect /> should render component with selected item 1`
             type="text"
             value=""
           />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
+          </i>
         </div>
       </div>
       <div

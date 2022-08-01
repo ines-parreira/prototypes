@@ -88,6 +88,14 @@ const SelectVisibilityStatus = ({
                                     ' (currently Unlisted)'}
                             </div>
                         </div>
+                        <i
+                            className={classnames(
+                                'material-icons',
+                                css.dropdownIcon
+                            )}
+                        >
+                            arrow_drop_down
+                        </i>
                     </div>
                 </DropdownToggle>
                 <DropdownMenu className={css.dropdown}>

@@ -222,6 +222,11 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 type="text"
                                                 value=""
                                               />
+                                              <i
+                                                className="material-icons dropdownIcon"
+                                              >
+                                                arrow_drop_down
+                                              </i>
                                             </div>
                                           </div>
                                         </InnerReference>

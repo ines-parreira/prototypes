@@ -29,6 +29,11 @@ exports[`<SelectVisibilityStatus /> should show selected option 1`] = `
               Public
             </div>
           </div>
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
+          </i>
         </div>
       </div>
       <div

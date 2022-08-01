@@ -125,6 +125,11 @@ exports[`<HelpCenterEditModalHeader /> should display the component correctly - 
                   type="text"
                   value=""
                 />
+                <i
+                  class="material-icons dropdownIcon"
+                >
+                  arrow_drop_down
+                </i>
               </div>
             </div>
             <div

@@ -142,6 +142,11 @@ exports[`<PhoneIntegrationCreate/> render() should prefill the title field using
                       type="text"
                       value=""
                     />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
                 </div>
                 <div
@@ -256,6 +261,11 @@ exports[`<PhoneIntegrationCreate/> render() should prefill the title field using
                       type="text"
                       value=""
                     />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
                 </div>
                 <div
@@ -464,6 +474,11 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                       type="text"
                       value=""
                     />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
                 </div>
                 <div
@@ -578,6 +593,11 @@ exports[`<PhoneIntegrationCreate/> render() should render 1`] = `
                       type="text"
                       value=""
                     />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
                 </div>
                 <div
@@ -756,6 +776,11 @@ exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with t
                       type="text"
                       value=""
                     />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
                 </div>
                 <div
@@ -870,6 +895,11 @@ exports[`<PhoneIntegrationCreate/> render() should submit a valid payload with t
                       type="text"
                       value=""
                     />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
                 </div>
                 <div

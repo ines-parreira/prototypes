@@ -142,6 +142,11 @@ exports[`<SmsIntegrationCreate/> render() should prefill the title field using t
                       type="text"
                       value=""
                     />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
                 </div>
                 <div
@@ -383,6 +388,11 @@ exports[`<SmsIntegrationCreate/> render() should render 1`] = `
                       type="text"
                       value=""
                     />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
                 </div>
                 <div
@@ -594,6 +604,11 @@ exports[`<SmsIntegrationCreate/> render() should submit a valid payload with the
                       type="text"
                       value=""
                     />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
                 </div>
                 <div

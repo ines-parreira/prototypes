@@ -129,6 +129,11 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
                                 type="text"
                                 value=""
                               />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
                             </div>
                           </div>
                           <div
@@ -219,6 +224,11 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
                                 type="text"
                                 value=""
                               />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
                             </div>
                           </div>
                           <div
@@ -930,6 +940,11 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
                                 type="text"
                                 value=""
                               />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
                             </div>
                           </div>
                           <div
@@ -1020,6 +1035,11 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
                                 type="text"
                                 value=""
                               />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
                             </div>
                           </div>
                           <div
@@ -1080,6 +1100,11 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
                                 type="text"
                                 value=""
                               />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
                             </div>
                           </div>
                           <div
@@ -1600,6 +1625,11 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
                                 type="text"
                                 value=""
                               />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
                             </div>
                           </div>
                           <div
@@ -1772,6 +1802,11 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
                                 type="text"
                                 value=""
                               />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
                             </div>
                           </div>
                           <div
@@ -1872,6 +1907,11 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
                                 type="text"
                                 value=""
                               />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
                             </div>
                           </div>
                           <div

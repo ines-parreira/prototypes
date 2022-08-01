@@ -275,6 +275,11 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                       type="text"
                       value=""
                     />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
                 </div>
                 <div
@@ -324,6 +329,11 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
                         Public
                       </div>
                     </div>
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
                   </div>
                 </div>
                 <div

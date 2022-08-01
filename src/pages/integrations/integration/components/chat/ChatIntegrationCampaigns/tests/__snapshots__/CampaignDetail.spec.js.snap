@@ -181,6 +181,11 @@ exports[`CampaignDetail component should display default value when it's a new c
                           type="text"
                           value=""
                         />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
                       </div>
                     </div>
                     <div
@@ -347,6 +352,11 @@ exports[`CampaignDetail component should display default value when it's a new c
                           type="text"
                           value=""
                         />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
                       </div>
                     </div>
                     <div
@@ -835,6 +845,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           type="text"
                           value=""
                         />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
                       </div>
                     </div>
                     <div
@@ -961,6 +976,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           type="text"
                           value=""
                         />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
                       </div>
                     </div>
                     <div
@@ -1106,6 +1126,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           type="text"
                           value=""
                         />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
                       </div>
                     </div>
                     <div
@@ -1592,6 +1617,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           type="text"
                           value=""
                         />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
                       </div>
                     </div>
                     <div
@@ -1718,6 +1748,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           type="text"
                           value=""
                         />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
                       </div>
                     </div>
                     <div
@@ -1863,6 +1898,11 @@ exports[`CampaignDetail component should display the campaign correctly when upd
                           type="text"
                           value=""
                         />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
                       </div>
                     </div>
                     <div

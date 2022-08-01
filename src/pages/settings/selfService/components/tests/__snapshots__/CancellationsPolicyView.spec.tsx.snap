@@ -113,6 +113,11 @@ exports[`<CancellationsPolicyView/> onSubmit() should set the eligibility option
                           type="text"
                           value=""
                         />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
                       </div>
                     </div>
                     <div
@@ -292,6 +297,11 @@ exports[`<CancellationsPolicyView/> render() should render the eligibility windo
                           type="text"
                           value=""
                         />
+                        <i
+                          class="material-icons dropdownIcon"
+                        >
+                          arrow_drop_down
+                        </i>
                       </div>
                     </div>
                     <div

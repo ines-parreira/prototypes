@@ -77,6 +77,11 @@ exports[`<TwilioSubaccountStatusForm /> render() should render with the Twillio 
                     type="text"
                     value=""
                   />
+                  <i
+                    class="material-icons dropdownIcon"
+                  >
+                    arrow_drop_down
+                  </i>
                 </div>
               </div>
               <div

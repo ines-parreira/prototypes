@@ -229,6 +229,11 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page whe
                 type="text"
                 value=""
               />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
             </div>
           </div>
           <div
@@ -334,6 +339,11 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page wit
                 type="text"
                 value=""
               />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
             </div>
           </div>
           <div
@@ -439,6 +449,11 @@ exports[`<EmailDomainVerificationContainer/> render() should render the page wit
                 type="text"
                 value=""
               />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
             </div>
           </div>
           <div

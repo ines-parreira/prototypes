@@ -43,6 +43,7 @@ export const DefaultLanguageSelect: React.FC<Props> = ({
                         value={preferences.defaultLanguage}
                         onChange={onChangeLanguage}
                         style={{display: 'inline-block'}}
+                        className={css.select}
                     />
                 </Col>
             </Row>

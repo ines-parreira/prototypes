@@ -78,6 +78,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                             options={localeOptions}
                             onChange={handleOnChangeLocale}
                             aria-label="language selector"
+                            className={css.languageSelector}
                         />
                     )}
                     <Button

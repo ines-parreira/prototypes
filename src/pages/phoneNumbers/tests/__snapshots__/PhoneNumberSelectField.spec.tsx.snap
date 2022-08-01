@@ -41,6 +41,11 @@ exports[`<PhoneNumberSelectField/> render() should hide phone numbers that have 
             type="text"
             value=""
           />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
+          </i>
         </div>
       </div>
       <div
@@ -118,6 +123,11 @@ exports[`<PhoneNumberSelectField/> render() should hide phone numbers that have 
             type="text"
             value=""
           />
+          <i
+            class="material-icons dropdownIcon"
+          >
+            arrow_drop_down
+          </i>
         </div>
       </div>
       <div
@@ -206,6 +216,11 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
               type="text"
               value=""
             />
+            <i
+              class="material-icons dropdownIcon"
+            >
+              arrow_drop_down
+            </i>
           </div>
         </div>
         <div
@@ -361,6 +376,11 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                                 type="text"
                                 value=""
                               />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
                             </div>
                           </div>
                           <div
@@ -461,6 +481,11 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                                 type="text"
                                 value=""
                               />
+                              <i
+                                class="material-icons dropdownIcon"
+                              >
+                                arrow_drop_down
+                              </i>
                             </div>
                           </div>
                           <div
@@ -537,6 +562,11 @@ exports[`<PhoneNumberSelectField/> render() should render 1`] = `
           type="text"
           value=""
         />
+        <i
+          class="material-icons dropdownIcon"
+        >
+          arrow_drop_down
+        </i>
       </div>
     </div>
     <div
