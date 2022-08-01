@@ -38,6 +38,7 @@ declare global {
                 callback: (e: Record<string, any>) => void
             ) => void
             destroy: (target: string, id: string) => Promise<void>
+            do: (action: string, id: string) => void
         }
         noticeableWidgetId: string
         PHRASE_PREDICTION_URL: string

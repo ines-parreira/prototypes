@@ -1,7 +1,8 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import userEvent, {TargetElement} from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event'
 import {fromJS, Map} from 'immutable'
+import {within} from '@testing-library/dom'
 
 import {DEFAULT_PREFERENCES} from '../../../../config'
 import {proPlan, advancedPlan} from '../../../../fixtures/subscriptionPlan'
@@ -26,6 +27,13 @@ describe('<Navbar />', () => {
         isTrialing: false,
         submitSetting: jest.fn(),
         isPreferencesLoading: false,
+    }
+
+    window.noticeable = {
+        on: jest.fn(),
+        do: jest.fn(),
+        render: jest.fn(() => Promise.resolve()),
+        destroy: jest.fn(() => Promise.resolve()),
     }
 
     afterEach(() => {
@@ -55,11 +63,10 @@ describe('<Navbar />', () => {
     })
 
     it('should toggle the user availability when clicking the availability toggle', () => {
-        const {container} = render(<Navbar {...minProps} isOpenedPanel />)
+        const {getByText} = render(<Navbar {...minProps} isOpenedPanel />)
 
-        userEvent.click(
-            container.getElementsByClassName('slider')[0] as TargetElement
-        )
+        userEvent.click(getByText(user.name))
+        userEvent.click(getByText(/available/i))
         expect(minProps.submitSetting).toHaveBeenCalledWith(
             {
                 data: {available: false, show_macros: false},
@@ -73,6 +80,8 @@ describe('<Navbar />', () => {
         const {getByText} = render(
             <Navbar {...minProps} currentPlan={fromJS(proPlan)} />
         )
+
+        userEvent.click(getByText(user.name))
         expect(getByText(/book office hours/i)).toBeTruthy()
     })
 
@@ -88,15 +97,10 @@ describe('<Navbar />', () => {
     })
 
     it('should toggle the dropdown when clicking on the current logged user', () => {
-        window.noticeable = {
-            on: jest.fn(),
-            render: () => Promise.resolve(),
-            destroy: () => Promise.resolve(),
-        }
         const {getByText} = render(<Navbar {...minProps} />)
 
         userEvent.click(getByText(user.name))
-        expect(document.getElementsByClassName('show')).toHaveLength(2)
+        expect(getByText(/your profile/i)).toBeTruthy()
     })
 
     it('should fallback user name to email', () => {
@@ -111,6 +115,44 @@ describe('<Navbar />', () => {
                 })}
             />
         )
-        expect(getAllByRole('button')[1]).toMatchSnapshot()
+
+        const {getByText} = within(getAllByRole('button')[1])
+
+        expect(getByText(user.email)).toBeTruthy()
+    })
+
+    it('should render the noticeable widget when the user menu displays the updates', () => {
+        const {getByText} = render(<Navbar {...minProps} />)
+
+        userEvent.click(getByText(user.name))
+        userEvent.click(getByText(/gorgias updates/i))
+
+        expect(window.noticeable.render).toHaveBeenCalled()
+        expect(window.noticeable.on).toHaveBeenCalled()
+    })
+
+    it('should not render the noticeable widget when it has already been rendered', () => {
+        const {getByText} = render(<Navbar {...minProps} />)
+
+        userEvent.click(getByText(user.name))
+        userEvent.click(getByText(/gorgias updates/i))
+        userEvent.click(getByText(user.name))
+        userEvent.click(getByText(user.name))
+
+        expect(window.noticeable.render).toHaveBeenCalledTimes(1)
+    })
+
+    it('should reopen the user menu at the initial main screen', () => {
+        const {getByText, queryByText} = render(<Navbar {...minProps} />)
+
+        userEvent.click(getByText(user.name))
+        userEvent.click(getByText(/gorgias updates/i))
+        userEvent.click(getByText(user.name))
+
+        expect(queryByText(/your profile/i)).toBeFalsy()
+
+        userEvent.click(getByText(user.name))
+
+        expect(getByText(/your profile/i)).toBeTruthy()
     })
 })

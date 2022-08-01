@@ -1,41 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Navbar /> should fallback user name to email 1`] = `
-<button
-  aria-expanded="false"
-  aria-haspopup="true"
-  class="dropdown-toggle dropdown-toggle-dropup btn btn-transparent"
-  type="button"
->
-  <div>
-    <span
-      class="body-semibold"
-    >
-      alex@gorgias.io
-      <div
-        class="component"
-        style="width: 36px; height: 36px; position: absolute; bottom: 12px; right: 18px;"
-      >
-        <div
-          class="initials"
-          style="width: 36px; height: 36px; font-size: 15px;"
-        >
-          <span
-            style="line-height: 38px;"
-          >
-            a
-          </span>
-        </div>
-        <div
-          class="badge"
-          style="background-color: rgb(36, 214, 157);"
-        />
-      </div>
-    </span>
-  </div>
-</button>
-`;
-
 exports[`<Navbar /> should render the navbar 1`] = `
 <div
   class="nav-primary hidden-panel"
@@ -70,7 +34,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
       tabindex="-1"
     >
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/tickets"
@@ -83,7 +47,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
         Tickets
       </a>
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/customers"
@@ -96,7 +60,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
         Customers
       </a>
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/stats"
@@ -109,7 +73,7 @@ exports[`<Navbar /> should render the navbar 1`] = `
         Statistics
       </a>
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/settings"
@@ -126,201 +90,32 @@ exports[`<Navbar /> should render the navbar 1`] = `
   <div
     class="navbar-content"
   />
-  <div
-    class="nav-dropdown dropdown"
+  <button
+    class="dropdown-toggle dropdown-toggle-dropup"
   >
-    <button
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="dropdown-toggle dropdown-toggle-dropup btn btn-transparent"
-      type="button"
+    <div>
+      Alex Plugaru
+    </div>
+    <div
+      class="component"
+      style="width: 36px; height: 36px;"
     >
-      <div>
+      <div
+        class="initials"
+        style="width: 36px; height: 36px; font-size: 15px;"
+      >
         <span
-          class="body-semibold"
+          style="line-height: 38px;"
         >
-          Alex Plugaru
-          <div
-            class="component"
-            style="width: 36px; height: 36px; position: absolute; bottom: 12px; right: 18px;"
-          >
-            <div
-              class="initials"
-              style="width: 36px; height: 36px; font-size: 15px;"
-            >
-              <span
-                style="line-height: 38px;"
-              >
-                AP
-              </span>
-            </div>
-            <div
-              class="badge"
-              style="background-color: rgb(36, 214, 157);"
-            />
-          </div>
+          AP
         </span>
       </div>
-    </button>
-    <div
-      aria-hidden="true"
-      class="dropdown-menu dropdown-menu"
-      role="menu"
-      tabindex="-1"
-    >
-      <a
-        class="dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-      >
-        <div
-          class="d-flex justify-content-between align-items-center"
-        >
-          <div>
-            Available
-          </div>
-          <div>
-            <div>
-              <label
-                aria-checked="true"
-                class="label label"
-                for="toggle-button-42"
-                role="switch"
-              >
-                <input
-                  checked=""
-                  class="input"
-                  disabled=""
-                  id="toggle-button-42"
-                  name="toggle-button-42"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-              </label>
-            </div>
-          </div>
-        </div>
-      </a>
       <div
-        class="dropdown-divider"
-        tabindex="-1"
+        class="badge"
+        style="background-color: rgb(36, 214, 157);"
       />
-      <a
-        class="dropdown-item dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-        to="/app/settings/profile"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          person
-        </i>
-        Your profile
-      </a>
-      <a
-        class="dropdown-item dropdown-item"
-        href="https://docs.gorgias.com/"
-        role="menuitem"
-        tabindex="0"
-        target="_blank"
-      >
-        <i
-          class="material-icons mr-2 icon"
-          title="Help Center"
-        >
-          help
-        </i>
-        Help Center
-      </a>
-      <a
-        class="dropdown-item dropdown-item"
-        href="https://status.gorgias.com/"
-        role="menuitem"
-        tabindex="0"
-        target="_blank"
-      >
-        <i
-          class="material-icons mr-2 icon"
-          title="Service status"
-        >
-          query_stats
-        </i>
-        Service status
-      </a>
-      <a
-        class="dropdown-item dropdown-item"
-        href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
-        role="menuitem"
-        tabindex="0"
-        target="_blank"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          map
-        </i>
-        Roadmap
-      </a>
-      <div
-        class="dropdown-item dropdown-item"
-        id="noticeable-widget"
-        role="menuitem"
-        tabindex="0"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          new_releases
-        </i>
-        Latest updates
-        <span
-          id="noticeable-widget-notification"
-        />
-      </div>
-      <a
-        class="dropdown-item dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-        to="/app/referral-program"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          favorite_border
-        </i>
-        Refer a friend & earn
-      </a>
-      <button
-        class="dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-        type="button"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          keyboard
-        </i>
-        Keyboard shortcuts
-      </button>
-      <a
-        class="dropdown-item dropdown-item"
-        href="/logout?csrf-token=abcd"
-        role="menuitem"
-        tabindex="0"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          exit_to_app
-        </i>
-        Log out
-      </a>
     </div>
-  </div>
+  </button>
 </div>
 `;
 
@@ -358,7 +153,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
       tabindex="-1"
     >
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/tickets"
@@ -371,7 +166,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
         Tickets
       </a>
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/customers"
@@ -384,7 +179,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
         Customers
       </a>
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/stats"
@@ -397,7 +192,7 @@ exports[`<Navbar /> should render the opened panel 1`] = `
         Statistics
       </a>
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/settings"
@@ -414,201 +209,32 @@ exports[`<Navbar /> should render the opened panel 1`] = `
   <div
     class="navbar-content"
   />
-  <div
-    class="nav-dropdown dropdown"
+  <button
+    class="dropdown-toggle dropdown-toggle-dropup"
   >
-    <button
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="dropdown-toggle dropdown-toggle-dropup btn btn-transparent"
-      type="button"
+    <div>
+      Alex Plugaru
+    </div>
+    <div
+      class="component"
+      style="width: 36px; height: 36px;"
     >
-      <div>
+      <div
+        class="initials"
+        style="width: 36px; height: 36px; font-size: 15px;"
+      >
         <span
-          class="body-semibold"
+          style="line-height: 38px;"
         >
-          Alex Plugaru
-          <div
-            class="component"
-            style="width: 36px; height: 36px; position: absolute; bottom: 12px; right: 18px;"
-          >
-            <div
-              class="initials"
-              style="width: 36px; height: 36px; font-size: 15px;"
-            >
-              <span
-                style="line-height: 38px;"
-              >
-                AP
-              </span>
-            </div>
-            <div
-              class="badge"
-              style="background-color: rgb(36, 214, 157);"
-            />
-          </div>
+          AP
         </span>
       </div>
-    </button>
-    <div
-      aria-hidden="true"
-      class="dropdown-menu dropdown-menu"
-      role="menu"
-      tabindex="-1"
-    >
-      <a
-        class="dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-      >
-        <div
-          class="d-flex justify-content-between align-items-center"
-        >
-          <div>
-            Available
-          </div>
-          <div>
-            <div>
-              <label
-                aria-checked="true"
-                class="label label"
-                for="toggle-button-42"
-                role="switch"
-              >
-                <input
-                  checked=""
-                  class="input"
-                  disabled=""
-                  id="toggle-button-42"
-                  name="toggle-button-42"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-              </label>
-            </div>
-          </div>
-        </div>
-      </a>
       <div
-        class="dropdown-divider"
-        tabindex="-1"
+        class="badge"
+        style="background-color: rgb(36, 214, 157);"
       />
-      <a
-        class="dropdown-item dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-        to="/app/settings/profile"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          person
-        </i>
-        Your profile
-      </a>
-      <a
-        class="dropdown-item dropdown-item"
-        href="https://docs.gorgias.com/"
-        role="menuitem"
-        tabindex="0"
-        target="_blank"
-      >
-        <i
-          class="material-icons mr-2 icon"
-          title="Help Center"
-        >
-          help
-        </i>
-        Help Center
-      </a>
-      <a
-        class="dropdown-item dropdown-item"
-        href="https://status.gorgias.com/"
-        role="menuitem"
-        tabindex="0"
-        target="_blank"
-      >
-        <i
-          class="material-icons mr-2 icon"
-          title="Service status"
-        >
-          query_stats
-        </i>
-        Service status
-      </a>
-      <a
-        class="dropdown-item dropdown-item"
-        href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
-        role="menuitem"
-        tabindex="0"
-        target="_blank"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          map
-        </i>
-        Roadmap
-      </a>
-      <div
-        class="dropdown-item dropdown-item"
-        id="noticeable-widget"
-        role="menuitem"
-        tabindex="0"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          new_releases
-        </i>
-        Latest updates
-        <span
-          id="noticeable-widget-notification"
-        />
-      </div>
-      <a
-        class="dropdown-item dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-        to="/app/referral-program"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          favorite_border
-        </i>
-        Refer a friend & earn
-      </a>
-      <button
-        class="dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-        type="button"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          keyboard
-        </i>
-        Keyboard shortcuts
-      </button>
-      <a
-        class="dropdown-item dropdown-item"
-        href="/logout?csrf-token=abcd"
-        role="menuitem"
-        tabindex="0"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          exit_to_app
-        </i>
-        Log out
-      </a>
     </div>
-  </div>
+  </button>
 </div>
 `;
 
@@ -646,7 +272,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
       tabindex="-1"
     >
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/tickets"
@@ -659,7 +285,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
         Tickets
       </a>
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/customers"
@@ -672,7 +298,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
         Customers
       </a>
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/stats"
@@ -685,7 +311,7 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
         Statistics
       </a>
       <a
-        class="dropdown-item dropdown-item dropdown-item"
+        class="dropdown-item dropdown-item menu-item"
         role="menuitem"
         tabindex="0"
         to="/app/settings"
@@ -702,199 +328,31 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
   <div
     class="navbar-content"
   />
-  <div
-    class="nav-dropdown dropdown"
+  <button
+    class="dropdown-toggle dropdown-toggle-dropup"
   >
-    <button
-      aria-expanded="false"
-      aria-haspopup="true"
-      class="dropdown-toggle dropdown-toggle-dropup btn btn-transparent"
-      type="button"
+    <div>
+      Alex Plugaru
+    </div>
+    <div
+      class="component"
+      style="width: 36px; height: 36px;"
     >
-      <div>
+      <div
+        class="initials"
+        style="width: 36px; height: 36px; font-size: 15px;"
+      >
         <span
-          class="body-semibold"
+          style="line-height: 38px;"
         >
-          Alex Plugaru
-          <div
-            class="component"
-            style="width: 36px; height: 36px; position: absolute; bottom: 12px; right: 18px;"
-          >
-            <div
-              class="initials"
-              style="width: 36px; height: 36px; font-size: 15px;"
-            >
-              <span
-                style="line-height: 38px;"
-              >
-                AP
-              </span>
-            </div>
-            <div
-              class="badge"
-              style="background-color: rgb(255, 150, 0);"
-            />
-          </div>
+          AP
         </span>
       </div>
-    </button>
-    <div
-      aria-hidden="true"
-      class="dropdown-menu dropdown-menu"
-      role="menu"
-      tabindex="-1"
-    >
-      <a
-        class="dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-      >
-        <div
-          class="d-flex justify-content-between align-items-center"
-        >
-          <div>
-            Available
-          </div>
-          <div>
-            <div>
-              <label
-                aria-checked="false"
-                class="label label"
-                for="toggle-button-42"
-                role="switch"
-              >
-                <input
-                  class="input"
-                  disabled=""
-                  id="toggle-button-42"
-                  name="toggle-button-42"
-                  type="checkbox"
-                />
-                <div
-                  class="slider"
-                />
-              </label>
-            </div>
-          </div>
-        </div>
-      </a>
       <div
-        class="dropdown-divider"
-        tabindex="-1"
+        class="badge"
+        style="background-color: rgb(255, 150, 0);"
       />
-      <a
-        class="dropdown-item dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-        to="/app/settings/profile"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          person
-        </i>
-        Your profile
-      </a>
-      <a
-        class="dropdown-item dropdown-item"
-        href="https://docs.gorgias.com/"
-        role="menuitem"
-        tabindex="0"
-        target="_blank"
-      >
-        <i
-          class="material-icons mr-2 icon"
-          title="Help Center"
-        >
-          help
-        </i>
-        Help Center
-      </a>
-      <a
-        class="dropdown-item dropdown-item"
-        href="https://status.gorgias.com/"
-        role="menuitem"
-        tabindex="0"
-        target="_blank"
-      >
-        <i
-          class="material-icons mr-2 icon"
-          title="Service status"
-        >
-          query_stats
-        </i>
-        Service status
-      </a>
-      <a
-        class="dropdown-item dropdown-item"
-        href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
-        role="menuitem"
-        tabindex="0"
-        target="_blank"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          map
-        </i>
-        Roadmap
-      </a>
-      <div
-        class="dropdown-item dropdown-item"
-        id="noticeable-widget"
-        role="menuitem"
-        tabindex="0"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          new_releases
-        </i>
-        Latest updates
-        <span
-          id="noticeable-widget-notification"
-        />
-      </div>
-      <a
-        class="dropdown-item dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-        to="/app/referral-program"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          favorite_border
-        </i>
-        Refer a friend & earn
-      </a>
-      <button
-        class="dropdown-item dropdown-item"
-        role="menuitem"
-        tabindex="0"
-        type="button"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          keyboard
-        </i>
-        Keyboard shortcuts
-      </button>
-      <a
-        class="dropdown-item dropdown-item"
-        href="/logout?csrf-token=abcd"
-        role="menuitem"
-        tabindex="0"
-      >
-        <i
-          class="material-icons mr-2 icon"
-        >
-          exit_to_app
-        </i>
-        Log out
-      </a>
     </div>
-  </div>
+  </button>
 </div>
 `;

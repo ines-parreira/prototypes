@@ -39,7 +39,8 @@ const DropdownItem = <T extends boolean | number | string>({
     shouldCloseOnSelect,
     tag = 'li',
     option,
-}: Props<T>) => {
+    ...rest
+}: Props<T> & Omit<HTMLAttributes<HTMLOrSVGElement>, 'onClick'>) => {
     const itemRef = useRef<HTMLElement | null>(null)
 
     const dropdownContext = useContext(DropdownContext)
@@ -149,6 +150,7 @@ const DropdownItem = <T extends boolean | number | string>({
             }
             ref={itemRef}
             tabIndex={0}
+            {...rest}
         >
             {isMultiple && (
                 <CheckBox

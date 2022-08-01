@@ -119,7 +119,7 @@ const Dropdown = forwardRef(
                 50,
                 {leading: true}
             ),
-            [refs.reference, refs.floating, update]
+            [children, refs.reference, refs.floating, update]
         )
 
         useEffect(handleUpdate, [handleUpdate])

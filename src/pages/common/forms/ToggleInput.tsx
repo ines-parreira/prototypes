@@ -22,7 +22,7 @@ type Props = {
     isDisabled?: boolean
     isLoading?: boolean
     name?: string
-    onClick: (nextValue: boolean, event: MouseEvent<HTMLLabelElement>) => void
+    onClick?: (nextValue: boolean, event: MouseEvent<HTMLLabelElement>) => void
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'checked' | 'disabled' | 'name' | 'type' | 'onClick'
@@ -45,7 +45,7 @@ const ToggleInput = ({
 
     const handleClick = useCallback(
         (event: MouseEvent<HTMLLabelElement>) => {
-            !isDisabled && !isLoading && onClick(!isToggled, event)
+            !isDisabled && !isLoading && onClick?.(!isToggled, event)
         },
         [isDisabled, isLoading, isToggled, onClick]
     )

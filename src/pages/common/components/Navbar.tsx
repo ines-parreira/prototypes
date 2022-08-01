@@ -1,11 +1,10 @@
-import React, {Component, ReactNode} from 'react'
+import React, {Component, ComponentProps, createRef, ReactNode} from 'react'
 import PropTypes from 'prop-types'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 import {
-    Dropdown,
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
@@ -13,6 +12,7 @@ import {
 } from 'reactstrap'
 import * as Sentry from '@sentry/react'
 
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
 import shortcutManager from '../../../services/shortcutManager/index'
 import {DEPRECATED_getCurrentPlan} from '../../../state/billing/selectors'
@@ -34,11 +34,18 @@ import ToggleInput from '../forms/ToggleInput'
 import Avatar from './Avatar/Avatar'
 
 import css from './Navbar.less'
+import DropdownBody from './dropdown/DropdownBody'
+import DropdownHeader from './dropdown/DropdownHeader'
+import DropdownItemLabel from './dropdown/DropdownItemLabel'
+import Screens from './screens/Screens'
+import Screen from './screens/Screen'
+
+const unreadCountChangedEvent = 'widget:publication:unread_count:changed'
 
 type NavLinkProps = {
     to: string
-    className: Maybe<string>
-}
+    className?: string
+} & ComponentProps<typeof Link>
 
 // A <Link /> with some default styles
 class NavLink extends Component<NavLinkProps> {
@@ -56,7 +63,7 @@ class NavLink extends Component<NavLinkProps> {
         return (
             <Link
                 {...this.props}
-                className={classnames(className, 'dropdown-item', {
+                className={classnames(className, css['menu-item'], {
                     current: window.location.pathname.includes(url),
                 })}
             />
@@ -99,13 +106,19 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
+type ActiveScreen = 'main' | 'gorgias-updates' | 'learn'
+
 type State = {
     bottomDropdownOpen: boolean
     noticeableWidgetRendered: boolean
     title: Maybe<string>
+    activeScreen: ActiveScreen
+    noticeableCount: number
 }
 
-export class Navbar extends React.Component<Props, State> {
+export class Navbar extends Component<Props, State> {
+    menuToggleRef = createRef<HTMLButtonElement>()
+
     static childContextTypes = {
         closePanel: PropTypes.func.isRequired,
     }
@@ -114,6 +127,8 @@ export class Navbar extends React.Component<Props, State> {
         bottomDropdownOpen: false,
         noticeableWidgetRendered: false,
         title: null,
+        activeScreen: 'main' as ActiveScreen,
+        noticeableCount: 0,
     }
 
     getChildContext() {
@@ -130,13 +145,13 @@ export class Navbar extends React.Component<Props, State> {
         })
     }
 
-    componentDidUpdate(prevProps: OwnProps, prevState: State) {
+    componentDidUpdate() {
         // render and update the noticeable widget and notification
-        if (this.state.bottomDropdownOpen) {
-            if (
-                prevState.bottomDropdownOpen ||
-                this.state.noticeableWidgetRendered
-            ) {
+        if (
+            this.state.bottomDropdownOpen &&
+            this.state.activeScreen === 'gorgias-updates'
+        ) {
+            if (this.state.noticeableWidgetRendered) {
                 return
             }
 
@@ -160,18 +175,13 @@ export class Navbar extends React.Component<Props, State> {
             }
 
             window.noticeable.on(
-                'widget:publication:unread_count:changed',
+                unreadCountChangedEvent,
                 window.noticeableWidgetId,
                 (e: Record<string, any>) => {
-                    const element = document.getElementById(
-                        'noticeable-widget-notification'
-                    )
-                    if (element) {
-                        element.style.visibility =
-                            (e.detail as Record<string, any>).value === 0
-                                ? 'hidden'
-                                : 'visible'
-                    }
+                    this.setState({
+                        noticeableCount: (e.detail as Record<string, any>)
+                            .value,
+                    })
                     Sentry.addBreadcrumb({
                         category: 'noticeable',
                         message: 'widget unread_count changed',
@@ -198,6 +208,7 @@ export class Navbar extends React.Component<Props, State> {
     _toggleBottomDropdown = () => {
         this.setState((prevState) => ({
             bottomDropdownOpen: !prevState.bottomDropdownOpen,
+            activeScreen: 'main',
         }))
     }
 
@@ -286,136 +297,226 @@ export class Navbar extends React.Component<Props, State> {
                     {this.props.children}
                 </div>
 
-                <Dropdown
-                    toggle={this._toggleBottomDropdown}
-                    isOpen={this.state.bottomDropdownOpen}
-                    className={css['nav-dropdown']}
+                <button
+                    ref={this.menuToggleRef}
+                    className={classnames(
+                        css['dropdown-toggle'],
+                        css['dropdown-toggle-dropup'],
+                        {active: this.state.bottomDropdownOpen}
+                    )}
+                    onClick={this._toggleBottomDropdown}
                 >
-                    <DropdownToggle
-                        color="transparent"
-                        className={classnames(
-                            css['dropdown-toggle'],
-                            css['dropdown-toggle-dropup']
-                        )}
-                    >
-                        <div>
-                            <span className="body-semibold">
-                                {currentUser.get('name') ||
-                                    currentUser.get('email')}
-                                <Avatar
-                                    name={
-                                        currentUser.get('name') ||
-                                        currentUser.get('email')
-                                    }
-                                    url={currentUser.getIn([
-                                        'meta',
-                                        'profile_picture_url',
-                                    ])}
-                                    size={36}
-                                    style={{
-                                        position: 'absolute',
-                                        bottom: '12px',
-                                        right: '18px',
-                                    }}
-                                    badgeColor={
-                                        available ? '#24d69d' : '#FF9600'
-                                    }
+                    <div>
+                        {currentUser.get('name') || currentUser.get('email')}
+                    </div>
+                    <Avatar
+                        name={
+                            currentUser.get('name') || currentUser.get('email')
+                        }
+                        url={currentUser.getIn(['meta', 'profile_picture_url'])}
+                        size={36}
+                        badgeColor={available ? '#24d69d' : '#FF9600'}
+                    />
+                </button>
+                <Dropdown
+                    className={css.menuContent}
+                    isOpen={this.state.bottomDropdownOpen}
+                    onToggle={this._toggleBottomDropdown}
+                    target={this.menuToggleRef}
+                    placement="top"
+                    offset={0}
+                >
+                    <Screens activeScreen={this.state.activeScreen}>
+                        <Screen name="main">
+                            <div
+                                className={classnames(
+                                    css['dropdown-item-user-menu'],
+                                    css.availabilityToggle
+                                )}
+                                onClick={this._updateAvailableForChatPreference}
+                            >
+                                <span>Available</span>
+                                <ToggleInput
+                                    isToggled={available}
+                                    isLoading={isPreferencesLoading}
                                 />
-                            </span>
-                        </div>
-                    </DropdownToggle>
-                    <DropdownMenu className={css['dropdown-menu']}>
-                        <DropdownItem
-                            tag="a"
-                            toggle={false}
-                            className={css['dropdown-item']}
-                        >
-                            <div className="d-flex justify-content-between align-items-center">
-                                <div>Available</div>
-                                <div>
-                                    <ToggleInput
-                                        isToggled={available}
-                                        isLoading={isPreferencesLoading}
-                                        onClick={
-                                            this
-                                                ._updateAvailableForChatPreference
-                                        }
-                                    />
-                                </div>
                             </div>
-                        </DropdownItem>
-                        <DropdownItem divider />
-                        <DropdownItem
-                            tag={NavLink}
-                            to="/app/settings/profile"
-                            onClick={() => {
-                                logEvent(SegmentEvent.MenuUserLinkClicked, {
-                                    link: 'your-profile',
-                                })
-                                this._closePanel()
-                            }}
-                            className={css['dropdown-item']}
-                        >
-                            <i
-                                className={classnames(
-                                    'material-icons mr-2',
-                                    css.icon
+                            <hr className={css.separator} />
+                            <DropdownBody>
+                                <NavLink
+                                    to="/app/settings/profile"
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.MenuUserLinkClicked,
+                                            {
+                                                link: 'your-profile',
+                                            }
+                                        )
+                                        this._toggleBottomDropdown()
+                                    }}
+                                    className={css['dropdown-item-user-menu']}
+                                >
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.icon
+                                        )}
+                                    >
+                                        person
+                                    </i>
+                                    Your profile
+                                </NavLink>
+                                <div
+                                    onClick={() => {
+                                        this.setState({
+                                            activeScreen: 'gorgias-updates',
+                                        })
+                                    }}
+                                    className={css['dropdown-item-user-menu']}
+                                >
+                                    <DropdownItemLabel
+                                        className={css.submenu}
+                                        suffix={
+                                            <i
+                                                className={classnames(
+                                                    'material-icons',
+                                                    css['sub-menu-chevron']
+                                                )}
+                                            >
+                                                chevron_right
+                                            </i>
+                                        }
+                                    >
+                                        <i
+                                            className={classnames(
+                                                'material-icons mr-2',
+                                                css.icon
+                                            )}
+                                        >
+                                            update
+                                        </i>
+                                        Gorgias updates
+                                    </DropdownItemLabel>
+                                </div>
+                                <div
+                                    className={classnames(
+                                        css['dropdown-item-user-menu']
+                                    )}
+                                    onClick={() => {
+                                        this.setState({
+                                            activeScreen: 'learn',
+                                        })
+                                    }}
+                                >
+                                    <DropdownItemLabel
+                                        className={css.submenu}
+                                        suffix={
+                                            <i
+                                                className={classnames(
+                                                    'material-icons',
+                                                    css['sub-menu-chevron']
+                                                )}
+                                            >
+                                                chevron_right
+                                            </i>
+                                        }
+                                    >
+                                        <i
+                                            className={classnames(
+                                                'material-icons mr-2',
+                                                css.icon
+                                            )}
+                                        >
+                                            local_library
+                                        </i>
+                                        Learn
+                                    </DropdownItemLabel>
+                                </div>
+                                {isBasicOrPro && !isTrialing && (
+                                    <a
+                                        className={classnames(
+                                            css['dropdown-item-user-menu']
+                                        )}
+                                        onClick={() => {
+                                            window.open(
+                                                'https://calendly.com/gorgias-office-hours',
+                                                '_blank',
+                                                'noopener'
+                                            )
+                                            this._toggleBottomDropdown()
+                                        }}
+                                    >
+                                        <span title="Book a meeting with a Customer Success Manager at Gorgias.">
+                                            <i
+                                                className={classnames(
+                                                    'material-icons mr-2',
+                                                    css.icon
+                                                )}
+                                            >
+                                                event
+                                            </i>
+                                            Book office hours
+                                        </span>
+                                    </a>
                                 )}
-                            >
-                                person
-                            </i>
-                            Your profile
-                        </DropdownItem>
-                        <DropdownItem
-                            tag="a"
-                            href="https://docs.gorgias.com/"
-                            target="_blank"
-                            onClick={() =>
-                                logEvent(SegmentEvent.MenuUserLinkClicked, {
-                                    link: 'helpdocs',
-                                })
-                            }
-                            className={css['dropdown-item']}
-                        >
-                            <i
-                                className={classnames(
-                                    'material-icons mr-2',
-                                    css.icon
-                                )}
-                                title="Help Center"
-                            >
-                                help
-                            </i>
-                            Help Center
-                        </DropdownItem>
-                        <DropdownItem
-                            tag="a"
-                            href="https://status.gorgias.com/"
-                            target="_blank"
-                            className={css['dropdown-item']}
-                            onClick={() =>
-                                logEvent(SegmentEvent.MenuUserLinkClicked, {
-                                    link: 'service-status',
-                                })
-                            }
-                        >
-                            <i
-                                className={classnames(
-                                    'material-icons mr-2',
-                                    css.icon
-                                )}
-                                title="Service status"
-                            >
-                                query_stats
-                            </i>
-                            Service status
-                        </DropdownItem>
-                        {isBasicOrPro && !isTrialing && (
-                            <DropdownItem
-                                tag="a"
-                                href="https://calendly.com/gorgias-office-hours"
-                                target="_blank"
-                                title="Book a meeting with a Customer Success Manager at Gorgias."
+                                <NavLink
+                                    to="/app/referral-program"
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.MenuUserLinkClicked,
+                                            {
+                                                link: 'referral-program',
+                                            }
+                                        )
+                                        this._toggleBottomDropdown()
+                                    }}
+                                    className={css['dropdown-item-user-menu']}
+                                >
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.icon
+                                        )}
+                                    >
+                                        favorite_border
+                                    </i>
+                                    Refer a friend & earn
+                                </NavLink>
+
+                                <div
+                                    className={classnames(
+                                        css['dropdown-item-user-menu']
+                                    )}
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.MenuUserLinkClicked,
+                                            {
+                                                link: 'log-out',
+                                            }
+                                        )
+                                        window.location.href = `/logout?csrf-token=${window.CSRF_TOKEN}`
+                                    }}
+                                >
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.icon
+                                        )}
+                                    >
+                                        exit_to_app
+                                    </i>
+                                    Log out
+                                </div>
+                            </DropdownBody>
+                        </Screen>
+
+                        <Screen name="learn">
+                            <DropdownHeader
+                                onClick={() => {
+                                    this.setState({
+                                        activeScreen: 'main',
+                                    })
+                                }}
                                 className={css['dropdown-item']}
                             >
                                 <i
@@ -424,118 +525,244 @@ export class Navbar extends React.Component<Props, State> {
                                         css.icon
                                     )}
                                 >
-                                    event
+                                    arrow_back
                                 </i>
-                                Book office hours
-                            </DropdownItem>
-                        )}
-                        <DropdownItem
-                            tag="a"
-                            href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
-                            target="_blank"
-                            className={css['dropdown-item']}
-                            onClick={() =>
-                                logEvent(SegmentEvent.MenuUserLinkClicked, {
-                                    link: 'roadmap',
-                                })
-                            }
-                        >
-                            <i
-                                className={classnames(
-                                    'material-icons mr-2',
-                                    css.icon
-                                )}
+                                Back
+                            </DropdownHeader>
+                            <DropdownBody>
+                                <div
+                                    className={classnames(
+                                        css['dropdown-item-user-menu']
+                                    )}
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.MenuUserLinkClicked,
+                                            {
+                                                link: 'helpdocs',
+                                            }
+                                        )
+                                        window.open(
+                                            'https://docs.gorgias.com/',
+                                            '_blank',
+                                            'noopener'
+                                        )
+                                        this._toggleBottomDropdown()
+                                    }}
+                                >
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.icon
+                                        )}
+                                        title="Help Center"
+                                    >
+                                        help
+                                    </i>
+                                    Help Center
+                                </div>
+                                <div
+                                    className={css['dropdown-item-user-menu']}
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.MenuUserLinkClicked,
+                                            {
+                                                link: 'gorgiasacademy',
+                                            }
+                                        )
+                                        window.open(
+                                            'https://academy.gorgias.com/trainings?utm_source=in_app&utm_medium=menu&utm_campaign=user_menu',
+                                            '_blank',
+                                            'noopener'
+                                        )
+                                        this._toggleBottomDropdown()
+                                    }}
+                                >
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.icon
+                                        )}
+                                        title="Gorgias Academy"
+                                    >
+                                        school
+                                    </i>
+                                    Gorgias Academy
+                                </div>
+                                <div
+                                    className={css['dropdown-item-user-menu']}
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.MenuUserLinkClicked,
+                                            {
+                                                link: 'gorgiascommunity',
+                                            }
+                                        )
+                                        window.open(
+                                            'https://community.gorgias.com/',
+                                            '_blank',
+                                            'noopener'
+                                        )
+                                        this._toggleBottomDropdown()
+                                    }}
+                                >
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.icon
+                                        )}
+                                        title="Gorgias Community"
+                                    >
+                                        people_alt
+                                    </i>
+                                    Gorgias Community
+                                </div>
+                                <div
+                                    className={css['dropdown-item-user-menu']}
+                                    onClick={() => {
+                                        shortcutManager.triggerAction(
+                                            'KeyboardHelp',
+                                            'SHOW_HELP'
+                                        )
+                                        logEvent(
+                                            SegmentEvent.MenuUserLinkClicked,
+                                            {
+                                                link: 'keyboard-shortcuts',
+                                            }
+                                        )
+                                        this._toggleBottomDropdown()
+                                    }}
+                                >
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.icon
+                                        )}
+                                    >
+                                        keyboard
+                                    </i>
+                                    Keyboard shortcuts
+                                </div>
+                            </DropdownBody>
+                        </Screen>
+
+                        <Screen name="gorgias-updates">
+                            <DropdownHeader
+                                onClick={() => {
+                                    this.setState({
+                                        activeScreen: 'main',
+                                    })
+                                }}
+                                className={css['dropdown-item']}
                             >
-                                map
-                            </i>
-                            Roadmap
-                        </DropdownItem>
-                        <DropdownItem
-                            tag="div"
-                            id="noticeable-widget"
-                            toggle={false}
-                            className={css['dropdown-item']}
-                            onClick={() =>
-                                logEvent(SegmentEvent.MenuUserLinkClicked, {
-                                    link: 'latest-updates',
-                                })
-                            }
-                        >
-                            <i
-                                className={classnames(
-                                    'material-icons mr-2',
-                                    css.icon
-                                )}
-                            >
-                                new_releases
-                            </i>
-                            Latest updates
-                            <span id="noticeable-widget-notification" />
-                        </DropdownItem>
-                        <DropdownItem
-                            tag={NavLink}
-                            to={'/app/referral-program'}
-                            onClick={() => {
-                                logEvent(SegmentEvent.MenuUserLinkClicked, {
-                                    link: 'referral-program',
-                                })
-                                this._closePanel()
-                            }}
-                            className={css['dropdown-item']}
-                        >
-                            <i
-                                className={classnames(
-                                    'material-icons mr-2',
-                                    css.icon
-                                )}
-                            >
-                                favorite_border
-                            </i>
-                            Refer a friend & earn
-                        </DropdownItem>
-                        <DropdownItem
-                            onClick={() => {
-                                shortcutManager.triggerAction(
-                                    'KeyboardHelp',
-                                    'SHOW_HELP'
-                                )
-                                logEvent(SegmentEvent.MenuUserLinkClicked, {
-                                    link: 'keyboard-shortcuts',
-                                })
-                            }}
-                            className={css['dropdown-item']}
-                        >
-                            <i
-                                className={classnames(
-                                    'material-icons mr-2',
-                                    css.icon
-                                )}
-                            >
-                                keyboard
-                            </i>
-                            Keyboard shortcuts
-                        </DropdownItem>
-                        <DropdownItem
-                            tag="a"
-                            href={`/logout?csrf-token=${window.CSRF_TOKEN}`}
-                            className={css['dropdown-item']}
-                            onClick={() =>
-                                logEvent(SegmentEvent.MenuUserLinkClicked, {
-                                    link: 'log-out',
-                                })
-                            }
-                        >
-                            <i
-                                className={classnames(
-                                    'material-icons mr-2',
-                                    css.icon
-                                )}
-                            >
-                                exit_to_app
-                            </i>
-                            Log out
-                        </DropdownItem>
-                    </DropdownMenu>
+                                <i
+                                    className={classnames(
+                                        'material-icons mr-2',
+                                        css.icon
+                                    )}
+                                >
+                                    arrow_back
+                                </i>
+                                Back
+                            </DropdownHeader>
+                            <DropdownBody>
+                                <div
+                                    className={classnames(
+                                        css['dropdown-item-user-menu'],
+                                        css['latest-updates']
+                                    )}
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.MenuUserLinkClicked,
+                                            {
+                                                link: 'latest-updates',
+                                            }
+                                        )
+                                        window.noticeable.do(
+                                            'widget:open',
+                                            window.noticeableWidgetId
+                                        )
+                                    }}
+                                >
+                                    <div>
+                                        <i
+                                            className={classnames(
+                                                'material-icons mr-2',
+                                                css.icon
+                                            )}
+                                        >
+                                            new_releases
+                                        </i>
+                                        Latest updates
+                                    </div>
+                                    <span
+                                        id="noticeable-widget-notification"
+                                        style={{
+                                            visibility: !!this.state
+                                                .noticeableCount
+                                                ? 'visible'
+                                                : 'hidden',
+                                        }}
+                                    />
+                                </div>
+                                <div
+                                    className={css['dropdown-item-user-menu']}
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.MenuUserLinkClicked,
+                                            {
+                                                link: 'roadmap',
+                                            }
+                                        )
+                                        window.open(
+                                            'https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/',
+                                            '_blank',
+                                            'noopener'
+                                        )
+                                        this._toggleBottomDropdown()
+                                    }}
+                                >
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.icon
+                                        )}
+                                    >
+                                        map
+                                    </i>
+                                    Roadmap
+                                </div>
+                                <div
+                                    className={css['dropdown-item-user-menu']}
+                                    onClick={() => {
+                                        logEvent(
+                                            SegmentEvent.MenuUserLinkClicked,
+                                            {
+                                                link: 'service-status',
+                                            }
+                                        )
+                                        window.open(
+                                            'https://status.gorgias.com/',
+                                            '_blank',
+                                            'noopener'
+                                        )
+                                        this._toggleBottomDropdown()
+                                    }}
+                                >
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.icon
+                                        )}
+                                        title="Service status"
+                                    >
+                                        query_stats
+                                    </i>
+                                    Service status
+                                </div>
+                            </DropdownBody>
+                        </Screen>
+                        <div id="noticeable-widget" />
+                    </Screens>
                 </Dropdown>
             </div>
         )

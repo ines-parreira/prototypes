@@ -78,9 +78,23 @@
     }
 
     .dropdown-toggle-dropup {
+        background: @classic-neutral-grey-6;
         border-width: 1px 0 0;
         padding-top: 12px;
         padding-bottom: 12px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .body-semibold();
+
+        &.active {
+            background-color: darken(@classic-neutral-grey-6, 8%);
+        }
+
+        &:focus {
+            outline: none;
+        }
     }
 
     .dropdown-menu {
@@ -94,24 +108,24 @@
         border: solid 1px #cfe0ee;
         border-top: none;
         padding: 4px 0;
+    }
 
-        .dropdown-item {
-            display: block;
-            padding: 8px 16px;
+    .dropdown-item {
+        display: block;
+        padding: 8px 16px;
+        color: @classic-neutral-grey-6;
+        font-weight: normal;
+        outline: none;
+        vertical-align: middle;
+
+        &:global.current {
             color: @classic-neutral-grey-6;
-            font-weight: normal;
-            outline: none;
-            vertical-align: middle;
+            font-weight: 600;
+        }
 
-            &:global.current {
-                color: @classic-neutral-grey-6;
-                font-weight: 600;
-            }
-
-            &:global:hover {
-                background-color: @classic-neutral-grey-2;
-                color: @classic-neutral-grey-6;
-            }
+        &:global:hover {
+            background-color: @classic-neutral-grey-2;
+            color: @classic-neutral-grey-6;
         }
     }
 
@@ -129,5 +143,59 @@
 
     .icon-more {
         font-size: 21px;
+    }
+
+    .menu-item {
+        color: @classic-neutral-grey-6;
+
+        &:hover {
+            color: @classic-neutral-grey-6;
+        }
+    }
+
+    .separator {
+        border-top: 1px solid @classic-neutral-grey-3;
+        margin: 4px 0 0 0;
+    }
+
+    .submenu {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 !important;
+        width: 100%;
+    }
+
+    .sub-menu-chevron {
+        color: @classic-neutral-grey-4;
+        vertical-align: -14% !important;
+    }
+
+    .latest-updates {
+        justify-content: space-between;
+    }
+
+    .dropdown-item-user-menu {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+        cursor: pointer;
+        min-height: 36px;
+        padding: 0 8px;
+        transition: background-color 0.2s linear;
+
+        &:hover {
+            background: @classic-neutral-grey-1;
+        }
+
+        &:focus {
+            background: @classic-neutral-grey-2;
+        }
+
+        &.availabilityToggle {
+            justify-content: space-between;
+            padding: 12px 4px 8px 16px;
+        }
     }
 }
