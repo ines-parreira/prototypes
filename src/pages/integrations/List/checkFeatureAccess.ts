@@ -15,6 +15,14 @@ export function checkBigCommerceAccess(domain: string) {
                   'pilarhelpdesk',
                   'catalinm-test',
                   'as7testing',
+                  // beta program users
+                  'solostove',
+                  'liftsupportsdepot',
+                  'mollymutt',
+                  'dance4me',
+                  'yatesjewelers',
+                  'roamrogue',
+                  'iagperformance',
               ].includes(domain) || domain.includes('.preview')
             : false
     )
