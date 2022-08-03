@@ -73,23 +73,19 @@ export default class TicketReplyAction extends Component<Props> {
 
         return (
             <div className="mb-3">
-                {!!title && (
-                    <div className="mb-2">
-                        <strong>{title}</strong>
-                    </div>
-                )}
+                {!!title && <strong>{title}</strong>}
                 {args
                     .map((arg: Map<any, any>, key) => (
-                        <div key={key} className={css.argInput}>
-                            <InputField
-                                label={arg.get('key')}
-                                value={arg.get('value')}
-                                onChange={(value) =>
-                                    this.setListDictValue(arg, value, category)
-                                }
-                                isRequired={arg.get('required')}
-                            />
-                        </div>
+                        <InputField
+                            label={arg.get('key')}
+                            value={arg.get('value')}
+                            onChange={(value) =>
+                                this.setListDictValue(arg, value, category)
+                            }
+                            isRequired={arg.get('required')}
+                            className={classnames('mt-2', css.inputField)}
+                            key={key}
+                        />
                     ))
                     .toList()}
             </div>
@@ -299,6 +295,7 @@ export default class TicketReplyAction extends Component<Props> {
 
         const isInline =
             action.get('name') !== MacroActionName.AddInternalNote &&
+            action.get('name') !== MacroActionName.Http &&
             action.get('name') !==
                 MacroActionName.ShopifyEditShippingAddressLastOrder
 
