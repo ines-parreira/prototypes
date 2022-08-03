@@ -1,21 +1,19 @@
 import {fromJS, Map, List} from 'immutable'
 
-import {getActionTemplate} from '../../../../utils'
-import {getDefaultMacro} from '../../../../state/macro/utils'
+import {ActionTemplateExecution} from 'config'
+import {getActionTemplate} from 'utils'
+import {getDefaultMacro} from 'state/macro/utils'
 
 export const isMacroDisabled = (
     macro: Map<any, any>,
     disableExternalActions?: boolean
 ) => {
-    if (!disableExternalActions) {
-        return false
-    }
+    if (!disableExternalActions) return false
 
     return (macro.get('actions', fromJS([])) as List<any>).some(
-        (action: Map<any, any>) => {
-            const actionTemplate = getActionTemplate(action.get('name'))
-            return !!actionTemplate && actionTemplate.execution === 'back'
-        }
+        (action: Map<any, any>) =>
+            getActionTemplate(action.get('name'))?.execution ===
+            ActionTemplateExecution.External
     )
 }
 

@@ -72,6 +72,7 @@ describe('ticket selectors', () => {
                 },
                 state: {
                     dirty: false,
+                    appliedMacro: {},
                 },
                 via: TicketVia.Email,
             }),
@@ -245,5 +246,11 @@ describe('ticket selectors', () => {
         expect((body.get(5) as Map<any, any>).get('isPending')).toBe(false)
         expect((body.get(6) as Map<any, any>).get('isPending')).toBe(true)
         expect(body).toMatchSnapshot()
+    })
+
+    it('getAppliedMacro', () => {
+        expect(selectors.getAppliedMacro({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 })

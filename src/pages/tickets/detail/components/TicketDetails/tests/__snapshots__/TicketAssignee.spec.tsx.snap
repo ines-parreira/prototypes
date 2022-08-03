@@ -30,6 +30,7 @@ exports[`<TicketAssignee/> render() should display teams only 1`] = `
     style={
       Object {
         "width": "260px",
+        "zIndex": 1051,
       }
     }
     tag="div"
@@ -123,6 +124,7 @@ exports[`<TicketAssignee/> render() should display the email of the agent assign
     style={
       Object {
         "width": "260px",
+        "zIndex": 1051,
       }
     }
     tag="div"
@@ -238,6 +240,7 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
     style={
       Object {
         "width": "260px",
+        "zIndex": 1051,
       }
     }
     tag="div"
@@ -353,6 +356,7 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
     style={
       Object {
         "width": "260px",
+        "zIndex": 1051,
       }
     }
     tag="div"
@@ -481,6 +485,7 @@ exports[`<TicketAssignee/> render() should display the name of the team assigned
     style={
       Object {
         "width": "260px",
+        "zIndex": 1051,
       }
     }
     tag="div"
@@ -593,6 +598,7 @@ exports[`<TicketAssignee/> render() should display users only 1`] = `
     style={
       Object {
         "width": "260px",
+        "zIndex": 1051,
       }
     }
     tag="div"
@@ -692,6 +698,7 @@ exports[`<TicketAssignee/> render() should not display any agent info because th
     style={
       Object {
         "width": "260px",
+        "zIndex": 1051,
       }
     }
     tag="div"
@@ -791,6 +798,7 @@ exports[`<TicketAssignee/> render() should not display teams because object is e
     style={
       Object {
         "width": "260px",
+        "zIndex": 1051,
       }
     }
     tag="div"
@@ -864,7 +872,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
     className="classname"
     currentAssigneeTeam={null}
     currentAssigneeUser={null}
-    direction="right"
+    menuDirection="right"
     setTeam={[MockFunction]}
     setUser={[MockFunction]}
     transparent={false}
@@ -879,10 +887,11 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
           "email": "steve@acme.gorgias.io",
         }
       }
-      direction="right"
+      direction="down"
       dispatch={[Function]}
       handleTeams={true}
       handleUsers={true}
+      menuDirection="right"
       setTeam={[MockFunction]}
       setUser={[MockFunction]}
       teams={
@@ -977,6 +986,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
               style={
                 Object {
                   "width": "260px",
+                  "zIndex": 1051,
                 }
               }
               tag="div"
@@ -988,6 +998,7 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
                 style={
                   Object {
                     "width": "260px",
+                    "zIndex": 1051,
                   }
                 }
                 tabIndex="-1"

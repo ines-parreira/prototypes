@@ -76,7 +76,8 @@ exports[`<TicketReply/> should render the editor with the applied macro actions 
           Immutable.Map {
             "execution": "back",
             "name": "addInternalNote",
-            "title": "Add internal note",
+            "title": "Send internal note",
+            "icon": "note",
             "arguments": Immutable.Map {
               "body_text": Immutable.Map {
                 "type": "string",

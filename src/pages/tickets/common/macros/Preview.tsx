@@ -7,7 +7,7 @@ import {TicketMessageSourceType} from 'business/types/ticket'
 import {isRichType} from 'config/ticket'
 import {getIconFromActionType} from 'models/macroAction/helpers'
 
-import {actionTypeToName} from 'models/macroAction/types'
+import {actionTypeToName, MacroActionName} from 'models/macroAction/types'
 import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 
 import {
@@ -23,26 +23,26 @@ import {
 } from 'pages/tickets/common/utils'
 import {getActionTemplate} from 'utils'
 import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
+import {ActionTemplateExecution} from 'config'
 
 import css from './Preview.less'
 
 type Props = {
     displayHTML?: boolean
-    actions: List<any>
+    actions: List<Map<string, any>>
     ticketMessageSourceType?: TicketMessageSourceType
     className?: string
 }
 
 class Preview extends Component<Props> {
-    renderAddAttachments = (attachments: List<any>) => {
-        if (!attachments) {
-            return null
-        }
+    renderAddAttachments = (attachmentAction?: Map<string, any>) => {
+        if (!attachmentAction) return null
+
         return (
             <div className="mb-3">
                 <strong className="text-muted mr-2">Attach files:</strong>
                 {(
-                    attachments.getIn(['arguments', 'attachments']) as Map<
+                    attachmentAction.getIn(['arguments', 'attachments']) as Map<
                         any,
                         any
                     >
@@ -58,104 +58,93 @@ class Preview extends Component<Props> {
         )
     }
 
-    renderResponseText(responseTextAction: Map<string, any>) {
-        if (responseTextAction) {
-            const value: ComponentProps<typeof DEPRECATED_RichField>['value'] =
-                {
-                    text: responseTextAction.getIn(['arguments', 'body_text']),
-                }
+    renderResponseText(responseTextAction?: Map<string, any>) {
+        if (!responseTextAction) return null
 
-            const hasSourceType = !!this.props.ticketMessageSourceType
-
-            // If displayHTML is set to TRUE or
-            // ticketMessageSourceTypeisRichType property is passed to the element and supports HTML content
-            // then we don't strip the HTML tags, we use it as it is.
-            // This is used for macro preview.
-            if (
-                this.props.displayHTML ||
-                (hasSourceType &&
-                    isRichType(this.props.ticketMessageSourceType!))
-            ) {
-                value.html = responseTextAction.getIn([
-                    'arguments',
-                    'body_html',
-                ])
-                // This is used for ticket macros
-            } else if (
-                hasSourceType &&
-                this.props.ticketMessageSourceType ===
-                    TicketMessageSourceType.FacebookMessenger
-            ) {
-                // Get body_html as text
-                let html = responseTextAction.getIn(['arguments', 'body_html'])
-
-                html = sanitizeHtmlForFacebookMessenger(html)
-                value.html = html
-            }
-
-            return (
-                <div className={css.macroData}>
-                    <DEPRECATED_RichField
-                        value={value}
-                        onChange={() => null}
-                        displayOnly
-                    />
-                </div>
-            )
+        const value: ComponentProps<typeof DEPRECATED_RichField>['value'] = {
+            text: responseTextAction.getIn(['arguments', 'body_text']),
         }
-    }
 
-    renderSetStatus(setStatusAction: Map<string, any>) {
-        if (setStatusAction) {
-            return (
-                <div className={css.macroData}>
-                    <strong className="text-muted mr-2">Set status:</strong>
-                    <StatusLabel
-                        status={setStatusAction.getIn(['arguments', 'status'])}
-                    />
-                </div>
-            )
-        }
-    }
+        const hasSourceType = !!this.props.ticketMessageSourceType
 
-    renderSnoozeTicket(snoozeTicketAction: Map<string, any>) {
-        if (snoozeTicketAction) {
-            const duration = snoozeTicketAction.getIn([
-                'arguments',
-                'snooze_timedelta',
-            ])
-            return (
-                <div className={css.macroData}>
-                    <strong className="text-muted">Snooze for </strong>
-                    <TimedeltaLabel duration={duration} />
-                </div>
-            )
-        }
-    }
+        // If displayHTML is set to TRUE or
+        // ticketMessageSourceTypeisRichType property is passed to the element and supports HTML content
+        // then we don't strip the HTML tags, we use it as it is.
+        // This is used for macro preview.
+        if (
+            this.props.displayHTML ||
+            (hasSourceType && isRichType(this.props.ticketMessageSourceType!))
+        ) {
+            value.html = responseTextAction.getIn(['arguments', 'body_html'])
+            // This is used for ticket macros
+        } else if (
+            hasSourceType &&
+            this.props.ticketMessageSourceType ===
+                TicketMessageSourceType.FacebookMessenger
+        ) {
+            // Get body_html as text
+            let html = responseTextAction.getIn(['arguments', 'body_html'])
 
-    renderAddTags(addTagsActions: List<any>) {
-        if (!addTagsActions || !addTagsActions.size) {
-            return null
+            html = sanitizeHtmlForFacebookMessenger(html)
+            value.html = html
         }
 
         return (
-            <div className={classnames(css.macroData, css.addTagWrapper)}>
-                <strong className="text-muted mr-2">Add tags:</strong>
-                {addTagsActions
-                    .map((action: Map<string, any>) =>
-                        (action.getIn(['arguments', 'tags'], '') as string)
-                            .split(',')
-                            .map((tag) => <TagLabel key={tag}>{tag}</TagLabel>)
-                    )
-                    .toJS()}
+            <div className={css.macroData}>
+                <DEPRECATED_RichField
+                    value={value}
+                    onChange={() => null}
+                    displayOnly
+                />
             </div>
         )
     }
 
-    renderSetAssignee(setAssigneeAction: Map<string, any>) {
-        if (!setAssigneeAction) {
-            return null
-        }
+    renderSetStatus(setStatusAction?: Map<string, any>) {
+        if (!setStatusAction) return null
+
+        return (
+            <div className={css.macroData}>
+                <strong className="text-muted mr-2">Set status:</strong>
+                <StatusLabel
+                    status={setStatusAction.getIn(['arguments', 'status'])}
+                />
+            </div>
+        )
+    }
+
+    renderSnoozeTicket(snoozeTicketAction?: Map<string, any>) {
+        if (!snoozeTicketAction) return null
+
+        const duration = snoozeTicketAction.getIn([
+            'arguments',
+            'snooze_timedelta',
+        ])
+        return (
+            <div className={css.macroData}>
+                <strong className="text-muted">Snooze for </strong>
+                <TimedeltaLabel duration={duration} />
+            </div>
+        )
+    }
+
+    renderAddTags(addTagsAction?: Map<string, any>) {
+        if (!addTagsAction) return null
+
+        return (
+            <div className={classnames(css.macroData, css.addTagWrapper)}>
+                <strong className="text-muted mr-2">Add tags:</strong>
+                {(addTagsAction.getIn(['arguments', 'tags'], '') as string)
+                    .split(',')
+                    .map((tag) => (
+                        <TagLabel key={tag}>{tag}</TagLabel>
+                    ))}
+            </div>
+        )
+    }
+
+    renderSetAssignee(setAssigneeAction?: Map<string, any>) {
+        if (!setAssigneeAction) return null
 
         return (
             <div className={css.macroData}>
@@ -176,10 +165,8 @@ class Preview extends Component<Props> {
         )
     }
 
-    renderSetTeamAssignee(setTeamAssigneeAction: Map<string, any>) {
-        if (!setTeamAssigneeAction) {
-            return null
-        }
+    renderSetTeamAssignee(setTeamAssigneeAction?: Map<string, any>) {
+        if (!setTeamAssigneeAction) return null
 
         return (
             <div className={css.macroData}>
@@ -200,10 +187,8 @@ class Preview extends Component<Props> {
         )
     }
 
-    renderSetSubject(setSubjectAction: Map<string, any>) {
-        if (!setSubjectAction) {
-            return null
-        }
+    renderSetSubject(setSubjectAction?: Map<string, any>) {
+        if (!setSubjectAction) return null
 
         return (
             <div className={css.macroData}>
@@ -215,10 +200,8 @@ class Preview extends Component<Props> {
         )
     }
 
-    renderBackActions(integrationType: string, integrationActions: List<any>) {
-        if (!integrationActions || !integrationActions.size) {
-            return null
-        }
+    renderActions(integrationType: string, integrationActions: List<any>) {
+        if (!integrationActions?.size) return null
 
         return (
             <div
@@ -253,64 +236,50 @@ class Preview extends Component<Props> {
         )
     }
 
+    renderIntegrations(actions: List<Map<string, any>>) {
+        return getSortedIntegrationActions(
+            actions
+                .filter(
+                    (action) =>
+                        getActionTemplate(action?.get('name'))?.execution ===
+                            ActionTemplateExecution.External ||
+                        action?.get('name') === MacroActionName.AddInternalNote
+                )
+                .toList()
+        )
+            .map((v, k) => this.renderActions(k, v))
+            .toList()
+            .toJS() as JSX.Element[]
+    }
+
     render() {
         const {actions, className} = this.props
+        if (!actions?.size) return null
 
-        if (!actions || !actions.size) {
-            return null
-        }
-
-        const addTagsActions = actions
-            .filter((action: Map<any, any>) => action.get('name') === 'addTags')
-            .toList()
-
-        const responseTextAction = actions.find(
-            (action: Map<string, any>) =>
-                action.get('name') === 'setResponseText'
-        )
-        const setStatusAction = actions.find(
-            (action: Map<string, any>) => action.get('name') === 'setStatus'
-        )
-        const snoozeTicketAction = actions.find(
-            (action: Map<string, any>) => action.get('name') === 'snoozeTicket'
-        )
-        const setAssigneeAction = actions.find(
-            (action: Map<string, any>) => action.get('name') === 'setAssignee'
-        )
-        const setTeamAssigneeAction = actions.find(
-            (action: Map<string, any>) =>
-                action.get('name') === 'setTeamAssignee'
-        )
-        const setSubjectAction = actions.find(
-            (action: Map<string, any>) => action.get('name') === 'setSubject'
-        )
-        const addAttachmentsActions = actions.find(
-            (action: Map<any, any>) => action.get('name') === 'addAttachments'
-        )
-        const backActions = actions
-            .filter(
-                (action: Map<string, any>) =>
-                    getActionTemplate(action.get('name'))?.execution === 'back'
-            )
-            .toList()
-
-        const sortedBackActions: Map<string, any> =
-            getSortedIntegrationActions(backActions)
+        const findAction = (actionName: string) =>
+            actions.find((action) => action?.get('name') === actionName)
 
         return (
             <div className={classnames(css.component, className)}>
-                {this.renderSetStatus(setStatusAction)}
-                {this.renderSnoozeTicket(snoozeTicketAction)}
-                {this.renderAddTags(addTagsActions)}
-                {this.renderSetAssignee(setAssigneeAction)}
-                {this.renderSetTeamAssignee(setTeamAssigneeAction)}
-                {this.renderSetSubject(setSubjectAction)}
-                {sortedBackActions
-                    .map((v, k) => this.renderBackActions(k!, v))
-                    .toList()
-                    .toJS()}
-                {this.renderAddAttachments(addAttachmentsActions)}
-                {this.renderResponseText(responseTextAction)}
+                {this.renderSetStatus(findAction(MacroActionName.SetStatus))}
+                {this.renderSnoozeTicket(
+                    findAction(MacroActionName.SnoozeTicket)
+                )}
+                {this.renderAddTags(findAction(MacroActionName.AddTags))}
+                {this.renderSetAssignee(
+                    findAction(MacroActionName.SetAssignee)
+                )}
+                {this.renderSetTeamAssignee(
+                    findAction(MacroActionName.SetTeamAssignee)
+                )}
+                {this.renderSetSubject(findAction(MacroActionName.SetSubject))}
+                {this.renderIntegrations(actions)}
+                {this.renderAddAttachments(
+                    findAction(MacroActionName.AddAttachments)
+                )}
+                {this.renderResponseText(
+                    findAction(MacroActionName.SetResponseText)
+                )}
             </div>
         )
     }

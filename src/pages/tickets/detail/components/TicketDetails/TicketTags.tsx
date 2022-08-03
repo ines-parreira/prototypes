@@ -29,6 +29,9 @@ type OwnProps = {
     addTag: (tag: string) => void
     removeTag: (tag: string) => void
     transparent: boolean
+    right?: boolean
+    dropdownUpDirection?: boolean
+    dropdownContainer?: HTMLElement
 }
 
 type Props = OwnProps &
@@ -145,11 +148,18 @@ export class TicketTags extends Component<Props, State> {
         })
 
         void fieldEnumSearchCancellable(field, search).then((data) => {
-            if (!data) {
-                return
-            }
+            if (!data) return
+
+            const existingTagNames = this.props.ticketTags.map(
+                (x: Map<any, any>) => x.get('name') as string
+            )
+            const options = data.filter(
+                (tag: Map<any, any>) =>
+                    !existingTagNames.contains(tag.get('name'))
+            ) as List<any>
+
             this.setState({
-                enum: data,
+                enum: options,
                 isLoading: false,
             })
         })
@@ -167,8 +177,8 @@ export class TicketTags extends Component<Props, State> {
     }
 
     displayMenu = () => {
-        const {ticketTags, currentUser} = this.props
-        const {search} = this.state
+        const {currentUser} = this.props
+        const {search, enum: tags} = this.state
 
         if (this.state.isLoading) {
             return (
@@ -179,14 +189,7 @@ export class TicketTags extends Component<Props, State> {
             )
         }
 
-        const existingTagNames = ticketTags.map(
-            (x: Map<any, any>) => x.get('name') as string
-        )
-        const availableTags = this.state.enum.filter(
-            (tag: Map<any, any>) => !existingTagNames.contains(tag.get('name'))
-        )
-
-        let options = availableTags
+        let options = tags
             .map((tag: Map<any, any>, i) => {
                 const name = tag.get('name') as string
                 return (
@@ -203,15 +206,12 @@ export class TicketTags extends Component<Props, State> {
             })
             .toList()
 
-        const isInEnum = !!this.state.enum.find(
+        const isInEnum = !!tags.find(
             (tag: Map<any, any>) => tag.get('name') === search
         )
 
         if (!isInEnum && search) {
-            if (
-                !availableTags.isEmpty() &&
-                hasRole(currentUser, UserRole.Agent)
-            ) {
+            if (!tags.isEmpty() && hasRole(currentUser, UserRole.Agent)) {
                 options = options.push(<DropdownItem key="divider" divider />)
             }
 
@@ -219,16 +219,14 @@ export class TicketTags extends Component<Props, State> {
                 ? options.push(
                       <DropdownItem
                           key="create"
-                          ref={
-                              availableTags.isEmpty() ? this.tagRef : undefined
-                          }
+                          ref={tags.isEmpty() ? this.tagRef : undefined}
                           type="button"
                           onClick={() => this.addTag(search)}
                       >
                           <b>Create</b> {search}
                       </DropdownItem>
                   )
-                : availableTags.isEmpty()
+                : tags.isEmpty()
                 ? options.push(
                       <DropdownItem key="not_found" disabled>
                           Couldn't find the tag: {search}
@@ -241,9 +239,20 @@ export class TicketTags extends Component<Props, State> {
     }
 
     render() {
-        const {ticketTags, removeTag, transparent} = this.props
+        const {
+            ticketTags,
+            removeTag,
+            transparent,
+            right,
+            dropdownUpDirection,
+            dropdownContainer,
+        } = this.props
         return (
-            <div className="d-none d-md-inline-flex align-items-center flex-wrap ml-2 mr-2 mb-1">
+            <div
+                className={`d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1${
+                    right ? ' justify-content-end' : ''
+                }`}
+            >
                 {ticketTags
                     .sort((a: Map<any, any>, b: Map<any, any>) => {
                         const first = (a.get('name') as string).toLowerCase()
@@ -279,6 +288,8 @@ export class TicketTags extends Component<Props, State> {
                     isOpen={this.state.dropdownOpen}
                     toggle={this.toggle}
                     group={false}
+                    key={+this.state.isLoading} //Force re-render so dropdown position is correct
+                    direction={dropdownUpDirection ? 'up' : 'down'}
                 >
                     <DropdownToggle
                         color="secondary"
@@ -291,11 +302,15 @@ export class TicketTags extends Component<Props, State> {
                         <i className="material-icons md-1 align-middle">add</i>
                         {!ticketTags.size && (
                             <strong className="ml-1 align-middle">
-                                add tags
+                                Add tags
                             </strong>
                         )}
                     </DropdownToggle>
-                    <TagDropdownMenu style={{padding: '0.5rem 4px'}}>
+                    <TagDropdownMenu
+                        right={!!right}
+                        style={{padding: '0.5rem 4px'}}
+                        container={dropdownContainer}
+                    >
                         <DropdownItem header>ADD TAG:</DropdownItem>
                         <DropdownItem header className="dropdown-item-input">
                             <TextInput

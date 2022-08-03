@@ -243,7 +243,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
             tabindex="0"
             type="button"
           >
-            Add internal note
+            Send internal note
           </button>
           <div
             class="dropdown-divider"

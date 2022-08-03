@@ -7,6 +7,9 @@ type Props = {
     args: Map<string, string>
     index: number
     updateActionArgs: (index: number, args: Map<string, string>) => void
+    right?: boolean
+    dropdownUpDirection?: boolean
+    dropdownContainer?: HTMLElement
 }
 
 export default class AddTagsAction extends React.Component<Props> {
@@ -36,6 +39,7 @@ export default class AddTagsAction extends React.Component<Props> {
     }
 
     render() {
+        const {right, dropdownUpDirection, dropdownContainer} = this.props
         const ticketTags = fromJS(
             this.splitIncomingTags().map((t) => ({name: t}))
         )
@@ -45,6 +49,9 @@ export default class AddTagsAction extends React.Component<Props> {
                 ticketTags={ticketTags}
                 addTag={this.addTag}
                 removeTag={this.removeTag}
+                right={!!right}
+                dropdownUpDirection={!!dropdownUpDirection}
+                dropdownContainer={dropdownContainer}
             />
         )
     }

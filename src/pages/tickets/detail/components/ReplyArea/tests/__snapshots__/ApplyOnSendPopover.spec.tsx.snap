@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ApplyOnSendPopover/> should not render the popover because of date 1`] = `
+<body>
+  <div
+    id="submit-button"
+  />
+  <div />
+</body>
+`;
+
+exports[`<ApplyOnSendPopover/> should render the popover 1`] = `
+<body>
+  <div
+    id="submit-button"
+  />
+  <div />
+  <div>
+    <div
+      class="fade"
+    >
+      <div
+        class="popover show bs-popover-auto"
+        style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+      >
+        <div
+          class="popover-inner"
+          role="tooltip"
+        >
+          <div
+            class="popover-body"
+          >
+            <div
+              class="d-md-block p-1 popoverContent"
+            >
+              <span
+                aria-label="waving hand"
+                role="img"
+              >
+                👋
+              </span>
+               
+              Hey there, we’ve made an update! All
+               
+              <b>
+                macro actions will now be applied once a message is sent.
+              </b>
+            </div>
+            <button
+              class="mt-2 mb-2 btn btn-secondary btn-small"
+              intent="secondary"
+              type="button"
+            >
+              Got It
+            </button>
+          </div>
+        </div>
+        <span
+          class="arrow"
+        />
+      </div>
+    </div>
+  </div>
+</body>
+`;

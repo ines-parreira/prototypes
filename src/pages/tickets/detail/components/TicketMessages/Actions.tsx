@@ -1,11 +1,12 @@
-import React, {Component, ComponentProps} from 'react'
+import React, {Component} from 'react'
 import {fromJS} from 'immutable'
 import _get from 'lodash/get'
+import _truncate from 'lodash/truncate'
 import classnames from 'classnames'
 
-import {getActionTemplate} from 'utils'
-import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {Badge} from 'reactstrap'
+import {getActionTemplate, toRGBA} from 'utils'
+import Spinner from 'pages/common/components/Spinner'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -14,6 +15,9 @@ import {ContentType} from 'models/api/types'
 import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
 import {TicketMessage, ActionStatus, Action} from 'models/ticket/types'
 
+import {ActionTemplate, ActionTemplateExecution} from 'config'
+import {MacroActionName} from 'models/macroAction/types'
+import Tooltip from 'pages/common/components/Tooltip'
 import css from './Actions.less'
 
 const SHOPIFY_ACTION_NAMES = [
@@ -26,6 +30,17 @@ const SHOPIFY_ACTION_NAMES = [
     MACRO_ACTION_NAME.SHOPIFY_PARTIAL_REFUND_LAST_ORDER,
     MACRO_ACTION_NAME.SHOPIFY_REFUND_SHIPPING_COST_LAST_ORDER,
 ]
+const displayedArg: Record<string, string> = {
+    [MacroActionName.AddTags]: 'tags',
+    [MacroActionName.AddAttachments]: 'attachments',
+    [MacroActionName.AddInternalNote]: 'body_text',
+    [MacroActionName.SetAssignee]: 'assignee_user',
+    [MacroActionName.SetResponseText]: 'body_text',
+    [MacroActionName.SetStatus]: 'status',
+    [MacroActionName.SetSubject]: 'subject',
+    [MacroActionName.SetTeamAssignee]: 'assignee_team',
+    [MacroActionName.SnoozeTicket]: 'snooze_timedelta',
+}
 
 type Props = {
     message: TicketMessage
@@ -66,13 +81,13 @@ export default class Actions extends Component<Props, State> {
             <ModalBody>
                 {Object.keys(action.arguments!).map((arg, idx) => {
                     if (!hiddenOptions.includes(arg)) {
-                        let value: string =
+                        let value =
                             action.arguments![
                                 arg as keyof typeof action.arguments
                             ]
 
                         if (typeof value === 'boolean') {
-                            value = (value as boolean).toString()
+                            value = value.toString()
                         }
 
                         return (
@@ -141,37 +156,64 @@ export default class Actions extends Component<Props, State> {
         )
     }
 
+    _renderActionArg = (action: Action) => {
+        const key = displayedArg[action.name]
+        const actionArgs = action.arguments as ActionTemplate['arguments']
+        let arg = actionArgs && key ? actionArgs[key] : 'None'
+
+        if (!arg) arg = 'None'
+        if (typeof arg === 'object')
+            arg =
+                'name' in arg
+                    ? ((arg as ActionTemplate['arguments'])!.name as string)
+                    : 'None'
+
+        if (action.name === MacroActionName.AddTags)
+            arg = arg.split(',').join(', ')
+        return _truncate(arg, {length: 20})
+    }
+
     render() {
         const {message} = this.props
 
-        if (!message.actions) {
-            return null
-        }
+        if (!message.actions) return null
 
         const backActions = message.actions.filter(
-            (action) => getActionTemplate(action.name)!.execution === 'back'
+            ({name}) =>
+                getActionTemplate(name)!.execution !==
+                ActionTemplateExecution.Front
         )
 
-        if (backActions.length === 0) {
-            return null
-        }
+        if (backActions.length === 0) return null
 
         return (
             <div className={classnames(css.component, 'mt-3')}>
+                <div className={classnames(css.title, 'mb-2 text-muted')}>
+                    Macro actions performed:
+                </div>
                 {backActions.map((action, index) => {
-                    let intent: ComponentProps<typeof Button>['intent'] =
-                        'primary'
-                    let icon = 'check'
+                    const getIcon = (icon: string) => (
+                        <i
+                            className={classnames(
+                                'material-icons mr-2',
+                                css.icon
+                            )}
+                        >
+                            {icon}
+                        </i>
+                    )
+                    let icon = getIcon('check')
+                    let color = '#20C08C'
 
-                    if (action.status === ActionStatus.Error) {
-                        intent = 'destructive'
-                        icon = 'close'
-                    } else if (action.status === ActionStatus.Pending) {
-                        intent = 'secondary'
-                        icon = 'refresh'
-                    } else if ((action.status as any) === 'canceled') {
-                        intent = 'destructive'
-                        icon = 'block'
+                    if (action.status === ActionStatus.Pending) {
+                        icon = <Spinner className={css.spinner} color="dark" />
+                        color = '#1D365C'
+                    } else if (
+                        action.status === ActionStatus.Error ||
+                        action.status === ActionStatus.Cancelled
+                    ) {
+                        icon = getIcon('info_outline')
+                        color = '#F24F66'
                     }
 
                     const isHttpAction = action.name === 'http'
@@ -179,20 +221,51 @@ export default class Actions extends Component<Props, State> {
                         action.name
                     )
                     const contentType = _get(action, 'arguments.content_type')
+
+                    const arg = this._renderActionArg(action)
+
+                    const isHTTPOrShopify = isHttpAction || isShopifyAction
+
                     return (
                         <div
                             key={`message-actions-${index}`}
-                            className="d-inline-block mr-1"
+                            className="d-inline-block ml-1 mr-1 mb-2"
                         >
-                            <Button
-                                intent={intent}
-                                onClick={this._openModal(index)}
-                            >
-                                <ButtonIconLabel icon={icon}>
+                            {
+                                <Badge
+                                    cssModule={{badge: css.badge}}
+                                    style={{
+                                        color,
+                                        backgroundColor: toRGBA(color, 0.05),
+                                    }}
+                                    id={`message-${message.id!}-actions-badge-${index}`}
+                                >
+                                    {icon}
                                     {action.title}
-                                </ButtonIconLabel>
-                            </Button>
-                            {isShopifyAction ? (
+                                    {!isHTTPOrShopify && ': ' + arg}
+                                </Badge>
+                            }
+                            {isHTTPOrShopify &&
+                                action.status !== ActionStatus.Pending && (
+                                    <Tooltip
+                                        target={`message-${message.id!}-actions-badge-${index}`}
+                                        autohide={false}
+                                    >
+                                        Action
+                                        {action.status === ActionStatus.Success
+                                            ? ' succeeded. '
+                                            : ' failed. '}
+                                        {
+                                            <a
+                                                href="#"
+                                                onClick={this._openModal(index)}
+                                            >
+                                                More details
+                                            </a>
+                                        }
+                                    </Tooltip>
+                                )}
+                            {isShopifyAction && (
                                 <Modal
                                     isOpen={this.state.isModalOpen[index]}
                                     onClose={this._closeModal(index)}
@@ -204,8 +277,8 @@ export default class Actions extends Component<Props, State> {
                                         action
                                     )}
                                 </Modal>
-                            ) : null}
-                            {isHttpAction ? (
+                            )}
+                            {isHttpAction && (
                                 <Modal
                                     isOpen={this.state.isModalOpen[index]}
                                     onClose={this._closeModal(index)}
@@ -218,7 +291,7 @@ export default class Actions extends Component<Props, State> {
                                         contentType
                                     )}
                                 </Modal>
-                            ) : null}
+                            )}
                         </div>
                     )
                 })}

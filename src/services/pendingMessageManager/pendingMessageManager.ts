@@ -1,6 +1,7 @@
 import {dismissNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 
+import {fromJS} from 'immutable'
 import {store as reduxStore} from '../../init'
 import {
     newMessageResetFromMessage,
@@ -10,7 +11,6 @@ import {notify} from '../../state/notifications/actions'
 import {NotificationStatus} from '../../state/notifications/types'
 import {applyMacro, messageDeleted} from '../../state/ticket/actions'
 import {logEvent, SegmentEvent} from '../../store/middlewares/segmentTracker'
-import {RootState} from '../../state/types'
 import history from '../../pages/history'
 import {NewMessage, ReplyAreaState} from '../../state/newMessage/types'
 
@@ -106,28 +106,22 @@ export class PendingMessageManager {
             typeSafeReduxStore.dispatch(messageDeleted(messageId as any))
             history.push(`/app/ticket/${ticketId || ''}`)
             setTimeout(() => {
-                const macros = messageToSend.macros || []
-                const {macros: macrosState} =
-                    typeSafeReduxStore.getState() as RootState
-
                 typeSafeReduxStore.dispatch(
                     newMessageResetFromMessage({
                         replyAreaState,
                         newMessage: messageToSend,
                     })
                 )
-                macros.map(({id}) => {
-                    if (macrosState.get(id)) {
-                        //$TsFixMe remove casting on init.js migration
-                        typeSafeReduxStore.dispatch(
-                            applyMacro(
-                                macrosState.get(id),
-                                parseInt(ticketId as any),
-                                false
-                            ) as any
-                        )
-                    }
-                })
+                if (messageToSend.actions) {
+                    const macro = fromJS({actions: messageToSend.actions})
+                    typeSafeReduxStore.dispatch(
+                        applyMacro(
+                            macro,
+                            parseInt(ticketId as any),
+                            false
+                        ) as any
+                    )
+                }
             }, 0)
             this.clearMessage()
         }

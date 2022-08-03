@@ -145,6 +145,7 @@ class Error extends Component<Props, State> {
             retryButton = (
                 <span className="mr-2">
                     <Button
+                        fillStyle="ghost"
                         id={id}
                         onClick={this.retry}
                         isDisabled={!!this.state.loading}
@@ -164,11 +165,12 @@ class Error extends Component<Props, State> {
             forceButton = (
                 <span className="mr-2">
                     <Button
+                        fillStyle="ghost"
                         id={id}
                         onClick={this.force}
                         isDisabled={!!this.state.loading}
                     >
-                        Force
+                        Skip Failed Action
                     </Button>
                     <Tooltip placement="top" target={id} offset="0, 4px">
                         Ignore failure, execute other actions and send the
@@ -184,12 +186,13 @@ class Error extends Component<Props, State> {
             cancelButton = (
                 <span>
                     <Button
+                        fillStyle="ghost"
                         id={id}
                         intent="secondary"
                         onClick={this.cancel}
                         isDisabled={!!this.state.loading}
                     >
-                        Cancel
+                        Cancel Message
                     </Button>
                     <Tooltip
                         boundariesElement="viewport"
@@ -204,6 +207,8 @@ class Error extends Component<Props, State> {
         }
 
         const hasActions = !!messageActions.length
+        const hasErrorResponse = (action: Action) =>
+            action.status === 'error' && action.response && action.response.msg
 
         return (
             <div
@@ -212,41 +217,39 @@ class Error extends Component<Props, State> {
                     [css.showActions]: this.state.showActions,
                 })}
             >
-                <Alert
-                    type={AlertType.Error}
-                    icon
-                    customActions={
+                <Alert type={AlertType.Error} icon>
+                    <div
+                        className={
+                            'd-flex justify-content-between flex-wrap align-items-center'
+                        }
+                    >
+                        <div>
+                            <span
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizeHtmlDefault(error),
+                                }}
+                            />{' '}
+                            {messageActions.some(hasErrorResponse) && (
+                                <a
+                                    className={css.toggleActions}
+                                    onClick={this._toggleActions}
+                                >
+                                    Find out why?
+                                </a>
+                            )}
+                        </div>
                         <div className={css.buttons}>
                             {retryButton}
                             {forceButton}
                             {cancelButton}
                         </div>
-                    }
-                >
-                    <div>
-                        <span
-                            dangerouslySetInnerHTML={{
-                                __html: sanitizeHtmlDefault(error),
-                            }}
-                        />{' '}
-                        <a
-                            className={css.toggleActions}
-                            onClick={this._toggleActions}
-                        >
-                            Find out why?
-                        </a>
                     </div>
-
                     <ul className={css.actions}>
                         {messageActions.map((action, idx) => {
-                            if (
-                                action.status === 'error' &&
-                                action.response &&
-                                action.response.msg
-                            ) {
+                            if (hasErrorResponse(action)) {
                                 const template = getActionTemplate(action.name)
                                 const transformedMsg = stripErrorMessage(
-                                    action.response.msg
+                                    action.response!.msg
                                 )
 
                                 return (

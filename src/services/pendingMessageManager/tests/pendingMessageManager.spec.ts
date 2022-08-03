@@ -36,9 +36,19 @@ jest.useFakeTimers()
 
 describe('services', () => {
     describe('pendingMessageManager', () => {
+        const actions = [
+            {
+                arguments: {tags: 'refund'},
+                name: 'addTags',
+                title: 'Add tags',
+                type: 'user',
+                status: 'pending',
+            },
+        ]
+
         const sendMessageArgs: SendMessageArgs = {
             messageId: 1,
-            messageToSend: {} as any,
+            messageToSend: {actions: fromJS(actions)} as any,
             replyAreaState: {} as any,
             action: null,
             resetMessage: true,
@@ -109,17 +119,13 @@ describe('services', () => {
         })
 
         it('should apply macro when undoing a message using macro', () => {
-            const args: SendMessageArgs = {
-                ...sendMessageArgs,
-                messageToSend: {macros: [{id: '1'}]} as any,
-            }
-            pendingMessageManager.sendMessage(args)
+            pendingMessageManager.sendMessage(sendMessageArgs)
             pendingMessageManager.undoMessage()
 
             jest.runAllTimers()
             expect(applyMacro).toHaveBeenNthCalledWith(
                 1,
-                fromJS({id: 1}),
+                fromJS({actions}),
                 1,
                 false
             )

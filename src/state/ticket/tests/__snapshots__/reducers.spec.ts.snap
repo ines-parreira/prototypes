@@ -2750,3 +2750,27 @@ Object {
   "via": "helpdesk",
 }
 `;
+
+exports[`ticket reducers should handle same actions stacking 1`] = `
+Object {
+  "actions": Array [
+    Object {
+      "arguments": Object {
+        "status": "closed",
+      },
+      "name": "setStatus",
+      "title": "Set status",
+      "type": "user",
+    },
+    Object {
+      "arguments": Object {
+        "subject": "Test Verb",
+      },
+      "name": "setSubject",
+      "title": "Set subject",
+      "type": "user",
+    },
+  ],
+  "id": 2,
+}
+`;

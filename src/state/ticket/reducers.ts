@@ -9,7 +9,8 @@ import * as newMessageTypes from 'state/newMessage/constants'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {compare} from 'utils'
 
-import {getPendingMessageIndex, parseTimedelta} from './utils'
+import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
+import {getPendingMessageIndex, mergeActions, parseTimedelta} from './utils'
 import * as types from './constants'
 import {
     deduplicateAuditLogEvents,
@@ -291,6 +292,30 @@ export default function reducer(
         }
 
         case types.APPLY_MACRO: {
+            // Try to merge actions with the previous applied macro
+            if (action.macro) {
+                const oldActions = (
+                    state.getIn(
+                        ['state', 'appliedMacro', 'actions'],
+                        fromJS([])
+                    ) as List<any>
+                ).filter(
+                    (action: Map<any, any>) =>
+                        ![
+                            MACRO_ACTION_NAME.SET_RESPONSE_TEXT,
+                            MACRO_ACTION_NAME.ADD_ATTACHMENTS,
+                        ].includes(action.get('name'))
+                ) as List<any>
+
+                if (oldActions.size)
+                    action.macro = action.macro?.set(
+                        'actions',
+                        mergeActions(
+                            oldActions,
+                            action.macro.get('actions', fromJS([]))
+                        )
+                    )
+            }
             ticketReplyCache.set(action.ticketId as string, {
                 macro: action.macro,
             })
@@ -324,16 +349,18 @@ export default function reducer(
                     )
                 ticketReplyCache.set(action.ticketId as string, updatedCache)
             }
-            return state.setIn(
-                [
-                    'state',
-                    'appliedMacro',
-                    'actions',
-                    String(action.actionIndex),
-                    'arguments',
-                ],
-                action.value
-            )
+            return state.getIn(['state', 'appliedMacro'])
+                ? state.setIn(
+                      [
+                          'state',
+                          'appliedMacro',
+                          'actions',
+                          String(action.actionIndex),
+                          'arguments',
+                      ],
+                      action.value
+                  )
+                : state
         }
 
         case types.DELETE_ACTION_ON_APPLIED: {

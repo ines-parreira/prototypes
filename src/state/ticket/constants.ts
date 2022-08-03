@@ -99,3 +99,5 @@ export const TICKET_CHANNEL_NAMES: Record<TicketChannel, string> =
         [TicketChannel.YotpoReview]: 'Yotpo Review',
         [TicketChannel.HelpCenter]: 'Help Center',
     })
+
+export const EMPTY_SENDER = {name: '', address: ''}

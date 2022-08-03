@@ -13,6 +13,10 @@ import Label from 'pages/common/forms/Label/Label'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import AddInternalNoteAction from 'pages/tickets/common/macros/components/actions/AddInternalNoteAction'
+import SnoozeTicketAction from 'pages/tickets/common/macros/components/actions/SnoozeTicketAction'
+import SetAssigneeAction from 'pages/tickets/common/macros/components/actions/SetAssigneeAction'
+import SetStatusAction from 'pages/tickets/common/macros/components/actions/SetStatusAction'
+import AddTagsAction from 'pages/tickets/common/macros/components/actions/AddTagsAction'
 import {updateActionArgsOnApplied} from 'state/ticket/actions'
 import {getActionTemplate} from 'utils'
 
@@ -45,10 +49,14 @@ export default class TicketReplyAction extends Component<Props> {
         }
     }
 
-    setArguments = _debounce((index: number, args = fromJS({})) => {
-        this.props.action.setIn(['arguments'], args)
-        this.props.update(index, args, this.props.ticketId)
-    }, 200)
+    setArguments = _debounce(
+        (index: number, args = fromJS({})) => {
+            this.props.action.setIn(['arguments'], args)
+            this.props.update(index, args, this.props.ticketId)
+        },
+        200,
+        {leading: true, trailing: false}
+    )
 
     setValue(key: string, value: number | string | boolean) {
         const newValue = (
@@ -88,91 +96,185 @@ export default class TicketReplyAction extends Component<Props> {
         )
     }
 
-    renderArgs = (args: Map<any, any>) => {
-        const template = getActionTemplate(this.props.action.get('name'))
-        const sortedArgs = args.sortBy(
-            (v, k: string) => template!.arguments![k].display_order
+    renderArgs = (actionArgs: Map<any, any>, isInline: boolean) => {
+        const action = this.props.action
+        const template = getActionTemplate(action.get('name'))!
+        const sortedArgs = actionArgs.sortBy(
+            (v, k: string) => template.arguments![k]?.display_order ?? 0
         )
 
         return (
             <>
                 {sortedArgs
                     .map((value: number | string | boolean, key: string) => {
-                        const label = template!.arguments![key].label
-                        const inputConfig = template!.arguments![key].input
-
-                        if (inputConfig?.type === 'checkbox') {
-                            return (
-                                <CheckBox
-                                    className={css.input}
-                                    key={key}
-                                    isChecked={!!value}
-                                    onChange={(value) =>
-                                        this.setValue(key, value)
-                                    }
-                                    required={
-                                        template!.arguments![key].required ||
-                                        false
-                                    }
-                                >
-                                    {label || key}
-                                </CheckBox>
-                            )
-                        } else if (inputConfig?.type === 'number') {
-                            return (
-                                <NumberInput
-                                    className={css.input}
-                                    key={key}
-                                    {...inputConfig}
-                                    value={value as number}
-                                    onChange={(value) =>
-                                        this.setValue(key, value!)
-                                    }
-                                    isRequired={
-                                        template!.arguments![key].required ||
-                                        false
-                                    }
-                                    hasControls
-                                />
-                            )
-                        } else if (inputConfig?.type === 'select') {
-                            return (
-                                <div
-                                    key={key}
-                                    className={css.selectFieldWrapper}
-                                >
-                                    <Label className={css.label}>{label}</Label>
-                                    <SelectField
+                        const args = template.arguments![key]
+                        switch (args.input?.type) {
+                            case 'checkbox':
+                                return (
+                                    <CheckBox
                                         className={css.input}
-                                        {...inputConfig}
-                                        value={value as string | number}
+                                        key={key}
+                                        isChecked={!!value}
                                         onChange={(value) =>
                                             this.setValue(key, value)
                                         }
-                                        required={
-                                            template!.arguments![key]
-                                                .required || false
+                                        required={!!args.required}
+                                    >
+                                        {args.label || key}
+                                    </CheckBox>
+                                )
+                            case 'number':
+                                return (
+                                    <NumberInput
+                                        className={css.input}
+                                        key={key}
+                                        {...args.input}
+                                        value={value as number}
+                                        onChange={(value) =>
+                                            this.setValue(key, value!)
                                         }
+                                        isRequired={!!args.required}
+                                        hasControls
                                     />
-                                </div>
-                            )
+                                )
+                            case 'select':
+                                return (
+                                    <div
+                                        key={key}
+                                        className={css.selectFieldWrapper}
+                                    >
+                                        <Label className={css.label}>
+                                            {args.label}
+                                        </Label>
+                                        <SelectField
+                                            className={css.input}
+                                            {...args.input}
+                                            value={value as string | number}
+                                            onChange={(value) =>
+                                                this.setValue(key, value)
+                                            }
+                                            required={!!args.required}
+                                        />
+                                    </div>
+                                )
+                            case 'timedelta':
+                                return (
+                                    <SnoozeTicketAction
+                                        key={key}
+                                        index={0}
+                                        action={action}
+                                        updateActionArgs={(_, value) => {
+                                            this.setValue(
+                                                key,
+                                                value.get('snooze_timedelta')
+                                            )
+                                        }}
+                                    />
+                                )
+                            case 'assignee_team-select':
+                                return (
+                                    <SetAssigneeAction
+                                        key={key}
+                                        index={0}
+                                        action={action}
+                                        updateActionArgs={(_, value) => {
+                                            this.setValue(
+                                                key,
+                                                value.get('assignee_team')
+                                            )
+                                        }}
+                                        handleTeams={true}
+                                        right={true}
+                                        up={true}
+                                        dropdownContainer={document.body}
+                                    />
+                                )
+                            case 'assignee_user-select':
+                                return (
+                                    <SetAssigneeAction
+                                        key={key}
+                                        index={0}
+                                        action={action}
+                                        updateActionArgs={(_, value) => {
+                                            this.setValue(
+                                                key,
+                                                value.get('assignee_user')
+                                            )
+                                        }}
+                                        handleUsers={true}
+                                        right={true}
+                                        up={true}
+                                        dropdownContainer={document.body}
+                                    />
+                                )
+                            case 'status-select':
+                                return (
+                                    <SetStatusAction
+                                        key={key}
+                                        index={0}
+                                        action={action}
+                                        updateActionArgs={(_, value) => {
+                                            this.setValue(
+                                                key,
+                                                value.get('status')
+                                            )
+                                        }}
+                                        fullWidth={false}
+                                    />
+                                )
+                            case 'tags-select':
+                                return (
+                                    <div className={css.tagsSelect}>
+                                        <AddTagsAction
+                                            key={key}
+                                            index={0}
+                                            args={action.get('arguments')}
+                                            updateActionArgs={(_, value) => {
+                                                this.setValue(
+                                                    key,
+                                                    value.get('tags')
+                                                )
+                                            }}
+                                            right={true}
+                                            dropdownUpDirection={true}
+                                            dropdownContainer={document.body}
+                                        />
+                                    </div>
+                                )
+                            default:
+                                return (
+                                    <>
+                                        {isInline && args.label && (
+                                            <Label
+                                                isRequired={!!args.required}
+                                                className="mr-2"
+                                            >
+                                                {args.label}
+                                            </Label>
+                                        )}
+                                        <InputField
+                                            key={key}
+                                            {...args.input}
+                                            className={classnames(
+                                                {'mt-3': isInline},
+                                                css.inputField
+                                            )}
+                                            value={value as string}
+                                            onChange={(
+                                                value: number | string | boolean
+                                            ) => this.setValue(key, value)}
+                                            isRequired={!!args.required}
+                                            label={
+                                                isInline
+                                                    ? null
+                                                    : args.label === undefined
+                                                    ? key
+                                                    : args.label
+                                            }
+                                        />
+                                    </>
+                                )
                         }
-
-                        return (
-                            <InputField
-                                key={key}
-                                {...inputConfig}
-                                className={css.inputField}
-                                value={value as string}
-                                onChange={(value: number | string | boolean) =>
-                                    this.setValue(key, value)
-                                }
-                                isRequired={
-                                    template!.arguments![key].required || false
-                                }
-                                label={label || key}
-                            />
-                        )
                     })
                     .toList()}
             </>
@@ -189,9 +291,16 @@ export default class TicketReplyAction extends Component<Props> {
             type = template.integrationType
         }
 
-        const icon = getIconFromActionType(type)
+        const icon = template?.icon
+            ? template.icon
+            : getIconFromActionType(type)
 
         let argsComponent = null
+
+        const isInline =
+            action.get('name') !== MacroActionName.AddInternalNote &&
+            action.get('name') !==
+                MacroActionName.ShopifyEditShippingAddressLastOrder
 
         if (type === MacroActionName.Http) {
             const headersArgs = (
@@ -255,45 +364,62 @@ export default class TicketReplyAction extends Component<Props> {
             )
         } else {
             const args = action.get('arguments') as Map<any, any>
-
-            if (args && !args.isEmpty()) {
-                argsComponent = (
-                    <div className={classnames(css.argsWrapper)}>
-                        {this.renderArgs(args)}
-                    </div>
-                )
-            }
+            if (args && !args.isEmpty())
+                argsComponent = this.renderArgs(args, isInline)
         }
 
         const notes = getActionTemplate(action.get('name'))!.notes
 
         return (
             <div className={css.component}>
-                <div className={css.title}>
-                    {!!type && (
-                        <img
-                            alt={`${action.get('title') as string} icon`}
-                            className={css.actionLogo}
-                            role="presentation"
-                            src={icon}
-                        />
-                    )}
-                    <span>{action.get('title')}</span>
-                </div>
-                <i
-                    className={classnames(css.closeIcon, 'material-icons')}
-                    onClick={() => remove(this.props.index, ticketId)}
+                <div
+                    className={
+                        'd-flex justify-content-between align-items-baseline'
+                    }
                 >
-                    close
-                </i>
-                {argsComponent}
-                {!!notes &&
-                    notes.map((note, idx) => (
-                        <Caption key={idx} className={css.note}>
-                            <i className="material-icons mr-1">info</i>
-                            {note}
-                        </Caption>
-                    ))}
+                    <div className={'flex-grow'}>
+                        <div className="d-flex align-items-center flex-wrap">
+                            <div className={css.title}>
+                                {template?.icon ? (
+                                    <i className="material-icons md-3 mr-1 text-secondary">
+                                        {template.icon}
+                                    </i>
+                                ) : (
+                                    !!type && (
+                                        <img
+                                            alt={`${
+                                                action.get('title') as string
+                                            } icon`}
+                                            className={css.actionLogo}
+                                            role="presentation"
+                                            src={icon}
+                                        />
+                                    )
+                                )}
+                                <span>{action.get('title')}</span>
+                            </div>
+                            <div className={css.spacer}></div>
+                            {isInline && argsComponent}
+                        </div>
+                        {!isInline && argsComponent}
+                        {!!notes &&
+                            notes.map((note, idx) => (
+                                <Caption key={idx} className={css.note}>
+                                    <i className="material-icons mr-1">info</i>
+                                    {note}
+                                </Caption>
+                            ))}
+                    </div>
+                    <i
+                        className={classnames(
+                            css.closeIcon,
+                            'material-icons ml-4'
+                        )}
+                        onClick={() => remove(this.props.index, ticketId)}
+                    >
+                        close
+                    </i>
+                </div>
             </div>
         )
     }

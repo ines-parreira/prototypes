@@ -29,7 +29,7 @@ const minProps: Omit<
 > = {
     currentAssigneeUser: null,
     currentAssigneeTeam: null,
-    direction: 'right',
+    menuDirection: 'right',
     setUser: jest.fn(),
     setTeam: jest.fn(),
     className: 'classname',
@@ -139,7 +139,7 @@ describe('<TicketAssignee/>', () => {
         const defaultProps: ComponentProps<typeof TicketAssignee> = {
             currentAssigneeUser: null,
             currentAssigneeTeam: null,
-            direction: 'right',
+            menuDirection: 'right',
             setUser: jest.fn(),
             setTeam: jest.fn(),
             className: 'classname',

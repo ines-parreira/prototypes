@@ -8,9 +8,10 @@ import {getMacroParametersOptions} from 'state/macro/selectors'
 type Props = {
     selectedProperties: MacrosProperties
     onChange: (properties: MacrosProperties) => void
+    size?: 'sm' | 'lg'
 }
 
-const MacroFilters = ({selectedProperties, onChange}: Props) => {
+const MacroFilters = ({selectedProperties, onChange, size}: Props) => {
     const properties: MacrosProperties = useAppSelector(
         getMacroParametersOptions
     ).toJS()
@@ -28,6 +29,7 @@ const MacroFilters = ({selectedProperties, onChange}: Props) => {
                 }}
                 value={selectedProperties.languages ?? []}
                 isMultiple={false}
+                size={size}
             >
                 {properties.languages
                     ?.filter((language) => !!language)
@@ -48,6 +50,7 @@ const MacroFilters = ({selectedProperties, onChange}: Props) => {
                     })
                 }
                 value={selectedProperties.tags ?? []}
+                size={size}
             >
                 {properties.tags?.map((tag) => (
                     <SelectFilter.Item key={tag} value={tag} label={tag} />

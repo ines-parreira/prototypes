@@ -8,13 +8,13 @@ import {actionTypeToName, MacroAction} from 'models/macroAction/types'
 import {getSortedIntegrationActions} from 'pages/tickets/common/utils'
 
 import {BaseActionPreview} from './BaseActionPreview'
-import css from './BackendActionPreview.less'
+import css from './ComplexActionPreview.less'
 
 type Props = {
     actions: MacroAction[]
 }
 
-export const BackendActionPreview = ({actions}: Props) => {
+export const ComplexActionPreview = ({actions}: Props) => {
     const sortedActions: Record<string, MacroAction[]> =
         getSortedIntegrationActions(fromJS(actions)).toJS()
 

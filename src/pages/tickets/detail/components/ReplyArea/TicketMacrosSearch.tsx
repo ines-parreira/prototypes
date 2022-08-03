@@ -64,6 +64,7 @@ const TicketMacrosSearch = ({
                         tags: searchParams.tags,
                     }}
                     onChange={searchMacros}
+                    size="sm"
                 />
             )}
 

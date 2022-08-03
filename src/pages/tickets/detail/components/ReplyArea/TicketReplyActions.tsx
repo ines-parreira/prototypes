@@ -4,12 +4,16 @@ import {Collapse} from 'reactstrap'
 import classNames from 'classnames'
 
 import {MacroActionName} from 'models/macroAction/types'
-import Badge from 'pages/common/components/Badge/Badge'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Tooltip from 'pages/common/components/Tooltip'
 import {updateActionArgsOnApplied} from 'state/ticket/actions'
 import {getActionTemplate} from 'utils'
 
+import {ActionTemplateExecution} from 'config'
+import useAppSelector from 'hooks/useAppSelector'
+import {hasContent} from 'state/newMessage/selectors'
 import TicketReplyAction from './TicketReplyAction'
+import TMPApplyOnSendPopover from './ApplyOnSendPopover'
 import css from './TicketReplyActions.less'
 
 type Props = {
@@ -25,16 +29,16 @@ export default function TicketReplyActions({
     onDelete,
     onUpdate,
 }: Props) {
-    const backendActions = appliedMacro
-        ? ((appliedMacro.get('actions') as List<any>).filter(
-              (action: Map<any, any>) => {
-                  const actionTemplate = getActionTemplate(action.get('name'))
-                  return !!actionTemplate && actionTemplate.execution === 'back'
-              }
-          ) as List<any>)
-        : (fromJS([]) as List<any>)
+    const backendActions: List<any> = appliedMacro
+        ? (appliedMacro.get('actions') as List<Map<any, any>>).filter(
+              (action) =>
+                  getActionTemplate(action!.get('name'))?.execution !==
+                  ActionTemplateExecution.Front
+          )
+        : fromJS([])
 
     const [isOpen, setIsOpen] = useState(backendActions.size < 5)
+    const hasNewMessageContent = useAppSelector(hasContent)
 
     if (!appliedMacro || !backendActions || !backendActions.size) {
         return null
@@ -62,8 +66,12 @@ export default function TicketReplyActions({
                 >
                     bolt
                 </i>
-                <Badge className="mr-2">{backendActions.size}</Badge>
-                <span className={css.title}>Actions performed on send</span>
+                <Badge type={ColorType.Classic} className="mr-2">
+                    {backendActions.size}
+                </Badge>
+                <span className={css.title}>
+                    Actions performed{hasNewMessageContent && ' on send'}
+                </span>
                 <i
                     id="show-actions"
                     className={classNames(css.collapseIcon, 'material-icons')}
@@ -74,7 +82,8 @@ export default function TicketReplyActions({
                     {isOpen ? 'Hide macro actions ' : 'Show macro actions'}
                 </Tooltip>
             </div>
-            <Collapse isOpen={isOpen}>
+            <TMPApplyOnSendPopover actions={backendActions} />
+            <Collapse isOpen={isOpen} className={css.scrollable}>
                 {sortedBackendActions.map(
                     (action: Map<any, any>, key: number | undefined) => (
                         <TicketReplyAction

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TicketTags component should display current tags 1`] = `
+exports[`AddTagsAction action component should render the AddTagsAction action component 1`] = `
 <div
   class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1"
 >
@@ -9,7 +9,7 @@ exports[`TicketTags component should display current tags 1`] = `
     style="color: rgb(128, 136, 214);"
   >
     <span>
-      angry
+      tag1
       <i
         class="remove material-icons cursor-pointer ml-1"
       >
@@ -22,20 +22,7 @@ exports[`TicketTags component should display current tags 1`] = `
     style="color: rgb(128, 136, 214);"
   >
     <span>
-      refund
-      <i
-        class="remove material-icons cursor-pointer ml-1"
-      >
-        close
-      </i>
-    </span>
-  </span>
-  <span
-    class="badge-tag tagLabel badge badge-secondary"
-    style="color: rgb(128, 136, 214);"
-  >
-    <span>
-      return
+      tag2
       <i
         class="remove material-icons cursor-pointer ml-1"
       >

@@ -1,9 +1,6 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {render, fireEvent} from '@testing-library/react'
 
-import Button from 'pages/common/components/button/Button'
-import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalBody from 'pages/common/components/modal/ModalBody'
 import {Action, ActionStatus, TicketMessage} from 'models/ticket/types'
 import {
     action as defaultAction,
@@ -61,24 +58,45 @@ describe('Actions component', () => {
                 title: 'action4',
                 arguments: args,
             },
+            {
+                ...defaultAction,
+                name: 'addTags',
+                title: 'Add tags',
+                arguments: {tags: 'tag1,tag2'},
+            },
+            {
+                ...defaultAction,
+                status: ActionStatus.Cancelled,
+                name: 'setAssignee',
+                title: 'Assign an agent',
+                arguments: {assignee_user: 'User 1'},
+            },
         ],
     }
 
-    let component = mount(<Actions message={message} />)
-
     it('should display only actions with execution in back-end', () => {
-        expect(component.find(Button).length).toBe(4)
+        const {container} = render(<Actions message={message} />)
+        // 6 actions + 1 header message
+        expect((container.firstChild as HTMLDivElement).children).toHaveLength(
+            7
+        )
     })
 
-    it('should display actions titles', () => {
-        const action1Button = component.find('button').at(0)
-        expect(action1Button).toIncludeText('action1')
-
-        const action3Button = component.find('button').at(2)
-        expect(action3Button).toIncludeText('action3')
+    it('should display the action badge correctly', async () => {
+        const {findByText} = render(<Actions message={message} />)
+        expect(await findByText('action1')).toMatchSnapshot()
+        expect(await findByText('Add tags: tag1, tag2')).toMatchSnapshot()
     })
 
-    it('should display modal with shopify action details', () => {
+    it('should display modal when hovering http or shopify action', async () => {
+        const {findByText} = render(<Actions message={message} />)
+        fireEvent.mouseOver(await findByText('action1'))
+        expect(
+            await findByText('Action failed.', {exact: false})
+        ).toMatchSnapshot()
+    })
+
+    it('should open modal when clicking more details on http or shopify tooltip', async () => {
         const minArguments = {
             restock: true,
             order_id: 1234,
@@ -94,15 +112,12 @@ describe('Actions component', () => {
                 },
             ],
         }
-        component = mount(<Actions message={messageWithRefund} />)
-
-        const refundActionButton = component.find('button').at(0)
-        expect(refundActionButton).toIncludeText('Refund Action')
-        refundActionButton.simulate('click')
-
-        const modalHeader = component.find(ModalHeader)
-        expect(modalHeader).toIncludeText('Options')
-        const modalContent = component.find(ModalBody)
-        expect(modalContent).toIncludeText('restock: trueorder_id: 1234')
+        const {findByText} = render(<Actions message={messageWithRefund} />)
+        fireEvent.mouseOver(await findByText('Refund Action'))
+        expect(
+            await findByText('Action succeeded.', {exact: false})
+        ).toMatchSnapshot()
+        fireEvent.click(await findByText('More details'))
+        expect((await findByText('order_id:')).closest('div')).toMatchSnapshot()
     })
 })

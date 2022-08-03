@@ -1,5 +1,5 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS, Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import {Moment} from 'moment'
 
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
@@ -9,6 +9,14 @@ import {EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
 import {GorgiasAction} from 'state/types'
 import * as ticketFixtures from 'fixtures/ticket'
 
+import {
+    addInternalNoteAction,
+    addTagsAction,
+    httpAction,
+    setStatusAction,
+    setSubjectAction,
+    shopifyAction,
+} from 'fixtures/macro'
 import * as types from '../constants'
 import reducer, {initialState} from '../reducers'
 
@@ -496,6 +504,148 @@ describe('ticket reducers', () => {
                 }
             ).toJS()
         ).toMatchSnapshot()
+    })
+
+    it('should handle tag stacking', () => {
+        const state = reducer(initialState, {
+            type: types.APPLY_MACRO,
+            macro: fromJS({id: 1, actions: [addTagsAction]}),
+        })
+
+        expect(
+            reducer(state, {
+                type: types.APPLY_MACRO,
+                macro: fromJS({
+                    id: 1,
+                    actions: [
+                        {
+                            ...addTagsAction,
+                            arguments: {
+                                tags: 'refund,paid',
+                            },
+                        },
+                    ],
+                }),
+            }).getIn([
+                'state',
+                'appliedMacro',
+                'actions',
+                0,
+                'arguments',
+                'tags',
+            ])
+        ).toEqual('refund,billing,refund accepted,paid') // doesn't duplicate refund and adds paid
+    })
+
+    it('should handle new actions stacking', () => {
+        const state = reducer(initialState, {
+            type: types.APPLY_MACRO,
+            macro: fromJS({id: 1, actions: [addTagsAction]}),
+        })
+
+        expect(
+            (
+                reducer(state, {
+                    type: types.APPLY_MACRO,
+                    macro: fromJS({
+                        id: 2,
+                        actions: [httpAction, shopifyAction],
+                    }),
+                }).getIn(['state', 'appliedMacro', 'actions']) as List<any>
+            )
+                .map((action: Map<any, any>) => action.get('name') as string)
+                .toJS()
+        ).toEqual(['http', 'shopifyFullRefundLastOrder', 'addTags'])
+    })
+
+    it('should handle http hook stacking', () => {
+        const state = reducer(initialState, {
+            type: types.APPLY_MACRO,
+            macro: fromJS({id: 1, actions: [httpAction]}),
+        })
+
+        expect(
+            (
+                reducer(state, {
+                    type: types.APPLY_MACRO,
+                    macro: fromJS({
+                        id: 2,
+                        actions: [httpAction],
+                    }),
+                }).getIn(['state', 'appliedMacro', 'actions']) as List<any>
+            )
+                .map((action: Map<any, any>) => action.get('name') as string)
+                .toJS()
+        ).toEqual(['http']) // Same http hook got deduplicated
+
+        expect(
+            (
+                reducer(state, {
+                    type: types.APPLY_MACRO,
+                    macro: fromJS({
+                        id: 2,
+                        actions: [{...httpAction, title: 'new title'}],
+                    }),
+                }).getIn(['state', 'appliedMacro', 'actions']) as List<any>
+            )
+                .map((action: Map<any, any>) => action.get('name') as string)
+                .toJS()
+        ).toEqual(['http', 'http']) //Different http hook, so we keep both
+    })
+
+    it('should handle internal note stacking', () => {
+        const state = reducer(initialState, {
+            type: types.APPLY_MACRO,
+            macro: fromJS({id: 1, actions: [addInternalNoteAction]}),
+        })
+
+        const newState = reducer(state, {
+            type: types.APPLY_MACRO,
+            macro: fromJS({
+                id: 2,
+                actions: [addInternalNoteAction],
+            }),
+        })
+        expect(
+            (newState.getIn(['state', 'appliedMacro', 'actions']) as List<any>)
+                .map((action: Map<any, any>) => action.get('name') as string)
+                .toJS()
+        ).toEqual(['addInternalNote']) // actions got merged
+
+        expect(
+            newState.getIn([
+                'state',
+                'appliedMacro',
+                'actions',
+                0,
+                'arguments',
+                'body_text',
+            ])
+        ).toEqual('Hello\nHello') //Body got concatenated
+    })
+
+    it('should handle same actions stacking', () => {
+        const state = reducer(initialState, {
+            type: types.APPLY_MACRO,
+            macro: fromJS({
+                id: 1,
+                actions: [setStatusAction, setSubjectAction],
+            }),
+        })
+
+        const newState = reducer(state, {
+            type: types.APPLY_MACRO,
+            macro: fromJS({
+                id: 2,
+                actions: [
+                    {...setStatusAction, arguments: {status: 'closed'}},
+                    {...setSubjectAction, arguments: {subject: 'Test Verb'}},
+                ],
+            }),
+        })
+        expect(
+            (newState.getIn(['state', 'appliedMacro']) as Map<any, any>).toJS()
+        ).toMatchSnapshot() //Only keep the last actions values
     })
 
     it('should handle CLEAR_APPLIED_MACRO', () => {

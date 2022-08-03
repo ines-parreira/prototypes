@@ -31,7 +31,9 @@ import {NotificationStatus} from 'state/notifications/types'
 import {RootState} from 'state/types'
 import {TicketMessage} from 'models/ticket/types'
 
+import {MACRO_ACTION_NAME} from 'models/macroAction/constants'
 import {getProperty} from './selectors'
+import {EMPTY_SENDER} from './constants'
 
 export type Receiver = {
     name: string
@@ -411,18 +413,20 @@ export function buildPartialUpdateFromAction(
         : actionNames
 
     return formattedActionNames
-        .map((actionName) => getActionTemplate(actionName))
-        .filter((config) => !!config!.partialUpdateKeys)
+        .map((actionName) => getActionTemplate(actionName)!)
+        .filter((config) => !!config.partialUpdateKeys)
         .reduce((result: Record<string, Map<any, any>>, config) => {
-            const keys = config!.partialUpdateKeys
-            const values = config!.partialUpdateValues
+            const keys = config.partialUpdateKeys
+            const values = config.partialUpdateValues
             if (Array.isArray(keys)) {
-                ;(config!.partialUpdateKeys as string[]).forEach(
+                keys.forEach(
                     (key, idx) =>
-                        (result[key] = getProperty(values[idx])(state))
+                        (result[key] = getProperty((values as string[])[idx])(
+                            state
+                        ))
                 )
-            } else {
-                result[keys] = getProperty(values)(state)
+            } else if (typeof keys === 'string') {
+                result[keys] = getProperty(values as string)(state)
             }
             return result
         }, {})
@@ -527,10 +531,7 @@ export function getNewMessageSender(
     integrations: Map<any, any>
 ) {
     if (newMessageSourceType === 'internal-note') {
-        return fromJS({
-            name: '',
-            address: '',
-        }) as Map<any, any>
+        return fromJS(EMPTY_SENDER) as Map<any, any>
     }
 
     if (newMessageSourceType === TicketMessageSourceType.Phone) {
@@ -905,4 +906,74 @@ export const parseTimedelta = (timedelta: string) => {
         return moment.duration(Number(value), unit as any)
     }
     throw new Error(`${timedelta} is not a properly formatted timedelta`)
+}
+
+export const mergeTagActions = (
+    oldAction: Map<any, any>,
+    newAction: Map<any, any>
+) => {
+    const oldTags = oldAction.getIn(['arguments', 'tags']) as string
+    const newTags = newAction.getIn(['arguments', 'tags']) as string
+    return Array.from(new Set((oldTags + ',' + newTags).split(','))).join(',')
+}
+
+export const mergeInternalNoteActions = (
+    oldAction: Map<any, any>,
+    newAction: Map<any, any>
+) => {
+    let args = newAction.get('arguments') as Map<any, any>
+    args = args.set(
+        'body_text',
+        (args.get('body_text') as string) +
+            '\n' +
+            (oldAction.getIn(['arguments', 'body_text']) as string)
+    )
+    return args.set(
+        'body_html',
+        (args.get('body_html') as string) +
+            '<br/>' +
+            (oldAction.getIn(['arguments', 'body_html']) as string)
+    )
+}
+
+export const mergeActions = (oldActions: List<any>, newActions: List<any>) => {
+    let actions = newActions
+    oldActions.forEach((oldAction: Map<any, any>) => {
+        const name = oldAction.get('name')
+        const macroActionIndex = actions.findIndex(
+            (macroAction: Map<any, any>) => macroAction.get('name') === name
+        )
+        if (macroActionIndex !== -1) {
+            const newAction = actions.get(macroActionIndex)
+            switch (name) {
+                case MACRO_ACTION_NAME.ADD_TAGS: {
+                    actions = actions.setIn(
+                        [macroActionIndex, 'arguments', 'tags'],
+                        mergeTagActions(oldAction, newAction)
+                    )
+                    break
+                }
+                case MACRO_ACTION_NAME.HTTP: {
+                    const hookActions = actions.filter(
+                        (action: Map<any, any>) => action.get('name') === name
+                    )
+
+                    if (!hookActions.includes(oldAction))
+                        actions = actions.push(oldAction)
+                    break
+                }
+                case MACRO_ACTION_NAME.ADD_INTERNAL_NOTE: {
+                    actions = actions.setIn(
+                        [macroActionIndex, 'arguments'],
+                        mergeInternalNoteActions(oldAction, newAction)
+                    )
+                    break
+                }
+                // Keep only new action values
+                default:
+                    break
+            }
+        } else actions = actions.push(oldAction)
+    })
+    return actions
 }

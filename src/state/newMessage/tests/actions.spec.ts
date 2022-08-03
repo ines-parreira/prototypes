@@ -43,6 +43,7 @@ import client from 'models/api/resources'
 import {SearchType} from 'models/search/types'
 import {SEARCH_ENDPOINT} from 'models/search/resources'
 
+import {addInternalNoteAction} from 'fixtures/macro'
 import {getReplyAreaStateSnapshot} from './testUtils'
 
 type MockedRootState = {
@@ -1063,6 +1064,52 @@ describe('actions', () => {
                     )
                 ).toMatchSnapshot()
             })
+
+            it('should transform empty message with macro to internal note', () => {
+                const {dispatch, getState} = mockStore({
+                    ...storeState,
+                    newMessage: storeState.newMessage?.set('body_text', ''),
+                    ticket: storeState.ticket?.setIn(
+                        ['state', 'appliedMacro'],
+                        {name: 'Macro 1'}
+                    ),
+                })
+
+                const {ticket, newMessage} = getState() as RootState
+                data = actions.prepareTicketDataToSend(
+                    dispatch,
+                    getState as () => RootState,
+                    ticket.set('subject', 'Foo subject'),
+                    newMessage,
+                    '',
+                    fromJS([]),
+                    currentUser
+                )
+                expect(data?.newMessage).toMatchSnapshot()
+            })
+
+            it('should replace empty message with intenal note text from internal note action', () => {
+                const {dispatch, getState} = mockStore({
+                    ...storeState,
+                    newMessage: storeState.newMessage?.set('body_text', ''),
+                    ticket: storeState.ticket?.setIn(
+                        ['state', 'appliedMacro'],
+                        {name: 'Macro 1'}
+                    ),
+                })
+
+                const {ticket, newMessage} = getState() as RootState
+                data = actions.prepareTicketDataToSend(
+                    dispatch,
+                    getState as () => RootState,
+                    ticket.set('subject', 'Foo subject'),
+                    newMessage,
+                    '',
+                    fromJS([addInternalNoteAction]),
+                    currentUser
+                )
+                expect(data?.newMessage).toMatchSnapshot()
+            })
         })
 
         describe('addEmailExtra()', () => {
@@ -1169,7 +1216,7 @@ describe('actions', () => {
                             TicketMessageSourceType.FacebookComment
                         )
                         .setIn(['newMessage', 'body_text'], '')
-                        .setIn(['newMessage', 'attachments'], [{}]),
+                        .setIn(['newMessage', 'attachments'], fromJS([{}])),
                     currentUser: fromJS({
                         id: 1,
                         name: 'foo',

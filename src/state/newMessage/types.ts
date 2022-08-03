@@ -28,6 +28,8 @@ export type NewMessage = {
     source: {
         type: string
         extra: Record<string, unknown>
+        from?: Record<string, unknown>
+        to?: Record<string, unknown>
     }
     channel: string
     sender: User

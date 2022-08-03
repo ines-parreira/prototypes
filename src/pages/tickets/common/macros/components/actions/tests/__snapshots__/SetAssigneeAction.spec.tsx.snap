@@ -3,6 +3,7 @@
 exports[`<SetAssigneeAction/> render() should render team dropdown 1`] = `
 <Connect(TicketAssigneeContainer)
   className="assignee"
+  direction="down"
   handleTeams={true}
   handleUsers={false}
   setTeam={[Function]}
@@ -20,6 +21,7 @@ exports[`<SetAssigneeAction/> render() should render team dropdown with current 
       "decoration": Immutable.Map {},
     }
   }
+  direction="down"
   handleTeams={true}
   handleUsers={false}
   setTeam={[Function]}
@@ -30,6 +32,7 @@ exports[`<SetAssigneeAction/> render() should render team dropdown with current 
 exports[`<SetAssigneeAction/> render() should render user dropdown 1`] = `
 <Connect(TicketAssigneeContainer)
   className="assignee"
+  direction="down"
   handleTeams={false}
   handleUsers={true}
   setTeam={[Function]}
@@ -47,6 +50,7 @@ exports[`<SetAssigneeAction/> render() should render user dropdown with current 
       "decoration": Immutable.Map {},
     }
   }
+  direction="down"
   handleTeams={false}
   handleUsers={true}
   setTeam={[Function]}

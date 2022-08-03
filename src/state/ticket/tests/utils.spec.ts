@@ -1,6 +1,14 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, List, Map} from 'immutable'
 
+import {
+    addInternalNoteAction,
+    addTagsAction,
+    httpAction,
+    setStatusAction,
+    setSubjectAction,
+    shopifyAction,
+} from 'fixtures/macro'
 import {PhoneIntegrationEvent} from '../../../constants/integrations/types/event'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../constants/integration'
 import {getEmailChannels} from '../../integrations/selectors'
@@ -18,6 +26,8 @@ import {
     receiversStateFromValue,
     receiversValueFromState,
     replaceIntegrationVariables,
+    mergeInternalNoteActions,
+    mergeActions,
 } from '../utils'
 import {getPersonLabelFromSource} from '../../../pages/tickets/common/utils'
 import {
@@ -1117,6 +1127,101 @@ describe('ticket utils', () => {
             const channel = getValidSender(2)
             const channels = fromJS([getValidSender(1), channel])
             expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
+        })
+    })
+
+    describe('mergeInternalNoteActions', () => {
+        it('should merge internal note actions', () => {
+            const oldAction = fromJS({
+                arguments: {body_text: 'foo', body_html: 'foo'},
+            })
+            const newAction = fromJS({
+                arguments: {body_text: 'bar', body_html: 'bar'},
+            })
+            expect(
+                mergeInternalNoteActions(oldAction, newAction)
+            ).toMatchSnapshot()
+        })
+    })
+
+    describe('mergeActions', () => {
+        it('should merge http hooks', () => {
+            const oldActions = fromJS([
+                httpAction,
+                {...httpAction, title: 'title2'},
+            ])
+            const newActions = fromJS([
+                httpAction,
+                {...httpAction, title: 'title2'},
+                {...httpAction, title: 'title3'},
+            ])
+            expect(
+                mergeActions(oldActions, newActions)
+                    .map(
+                        (action: Map<any, any>) => action.get('title') as string
+                    )
+                    .toJS()
+            ).toEqual(['Refund Last Month', 'title2', 'title3'])
+        })
+
+        it('should handle tag stacking', () => {
+            const oldActions = fromJS([addTagsAction])
+            const newActions = fromJS([
+                {...addTagsAction, arguments: {tags: 'refund,paid'}},
+            ])
+
+            expect(
+                mergeActions(oldActions, newActions).getIn([
+                    0,
+                    'arguments',
+                    'tags',
+                ])
+            ).toEqual('refund,billing,refund accepted,paid') // doesn't duplicate refund and adds paid
+        })
+
+        it('should handle new actions stacking', () => {
+            const oldActions = fromJS([addTagsAction])
+            const newActions = fromJS([httpAction, shopifyAction])
+
+            expect(
+                mergeActions(oldActions, newActions)
+                    .map(
+                        (action: Map<any, any>) => action.get('name') as string
+                    )
+                    .toJS()
+            ).toEqual(['http', 'shopifyFullRefundLastOrder', 'addTags'])
+        })
+
+        it('should handle internal note stacking', () => {
+            const action = fromJS([addInternalNoteAction])
+            const result = mergeActions(action, action)
+
+            expect(
+                result
+                    .map(
+                        (action: Map<any, any>) => action.get('name') as string
+                    )
+                    .toJS()
+            ).toEqual(['addInternalNote']) // actions got merged
+
+            expect(result.getIn([0, 'arguments', 'body_text'])).toEqual(
+                'Hello\nHello'
+            ) //Body got concatenated
+        })
+
+        it('should handle same actions stacking', () => {
+            const oldActions = fromJS([setStatusAction, setSubjectAction])
+            const newActions = fromJS([
+                {...setStatusAction, arguments: {status: 'closed'}},
+                {
+                    ...setSubjectAction,
+                    arguments: {subject: 'Test Verb'},
+                },
+            ])
+
+            expect(
+                mergeActions(oldActions, newActions).toJS()
+            ).toMatchSnapshot() //Only keep the last actions values
         })
     })
 })

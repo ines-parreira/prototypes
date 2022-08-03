@@ -34,7 +34,7 @@ import TICKET_LANGUAGES from './config/ticketLanguages'
 import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
 import {Notification, NotificationStatus} from './state/notifications/types'
 import {ViewsState} from './state/views/types'
-import {ActionTemplate, Attachment, Schemas} from './types'
+import {Attachment, Schemas} from './types'
 import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {UserRole} from './config/types/user'
 import {RootState} from './state/types'
@@ -649,9 +649,7 @@ export function toQueryParams(obj: Record<string, unknown>): string {
 }
 
 export function getActionTemplate(actionName: string) {
-    return ACTION_TEMPLATES.find(
-        (template) => template.name === actionName
-    ) as Maybe<ActionTemplate>
+    return ACTION_TEMPLATES.find((template) => template.name === actionName)
 }
 
 export const createImmutableSelector = createSelectorCreator(

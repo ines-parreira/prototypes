@@ -11,6 +11,9 @@ type Props = {
     handleTeams?: boolean
     handleUsers?: boolean
     updateActionArgs: (index: number, args: Map<any, any>) => void
+    right?: boolean
+    up?: boolean
+    dropdownContainer?: HTMLElement
 }
 
 export default class SetAssigneeAction extends Component<Props> {
@@ -34,7 +37,7 @@ export default class SetAssigneeAction extends Component<Props> {
     }
 
     render() {
-        const {action, handleTeams, handleUsers} = this.props
+        const {action, handleTeams, handleUsers, dropdownContainer} = this.props
         return (
             <TicketAssignee
                 className={css.assignee}
@@ -50,6 +53,9 @@ export default class SetAssigneeAction extends Component<Props> {
                 handleUsers={handleUsers}
                 setUser={(user) => this.setUserAssignee(user)}
                 setTeam={(team) => this.setTeamAssignee(team)}
+                menuDirection={this.props.right ? 'right' : undefined}
+                direction={this.props.up ? 'up' : 'down'}
+                dropdownContainer={dropdownContainer}
             />
         )
     }

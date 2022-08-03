@@ -1,5 +1,13 @@
+import {fromJS} from 'immutable'
 import {TicketMessageSourceType} from 'business/types/ticket'
-import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
+import {MacroActionName} from 'models/macroAction/types'
+import {
+    getPersonLabelFromSource,
+    getSortedIntegrationActions,
+    getSortedIntegrationActionsNames,
+} from 'pages/tickets/common/utils'
+import {getActionTemplate} from 'utils'
+import {ActionTemplate} from 'config'
 
 describe('getPersonLabelFromSource()', () => {
     it('should return email label', () => {
@@ -18,5 +26,38 @@ describe('getPersonLabelFromSource()', () => {
         const label = getPersonLabelFromSource(person, sourceType)
 
         expect(label).toMatchSnapshot()
+    })
+})
+
+const integrationActions = [
+    getActionTemplate(MacroActionName.ShopifyCancelLastOrder)!,
+    getActionTemplate(MacroActionName.ShopifyCancelOrder)!,
+    getActionTemplate(MacroActionName.ShopifyEditShippingAddressLastOrder)!,
+    getActionTemplate(MacroActionName.RechargeCancelLastSubscription)!,
+    getActionTemplate(MacroActionName.RechargeActivateLastSubscription)!,
+]
+
+describe('getSortedIntegrationActionsNames', () => {
+    it('should return sorted integration actions names', () => {
+        const sortedIntegrationActions =
+            getSortedIntegrationActionsNames(integrationActions)
+
+        expect(sortedIntegrationActions.toJS()).toMatchSnapshot()
+    })
+})
+
+describe('getSortedIntegrationActions', () => {
+    it('should return sorted integration actions names', () => {
+        const sortedIntegrationActions = getSortedIntegrationActions(
+            fromJS(integrationActions)
+        )
+
+        expect(
+            Object.entries<ActionTemplate[]>(
+                sortedIntegrationActions.toJS()
+            ).reduce((acc, [key, value]) => {
+                return {...acc, [key]: value.map((action) => action.name)}
+            }, {})
+        ).toMatchSnapshot()
     })
 })

@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Actions component should display modal when hovering http or shopify action 1`] = `
+<div
+  class="tooltip-inner"
+  role="tooltip"
+>
+  Action
+   failed. 
+  <a
+    href="#"
+  >
+    More details
+  </a>
+</div>
+`;
+
+exports[`Actions component should display the action badge correctly 1`] = `
+<span
+  class="badge badge-secondary"
+  id="message-1-actions-badge-0"
+  style="color: rgb(242, 79, 102); background-color: rgba(242, 79, 102, 0.05);"
+>
+  <i
+    class="material-icons mr-2 icon"
+  >
+    info_outline
+  </i>
+  action1
+</span>
+`;
+
+exports[`Actions component should display the action badge correctly 2`] = `
+<span
+  class="badge badge-secondary"
+  id="message-1-actions-badge-4"
+  style="color: rgb(32, 192, 140); background-color: rgba(32, 192, 140, 0.05);"
+>
+  <i
+    class="material-icons mr-2 icon"
+  >
+    check
+  </i>
+  Add tags
+  : tag1, tag2
+</span>
+`;
+
+exports[`Actions component should open modal when clicking more details on http or shopify tooltip 1`] = `
+<div
+  class="tooltip-inner"
+  role="tooltip"
+>
+  Action
+   succeeded. 
+  <a
+    href="#"
+  >
+    More details
+  </a>
+</div>
+`;
+
+exports[`Actions component should open modal when clicking more details on http or shopify tooltip 2`] = `
+<div
+  class="wrapper"
+  id="modal-13-desc"
+>
+  <p>
+    <b>
+      restock
+      :
+    </b>
+     
+    true
+  </p>
+  <p>
+    <b>
+      order_id
+      :
+    </b>
+     
+    1234
+  </p>
+</div>
+`;

@@ -13,6 +13,9 @@ import {notify} from 'state/notifications/actions'
 import * as ticketActions from 'state/ticket/actions'
 import {Context, renderTemplate} from 'pages/common/utils/template'
 import {getActionTemplate, toJS, uploadFiles} from 'utils'
+import {ActionTemplateExecution} from 'config'
+import {Macro} from 'models/macro/types'
+
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
@@ -26,7 +29,7 @@ import * as integrationSelectors from 'state/integrations/selectors'
 import * as ticketSelectors from 'state/ticket/selectors'
 import * as agentSelectors from 'state/agents/selectors'
 import socketManager from 'services/socketManager/socketManager'
-import {ActionTemplate, Attachment} from 'types'
+import {Attachment} from 'types'
 import type {CurrentUser, RootState, StoreDispatch} from 'state/types'
 import {getMomentNow} from 'utils/date'
 import {TicketMessageSourceType} from 'business/types/ticket'
@@ -41,6 +44,8 @@ import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
 import {SearchType, UserSearchResult} from 'models/search/types'
 import {search} from 'models/search/resources'
 
+import {EMPTY_SENDER} from 'state/ticket/constants'
+import {MacroActionName} from 'models/macroAction/types'
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
 import * as constants from './constants'
@@ -635,6 +640,45 @@ export function prepareTicketDataToSend(
 
     // Prepare newMessage to send it.
     if (ticket.newMessage) {
+        const state = getState()
+        let actions = actionsForMacro
+
+        //Transform empty message with macro to internal note
+        if (!selectors.hasContent(state) && !!ticket.state?.appliedMacro) {
+            ticket.newMessage.source = {
+                ...ticket.newMessage.source,
+                type: TicketMessageSourceType.InternalNote,
+                from: EMPTY_SENDER,
+            }
+            delete ticket.newMessage.source.to
+            const internalNote = actions?.find(
+                (action) =>
+                    action!.get('name') === MacroActionName.AddInternalNote
+            )
+            if (internalNote) {
+                ticket.newMessage.body_text = internalNote.getIn(
+                    ['arguments', 'body_text'],
+                    ''
+                )
+                ticket.newMessage.body_html = internalNote.getIn(
+                    ['arguments', 'body_html'],
+                    ''
+                )
+                actions = actions?.filter(
+                    (action) =>
+                        action!.get('name') !== MacroActionName.AddInternalNote
+                ) as Maybe<MacroActions>
+            } else {
+                const text = `Applied macro "${
+                    (ticket.state.appliedMacro as Macro).name
+                }"`
+                ticket.newMessage.body_text = text
+                ticket.newMessage.body_html = `<div>${text}</div>`
+            }
+
+            ticket.newMessage.public = false
+        }
+
         const sourceType = ticket.newMessage.source.type
         const {emailExtraAdded, contentState} = replyAreaState
 
@@ -650,7 +694,6 @@ export function prepareTicketDataToSend(
                 TicketMessageSourceType.FacebookReviewComment
 
         if (sourceType === TicketMessageSourceType.Email && !emailExtraAdded) {
-            const state = getState()
             const newContentState = addEmailExtraContent(contentState, {
                 signature: selectors.getNewMessageSignature(state),
                 replyThreadMessages: getReplyThreadMessages(
@@ -714,8 +757,8 @@ export function prepareTicketDataToSend(
             }
         }
 
-        if (actionsForMacro) {
-            ticket.newMessage.actions = actionsForMacro.map(
+        if (actions) {
+            ticket.newMessage.actions = actions.map(
                 (curAction: Map<any, any> = fromJS({})) =>
                     formatAction(
                         curAction,
@@ -794,7 +837,9 @@ export const formatAction = (
         .set('arguments', newArgs)
         .set(
             'status',
-            template.get('execution') === 'back' ? 'pending' : 'success'
+            template.get('execution') !== ActionTemplateExecution.Front
+                ? 'pending'
+                : 'success'
         )
 }
 
@@ -868,7 +913,7 @@ export function prepareTicketMessage(
                 >[]) {
                     const template = getActionTemplate(
                         (fromJS(messageAction) as Map<any, any>).get('name')
-                    ) as ActionTemplate
+                    )
 
                     // We can't just have a fallback in the get, in case ticket.customer.data === null
                     const customer: Record<string, unknown> = (

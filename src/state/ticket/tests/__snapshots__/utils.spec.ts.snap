@@ -1,5 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ticket utils mergeActions should handle same actions stacking 1`] = `
+Array [
+  Object {
+    "arguments": Object {
+      "status": "closed",
+    },
+    "name": "setStatus",
+    "title": "Set status",
+    "type": "user",
+  },
+  Object {
+    "arguments": Object {
+      "subject": "Test Verb",
+    },
+    "name": "setSubject",
+    "title": "Set subject",
+    "type": "user",
+  },
+]
+`;
+
+exports[`ticket utils mergeInternalNoteActions should merge internal note actions 1`] = `
+Immutable.Map {
+  "body_text": "bar
+foo",
+  "body_html": "bar<br/>foo",
+}
+`;
+
 exports[`ticket utils replaceIntegrationVariables() should return an empty value and log a notification because there is no matching integration 1`] = `
 Array [
   Array [

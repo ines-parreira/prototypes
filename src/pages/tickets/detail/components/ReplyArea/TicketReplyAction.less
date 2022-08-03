@@ -8,9 +8,6 @@
     padding: 15px;
 
     .closeIcon {
-        position: absolute;
-        top: 18px;
-        right: 10px;
         font-size: 20px;
         color: @classic-neutral-grey-4;
         cursor: pointer;
@@ -38,10 +35,15 @@
         align-items: center;
         display: flex;
         width: fit-content;
+        margin-left: 2em;
     }
 
     .inputField {
-        width: 50%;
+        min-width: 20em;
+        max-width: 40em;
+        input {
+            background-color: white;
+        }
     }
 
     .selectFieldWrapper {
@@ -52,5 +54,14 @@
 
     .label {
         margin-bottom: 4px;
+    }
+
+    .tagsSelect {
+        max-width: 400px;
+    }
+
+    .spacer {
+        flex-grow: 1;
+        min-width: 5em;
     }
 }

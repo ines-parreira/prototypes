@@ -37,8 +37,8 @@ const Errors = (props: Props) => {
                 // @ts-ignore
                 <Error
                     key="action-error"
-                    error="This message was not sent because one or more actions failed while sending it."
-                    retryTooltipMessage="Retry to execute the failed action(s) automatically, and send the message if it succeeds."
+                    error="Message not sent because action failed."
+                    retryTooltipMessage="Retry to execute the failed action automatically, and send the message if it succeeds."
                     messageId={message.id!}
                     ticketId={message.ticket_id || ticketId}
                     messageActions={message.actions!}

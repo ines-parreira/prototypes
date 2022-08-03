@@ -532,7 +532,7 @@ export const applyMacro =
         getState: () => RootState
     ): Promise<ReturnType<StoreDispatch>> => {
         // render macro action arguments
-        let state = getState()
+        const state = getState()
 
         const renderedMacro = macro.update('actions', (actions: List<any>) => {
             return actions.map((action: Map<any, any>) => {
@@ -554,36 +554,17 @@ export const applyMacro =
             ticketId,
         })
 
-        const actions = renderedMacro.get('actions', fromJS([])) as List<any>
-
-        actions.forEach((action: Map<any, any>) => {
-            if (
-                !shouldUpdateNewMessage &&
-                ['addAttachments', 'setResponseText'].includes(
-                    action.get('name')
-                )
-            ) {
-                return
-            }
-            dispatch(applyMacroAction(action))
-        })
-
-        state = getState() // refetch state after macro actions has been applied
-
-        const actionNames = (
-            actions.map(
-                (action: Map<any, any>) => action.get('name') as string
-            ) as List<any>
-        ).toJS() as string[]
-        const partialUpdate = buildPartialUpdateFromAction(actionNames, state)
-
-        void dispatch(ticketPartialUpdate(partialUpdate))
-        if (shouldUpdateNewMessage) {
-            dispatch({
-                type: newMessageTypes.NEW_MESSAGE_RECORD_MACRO,
-                macro,
-            })
-        }
+        if (shouldUpdateNewMessage)
+            (renderedMacro.get('actions', fromJS([])) as List<any>).forEach(
+                (action: Map<any, any>) => {
+                    if (
+                        ['setResponseText', 'addAttachments'].includes(
+                            action.get('name')
+                        )
+                    )
+                        dispatch(applyMacroAction(action))
+                }
+            )
 
         return Promise.resolve()
     }
@@ -957,8 +938,7 @@ export const handleMessageActionError =
                 status: NotificationStatus.Error,
                 dismissAfter: 0,
                 allowHTML: true,
-                message:
-                    'Your last message could not be sent because an action broke on it, you should review it right now.',
+                message: 'Last message not sent because an action failed.',
                 buttons,
             })
         )

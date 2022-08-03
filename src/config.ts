@@ -17,7 +17,6 @@ import {MacroActionName} from './models/macroAction/types'
 import {Customer} from './state/customers/types'
 
 import {daysToHours, hoursToSeconds} from './utils'
-import {ActionTemplateExecution} from './types'
 import {AccountFeature} from './state/currentAccount/types'
 import {TicketMessageSourceType} from './business/types/ticket'
 
@@ -486,15 +485,55 @@ export const ZENDESK_IMPORTED_TICKETS_FOR_YEARS = 2
 export const JSON_CONTENT_TYPE = 'application/json'
 export const FORM_CONTENT_TYPE = 'application/x-www-form-urlencoded'
 
+export enum ActionTemplateExecution {
+    Front = 'front',
+    Back = 'back',
+    External = 'external',
+}
+
+export type ActionTemplate = {
+    execution: ActionTemplateExecution
+    name: MacroActionName
+    title: string
+    notes?: string[]
+    integrationType?: string
+    arguments?: {
+        [key: string]: {
+            default?: boolean | string | null | Array<any> | any
+            display_order?: number
+            editable?: boolean
+            input?: {
+                type: string
+                step?: number
+                options?: any
+                allowCustomValue?: boolean
+            }
+            label?: string | null
+            type?: string
+            required?: boolean
+            format?: string
+            enum?: string[]
+            items?: any
+        }
+    }
+    validators?: Array<{
+        validate: (value: Customer) => unknown | boolean
+        error: string
+    }>
+    partialUpdateKeys?: string | string[]
+    partialUpdateValues?: string | string[]
+    icon?: string
+}
+
 /**
- * execution - 'front' or 'back', either the action is executed client side or on server
+ * execution - 'front', 'back' or external, either the action is executed client side, server side or sent to third party
  * name - name of the action (must correspond to action name to be triggered on client side)
  * title - label shown in actions list in macro editor
  * arguments - description of macro action form (and structure of data returned by the form)
  * integrationType - action bound to a type of integration (should nt be available if no integration of this type)
  * getStateData - selector used to retrieve data from reducer corresponding to data updated by the action
  */
-export const ACTION_TEMPLATES = [
+export const ACTION_TEMPLATES: ActionTemplate[] = [
     {
         execution: ActionTemplateExecution.Front,
         name: MacroActionName.SetResponseText,
@@ -523,63 +562,116 @@ export const ACTION_TEMPLATES = [
         },
     },
     {
-        execution: ActionTemplateExecution.Front,
+        execution: ActionTemplateExecution.Back,
         name: MacroActionName.AddTags,
         title: 'Add tags',
         partialUpdateKeys: 'tags',
         partialUpdateValues: 'tags',
+        icon: 'label',
+        arguments: {
+            tags: {
+                default: '',
+                input: {
+                    type: 'tags-select',
+                },
+            },
+        },
     },
     {
-        execution: ActionTemplateExecution.Front,
+        execution: ActionTemplateExecution.Back,
         name: MacroActionName.SetStatus,
         title: 'Set status',
         partialUpdateKeys: 'status',
         partialUpdateValues: 'status',
+        icon: 'power_settings_new',
+        arguments: {
+            status: {
+                default: 'open',
+                input: {
+                    type: 'status-select',
+                },
+            },
+        },
     },
     {
-        execution: ActionTemplateExecution.Front,
+        execution: ActionTemplateExecution.Back,
         name: MacroActionName.SetAssignee,
         title: 'Assign an agent',
         partialUpdateKeys: 'assignee_user',
         partialUpdateValues: 'assignee_user',
+        icon: 'person',
         arguments: {
             assignee_user: {
-                type: 'dict',
-                default: null,
+                input: {
+                    type: 'assignee_user-select',
+                },
             },
         },
     },
     {
-        execution: ActionTemplateExecution.Front,
+        execution: ActionTemplateExecution.Back,
         name: MacroActionName.SetTeamAssignee,
         title: 'Assign a team',
         partialUpdateKeys: 'assignee_team',
         partialUpdateValues: 'assignee_team',
+        icon: 'groups',
         arguments: {
             assignee_team: {
                 type: 'dict',
                 default: null,
+                label: null,
+                display_order: 1,
+                editable: true,
+                required: true,
+                input: {
+                    type: 'assignee_team-select',
+                },
             },
         },
     },
     {
-        execution: ActionTemplateExecution.Front,
+        execution: ActionTemplateExecution.Back,
         name: MacroActionName.SetSubject,
         title: 'Set subject',
         partialUpdateKeys: 'subject',
         partialUpdateValues: 'subject',
+        icon: 'subject',
+        arguments: {
+            subject: {
+                type: 'string',
+                default: '',
+                display_order: 1,
+                editable: true,
+                required: true,
+                label: null,
+            },
+        },
     },
     {
-        execution: ActionTemplateExecution.Front,
+        execution: ActionTemplateExecution.Back,
         name: MacroActionName.SnoozeTicket,
         title: 'Snooze for',
+        icon: 'snooze',
         partialUpdateKeys: ['snooze_datetime', 'status'],
         partialUpdateValues: ['snooze_datetime', 'status'],
+        arguments: {
+            snooze_timedelta: {
+                type: 'string',
+                default: '1d',
+                display_order: 1,
+                editable: true,
+                required: true,
+                input: {
+                    type: 'timedelta',
+                },
+            },
+        },
     },
     {
         execution: ActionTemplateExecution.Back,
         name: MacroActionName.AddInternalNote,
-        title: 'Add internal note',
+        title: 'Send internal note',
+        icon: 'note',
         arguments: {
             body_text: {
                 type: 'string',
@@ -593,7 +685,7 @@ export const ACTION_TEMPLATES = [
         },
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         name: MacroActionName.Http,
         title: 'HTTP hook',
         arguments: {
@@ -673,7 +765,7 @@ export const ACTION_TEMPLATES = [
         },
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyCancelLastOrder,
         title: 'Cancel last order',
@@ -753,7 +845,7 @@ export const ACTION_TEMPLATES = [
         ],
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyCancelOrder,
         title: 'Cancel order',
@@ -788,7 +880,7 @@ export const ACTION_TEMPLATES = [
         },
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyDuplicateLastOrder,
         title: 'Duplicate last order',
@@ -817,7 +909,7 @@ export const ACTION_TEMPLATES = [
         ],
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyEditShippingAddressLastOrder,
         title: "Edit last order's shipping address",
@@ -929,7 +1021,7 @@ export const ACTION_TEMPLATES = [
         ],
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyRefundShippingCostLastOrder,
         title: "Refund last order's shipping cost",
@@ -977,7 +1069,7 @@ export const ACTION_TEMPLATES = [
         ],
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyFullRefundLastOrder,
         title: 'Refund last order',
@@ -1036,7 +1128,7 @@ export const ACTION_TEMPLATES = [
         ],
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyPartialRefundLastOrder,
         title: 'Partially refund last order',
@@ -1096,7 +1188,7 @@ export const ACTION_TEMPLATES = [
         ],
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Shopify,
         name: MacroActionName.ShopifyEditNoteLastOrder,
         title: "Edit last order's note",
@@ -1135,7 +1227,7 @@ export const ACTION_TEMPLATES = [
         ],
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Recharge,
         name: MacroActionName.RechargeCancelLastSubscription,
         title: 'Cancel last subscription',
@@ -1197,7 +1289,7 @@ export const ACTION_TEMPLATES = [
         ],
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Recharge,
         name: MacroActionName.RechargeActivateLastSubscription,
         title: 'Activate last subscription',
@@ -1240,7 +1332,7 @@ export const ACTION_TEMPLATES = [
         ],
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Recharge,
         name: MacroActionName.RechargeRefundLastCharge,
         title: 'Refund last charge',
@@ -1292,7 +1384,7 @@ export const ACTION_TEMPLATES = [
         ],
     },
     {
-        execution: ActionTemplateExecution.Back,
+        execution: ActionTemplateExecution.External,
         integrationType: IntegrationType.Recharge,
         name: MacroActionName.RechargeRefundLastOrder,
         title: 'Refund last order',

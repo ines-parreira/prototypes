@@ -3,3 +3,31 @@
 exports[`getPersonLabelFromSource() should return email label 1`] = `"Foo Bar (foo@bar.com)"`;
 
 exports[`getPersonLabelFromSource() should return phone label 1`] = `"Foo Bar (+14151235555)"`;
+
+exports[`getSortedIntegrationActions should return sorted integration actions names 1`] = `
+Object {
+  "recharge": Array [
+    "rechargeCancelLastSubscription",
+    "rechargeActivateLastSubscription",
+  ],
+  "shopify": Array [
+    "shopifyCancelLastOrder",
+    "shopifyCancelOrder",
+    "shopifyEditShippingAddressOfLastOrder",
+  ],
+}
+`;
+
+exports[`getSortedIntegrationActionsNames should return sorted integration actions names 1`] = `
+Object {
+  "recharge": Array [
+    "rechargeCancelLastSubscription",
+    "rechargeActivateLastSubscription",
+  ],
+  "shopify": Array [
+    "shopifyCancelLastOrder",
+    "shopifyCancelOrder",
+    "shopifyEditShippingAddressOfLastOrder",
+  ],
+}
+`;

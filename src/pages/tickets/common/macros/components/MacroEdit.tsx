@@ -9,14 +9,13 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
-import {ACTION_TEMPLATES} from 'config'
+import {ACTION_TEMPLATES, ActionTemplateExecution} from 'config'
 import {IntegrationType} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {Attachment} from 'models/ticket/types'
 import {generateDefaultAction} from 'state/macro/utils'
 import {RootState} from 'state/types'
 import {getActionTemplate, humanizeString} from 'utils'
-import {ActionTemplate} from 'types'
 import {getSortedIntegrationActionsNames} from 'pages/tickets/common/utils'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import * as newMessageTypes from 'state/newMessage/constants'
@@ -107,11 +106,9 @@ export class MacroEdit extends Component<Props> {
     }
 
     renderNewActionMenu = () => {
-        // front actions executed on client
         const ticketActions = ACTION_TEMPLATES.filter(
             (template) =>
-                template.execution === 'front' ||
-                template.name === MacroActionName.AddInternalNote
+                template.execution !== ActionTemplateExecution.External
         )
             // remove actions that have already been used
             .filter(
@@ -122,15 +119,10 @@ export class MacroEdit extends Component<Props> {
                     )
             )
 
-        // external actions executed on server
-        const externalActions = ACTION_TEMPLATES.filter(
-            (template) =>
-                template.execution === 'back' &&
-                template.name !== MacroActionName.AddInternalNote
-        )
-        // external actions without externalType, list of names
-        const nonIntegrationActions = externalActions.filter(
-            (v) => !v.integrationType
+        const nonIntegrationActions = ACTION_TEMPLATES.filter(
+            ({execution, integrationType}) =>
+                execution === ActionTemplateExecution.External &&
+                !integrationType
         )
 
         const hasActions = ticketActions.length > 0
@@ -346,16 +338,14 @@ export class MacroEdit extends Component<Props> {
 
         if (!currentMacro || currentMacro.isEmpty()) return null
 
-        // external actions executed on server
-        const externalActions = ACTION_TEMPLATES.filter(
-            (template) => template.execution === 'back'
-        )
         // external actions with externalType grouped by externalType
         const integrationMenus: Map<any, any> =
             getSortedIntegrationActionsNames(
-                externalActions.filter(
-                    (v) => !!v.integrationType
-                ) as ActionTemplate[]
+                ACTION_TEMPLATES.filter(
+                    ({execution, integrationType}) =>
+                        execution === ActionTemplateExecution.External &&
+                        !!integrationType
+                )
             )
 
         return (

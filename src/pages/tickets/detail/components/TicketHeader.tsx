@@ -438,7 +438,12 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                 </div>
 
                 <div className="d-flex justify-content-between">
-                    <div className="d-inline-flex">
+                    <div
+                        className={classnames(
+                            css.statusAndTags,
+                            'd-inline-flex'
+                        )}
+                    >
                         {isUpdate && (
                             <TicketStatus
                                 currentStatus={ticket.get('status')}
@@ -455,7 +460,8 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                     </div>
                     <div className="d-inline-flex align-items-top">
                         <TicketAssignee
-                            direction="right"
+                            menuDirection="right"
+                            direction="down"
                             currentAssigneeUser={ticket.get('assignee_user')}
                             currentAssigneeTeam={ticket.get('assignee_team')}
                             profilePictureUrl={ticket.getIn([

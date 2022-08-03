@@ -4,7 +4,7 @@ import {getValuePropFromSourceType} from 'state/ticket/utils'
 import {getActionTemplate} from 'utils'
 import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
 import {TicketMessageSourceType} from 'business/types/ticket'
-import {ActionTemplate} from 'types'
+import {ActionTemplate} from 'config'
 
 /**
  * Return the label of the given person
@@ -76,26 +76,12 @@ export function fileIconFromContentType(contentType: string): string {
  * @param actionsList: the list of actions' names
  * @returns {any} the dictionary of sorted actions' names
  */
-export function getSortedIntegrationActionsNames(
-    actionsList: ActionTemplate[]
-) {
-    let sortedActions: Map<any, any> = fromJS({})
-
-    actionsList.map((action: ActionTemplate) => {
-        const type = action.integrationType
-
-        if (!sortedActions.get(type)) {
-            sortedActions = sortedActions.set(type, fromJS([]))
-        }
-
-        sortedActions = sortedActions.set(
-            type,
-            (sortedActions.get(type) as List<any>).push(action.name)
-        )
-    })
-
-    return sortedActions
-}
+export const getSortedIntegrationActionsNames = (actions: ActionTemplate[]) =>
+    fromJS(
+        actions.reduce((sorted, {integrationType: type, name}) => {
+            return {...sorted, [type!]: [...(sorted[type!] || []), name]}
+        }, {} as {[key: string]: string[]})
+    ) as Map<string, any>
 
 /**
  * Take a list of integration actions (action object, not names), and return them sorted by type.
@@ -104,25 +90,13 @@ export function getSortedIntegrationActionsNames(
  * @param actionsList: the list of actions
  * @returns {any} the dictionary of sorted actions
  */
-export function getSortedIntegrationActions(
-    actionsList: List<any>
-): Map<any, any> {
-    let sortedActions: Map<any, any> = fromJS({})
-
-    actionsList.map((action: Map<any, any>) => {
-        const type =
-            getActionTemplate(action.get('name'))?.integrationType ||
-            action.get('name')
-
-        if (!sortedActions.get(type)) {
-            sortedActions = sortedActions.set(type, fromJS([]))
-        }
-
-        sortedActions = sortedActions.set(
-            type,
-            (sortedActions.get(type) as List<any>).push(action)
-        )
-    })
-
-    return sortedActions
-}
+export const getSortedIntegrationActions = (
+    actions: List<Map<string, any>>
+): Map<any, any> =>
+    fromJS(
+        actions.reduce((sorted, action) => {
+            const name: string = action!.get('name')
+            const type = getActionTemplate(name)?.integrationType || name
+            return {...sorted, [type]: [...(sorted![type] || []), action]}
+        }, {} as {[key: string]: any[]})
+    ) as Map<string, any>

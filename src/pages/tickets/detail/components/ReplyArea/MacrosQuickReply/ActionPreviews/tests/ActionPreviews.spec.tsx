@@ -4,13 +4,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {StoreDispatch, RootState} from '../../../../../../../../state/types'
+import {setStatusAction, setTextAction} from 'fixtures/macro'
+import {RootState, StoreDispatch} from 'state/types'
 import {ActionPreviews} from '../ActionPreviews'
-
-import {
-    setStatusAction,
-    setTextAction,
-} from '../../../../../../../../fixtures/macro'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '42')
 

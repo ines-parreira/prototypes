@@ -273,3 +273,13 @@ export const getBody = createImmutableSelector<
             .concat(activePendingMessages) as List<any>
     }
 )
+
+export const getAppliedMacro = createImmutableSelector<
+    RootState,
+    Map<any, any>,
+    TicketState
+>(
+    getTicketState,
+    (state) =>
+        state.getIn(['state', 'appliedMacro'], fromJS({})) as Map<any, any>
+)

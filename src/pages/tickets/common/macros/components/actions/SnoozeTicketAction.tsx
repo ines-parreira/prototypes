@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {Map, fromJS} from 'immutable'
 
 import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
@@ -7,7 +7,7 @@ import css from './SnoozeTicketAction.less'
 
 type Props = {
     index: number
-    updateActionArgs: (index: number, args: unknown) => void
+    updateActionArgs: (index: number, args: Map<string, any>) => void
     action: Map<string, any>
 }
 
@@ -23,10 +23,6 @@ export default function SnoozeTicketAction(props: Props) {
         '1d'
     )
     const [duration, setDuration] = useState(defaultDuration)
-    useEffect(() => {
-        updateActionArgs(index, fromJS({snooze_timedelta: defaultDuration}))
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     const onChange = (value: string) => {
         setDuration(value)

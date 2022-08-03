@@ -2,10 +2,11 @@ import React, {Component} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import _sample from 'lodash/sample'
 import classnames from 'classnames'
-import {Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
+import {MacroActionName} from 'models/macroAction/types'
 import {RootState} from '../../../../../state/types'
 import shortcutManager from '../../../../../services/shortcutManager'
 import keymap from '../../../../../config/shortcuts'
@@ -15,7 +16,10 @@ import {
     getPreferences,
     isHidingTips,
 } from '../../../../../state/currentUser/selectors'
-import {isReady} from '../../../../../state/newMessage/selectors'
+import {
+    hasContent,
+    hasRecipientsOrPrivate,
+} from '../../../../../state/newMessage/selectors'
 import Tooltip from '../../../../common/components/Tooltip'
 import {SubmitArgs} from '../../TicketDetailContainer'
 
@@ -89,8 +93,14 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
     }
 
     render() {
-        const {newMessage, canSendMessage, ticket, isHidingTips} = this.props
-        const disabled = !canSendMessage
+        const {
+            newMessage,
+            isAccountActive,
+            ticket,
+            isHidingTips,
+            hasRecipientsOrPrivate,
+            hasContent,
+        } = this.props
         const loading = newMessage.getIn([
             '_internal',
             'loading',
@@ -101,6 +111,27 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
         const hasTitle = !!ticket.get('subject')
         const titleConfirmation =
             'Are you sure you want to create a ticket with no subject?'
+
+        const hasActions =
+            (
+                ticket.getIn(
+                    ['state', 'appliedMacro', 'actions'],
+                    fromJS([])
+                ) as List<any>
+            ).findIndex(
+                (action: Map<any, any>) =>
+                    ![
+                        MacroActionName.SetResponseText,
+                        MacroActionName.AddAttachments,
+                    ].includes(action?.get('name'))
+            ) !== -1
+
+        const text = hasContent || !hasActions ? 'Send' : 'Apply Macro'
+        const disabled = !(
+            isAccountActive &&
+            hasRecipientsOrPrivate &&
+            (hasContent || hasActions)
+        )
 
         return (
             <div
@@ -120,7 +151,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             onClick={() => this.submit()}
                             isLoading={loading}
                         >
-                            Send
+                            {text}
                         </Button>
                     ) : (
                         <ConfirmButton
@@ -133,7 +164,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             onConfirm={() => this.submit()}
                             isLoading={loading}
                         >
-                            Send
+                            {text}
                         </ConfirmButton>
                     )}
                     {!disabled && (
@@ -157,7 +188,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             onClick={() => this.submit('closed', true)}
                             isLoading={loading}
                         >
-                            Send &amp; Close
+                            {text} &amp; Close
                         </Button>
                     ) : (
                         <ConfirmButton
@@ -169,7 +200,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             onConfirm={() => this.submit('closed', true)}
                             isLoading={loading}
                         >
-                            Send &amp; Close
+                            {text} &amp; Close
                         </ConfirmButton>
                     )}
                     {!disabled && (
@@ -215,7 +246,9 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
 
 const connector = connect(
     (state: RootState) => ({
-        canSendMessage: isAccountActive(state) && isReady(state),
+        isAccountActive: isAccountActive(state),
+        hasRecipientsOrPrivate: hasRecipientsOrPrivate(state),
+        hasContent: hasContent(state),
         currentUserPreferences: getPreferences(state),
         isHidingTips: isHidingTips(state),
         newMessage: state.newMessage,

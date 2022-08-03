@@ -4,16 +4,15 @@ import {fromJS} from 'immutable'
 
 import classnames from 'classnames'
 
-import {
-    MacroAction,
-    MacroActionName,
-} from '../../../../../../../models/macroAction/types'
-import {getActionTemplate} from '../../../../../../../utils'
-import Preview from '../../../../../common/macros/Preview'
+import {getActionTemplate} from 'utils'
 
+import {MacroAction, MacroActionName} from 'models/macroAction/types'
+import Preview from 'pages/tickets/common/macros/Preview'
+
+import {ActionTemplateExecution} from 'config'
 import TagActionPreview from './TagActionPreview'
 import {SimpleActionPreview} from './SimpleActionPreview'
-import {BackendActionPreview} from './BackendActionPreview'
+import {ComplexActionPreview} from './ComplexActionPreview'
 
 import css from './ActionPreviews.less'
 
@@ -49,18 +48,23 @@ export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
         (action) => action.name === MacroActionName.SetResponseText
     )
 
-    const backActions = actions.filter(
-        (action) => getActionTemplate(action.name)?.execution === 'back'
-    )
-
-    const otherActions = actions.filter(
+    const simpleActions = actions.filter(
         (action) =>
             action.name !== MacroActionName.SetResponseText &&
-            getActionTemplate(action.name)?.execution !== 'back'
+            action.name !== MacroActionName.AddInternalNote &&
+            getActionTemplate(action.name)?.execution !==
+                ActionTemplateExecution.External
     )
 
-    const hasOtherActions = otherActions.length > 0
-    const hasBackActions = backActions.length > 0
+    const complexActions = actions.filter(
+        (action) =>
+            getActionTemplate(action.name)?.execution ===
+                ActionTemplateExecution.External ||
+            action.name === MacroActionName.AddInternalNote
+    )
+
+    const hasSimpleActions = simpleActions.length > 0
+    const hasComplexActions = complexActions.length > 0
 
     return (
         <>
@@ -72,35 +76,24 @@ export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
                     <Preview actions={fromJS([setResponseTextAction])} />
                 </div>
             )}
-            {(hasOtherActions || hasBackActions) && (
+            {(hasSimpleActions || hasComplexActions) && (
                 <div
                     className={classnames(css.popoverActionWrapper, {
                         [css.leftBorder]: setResponseTextAction,
                     })}
                 >
-                    {hasOtherActions &&
-                        Object.keys(ACTION_COMPONENT_MAPPER).map(
-                            (actionType: string) => {
-                                const Component =
-                                    ACTION_COMPONENT_MAPPER[
-                                        actionType as AvailableActions
-                                    ]
-                                const action = otherActions.find(
-                                    (action) => action.name === actionType
-                                )
-                                return (
-                                    action && (
-                                        <Component
-                                            action={action}
-                                            key={actionType}
-                                        />
-                                    )
-                                )
-                            }
-                        )}
+                    {simpleActions.map((action) => {
+                        const ActionPreview =
+                            ACTION_COMPONENT_MAPPER[
+                                action.name as AvailableActions
+                            ]
+                        return (
+                            <ActionPreview key={action.name} action={action} />
+                        )
+                    })}
 
-                    {hasBackActions && (
-                        <BackendActionPreview actions={backActions} />
+                    {hasComplexActions && (
+                        <ComplexActionPreview actions={complexActions} />
                     )}
                 </div>
             )}

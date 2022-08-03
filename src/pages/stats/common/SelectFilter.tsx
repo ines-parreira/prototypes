@@ -165,6 +165,7 @@ type Props = {
     plural?: string
     singular?: string
     value: Value[]
+    size?: 'sm' | 'lg'
 }
 
 const DefaultDropdownMenu = (props: ComponentProps<typeof DropdownMenu>) => (
@@ -185,6 +186,7 @@ const SelectFilter = ({
     singular = 'item',
     value,
     toggleClassName = 'mr-2',
+    size,
 }: Props) => {
     const [search, setSearch] = useState('')
     const [selectedGroupIds, setSelectedGroupIds] = useState<Value[]>([])
@@ -365,6 +367,7 @@ const SelectFilter = ({
                 <UncontrolledDropdown
                     disabled={isDisabled}
                     className={className}
+                    size={size}
                 >
                     <DropdownToggle
                         caret

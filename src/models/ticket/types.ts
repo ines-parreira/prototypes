@@ -139,6 +139,7 @@ export type Action = {
         response: string
     }
     arguments?: {
+        [key: string]: unknown
         headers?: Record<string, string>
         params?: Record<string, number>
         form?: Record<string, string>

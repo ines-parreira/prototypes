@@ -34,6 +34,24 @@ describe('new message selectors', () => {
         })
     })
 
+    describe('hasText', () => {
+        it('should detect text', () => {
+            state.newMessage = state.newMessage.setIn(
+                ['newMessage', 'body_text'],
+                'Hello World'
+            )
+            expect(selectors.hasText(state)).toEqual(true)
+        })
+
+        it('should not detect text', () => {
+            state.newMessage = state.newMessage.setIn(
+                ['newMessage', 'body_text'],
+                '  \n\t'
+            )
+            expect(selectors.hasText(state)).toEqual(false)
+        })
+    })
+
     describe('isReady()', () => {
         it('should be ready (reply with body)', () => {
             state.newMessage = state.newMessage

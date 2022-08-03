@@ -15,6 +15,8 @@ import socketManager from 'services/socketManager/socketManager'
 import {JoinEventType} from 'services/socketManager/types'
 import {isAccountActive} from 'state/currentAccount/selectors'
 import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
+import {getAppliedMacro} from 'state/ticket/selectors'
+
 import {
     DEPRECATED_getActiveCustomer,
     getCustomersState,
@@ -539,7 +541,9 @@ const connector = connect(
         customers: getCustomersState(state),
         ticket: state.ticket,
         newMessage: state.newMessage,
-        canSendMessage: isAccountActive(state) && isReady(state),
+        canSendMessage:
+            isAccountActive(state) &&
+            (isReady(state) || !!getAppliedMacro(state)),
         newMessageSource: getNewMessageSource(state),
     }),
     {

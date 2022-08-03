@@ -1,29 +1,36 @@
 @import '~css/new/colors';
 @import '~css/new/colorTokens';
 
-:local .actions {
-    display: flex;
-    position: static;
-    flex-direction: row;
-    align-items: center;
-    padding: 16px;
-    background: @classic-neutral-grey-2;
-    border-top: 1px solid @classic-neutral-grey-3;
-    cursor: pointer;
+:local {
+    .actions {
+        display: flex;
+        position: static;
+        flex-direction: row;
+        align-items: center;
+        padding: 16px;
+        background: @classic-neutral-grey-2;
+        border-top: 1px solid @classic-neutral-grey-3;
+        cursor: pointer;
 
-    .title {
-        font-size: 1.1em;
-        font-weight: 600;
+        .title {
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .actionIcon {
+            font-size: 20px;
+        }
+
+        .collapseIcon {
+            position: absolute;
+            font-size: 20px;
+            right: 10px;
+            color: @classic-neutral-grey-4;
+        }
     }
 
-    .actionIcon {
-        font-size: 20px;
-    }
-
-    .collapseIcon {
-        position: absolute;
-        font-size: 20px;
-        right: 10px;
-        color: @classic-neutral-grey-4;
+    .scrollable {
+        overflow-y: auto;
+        max-height: 325px;
     }
 }

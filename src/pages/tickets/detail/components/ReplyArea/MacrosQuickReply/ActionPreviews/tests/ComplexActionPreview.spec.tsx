@@ -1,38 +1,38 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import {BackendActionPreview} from '../BackendActionPreview'
+import {ComplexActionPreview} from '../ComplexActionPreview'
 import {
     httpAction,
     shopifyAction,
     addInternalNoteAction,
 } from '../../../../../../../../fixtures/macro'
 
-describe('<BackActionPreview />', () => {
+describe('<ComplexActionPreview />', () => {
     it('should render http actions', () => {
         const {container} = render(
-            <BackendActionPreview actions={[httpAction]} />
+            <ComplexActionPreview actions={[httpAction]} />
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render shopify actions', () => {
         const {container} = render(
-            <BackendActionPreview actions={[shopifyAction]} />
+            <ComplexActionPreview actions={[shopifyAction]} />
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render both shopify actions and http actions', () => {
         const {container} = render(
-            <BackendActionPreview actions={[shopifyAction, httpAction]} />
+            <ComplexActionPreview actions={[shopifyAction, httpAction]} />
         )
         expect(container).toMatchSnapshot()
     })
 
-    it('should render both internal note actions', () => {
+    it('should render both internal note action', () => {
         const {container} = render(
-            <BackendActionPreview actions={[addInternalNoteAction]} />
+            <ComplexActionPreview actions={[addInternalNoteAction]} />
         )
         expect(container).toMatchSnapshot()
     })

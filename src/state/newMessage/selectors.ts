@@ -237,34 +237,30 @@ export const hasAttachments = createSelector<RootState, boolean, Map<any, any>>(
         !((message.get('attachments') || fromJS([])) as List<any>).isEmpty()
 )
 
-// Determine if the new message is ready to be sent
-export const isReady = createSelector<
-    RootState,
-    boolean,
-    Map<any, any>,
-    boolean,
-    boolean,
-    boolean,
-    boolean
->(
+export const hasText = createSelector<RootState, boolean, Map<any, any>>(
     getNewMessage,
+    (message) => /\S/.test((message.get('body_text') as string) || '')
+)
+
+export const hasRecipientsOrPrivate = createSelector(
     hasNewMessageRecipients,
-    hasAttachments,
     isNewMessagePublic,
+    (hasRecipients, isPublic) => hasRecipients || !isPublic
+)
+
+export const hasContent = createSelector(
+    hasText,
+    hasAttachments,
     isForward,
-    (
-        newMessage,
-        hasRecipients,
-        hasAttachments,
-        isNewMessagePublic,
-        isForward
-    ) => {
-        const hasText = /\S/.test((newMessage.get('body_text') as string) || '')
-        return (
-            (hasText || hasAttachments || isForward) &&
-            (hasRecipients || !isNewMessagePublic)
-        )
-    }
+    (hasText, hasAttachments, isForward) =>
+        hasText || hasAttachments || isForward
+)
+
+// Determine if the new message is ready to be sent
+export const isReady = createSelector(
+    hasRecipientsOrPrivate,
+    hasContent,
+    (hasRecipientsOrPrivate, hasContent) => hasRecipientsOrPrivate && hasContent
 )
 
 export const getNewMessageSignature = (state: RootState): Map<any, any> => {

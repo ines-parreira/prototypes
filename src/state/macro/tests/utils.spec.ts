@@ -1,5 +1,6 @@
 import {fromJS} from 'immutable'
 
+import {ActionTemplateExecution} from 'config'
 import {MacroActionName} from '../../../models/macroAction/types'
 import {getDefaultMacro, generateDefaultAction, getErrorReason} from '../utils'
 import {MacroApiError} from '../types'
@@ -12,7 +13,7 @@ describe('macro utils', () => {
             ).toEqual(
                 fromJS({
                     type: 'user',
-                    execution: 'front',
+                    execution: ActionTemplateExecution.Front,
                     name: MacroActionName.SetResponseText,
                     title: 'Add response text',
                     arguments: {
@@ -32,7 +33,7 @@ describe('macro utils', () => {
                     actions: [
                         {
                             type: 'user',
-                            execution: 'front',
+                            execution: ActionTemplateExecution.Front,
                             name: MacroActionName.SetResponseText,
                             title: 'Add response text',
                             arguments: {

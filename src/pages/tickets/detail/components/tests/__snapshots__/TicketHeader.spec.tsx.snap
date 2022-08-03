@@ -137,7 +137,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
     class="d-flex justify-content-between"
   >
     <div
-      class="d-inline-flex"
+      class="statusAndTags d-inline-flex"
     >
       <div
         class="d-inline-block mr-2"
@@ -163,7 +163,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
         </span>
       </div>
       <div
-        class="d-none d-md-inline-flex align-items-center flex-wrap ml-2 mr-2 mb-1"
+        class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1"
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
@@ -197,7 +197,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
             aria-hidden="true"
             class="dropdown-menu"
             role="menu"
-            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
             tabindex="-1"
           >
             <h6
@@ -274,7 +274,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
           aria-hidden="true"
           class="dropdown-menu dropdown-menu-right"
           role="menu"
-          style="width: 260px;"
+          style="width: 260px; z-index: 1051;"
           tabindex="-1"
         >
           <h6
@@ -374,10 +374,10 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
     class="d-flex justify-content-between"
   >
     <div
-      class="d-inline-flex"
+      class="statusAndTags d-inline-flex"
     >
       <div
-        class="d-none d-md-inline-flex align-items-center flex-wrap ml-2 mr-2 mb-1"
+        class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1"
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
@@ -411,7 +411,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
             aria-hidden="true"
             class="dropdown-menu"
             role="menu"
-            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
             tabindex="-1"
           >
             <h6
@@ -488,7 +488,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
           aria-hidden="true"
           class="dropdown-menu dropdown-menu-right"
           role="menu"
-          style="width: 260px;"
+          style="width: 260px; z-index: 1051;"
           tabindex="-1"
         >
           <h6
@@ -709,7 +709,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
     class="d-flex justify-content-between"
   >
     <div
-      class="d-inline-flex"
+      class="statusAndTags d-inline-flex"
     >
       <div
         class="d-inline-block mr-2"
@@ -735,7 +735,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
         </span>
       </div>
       <div
-        class="d-none d-md-inline-flex align-items-center flex-wrap ml-2 mr-2 mb-1"
+        class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1"
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
@@ -769,7 +769,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
             aria-hidden="true"
             class="dropdown-menu"
             role="menu"
-            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
             tabindex="-1"
           >
             <h6
@@ -846,7 +846,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
           aria-hidden="true"
           class="dropdown-menu dropdown-menu-right"
           role="menu"
-          style="width: 260px;"
+          style="width: 260px; z-index: 1051;"
           tabindex="-1"
         >
           <h6
@@ -1063,7 +1063,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
     class="d-flex justify-content-between"
   >
     <div
-      class="d-inline-flex"
+      class="statusAndTags d-inline-flex"
     >
       <div
         class="d-inline-block mr-2"
@@ -1089,7 +1089,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
         </span>
       </div>
       <div
-        class="d-none d-md-inline-flex align-items-center flex-wrap ml-2 mr-2 mb-1"
+        class="d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1"
       >
         <span
           class="badge-tag tagLabel badge badge-secondary"
@@ -1123,7 +1123,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
             aria-hidden="true"
             class="dropdown-menu"
             role="menu"
-            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+            style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
             tabindex="-1"
           >
             <h6
@@ -1200,7 +1200,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
           aria-hidden="true"
           class="dropdown-menu dropdown-menu-right"
           role="menu"
-          style="width: 260px;"
+          style="width: 260px; z-index: 1051;"
           tabindex="-1"
         >
           <h6

@@ -18,7 +18,7 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
     <span
       class="title"
     >
-      Actions performed on send
+      Actions performed
     </span>
     <i
       class="collapseIcon material-icons"
@@ -28,197 +28,211 @@ exports[`<TicketReplyActions/> should collapse the macro actions 1`] = `
     </i>
   </div>
   <div
-    class="collapse"
+    class="scrollable collapse"
     style=""
   >
     <div
       class="component"
     >
       <div
-        class="title"
-      >
-        <img
-          alt="Add internal note icon"
-          class="actionLogo"
-          role="presentation"
-          src="test-file-stub"
-        />
-        <span>
-          Add internal note
-        </span>
-      </div>
-      <i
-        class="closeIcon material-icons"
-      >
-        close
-      </i>
-      <div
-        class="argsWrapper"
+        class="d-flex justify-content-between align-items-baseline"
       >
         <div
-          class="field"
+          class="flex-grow"
         >
           <div
-            class="rich-textarea-wrapper"
+            class="d-flex align-items-center flex-wrap"
           >
             <div
-              class="editor-wrapper"
+              class="title"
+            >
+              <i
+                class="material-icons md-3 mr-1 text-secondary"
+              >
+                note
+              </i>
+              <span>
+                Send internal note
+              </span>
+            </div>
+            <div
+              class="spacer"
+            />
+          </div>
+          <div
+            class="argsWrapper"
+          >
+            <div
+              class="field"
             >
               <div
-                class="withMinHeight"
+                class="rich-textarea-wrapper"
               >
                 <div
-                  class="DraftEditor-root"
+                  class="editor-wrapper"
                 >
                   <div
-                    class="DraftEditor-editorContainer"
+                    class="withMinHeight"
                   >
                     <div
-                      aria-autocomplete="list"
-                      aria-describedby="placeholder-888"
-                      aria-expanded="true"
-                      class="notranslate public-DraftEditor-content"
-                      contenteditable="true"
-                      role="combobox"
-                      spellcheck="true"
-                      style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                      class="DraftEditor-root"
                     >
                       <div
-                        data-contents="true"
+                        class="DraftEditor-editorContainer"
                       >
                         <div
-                          class=""
-                          data-block="true"
-                          data-editor="888"
-                          data-offset-key="888-0-0"
+                          aria-autocomplete="list"
+                          aria-describedby="placeholder-888"
+                          aria-expanded="true"
+                          class="notranslate public-DraftEditor-content"
+                          contenteditable="true"
+                          role="combobox"
+                          spellcheck="true"
+                          style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                         >
                           <div
-                            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                            data-offset-key="888-0-0"
+                            data-contents="true"
                           >
-                            <span
+                            <div
+                              class=""
+                              data-block="true"
+                              data-editor="888"
                               data-offset-key="888-0-0"
                             >
-                              <span
-                                data-text="true"
+                              <div
+                                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                data-offset-key="888-0-0"
                               >
-                                Map { "type": "string", "format": "html", "default": "" }
-                              </span>
-                            </span>
+                                <span
+                                  data-offset-key="888-0-0"
+                                >
+                                  <span
+                                    data-text="true"
+                                  >
+                                    Map { "type": "string", "format": "html", "default": "" }
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div
-              class="editor-toolbar page"
-            >
-              <div
-                class="actionsWrapper"
-              >
                 <div
-                  class="actions"
+                  class="editor-toolbar page"
                 >
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="format_bold"
-                    type="button"
+                  <div
+                    class="actionsWrapper"
                   >
-                    <i
-                      class="material-icons icon"
-                    >
-                      format_bold
-                    </i>
-                  </button>
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="format_italic"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      format_italic
-                    </i>
-                  </button>
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="format_underline"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      format_underline
-                    </i>
-                  </button>
-                  <span
-                    class="popoverWrapper"
-                  >
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="insert_link"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        link
-                      </i>
-                    </button>
                     <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
-                  >
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="insert_photo"
-                      type="button"
+                      class="actions"
                     >
-                      <i
-                        class="material-icons icon"
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_bold"
+                        type="button"
                       >
-                        insert_photo
-                      </i>
-                    </button>
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_bold
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_italic"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_italic
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_underline"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_underline
+                        </i>
+                      </button>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_link"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            link
+                          </i>
+                        </button>
+                        <div
+                          class="popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_photo"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_photo
+                          </i>
+                        </button>
+                        <div
+                          class="popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_emoticon"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_emoticon
+                          </i>
+                        </button>
+                        <div
+                          class="p-0 d-flex popover top-left hidden"
+                        />
+                      </span>
+                    </div>
                     <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
-                  >
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="insert_emoticon"
-                      type="button"
+                      class="hoverOverlay"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_emoticon
-                      </i>
-                    </button>
-                    <div
-                      class="p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
-                </div>
-                <div
-                  class="hoverOverlay"
-                >
-                  Add files as attachments
+                      Add files as attachments
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <i
+          class="closeIcon material-icons ml-4"
+        >
+          close
+        </i>
       </div>
     </div>
   </div>
@@ -243,7 +257,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
     <span
       class="title"
     >
-      Actions performed on send
+      Actions performed
     </span>
     <i
       class="collapseIcon material-icons"
@@ -253,383 +267,449 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
     </i>
   </div>
   <div
-    class="collapse"
+    class="scrollable collapse"
   >
     <div
       class="component"
     >
       <div
-        class="title"
-      >
-        <img
-          alt="Add internal note icon"
-          class="actionLogo"
-          role="presentation"
-          src="test-file-stub"
-        />
-        <span>
-          Add internal note
-        </span>
-      </div>
-      <i
-        class="closeIcon material-icons"
-      >
-        close
-      </i>
-      <div
-        class="argsWrapper"
+        class="d-flex justify-content-between align-items-baseline"
       >
         <div
-          class="field"
+          class="flex-grow"
         >
           <div
-            class="rich-textarea-wrapper"
+            class="d-flex align-items-center flex-wrap"
           >
             <div
-              class="editor-wrapper"
+              class="title"
+            >
+              <i
+                class="material-icons md-3 mr-1 text-secondary"
+              >
+                note
+              </i>
+              <span>
+                Send internal note
+              </span>
+            </div>
+            <div
+              class="spacer"
+            />
+          </div>
+          <div
+            class="argsWrapper"
+          >
+            <div
+              class="field"
             >
               <div
-                class="withMinHeight"
+                class="rich-textarea-wrapper"
               >
                 <div
-                  class="DraftEditor-root"
+                  class="editor-wrapper"
                 >
                   <div
-                    class="DraftEditor-editorContainer"
+                    class="withMinHeight"
                   >
                     <div
-                      aria-autocomplete="list"
-                      aria-describedby="placeholder-888"
-                      aria-expanded="true"
-                      class="notranslate public-DraftEditor-content"
-                      contenteditable="true"
-                      role="combobox"
-                      spellcheck="true"
-                      style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                      class="DraftEditor-root"
                     >
                       <div
-                        data-contents="true"
+                        class="DraftEditor-editorContainer"
                       >
                         <div
-                          class=""
-                          data-block="true"
-                          data-editor="888"
-                          data-offset-key="888-0-0"
+                          aria-autocomplete="list"
+                          aria-describedby="placeholder-888"
+                          aria-expanded="true"
+                          class="notranslate public-DraftEditor-content"
+                          contenteditable="true"
+                          role="combobox"
+                          spellcheck="true"
+                          style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                         >
                           <div
-                            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                            data-offset-key="888-0-0"
+                            data-contents="true"
                           >
-                            <span
+                            <div
+                              class=""
+                              data-block="true"
+                              data-editor="888"
                               data-offset-key="888-0-0"
                             >
-                              <span
-                                data-text="true"
+                              <div
+                                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                data-offset-key="888-0-0"
                               >
-                                Map { "type": "string", "format": "html", "default": "" }
-                              </span>
-                            </span>
+                                <span
+                                  data-offset-key="888-0-0"
+                                >
+                                  <span
+                                    data-text="true"
+                                  >
+                                    Map { "type": "string", "format": "html", "default": "" }
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div
-              class="editor-toolbar page"
-            >
-              <div
-                class="actionsWrapper"
-              >
                 <div
-                  class="actions"
+                  class="editor-toolbar page"
                 >
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="format_bold"
-                    type="button"
+                  <div
+                    class="actionsWrapper"
                   >
-                    <i
-                      class="material-icons icon"
-                    >
-                      format_bold
-                    </i>
-                  </button>
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="format_italic"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      format_italic
-                    </i>
-                  </button>
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="format_underline"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      format_underline
-                    </i>
-                  </button>
-                  <span
-                    class="popoverWrapper"
-                  >
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="insert_link"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        link
-                      </i>
-                    </button>
                     <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
-                  >
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="insert_photo"
-                      type="button"
+                      class="actions"
                     >
-                      <i
-                        class="material-icons icon"
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_bold"
+                        type="button"
                       >
-                        insert_photo
-                      </i>
-                    </button>
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_bold
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_italic"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_italic
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_underline"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_underline
+                        </i>
+                      </button>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_link"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            link
+                          </i>
+                        </button>
+                        <div
+                          class="popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_photo"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_photo
+                          </i>
+                        </button>
+                        <div
+                          class="popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_emoticon"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_emoticon
+                          </i>
+                        </button>
+                        <div
+                          class="p-0 d-flex popover top-left hidden"
+                        />
+                      </span>
+                    </div>
                     <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
-                  >
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="insert_emoticon"
-                      type="button"
+                      class="hoverOverlay"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_emoticon
-                      </i>
-                    </button>
-                    <div
-                      class="p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
-                </div>
-                <div
-                  class="hoverOverlay"
-                >
-                  Add files as attachments
+                      Add files as attachments
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <i
+          class="closeIcon material-icons ml-4"
+        >
+          close
+        </i>
       </div>
     </div>
     <div
       class="component"
     >
       <div
-        class="title"
-      >
-        <img
-          alt="Cancel last order icon"
-          class="actionLogo"
-          role="presentation"
-          src="test-file-stub"
-        />
-        <span>
-          Cancel last order
-        </span>
-      </div>
-      <i
-        class="closeIcon material-icons"
-      >
-        close
-      </i>
-      <div
-        class="argsWrapper"
+        class="d-flex justify-content-between align-items-baseline"
       >
         <div
-          class="input"
+          class="flex-grow"
         >
-          <label
-            class="label label"
-            for="checkbox-1"
+          <div
+            class="d-flex align-items-center flex-wrap"
           >
-            <input
-              checked=""
-              class="input"
-              id="checkbox-1"
-              name="checkbox-1"
-              type="checkbox"
+            <div
+              class="title"
+            >
+              <img
+                alt="Cancel last order icon"
+                class="actionLogo"
+                role="presentation"
+                src="test-file-stub"
+              />
+              <span>
+                Cancel last order
+              </span>
+            </div>
+            <div
+              class="spacer"
             />
-            Restock
-          </label>
+            <div
+              class="input"
+            >
+              <label
+                class="label label"
+                for="checkbox-1"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  id="checkbox-1"
+                  name="checkbox-1"
+                  type="checkbox"
+                />
+                Restock
+              </label>
+            </div>
+            <div
+              class="input"
+            >
+              <label
+                class="label label"
+                for="checkbox-2"
+              >
+                <input
+                  checked=""
+                  class="input"
+                  id="checkbox-2"
+                  name="checkbox-2"
+                  type="checkbox"
+                />
+                Refund
+              </label>
+            </div>
+          </div>
         </div>
+        <i
+          class="closeIcon material-icons ml-4"
+        >
+          close
+        </i>
+      </div>
+    </div>
+    <div
+      class="component"
+    >
+      <div
+        class="d-flex justify-content-between align-items-baseline"
+      >
         <div
-          class="input"
+          class="flex-grow"
         >
-          <label
-            class="label label"
-            for="checkbox-2"
+          <div
+            class="d-flex align-items-center flex-wrap"
           >
-            <input
-              checked=""
-              class="input"
-              id="checkbox-2"
-              name="checkbox-2"
-              type="checkbox"
+            <div
+              class="title"
+            >
+              <img
+                alt="Duplicate last order icon"
+                class="actionLogo"
+                role="presentation"
+                src="test-file-stub"
+              />
+              <span>
+                Duplicate last order
+              </span>
+            </div>
+            <div
+              class="spacer"
             />
-            Refund
-          </label>
+          </div>
         </div>
-      </div>
-    </div>
-    <div
-      class="component"
-    >
-      <div
-        class="title"
-      >
-        <img
-          alt="Duplicate last order icon"
-          class="actionLogo"
-          role="presentation"
-          src="test-file-stub"
-        />
-        <span>
-          Duplicate last order
-        </span>
-      </div>
-      <i
-        class="closeIcon material-icons"
-      >
-        close
-      </i>
-    </div>
-    <div
-      class="component"
-    >
-      <div
-        class="title"
-      >
-        <img
-          alt="Partially refund last order icon"
-          class="actionLogo"
-          role="presentation"
-          src="test-file-stub"
-        />
-        <span>
-          Partially refund last order
-        </span>
-      </div>
-      <i
-        class="closeIcon material-icons"
-      >
-        close
-      </i>
-      <div
-        class="argsWrapper"
-      >
-        <span
-          class="input wrapper group horizontal"
+        <i
+          class="closeIcon material-icons ml-4"
         >
-          <input
-            class="input"
-            max="Infinity"
-            min="-Infinity"
-            required=""
-            step="0.01"
-            type="number"
-            value="Map { \\"label\\": \\"Amount\\", \\"default\\": \\"\\", \\"editable\\": true, \\"required\\": true, \\"display_order\\": 1, \\"input\\": Map { \\"type\\": \\"number\\", \\"step\\": 0.01 } }"
-          />
-          <span
-            class="controls group vertical"
+          close
+        </i>
+      </div>
+    </div>
+    <div
+      class="component"
+    >
+      <div
+        class="d-flex justify-content-between align-items-baseline"
+      >
+        <div
+          class="flex-grow"
+        >
+          <div
+            class="d-flex align-items-center flex-wrap"
           >
-            <button
-              class="wrapper button wrapper small fill secondary small top"
-              type="button"
+            <div
+              class="title"
             >
-              <i
-                class="material-icons icon"
-              >
-                arrow_drop_up
-              </i>
-            </button>
-            <button
-              class="wrapper button wrapper small fill secondary small bottom"
-              type="button"
+              <img
+                alt="Partially refund last order icon"
+                class="actionLogo"
+                role="presentation"
+                src="test-file-stub"
+              />
+              <span>
+                Partially refund last order
+              </span>
+            </div>
+            <div
+              class="spacer"
+            />
+            <span
+              class="input wrapper group horizontal"
             >
-              <i
-                class="material-icons icon"
+              <input
+                class="input"
+                max="Infinity"
+                min="-Infinity"
+                required=""
+                step="0.01"
+                type="number"
+                value="Map { \\"label\\": \\"Amount\\", \\"default\\": \\"\\", \\"editable\\": true, \\"required\\": true, \\"display_order\\": 1, \\"input\\": Map { \\"type\\": \\"number\\", \\"step\\": 0.01 } }"
+              />
+              <span
+                class="controls group vertical"
               >
-                arrow_drop_down
-              </i>
-            </button>
-          </span>
-        </span>
-      </div>
-      <div
-        class="caption note"
-      >
+                <button
+                  class="wrapper button wrapper small fill secondary small top"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    arrow_drop_up
+                  </i>
+                </button>
+                <button
+                  class="wrapper button wrapper small fill secondary small bottom"
+                  type="button"
+                >
+                  <i
+                    class="material-icons icon"
+                  >
+                    arrow_drop_down
+                  </i>
+                </button>
+              </span>
+            </span>
+          </div>
+          <div
+            class="caption note"
+          >
+            <i
+              class="material-icons mr-1"
+            >
+              info
+            </i>
+            This action will fail if the payment hasn't been captured yet.
+          </div>
+        </div>
         <i
-          class="material-icons mr-1"
+          class="closeIcon material-icons ml-4"
         >
-          info
+          close
         </i>
-        This action will fail if the payment hasn't been captured yet.
       </div>
     </div>
     <div
       class="component"
     >
       <div
-        class="title"
+        class="d-flex justify-content-between align-items-baseline"
       >
-        <img
-          alt="Refund last order's shipping cost icon"
-          class="actionLogo"
-          role="presentation"
-          src="test-file-stub"
-        />
-        <span>
-          Refund last order's shipping cost
-        </span>
-      </div>
-      <i
-        class="closeIcon material-icons"
-      >
-        close
-      </i>
-      <div
-        class="caption note"
-      >
-        <i
-          class="material-icons mr-1"
+        <div
+          class="flex-grow"
         >
-          info
+          <div
+            class="d-flex align-items-center flex-wrap"
+          >
+            <div
+              class="title"
+            >
+              <img
+                alt="Refund last order's shipping cost icon"
+                class="actionLogo"
+                role="presentation"
+                src="test-file-stub"
+              />
+              <span>
+                Refund last order's shipping cost
+              </span>
+            </div>
+            <div
+              class="spacer"
+            />
+          </div>
+          <div
+            class="caption note"
+          >
+            <i
+              class="material-icons mr-1"
+            >
+              info
+            </i>
+            This action will fail if the payment hasn't been captured yet.
+          </div>
+        </div>
+        <i
+          class="closeIcon material-icons ml-4"
+        >
+          close
         </i>
-        This action will fail if the payment hasn't been captured yet.
       </div>
     </div>
   </div>
@@ -654,7 +734,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
     <span
       class="title"
     >
-      Actions performed on send
+      Actions performed
     </span>
     <i
       class="collapseIcon material-icons"
@@ -664,196 +744,210 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions unco
     </i>
   </div>
   <div
-    class="collapse show"
+    class="scrollable collapse show"
   >
     <div
       class="component"
     >
       <div
-        class="title"
-      >
-        <img
-          alt="Add internal note icon"
-          class="actionLogo"
-          role="presentation"
-          src="test-file-stub"
-        />
-        <span>
-          Add internal note
-        </span>
-      </div>
-      <i
-        class="closeIcon material-icons"
-      >
-        close
-      </i>
-      <div
-        class="argsWrapper"
+        class="d-flex justify-content-between align-items-baseline"
       >
         <div
-          class="field"
+          class="flex-grow"
         >
           <div
-            class="rich-textarea-wrapper"
+            class="d-flex align-items-center flex-wrap"
           >
             <div
-              class="editor-wrapper"
+              class="title"
+            >
+              <i
+                class="material-icons md-3 mr-1 text-secondary"
+              >
+                note
+              </i>
+              <span>
+                Send internal note
+              </span>
+            </div>
+            <div
+              class="spacer"
+            />
+          </div>
+          <div
+            class="argsWrapper"
+          >
+            <div
+              class="field"
             >
               <div
-                class="withMinHeight"
+                class="rich-textarea-wrapper"
               >
                 <div
-                  class="DraftEditor-root"
+                  class="editor-wrapper"
                 >
                   <div
-                    class="DraftEditor-editorContainer"
+                    class="withMinHeight"
                   >
                     <div
-                      aria-autocomplete="list"
-                      aria-describedby="placeholder-888"
-                      aria-expanded="true"
-                      class="notranslate public-DraftEditor-content"
-                      contenteditable="true"
-                      role="combobox"
-                      spellcheck="true"
-                      style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                      class="DraftEditor-root"
                     >
                       <div
-                        data-contents="true"
+                        class="DraftEditor-editorContainer"
                       >
                         <div
-                          class=""
-                          data-block="true"
-                          data-editor="888"
-                          data-offset-key="888-0-0"
+                          aria-autocomplete="list"
+                          aria-describedby="placeholder-888"
+                          aria-expanded="true"
+                          class="notranslate public-DraftEditor-content"
+                          contenteditable="true"
+                          role="combobox"
+                          spellcheck="true"
+                          style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
                         >
                           <div
-                            class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
-                            data-offset-key="888-0-0"
+                            data-contents="true"
                           >
-                            <span
+                            <div
+                              class=""
+                              data-block="true"
+                              data-editor="888"
                               data-offset-key="888-0-0"
                             >
-                              <span
-                                data-text="true"
+                              <div
+                                class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                data-offset-key="888-0-0"
                               >
-                                Map { "type": "string", "format": "html", "default": "" }
-                              </span>
-                            </span>
+                                <span
+                                  data-offset-key="888-0-0"
+                                >
+                                  <span
+                                    data-text="true"
+                                  >
+                                    Map { "type": "string", "format": "html", "default": "" }
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div
-              class="editor-toolbar page"
-            >
-              <div
-                class="actionsWrapper"
-              >
                 <div
-                  class="actions"
+                  class="editor-toolbar page"
                 >
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="format_bold"
-                    type="button"
+                  <div
+                    class="actionsWrapper"
                   >
-                    <i
-                      class="material-icons icon"
-                    >
-                      format_bold
-                    </i>
-                  </button>
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="format_italic"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      format_italic
-                    </i>
-                  </button>
-                  <button
-                    class="wrapper button wrapper small fill secondary small"
-                    id="format_underline"
-                    type="button"
-                  >
-                    <i
-                      class="material-icons icon"
-                    >
-                      format_underline
-                    </i>
-                  </button>
-                  <span
-                    class="popoverWrapper"
-                  >
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="insert_link"
-                      type="button"
-                    >
-                      <i
-                        class="material-icons icon"
-                      >
-                        link
-                      </i>
-                    </button>
                     <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
-                  >
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="insert_photo"
-                      type="button"
+                      class="actions"
                     >
-                      <i
-                        class="material-icons icon"
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_bold"
+                        type="button"
                       >
-                        insert_photo
-                      </i>
-                    </button>
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_bold
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_italic"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_italic
+                        </i>
+                      </button>
+                      <button
+                        class="wrapper button wrapper small fill secondary small"
+                        id="format_underline"
+                        type="button"
+                      >
+                        <i
+                          class="material-icons icon"
+                        >
+                          format_underline
+                        </i>
+                      </button>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_link"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            link
+                          </i>
+                        </button>
+                        <div
+                          class="popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_photo"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_photo
+                          </i>
+                        </button>
+                        <div
+                          class="popover top-left hidden"
+                        />
+                      </span>
+                      <span
+                        class="popoverWrapper"
+                      >
+                        <button
+                          class="wrapper button wrapper small fill secondary small"
+                          id="insert_emoticon"
+                          type="button"
+                        >
+                          <i
+                            class="material-icons icon"
+                          >
+                            insert_emoticon
+                          </i>
+                        </button>
+                        <div
+                          class="p-0 d-flex popover top-left hidden"
+                        />
+                      </span>
+                    </div>
                     <div
-                      class="popover top-left hidden"
-                    />
-                  </span>
-                  <span
-                    class="popoverWrapper"
-                  >
-                    <button
-                      class="wrapper button wrapper small fill secondary small"
-                      id="insert_emoticon"
-                      type="button"
+                      class="hoverOverlay"
                     >
-                      <i
-                        class="material-icons icon"
-                      >
-                        insert_emoticon
-                      </i>
-                    </button>
-                    <div
-                      class="p-0 d-flex popover top-left hidden"
-                    />
-                  </span>
-                </div>
-                <div
-                  class="hoverOverlay"
-                >
-                  Add files as attachments
+                      Add files as attachments
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <i
+          class="closeIcon material-icons ml-4"
+        >
+          close
+        </i>
       </div>
     </div>
   </div>

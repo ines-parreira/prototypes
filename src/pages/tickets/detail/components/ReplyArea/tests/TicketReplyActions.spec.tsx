@@ -33,6 +33,10 @@ describe('<TicketReplyActions/>', () => {
         onUpdate: jest.fn(),
     }
 
+    const element = document.createElement('div')
+    element.setAttribute('id', 'submit-button')
+    document.body.appendChild(element)
+
     it('should render the ticket reply macro actions uncollapsed', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
@@ -92,12 +96,12 @@ describe('<TicketReplyActions/>', () => {
                 <TicketReplyActions {...minProps} />
             </Provider>
         )
-        const header = screen.getByText('Actions performed on send')
+        const header = screen.getByText('Actions performed')
         const collapsingElement = container.firstChild?.lastChild as HTMLElement
 
         fireEvent.click(header)
         await waitFor(() => {
-            expect(collapsingElement.className).toBe('collapse')
+            expect(collapsingElement.className).toBe('scrollable collapse')
         })
         expect(container.firstChild).toMatchSnapshot()
     })

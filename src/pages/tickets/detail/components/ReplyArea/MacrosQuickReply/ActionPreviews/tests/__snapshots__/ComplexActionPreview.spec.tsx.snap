@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<BackActionPreview /> should render both internal note actions 1`] = `
+exports[`<ComplexActionPreview /> should render both internal note action 1`] = `
 <div>
   <div
     class="wrapper"
@@ -33,7 +33,7 @@ exports[`<BackActionPreview /> should render both internal note actions 1`] = `
 </div>
 `;
 
-exports[`<BackActionPreview /> should render both shopify actions and http actions 1`] = `
+exports[`<ComplexActionPreview /> should render both shopify actions and http actions 1`] = `
 <div>
   <div
     class="wrapper"
@@ -94,7 +94,7 @@ exports[`<BackActionPreview /> should render both shopify actions and http actio
 </div>
 `;
 
-exports[`<BackActionPreview /> should render http actions 1`] = `
+exports[`<ComplexActionPreview /> should render http actions 1`] = `
 <div
   class="wrapper"
 >
@@ -125,7 +125,7 @@ exports[`<BackActionPreview /> should render http actions 1`] = `
 </div>
 `;
 
-exports[`<BackActionPreview /> should render shopify actions 1`] = `
+exports[`<ComplexActionPreview /> should render shopify actions 1`] = `
 <div
   class="wrapper"
 >

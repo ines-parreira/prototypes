@@ -1971,6 +1971,46 @@ Object {
 }
 `;
 
+exports[`actions new message prepareTicketDataToSend() should replace empty message with intenal note text from internal note action 1`] = `
+Object {
+  "actions": Immutable.List [],
+  "body_html": "<div>Hello</div>",
+  "body_text": "Hello",
+  "public": false,
+  "sender": Immutable.Map {
+    "id": 1,
+    "name": "Steve",
+  },
+  "source": Object {
+    "from": Object {
+      "address": "",
+      "name": "",
+    },
+    "type": "internal-note",
+  },
+}
+`;
+
+exports[`actions new message prepareTicketDataToSend() should transform empty message with macro to internal note 1`] = `
+Object {
+  "actions": Immutable.List [],
+  "body_html": "<div>Applied macro \\"Macro 1\\"</div>",
+  "body_text": "Applied macro \\"Macro 1\\"",
+  "public": false,
+  "sender": Immutable.Map {
+    "id": 1,
+    "name": "Steve",
+  },
+  "source": Object {
+    "from": Object {
+      "address": "",
+      "name": "",
+    },
+    "type": "internal-note",
+  },
+}
+`;
+
 exports[`actions new message prepareTicketMessage should prepare next new message after we submitted an instagram comment 1`] = `
 Object {
   "attachments": Array [],

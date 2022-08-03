@@ -5,6 +5,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 
+import {Direction} from 'reactstrap/lib/Dropdown'
 import {getCurrentUser} from '../../../../../../state/currentUser/selectors'
 import {getAgents} from '../../../../../../state/agents/selectors'
 import {getTeams} from '../../../../../../state/teams/selectors'
@@ -22,7 +23,9 @@ type Props = {
     handleUsers: boolean
     currentAssigneeUser: Map<any, any> | null
     currentAssigneeTeam: Map<any, any> | null
-    direction: string
+    direction?: Direction
+    menuDirection?: string
+    dropdownContainer?: HTMLElement
     setUser: (
         ...args: ArgumentsOf<typeof setAgent>
     ) => ReturnType<ReturnType<typeof setAgent>> | void
@@ -45,12 +48,17 @@ type State = {
 export class TicketAssigneeContainer extends Component<Props, State> {
     static defaultProps: Pick<
         Props,
-        'handleTeams' | 'handleUsers' | 'direction' | 'transparent'
+        | 'handleTeams'
+        | 'handleUsers'
+        | 'menuDirection'
+        | 'transparent'
+        | 'direction'
     > = {
         handleTeams: true,
         handleUsers: true,
-        direction: 'left',
+        menuDirection: 'left',
         transparent: false,
+        direction: 'down',
     }
 
     constructor(props: Props) {
@@ -321,7 +329,8 @@ export class TicketAssigneeContainer extends Component<Props, State> {
     }
 
     render() {
-        const {direction, className} = this.props
+        const {direction, menuDirection, className, dropdownContainer} =
+            this.props
         const {search, dropdownOpen} = this.state
 
         return (
@@ -330,11 +339,13 @@ export class TicketAssigneeContainer extends Component<Props, State> {
                 isOpen={dropdownOpen}
                 toggle={this._toggle}
                 a11y={false}
+                direction={direction}
             >
                 {this._renderDropdownToggle()}
                 <DropdownMenu
-                    right={direction === 'right'}
-                    style={{width: '260px'}}
+                    right={menuDirection === 'right'}
+                    style={{width: '260px', zIndex: 1051}}
+                    container={dropdownContainer}
                 >
                     <DropdownItem header>ASSIGN TO:</DropdownItem>
                     <DropdownItem header className="dropdown-item-input">

@@ -281,7 +281,7 @@ exports[`TicketListActions component should not render export tickets button for
         class="dropdown-menu dropdown-menu-right"
         disabled=""
         role="menu"
-        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
         tabindex="-1"
       >
         <h6
@@ -630,7 +630,7 @@ exports[`TicketListActions component should not render the delete button for bas
         class="dropdown-menu dropdown-menu-right"
         disabled=""
         role="menu"
-        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
         tabindex="-1"
       >
         <h6
@@ -1059,7 +1059,7 @@ exports[`TicketListActions component should render agents options in assign agen
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
         role="menu"
-        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
         tabindex="-1"
       >
         <h6
@@ -1415,7 +1415,7 @@ exports[`TicketListActions component should render enabled buttons when some tic
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
         role="menu"
-        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
         tabindex="-1"
       >
         <h6
@@ -1782,7 +1782,7 @@ exports[`TicketListActions component should render export tickets button for age
         class="dropdown-menu dropdown-menu-right"
         disabled=""
         role="menu"
-        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
         tabindex="-1"
       >
         <h6
@@ -2231,7 +2231,7 @@ exports[`TicketListActions component should render teams in assign team dropdown
         aria-hidden="true"
         class="dropdown-menu dropdown-menu-right"
         role="menu"
-        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
         tabindex="-1"
       >
         <h6
@@ -2598,7 +2598,7 @@ exports[`TicketListActions component should render the delete action for lead an
         class="dropdown-menu dropdown-menu-right"
         disabled=""
         role="menu"
-        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
         tabindex="-1"
       >
         <h6
@@ -2967,7 +2967,7 @@ exports[`TicketListActions component should render the special actions for lead 
         class="dropdown-menu dropdown-menu-right"
         disabled=""
         role="menu"
-        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em;"
+        style="padding: 0.5rem 4px; width: auto; min-width: 16.428571428571427em; max-width: 34.285714285714285em; z-index: 1051;"
         tabindex="-1"
       >
         <h6

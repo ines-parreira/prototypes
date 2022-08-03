@@ -10,45 +10,11 @@ import {
     Integration,
 } from 'models/integration/types'
 import {PhoneNumber} from 'models/phoneNumber/types'
-import {MacroActionName} from 'models/macroAction/types'
 import {Section} from 'models/section/types'
 import {View} from 'models/view/types'
 import {Account} from 'state/currentAccount/types'
-import {Customer} from 'state/customers/types'
 import {Tag} from 'state/tags/types'
 import {Team} from 'state/teams/types'
-
-export enum ActionTemplateExecution {
-    Front = 'front',
-    Back = 'back',
-}
-
-export type ActionTemplate = {
-    execution: ActionTemplateExecution
-    name: MacroActionName
-    title: string
-    notes?: string[]
-    integrationType?: string
-    arguments?: {
-        [key: string]: {
-            default: boolean
-            display_order: number
-            editable: boolean
-            input: {
-                type: string
-            }
-            label: string
-            type: string
-            required: boolean
-        }
-    }
-    validators?: Array<{
-        validate: (value: Customer) => unknown | boolean
-        error: string
-    }>
-    partialUpdateKeys: string | string[]
-    partialUpdateValues: string
-}
 
 export type Attachment = {
     content_type: string
