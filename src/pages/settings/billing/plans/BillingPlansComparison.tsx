@@ -23,10 +23,8 @@ import {setFutureSubscriptionPlan} from 'state/billing/actions'
 import {getCurrentSubscription} from 'state/currentAccount/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useFeatureFlags} from 'hooks/useFeatureFlags'
 import SynchronizedScrollTopProvider from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
 import SynchronizedScrollTopContainer from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopContainer'
-import {FlagKey} from 'providers/FeatureFlags'
 
 import css from './BillingPlansComparison.less'
 import BillingComparisonPlanCard from './BillingComparisonPlanCard'
@@ -51,15 +49,11 @@ export default function BillingPlansComparison({
     const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
     const regularCurrentPlan = useAppSelector(getEquivalentRegularCurrentPlan)
     const displayedCurrentPlan = regularCurrentPlan || currentPlan
-    const {getFlag} = useFeatureFlags()
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isAllowedToChangePlan = useAppSelector(makeIsAllowedToChangePlan)
     const [selectedInterval, setSelectedInterval] = useState<PlanInterval>(
         currentPlan.get('interval') || PlanInterval.Month
     )
-    const shouldDisplayStarterPlan =
-        getFlag(FlagKey.StarterPlanAccess) ||
-        currentPlan.get('name') === 'Starter'
     const isCustomPlan = currentPlan.get('custom', false)
     const availablePlans = isCustomPlan
         ? (plans.filter(
@@ -76,10 +70,6 @@ export default function BillingPlansComparison({
                           !accountHasLegacyPlan)) &&
                   !(plan.get('custom') as boolean)
           ) as Map<any, any>)
-    const filteredPlans = availablePlans.filter(
-        (plan: Map<any, any>) =>
-            plan.get('name') !== 'Starter' || shouldDisplayStarterPlan
-    ) as Map<any, any>
 
     const handleIntervalToggle = () => {
         setSelectedInterval(
@@ -194,7 +184,7 @@ export default function BillingPlansComparison({
                                 }
                             />
                         )}
-                        {filteredPlans
+                        {availablePlans
                             .mapEntries((entry) => {
                                 const [planId, plan] = entry as [
                                     string,

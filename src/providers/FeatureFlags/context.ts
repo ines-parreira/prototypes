@@ -4,7 +4,6 @@ export enum FlagKey {
     SelfServiceArticleRecommendation = 'self-service-article-recommendation',
     EarlyAdopter = 'early-adopter',
     DefaultMacroToSearch = 'default-macro-to-search',
-    StarterPlanAccess = 'starter-plan-access',
     SelfServiceStandalonePortal = 'self-service-standalone-portal',
     SelfServiceStatsV2 = 'self-service-stats-v2',
 }

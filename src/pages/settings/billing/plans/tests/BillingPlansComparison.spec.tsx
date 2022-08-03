@@ -6,8 +6,6 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
-import {useFeatureFlags} from 'hooks/useFeatureFlags'
-
 import {notify} from '../../../../../state/notifications/actions'
 import BillingPlansComparison from '../BillingPlansComparison'
 import {
@@ -20,7 +18,6 @@ import {
     advancedAutomationPlan,
     customPlan,
     customLegacyPlan,
-    starterPlan,
 } from '../../../../../fixtures/subscriptionPlan'
 import {RootState, StoreDispatch} from '../../../../../state/types'
 import {account} from '../../../../../fixtures/account'
@@ -37,13 +34,9 @@ jest.mock('popper.js')
 jest.mock('../../../../../state/currentAccount/actions')
 jest.mock('../../../../../state/notifications/actions')
 jest.mock('lodash/uniqueId', () => () => '42')
-jest.mock('hooks/useFeatureFlags', () => ({
-    useFeatureFlags: jest.fn(() => ({getFlag: () => false})),
-}))
 
 describe('<BillingPlansComparison />', () => {
     const defaultPlans = [
-        starterPlan,
         basicPlan,
         advancedPlan,
         proPlan,
@@ -66,23 +59,17 @@ describe('<BillingPlansComparison />', () => {
                 ...plan,
                 id: monthlyId,
                 interval: PlanInterval.Month,
-                automation_addon_equivalent_plan:
-                    plan.name === 'starter'
-                        ? null
-                        : plan.automation_addon_included
-                        ? `${plan.name.toLowerCase()}-monthly`
-                        : `${plan.name.toLowerCase()}-automation-monthly`,
+                automation_addon_equivalent_plan: plan.automation_addon_included
+                    ? `${plan.name.toLowerCase()}-monthly`
+                    : `${plan.name.toLowerCase()}-automation-monthly`,
             },
             [yearlyId]: {
                 ...plan,
                 id: yearlyId,
                 interval: PlanInterval.Year,
-                automation_addon_equivalent_plan:
-                    plan.name === 'starter'
-                        ? null
-                        : plan.automation_addon_included
-                        ? `${plan.name.toLowerCase()}-yearly`
-                        : `${plan.name.toLowerCase()}-automation-yearly`,
+                automation_addon_equivalent_plan: plan.automation_addon_included
+                    ? `${plan.name.toLowerCase()}-yearly`
+                    : `${plan.name.toLowerCase()}-automation-yearly`,
             },
         }
     }, {} as Partial<Record<string, Plan>>)
@@ -92,7 +79,7 @@ describe('<BillingPlansComparison />', () => {
             ...account,
             current_subscription: {
                 ...account.current_subscription,
-                plan: Object.values(defaultPlans)[2]!.id,
+                plan: Object.values(defaultPlans)[0]!.id,
             },
         }),
         billing: fromJS({
@@ -146,7 +133,7 @@ describe('<BillingPlansComparison />', () => {
         '%s interval',
         (interval) => {
             const currentPlan = (Object.values(defaultPlans) as Plan[]).find(
-                (plan) => plan.interval === interval && plan.name !== 'Starter'
+                (plan) => plan.interval === interval
             )
 
             it(`should render only plans with the selected interval for ${
@@ -370,36 +357,5 @@ describe('<BillingPlansComparison />', () => {
                 '-automation-'
             ),
         })
-    })
-
-    it('should display the starter plan when the account is subscribed to a starter plan', () => {
-        const {getByText} = render(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    currentAccount: defaultState.currentAccount?.setIn(
-                        ['current_subscription', 'plan'],
-                        'starter-monthly'
-                    ),
-                })}
-            >
-                <BillingPlansComparison {...minProps} />
-            </Provider>
-        )
-
-        expect(getByText(/Starter/)).toBeTruthy()
-    })
-
-    it('should display the starter plan when the account is feature flagged', () => {
-        ;(
-            useFeatureFlags as jest.MockedFunction<typeof useFeatureFlags>
-        ).mockImplementation(() => ({flags: {}, getFlag: () => true}))
-        const {getByText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <BillingPlansComparison {...minProps} />
-            </Provider>
-        )
-
-        expect(getByText(/Upgrade to Starter Plan/)).toBeTruthy()
     })
 })
