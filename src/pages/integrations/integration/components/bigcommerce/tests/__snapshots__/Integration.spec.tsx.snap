@@ -84,13 +84,13 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
             class="label isDisabled mb-2"
             for="disabled-store-field"
           >
-            Store name
+            Store domain
           </label>
           <span
             class="mb-4 wrapper group horizontal"
           >
             <div
-              class="wrapper left isDisabled isNested"
+              class="wrapper isDisabled isNested"
             >
               <input
                 class="input"
@@ -101,11 +101,6 @@ exports[`<BigCommerceIntegration/> render() should render an integration with a 
                 value=""
               />
             </div>
-            <span
-              class="groupAddon right isDisabled"
-            >
-              .mybigcommerce.com
-            </span>
           </span>
           <div>
             <button

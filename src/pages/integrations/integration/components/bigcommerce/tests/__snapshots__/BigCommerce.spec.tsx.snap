@@ -316,13 +316,13 @@ exports[`<BigCommerce/> Integration should render 1`] = `
             class="label isDisabled mb-2"
             for="disabled-store-field"
           >
-            Store name
+            Store domain
           </label>
           <span
             class="mb-4 wrapper group horizontal"
           >
             <div
-              class="wrapper left isDisabled isNested"
+              class="wrapper isDisabled isNested"
             >
               <input
                 class="input"
@@ -333,11 +333,6 @@ exports[`<BigCommerce/> Integration should render 1`] = `
                 value=""
               />
             </div>
-            <span
-              class="groupAddon right isDisabled"
-            >
-              .mybigcommerce.com
-            </span>
           </span>
           <div>
             <button

@@ -16,7 +16,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import Label from 'pages/common/forms/Label/Label'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import settingsCss from 'pages/settings/settings.less'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
@@ -88,15 +87,17 @@ const Integration = ({integration, loading}: Props) => {
                             isDisabled
                             className="mb-2"
                         >
-                            Store name
+                            Store domain
                         </Label>
                         <InputGroup isDisabled className="mb-4">
                             <TextInput
                                 id="disabled-store-field"
                                 name="store-name"
-                                value={integration.get('name')}
+                                value={integration.getIn([
+                                    'meta',
+                                    'shop_domain',
+                                ])}
                             />
-                            <GroupAddon>.mybigcommerce.com</GroupAddon>
                         </InputGroup>
 
                         <div>
