@@ -3,8 +3,10 @@ export function checkBigCommerceAccess(domain: string) {
         // allow access feature for specified domains and for preview envs
         domain
             ? [
+                  // staging + ecom&devrel team
                   'acme',
                   'test-martin',
+                  'sf-bicycle',
                   'manuel-testing',
                   'alexandru-daineanu-test-store',
                   'maximstore',
@@ -14,6 +16,7 @@ export function checkBigCommerceAccess(domain: string) {
                   'lisa-t-test',
                   'pilarhelpdesk',
                   'catalinm-test',
+                  // BigCommerce QA
                   'as7testing',
                   // beta program users
                   'solostove',
@@ -23,6 +26,9 @@ export function checkBigCommerceAccess(domain: string) {
                   'yatesjewelers',
                   'roamrogue',
                   'iagperformance',
+                  'northsidegeneralstore',
+                  'bakehouse',
+                  'swym-bigcommerce-dev',
               ].includes(domain) || domain.includes('.preview')
             : false
     )
