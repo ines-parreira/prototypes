@@ -94,185 +94,186 @@ export default class TicketReplyAction extends Component<Props> {
 
     renderArgs = (actionArgs: Map<any, any>, isInline: boolean) => {
         const action = this.props.action
-        const template = getActionTemplate(action.get('name'))!
-        const sortedArgs = actionArgs.sortBy(
-            (v, k: string) => template.arguments![k]?.display_order ?? 0
+        const template = getActionTemplate(action.get('name'))
+        if (!template || !template.arguments) return
+
+        const sortedArgs = Object.entries(template.arguments).sort(
+            ([, value_a], [, value_b]) =>
+                (value_a.display_order ?? 0) - (value_b.display_order ?? 0)
         )
 
         return (
             <>
-                {sortedArgs
-                    .map((value: number | string | boolean, key: string) => {
-                        const args = template.arguments![key]
-                        switch (args.input?.type) {
-                            case 'checkbox':
-                                return (
-                                    <CheckBox
+                {sortedArgs.map(([key, args]) => {
+                    const value = actionArgs.get(key) as
+                        | number
+                        | string
+                        | boolean
+                    switch (args.input?.type) {
+                        case 'checkbox':
+                            return (
+                                <CheckBox
+                                    className={css.input}
+                                    key={key}
+                                    isChecked={!!value}
+                                    onChange={(value) =>
+                                        this.setValue(key, value)
+                                    }
+                                    required={!!args.required}
+                                >
+                                    {args.label || key}
+                                </CheckBox>
+                            )
+                        case 'number':
+                            return (
+                                <NumberInput
+                                    className={css.input}
+                                    key={key}
+                                    {...args.input}
+                                    value={value as number}
+                                    onChange={(value) =>
+                                        this.setValue(key, value!)
+                                    }
+                                    isRequired={!!args.required}
+                                    hasControls
+                                />
+                            )
+                        case 'select':
+                            return (
+                                <div
+                                    key={key}
+                                    className={css.selectFieldWrapper}
+                                >
+                                    <Label className={css.label}>
+                                        {args.label}
+                                    </Label>
+                                    <SelectField
                                         className={css.input}
-                                        key={key}
-                                        isChecked={!!value}
+                                        {...args.input}
+                                        value={value as string | number}
                                         onChange={(value) =>
                                             this.setValue(key, value)
                                         }
                                         required={!!args.required}
-                                    >
-                                        {args.label || key}
-                                    </CheckBox>
-                                )
-                            case 'number':
-                                return (
-                                    <NumberInput
-                                        className={css.input}
-                                        key={key}
-                                        {...args.input}
-                                        value={value as number}
-                                        onChange={(value) =>
-                                            this.setValue(key, value!)
-                                        }
-                                        isRequired={!!args.required}
-                                        hasControls
                                     />
-                                )
-                            case 'select':
-                                return (
-                                    <div
+                                </div>
+                            )
+                        case 'timedelta':
+                            return (
+                                <SnoozeTicketAction
+                                    key={key}
+                                    index={0}
+                                    action={action}
+                                    updateActionArgs={(_, value) => {
+                                        this.setValue(
+                                            key,
+                                            value.get('snooze_timedelta')
+                                        )
+                                    }}
+                                />
+                            )
+                        case 'assignee_team-select':
+                            return (
+                                <SetAssigneeAction
+                                    key={key}
+                                    index={0}
+                                    action={action}
+                                    updateActionArgs={(_, value) => {
+                                        this.setValue(
+                                            key,
+                                            value.get('assignee_team')
+                                        )
+                                    }}
+                                    handleTeams={true}
+                                    right={true}
+                                    up={true}
+                                    dropdownContainer={document.body}
+                                />
+                            )
+                        case 'assignee_user-select':
+                            return (
+                                <SetAssigneeAction
+                                    key={key}
+                                    index={0}
+                                    action={action}
+                                    updateActionArgs={(_, value) => {
+                                        this.setValue(
+                                            key,
+                                            value.get('assignee_user')
+                                        )
+                                    }}
+                                    handleUsers={true}
+                                    right={true}
+                                    up={true}
+                                    dropdownContainer={document.body}
+                                />
+                            )
+                        case 'status-select':
+                            return (
+                                <SetStatusAction
+                                    key={key}
+                                    index={0}
+                                    action={action}
+                                    updateActionArgs={(_, value) => {
+                                        this.setValue(key, value.get('status'))
+                                    }}
+                                    fullWidth={false}
+                                />
+                            )
+                        case 'tags-select':
+                            return (
+                                <div className={css.tagsSelect}>
+                                    <AddTagsAction
                                         key={key}
-                                        className={css.selectFieldWrapper}
-                                    >
-                                        <Label className={css.label}>
+                                        index={0}
+                                        args={action.get('arguments')}
+                                        updateActionArgs={(_, value) => {
+                                            this.setValue(
+                                                key,
+                                                value.get('tags')
+                                            )
+                                        }}
+                                        right={true}
+                                        dropdownUpDirection={true}
+                                        dropdownContainer={document.body}
+                                    />
+                                </div>
+                            )
+                        default:
+                            return (
+                                <>
+                                    {isInline && args.label && (
+                                        <Label
+                                            isRequired={!!args.required}
+                                            className="mr-2"
+                                        >
                                             {args.label}
                                         </Label>
-                                        <SelectField
-                                            className={css.input}
-                                            {...args.input}
-                                            value={value as string | number}
-                                            onChange={(value) =>
-                                                this.setValue(key, value)
-                                            }
-                                            required={!!args.required}
-                                        />
-                                    </div>
-                                )
-                            case 'timedelta':
-                                return (
-                                    <SnoozeTicketAction
+                                    )}
+                                    <InputField
                                         key={key}
-                                        index={0}
-                                        action={action}
-                                        updateActionArgs={(_, value) => {
-                                            this.setValue(
-                                                key,
-                                                value.get('snooze_timedelta')
-                                            )
-                                        }}
-                                    />
-                                )
-                            case 'assignee_team-select':
-                                return (
-                                    <SetAssigneeAction
-                                        key={key}
-                                        index={0}
-                                        action={action}
-                                        updateActionArgs={(_, value) => {
-                                            this.setValue(
-                                                key,
-                                                value.get('assignee_team')
-                                            )
-                                        }}
-                                        handleTeams={true}
-                                        right={true}
-                                        up={true}
-                                        dropdownContainer={document.body}
-                                    />
-                                )
-                            case 'assignee_user-select':
-                                return (
-                                    <SetAssigneeAction
-                                        key={key}
-                                        index={0}
-                                        action={action}
-                                        updateActionArgs={(_, value) => {
-                                            this.setValue(
-                                                key,
-                                                value.get('assignee_user')
-                                            )
-                                        }}
-                                        handleUsers={true}
-                                        right={true}
-                                        up={true}
-                                        dropdownContainer={document.body}
-                                    />
-                                )
-                            case 'status-select':
-                                return (
-                                    <SetStatusAction
-                                        key={key}
-                                        index={0}
-                                        action={action}
-                                        updateActionArgs={(_, value) => {
-                                            this.setValue(
-                                                key,
-                                                value.get('status')
-                                            )
-                                        }}
-                                        fullWidth={false}
-                                    />
-                                )
-                            case 'tags-select':
-                                return (
-                                    <div className={css.tagsSelect}>
-                                        <AddTagsAction
-                                            key={key}
-                                            index={0}
-                                            args={action.get('arguments')}
-                                            updateActionArgs={(_, value) => {
-                                                this.setValue(
-                                                    key,
-                                                    value.get('tags')
-                                                )
-                                            }}
-                                            right={true}
-                                            dropdownUpDirection={true}
-                                            dropdownContainer={document.body}
-                                        />
-                                    </div>
-                                )
-                            default:
-                                return (
-                                    <>
-                                        {isInline && args.label && (
-                                            <Label
-                                                isRequired={!!args.required}
-                                                className="mr-2"
-                                            >
-                                                {args.label}
-                                            </Label>
+                                        {...args.input}
+                                        className={classnames(
+                                            {'mt-3': !isInline},
+                                            css.inputField
                                         )}
-                                        <InputField
-                                            key={key}
-                                            {...args.input}
-                                            className={classnames(
-                                                {'mt-3': isInline},
-                                                css.inputField
-                                            )}
-                                            value={value as string}
-                                            onChange={(
-                                                value: number | string | boolean
-                                            ) => this.setValue(key, value)}
-                                            isRequired={!!args.required}
-                                            label={
-                                                isInline
-                                                    ? null
-                                                    : args.label === undefined
-                                                    ? key
-                                                    : args.label
-                                            }
-                                        />
-                                    </>
-                                )
-                        }
-                    })
-                    .toList()}
+                                        value={value as string}
+                                        onChange={(
+                                            value: number | string | boolean
+                                        ) => this.setValue(key, value)}
+                                        isRequired={!!args.required}
+                                        label={
+                                            isInline
+                                                ? null
+                                                : args.label === undefined
+                                                ? key
+                                                : args.label
+                                        }
+                                    />
+                                </>
+                            )
+                    }
+                })}
             </>
         )
     }
@@ -361,8 +362,7 @@ export default class TicketReplyAction extends Component<Props> {
             )
         } else {
             const args = action.get('arguments') as Map<any, any>
-            if (args && !args.isEmpty())
-                argsComponent = this.renderArgs(args, isInline)
+            argsComponent = this.renderArgs(args, isInline)
         }
 
         const notes = getActionTemplate(action.get('name'))!.notes
