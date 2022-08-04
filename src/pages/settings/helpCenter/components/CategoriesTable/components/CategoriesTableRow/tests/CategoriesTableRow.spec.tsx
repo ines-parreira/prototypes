@@ -18,6 +18,7 @@ import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCat
 import {Category} from 'models/helpCenter/types'
 import {CategoriesTableRow} from '../CategoriesTableRow'
 import {CategoriesTableBasicRow} from '../../CategoriesTableBasicRow/CategoriesTableBasicRow'
+import {CATEGORY_TREE_MAX_LEVEL} from '../../../../../constants'
 
 const mockStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,
@@ -376,7 +377,7 @@ describe('<CategoriesTableRow />', () => {
                         categoryId={categories[0].id}
                         category={categories[0]}
                         position={0}
-                        level={3}
+                        level={CATEGORY_TREE_MAX_LEVEL}
                         isUnlisted={false}
                         childCategories={categories[0].children}
                         renderArticleList={() => <div />}

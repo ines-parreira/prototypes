@@ -1,4 +1,6 @@
-.mixin-level-loop (@i) when (@i < 5) {
+@import (reference) '../../helpCenter.less';
+
+.mixin-level-loop (@i) when (@i < @maxCategoryTreeDepth) {
     :global(#app-root) .nesting-level-@{i} {
         padding-left: (30px + @i*28px);
     }

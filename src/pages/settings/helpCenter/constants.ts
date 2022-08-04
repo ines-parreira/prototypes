@@ -144,3 +144,4 @@ export enum EditingStateEnum {
     UNSAVED = 'UNSAVED',
     SAVED = 'SAVED',
 }
+export const CATEGORY_TREE_MAX_LEVEL = 4

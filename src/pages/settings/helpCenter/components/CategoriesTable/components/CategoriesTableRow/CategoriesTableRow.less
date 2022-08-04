@@ -1,6 +1,7 @@
 @import (reference) '~css/new/colorTokens';
+@import (reference) '../../../../helpCenter.less';
 
-.mixin-level-loop (@i) when (@i < 4) {
+.mixin-level-loop (@i) when (@i < @maxCategoryTreeDepth) {
     .subCategory-table-level@{i} {
         margin-bottom: 0px;
         padding-left: 20px;

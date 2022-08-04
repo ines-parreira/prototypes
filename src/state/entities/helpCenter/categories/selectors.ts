@@ -2,6 +2,7 @@ import {createSelector} from 'reselect'
 
 import {Category, NonRootCategory} from 'models/helpCenter/types'
 
+import {CATEGORY_TREE_MAX_LEVEL} from 'pages/settings/helpCenter/constants'
 import {getArticles} from '../articles/selectors'
 import {getHelpCenterStore} from '../selectors'
 import {isNonRootCategory} from '.'
@@ -65,7 +66,7 @@ export const getParentCategories = createSelector(
             }
             categoriesArray.push(category)
             category.children.forEach((categoryId) => {
-                if (level < 3) {
+                if (level < CATEGORY_TREE_MAX_LEVEL) {
                     traverseCategories(categories[categoryId], level + 1)
                 }
             })

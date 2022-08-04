@@ -28,6 +28,7 @@ import {
     CategoryRowActionTypes,
     CATEGORY_ROW_ACTIONS,
     MODALS,
+    CATEGORY_TREE_MAX_LEVEL,
 } from 'pages/settings/helpCenter/constants'
 import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -207,7 +208,8 @@ const DroppableCategoriesTableRow = ({
                             name,
                             icon,
                             disabled:
-                                level >= 3 && name === 'createNestedCategory',
+                                level >= CATEGORY_TREE_MAX_LEVEL &&
+                                name === 'createNestedCategory',
                             tooltip: {
                                 content: tooltip,
                                 target: `${name}-${category.id}`,
