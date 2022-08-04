@@ -94,6 +94,7 @@ describe('Config: views', () => {
                 // list of properties that return something else than a string
                 const fieldNameToType = {
                     ticket: {
+                        id: 'number',
                         details: 'object',
                         tags: 'object',
                         language: 'object',

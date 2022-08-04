@@ -10,6 +10,7 @@ export enum ViewType {
 }
 
 export enum ViewField {
+    TicketId = 'id',
     Name = 'name',
     Email = 'email',
     Created = 'created',

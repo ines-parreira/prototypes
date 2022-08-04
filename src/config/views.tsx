@@ -1,5 +1,5 @@
 import React from 'react'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
 import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
@@ -229,6 +229,10 @@ export const views = fromJS([
                     },
                 },
             },
+            {
+                name: ViewField.TicketId,
+                title: 'Ticket ID',
+            },
         ],
         cell: (fieldName: ViewField, item: Map<any, any>) => {
             switch (fieldName) {
@@ -333,6 +337,9 @@ export const views = fromJS([
                                 })}
                         </div>
                     )
+                }
+                case ViewField.TicketId: {
+                    return (item.get('id') as string) || ''
                 }
                 default: {
                     return defaultCell(fieldName, item)

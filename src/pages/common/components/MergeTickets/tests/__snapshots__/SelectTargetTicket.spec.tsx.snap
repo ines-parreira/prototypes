@@ -241,6 +241,10 @@ exports[`SelectTargetTicket component should render 1`] = `
                 },
               },
             },
+            Immutable.Map {
+              "name": "id",
+              "title": "Ticket ID",
+            },
           ],
           "api": "tickets",
           "type": "ticket-list",

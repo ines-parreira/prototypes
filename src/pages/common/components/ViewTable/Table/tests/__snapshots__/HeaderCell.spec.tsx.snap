@@ -246,6 +246,10 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
                 },
               },
             },
+            Immutable.Map {
+              "name": "id",
+              "title": "Ticket ID",
+            },
           ],
           "api": "tickets",
           "type": "ticket-list",
@@ -461,6 +465,10 @@ exports[`ViewTable::Table::HeaderCell last cell 1`] = `
                 "snooze_datetime": "desc",
               },
             },
+          },
+          Immutable.Map {
+            "name": "id",
+            "title": "Ticket ID",
           },
         ]
       }
