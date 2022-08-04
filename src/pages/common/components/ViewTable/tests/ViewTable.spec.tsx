@@ -248,6 +248,35 @@ describe('<ViewTable />', () => {
                 mockSearchRank
             )
         })
+
+        it(
+            'should reset the active view and fetch items from the suggested view when isSearch is not true, ' +
+                'but the active view has a search term that was not cleared',
+            () => {
+                render(
+                    <ViewTableContainer
+                        {...minProps}
+                        activeView={
+                            fromJS({...fixtureView, id: 0, search: ''}) as Map<
+                                any,
+                                any
+                            >
+                        }
+                        urlViewId={null}
+                    />
+                )
+
+                expect(minProps.setViewActive).toHaveBeenLastCalledWith(
+                    minProps.activeView
+                )
+                expect(minProps.fetchViewItems).toHaveBeenLastCalledWith(
+                    null,
+                    undefined,
+                    null,
+                    null
+                )
+            }
+        )
     })
 
     describe('on update', () => {

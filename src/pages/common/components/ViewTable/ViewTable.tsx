@@ -115,6 +115,13 @@ export class ViewTableContainer extends Component<Props> {
 
             setViewActive(getView(suggestedViewId as unknown as string))
             activeViewIdSet(suggestedViewId)
+        } else if (!isSearch && activeView.get('search') !== null) {
+            const suggestedViewId = getViewIdToDisplay(
+                config.get('type'),
+                undefined
+            )
+            setViewActive(getView(suggestedViewId as unknown as string))
+            activeViewIdSet(suggestedViewId)
         }
 
         void fetchViewItems(
