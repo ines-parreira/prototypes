@@ -108,7 +108,7 @@ const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
             >
                 Enable chat widget
             </ToggleInput>
-            <p>This makes a chat widget visible for all help center pages.</p>
+            <p>This makes a chat widget visible for all Help Center pages.</p>
 
             {chatOptions.length === 0 && (
                 <div className={css['warning-no-chat']}>
@@ -153,7 +153,7 @@ const ChatApplication: React.FC<Props> = ({helpCenterId}) => {
                         <img src={warningIcon} alt="warning icon" />
                         <p className={css.alertMessage}>
                             The selected chat integration is using a different
-                            help center for article recommendations.
+                            Help Center for article recommendations.
                         </p>
                     </div>
                 </LinkAlert>

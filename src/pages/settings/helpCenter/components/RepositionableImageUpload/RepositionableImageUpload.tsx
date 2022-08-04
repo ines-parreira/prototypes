@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useEffect, useState} from 'react'
+import React, {FunctionComponent, MouseEvent, useEffect, useState} from 'react'
 
 import {
     Title,
@@ -72,6 +72,11 @@ export const RepositionableImageUpload: FunctionComponent<RepositionableImageUpl
 
         const shouldDisplayRemoveImage = !isTouched && defaultPreview
 
+        const handleRemoveImage = (event: MouseEvent<HTMLDivElement>) => {
+            handleOnRemoveFile(event)
+            setRepositioningInProgress(false)
+        }
+
         return (
             <div className={imageUploadCss.container}>
                 <Title help={info} Tooltip={{style: {width: 180}}}>
@@ -97,18 +102,12 @@ export const RepositionableImageUpload: FunctionComponent<RepositionableImageUpl
                         <HelpText
                             {...helpTextProps}
                             onHighlightClick={() => inputRef.current?.click()}
+                            onRemoveClick={
+                                shouldDisplayRemoveImage
+                                    ? handleRemoveImage
+                                    : undefined
+                            }
                         />
-                        {shouldDisplayRemoveImage && (
-                            <div
-                                className={css.highlight}
-                                onClick={(event) => {
-                                    handleOnRemoveFile(event)
-                                    setRepositioningInProgress(false)
-                                }}
-                            >
-                                Remove image
-                            </div>
-                        )}
                     </div>
                 )}
             </div>

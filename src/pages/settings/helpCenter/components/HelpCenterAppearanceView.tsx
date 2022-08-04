@@ -370,7 +370,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
         <HelpCenterPageWrapper helpCenter={helpCenter}>
             <div className={css.heading}>
                 <h3>Appearance</h3>
-                <p>Set up your help center's logo, color and theme.</p>
+                <p>Set up your Help Center's logo, color and theme.</p>
             </div>
             <div className={css.heading}>
                 <h4>Logo &amp; Favicon</h4>
@@ -455,10 +455,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 <div className={css.bannerHeader}>
                     <div className={css.bannerHeaderText}>
                         <div className={css.heading}>
-                            <h3>Banner settings</h3>
+                            <h3>Background settings</h3>
                             <p>
-                                This is displayed on top of your help center’s{' '}
-                                <strong>home page</strong>.
+                                Add a banner title in multiple languages and a
+                                background image.
                             </p>
                         </div>
                     </div>
@@ -499,7 +499,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             bannerImage,
                             bannerImageUrl
                         ),
-                        text: 'recommended size 1440 x 316 - Maximum 10 MB',
+                        text: 'Use 2500px wide images for best quality. Images less than 1440px wide may appear blurry. File size of 500 KB or less will help your help center load quickly. Max file size 10 MB.',
                     }}
                     verticalOffset={translation?.banner_image_vertical_offset}
                     inputRef={bannerInputRef}

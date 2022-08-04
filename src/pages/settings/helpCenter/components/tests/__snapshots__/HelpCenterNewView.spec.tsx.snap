@@ -388,7 +388,7 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
             Theme
           </h4>
           <p>
-            Select which theme you prefer to use in your help center. 
+            Select which theme you prefer to use in your Help Center. 
             <b>
               This will affect the header & footer.
             </b>

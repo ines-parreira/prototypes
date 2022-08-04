@@ -179,7 +179,7 @@ export const HelpCenterStartView: React.FC = () => {
                         width: 180,
                     }}
                 >
-                    Please contact us to create more help centers.
+                    Please contact us to create more Help Centers.
                 </Tooltip>
             </PageHeader>
 
@@ -190,7 +190,7 @@ export const HelpCenterStartView: React.FC = () => {
             >
                 <p>
                     Help Center is a tool that makes it easier to answer your
-                    client’s questions in an organic way. Set up a dedicated
+                    customers’ questions in an organic way. Set up a dedicated
                     site to sideload your support flow.{' '}
                     <a
                         href="https://docs.gorgias.com/help-center/gorgias-help-center"

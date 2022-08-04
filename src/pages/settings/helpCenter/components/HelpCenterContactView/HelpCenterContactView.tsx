@@ -27,7 +27,7 @@ const HelpCenterContactView: React.FC = () => {
                             <h3>Chat Widget</h3>
                             <p>
                                 This chat integration is going to be displayed
-                                as a widget on every page of your help center.
+                                as a widget on every page of your Help Center.
                             </p>
                         </div>
                     </div>

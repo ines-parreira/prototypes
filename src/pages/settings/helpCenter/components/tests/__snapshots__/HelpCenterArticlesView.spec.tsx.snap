@@ -131,7 +131,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
         </span>
       </h1>
       <p>
-        Write your first article or create your first category to be displayed in your very own Help Center.
+        Write your first article and create article categories to be displayed in your Help Center.
       </p>
       <button
         class="wrapper mr-2 fill primary medium"
@@ -162,12 +162,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
           Import articles from another Help Center
         </h4>
         <p>
-          You can import your existing articles from
-           
-          <strong>
-            other supported help center solutions
-          </strong>
-           or by uploading a CSV.
+          You can import CSV files with articles from another Help Center.
         </p>
         <button
           class="wrapper fill secondary medium"

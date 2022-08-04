@@ -241,8 +241,8 @@ export const OrderManagementFlowsPreferences = () => {
                                                 policyName="Track"
                                                 policyDescription="Let customers track
                                                         orders directly from the
-                                                        Self-service Portal in chat
-                                                        and help center"
+                                                        Self-service Portal in Chat
+                                                        and Help Center"
                                                 configuration={configuration}
                                             />
                                             <PolicyRow
@@ -262,8 +262,8 @@ export const OrderManagementFlowsPreferences = () => {
                                                 integration={integration}
                                                 policyName="Return"
                                                 policyDescription="Let customers request returns directly
-                                                        from the Self-service Portal in chat
-                                                        and help center"
+                                                        from the Self-service Portal in Chat
+                                                        and Help Center"
                                                 configuration={configuration}
                                             />
                                             <PolicyRow
@@ -273,8 +273,8 @@ export const OrderManagementFlowsPreferences = () => {
                                                 integration={integration}
                                                 policyName="Cancel"
                                                 policyDescription="Let customers request order cancellations
-                                                        directly from the Self-service Portal in chat
-                                                        and help center"
+                                                        directly from the Self-service Portal in Chat
+                                                        and Help Center"
                                                 configuration={configuration}
                                             />
                                         </tbody>

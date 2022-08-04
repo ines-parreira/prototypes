@@ -5,15 +5,18 @@ exports[`<HelpText> matches snapshot 1`] = `
   <div
     class="container"
   >
-    <span
-      class="highlight"
+    <div
+      class="actions"
     >
-      Upload image
-    </span>
-    <br />
-    <span>
+      <div
+        class="highlight"
+      >
+        Upload image
+      </div>
+    </div>
+    <p>
       recommended size 1640 x 624
-    </span>
+    </p>
   </div>
 </div>
 `;

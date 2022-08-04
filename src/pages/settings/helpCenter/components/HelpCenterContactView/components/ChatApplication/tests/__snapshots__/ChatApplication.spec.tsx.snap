@@ -28,7 +28,7 @@ exports[`<ChatApplication /> allows to enable chat widget and selects the first 
       </label>
     </div>
     <p>
-      This makes a chat widget visible for all help center pages.
+      This makes a chat widget visible for all Help Center pages.
     </p>
   </section>
 </div>
@@ -62,7 +62,7 @@ exports[`<ChatApplication /> is disabled if there are no chat integrations 1`] =
       </label>
     </div>
     <p>
-      This makes a chat widget visible for all help center pages.
+      This makes a chat widget visible for all Help Center pages.
     </p>
     <div
       class="warning-no-chat"

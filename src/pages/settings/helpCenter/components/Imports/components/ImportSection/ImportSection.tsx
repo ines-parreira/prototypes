@@ -232,9 +232,7 @@ export const ImportSection: React.FC<Props> = ({className}: Props) => {
             <h4>Import articles from another Help Center</h4>
 
             <p>
-                You can import your existing articles from{' '}
-                <strong>other supported help center solutions</strong> or by
-                uploading a CSV.
+                You can import CSV files with articles from another Help Center.
             </p>
 
             {isHotswapImportInProgress && (

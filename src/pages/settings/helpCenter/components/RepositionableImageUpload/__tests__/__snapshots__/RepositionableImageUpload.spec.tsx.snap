@@ -53,20 +53,23 @@ exports[`<RepositionableImageUpload /> matches snapshot with preview 1`] = `
       <div
         class="container"
       >
-        <span
-          class="highlight clickable"
+        <div
+          class="actions"
         >
-          upload
-        </span>
-        <br />
-        <span>
+          <div
+            class="highlight clickable"
+          >
+            upload
+          </div>
+          <div
+            class="removeHighlight"
+          >
+            Remove image
+          </div>
+        </div>
+        <p>
           text
-        </span>
-      </div>
-      <div
-        class="highlight"
-      >
-        Remove image
+        </p>
       </div>
     </div>
   </div>

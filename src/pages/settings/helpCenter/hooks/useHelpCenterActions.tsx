@@ -26,7 +26,7 @@ export const useHelpCenterActions = () => {
             } catch (err) {
                 void dispatch(
                     notify({
-                        message: "Failed to fetch Help center's translations",
+                        message: "Failed to fetch Help Center's translations",
                         status: NotificationStatus.Error,
                     })
                 )
@@ -53,7 +53,7 @@ export const useHelpCenterActions = () => {
             } catch (err) {
                 void dispatch(
                     notify({
-                        message: "Failed to fetch Help center's custom domains",
+                        message: "Failed to fetch Help Center's custom domains",
                         status: NotificationStatus.Error,
                     })
                 )

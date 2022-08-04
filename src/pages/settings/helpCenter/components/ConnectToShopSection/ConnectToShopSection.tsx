@@ -121,7 +121,7 @@ export const ConnectToShopSection = ({
                         target={disconnectButtonRef}
                         disabled={disconnectModalOpen}
                     >
-                        Disconnect help center from this store
+                        Disconnect Help Center from this store
                     </Tooltip>
 
                     <Popover
@@ -135,7 +135,7 @@ export const ConnectToShopSection = ({
                         <PopoverHeader>Are you sure?</PopoverHeader>
                         <PopoverBody>
                             <p>
-                                Disconnecting this store from the help center
+                                Disconnecting this store from the Help Center
                                 will remove Self-Service features (if the
                                 features are enabled).
                             </p>
@@ -143,7 +143,7 @@ export const ConnectToShopSection = ({
                             <p>
                                 Are you sure you want to disconnect{' '}
                                 <strong>{helpCenter.shop_name}</strong> from
-                                this help center?
+                                this Help Center?
                             </p>
 
                             <Button

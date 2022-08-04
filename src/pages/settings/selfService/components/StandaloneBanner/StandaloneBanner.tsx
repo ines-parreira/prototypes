@@ -24,9 +24,9 @@ export const StandaloneBanner = ({
 }: Props): JSX.Element => {
     const title = useMemo(() => {
         if (helpCenters.length === 1 && helpCenters[0].shop_name) {
-            return `We created a help center for ${helpCenters[0].shop_name} to help you get started.`
+            return `We created a Help Center for ${helpCenters[0].shop_name} to help you get started.`
         }
-        return 'We created a help center for each store to help you get started.'
+        return 'We created a Help Center for each store to help you get started.'
     }, [helpCenters])
 
     const content = useMemo(() => {
@@ -38,10 +38,10 @@ export const StandaloneBanner = ({
             return (
                 <div className={css.bannerContent}>
                     <div>
-                        Customize your help center to look and feel like your
+                        Customize your Help Center to look and feel like your
                         brand by adding a logo, background image, your brand
                         color and fonts, and more! Use your{' '}
-                        <a href={url}>help center’s live</a> URL to redirect
+                        <a href={url}>Help Center’s live</a> URL to redirect
                         shoppers to self-service.
                     </div>
                     <NavLink

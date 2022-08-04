@@ -44,7 +44,7 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
                     <h3>Search Engine Optimization (SEO)</h3>
                     <p>
                         Allow you to add tracking links and other scripts to
-                        your help center page.
+                        your Help Center page.
                     </p>
                 </div>
             </div>
@@ -56,7 +56,7 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
                 label="Meta Title"
                 value={seoMeta.title ?? ''}
                 onChange={onEditSeoMeta('title')}
-                caption="Help center title is displayed in search engines to help people find it."
+                caption="Help Center title is displayed in search engines to help people find it."
             />
             <TextArea
                 rows={2}
@@ -65,7 +65,7 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
                 label="Meta Description"
                 value={seoMeta.description ?? ''}
                 onChange={onEditSeoMeta('description')}
-                caption="Help center description is displayed in search engines to help people find it."
+                caption="Help Center description is displayed in search engines to help people find it."
             />
             <SearchEnginePreview
                 baseUrl={getAbsoluteUrl({domain}, false)}
@@ -74,7 +74,7 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
                     seoMeta.description ||
                     `Home page of the ${helpCenter.name} Help Center`
                 }
-                help="This is a preview of how your help center is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)"
+                help="This is a preview of how your Help Center is going to look like in search engines (e.g. Google, Duckduckgo, Bing...)"
             />
         </section>
     )

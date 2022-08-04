@@ -125,11 +125,12 @@ export const SelfServiceView = () => {
                                     the same 20 types of issues.
                                 </p>
                                 <p>
-                                    Self-service enables your customers to
-                                    browse their orders and select the type of
-                                    issue they are having. It will then create a
-                                    chat or help center ticket for your team to
-                                    handle.
+                                    Self-service empowers customers to find
+                                    answers to common questions and manage their
+                                    orders via Chat or Help Center, resolving
+                                    requests without an agent. If customers
+                                    require further assistance, a chat or help
+                                    center ticket is created.
                                 </p>
                                 {shouldShowProductBanner && (
                                     <StandaloneBanner

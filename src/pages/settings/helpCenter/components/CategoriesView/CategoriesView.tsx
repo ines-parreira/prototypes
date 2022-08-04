@@ -106,8 +106,8 @@ export const CategoriesViews = ({
                         </span>
                     </h1>
                     <p>
-                        Write your first article or create your first category
-                        to be displayed in your very own Help Center.
+                        Write your first article and create article categories
+                        to be displayed in your Help Center.
                     </p>
                     <Button className="mr-2" onClick={onCreateArticle}>
                         <i className="material-icons-outlined mr-1">article</i>
@@ -125,12 +125,12 @@ export const CategoriesViews = ({
                         <div className={css.bannerContainer}>
                             <Banner
                                 preview={<img src={standalonePreview} alt="" />}
-                                title="Not ready to add articles? Customize your help center in the meantime."
+                                title="Not ready to add articles? Customize your Help Center in the meantime."
                             >
                                 <div className={css.bannerContent}>
                                     <div>
                                         <div>
-                                            We created a help center to help get
+                                            We created a Help Center to help get
                                             you started. Customize it by adding
                                             a logo,
                                         </div>

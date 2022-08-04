@@ -119,7 +119,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             Appearance
           </h3>
           <p>
-            Set up your help center's logo, color and theme.
+            Set up your Help Center's logo, color and theme.
           </p>
         </div>
         <div
@@ -197,15 +197,18 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             <div
               class="container"
             >
-              <span
-                class="highlight clickable"
+              <div
+                class="actions"
               >
-                Upload image
-              </span>
-              <br />
-              <span>
+                <div
+                  class="highlight clickable"
+                >
+                  Upload image
+                </div>
+              </div>
+              <p>
                 maximum 10 MB
-              </span>
+              </p>
             </div>
           </div>
           <div
@@ -270,15 +273,18 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             <div
               class="container"
             >
-              <span
-                class="highlight clickable"
+              <div
+                class="actions"
               >
-                Upload image
-              </span>
-              <br />
-              <span>
+                <div
+                  class="highlight clickable"
+                >
+                  Upload image
+                </div>
+              </div>
+              <p>
                 maximum 10 MB
-              </span>
+              </p>
             </div>
           </div>
           <div
@@ -331,15 +337,18 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             <div
               class="container"
             >
-              <span
-                class="highlight clickable"
+              <div
+                class="actions"
               >
-                Upload image
-              </span>
-              <br />
-              <span>
+                <div
+                  class="highlight clickable"
+                >
+                  Upload image
+                </div>
+              </div>
+              <p>
                 recommended size 64 x 64
-              </span>
+              </p>
             </div>
           </div>
         </section>
@@ -348,7 +357,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
             Theme
           </h4>
           <p>
-            Select which theme you prefer to use in your help center. 
+            Select which theme you prefer to use in your Help Center. 
             <b>
               This will affect the header & footer.
             </b>
@@ -661,15 +670,10 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 class="heading"
               >
                 <h3>
-                  Banner settings
+                  Background settings
                 </h3>
                 <p>
-                  This is displayed on top of your help center’s
-                   
-                  <strong>
-                    home page
-                  </strong>
-                  .
+                  Add a banner title in multiple languages and a background image.
                 </p>
               </div>
             </div>
@@ -832,17 +836,19 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               <div
                 class="container"
               >
-                <span
-                  class="highlight clickable"
+                <div
+                  class="actions"
                 >
-                  Upload image
-                </span>
-                <br />
-                <span>
-                  recommended size 1440 x 316 - Maximum 10 MB
-                </span>
+                  <div
+                    class="highlight clickable"
+                  >
+                    Upload image
+                  </div>
+                </div>
+                <p>
+                  Use 2500px wide images for best quality. Images less than 1440px wide may appear blurry. File size of 500 KB or less will help your help center load quickly. Max file size 10 MB.
+                </p>
               </div>
-              
             </div>
           </div>
         </section>

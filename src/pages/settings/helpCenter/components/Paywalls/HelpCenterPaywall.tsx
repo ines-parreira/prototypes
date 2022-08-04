@@ -41,7 +41,7 @@ const HelpCenterPaywall = (): JSX.Element => {
             header="Change plans to activate your Help Center"
             description={
                 <>
-                    Create your own help center in order to help users better
+                    Create your own Help Center in order to help users better
                     understand your product and answer frequently asked
                     questions.
                     {currentPlanName === PlanName.Enterprise

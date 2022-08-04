@@ -182,7 +182,7 @@ describe('<ChatApplication />', () => {
         )
 
         screen.getByText(
-            'The selected chat integration is using a different help center for article recommendations.'
+            'The selected chat integration is using a different Help Center for article recommendations.'
         )
         const chatIntegrationLink = screen.getByText(
             'Go To Chat Settings'
@@ -218,7 +218,7 @@ describe('<ChatApplication />', () => {
 
         expect(
             screen.queryByText(
-                'The selected chat integration is using a different help center for article recommendations.'
+                'The selected chat integration is using a different Help Center for article recommendations.'
             )
         ).toBeNull()
     })
@@ -249,7 +249,7 @@ describe('<ChatApplication />', () => {
 
         expect(
             screen.queryByText(
-                'The selected chat integration is using a different help center for article recommendations.'
+                'The selected chat integration is using a different Help Center for article recommendations.'
             )
         ).toBeNull()
     })
@@ -275,7 +275,7 @@ describe('<ChatApplication />', () => {
 
         expect(
             screen.queryByText(
-                'The selected chat integration is using a different help center for article recommendations.'
+                'The selected chat integration is using a different Help Center for article recommendations.'
             )
         ).toBeNull()
     })

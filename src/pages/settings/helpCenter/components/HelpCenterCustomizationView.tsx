@@ -301,7 +301,7 @@ export const HelpCenterCustomizationView = () => {
                                 innerClassName={css['tooltip-inner']}
                                 arrowClassName={css['tooltip-arrow']}
                             >
-                                Add custom HTML code for the help center header.
+                                Add custom HTML code for the Help Center header.
                             </Tooltip>
                         </div>
                     </ToggleInput>
@@ -393,7 +393,7 @@ export const HelpCenterCustomizationView = () => {
                                 innerClassName={css['tooltip-inner']}
                                 arrowClassName={css['tooltip-arrow']}
                             >
-                                Add custom HTML code for the help center footer.
+                                Add custom HTML code for the Help Center footer.
                             </Tooltip>
                         </div>
                     </ToggleInput>

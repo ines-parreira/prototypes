@@ -15,6 +15,11 @@
         }
     }
 
+    .actions {
+        display: flex;
+        width: 100%;
+    }
+
     .highlight {
         color: @classic-main-primary;
         font-weight: 600;
@@ -22,5 +27,13 @@
         &.clickable {
             cursor: pointer;
         }
+    }
+
+    .removeHighlight {
+        margin-left: auto;
+
+        color: @classic-feedback-error;
+        font-weight: 600;
+        cursor: pointer;
     }
 }

@@ -17,7 +17,7 @@ exports[`MaxArticleBanner should render the banner with a warning 1`] = `
       <div
         class="bannerLabel"
       >
-        Your help center currently contains 4 articles out of 5 authorized articles. Please contact us to increase the limit.
+        Your Help Center currently contains 4 articles out of 5 authorized articles. Please contact us to increase the limit.
       </div>
     </div>
     <div
@@ -58,7 +58,7 @@ exports[`MaxArticleBanner should render the banner with the max articles limitat
       <div
         class="bannerLabel"
       >
-        Each help center is limited to 5 articles, please contact us to increase the authorized maximum number of articles.
+        Each Help Center is limited to 5 articles, please contact us to increase the authorized maximum number of articles.
       </div>
     </div>
     <div

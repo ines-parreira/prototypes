@@ -75,7 +75,7 @@ exports[`HelpCenterPaywall should render the component correctly "for" Pro legac
                 class="description"
               >
                 <p>
-                  Create your own help center in order to help users better understand your product and answer frequently asked questions.
+                  Create your own Help Center in order to help users better understand your product and answer frequently asked questions.
                 </p>
               </div>
               <div
@@ -189,7 +189,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Advanced" 
                 class="description"
               >
                 <p>
-                  Create your own help center in order to help users better understand your product and answer frequently asked questions.
+                  Create your own Help Center in order to help users better understand your product and answer frequently asked questions.
                   You can contact your customer success manager or do it from here to upgrade today!
                 </p>
               </div>
@@ -304,7 +304,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Basic" leg
                 class="description"
               >
                 <p>
-                  Create your own help center in order to help users better understand your product and answer frequently asked questions.
+                  Create your own Help Center in order to help users better understand your product and answer frequently asked questions.
                 </p>
               </div>
               <div
@@ -418,7 +418,7 @@ exports[`HelpCenterPaywall should render the component correctly for "Enterprise
                 class="description"
               >
                 <p>
-                  Create your own help center in order to help users better understand your product and answer frequently asked questions.
+                  Create your own Help Center in order to help users better understand your product and answer frequently asked questions.
                   Contact your customer success manager to upgrade today!
                 </p>
               </div>
@@ -533,7 +533,7 @@ exports[`HelpCenterPaywall should render the component correctly for when the pl
                 class="description"
               >
                 <p>
-                  Create your own help center in order to help users better understand your product and answer frequently asked questions.
+                  Create your own Help Center in order to help users better understand your product and answer frequently asked questions.
                 </p>
               </div>
               <div

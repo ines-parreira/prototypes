@@ -38,8 +38,8 @@ const MaxArticleBanner = ({
     }, [nbArticles, isLimitReached, shouldDisplayWarning])
 
     const message = isLimitReached
-        ? `Each help center is limited to ${maxArticles} articles, please contact us to increase the authorized maximum number of articles.`
-        : `Your help center currently contains ${nbArticles} articles out of ${maxArticles} authorized articles. Please contact us to increase the limit.`
+        ? `Each Help Center is limited to ${maxArticles} articles, please contact us to increase the authorized maximum number of articles.`
+        : `Your Help Center currently contains ${nbArticles} articles out of ${maxArticles} authorized articles. Please contact us to increase the limit.`
 
     return isShowingBanner ? (
         <div className={css.banner}>
