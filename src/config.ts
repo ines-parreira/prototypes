@@ -605,6 +605,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
                 input: {
                     type: 'assignee_user-select',
                 },
+                default: null,
             },
         },
     },
