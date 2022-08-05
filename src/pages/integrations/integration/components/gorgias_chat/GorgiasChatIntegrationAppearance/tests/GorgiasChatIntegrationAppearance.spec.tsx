@@ -60,6 +60,11 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             updateOrCreateIntegration: jest.fn(() => Promise.resolve()),
             deleteIntegration: jest.fn(() => Promise.resolve()),
         },
+        currentAccount: fromJS({
+            meta: {
+                company_name: 'Acme Corp',
+            },
+        }) as Map<any, any>,
     } as any as Props
 
     beforeEach(() => {

@@ -34,6 +34,7 @@ import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from 'config/integrations'
 import {Language} from 'constants/languages'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import * as integrationSelectors from 'state/integrations/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
@@ -133,6 +134,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     currentUser,
     shopifyIntegrations,
     gorgiasChatIntegrations,
+    currentAccount,
 }: Props & ConnectedProps<typeof connector>) => {
     const [state, setState] = useState<State>(
         _merge(
@@ -159,18 +161,20 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         }
 
         // Preselect store if merchant has only 1 shopify integration
-        if (
-            !isUpdate &&
-            !loading.get('integration') &&
-            shopifyIntegrations.size === 1
-        ) {
-            const shopifyIntegration: ShopifyIntegration = (
-                shopifyIntegrations.getIn(['0']) as Map<any, any>
-            ).toJS()
+        if (!isUpdate && !loading.get('integration')) {
+            if (shopifyIntegrations.size === 1) {
+                const shopifyIntegration: ShopifyIntegration = (
+                    shopifyIntegrations.getIn(['0']) as Map<any, any>
+                ).toJS()
 
-            setStoreName(shopifyIntegration.meta?.shop_name)
-            setStoreIntegrationId(shopifyIntegration.id)
-            prefillWithStorename(shopifyIntegration.meta?.shop_name)
+                setStoreName(shopifyIntegration.meta?.shop_name)
+                setStoreIntegrationId(shopifyIntegration.id)
+            }
+            prefillWithStorename(
+                (currentAccount.get('meta') as Map<any, any>).get(
+                    'company_name'
+                )
+            )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [integration])
@@ -876,6 +880,7 @@ const mapStateToProps = (state: RootState) => {
         gorgiasChatIntegrations: integrationSelectors.getIntegrationsByTypes(
             IntegrationType.GorgiasChat
         )(state),
+        currentAccount: getCurrentAccountState(state),
     }
 }
 const connector = connect(mapStateToProps)

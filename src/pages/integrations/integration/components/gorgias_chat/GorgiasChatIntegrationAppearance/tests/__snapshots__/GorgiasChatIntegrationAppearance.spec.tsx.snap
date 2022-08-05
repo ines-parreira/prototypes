@@ -239,7 +239,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
-                      value=""
+                      value="Acme Corp Support"
                     />
                   </div>
                 </div>
@@ -669,7 +669,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       <div
                         class="appName"
                       >
-                         
+                        Acme Corp Support
                       </div>
                       <div
                         class="introductionText"
@@ -4625,7 +4625,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
-                      value="MY ONLY SHOPIFY STORE Support"
+                      value="Acme Corp Support"
                     />
                   </div>
                 </div>
@@ -5054,7 +5054,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       <div
                         class="appName"
                       >
-                        MY ONLY SHOPIFY STORE Support
+                        Acme Corp Support
                       </div>
                       <div
                         class="introductionText"
@@ -5453,7 +5453,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       placeholder="Ex: Company Support"
                       required=""
                       type="text"
-                      value=""
+                      value="Acme Corp Support"
                     />
                   </div>
                 </div>
@@ -5883,7 +5883,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       <div
                         class="appName"
                       >
-                         
+                        Acme Corp Support
                       </div>
                       <div
                         class="introductionText"
