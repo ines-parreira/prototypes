@@ -4,8 +4,9 @@ import React, {
     useRef,
     ComponentProps,
     MutableRefObject,
+    useEffect,
 } from 'react'
-import {useLocalStorage, useClickAway, useEffectOnce} from 'react-use'
+import {useLocalStorage, useClickAway} from 'react-use'
 import {Popover, PopoverBody} from 'reactstrap'
 import classnames from 'classnames'
 import Button from 'pages/common/components/button/Button'
@@ -31,14 +32,20 @@ interface StageProp {
 }
 
 interface Props {
+    macrosVisible: boolean
     onClearMacro: () => void
     target: MutableRefObject<HTMLElement | null>
 }
 
-export default function OnbordingMacroPopover({target, onClearMacro}: Props) {
+export default function OnbordingMacroPopover({
+    target,
+    onClearMacro,
+    macrosVisible,
+}: Props) {
     const dispatch = useAppDispatch()
     const [stage, setStage] = useState<Stages>('info')
     const [showPopover, setShowPopover] = useState(false)
+    const hasShownPopover = useRef(false)
     const ticket = useAppSelector(getTicket)
     const currentUser = useAppSelector(getCurrentUser)
 
@@ -49,7 +56,7 @@ export default function OnbordingMacroPopover({target, onClearMacro}: Props) {
         0
     )
 
-    useEffectOnce(() => {
+    useEffect(() => {
         const showMacrosSetting: undefined | boolean =
             currentUserPreferences.getIn(['data', 'show_macros'])
 
@@ -60,13 +67,18 @@ export default function OnbordingMacroPopover({target, onClearMacro}: Props) {
             ])
 
         if (
+            macrosVisible &&
             showPopoverSetting &&
             showMacrosSetting &&
-            ticket.channel === 'email'
+            ticket.channel === 'email' &&
+            !hasShownPopover.current
         ) {
-            setShowPopover(true)
+            setShowPopover(() => {
+                hasShownPopover.current = true
+                return true
+            })
         }
-    })
+    }, [macrosVisible, currentUserPreferences, ticket])
 
     const setShowMacroByDefault = async (showMacro?: boolean) => {
         setShowPopover(false)
@@ -112,9 +124,8 @@ export default function OnbordingMacroPopover({target, onClearMacro}: Props) {
         info: {
             content: (
                 <p>
-                    This is the macro search view.{' '}
-                    <b>You can compose your message from scratch </b> by
-                    clicking here.
+                    You're currently in the macro search view. You can switch to
+                    the text editor here.
                 </p>
             ),
             buttons: [
@@ -128,7 +139,7 @@ export default function OnbordingMacroPopover({target, onClearMacro}: Props) {
         prompt: {
             content: (
                 <p>
-                    You’re now defaulted to the macro search to better optimise
+                    You're now defaulted to the macro search view to optimize
                     your workflow.
                 </p>
             ),

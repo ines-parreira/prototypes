@@ -28,12 +28,7 @@ exports[`<OnbordingMacroPopover /> should display popover 1`] = `
                 class="d-md-block p-1 popoverContent"
               >
                 <p>
-                  This is the macro search view.
-                   
-                  <b>
-                    You can compose your message from scratch 
-                  </b>
-                   by clicking here.
+                  You're currently in the macro search view. You can switch to the text editor here.
                 </p>
               </div>
               <button

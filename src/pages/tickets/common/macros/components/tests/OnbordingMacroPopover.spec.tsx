@@ -48,6 +48,7 @@ describe('<OnbordingMacroPopover />', () => {
         defaultState: Partial<RootState>
         props?: {
             onClearMacro?: () => void
+            macrosVisible?: boolean
         }
     }) {
         const ref = useRef<any>()
@@ -55,6 +56,7 @@ describe('<OnbordingMacroPopover />', () => {
             <Provider store={mockStore(defaultState)}>
                 <div style={{width: 800}} ref={ref} data-testid="parent">
                     <OnbordingMacroPopover
+                        macrosVisible={props?.macrosVisible ?? true}
                         onClearMacro={props?.onClearMacro || jest.fn()}
                         target={ref}
                     />
@@ -286,5 +288,46 @@ describe('<OnbordingMacroPopover />', () => {
         await waitFor(() => expect(logEvent).toHaveBeenCalled())
 
         expect(screen.queryByText('Revert back')).toBeFalsy()
+    })
+
+    it("should not render popover if 'macro search' is hidden", () => {
+        const userSettings: UserSetting[] = [
+            {
+                data: {
+                    show_macros: true,
+                    macros_default_to_search_popover: true,
+                    available: true,
+                },
+                id: 3,
+                type: UserSettingType.Preferences,
+            },
+        ]
+
+        user.settings = userSettings
+
+        const defaultState: Partial<RootState> = {
+            currentUser: fromJS(user),
+            ticket: fromJS(ticket),
+        }
+
+        const onClearMacro = jest.fn()
+
+        const {rerender} = render(
+            <OnbordingMacroPopoverTestComp
+                props={{onClearMacro, macrosVisible: false}}
+                defaultState={defaultState}
+            />
+        )
+
+        expect(screen.queryByText('Got it')).toBeFalsy()
+
+        rerender(
+            <OnbordingMacroPopoverTestComp
+                props={{onClearMacro, macrosVisible: true}}
+                defaultState={defaultState}
+            />
+        )
+
+        expect(screen.queryByText('Got it')).toBeTruthy()
     })
 })

@@ -81,6 +81,7 @@ const TicketMacrosSearch = ({
 
             {getFlag(FlagKey.DefaultMacroToSearch) && (
                 <OnbordingMacroPopover
+                    macrosVisible={macrosVisible}
                     target={ref}
                     onClearMacro={onClearMacro}
                 />
