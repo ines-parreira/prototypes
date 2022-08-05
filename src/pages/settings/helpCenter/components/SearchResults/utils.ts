@@ -1,5 +1,6 @@
 import {Article, Category, LocaleCode} from 'models/helpCenter/types'
 import {isNonRootCategory} from 'state/entities/helpCenter/categories'
+import {MAX_CATEGORY_DEPTH} from '../../constants'
 import {FlatAlgoliaSearchResults} from '../../providers/SearchContext'
 import {
     AlgoliaHit,
@@ -17,8 +18,6 @@ import {
     SearchResult,
     SearchResultCategory,
 } from './types'
-
-const MAX_CATEGORY_DEPTH = 4
 
 const createCategorySearchResultById = (
     id: number,

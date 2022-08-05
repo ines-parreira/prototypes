@@ -144,4 +144,7 @@ export enum EditingStateEnum {
     UNSAVED = 'UNSAVED',
     SAVED = 'SAVED',
 }
+// category levels are identified from 0 to n
 export const CATEGORY_TREE_MAX_LEVEL = 4
+// category depth represents the total number of category levels
+export const MAX_CATEGORY_DEPTH = CATEGORY_TREE_MAX_LEVEL + 1
