@@ -30,7 +30,10 @@ export class BillingContainer extends Component<Props> {
         if (notif_msg) {
             void this.props.notify({
                 status: notif_type as NotificationStatus,
-                title: (notif_msg as string).replace(/\+/g, ' '),
+                title: decodeURIComponent(notif_msg as string).replace(
+                    /\+/g,
+                    ' '
+                ),
                 allowHTML: false,
             })
             // remove notification from url
