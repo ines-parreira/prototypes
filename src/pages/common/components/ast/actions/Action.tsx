@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom'
 import _isFunction from 'lodash/isFunction'
 import _isArray from 'lodash/isArray'
 
+import {ManagedRulesSlugs} from 'state/rules/types'
 import {computeLeftPadding} from '../utils.js'
 import {templateRegex} from '../../../utils/template'
 
@@ -277,6 +278,14 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
     facebookLikeComment: {
         compact: true,
         name: 'Like Facebook comment',
+    },
+}
+
+export const actionsConfigWithManagedRules: {[key: string]: ActionConfig} = {
+    ...actionsConfig,
+    [ManagedRulesSlugs.AutoReplyFAQ]: {
+        compact: true,
+        name: 'Help-center article recommendation',
     },
 }
 

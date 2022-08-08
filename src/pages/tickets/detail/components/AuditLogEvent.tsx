@@ -11,7 +11,7 @@ import {
     TeamLabel,
 } from 'pages/common/utils/labels'
 import Tooltip from 'pages/common/components/Tooltip'
-import {actionsConfig} from 'pages/common/components/ast/actions/Action'
+import {actionsConfigWithManagedRules} from 'pages/common/components/ast/actions/Action'
 import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
 import {
     TicketEventType,
@@ -392,7 +392,9 @@ export class AuditLogEventContainer extends Component<Props> {
                 const failure_reason =
                     rulesActionsFailures[action.get('failure_reason') as string]
                 const action_name =
-                    actionsConfig[action.get('action_name') as string].name
+                    actionsConfigWithManagedRules[
+                        action.get('action_name') as string
+                    ].name
                 return (
                     <div className={css.failedAction} key={`action-${index}`}>
                         <span className={css.failureName}>{action_name} </span>

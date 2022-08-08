@@ -246,6 +246,7 @@ export enum RuleActionFailureCauses {
     NoTeamAssignUserNotFound = 'team-not-found',
     NoEmailNoRecipient = 'no-recipient',
     NoEmailIntegrationNotFound = 'integration-not-found',
+    MissingHelpCenter = 'missing-help-center',
 }
 
 export enum RuleActionFailureSeverity {
@@ -313,6 +314,11 @@ export const rulesActionsFailures: {
     [RuleActionFailureCauses.NoEmailIntegrationNotFound]: {
         description:
             'The integration used to send the email was deactivated or deleted.',
+        severity: RuleActionFailureSeverity.Error,
+    },
+    [RuleActionFailureCauses.MissingHelpCenter]: {
+        description:
+            'The connected help-center has either been deactivated or deleted.',
         severity: RuleActionFailureSeverity.Error,
     },
 }
