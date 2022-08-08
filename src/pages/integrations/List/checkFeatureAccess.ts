@@ -30,6 +30,7 @@ export function checkBigCommerceAccess(domain: string) {
                   'bakehouse',
                   'swym-bigcommerce-dev',
                   'true-north-apparel',
+                  'shoeandbootaccessories4u',
               ].includes(domain) || domain.includes('.preview')
             : false
     )
