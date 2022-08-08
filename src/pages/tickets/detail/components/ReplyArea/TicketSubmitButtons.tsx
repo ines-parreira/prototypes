@@ -112,19 +112,22 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
         const titleConfirmation =
             'Are you sure you want to create a ticket with no subject?'
 
-        const hasActions =
-            (
-                ticket.getIn(
-                    ['state', 'appliedMacro', 'actions'],
-                    fromJS([])
-                ) as List<any>
-            ).findIndex(
-                (action: Map<any, any>) =>
-                    ![
-                        MacroActionName.SetResponseText,
-                        MacroActionName.AddAttachments,
-                    ].includes(action?.get('name'))
-            ) !== -1
+        const actions = ticket.getIn(
+            ['state', 'appliedMacro', 'actions'],
+            fromJS([])
+        ) as List<Map<any, any>>
+
+        const hasActions = actions.some(
+            (action) =>
+                ![
+                    MacroActionName.SetResponseText,
+                    MacroActionName.AddAttachments,
+                ].includes(action?.get('name'))
+        )
+
+        const hasSetSubjectAction = actions.some(
+            (action) => action?.get('name') === MacroActionName.SetSubject
+        )
 
         const text = hasContent || !hasActions ? 'Send' : 'Apply Macro'
         const disabled = !(
@@ -133,6 +136,8 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
             (hasContent || hasActions)
         )
 
+        const showConfirm = !hasTitle && !isUpdating && !hasSetSubjectAction
+
         return (
             <div
                 className={classnames(
@@ -140,8 +145,8 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                     'd-flex align-items-center justify-content-between'
                 )}
             >
-                <div className={classnames(css.buttons)}>
-                    {hasTitle || isUpdating ? (
+                <div className={classnames(css.buttons)} id="submit-button-div">
+                    {!showConfirm ? (
                         <Button
                             id="submit-button"
                             type="submit"
@@ -179,7 +184,7 @@ export class TicketSubmitButtonsContainer extends Component<Props> {
                             )}
                         </Tooltip>
                     )}
-                    {hasTitle || isUpdating ? (
+                    {!showConfirm ? (
                         <Button
                             id="submit-and-close-button"
                             type="submit"

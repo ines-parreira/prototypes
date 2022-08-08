@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {Map, fromJS} from 'immutable'
 
 import {ACTION_TEMPLATES} from 'config'
 import {MacroActionName} from 'models/macroAction/types'
@@ -17,35 +17,19 @@ describe('TicketSubmitButtons component', () => {
         },
     }
 
-    const ticketWithMacro = fromJS({
-        state: {
-            appliedMacro: {
-                actions: [
-                    ACTION_TEMPLATES.find(
-                        (action) =>
-                            action.name === MacroActionName.AddInternalNote
-                    ),
-                ],
-            },
-        },
-    })
+    const createTicket = (actionNames: string[]) => {
+        const actions = actionNames.map(
+            (name) => ACTION_TEMPLATES.find((action) => action.name === name)!
+        )
+        return fromJS({state: {appliedMacro: {actions}}}) as Map<any, any>
+    }
 
-    const ticketWithMacroSetResponseTextAndAddAttachements = fromJS({
-        state: {
-            appliedMacro: {
-                actions: [
-                    ACTION_TEMPLATES.find(
-                        (action) =>
-                            action.name === MacroActionName.SetResponseText
-                    ),
-                    ACTION_TEMPLATES.find(
-                        (action) =>
-                            action.name === MacroActionName.AddAttachments
-                    ),
-                ],
-            },
-        },
-    })
+    const ticketWithMacro = createTicket([MacroActionName.AddInternalNote])
+    const ticketWithSetResponseTextAndAddAttachements = createTicket([
+        MacroActionName.SetResponseText,
+        MacroActionName.AddAttachments,
+    ])
+    const ticketWithSubject = createTicket([MacroActionName.SetSubject])
 
     const minProps = {
         submit: () => null,
@@ -109,7 +93,7 @@ describe('TicketSubmitButtons component', () => {
             <TicketSubmitButtonsContainer
                 {...minProps}
                 hasContent={false}
-                ticket={ticketWithMacroSetResponseTextAndAddAttachements}
+                ticket={ticketWithSetResponseTextAndAddAttachements}
             />
         )
         expect(component.find('div.buttons')).toMatchSnapshot()
@@ -120,6 +104,16 @@ describe('TicketSubmitButtons component', () => {
             <TicketSubmitButtonsContainer
                 {...minProps}
                 ticket={ticketWithMacro}
+            />
+        )
+        expect(component.find('div.buttons')).toMatchSnapshot()
+    })
+
+    it('should not render confirm popover', () => {
+        const component = shallow(
+            <TicketSubmitButtonsContainer
+                {...minProps}
+                ticket={ticketWithSubject}
             />
         )
         expect(component.find('div.buttons')).toMatchSnapshot()

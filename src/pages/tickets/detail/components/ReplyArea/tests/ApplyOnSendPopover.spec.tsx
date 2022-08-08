@@ -20,7 +20,7 @@ describe('<ApplyOnSendPopover/>', () => {
     }
 
     const element = document.createElement('div')
-    element.setAttribute('id', 'submit-button')
+    element.setAttribute('id', 'submit-button-div')
     document.body.appendChild(element)
 
     it('should render the popover', () => {

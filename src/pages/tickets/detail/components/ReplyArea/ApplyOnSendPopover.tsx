@@ -28,7 +28,7 @@ export default function TMPApplyOnSendPopover({actions}: Props) {
 
     return (
         <Popover
-            target="submit-button"
+            target="submit-button-div"
             isOpen={!hide && hasNewAction && !hasExpired}
             placement="top-start"
         >

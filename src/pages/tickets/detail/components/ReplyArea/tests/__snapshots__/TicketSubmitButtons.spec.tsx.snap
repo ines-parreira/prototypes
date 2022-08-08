@@ -1,11 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TicketSubmitButtons component should not render confirm popover 1`] = `
+<div
+  className="buttons"
+  id="submit-button-div"
+>
+  <ForwardRef
+    className="mr-2"
+    id="submit-button"
+    isDisabled={false}
+    isLoading={false}
+    onClick={[Function]}
+    tabIndex={5}
+    type="submit"
+  >
+    Send
+  </ForwardRef>
+  <Tooltip
+    offset="0, 4px"
+    placement="top"
+    target="submit-button"
+  >
+    Ctrl + Enter
+  </Tooltip>
+  <ForwardRef
+    id="submit-and-close-button"
+    intent="secondary"
+    isDisabled={false}
+    isLoading={false}
+    onClick={[Function]}
+    type="submit"
+  >
+    Send
+     & Close
+  </ForwardRef>
+  <Tooltip
+    offset="0, 4px"
+    placement="top"
+    target="submit-and-close-button"
+  >
+    Ctrl + Shift + Enter
+  </Tooltip>
+</div>
+`;
+
 exports[`TicketSubmitButtons component should render buttons with a filled ticket 1`] = `
 <div
   className="component d-flex align-items-center justify-content-between"
 >
   <div
     className="buttons"
+    id="submit-button-div"
   >
     <ConfirmButton
       className="mr-2"
@@ -81,6 +126,7 @@ exports[`TicketSubmitButtons component should render buttons with a filled ticke
 exports[`TicketSubmitButtons component should render buttons with an Inactive account 1`] = `
 <div
   className="buttons"
+  id="submit-button-div"
 >
   <ConfirmButton
     className="mr-2"
@@ -112,6 +158,7 @@ exports[`TicketSubmitButtons component should render buttons with an Inactive ac
 exports[`TicketSubmitButtons component should render buttons with an empty ticket 1`] = `
 <div
   className="buttons"
+  id="submit-button-div"
 >
   <ConfirmButton
     className="mr-2"
@@ -143,6 +190,7 @@ exports[`TicketSubmitButtons component should render buttons with an empty ticke
 exports[`TicketSubmitButtons component should render buttons with no recipent and public 1`] = `
 <div
   className="buttons"
+  id="submit-button-div"
 >
   <ConfirmButton
     className="mr-2"
@@ -174,6 +222,7 @@ exports[`TicketSubmitButtons component should render buttons with no recipent an
 exports[`TicketSubmitButtons component should render buttons with only macro applied 1`] = `
 <div
   className="buttons"
+  id="submit-button-div"
 >
   <ConfirmButton
     className="mr-2"
@@ -219,6 +268,7 @@ exports[`TicketSubmitButtons component should render buttons with only macro app
 exports[`TicketSubmitButtons component should render buttons with only macro applied but only setResponseText && addAttachements 1`] = `
 <div
   className="buttons"
+  id="submit-button-div"
 >
   <ConfirmButton
     className="mr-2"
@@ -250,6 +300,7 @@ exports[`TicketSubmitButtons component should render buttons with only macro app
 exports[`TicketSubmitButtons component should render buttons with ticket content & macro applied 1`] = `
 <div
   className="buttons"
+  id="submit-button-div"
 >
   <ConfirmButton
     className="mr-2"

@@ -3,7 +3,7 @@
 exports[`<ApplyOnSendPopover/> should not render the popover because of date 1`] = `
 <body>
   <div
-    id="submit-button"
+    id="submit-button-div"
   />
   <div />
 </body>
@@ -12,7 +12,7 @@ exports[`<ApplyOnSendPopover/> should not render the popover because of date 1`]
 exports[`<ApplyOnSendPopover/> should render the popover 1`] = `
 <body>
   <div
-    id="submit-button"
+    id="submit-button-div"
   />
   <div />
   <div>
