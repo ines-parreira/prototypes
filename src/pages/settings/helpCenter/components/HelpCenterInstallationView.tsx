@@ -32,6 +32,7 @@ import {ImportSection} from './Imports/components/ImportSection'
 import {SubdomainSection} from './SubdomainSection'
 
 import css from './HelpCenterInstallationView.less'
+import GoogleAnalyticsSection from './GoogleAnalyticSection'
 
 export const HelpCenterInstallationView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -41,6 +42,7 @@ export const HelpCenterInstallationView: React.FC = () => {
     const helpCenter = useCurrentHelpCenter()
     const {isReady, client} = useHelpCenterApi()
     const [subdomainValue, setSubdomainValue] = useState<string>()
+    const [gaid, setGaid] = useState<string | null>(null)
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const [deleteModalConfirmation, setDeleteModalConfirmation] = useState('')
 
@@ -142,7 +144,8 @@ export const HelpCenterInstallationView: React.FC = () => {
         if (helpCenter.subdomain) {
             setSubdomainValue(helpCenter.subdomain)
         }
-    }, [helpCenter.subdomain])
+        setGaid(helpCenter.gaid)
+    }, [helpCenter.subdomain, helpCenter.gaid])
 
     const subdomainError = subdomainValue
         ? getSubdomainValidationError(subdomainValue, isSubdomainAvailable)
@@ -151,6 +154,8 @@ export const HelpCenterInstallationView: React.FC = () => {
         subdomainValue &&
         subdomainValue !== helpCenter.subdomain &&
         !subdomainError
+    const isUpdatedGaid =
+        helpCenter.gaid === null ? !!gaid : helpCenter.gaid !== gaid
     const helpCenterDomain = getHelpCenterDomain(helpCenter)
 
     return (
@@ -158,31 +163,49 @@ export const HelpCenterInstallationView: React.FC = () => {
             helpCenter={helpCenter}
             className={css.container}
         >
+            <GoogleAnalyticsSection
+                gaid={gaid ?? ''}
+                onChange={(value) => {
+                    setGaid(value.toUpperCase())
+                }}
+                onDelete={
+                    helpCenter.gaid
+                        ? () => {
+                              handleOnUpdateHelpCenter({gaid: null})
+                          }
+                        : null
+                }
+            />
             <SubdomainSection
                 value={subdomainValue}
                 href={getAbsoluteUrl({domain: helpCenterDomain})}
                 placeholder="brand-name"
                 onChange={setSubdomainValue}
                 error={subdomainError}
-            >
-                <Button
-                    isDisabled={!isNewSubdomainValid}
-                    onClick={() =>
-                        handleOnUpdateHelpCenter({
-                            subdomain: subdomainValue,
-                        })
-                    }
-                >
-                    Save Changes
-                </Button>
-            </SubdomainSection>
+            />
             <CustomDomain />
+
             <ImportSection />
             <ConnectToShopSection
                 onUpdate={handleOnUpdateHelpCenter}
                 helpCenter={helpCenter}
             />
-            <section>
+
+            <div className={css['ctas-group']}>
+                <Button
+                    isDisabled={!isNewSubdomainValid && !isUpdatedGaid}
+                    onClick={() =>
+                        handleOnUpdateHelpCenter({
+                            ...(isNewSubdomainValid
+                                ? {subdomain: subdomainValue}
+                                : {}),
+                            ...(isUpdatedGaid ? {gaid: gaid || null} : {}),
+                        })
+                    }
+                >
+                    Save Changes
+                </Button>
+
                 <ConfirmModalAction
                     actions={(onClose) => (
                         <>
@@ -253,7 +276,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                         </Button>
                     )}
                 </ConfirmModalAction>
-            </section>
+            </div>
         </HelpCenterPageWrapper>
     )
 }

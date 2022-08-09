@@ -3188,6 +3188,7 @@
                         "enum": ["manual", "automation"],
                         "type": "string"
                     },
+                    "gaid": {"type": "string", "nullable": true},
                     "account_id": {"type": "number"}
                 },
                 "required": ["name", "default_locale"]
@@ -3292,6 +3293,7 @@
                         "type": "string",
                         "enum": ["manual", "automation"]
                     },
+                    "gaid": {"type": "string", "nullable": true},
                     "contact_form": {
                         "nullable": true,
                         "allOf": [
@@ -3320,6 +3322,7 @@
                     "self_service_deactivated_datetime",
                     "hotswap_session_token",
                     "source",
+                    "gaid",
                     "contact_form"
                 ]
             },
@@ -3685,6 +3688,7 @@
                         "type": "string",
                         "enum": ["manual", "automation"]
                     },
+                    "gaid": {"type": "string", "nullable": true},
                     "contact_form": {
                         "nullable": true,
                         "allOf": [
@@ -3724,6 +3728,7 @@
                     "self_service_deactivated_datetime",
                     "hotswap_session_token",
                     "source",
+                    "gaid",
                     "contact_form"
                 ]
             },
@@ -3812,6 +3817,7 @@
                             {"$ref": "#/components/schemas/ContactFormDto"}
                         ]
                     },
+                    "gaid": {"type": "string", "nullable": true},
                     "powered_by_deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if \"Powered By Gorgias\" will be displayed in this help center footer",

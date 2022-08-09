@@ -823,6 +823,7 @@ declare namespace Components {
         helpdesk_integration_id: number | null;
       };
       source?: "manual" | "automation";
+      gaid?: string | null;
       account_id?: number;
     }
     export interface CreateNavigationLinkDto {
@@ -973,6 +974,7 @@ declare namespace Components {
       self_service_deactivated_datetime: string | null; // date-time
       hotswap_session_token: string | null;
       source: "manual" | "automation";
+      gaid: string | null;
       contact_form: {
         helpdesk_integration_email: string | null;
         helpdesk_integration_id: number | null;
@@ -1005,6 +1007,7 @@ declare namespace Components {
       self_service_deactivated_datetime: string | null; // date-time
       hotswap_session_token: string | null;
       source: "manual" | "automation";
+      gaid: string | null;
       contact_form: {
         helpdesk_integration_email: string | null;
         helpdesk_integration_id: number | null;
@@ -1508,6 +1511,7 @@ declare namespace Components {
         helpdesk_integration_email: string | null;
         helpdesk_integration_id: number | null;
       };
+      gaid?: string | null;
       /**
        * Boolean indicating if "Powered By Gorgias" will be displayed in this help center footer
        * example:

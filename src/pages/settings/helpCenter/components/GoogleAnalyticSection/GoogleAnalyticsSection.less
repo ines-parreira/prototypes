@@ -1,0 +1,27 @@
+@import (reference) '~css/new/colorTokens';
+
+:local {
+    .gaInput {
+        grid-area: input;
+        position: relative;
+    }
+
+    .deleteGa {
+        position: absolute;
+        right: 0;
+        top: 50%;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 33px;
+        width: 33px;
+
+        color: @classic-feedback-error;
+        font-size: 16px;
+
+        cursor: pointer;
+        transform: translateY(-50%);
+    }
+}
