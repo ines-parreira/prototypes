@@ -92,6 +92,29 @@ Array [
     "ticketId": 1,
     "type": "setResponseText",
   },
+  Object {
+    "macro": Immutable.Map {
+      "id": 1,
+      "actions": Immutable.List [
+        Immutable.Map {
+          "type": "user",
+          "name": "setResponseText",
+          "arguments": Immutable.Map {
+            "contentState": Immutable.Map {},
+            "selectionState": Immutable.Map {},
+          },
+        },
+        Immutable.Map {
+          "type": "user",
+          "name": "addTags",
+          "arguments": Immutable.Map {
+            "tags": "refund, billing",
+          },
+        },
+      ],
+    },
+    "type": "NEW_MESSAGE_RECORD_MACRO",
+  },
 ]
 `;
 

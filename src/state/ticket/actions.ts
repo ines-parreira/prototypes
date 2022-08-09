@@ -554,8 +554,8 @@ export const applyMacro =
             ticketId,
         })
 
-        if (shouldUpdateNewMessage)
-            (renderedMacro.get('actions', fromJS([])) as List<any>).forEach(
+        if (shouldUpdateNewMessage) {
+            ;(renderedMacro.get('actions', fromJS([])) as List<any>).forEach(
                 (action: Map<any, any>) => {
                     if (
                         ['setResponseText', 'addAttachments'].includes(
@@ -565,6 +565,11 @@ export const applyMacro =
                         dispatch(applyMacroAction(action))
                 }
             )
+            dispatch({
+                type: newMessageTypes.NEW_MESSAGE_RECORD_MACRO,
+                macro,
+            })
+        }
 
         return Promise.resolve()
     }
