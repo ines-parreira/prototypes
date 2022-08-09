@@ -77,8 +77,12 @@ export default function OnbordingMacroPopover({
                 hasShownPopover.current = true
                 return true
             })
+            logEvent(SegmentEvent.MacroDefaultMacroToSearch, {
+                action: 'show popover',
+                user_id: currentUser.get('id'),
+            })
         }
-    }, [macrosVisible, currentUserPreferences, ticket])
+    }, [macrosVisible, currentUserPreferences, ticket, currentUser])
 
     const setShowMacroByDefault = async (showMacro?: boolean) => {
         setShowPopover(false)
@@ -105,17 +109,26 @@ export default function OnbordingMacroPopover({
 
         if (nextClosedCount >= 3) {
             await setShowMacroByDefault()
+            logEvent(SegmentEvent.MacroDefaultMacroToSearch, {
+                action: 'closed popover',
+                user_id: currentUser.get('id'),
+            })
         }
     }
 
     const handleKeepSearch = async () => {
         await setShowMacroByDefault()
+        logEvent(SegmentEvent.MacroDefaultMacroToSearch, {
+            action: 'keep search',
+            user_id: currentUser.get('id'),
+        })
     }
 
     const handleRevertBack = async () => {
         onClearMacro()
         await setShowMacroByDefault(false)
-        logEvent(SegmentEvent.MacroRevertDefaultMacroToSearch, {
+        logEvent(SegmentEvent.MacroDefaultMacroToSearch, {
+            action: 'revert back',
             user_id: currentUser.get('id'),
         })
     }
