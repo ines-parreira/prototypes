@@ -163,6 +163,14 @@ export const HelpCenterInstallationView: React.FC = () => {
             helpCenter={helpCenter}
             className={css.container}
         >
+            <SubdomainSection
+                value={subdomainValue}
+                href={getAbsoluteUrl({domain: helpCenterDomain})}
+                placeholder="brand-name"
+                onChange={setSubdomainValue}
+                error={subdomainError}
+            />
+            <CustomDomain />
             <GoogleAnalyticsSection
                 gaid={gaid ?? ''}
                 onChange={(value) => {
@@ -176,15 +184,6 @@ export const HelpCenterInstallationView: React.FC = () => {
                         : null
                 }
             />
-            <SubdomainSection
-                value={subdomainValue}
-                href={getAbsoluteUrl({domain: helpCenterDomain})}
-                placeholder="brand-name"
-                onChange={setSubdomainValue}
-                error={subdomainError}
-            />
-            <CustomDomain />
-
             <ImportSection />
             <ConnectToShopSection
                 onUpdate={handleOnUpdateHelpCenter}
