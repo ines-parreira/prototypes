@@ -32,6 +32,8 @@ export function checkBigCommerceAccess(domain: string) {
                   'true-north-apparel',
                   'shoeandbootaccessories4u',
                   'parentgiving',
+                  'redsbaby',
+                  'joyoushealth',
               ].includes(domain) || domain.includes('.preview')
             : false
     )
