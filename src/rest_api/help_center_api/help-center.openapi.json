@@ -285,6 +285,33 @@
                 ]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/submit-contact-form": {
+            "post": {
+                "operationId": "sendContactForm",
+                "summary": "Send a contact form",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SubmitContactFormDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"204": {"description": ""}},
+                "tags": ["help-centers"],
+                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+            }
+        },
         "/api/help-center/help-centers/account": {
             "get": {
                 "operationId": "getAccountInfo",
@@ -3325,6 +3352,16 @@
                     "gaid",
                     "contact_form"
                 ]
+            },
+            "SubmitContactFormDto": {
+                "type": "object",
+                "properties": {
+                    "full_name": {"type": "string"},
+                    "email": {"type": "string"},
+                    "subject": {"type": "string"},
+                    "message": {"type": "string"}
+                },
+                "required": ["full_name", "email", "subject", "message"]
             },
             "AccountInfoDto": {
                 "type": "object",

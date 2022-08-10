@@ -1298,6 +1298,12 @@ declare namespace Components {
       to: string;
       help_center_id: number;
     }
+    export interface SubmitContactFormDto {
+      full_name: string;
+      email: string;
+      subject: string;
+      message: string;
+    }
     export interface UpdateArticleDto {
       category_id?: number | null;
     }
@@ -2380,6 +2386,15 @@ declare namespace Paths {
       shop_name: Parameters.ShopName;
     }
   }
+  namespace SendContactForm {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export type RequestBody = Components.Schemas.SubmitContactFormDto;
+  }
   namespace SetArticlesPositionsInCategory {
     namespace Parameters {
       export type CategoryId = number;
@@ -2638,6 +2653,14 @@ export interface OperationMethods {
     data?: Paths.CreateHelpCenter.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.CreateHelpCenter.Responses.$201>
+  /**
+   * sendContactForm - Send a contact form
+   */
+  'sendContactForm'(
+    parameters?: Parameters<Paths.SendContactForm.PathParameters> | null,
+    data?: Paths.SendContactForm.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
   /**
    * getAccountInfo - Get account information for a help center
    * 
@@ -3256,6 +3279,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListHelpCenters.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/submit-contact-form']: {
+    /**
+     * sendContactForm - Send a contact form
+     */
+    'post'(
+      parameters?: Parameters<Paths.SendContactForm.PathParameters> | null,
+      data?: Paths.SendContactForm.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
   }
   ['/api/help-center/help-centers/account']: {
     /**
