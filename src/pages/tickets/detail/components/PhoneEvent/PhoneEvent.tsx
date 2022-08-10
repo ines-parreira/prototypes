@@ -30,6 +30,12 @@ const icons = new window.Map<string, string>([
         PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
         callForwardedIcon,
     ],
+    [
+        PhoneIntegrationEvent.PhoneCallForwardedToGorgiasNumber,
+        callForwardedIcon,
+    ],
+    [PhoneIntegrationEvent.PhoneCallForwarded, callForwardedIcon],
+    [PhoneIntegrationEvent.MessagePlayed, callAnsweredIcon],
 ])
 
 const names = new window.Map<string, string>([
@@ -45,6 +51,12 @@ const names = new window.Map<string, string>([
         PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
         'Call forwarded to an external number',
     ],
+    [
+        PhoneIntegrationEvent.PhoneCallForwardedToGorgiasNumber,
+        'Call forwarded to a Gorgias number',
+    ],
+    [PhoneIntegrationEvent.PhoneCallForwarded, 'Call forwarded'],
+    [PhoneIntegrationEvent.MessagePlayed, 'Message played'],
 ])
 const customerBasedEvents = [
     PhoneIntegrationEvent.IncomingPhoneCall,

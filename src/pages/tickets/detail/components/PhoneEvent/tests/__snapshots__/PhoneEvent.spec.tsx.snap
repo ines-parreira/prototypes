@@ -278,6 +278,90 @@ exports[`<PhoneEvent/> render() should render with closed details 7`] = `
 </div>
 `;
 
+exports[`<PhoneEvent/> render() should render with closed details 8`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="phone-call-forwarded-to-gorgias-number"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Call forwarded to a Gorgias number
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEvent/> render() should render with closed details 9`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="phone-call-forwarded"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Call forwarded
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEvent/> render() should render with closed details 10`] = `
+<div
+  class="component"
+>
+  <div
+    class="event"
+  >
+    <div
+      class="content"
+    >
+      <div
+        class="icon"
+      >
+        <img
+          alt="message-played"
+          src="test-file-stub"
+        />
+      </div>
+      <span
+        class="actionName"
+      >
+        Message played
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<PhoneEvent/> render() should render with opened details 1`] = `
 <div
   class="component"

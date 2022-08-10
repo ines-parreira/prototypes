@@ -10,6 +10,10 @@ export const PHONE_CALL_ANSWERED = 'phone-call-answered'
 export const PHONE_CALL_CONVERSATION_STARTED = 'phone-call-conversation-started'
 export const PHONE_CALL_FORWARDED_TO_EXTERNAL_NUMBER =
     'phone-call-forwarded-to-external-number'
+export const PHONE_CALL_FORWARDED_TO_GORGIAS_NUMBER =
+    'phone-call-forwarded-to-gorgias-number'
+export const PHONE_CALL_FORWARDED = 'phone-call-forwarded'
+export const PLAYED_MESSAGE = 'message-played'
 
 export const TICKET_EVENT_TYPES_VALUES = Object.freeze(
     Object.values(TICKET_EVENT_TYPES)
@@ -26,6 +30,9 @@ export const PHONE_EVENTS_MAP = Object.freeze({
     PHONE_CALL_ANSWERED,
     PHONE_CALL_CONVERSATION_STARTED,
     PHONE_CALL_FORWARDED_TO_EXTERNAL_NUMBER,
+    PHONE_CALL_FORWARDED_TO_GORGIAS_NUMBER,
+    PHONE_CALL_FORWARDED,
+    PLAYED_MESSAGE,
 })
 
 export const PHONE_EVENTS = Object.freeze(Object.values(PHONE_EVENTS_MAP))
