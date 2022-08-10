@@ -1,7 +1,11 @@
 import React, {
     createContext,
+    forwardRef,
     ReactNode,
+    Ref,
+    RefObject,
     useCallback,
+    useImperativeHandle,
     useMemo,
     useState,
     useRef,
@@ -32,6 +36,7 @@ type Props = {
 type ModalContextState = {
     bodyId?: string
     labelId?: string
+    ref?: RefObject<HTMLDivElement>
 } & Pick<Props, 'id' | 'isScrollable' | 'onClose'>
 
 export const ModalContext = createContext<ModalContextState>({
@@ -39,19 +44,24 @@ export const ModalContext = createContext<ModalContextState>({
     onClose: () => ({}),
 })
 
-const Modal = ({
-    animation = 'default',
-    children,
-    className,
-    container = document.body,
-    id,
-    isClosable = true,
-    isOpen,
-    isScrollable = false,
-    onClose,
-    size,
-}: Props) => {
+const Modal = (
+    {
+        animation = 'default',
+        children,
+        className,
+        container = document.body,
+        id,
+        isClosable = true,
+        isOpen,
+        isScrollable = false,
+        onClose,
+        size,
+    }: Props,
+    forwardedRef: Ref<HTMLDivElement> | null | undefined
+) => {
     const ref = useRef<HTMLDivElement>(null)
+    useImperativeHandle(forwardedRef, () => ref.current!)
+
     const [bounceModal, setBounceModal] = useState(false)
     const randomId = useId()
     const modalId = id || 'modal-' + randomId
@@ -86,8 +96,9 @@ const Modal = ({
             isScrollable,
             labelId,
             onClose,
+            ref,
         }),
-        [bodyId, id, isScrollable, labelId, onClose]
+        [bodyId, id, isScrollable, labelId, onClose, ref]
     )
 
     const modal = (
@@ -139,4 +150,4 @@ const Modal = ({
     return createPortal(modal, container)
 }
 
-export default Modal
+export default forwardRef(Modal)

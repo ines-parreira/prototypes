@@ -28,7 +28,7 @@ exports[`Video component should render with default videoPreviewIndex 1`] = `
       foo
     </div>
   </div>
-  <Modal
+  <ForwardRef(Modal)
     isOpen={false}
     onClose={[Function]}
     size="huge"
@@ -47,7 +47,7 @@ exports[`Video component should render with default videoPreviewIndex 1`] = `
         title="rule-video"
       />
     </ModalBody>
-  </Modal>
+  </ForwardRef(Modal)>
 </div>
 `;
 
@@ -79,7 +79,7 @@ exports[`Video component should render with passed videoPreviewIndex 1`] = `
       foo
     </div>
   </div>
-  <Modal
+  <ForwardRef(Modal)
     isOpen={false}
     onClose={[Function]}
     size="huge"
@@ -98,6 +98,6 @@ exports[`Video component should render with passed videoPreviewIndex 1`] = `
         title="rule-video"
       />
     </ModalBody>
-  </Modal>
+  </ForwardRef(Modal)>
 </div>
 `;

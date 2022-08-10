@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LinkPopover /> should render a link 1`] = `
+<body>
+  <div>
+    <a
+      href="http://gorgias.com"
+      id="link-1"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      I am a link
+    </a>
+  </div>
+</body>
+`;
+
+exports[`<LinkPopover /> should render the popover on a specified modal 1`] = `
+<body>
+  <div />
+  <div
+    aria-describedby="modal-1-desc"
+    aria-labelledby="modal-1-title"
+    aria-modal="true"
+    class="modal default"
+    role="dialog"
+  >
+    <div
+      class="dialog"
+    >
+      <div
+        class="modalContent default"
+      >
+        <a
+          href="http://gorgias.com"
+          id="link-1"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          hover me
+        </a>
+        <div>
+          <div
+            class="wrapper fade"
+          >
+            <div
+              class="popover show bs-popover-auto"
+              style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+            >
+              <div
+                class="popover-inner inner"
+                role="tooltip"
+              >
+                <a
+                  class="url"
+                  href="http://gorgias.com"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  http://gorgias.com
+                </a>
+              </div>
+              <span
+                class="arrow"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

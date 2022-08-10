@@ -36,6 +36,7 @@ export default function SectionFormModal({
     sectionForm,
 }: Props) {
     const inputElement = useRef<HTMLInputElement>(null)
+    const modalElement = useRef<HTMLDivElement>(null)
 
     return (
         <Modal
@@ -43,6 +44,7 @@ export default function SectionFormModal({
             isOpen={isOpen && !!sectionForm}
             onClose={onClose}
             animation="none"
+            ref={modalElement}
         >
             <ModalHeader
                 title={`${isNewSection ? 'Create' : 'Update'} section`}
@@ -68,6 +70,7 @@ export default function SectionFormModal({
                                 }
                                 prefix={
                                     <EmojiSelect
+                                        container={modalElement}
                                         className={css.emojiSelect}
                                         emoji={
                                             sectionForm.decoration?.emoji ||

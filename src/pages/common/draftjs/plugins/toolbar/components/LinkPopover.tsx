@@ -4,6 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 
 import {RootState} from 'state/types'
 import IconButton from 'pages/common/components/button/IconButton'
+import {ModalContext} from 'pages/common/components/modal/Modal'
 
 import css from './LinkPopover.less'
 
@@ -73,45 +74,50 @@ export class LinkPopoverContainer extends Component<Props, State> {
                 onMouseLeave={this._onMouseLeave}
             >
                 {this.props.children}
-                <Popover
-                    isOpen={this.state.isOpen}
-                    target={id}
-                    placement="bottom-start"
-                    className={css.wrapper}
-                    innerClassName={css.inner}
-                    onMouseEnter={this._onMouseEnter}
-                    onMouseLeave={this._onMouseLeave}
-                    trigger="legacy"
-                >
-                    <a
-                        className={css.url}
-                        href={this.props.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {this.props.url}
-                    </a>
-                    {this.props.onEdit && (
-                        <IconButton
-                            size="small"
-                            intent="secondary"
-                            onClick={this._onEditClick}
-                            className={css.edit}
+                <ModalContext.Consumer>
+                    {(context) => (
+                        <Popover
+                            isOpen={this.state.isOpen}
+                            target={id}
+                            placement="bottom-start"
+                            className={css.wrapper}
+                            innerClassName={css.inner}
+                            onMouseEnter={this._onMouseEnter}
+                            onMouseLeave={this._onMouseLeave}
+                            trigger="legacy"
+                            container={context.ref}
                         >
-                            edit
-                        </IconButton>
+                            <a
+                                className={css.url}
+                                href={this.props.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                {this.props.url}
+                            </a>
+                            {this.props.onEdit && (
+                                <IconButton
+                                    size="small"
+                                    intent="secondary"
+                                    onClick={this._onEditClick}
+                                    className={css.edit}
+                                >
+                                    edit
+                                </IconButton>
+                            )}
+                            {this.props.onDelete && (
+                                <IconButton
+                                    size="small"
+                                    intent="secondary"
+                                    className={css.delete}
+                                    onClick={this._onDeleteClick}
+                                >
+                                    clear
+                                </IconButton>
+                            )}
+                        </Popover>
                     )}
-                    {this.props.onDelete && (
-                        <IconButton
-                            size="small"
-                            intent="secondary"
-                            className={css.delete}
-                            onClick={this._onDeleteClick}
-                        >
-                            clear
-                        </IconButton>
-                    )}
-                </Popover>
+                </ModalContext.Consumer>
             </a>
         )
     }
