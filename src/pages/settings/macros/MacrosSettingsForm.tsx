@@ -97,26 +97,28 @@ export function MacrosSettingsFormContainer({
     }
     const [{loading: isSubmitPending}, handleFormSubmit] =
         useAsyncFn(async () => {
-            macroForm.actions = macroForm.actions.filter(
-                (action) =>
-                    action.name !== MacroActionName.AddTags ||
-                    action.arguments.tags
-            )
+            const {actions, language} = macroForm
+
+            const macroFormData = {
+                ...macroForm,
+                actions: actions.filter(
+                    (action) =>
+                        action.name !== MacroActionName.AddTags ||
+                        action.arguments.tags
+                ),
+                language: language || null,
+            }
 
             let res
             try {
                 if (macroId) {
                     res = await updateMacro({
                         ...macros[macroId],
-                        ...macroForm,
-                        language: macroForm.language || null,
+                        ...macroFormData,
                     })
                     macroUpdated(res)
                 } else {
-                    res = await createMacro({
-                        ...macroForm,
-                        language: macroForm.language || null,
-                    })
+                    res = await createMacro(macroFormData)
                     macroCreated(res)
                 }
                 void notify({
