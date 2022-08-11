@@ -1,7 +1,9 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useAsyncFn} from 'react-use'
 import {fromJS, Map} from 'immutable'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     SELF_SERVICE_OVERVIEW,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES,
@@ -38,8 +40,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
 
-import {useFeatureFlags} from 'hooks/useFeatureFlags'
-import {FlagKey} from 'providers/FeatureFlags/context'
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
 import NormalizedBarStat from '../common/components/charts/NormalizedBarStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
@@ -77,7 +77,8 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
     const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
     const statsFilters = useAppSelector(getStatsFilters)
-    const {getFlag} = useFeatureFlags()
+    const hasSelfServiceStatisticsV2: boolean | undefined =
+        useFlags()[FeatureFlagKey.SelfServiceStatsV2]
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {period, integrations} = statsFilters
@@ -248,7 +249,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             config={statsConfig.get(SELF_SERVICE_OVERVIEW)}
                         />
                     </KeyMetricStatWrapper>
-                    {getFlag(FlagKey.SelfServiceStatsV2) && (
+                    {hasSelfServiceStatisticsV2 && (
                         <StatWrapper
                             stat={volumePerFlow}
                             isFetchingStat={isFetchingVolumePerFlow}
@@ -270,7 +271,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             )}
                         </StatWrapper>
                     )}
-                    {!getFlag(FlagKey.SelfServiceStatsV2) && (
+                    {!hasSelfServiceStatisticsV2 && (
                         <>
                             <StatWrapper
                                 stat={chatFlowsDistribution}

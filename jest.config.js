@@ -122,7 +122,7 @@ module.exports = {
     // runner: "jest-runner",
 
     // The paths to modules that run some code to configure or set up the testing environment before each test
-    setupFiles: ['./tests/setup.tsx'],
+    setupFiles: ['./tests/setup.tsx', 'jest-launchdarkly-mock'],
 
     // The path to a module that runs some code to configure or set up the testing framework before each test
     setupFilesAfterEnv: [
