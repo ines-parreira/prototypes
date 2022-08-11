@@ -226,7 +226,12 @@ export function CustomerRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:customerId/edit-widgets`}
                 exact
                 render={appRender({
-                    content: CustomerSourceContainer,
+                    content: withUserRoleRequired(
+                        CustomerSourceContainer,
+                        ADMIN_ROLE,
+                        undefined,
+                        location.pathname.replace('/edit-widgets', '')
+                    ),
                     navbar: CustomerNavbarContainer,
                     infobar: CustomerInfobarContainer,
                     isEditingWidgets: true,
@@ -296,7 +301,12 @@ export function UserRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:customerId/edit-widgets`}
                 exact
                 render={appRender({
-                    content: CustomerSourceContainer,
+                    content: withUserRoleRequired(
+                        CustomerSourceContainer,
+                        ADMIN_ROLE,
+                        undefined,
+                        location.pathname.replace('/edit-widgets', '')
+                    ),
                     navbar: CustomerNavbarContainer,
                     infobar: CustomerInfobarContainer,
                     isEditingWidgets: true,
@@ -308,7 +318,7 @@ export function UserRoutes({match: {path}}: RouteComponentProps) {
     )
 }
 
-export function TicketRoutes({match: {path}}: RouteComponentProps) {
+export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
     return (
         <Switch>
             <Route
@@ -325,7 +335,12 @@ export function TicketRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:ticketId/edit-widgets`}
                 exact
                 render={appRender({
-                    content: TicketSourceContainer,
+                    content: withUserRoleRequired(
+                        TicketSourceContainer,
+                        ADMIN_ROLE,
+                        undefined,
+                        location.pathname.replace('/edit-widgets', '')
+                    ),
                     navbar: TicketNavbar,
                     infobar: TicketInfobarContainer,
                     noContainerWidthLimit: true,

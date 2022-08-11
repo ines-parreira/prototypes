@@ -1,7 +1,8 @@
 import React, {ComponentProps, useState as mockUseState} from 'react'
-import {fireEvent, waitFor} from '@testing-library/react'
+import {fireEvent, waitFor, screen} from '@testing-library/react'
 import {fromJS, Map} from 'immutable'
 
+import {UserRole} from 'config/types/user'
 import {renderWithRouter} from 'utils/testing'
 import {
     FETCH_PREVIEW_CUSTOMER_ERROR,
@@ -115,6 +116,9 @@ const commonProps = {
     context: 'ticket',
     customer: fromJS({
         id: 2,
+    }),
+    currentUser: fromJS({
+        role: {name: UserRole.Admin},
     }),
     fetchCustomerHistory: jest.fn(() => () => Promise.resolve()),
     identifier: '1',
@@ -303,6 +307,23 @@ describe('<Infobar/>', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should not show widget edition button', () => {
+        renderWithRouter(
+            <Infobar
+                {...commonProps}
+                currentUser={fromJS({
+                    role: {name: UserRole.Agent},
+                })}
+            />
+        )
+
+        expect(
+            screen.queryByRole('button', {
+                name: /settings/,
+            })
+        ).toBeNull()
     })
 
     describe('onSearchResultClick()', () => {

@@ -6,14 +6,16 @@ import {fromJS, List, Map} from 'immutable'
 import {AxiosError, CancelToken} from 'axios'
 import {usePrevious, useUpdateEffect} from 'react-use'
 
+import {isAdmin} from 'utils'
 import useCancellableRequest from 'hooks/useCancellableRequest'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import * as infobarActions from 'state/infobar/actions'
 import * as infobarConstants from 'state/infobar/constants'
 import * as customersActions from 'state/customers/actions'
 import {setCustomer} from 'state/ticket/actions'
 import * as WidgetsActions from 'state/widgets/actions'
 import history from 'pages/history'
-import {ConnectedAction} from 'state/types'
+import {ConnectedAction, RootState} from 'state/types'
 import {WidgetContextType} from 'state/widgets/types'
 import {ApiListResponsePagination} from 'models/api/types'
 import {Customer} from 'state/customers/types'
@@ -95,6 +97,7 @@ export const Infobar = ({
         },
     },
     context,
+    currentUser,
     customer = fromJS({}),
     fetchCustomerHistory,
     identifier,
@@ -356,23 +359,29 @@ export const Infobar = ({
                         style={{maxWidth: 'none'}}
                         ref={searchRef}
                     />
-                    <IconButton
-                        className={classnames(
-                            'd-none d-md-inline-block ml-2 btn-transparent'
-                        )}
-                        id="toggle-widgets-edition-button"
-                        intent="secondary"
-                        isDisabled={!canEditWidgets}
-                        onClick={toggleEditionMode}
-                    >
-                        settings
-                    </IconButton>
-                    <Tooltip
-                        placement="left"
-                        target="toggle-widgets-edition-button"
-                    >
-                        {isEditing ? 'Leave widgets edition' : 'Edit widgets'}
-                    </Tooltip>
+                    {isAdmin(currentUser) && (
+                        <>
+                            <IconButton
+                                className={classnames(
+                                    'd-none d-md-inline-block ml-2 btn-transparent'
+                                )}
+                                id="toggle-widgets-edition-button"
+                                intent="secondary"
+                                isDisabled={!canEditWidgets}
+                                onClick={toggleEditionMode}
+                            >
+                                settings
+                            </IconButton>
+                            <Tooltip
+                                placement="left"
+                                target="toggle-widgets-edition-button"
+                            >
+                                {isEditing
+                                    ? 'Exit widgets editing'
+                                    : 'Edit widgets'}
+                            </Tooltip>
+                        </>
+                    )}
                 </div>
                 <div className={css.content}>
                     {mode === 'loading' ? (
@@ -618,11 +627,16 @@ export const Infobar = ({
     )
 }
 
-const connector = connect(null, {
-    fetchCustomerHistory: customersActions.fetchCustomerHistory,
-    searchCustomers: infobarActions.search,
-    searchSimilarCustomer: infobarActions.similarCustomer,
-    setCustomer,
-})
+const connector = connect(
+    (state: RootState) => ({
+        currentUser: getCurrentUser(state),
+    }),
+    {
+        fetchCustomerHistory: customersActions.fetchCustomerHistory,
+        searchCustomers: infobarActions.search,
+        searchSimilarCustomer: infobarActions.similarCustomer,
+        setCustomer,
+    }
+)
 
 export default connector(Infobar)
