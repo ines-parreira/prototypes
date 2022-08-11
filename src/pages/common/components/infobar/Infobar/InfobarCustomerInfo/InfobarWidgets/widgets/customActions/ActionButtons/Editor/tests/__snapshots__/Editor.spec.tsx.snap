@@ -3,20 +3,14 @@
 exports[`<Editor/> should call the correct callbacks when removing a button 1`] = `
 Array [
   Array [
-    "removeEditedWidget",
-    "some.template.meta.custom.buttons",
-    Array [
-      "some",
-      "absolute",
-      "template",
-    ],
-  ],
-  Array [
-    "startWidgetEdition",
     "some.template.meta.custom.buttons",
   ],
+]
+`;
+
+exports[`<Editor/> should call the correct callbacks when removing a button 2`] = `
+Array [
   Array [
-    "updateCustomActions",
     Array [
       Object {
         "action": Object {
@@ -37,14 +31,30 @@ Array [
 ]
 `;
 
+exports[`<Editor/> should call the correct callbacks when removing a button 3`] = `
+Array [
+  Array [
+    "some.template.meta.custom.buttons",
+    Array [
+      "some",
+      "absolute",
+      "template",
+    ],
+  ],
+]
+`;
+
 exports[`<Editor/> should call the correct callbacks when submitting a edited button 1`] = `
 Array [
   Array [
-    "startWidgetEdition",
     "some.template.meta.custom.buttons",
   ],
+]
+`;
+
+exports[`<Editor/> should call the correct callbacks when submitting a edited button 2`] = `
+Array [
   Array [
-    "updateCustomActions",
     Array [
       Object {
         "action": Object {
@@ -82,11 +92,14 @@ Array [
 exports[`<Editor/> should call the correct callbacks when submitting a new button 1`] = `
 Array [
   Array [
-    "startWidgetEdition",
     "some.template.meta.custom.buttons",
   ],
+]
+`;
+
+exports[`<Editor/> should call the correct callbacks when submitting a new button 2`] = `
+Array [
   Array [
-    "updateCustomActions",
     Array [
       Object {
         "action": Object {
@@ -138,13 +151,13 @@ Array [
 exports[`<Editor/> should render with buttons and "add button" button 1`] = `
 <div>
   <ul
-    class="list-group list-group-flush"
+    class="editList"
   >
     <li
-      class="editRow list-group-item"
+      class="editRow"
     >
       <button
-        class="btn btn-secondary"
+        class="wrapper fill secondary small"
         type="button"
       >
         I am in snapshots
@@ -153,22 +166,22 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
         class="editIcons"
       >
         <i
-          class="material-icons text-faded clickable"
+          class="material-icons"
         >
-          settings
+          edit
         </i>
         <i
-          class="material-icons text-danger clickable"
+          class="material-icons text-danger"
         >
-          close
+          delete
         </i>
       </span>
     </li>
     <li
-      class="editRow list-group-item"
+      class="editRow"
     >
       <button
-        class="btn btn-secondary"
+        class="wrapper fill secondary small"
         type="button"
       >
         I am in snapshots too
@@ -177,27 +190,27 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
         class="editIcons"
       >
         <i
-          class="material-icons text-faded clickable"
+          class="material-icons"
         >
-          settings
+          edit
         </i>
         <i
-          class="material-icons text-danger clickable"
+          class="material-icons text-danger"
         >
-          close
+          delete
         </i>
       </span>
     </li>
   </ul>
   <button
-    class="wrapper addButton fill secondary medium"
+    class="wrapper addButton fill secondary small"
     type="button"
   >
     <span
       class="wrapper"
     >
       <i
-        class="material-icons icon isLeft medium"
+        class="material-icons icon isLeft small"
       >
         add
       </i>

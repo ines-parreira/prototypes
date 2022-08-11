@@ -9,9 +9,9 @@ import thunk from 'redux-thunk'
 import {ShopifyTags} from 'models/integration/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import {fetchShopTags} from 'models/integration/resources/shopify'
-import {WidgetContext} from '../../WidgetContext'
+import {WidgetContext} from 'providers/infobar/WidgetContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {ActionButtonContext} from '../ActionButton'
-import {IntegrationContext} from '../IntegrationContext'
 import {EditableListWidget} from '../EditableListWidget'
 
 jest.mock('models/integration/resources/shopify', () => {

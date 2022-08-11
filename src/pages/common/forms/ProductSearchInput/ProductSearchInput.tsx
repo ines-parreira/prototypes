@@ -1,6 +1,7 @@
 import React, {Component, ContextType} from 'react'
 import _noop from 'lodash/noop'
 
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import SearchInput from '../SearchInput/SearchInput'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from '../../../../constants/integration'
 import {
@@ -10,7 +11,6 @@ import {
     Variant,
 } from '../../../../models/integration/types'
 import {Product as ShopifyProduct} from '../../../../constants/integrations/types/shopify'
-import {IntegrationContext} from '../../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 
 import ProductResult from './ProductResult'
 import VariantResult from './VariantResult'

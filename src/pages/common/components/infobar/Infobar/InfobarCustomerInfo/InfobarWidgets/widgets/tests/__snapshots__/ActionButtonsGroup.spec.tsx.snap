@@ -163,8 +163,9 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
     >
       <ForwardRef
         intent="secondary"
+        size="small"
       >
-        arrow_drop_down
+        more_horiz
       </ForwardRef>
     </DropdownToggle>
     <DropdownMenu
@@ -187,7 +188,7 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
         tag={[Function]}
         tagOptions={
           Object {
-            "className": "buttonFlex",
+            "className": "dropdownItem",
             "toggle": false,
           }
         }

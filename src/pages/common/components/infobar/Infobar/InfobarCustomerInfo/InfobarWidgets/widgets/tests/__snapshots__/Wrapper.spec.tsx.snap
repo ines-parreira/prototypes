@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InfobarWidgets component should call the appropriate callback when clicking remove icon in edit mode 1`] = `
+Array [
+  Array [
+    "templatePath",
+    Immutable.List [
+      "absolute",
+      "path",
+    ],
+  ],
+]
+`;
+
+exports[`InfobarWidgets component should display (without an edit or a remove icon) 1`] = `
+<div>
+  <div
+    class="draggable widgetWrapper shopify"
+  >
+    <div
+      class="anchor"
+      id="shopify"
+    />
+  </div>
+</div>
+`;
+
+exports[`InfobarWidgets component should have the proper color set 1`] = `
+<div>
+  <div
+    class="draggable widgetWrapper http widgetWrapperEditing"
+    style="box-shadow: inset 3px 0 0 #fff;"
+  >
+    <div
+      class="widgetWrapperTools"
+      id="card-wrapper-6"
+    >
+      <button
+        class="wrapper ghost primary small"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft small"
+          >
+            edit
+          </i>
+          Customize Widget
+        </span>
+      </button>
+      <button
+        class="wrapper ghost destructive small"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft small"
+          >
+            delete
+          </i>
+          Delete Widget
+        </span>
+      </button>
+    </div>
+    <div />
+  </div>
+</div>
+`;

@@ -6,7 +6,7 @@ import _debounce from 'lodash/debounce'
 
 import {uniqBy} from 'lodash'
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/OrderFooter/OrderFooter.less'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import OrderTotals from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/OrderFooter/OrderTotals/OrderTotals'

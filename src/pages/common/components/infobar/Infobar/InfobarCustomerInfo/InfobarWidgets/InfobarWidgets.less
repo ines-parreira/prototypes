@@ -1,25 +1,25 @@
+@import '~css/new/colorTokens';
+
 :local {
-    .container {
-        &:global.editing {
-            &:last-child {
-                padding-bottom: 50px;
+    .widgetsList {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: flex-start;
+        align-content: flex-start;
+    }
+    .dragging {
+        // Leave some minimum space in the widget zone to drop things
+        min-height: 300px;
+        :global {
+            .widget-field {
+                border: 1px solid transparent !important;
+                cursor: default !important;
             }
-
-            .wrapper {
-                background: white;
+            .widget-card:not(.can-drop) {
+                background-color: @classic-neutral-grey-1;
             }
-        }
-
-        &:global.dragging {
-            .card,
-            .message {
-                &:not(.wrapper):not(.can-drop) {
-                    background-color: #eeeeee;
-                }
-
-                .simple-field.draggable:hover {
-                    border: 1px solid transparent !important;
-                }
+            .widget-card.can-drop > .widget-card-content {
+                background-color: @classic-neutral-grey-0;
             }
         }
     }

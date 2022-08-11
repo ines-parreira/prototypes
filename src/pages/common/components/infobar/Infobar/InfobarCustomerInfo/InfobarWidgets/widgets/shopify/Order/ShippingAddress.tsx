@@ -2,10 +2,10 @@ import React, {useContext, useMemo} from 'react'
 import {Map} from 'immutable'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {WidgetContext} from 'providers/infobar/WidgetContext'
 import ActionButtonsGroup from '../../ActionButtonsGroup'
 import {InfobarAction} from '../../types'
 import {ShopifyActionType} from '../types'
-import {WidgetContext} from '../../../WidgetContext'
 
 import EditOrderShippingAddressModal from './EditOrderShippingAddressModal/EditOrderShippingAddressModal'
 

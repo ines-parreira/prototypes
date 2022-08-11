@@ -10,11 +10,10 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {IntegrationType} from 'models/integration/types'
-import {IntegrationContext} from '../IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 import ActionButtonsGroup from '../ActionButtonsGroup'
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
+import {StaticField} from '../StaticField'
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
@@ -90,25 +89,21 @@ class AfterTitleContainer extends Component<
         return (
             <>
                 <ActionButtonsGroup actions={actions} payload={payload} />
-                <CardHeaderDetails>
-                    <CardHeaderValue label="Total spent">
-                        <MoneyAmount
-                            amount={source.get('total_spent')}
-                            currencyCode={this.context.integration.getIn([
-                                'meta',
-                                'currency',
-                            ])}
-                        />
-                    </CardHeaderValue>
-                    <CardHeaderValue label="Orders">
-                        {source.get('orders_count')}
-                    </CardHeaderValue>
-                    {integrations.size > 1 && (
-                        <CardHeaderValue label="Store">
-                            {shopName}
-                        </CardHeaderValue>
-                    )}
-                </CardHeaderDetails>
+                <StaticField label="Total spent">
+                    <MoneyAmount
+                        amount={source.get('total_spent')}
+                        currencyCode={this.context.integration.getIn([
+                            'meta',
+                            'currency',
+                        ])}
+                    />
+                </StaticField>
+                <StaticField label="Orders">
+                    {source.get('orders_count')}
+                </StaticField>
+                {integrations.size > 1 && (
+                    <StaticField label="Store">{shopName}</StaticField>
+                )}
             </>
         )
     }
@@ -137,23 +132,25 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
 
     return (
         <>
-            <CardHeaderIcon src={logo} alt="Shopify" />
-            <CardHeaderTitle>Shopify</CardHeaderTitle>
-            <CardHeaderSubtitle>
-                <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => {
-                        logEvent(SegmentEvent.ShopifyProfileClicked, {
-                            account_domain: currentAccount.get('domain'),
-                        })
-                    }}
-                >
-                    {children}
-                </a>
-            </CardHeaderSubtitle>
             <ExpandAllButton />
+            <CardHeaderTitle>
+                <CardHeaderIcon src={logo} alt="Shopify" />
+                Shopify
+                <CardHeaderSubtitle>
+                    <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => {
+                            logEvent(SegmentEvent.ShopifyProfileClicked, {
+                                account_domain: currentAccount.get('domain'),
+                            })
+                        }}
+                    >
+                        {children}
+                    </a>
+                </CardHeaderSubtitle>
+            </CardHeaderTitle>
         </>
     )
 }

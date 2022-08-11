@@ -2,14 +2,11 @@
 
 exports[`Subscription AfterTitle should display only the activate action because the subscription is cancelled 1`] = `
 <div>
-  <div
-    class="badge ml-1"
-  />
   <span
     class="container group horizontal"
   >
     <button
-      class="wrapper fill secondary medium"
+      class="wrapper actionButton fill secondary small"
       id="action-button-2"
       type="button"
     >
@@ -20,42 +17,38 @@ exports[`Subscription AfterTitle should display only the activate action because
         class="wrapper"
       >
         <i
-          class="material-icons icon isLeft medium"
+          class="material-icons icon isLeft small"
         >
-          refresh
+          attach_money
         </i>
       </span>
        Activate
     </button>
   </span>
   <div
-    class="container"
+    class="widgetField staticWidgetField"
   >
     <span
-      class="container"
+      class="widgetFieldLabel"
     >
-      <span
-        class="label"
-      >
-        Created
-        : 
-      </span>
-      <strong />
+      Created
+      :
+       
     </span>
+    <span
+      class="widgetFieldValue"
+    />
   </div>
 </div>
 `;
 
 exports[`Subscription AfterTitle should display only the cancel action because the subscription is not cancelled 1`] = `
 <div>
-  <div
-    class="badge ml-1"
-  />
   <span
     class="container group horizontal"
   >
     <button
-      class="wrapper fill secondary medium"
+      class="wrapper actionButton fill secondary small"
       id="action-button-1"
       type="button"
     >
@@ -66,7 +59,7 @@ exports[`Subscription AfterTitle should display only the cancel action because t
         class="wrapper"
       >
         <i
-          class="material-icons icon isLeft medium"
+          class="material-icons icon isLeft small"
         >
           block
         </i>
@@ -75,19 +68,18 @@ exports[`Subscription AfterTitle should display only the cancel action because t
     </button>
   </span>
   <div
-    class="container"
+    class="widgetField staticWidgetField"
   >
     <span
-      class="container"
+      class="widgetFieldLabel"
     >
-      <span
-        class="label"
-      >
-        Created
-        : 
-      </span>
-      <strong />
+      Created
+      :
+       
     </span>
+    <span
+      class="widgetFieldValue"
+    />
   </div>
 </div>
 `;
@@ -99,6 +91,11 @@ exports[`Subscription TitleWrapper customer context should render custom link be
     rel="noopener noreferrer"
     target="_blank"
   />
+  <div>
+    <div
+      class="badge mt-2"
+    />
+  </div>
 </div>
 `;
 
@@ -109,6 +106,11 @@ exports[`Subscription TitleWrapper customer context should render default link b
     rel="noopener noreferrer"
     target="_blank"
   />
+  <div>
+    <div
+      class="badge mt-2"
+    />
+  </div>
 </div>
 `;
 
@@ -118,6 +120,11 @@ exports[`Subscription TitleWrapper should not render any link because no custome
     rel="noopener noreferrer"
     target="_blank"
   />
+  <div>
+    <div
+      class="badge mt-2"
+    />
+  </div>
 </div>
 `;
 
@@ -127,6 +134,11 @@ exports[`Subscription TitleWrapper should not render any provided link when no c
     rel="noopener noreferrer"
     target="_blank"
   />
+  <div>
+    <div
+      class="badge mt-2"
+    />
+  </div>
 </div>
 `;
 
@@ -137,6 +149,11 @@ exports[`Subscription TitleWrapper ticket context should render custom link beca
     rel="noopener noreferrer"
     target="_blank"
   />
+  <div>
+    <div
+      class="badge mt-2"
+    />
+  </div>
 </div>
 `;
 
@@ -147,5 +164,10 @@ exports[`Subscription TitleWrapper ticket context should render default link bec
     rel="noopener noreferrer"
     target="_blank"
   />
+  <div>
+    <div
+      class="badge mt-2"
+    />
+  </div>
 </div>
 `;

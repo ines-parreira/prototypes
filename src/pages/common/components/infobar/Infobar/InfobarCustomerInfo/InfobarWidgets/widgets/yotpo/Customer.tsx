@@ -3,17 +3,15 @@ import type {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/yotpo.svg'
 
-import {CardHeaderDetails} from '../CardHeaderDetails'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
-import {CardHeaderBadge} from '../CardHeaderBadge'
 import {CardHeaderStatusLabel} from '../CardHeaderStatusLabel'
-import {CardHeaderValue} from '../CardHeaderValue'
-import {IntegrationContext} from '../IntegrationContext'
+import {StaticField} from '../StaticField'
+import {CardHeaderYotpoBadge} from './custom/CardHeaderYotpoBadge'
 
 import {CardHeaderYotpoRatingThumbs} from './custom/CardHeaderYotpoRatingThumbs'
-import css from './Customer.less'
 
 export default function Customer() {
     return {
@@ -34,7 +32,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 
         return (
             <>
-                <CardHeaderDetails>
+                <StaticField noBold>
                     <CardHeaderYotpoRatingThumbs
                         label="Avg. rating"
                         value={source.getIn([
@@ -42,13 +40,13 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                             'avg_product_rating',
                         ])}
                     />
-                    <CardHeaderValue label="Reviews">
-                        {source.getIn(
-                            ['reviews_statistics', 'total_reviews'],
-                            'N/A'
-                        )}
-                    </CardHeaderValue>
-                </CardHeaderDetails>
+                </StaticField>
+                <StaticField label="Reviews">
+                    {source.getIn(
+                        ['reviews_statistics', 'total_reviews'],
+                        'N/A'
+                    )}
+                </StaticField>
             </>
         )
     }
@@ -73,16 +71,17 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
         ])
         return (
             <>
-                <CardHeaderIcon src={logo} alt="Yotpo" />
-                <CardHeaderTitle>Yotpo</CardHeaderTitle>
-
-                {pointBalance > 0 && (
-                    <CardHeaderBadge iconName="stars">
-                        {parseFloat(pointBalance).toLocaleString()}
-                    </CardHeaderBadge>
-                )}
-                <CardHeaderStatusLabel>{vipTierName}</CardHeaderStatusLabel>
                 <ExpandAllButton />
+                <CardHeaderTitle>
+                    <CardHeaderIcon src={logo} alt="Yotpo" />
+                    Yotpo
+                    {pointBalance > 0 && (
+                        <CardHeaderYotpoBadge iconName="stars">
+                            {parseFloat(pointBalance).toLocaleString()}
+                        </CardHeaderYotpoBadge>
+                    )}
+                    <CardHeaderStatusLabel>{vipTierName}</CardHeaderStatusLabel>
+                </CardHeaderTitle>
             </>
         )
     }
@@ -96,9 +95,9 @@ class BeforeContent extends React.Component<BeforeContentProps> {
         const {source} = this.props
         if (source.size < 2) {
             return (
-                <div className={css.emptyStateContainer}>
-                    <span>No statistic data are available right now.</span>
-                </div>
+                <StaticField noBold>
+                    No statistic data are available right now.
+                </StaticField>
             )
         }
         return null

@@ -2,12 +2,14 @@
 
 exports[`<ExpandAllButton/> render() should render 1`] = `
 <span
-  className="container expand-all"
+  className="expandAll"
   onClick={[Function]}
+  title="Fold all"
 >
-  <img
-    alt="Expand all"
-    src="test-file-stub"
-  />
+  <i
+    className="material-icons"
+  >
+    unfold_less
+  </i>
 </span>
 `;

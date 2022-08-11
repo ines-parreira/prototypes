@@ -6,16 +6,18 @@ import {fromJS} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
 import DragWrapper from '../../../../dragging/WidgetsDragWrapper.tsx'
-import {compare} from '../../../../../../../utils.ts'
+
 import {canDisplayWidget} from '../../../utils.tsx'
-import {getSourcePathFromContext} from '../../../../../../../state/widgets/utils.ts'
-import * as integrationsSelectors from '../../../../../../../state/integrations/selectors.ts'
 
 import InfobarWidget from './InfobarWidget'
-import PlaceholderWidget from './widgets/PlaceholderWidget.tsx'
+import Placeholder from './widgets/Placeholder.tsx'
 import {infobarWidgetShouldRender} from './predicates.ts'
 import css from './InfobarWidgets.less'
 import {InfobarTabs} from './InfobarTabs.tsx'
+
+import * as integrationsSelectors from 'state/integrations/selectors.ts'
+import {getSourcePathFromContext} from 'state/widgets/utils.ts'
+import {compare} from 'utils.ts'
 
 class InfobarWidgets extends React.Component {
     shouldComponentUpdate(nextProps) {
@@ -193,7 +195,7 @@ class InfobarWidgets extends React.Component {
 
             if (item.get('type') === 'placeholder') {
                 return (
-                    <PlaceholderWidget
+                    <Placeholder
                         key={`${newItem
                             .getIn(['template', 'path'])
                             .toString()}-${index}`}
@@ -233,9 +235,9 @@ class InfobarWidgets extends React.Component {
 
         const isEditing = !!(editing && editing.isEditing)
 
-        const className = classnames('widgets-list', css.container, {
+        const className = classnames(css.widgetsList, {
             editing: isEditing,
-            dragging: !!(editing && editing.isDragging),
+            [css.dragging]: !!(editing && editing.isDragging),
         })
 
         const genericSourcePath = getSourcePathFromContext(
@@ -282,20 +284,21 @@ class InfobarWidgets extends React.Component {
                 {displayTabs && !isEditing && (
                     <InfobarTabs preparedDisplayList={preparedDisplayList} />
                 )}
-                <div className={className}>
-                    <DragWrapper
-                        sort
-                        group={{
-                            name: 'root',
-                            pull: false,
-                            put: true,
-                        }}
-                        isEditing={isEditing}
-                        watchDrop
-                    >
+                <DragWrapper
+                    sort
+                    group={{
+                        name: 'root',
+                        pull: false,
+                        put: true,
+                    }}
+                    isEditing={isEditing}
+                    watchDrop
+                    tag={null}
+                >
+                    <div className={className}>
                         {this._renderWidgets(preparedDisplayList)}
-                    </DragWrapper>
-                </div>
+                    </div>
+                </DragWrapper>
             </>
         )
     }

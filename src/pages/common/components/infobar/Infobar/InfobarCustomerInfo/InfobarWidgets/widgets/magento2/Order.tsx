@@ -1,11 +1,10 @@
 import React, {Component, ContextType, ReactNode} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {CardBody} from 'reactstrap'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {
-    displayLabel,
+    displayValue,
     guessFieldValueFromRawData,
 } from 'pages/common/components/infobar/utils'
 import {DatetimeLabel} from 'pages/common/utils/labels'
@@ -14,8 +13,11 @@ import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
 import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import {getTrackingUrl} from 'utils/delivery'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import {IntegrationContext} from '../IntegrationContext'
+import {StaticField} from '../StaticField'
+import cardCss from '../Card.less'
+import css from './Order.less'
 
 export default function Order() {
     return {
@@ -85,27 +87,21 @@ class BeforeContentContainer extends Component<BeforeContentProps> {
         ) as List<any>
 
         return (
-            <div>
-                <div className="simple-field">
-                    <span className="field-label">State:</span>
-                    <span className="field-value">
-                        <Badge type={statusColors[state]}>
-                            {humanizeString(state)}
-                        </Badge>
-                    </span>
-                </div>
-                <div className="simple-field">
-                    <span className="field-label">Created at:</span>
-                    <span className="field-value">
-                        <DatetimeLabel dateTime={source.get('created_at')} />
-                    </span>
-                </div>
-                <div className="mt-3">
-                    {!orderShipments.isEmpty() ? (
-                        <Shipments shipments={orderShipments} />
-                    ) : null}
-                </div>
-            </div>
+            <>
+                <StaticField label="State">
+                    <Badge type={statusColors[state]}>
+                        {humanizeString(state)}
+                    </Badge>
+                </StaticField>
+
+                <StaticField label="Created at">
+                    <DatetimeLabel dateTime={source.get('created_at')} />
+                </StaticField>
+
+                {!orderShipments.isEmpty() ? (
+                    <Shipments shipments={orderShipments} />
+                ) : null}
+            </>
         )
     }
 }
@@ -154,31 +150,17 @@ export class Shipments extends Component<{
 
                 trackComponent = (
                     <div key={trackNumber}>
-                        <div className="simple-field">
-                            <span className="field-label">Carrier code:</span>
-                            <span className="field-value">
-                                {displayLabel(carrierCode)}
-                            </span>
-                        </div>
-                        <div className="simple-field">
-                            <span className="field-label">
-                                Tracking number:
-                            </span>
-                            <span className="field-value">
-                                {displayLabel(trackNumber)}
-                            </span>
-                        </div>
-                        <div className="simple-field">
-                            <span className="field-label">Tracking URL:</span>
-                            <span className="field-value">
-                                {displayLabel(
-                                    guessFieldValueFromRawData(
-                                        trackingUrl,
-                                        'url'
-                                    )
-                                )}
-                            </span>
-                        </div>
+                        <StaticField label="Carrier code">
+                            {displayValue(carrierCode)}
+                        </StaticField>
+                        <StaticField label="Tracking number">
+                            {displayValue(trackNumber)}
+                        </StaticField>
+                        <StaticField label="Tracking URL">
+                            {displayValue(
+                                guessFieldValueFromRawData(trackingUrl, 'url')
+                            )}
+                        </StaticField>
                     </div>
                 )
             }
@@ -189,8 +171,8 @@ export class Shipments extends Component<{
             const link = `https://${storeUrl}/${adminUrlSuffix}/sales/shipment/view/shipment_id/${shipmentId}/`
 
             return (
-                <div key={shipment.get('entity_id')} className="card">
-                    <CardBody className="header clearfix">
+                <div key={shipment.get('entity_id')} className={css.section}>
+                    <div className={cardCss.widgetCardHeader}>
                         <a
                             target="_blank"
                             rel="noopener noreferrer"
@@ -199,35 +181,18 @@ export class Shipments extends Component<{
                             <i className="material-icons">local_shipping</i>{' '}
                             <span>Shipment</span>
                         </a>
-                    </CardBody>
-                    <CardBody className="content">
-                        <div className="simple-field">
-                            <span className="field-label">Last updated:</span>
-                            <span className="field-value">
-                                <DatetimeLabel
-                                    dateTime={shipment.get('updated_at')}
-                                />
-                            </span>
-                        </div>
-                        {trackComponent}
-                        <div className="list mt-3">
-                            {(shipment.get('items') as List<any>).map(
-                                (item: Map<any, any>) => (
-                                    <div
-                                        key={item.get('order_item_id')}
-                                        className="card"
-                                    >
-                                        <CardBody className="header clearfix">
-                                            <span>
-                                                {item.get('qty')} x{' '}
-                                                {item.get('name')}
-                                            </span>
-                                        </CardBody>
-                                    </div>
-                                )
-                            )}
-                        </div>
-                    </CardBody>
+                    </div>
+                    <StaticField label="Last updated">
+                        <DatetimeLabel dateTime={shipment.get('updated_at')} />
+                    </StaticField>
+                    {trackComponent}
+                    {(shipment.get('items') as List<any>).map(
+                        (item: Map<any, any>) => (
+                            <StaticField key={item.get('order_item_id')}>
+                                {item.get('qty')} x {item.get('name')}
+                            </StaticField>
+                        )
+                    )}
                 </div>
             )
         })
@@ -256,47 +221,41 @@ export class CreditMemos extends Component<{
             const link = `https://${storeUrl}/${adminUrlSuffix}/sales/creditmemo/view/creditmemo_id/${creditMemoId}/`
 
             return (
-                <div key={creditMemo.get('entity_id')} className="card">
-                    <CardBody className="header clearfix">
-                        <a
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            href={adminUrlSuffix ? link : ''}
+                <div
+                    key={creditMemo.get('entity_id')}
+                    className={css.delimiter}
+                >
+                    <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={adminUrlSuffix ? link : ''}
+                    >
+                        <StaticField
+                            label={
+                                <>
+                                    <i className="material-icons">redeem</i>{' '}
+                                    Credit memo
+                                </>
+                            }
                         >
-                            <span>
-                                <i className="material-icons">redeem</i> Credit
-                                memo: {creditMemo.get('base_grand_total')}{' '}
-                                {creditMemo.get('base_currency_code')}
-                            </span>
-                        </a>
-                    </CardBody>
-                    <CardBody className="content">
-                        <div className="simple-field">
-                            <span className="field-label">Last updated:</span>
-                            <span className="field-value">
-                                <DatetimeLabel
-                                    dateTime={creditMemo.get('updated_at')}
-                                />
-                            </span>
-                        </div>
-                        <div className="list mt-3">
-                            {(creditMemo.get('items') as List<any>).map(
-                                (item: Map<any, any>) => (
-                                    <div
-                                        key={item.get('order_item_id')}
-                                        className="card"
-                                    >
-                                        <CardBody className="header clearfix">
-                                            <span>
-                                                {item.get('qty')} x{' '}
-                                                {item.get('name')}
-                                            </span>
-                                        </CardBody>
-                                    </div>
-                                )
-                            )}
-                        </div>
-                    </CardBody>
+                            {creditMemo.get('base_grand_total')}{' '}
+                            {creditMemo.get('base_currency_code')}
+                        </StaticField>
+                    </a>
+
+                    <StaticField label="Last updated">
+                        <DatetimeLabel
+                            dateTime={creditMemo.get('updated_at')}
+                        />
+                    </StaticField>
+
+                    {(creditMemo.get('items') as List<any>).map(
+                        (item: Map<any, any>) => (
+                            <StaticField key={item.get('order_item_id')}>
+                                {item.get('qty')} x {item.get('name')}
+                            </StaticField>
+                        )
+                    )}
                 </div>
             )
         })
@@ -326,17 +285,9 @@ class AfterContentContainer extends Component<AfterContentProps> {
                 creditMemo.get('order_id') === source.get('entity_id')
         ) as List<any>
 
-        if (orderCreditMemos.isEmpty()) {
-            return null
-        }
-
-        return (
-            <div className="mt-3">
-                {!orderCreditMemos.isEmpty() ? (
-                    <CreditMemos creditMemos={orderCreditMemos} />
-                ) : null}
-            </div>
-        )
+        return !orderCreditMemos.isEmpty() ? (
+            <CreditMemos creditMemos={orderCreditMemos} />
+        ) : null
     }
 }
 

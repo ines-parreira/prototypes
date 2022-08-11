@@ -1,0 +1,75 @@
+@import '~css/new/colorTokens';
+@import '~css/new/colors';
+
+:local {
+    .dataFields {
+        margin-bottom: 12px;
+    }
+    .dataHeader {
+        margin-bottom: 12px;
+        padding: 12px;
+        color: #573a08;
+        background-color: #fffaf3;
+        border: 1px solid @httpMagenta;
+        border-radius: 3px;
+    }
+    .dataTitle {
+        font-weight: 600;
+        font-size: 1.2em;
+        margin-bottom: 8px;
+    }
+
+    .shopify {
+        & > .dataHeader {
+            color: #5a7529;
+            background-color: #e0ecc8;
+            border-color: @shopifyGreen;
+        }
+    }
+
+    .recharge {
+        & > .dataHeader {
+            color: @classic-neutral-grey-0;
+            background-color: lighten(@rechargeBlue, 15%);
+            border-color: @rechargeBlue;
+            a {
+                color: @classic-neutral-grey-0;
+            }
+        }
+    }
+
+    .smooch_inside {
+        & > .dataHeader {
+            color: #570808;
+            background-color: #ffd7d7;
+            border-color: @chatPurple;
+        }
+    }
+
+    .magento2 {
+        & > .dataHeader {
+            color: #563110;
+            background-color: #ffdcc1;
+            border-color: @magentoOrange;
+        }
+    }
+
+    .yotpo {
+        & > .dataHeader {
+            color: @classic-neutral-grey-0;
+            background-color: lighten(@yotpoBlue, 5%);
+            border-color: @yotpoBlue;
+            a {
+                color: @classic-neutral-grey-0;
+            }
+        }
+    }
+
+    .bigcommerce {
+        & > .dataHeader {
+            color: @bigcommercePurple;
+            background-color: @bigcommerceLightPurple;
+            border-color: @bigcommercePurple;
+        }
+    }
+}

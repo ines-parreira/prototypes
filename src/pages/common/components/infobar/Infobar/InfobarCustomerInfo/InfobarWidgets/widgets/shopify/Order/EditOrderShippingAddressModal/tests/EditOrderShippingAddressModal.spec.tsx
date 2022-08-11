@@ -4,8 +4,8 @@ import {render, fireEvent} from '@testing-library/react'
 
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {shopifyCustomerFixture} from 'fixtures/shopify'
-import {CustomerContext} from 'providers/CustomerContext'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {CustomerContext} from 'providers/infobar/CustomerContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {EditOrderShippingAddressModal} from '../EditOrderShippingAddressModal'
 
 jest.mock('pages/common/utils/labels', () => ({

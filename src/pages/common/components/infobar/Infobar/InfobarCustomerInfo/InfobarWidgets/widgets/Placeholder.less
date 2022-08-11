@@ -1,0 +1,28 @@
+@import '~css/new/colors';
+
+:local {
+    .wrapper {
+        &:hover {
+            cursor: grab;
+        }
+        &:active {
+            cursor: grabbing;
+        }
+    }
+    .card {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 12px;
+        padding: 12px;
+        background-color: @classic-neutral-grey-0;
+        border: 1px solid @classic-neutral-grey-3;
+    }
+    .title {
+        margin: 0;
+    }
+    .delete {
+        padding: 0 4px;
+        font-size: 1.3rem;
+        cursor: pointer;
+    }
+}

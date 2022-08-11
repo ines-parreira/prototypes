@@ -7,7 +7,6 @@ import React, {
 } from 'react'
 import {fromJS, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {CardBody} from 'reactstrap'
 import _lowerCase from 'lodash/lowerCase'
 import _groupBy from 'lodash/groupBy'
 
@@ -19,9 +18,10 @@ import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/s
 import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
 import {devLog, humanizeString, isCurrentlyOnTicket, toJS} from 'utils'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
-import {IntegrationContext} from '../IntegrationContext'
+import {StaticField} from '../StaticField'
 
 export default function Charge() {
     return {
@@ -93,7 +93,7 @@ export class AfterTitle extends React.Component<{
                 ),
                 child: (
                     <>
-                        <ButtonIconLabel icon="refresh" /> Refund
+                        <ButtonIconLabel icon="attach_money" /> Refund
                     </>
                 ),
             },
@@ -206,16 +206,11 @@ class BeforeContent extends React.Component<{
         const status = ((source.get('status') as string) || '').toLowerCase()
 
         return (
-            <div>
-                <div className="simple-field">
-                    <span className="field-label">Status:</span>
-                    <span className="field-value">
-                        <Badge type={statusColors[status]}>
-                            {humanizeString(status)}
-                        </Badge>
-                    </span>
-                </div>
-            </div>
+            <StaticField label="Status">
+                <Badge type={statusColors[status]}>
+                    {humanizeString(status)}
+                </Badge>
+            </StaticField>
         )
     }
 }
@@ -232,45 +227,32 @@ export class AfterContent extends React.Component<{
             (item: Record<string, unknown>) => item.subscription_id
         ) as {[key: string]: (LineItem & {id: string})[]}
 
-        return (
-            <div className="mt-2">
-                {Object.keys(chargeSubscriptions).map((k) => {
-                    return (
-                        <div className="card" key={k}>
-                            <CardBody className="header clearfix">
-                                <a target="_blank">
-                                    <span>
-                                        <span
-                                            role="img"
-                                            aria-label="subscription emoji"
-                                        >
-                                            🔄
-                                        </span>{' '}
-                                        Subscription #{k}
-                                    </span>
-                                </a>
-                                <SubscriptionAfterTitle
-                                    isEditing={isEditing}
-                                    source={fromJS({
-                                        charge_id: source.get('id'),
-                                        subscription_id: k,
-                                    })}
-                                />
-                            </CardBody>
-                            <CardBody className="content">
-                                {chargeSubscriptions[k].map((item) => {
-                                    return (
-                                        <span key={`${k}-${item.id}`}>
-                                            {item.title} ({item.quantity})
-                                        </span>
-                                    )
-                                })}
-                            </CardBody>
-                        </div>
-                    )
-                })}
-            </div>
-        )
+        return Object.keys(chargeSubscriptions).map((k) => {
+            return (
+                <div key={k}>
+                    <StaticField>
+                        <span role="img" aria-label="subscription emoji">
+                            🔄
+                        </span>{' '}
+                        Subscription #{k}
+                    </StaticField>
+                    <SubscriptionAfterTitle
+                        isEditing={isEditing}
+                        source={fromJS({
+                            charge_id: source.get('id'),
+                            subscription_id: k,
+                        })}
+                    />
+                    {chargeSubscriptions[k].map((item) => {
+                        return (
+                            <StaticField key={`${k}-${item.id}`}>
+                                {item.title} ({item.quantity})
+                            </StaticField>
+                        )
+                    })}
+                </div>
+            )
+        })
     }
 }
 

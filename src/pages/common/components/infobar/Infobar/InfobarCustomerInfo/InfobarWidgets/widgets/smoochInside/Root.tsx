@@ -23,8 +23,8 @@ export function TitleWrapper({children, source, template}: Props) {
     const link = template.getIn(['meta', 'link'])
     return (
         <>
-            <CardHeaderIcon src={logo} alt="Chat" />
             <CardHeaderTitle>
+                <CardHeaderIcon src={logo} alt="Chat" />
                 {link ? (
                     <a
                         href={renderTemplate(link, source.toJS())}

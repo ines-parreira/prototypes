@@ -1,28 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<Button/> should render with correct label 1`] = `
-<li
-  class="editRow list-group-item"
+<button
+  class="wrapper fill secondary small"
+  type="button"
 >
-  <button
-    class="btn btn-secondary"
-    type="button"
-  >
-    should render
-  </button>
-  <span
-    class="editIcons"
-  >
-    <i
-      class="material-icons text-faded clickable"
-    >
-      settings
-    </i>
-    <i
-      class="material-icons text-danger clickable"
-    >
-      close
-    </i>
-  </span>
-</li>
+  should render
+</button>
 `;

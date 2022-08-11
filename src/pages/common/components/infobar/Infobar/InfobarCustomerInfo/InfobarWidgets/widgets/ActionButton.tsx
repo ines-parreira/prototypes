@@ -12,7 +12,14 @@ import _uniqueId from 'lodash/uniqueId'
 import _noop from 'lodash/noop'
 import {Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
-import {CustomerContext, CustomerContextType} from 'providers/CustomerContext'
+import {
+    CustomerContext,
+    CustomerContextType,
+} from 'providers/infobar/CustomerContext'
+import {
+    IntegrationContext,
+    IntegrationContextType,
+} from 'providers/infobar/IntegrationContext'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
@@ -23,8 +30,6 @@ import {getPendingActionCallbacks} from 'state/infobar/selectors'
 import {actionButtonHashForData} from 'state/infobar/utils'
 import {RootState} from 'state/types'
 import Tooltip from 'pages/common/components/Tooltip'
-
-import {IntegrationContext, IntegrationContextType} from './IntegrationContext'
 
 import css from './ActionButtons.less'
 import {InfobarModalProps, Option, Parameter} from './types'
@@ -352,8 +357,10 @@ export class ActionButtonContainer extends Component<Props, State> {
                     id={this.id}
                     type="button"
                     intent="secondary"
+                    size="small"
                     isDisabled={isLoading || hasError}
                     onClick={this.toggleUi}
+                    className={css.actionButton}
                     {...tagOptions}
                 >
                     <span id={tooltipTargetID} />

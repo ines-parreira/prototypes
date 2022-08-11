@@ -6,9 +6,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Customer from '../Customer'
-import {IntegrationContext} from '../../IntegrationContext'
-import {IntegrationType} from '../../../../../../../../../../models/integration/constants'
-import {initialState} from '../../../../../../../../../../state/infobarActions/shopify/createOrder/reducers'
+
+import {IntegrationContext} from 'providers/infobar/IntegrationContext.ts'
+import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
+import {IntegrationType} from 'models/integration/constants'
 
 const AfterTitle = Customer().AfterTitle
 

@@ -1,181 +1,171 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<AfterTitle/> render() should render with different score values 1`] = `
-<span
-  className="subtitle"
+<div
+  className="afterTitle"
 >
-  <CardHeaderValue
+  <StaticField
     label="Created"
   >
     <Connect(DatetimeLabelContainer)
       dateTime={2021-01-31T19:12:00.000Z}
       key="created-at"
     />
-    <span
-      className="starRatingWrapper"
-    >
-      <ReactStars
-        a11y={true}
-        activeColor="#FDAB40"
-        char="★"
-        color="#E8EBEF"
-        count={5}
-        edit={false}
-        emptyIcon={
-          <span
-            className="material-icons"
-          >
-            star
-          </span>
-        }
-        filledIcon={
-          <span
-            className="material-icons"
-          >
-            star
-          </span>
-        }
-        half={false}
-        halfIcon={
-          <span
-            className="material-icons"
-          >
-            star_half
-          </span>
-        }
-        isHalf={true}
-        onChange={[Function]}
-        size={15}
-        value={1.5}
-      />
-    </span>
-  </CardHeaderValue>
-</span>
+  </StaticField>
+  <StaticField>
+    <ReactStars
+      a11y={true}
+      activeColor="#FDAB40"
+      char="★"
+      color="#E8EBEF"
+      count={5}
+      edit={false}
+      emptyIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      filledIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      half={false}
+      halfIcon={
+        <span
+          className="material-icons"
+        >
+          star_half
+        </span>
+      }
+      isHalf={true}
+      onChange={[Function]}
+      size={15}
+      value={1.5}
+    />
+  </StaticField>
+</div>
 `;
 
 exports[`<AfterTitle/> render() should render with different score values 2`] = `
-<span
-  className="subtitle"
+<div
+  className="afterTitle"
 >
-  <CardHeaderValue
+  <StaticField
     label="Created"
   >
     <Connect(DatetimeLabelContainer)
       dateTime={2021-01-31T19:12:00.000Z}
       key="created-at"
     />
-    <span
-      className="starRatingWrapper"
-    >
-      <ReactStars
-        a11y={true}
-        activeColor="#FDAB40"
-        char="★"
-        color="#E8EBEF"
-        count={5}
-        edit={false}
-        emptyIcon={
-          <span
-            className="material-icons"
-          >
-            star
-          </span>
-        }
-        filledIcon={
-          <span
-            className="material-icons"
-          >
-            star
-          </span>
-        }
-        half={false}
-        halfIcon={
-          <span
-            className="material-icons"
-          >
-            star_half
-          </span>
-        }
-        isHalf={true}
-        onChange={[Function]}
-        size={15}
-        value={0}
-      />
-    </span>
-  </CardHeaderValue>
-</span>
+  </StaticField>
+  <StaticField>
+    <ReactStars
+      a11y={true}
+      activeColor="#FDAB40"
+      char="★"
+      color="#E8EBEF"
+      count={5}
+      edit={false}
+      emptyIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      filledIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      half={false}
+      halfIcon={
+        <span
+          className="material-icons"
+        >
+          star_half
+        </span>
+      }
+      isHalf={true}
+      onChange={[Function]}
+      size={15}
+      value={0}
+    />
+  </StaticField>
+</div>
 `;
 
 exports[`<AfterTitle/> render() should render with different score values 3`] = `
-<span
-  className="subtitle"
+<div
+  className="afterTitle"
 >
-  <CardHeaderValue
+  <StaticField
     label="Created"
   >
     <Connect(DatetimeLabelContainer)
       dateTime={2021-01-31T19:12:00.000Z}
       key="created-at"
     />
-    <span
-      className="starRatingWrapper"
-    >
-      <ReactStars
-        a11y={true}
-        activeColor="#FDAB40"
-        char="★"
-        color="#E8EBEF"
-        count={5}
-        edit={false}
-        emptyIcon={
-          <span
-            className="material-icons"
-          >
-            star
-          </span>
-        }
-        filledIcon={
-          <span
-            className="material-icons"
-          >
-            star
-          </span>
-        }
-        half={false}
-        halfIcon={
-          <span
-            className="material-icons"
-          >
-            star_half
-          </span>
-        }
-        isHalf={true}
-        onChange={[Function]}
-        size={15}
-        value={5}
-      />
-    </span>
-  </CardHeaderValue>
-</span>
+  </StaticField>
+  <StaticField>
+    <ReactStars
+      a11y={true}
+      activeColor="#FDAB40"
+      char="★"
+      color="#E8EBEF"
+      count={5}
+      edit={false}
+      emptyIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      filledIcon={
+        <span
+          className="material-icons"
+        >
+          star
+        </span>
+      }
+      half={false}
+      halfIcon={
+        <span
+          className="material-icons"
+        >
+          star_half
+        </span>
+      }
+      isHalf={true}
+      onChange={[Function]}
+      size={15}
+      value={5}
+    />
+  </StaticField>
+</div>
 `;
 
 exports[`<BeforeContent/> render() should render images correctly 1`] = `
-<div
-  className="reviewContainer"
->
-  <p
-    className="reviewTitle"
-  >
-    Review title
-  </p>
-  <p
-    className="reviewContent"
-  >
-    Long review content lorem ipsum dolor sit amen...
-  </p>
-  <div
-    className="reviewImagesContainer"
-  >
+<Fragment>
+  <div>
+    <StaticField>
+      Review title
+    </StaticField>
+    <StaticField
+      noBold={true}
+    >
+      Long review content lorem ipsum dolor sit amen...
+    </StaticField>
+  </div>
+  <StaticField>
     <img
       alt="review 13"
       className="reviewImage"
@@ -188,13 +178,9 @@ exports[`<BeforeContent/> render() should render images correctly 1`] = `
       key="14"
       src="http://s3.amazonaws.com/yotpo-images-test/Review/29/14/square.jpeg?1457513714"
     />
-  </div>
-  <div
-    className="reviewFooter"
-  >
-    <span
-      className="reviewFooterThumbs"
-    >
+  </StaticField>
+  <div>
+    <StaticField>
       <span
         className="material-icons reviewFooterThumb"
       >
@@ -213,31 +199,25 @@ exports[`<BeforeContent/> render() should render images correctly 1`] = `
       <b>
         0
       </b>
-    </span>
+    </StaticField>
   </div>
-</div>
+</Fragment>
 `;
 
 exports[`<BeforeContent/> render() should render votes down correctly 1`] = `
-<div
-  className="reviewContainer"
->
-  <p
-    className="reviewTitle"
-  >
-    Review title
-  </p>
-  <p
-    className="reviewContent"
-  >
-    Long review content lorem ipsum dolor sit amen...
-  </p>
-  <div
-    className="reviewFooter"
-  >
-    <span
-      className="reviewFooterThumbs"
+<Fragment>
+  <div>
+    <StaticField>
+      Review title
+    </StaticField>
+    <StaticField
+      noBold={true}
     >
+      Long review content lorem ipsum dolor sit amen...
+    </StaticField>
+  </div>
+  <div>
+    <StaticField>
       <span
         className="material-icons reviewFooterThumb"
       >
@@ -256,31 +236,25 @@ exports[`<BeforeContent/> render() should render votes down correctly 1`] = `
       <b>
         12
       </b>
-    </span>
+    </StaticField>
   </div>
-</div>
+</Fragment>
 `;
 
 exports[`<BeforeContent/> render() should render votes up correctly 1`] = `
-<div
-  className="reviewContainer"
->
-  <p
-    className="reviewTitle"
-  >
-    Review title
-  </p>
-  <p
-    className="reviewContent"
-  >
-    Long review content lorem ipsum dolor sit amen...
-  </p>
-  <div
-    className="reviewFooter"
-  >
-    <span
-      className="reviewFooterThumbs"
+<Fragment>
+  <div>
+    <StaticField>
+      Review title
+    </StaticField>
+    <StaticField
+      noBold={true}
     >
+      Long review content lorem ipsum dolor sit amen...
+    </StaticField>
+  </div>
+  <div>
+    <StaticField>
       <span
         className="material-icons reviewFooterThumb"
       >
@@ -299,31 +273,25 @@ exports[`<BeforeContent/> render() should render votes up correctly 1`] = `
       <b>
         0
       </b>
-    </span>
+    </StaticField>
   </div>
-</div>
+</Fragment>
 `;
 
 exports[`<BeforeContent/> render() should render with both votes up and down correctly 1`] = `
-<div
-  className="reviewContainer"
->
-  <p
-    className="reviewTitle"
-  >
-    Review title
-  </p>
-  <p
-    className="reviewContent"
-  >
-    Long review content lorem ipsum dolor sit amen...
-  </p>
-  <div
-    className="reviewFooter"
-  >
-    <span
-      className="reviewFooterThumbs"
+<Fragment>
+  <div>
+    <StaticField>
+      Review title
+    </StaticField>
+    <StaticField
+      noBold={true}
     >
+      Long review content lorem ipsum dolor sit amen...
+    </StaticField>
+  </div>
+  <div>
+    <StaticField>
       <span
         className="material-icons reviewFooterThumb"
       >
@@ -342,31 +310,25 @@ exports[`<BeforeContent/> render() should render with both votes up and down cor
       <b>
         12
       </b>
-    </span>
+    </StaticField>
   </div>
-</div>
+</Fragment>
 `;
 
 exports[`<BeforeContent/> render() should render with no images 1`] = `
-<div
-  className="reviewContainer"
->
-  <p
-    className="reviewTitle"
-  >
-    Review title
-  </p>
-  <p
-    className="reviewContent"
-  >
-    Long review content lorem ipsum dolor sit amen...
-  </p>
-  <div
-    className="reviewFooter"
-  >
-    <span
-      className="reviewFooterThumbs"
+<Fragment>
+  <div>
+    <StaticField>
+      Review title
+    </StaticField>
+    <StaticField
+      noBold={true}
     >
+      Long review content lorem ipsum dolor sit amen...
+    </StaticField>
+  </div>
+  <div>
+    <StaticField>
       <span
         className="material-icons reviewFooterThumb"
       >
@@ -385,55 +347,37 @@ exports[`<BeforeContent/> render() should render with no images 1`] = `
       <b>
         0
       </b>
-    </span>
+    </StaticField>
   </div>
-</div>
+</Fragment>
 `;
 
 exports[`<TitleWrapper/> render() should render both visible and invisible reviews correctly 1`] = `
-<div
-  className="titleContainer"
+<a
+  className="title"
+  href="#"
+  target="_self"
 >
-  <a
-    className="title"
-    href="#"
-    target="_self"
+  <span
+    className="material-icons inventory"
   >
-    <span
-      className="material-icons inventory"
-    >
-      inventory
-    </span>
-    <span />
-    <CardHeaderBadge
-      className="material-icons visibility"
-      color="secondary"
-      iconName="visibility_off"
-    />
-  </a>
-</div>
+    inventory
+  </span>
+  <span />
+</a>
 `;
 
 exports[`<TitleWrapper/> render() should render both visible and invisible reviews correctly 2`] = `
-<div
-  className="titleContainer"
+<a
+  className="title"
+  href="#"
+  target="_self"
 >
-  <a
-    className="title"
-    href="#"
-    target="_self"
+  <span
+    className="material-icons inventory"
   >
-    <span
-      className="material-icons inventory"
-    >
-      inventory
-    </span>
-    <span />
-    <CardHeaderBadge
-      className="material-icons visibility"
-      color="secondary"
-      iconName="visibility_off"
-    />
-  </a>
-</div>
+    inventory
+  </span>
+  <span />
+</a>
 `;

@@ -7,13 +7,13 @@ import React, {
 } from 'react'
 import {Form, Popover, PopoverBody} from 'reactstrap'
 
-import Button from 'pages/common/components/button/Button'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import useAppSelector from 'hooks/useAppSelector'
+import {ensureHTTPS} from 'utils/url'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {ensureHTTPS} from 'utils/url'
+import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import {
     Link,
     SubmitLink,

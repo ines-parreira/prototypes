@@ -18,17 +18,17 @@ import {
     onPayloadChange,
     onReset,
     setPayload,
-} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/actions'
-import {getCancelOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
-import {RootState} from '../../../../../../../../../../../state/types'
-import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
-import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
-import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order'
-import Loader from '../../../../../../../../Loader/Loader'
-import DEPRECATED_Modal from '../../../../../../../../DEPRECATED_Modal'
+} from 'state/infobarActions/shopify/cancelOrder/actions'
+import {getCancelOrderState} from 'state/infobarActions/shopify/cancelOrder/selectors'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+import {IntegrationType} from 'models/integration/types'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {getFinalCancelOrderPayload} from 'business/shopify/order'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import Loader from 'pages/common/components/Loader/Loader'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import {InfobarModalProps} from '../../../types'
-import {IntegrationContext} from '../../../IntegrationContext'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
 import css from './CancelOrderModal.less'

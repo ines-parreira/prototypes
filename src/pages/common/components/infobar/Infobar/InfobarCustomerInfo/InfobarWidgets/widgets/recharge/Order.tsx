@@ -20,10 +20,10 @@ import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import {renderTemplate} from 'pages/common/utils/template'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import ActionButtonsGroup from '../ActionButtonsGroup'
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
-import {IntegrationContext} from '../IntegrationContext'
+import {StaticField} from '../StaticField'
+import css from './Order.less'
 
 const OrderContext = createContext<{
     order: Map<string, unknown> | null
@@ -151,7 +151,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 ),
                 child: (
                     <>
-                        <ButtonIconLabel icon="refresh" /> Refund
+                        <ButtonIconLabel icon="attach_money" /> Refund
                     </>
                 ),
             },
@@ -178,33 +178,19 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             order_id: source.get('id'),
         }
 
-        const chargeStatus = (
-            (source.get('charge_status') as string) || ''
-        ).toLowerCase()
-
         return (
             <>
                 <ActionButtonsGroup
                     actions={this._getActions()}
                     payload={payload}
                 />
-                <CardHeaderDetails>
-                    <CardHeaderValue label="Created">
-                        <DatetimeLabel
-                            key="created-at"
-                            dateTime={source.get('created_at')}
-                            integrationType={RECHARGE_INTEGRATION_TYPE}
-                        />
-                    </CardHeaderValue>
-                    <CardHeaderValue>
-                        <Badge
-                            key="status"
-                            type={chargeStatusColors[chargeStatus]}
-                        >
-                            {humanizeString(chargeStatus)}
-                        </Badge>
-                    </CardHeaderValue>
-                </CardHeaderDetails>
+                <StaticField label="Created">
+                    <DatetimeLabel
+                        key="created-at"
+                        dateTime={source.get('created_at')}
+                        integrationType={RECHARGE_INTEGRATION_TYPE}
+                    />
+                </StaticField>
             </>
         )
     }
@@ -248,14 +234,11 @@ export class BeforeContent extends React.Component<BeforeContentProps> {
             ? associatedCharge.get('total_refunds')
             : '0'
 
-        return [
-            <div key="charge-total-refunds" className="simple-field">
-                <span className="field-label">Total refunds on charge:</span>
-                <span className="field-value">
-                    ${chargeTotalRefunds || '0.00'}
-                </span>
-            </div>,
-        ]
+        return (
+            <StaticField label="Total refunds on charge">
+                {chargeTotalRefunds || '0.00'}
+            </StaticField>
+        )
     }
 }
 
@@ -300,19 +283,35 @@ export function TitleWrapper({
         }
     }
 
+    const chargeStatus = (
+        (source.get('charge_status') as string) || ''
+    ).toLowerCase()
+
     return (
-        <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-                logEvent(SegmentEvent.RechargeOrderClicked, {
-                    account_domain: currentAccount.get('domain'),
-                })
-            }}
-        >
-            {children}
-        </a>
+        <>
+            <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                    logEvent(SegmentEvent.RechargeOrderClicked, {
+                        account_domain: currentAccount.get('domain'),
+                    })
+                }}
+                className={css.orderTitle}
+            >
+                {children}
+            </a>
+            <div>
+                <Badge
+                    key="status"
+                    type={chargeStatusColors[chargeStatus]}
+                    className="mt-2"
+                >
+                    {humanizeString(chargeStatus)}
+                </Badge>
+            </div>
+        </>
     )
 }
 

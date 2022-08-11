@@ -501,24 +501,26 @@ export const Infobar = ({
                                 widgets={widgets}
                             />
                             {!suggestedCustomer.isEmpty() && !isWidgetEditing && (
-                                <div className="d-none d-md-block">
-                                    <div
-                                        className={css.infobarSectionSeparator}
-                                    />
-                                    <div
-                                        className={classnames(
-                                            css.suggestedCustomer
-                                        )}
-                                    >
-                                        <h4>Is this the same person?</h4>
-                                        <p>
-                                            'We have found someone similar to
-                                            the customer of this ticket. If it
-                                            is the same person, merge them
-                                            together to get a unified view of
-                                            this customer.
-                                        </p>
-                                        <div style={{marginBottom: '30px'}}>
+                                <>
+                                    <div className="d-none d-md-block">
+                                        <div
+                                            className={
+                                                css.infobarSectionSeparator
+                                            }
+                                        />
+                                        <div
+                                            className={classnames(
+                                                css.suggestedCustomer
+                                            )}
+                                        >
+                                            <h4>Is this the same person?</h4>
+                                            <p>
+                                                'We have found someone similar
+                                                to the customer of this ticket.
+                                                If it is the same person, merge
+                                                them together to get a unified
+                                                view of this customer.
+                                            </p>
                                             <Button
                                                 className="mr-2"
                                                 onClick={() => {
@@ -540,68 +542,63 @@ export const Infobar = ({
                                                 </ButtonIconLabel>
                                             </Button>
                                         </div>
-                                        <ActionButtonContext.Provider
-                                            value={{
-                                                actionError:
-                                                    MERGE_ERROR_MESSAGE,
-                                            }}
-                                        >
-                                            <InfobarCustomerInfo
-                                                actions={
-                                                    {
-                                                        cancelDrag,
-                                                        drag,
-                                                        drop,
-                                                        generateAndSetWidgets,
-                                                        removeEditedWidget,
-                                                        resetWidgets,
-                                                        setEditedWidgets,
-                                                        setEditionAsDirty,
-                                                        startWidgetEdition,
-                                                        stopWidgetEdition,
-                                                        updateEditedWidget,
-                                                    } as any
-                                                }
-                                                isEditing={isEditing}
-                                                sources={sources
-                                                    .setIn(
-                                                        ['ticket', 'customer'],
-                                                        suggestedCustomer
-                                                    )
-                                                    .set(
-                                                        'customer',
-                                                        suggestedCustomer
-                                                    )}
-                                                customer={suggestedCustomer}
-                                                widgets={widgets}
-                                                displayTabs={false}
-                                            />
-                                            <MergeCustomersContainer
-                                                isTicketContext={
-                                                    !(
-                                                        sources.get(
-                                                            'ticket',
-                                                            fromJS({})
-                                                        ) as Map<any, any>
-                                                    ).isEmpty()
-                                                }
-                                                display={showMergeCustomerModal}
-                                                destinationCustomer={customer}
-                                                sourceCustomer={
-                                                    suggestedCustomer
-                                                }
-                                                onSuccess={
-                                                    handleCustomerHistoryFetch
-                                                }
-                                                onClose={() => {
-                                                    setShowMergeCustomerModal(
-                                                        false
-                                                    )
-                                                }}
-                                            />
-                                        </ActionButtonContext.Provider>
                                     </div>
-                                </div>
+                                    <ActionButtonContext.Provider
+                                        value={{
+                                            actionError: MERGE_ERROR_MESSAGE,
+                                        }}
+                                    >
+                                        <InfobarCustomerInfo
+                                            actions={
+                                                {
+                                                    cancelDrag,
+                                                    drag,
+                                                    drop,
+                                                    generateAndSetWidgets,
+                                                    removeEditedWidget,
+                                                    resetWidgets,
+                                                    setEditedWidgets,
+                                                    setEditionAsDirty,
+                                                    startWidgetEdition,
+                                                    stopWidgetEdition,
+                                                    updateEditedWidget,
+                                                } as any
+                                            }
+                                            isEditing={isEditing}
+                                            sources={sources
+                                                .setIn(
+                                                    ['ticket', 'customer'],
+                                                    suggestedCustomer
+                                                )
+                                                .set(
+                                                    'customer',
+                                                    suggestedCustomer
+                                                )}
+                                            customer={suggestedCustomer}
+                                            widgets={widgets}
+                                            displayTabs={false}
+                                        />
+                                        <MergeCustomersContainer
+                                            isTicketContext={
+                                                !(
+                                                    sources.get(
+                                                        'ticket',
+                                                        fromJS({})
+                                                    ) as Map<any, any>
+                                                ).isEmpty()
+                                            }
+                                            display={showMergeCustomerModal}
+                                            destinationCustomer={customer}
+                                            sourceCustomer={suggestedCustomer}
+                                            onSuccess={
+                                                handleCustomerHistoryFetch
+                                            }
+                                            onClose={() => {
+                                                setShowMergeCustomerModal(false)
+                                            }}
+                                        />
+                                    </ActionButtonContext.Provider>
+                                </>
                             )}
                         </>
                     ) : null}

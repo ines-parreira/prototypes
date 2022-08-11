@@ -9,8 +9,9 @@ import {
     shopifyCalculatedDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
 } from 'fixtures/shopify'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+
 import {ShopifyActionType} from '../../../../../types'
-import {IntegrationContext} from '../../../../../../IntegrationContext'
 import {OrderTotalsComponent} from '../OrderTotals'
 
 describe('<OrderTotalsComponent/>', () => {

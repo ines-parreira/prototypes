@@ -2,70 +2,9 @@
 
 :local {
     .badge {
-        position: relative;
-        top: -1px;
-        margin-left: 0.25rem;
-
-        & + .badge {
-            margin-left: 0.25rem;
-        }
-    }
-
-    .successBadge {
-        background-color: #eaf1fc !important;
-        color: @classic-main-primary !important;
-    }
-
-    .secondaryBadge {
-        background-color: #ebedf0 !important;
-        color: @classic-neutral-grey-5 !important;
-    }
-
-    .icon {
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        border-radius: 10px;
-        margin-left: -2px;
-        margin-right: 0.25rem;
-        position: relative;
-        top: 1px;
-    }
-
-    .fullIcon {
-        background: @classic-main-primary;
-    }
-
-    .fullIconSecondary {
-        background: @classic-neutral-grey-5;
-    }
-
-    .partialIcon {
-        border: 2px solid @classic-main-primary;
-        box-sizing: border-box;
-        background: linear-gradient(
-            0deg,
-            currentColor,
-            currentColor 50%,
-            transparent 0,
-            transparent
-        );
-    }
-
-    .partialIconSecondary {
-        border: 2px solid @classic-neutral-grey-5;
-        box-sizing: border-box;
-        background: linear-gradient(
-            0deg,
-            currentColor,
-            currentColor 50%,
-            transparent 0,
-            transparent
-        );
-    }
-
-    .emptyIcon {
-        border: 2px solid @classic-neutral-grey-5;
-        box-sizing: border-box;
+        // for some bad reasons the badge component adds
+        // extra margins to itself when stacked
+        margin-left: 0px !important;
+        margin: 4px 4px 0 0;
     }
 }

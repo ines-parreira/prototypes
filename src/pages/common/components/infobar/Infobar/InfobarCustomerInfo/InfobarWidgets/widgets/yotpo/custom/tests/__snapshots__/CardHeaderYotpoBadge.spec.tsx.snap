@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardHeaderYotpoBadge/> render() should render children 1`] = `
+<span
+  className=" container primary"
+>
+  <span
+    className="material-icons icon"
+  >
+    star
+  </span>
+  <span
+    className="children"
+  >
+    <p>
+      foo
+    </p>
+    <p>
+      bar
+    </p>
+  </span>
+</span>
+`;
+
+exports[`<CardHeaderYotpoBadge/> render() should render with material icons 1`] = `
+<span
+  className=" container primary"
+>
+  <span
+    className="material-icons icon"
+  >
+    visibilty
+  </span>
+</span>
+`;
+
+exports[`<CardHeaderYotpoBadge/> render() should render with material icons 2`] = `
+<span
+  className=" container primary"
+>
+  <span
+    className="material-icons icon"
+  >
+    visibilty_off
+  </span>
+</span>
+`;
+
+exports[`<CardHeaderYotpoBadge/> render() should render with material icons 3`] = `
+<span
+  className=" container primary"
+>
+  <span
+    className="material-icons icon"
+  >
+    star
+  </span>
+</span>
+`;
+
+exports[`<CardHeaderYotpoBadge/> render() should support css class injection 1`] = `
+<span
+  className="custom-css-class container primary"
+>
+  <span
+    className="material-icons icon"
+  >
+    star
+  </span>
+</span>
+`;
+
+exports[`<CardHeaderYotpoBadge/> render() should support no children 1`] = `
+<span
+  className=" container primary"
+>
+  <span
+    className="material-icons icon"
+  >
+    star
+  </span>
+</span>
+`;
+
+exports[`<CardHeaderYotpoBadge/> render() should support primary color 1`] = `
+<span
+  className=" container primary"
+>
+  <span
+    className="material-icons icon"
+  >
+    star
+  </span>
+  <span
+    className="children"
+  >
+    <p>
+      foo
+    </p>
+    <p>
+      bar
+    </p>
+  </span>
+</span>
+`;
+
+exports[`<CardHeaderYotpoBadge/> render() should support primary color 2`] = `
+<span
+  className=" container secondary"
+>
+  <span
+    className="material-icons icon"
+  >
+    star
+  </span>
+  <span
+    className="children"
+  >
+    <p>
+      foo
+    </p>
+    <p>
+      bar
+    </p>
+  </span>
+</span>
+`;

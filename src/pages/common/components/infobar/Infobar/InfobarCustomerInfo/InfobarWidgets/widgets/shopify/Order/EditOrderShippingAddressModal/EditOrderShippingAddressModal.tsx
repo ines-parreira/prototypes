@@ -26,24 +26,21 @@ import classnames from 'classnames'
 import {
     onInit,
     onReset,
-} from '../../../../../../../../../../../state/infobarActions/shopify/editShippingAddress/action'
-import {getShippingAddressState} from '../../../../../../../../../../../state/infobarActions/shopify/editShippingAddress/selectors'
-import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
-import {RootState} from '../../../../../../../../../../../state/types'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
-import {getCurrentAccountState} from '../../../../../../../../../../../state/currentAccount/selectors'
+} from 'state/infobarActions/shopify/editShippingAddress/action'
+import {getShippingAddressState} from 'state/infobarActions/shopify/editShippingAddress/selectors'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {RootState} from 'state/types'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
-import {
-    logEvent,
-    SegmentEvent,
-} from '../../../../../../../../../../../store/middlewares/segmentTracker'
-import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
-import {states} from '../../../../../../../../../../../fixtures/states'
-import SelectField from '../../../../../../../../../forms/SelectField/SelectField'
-import DEPRECATED_InputField from '../../../../../../../../../forms/DEPRECATED_InputField'
-import Loader from '../../../../../../../../Loader/Loader'
-import DEPRECATED_Modal from '../../../../../../../../DEPRECATED_Modal'
-import {IntegrationContext} from '../../../IntegrationContext'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import {IntegrationType} from 'models/integration/types'
+import {states} from 'fixtures/states'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import Loader from 'pages/common/components/Loader/Loader'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import {InfobarModalProps} from '../../../types'
 import {ShopifyActionType} from '../../types'
 

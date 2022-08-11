@@ -1,0 +1,89 @@
+@import '~css/new/colorTokens';
+@import '~css/new/mixins';
+
+:local {
+    .widgetCard {
+        position: relative;
+        margin-top: 12px;
+        background-color: @classic-neutral-grey-0;
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 4px;
+        .widgetCard {
+            background-color: transparent;
+            border: none;
+            border-top: 1px dashed @classic-neutral-grey-3;
+            border-radius: 0px;
+            &.onlyContent {
+                margin-top: 0;
+                border-top: none;
+            }
+            &.removeBorderTop {
+                border-top: none;
+            }
+        }
+    }
+    // we need this wrapped to benefit from margin fusion
+    // otherwise we can’t have proper spacing with the
+    // expand / collapse feature
+    .widgetCardMarginWrapper {
+        margin: 12px 0;
+        .widgetCardMarginWrapper.onlyContent {
+            margin: 0;
+        }
+    }
+
+    .widgetCardHeader {
+        margin-bottom: 12px;
+        padding: 1px 12px 0 12px;
+        font-weight: 600;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        &:hover {
+            .widgetCardTools {
+                display: inline;
+            }
+        }
+    }
+
+    .widgetCardHeaderPlaceholder {
+        color: @classic-neutral-grey-4;
+    }
+
+    .widgetCardContent {
+        display: block;
+    }
+    .dropdownIcon {
+        float: right;
+        padding-left: 8px;
+        font-size: 1.5rem;
+        line-height: 1.5rem;
+        i {
+            cursor: pointer;
+        }
+    }
+    .closed {
+        .widgetCardContent {
+            display: none;
+        }
+    }
+
+    .sourceWidgetCardHiddenIndicator {
+        margin-bottom: 12px;
+        font-size: 14px;
+        font-weight: normal;
+        color: @classic-neutral-grey-4;
+    }
+
+    .widgetCardTools {
+        display: none;
+        font-size: 1.3rem;
+        line-height: 1em;
+    }
+
+    .widgetCardToolIcon {
+        float: right;
+        padding: 0 4px;
+        cursor: pointer;
+    }
+}

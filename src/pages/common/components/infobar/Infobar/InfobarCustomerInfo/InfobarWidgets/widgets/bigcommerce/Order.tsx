@@ -2,12 +2,11 @@ import React, {ReactNode, useContext} from 'react'
 import {Map} from 'immutable'
 
 import {humanizeString} from 'utils'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {BIGCOMMERCE_INTEGRATION_TYPE} from 'constants/integration'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {DatetimeLabel} from 'pages/common/utils/labels'
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
-import {IntegrationContext} from '../IntegrationContext'
+import {StaticField} from '../StaticField'
 import MoneyAmount from '../MoneyAmount'
 
 export default function Order() {
@@ -29,35 +28,21 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
         return null
     }
 
-    const orderStatus = ((source.get('status') as string) || '')
-        .toLowerCase()
-        .split(' ')
-        .join('_')
-
     return (
         <>
-            <Badge
-                key="status"
-                type={statusColors[orderStatus]}
-                className="ml-1"
-            >
-                {humanizeString(orderStatus)}
-            </Badge>
-            <CardHeaderDetails>
-                <CardHeaderValue label="Created">
-                    <DatetimeLabel
-                        key="created"
-                        dateTime={source.get('date_created')}
-                        integrationType={BIGCOMMERCE_INTEGRATION_TYPE}
-                    />
-                </CardHeaderValue>
-                <CardHeaderValue label="Total">
-                    <MoneyAmount
-                        amount={source.get('total_inc_tax')}
-                        currencyCode={source.get('default_currency_code')}
-                    />
-                </CardHeaderValue>
-            </CardHeaderDetails>
+            <StaticField label="Created">
+                <DatetimeLabel
+                    key="created"
+                    dateTime={source.get('date_created')}
+                    integrationType={BIGCOMMERCE_INTEGRATION_TYPE}
+                />
+            </StaticField>
+            <StaticField label="Total">
+                <MoneyAmount
+                    amount={source.get('total_inc_tax')}
+                    currencyCode={source.get('default_currency_code')}
+                />
+            </StaticField>
         </>
     )
 }
@@ -93,9 +78,25 @@ export function TitleWrapper({children, source}: TitleWrapperProps) {
 
     const link = `https://store-${storeHash}.mybigcommerce.com/manage/orders/${orderId}`
 
+    const orderStatus = ((source.get('status') as string) || '')
+        .toLowerCase()
+        .split(' ')
+        .join('_')
+
     return (
-        <a href={link} target="_blank" rel="noopener noreferrer">
-            {children}
-        </a>
+        <>
+            <a href={link} target="_blank" rel="noopener noreferrer">
+                {children}
+            </a>
+            <div>
+                <Badge
+                    key="status"
+                    type={statusColors[orderStatus]}
+                    className="mt-2"
+                >
+                    {humanizeString(orderStatus)}
+                </Badge>
+            </div>
+        </>
     )
 }

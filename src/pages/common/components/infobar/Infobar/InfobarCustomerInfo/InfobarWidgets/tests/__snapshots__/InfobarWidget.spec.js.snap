@@ -2,7 +2,7 @@
 
 exports[`InfobarWidget card widget should display the widget if isEditing=true 1`] = `
 "<ContextProvider value={{...}}>
-  <CardInfobarWidget isEditing={true} isParentList={false} source={{...}} widget={{...}} template={{...}} editing={[undefined]} parent={[undefined]} open={true} AfterTitle={{...}} BeforeContent={{...}} TitleWrapper={{...}} Wrapper={{...}} />
+  <Card isEditing={true} isParentList={false} source={{...}} widget={{...}} template={{...}} editing={[undefined]} parent={[undefined]} open={true} removeBorderTop={false} AfterTitle={{...}} BeforeContent={{...}} TitleWrapper={{...}} Wrapper={{...}} />
 </ContextProvider>"
 `;
 
@@ -15,7 +15,7 @@ exports[`InfobarWidget card widget should display the widget with BigCommerce ex
     }
   }
 >
-  <CardInfobarWidget
+  <Card
     AfterTitle={null}
     BeforeContent={null}
     TitleWrapper={null}
@@ -24,6 +24,7 @@ exports[`InfobarWidget card widget should display the widget with BigCommerce ex
     isEditing={true}
     isParentList={false}
     open={true}
+    removeBorderTop={false}
     source={
       Immutable.Map {
         "foo": "bar",
@@ -73,7 +74,7 @@ exports[`InfobarWidget card widget should display the widget with Magento2 exten
     }
   }
 >
-  <CardInfobarWidget
+  <Card
     AfterTitle={null}
     BeforeContent={null}
     TitleWrapper={null}
@@ -82,6 +83,7 @@ exports[`InfobarWidget card widget should display the widget with Magento2 exten
     isEditing={true}
     isParentList={false}
     open={true}
+    removeBorderTop={false}
     source={
       Immutable.Map {
         "foo": "bar",
@@ -131,7 +133,7 @@ exports[`InfobarWidget card widget should display the widget with Recharge exten
     }
   }
 >
-  <CardInfobarWidget
+  <Card
     AfterTitle={null}
     BeforeContent={null}
     TitleWrapper={null}
@@ -140,6 +142,7 @@ exports[`InfobarWidget card widget should display the widget with Recharge exten
     isEditing={true}
     isParentList={false}
     open={true}
+    removeBorderTop={false}
     source={
       Immutable.Map {
         "foo": "bar",
@@ -189,7 +192,7 @@ exports[`InfobarWidget card widget should display the widget with Shopify extens
     }
   }
 >
-  <CardInfobarWidget
+  <Card
     AfterTitle={null}
     BeforeContent={null}
     TitleWrapper={null}
@@ -198,6 +201,7 @@ exports[`InfobarWidget card widget should display the widget with Shopify extens
     isEditing={true}
     isParentList={false}
     open={true}
+    removeBorderTop={false}
     source={
       Immutable.Map {
         "foo": "bar",

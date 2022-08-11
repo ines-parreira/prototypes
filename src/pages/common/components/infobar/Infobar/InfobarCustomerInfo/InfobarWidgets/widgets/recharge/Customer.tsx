@@ -7,13 +7,13 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {renderTemplate} from 'pages/common/utils/template'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+
+import {StaticField} from '../StaticField'
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
-import {IntegrationContext} from '../IntegrationContext'
 
 export default function Customer() {
     return {
@@ -29,11 +29,7 @@ type AfterTitleProps = {
 function AfterTitle({source}: AfterTitleProps) {
     return (
         <>
-            <CardHeaderDetails>
-                <CardHeaderValue label="Status">
-                    {source.get('status')}
-                </CardHeaderValue>
-            </CardHeaderDetails>
+            <StaticField label="Status">{source.get('status')}</StaticField>
         </>
     )
 }
@@ -61,23 +57,25 @@ export function TitleWrapper({children, source, template}: TitleWrapperProps) {
 
     return (
         <>
-            <CardHeaderIcon src={logo} alt="Recharge" />
-            <CardHeaderTitle>Recharge</CardHeaderTitle>
-            <CardHeaderSubtitle>
-                <a
-                    href={customLink || defaultLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => {
-                        logEvent(SegmentEvent.RechargeProfileClicked, {
-                            account_domain: currentAccount.get('domain'),
-                        })
-                    }}
-                >
-                    {children}
-                </a>
-            </CardHeaderSubtitle>
             <ExpandAllButton />
+            <CardHeaderTitle>
+                <CardHeaderIcon src={logo} alt="Recharge" />
+                Recharge
+                <CardHeaderSubtitle>
+                    <a
+                        href={customLink || defaultLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => {
+                            logEvent(SegmentEvent.RechargeProfileClicked, {
+                                account_domain: currentAccount.get('domain'),
+                            })
+                        }}
+                    >
+                        {children}
+                    </a>
+                </CardHeaderSubtitle>
+            </CardHeaderTitle>
         </>
     )
 }

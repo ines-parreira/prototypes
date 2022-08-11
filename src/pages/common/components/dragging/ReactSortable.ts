@@ -11,7 +11,7 @@ type Props = {
         sortable?: Sortable,
         event?: SortableEvent | MoveEvent
     ) => void
-    tag: keyof JSX.IntrinsicElements
+    tag: keyof JSX.IntrinsicElements | null
 }
 
 /**
@@ -125,7 +125,10 @@ class ReactSortable extends Component<Props> {
 
     render() {
         const {children, className, tag} = this.props
-        return React.createElement(tag, {className}, children)
+        if (tag) {
+            return React.createElement(tag, {className}, children)
+        }
+        return children
     }
 }
 

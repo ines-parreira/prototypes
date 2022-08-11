@@ -6,7 +6,7 @@ exports[`Order <AfterTitle/> should display the refund action (because total_pri
     class="container group horizontal"
   >
     <button
-      class="wrapper fill secondary medium"
+      class="wrapper actionButton fill secondary small"
       id="action-button-2"
       type="button"
     >
@@ -17,37 +17,27 @@ exports[`Order <AfterTitle/> should display the refund action (because total_pri
         class="wrapper"
       >
         <i
-          class="material-icons icon isLeft medium"
+          class="material-icons icon isLeft small"
         >
-          refresh
+          attach_money
         </i>
       </span>
        Refund
     </button>
   </span>
   <div
-    class="container"
+    class="widgetField staticWidgetField"
   >
     <span
-      class="container"
+      class="widgetFieldLabel"
     >
-      <span
-        class="label"
-      >
-        Created
-        : 
-      </span>
-      <strong />
+      Created
+      :
+       
     </span>
     <span
-      class="container"
-    >
-      <strong>
-        <div
-          class="badge"
-        />
-      </strong>
-    </span>
+      class="widgetFieldValue"
+    />
   </div>
 </div>
 `;
@@ -58,7 +48,7 @@ exports[`Order <AfterTitle/> should display the refund action 1`] = `
     class="container group horizontal"
   >
     <button
-      class="wrapper fill secondary medium"
+      class="wrapper actionButton fill secondary small"
       id="action-button-1"
       type="button"
     >
@@ -69,37 +59,27 @@ exports[`Order <AfterTitle/> should display the refund action 1`] = `
         class="wrapper"
       >
         <i
-          class="material-icons icon isLeft medium"
+          class="material-icons icon isLeft small"
         >
-          refresh
+          attach_money
         </i>
       </span>
        Refund
     </button>
   </span>
   <div
-    class="container"
+    class="widgetField staticWidgetField"
   >
     <span
-      class="container"
+      class="widgetFieldLabel"
     >
-      <span
-        class="label"
-      >
-        Created
-        : 
-      </span>
-      <strong />
+      Created
+      :
+       
     </span>
     <span
-      class="container"
-    >
-      <strong>
-        <div
-          class="badge"
-        />
-      </strong>
-    </span>
+      class="widgetFieldValue"
+    />
   </div>
 </div>
 `;
@@ -107,28 +87,18 @@ exports[`Order <AfterTitle/> should display the refund action 1`] = `
 exports[`Order <AfterTitle/> should not display the refund action because the charge is not refundable 1`] = `
 <div>
   <div
-    class="container"
+    class="widgetField staticWidgetField"
   >
     <span
-      class="container"
+      class="widgetFieldLabel"
     >
-      <span
-        class="label"
-      >
-        Created
-        : 
-      </span>
-      <strong />
+      Created
+      :
+       
     </span>
     <span
-      class="container"
-    >
-      <strong>
-        <div
-          class="badge"
-        />
-      </strong>
-    </span>
+      class="widgetFieldValue"
+    />
   </div>
 </div>
 `;
@@ -136,28 +106,18 @@ exports[`Order <AfterTitle/> should not display the refund action because the ch
 exports[`Order <AfterTitle/> should not display the refund action because the order was cancelled 1`] = `
 <div>
   <div
-    class="container"
+    class="widgetField staticWidgetField"
   >
     <span
-      class="container"
+      class="widgetFieldLabel"
     >
-      <span
-        class="label"
-      >
-        Created
-        : 
-      </span>
-      <strong />
+      Created
+      :
+       
     </span>
     <span
-      class="container"
-    >
-      <strong>
-        <div
-          class="badge"
-        />
-      </strong>
-    </span>
+      class="widgetFieldValue"
+    />
   </div>
 </div>
 `;
@@ -165,28 +125,18 @@ exports[`Order <AfterTitle/> should not display the refund action because the or
 exports[`Order <AfterTitle/> should not display the refund action because the order was refunded 1`] = `
 <div>
   <div
-    class="container"
+    class="widgetField staticWidgetField"
   >
     <span
-      class="container"
+      class="widgetFieldLabel"
     >
-      <span
-        class="label"
-      >
-        Created
-        : 
-      </span>
-      <strong />
+      Created
+      :
+       
     </span>
     <span
-      class="container"
-    >
-      <strong>
-        <div
-          class="badge"
-        />
-      </strong>
-    </span>
+      class="widgetFieldValue"
+    />
   </div>
 </div>
 `;
@@ -197,17 +147,18 @@ exports[`Order <AfterTitle/> should not render because widgets are being edited 
 
 exports[`Order <BeforeContent/> should render the total_refunds field to 0.00 because the value on the associated charge is null 1`] = `
 <div
-  class="simple-field"
+  class="widgetField staticWidgetField"
 >
   <span
-    class="field-label"
+    class="widgetFieldLabel"
   >
-    Total refunds on charge:
+    Total refunds on charge
+    :
+     
   </span>
   <span
-    class="field-value"
+    class="widgetFieldValue"
   >
-    $
     0.00
   </span>
 </div>
@@ -215,17 +166,18 @@ exports[`Order <BeforeContent/> should render the total_refunds field to 0.00 be
 
 exports[`Order <BeforeContent/> should render with the total_refunds field from the associated charge 1`] = `
 <div
-  class="simple-field"
+  class="widgetField staticWidgetField"
 >
   <span
-    class="field-label"
+    class="widgetFieldLabel"
   >
-    Total refunds on charge:
+    Total refunds on charge
+    :
+     
   </span>
   <span
-    class="field-value"
+    class="widgetFieldValue"
   >
-    $
     5.00
   </span>
 </div>
@@ -233,6 +185,7 @@ exports[`Order <BeforeContent/> should render with the total_refunds field from 
 
 exports[`Order <TitleWrapper/> should not render any link because no customer hash was passed 1`] = `
 <a
+  class="orderTitle"
   rel="noopener noreferrer"
   target="_blank"
 />
@@ -240,6 +193,7 @@ exports[`Order <TitleWrapper/> should not render any link because no customer ha
 
 exports[`Order <TitleWrapper/> should render the base link because a customer hash was passed and no custom link is set 1`] = `
 <a
+  class="orderTitle"
   href="https://storegorgias3-sp.admin.rechargeapps.com/admin/customers/4564/orders/history/2345"
   rel="noopener noreferrer"
   target="_blank"
@@ -248,6 +202,7 @@ exports[`Order <TitleWrapper/> should render the base link because a customer ha
 
 exports[`Order <TitleWrapper/> should render the custom link because a customer hash was passed and a custom link is set 1`] = `
 <a
+  class="orderTitle"
   href="https://google.com/s8d4f6sdf4"
   rel="noopener noreferrer"
   target="_blank"

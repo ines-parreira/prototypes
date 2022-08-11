@@ -1,29 +1,22 @@
-import React, {
-    FC,
-    memo,
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
-} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, {memo, useCallback, useContext, useEffect, useState} from 'react'
 import {DropdownItem} from 'reactstrap'
 
 import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from 'config/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {executeAction} from 'state/infobar/actions'
 import {getPendingActionCallbacks} from 'state/infobar/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {ContentType} from 'models/api/types'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {CustomerContext} from 'providers/CustomerContext'
-import {WidgetListContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ListInfobar'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {CustomerContext} from 'providers/infobar/CustomerContext'
+import {WidgetListContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/List'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import BaseButton from 'pages/common/components/button/Button'
 import {Action} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
-import useAppSelector from 'hooks/useAppSelector'
 
 import {mapActionToActionPayload} from './mapActionToActionPayload'
 
@@ -35,14 +28,7 @@ type Props = {
     isDropdown?: boolean
 }
 
-function Button({
-    index,
-    label,
-    action,
-    isDropdown = false,
-    openEditor,
-    executeAction,
-}: Props & ConnectedProps<typeof connector>) {
+function Button({index, label, action, isDropdown = false, openEditor}: Props) {
     // pending action management
     const getPendingActionCallback = useAppSelector(getPendingActionCallbacks)
     const [loadingId, setLoadingId] = useState<string>('')
@@ -53,25 +39,28 @@ function Button({
     }, [getPendingActionCallback])
 
     // action trigger management
+    const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {customerId} = useContext(CustomerContext)
     const {integrationId} = useContext(IntegrationContext)
     const {currentListIndex} = useContext(WidgetListContext)
     const handleExecuteAction = useCallback(
         (action: Action) => {
-            const loadingId = executeAction({
-                actionName: INFOBAR_CUSTOM_BUTTON_ACTION_NAME,
-                actionLabel: label,
-                integrationId: integrationId!,
-                customerId: customerId?.toString(),
-                payload: mapActionToActionPayload(action, {
-                    listIndex:
-                        currentListIndex !== null
-                            ? currentListIndex.toString()
-                            : undefined,
-                    integrationId: integrationId?.toString(),
-                }),
-            })
+            const loadingId = dispatch(
+                executeAction({
+                    actionName: INFOBAR_CUSTOM_BUTTON_ACTION_NAME,
+                    actionLabel: label,
+                    integrationId: integrationId!,
+                    customerId: customerId?.toString(),
+                    payload: mapActionToActionPayload(action, {
+                        listIndex:
+                            currentListIndex !== null
+                                ? currentListIndex.toString()
+                                : undefined,
+                        integrationId: integrationId?.toString(),
+                    }),
+                })
+            )
             logEvent(SegmentEvent.CustomActionButtonsExecuted, {
                 account_domain: currentAccount.get('domain'),
                 integration_id: integrationId,
@@ -80,7 +69,7 @@ function Button({
         },
         [
             label,
-            executeAction,
+            dispatch,
             customerId,
             integrationId,
             currentAccount,
@@ -119,14 +108,13 @@ function Button({
         <BaseButton
             intent="secondary"
             className={css.actionButton}
+            size="small"
             {...props}
         />
     )
 }
 
-const connector = connect(null, {executeAction})
-
-export default connector(memo(Button)) as FC<Props>
+export default memo(Button)
 
 function shouldDisplayEditor({headers, params, body}: Action): boolean {
     let shouldDisplayEditor = false

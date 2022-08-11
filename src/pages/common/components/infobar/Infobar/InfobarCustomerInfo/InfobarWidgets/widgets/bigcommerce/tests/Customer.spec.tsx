@@ -5,7 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {TitleWrapper} from '../Customer'
 

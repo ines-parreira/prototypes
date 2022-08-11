@@ -18,11 +18,10 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import {CardHeaderDetails} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderDetails'
 import DraftOrderModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/DraftOrderModal/DraftOrderModal'
-import {CardHeaderValue} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/CardHeaderValue'
+import {StaticField} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/StaticField'
 import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
@@ -30,6 +29,7 @@ import CancelOrderModal from './CancelOrderModal/CancelOrderModal'
 import RefundOrderModal from './RefundOrderModal/RefundOrderModal'
 import EditOrderModal from './EditOrderModal/EditOrderModal'
 import OrderStatus from './OrderStatus'
+import css from './OrderWidgets.less'
 
 export default function OrderWidget() {
     return {
@@ -82,6 +82,41 @@ class AfterTitle extends Component<AfterTitleProps> {
         } = this.context
         const actions: Array<InfobarAction> = [
             {
+                key: 'duplicate',
+                options: [
+                    {
+                        value: ShopifyActionType.DuplicateOrder,
+                        label: 'Duplicate',
+                        parameters: [
+                            {name: 'order_id', type: 'hidden'},
+                            {name: 'draft_order_id', type: 'hidden'},
+                            {name: 'payment_pending', type: 'hidden'},
+                        ],
+                    },
+                ],
+                title: 'Duplicate order',
+                child: (
+                    <>
+                        <ButtonIconLabel icon="content_copy" /> Duplicate
+                    </>
+                ),
+                modal: DraftOrderModal,
+                modalData: {
+                    actionName: ShopifyActionType.DuplicateOrder,
+                    order: source,
+                    customer: fromJS({
+                        id: source.getIn(['customer', 'id']),
+                        admin_graphql_api_id: source.getIn([
+                            'customer',
+                            'admin_graphql_api_id',
+                        ]),
+                        email: source.getIn(['customer', 'email']),
+                        default_address: source.get('default_address'),
+                        currency: source.get('currency'),
+                    }),
+                },
+            },
+            {
                 key: 'refund',
                 options: [
                     {
@@ -96,7 +131,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 title: 'Refund order',
                 child: (
                     <>
-                        <ButtonIconLabel icon="refresh" /> Refund
+                        <ButtonIconLabel icon="attach_money" /> Refund
                     </>
                 ),
                 modal: RefundOrderModal,
@@ -163,41 +198,6 @@ class AfterTitle extends Component<AfterTitleProps> {
                     }),
                 },
             },
-            {
-                key: 'duplicate',
-                options: [
-                    {
-                        value: ShopifyActionType.DuplicateOrder,
-                        label: 'Duplicate',
-                        parameters: [
-                            {name: 'order_id', type: 'hidden'},
-                            {name: 'draft_order_id', type: 'hidden'},
-                            {name: 'payment_pending', type: 'hidden'},
-                        ],
-                    },
-                ],
-                title: 'Duplicate order',
-                child: (
-                    <>
-                        <ButtonIconLabel icon="filter_none" /> Duplicate
-                    </>
-                ),
-                modal: DraftOrderModal,
-                modalData: {
-                    actionName: ShopifyActionType.DuplicateOrder,
-                    order: source,
-                    customer: fromJS({
-                        id: source.getIn(['customer', 'id']),
-                        admin_graphql_api_id: source.getIn([
-                            'customer',
-                            'admin_graphql_api_id',
-                        ]),
-                        email: source.getIn(['customer', 'email']),
-                        default_address: source.get('default_address'),
-                        currency: source.get('currency'),
-                    }),
-                },
-            },
         ]
 
         const removed: string[] = []
@@ -222,7 +222,7 @@ class AfterTitle extends Component<AfterTitleProps> {
 
     render() {
         const {source}: AfterTitleProps = this.props
-        const {integrationId, isOrderCancelled} = this.context
+        const {integrationId} = this.context
 
         if (this.props.isEditing) {
             return null
@@ -238,41 +238,30 @@ class AfterTitle extends Component<AfterTitleProps> {
 
         return (
             <>
-                <OrderStatus
-                    fulfillmentStatus={
-                        source.get('fulfillment_status') as FulfillmentStatus
-                    }
-                    financialStatus={
-                        source.get('financial_status') as FinancialStatus
-                    }
-                    isCancelled={!!isOrderCancelled}
-                />
                 <ActionButtonsGroup
                     actions={this._getActions()}
                     payload={payload}
                 />
-                <CardHeaderDetails>
-                    <CardHeaderValue label="Created">
-                        <DatetimeLabel
-                            key="created-at"
-                            dateTime={source.get('created_at') as string}
-                        />
-                    </CardHeaderValue>
-                    <CardHeaderValue label="Total">
-                        <MoneyAmount
-                            amount={source.getIn([
-                                'total_price_set',
-                                'presentment_money',
-                                'amount',
-                            ])}
-                            currencyCode={source.getIn([
-                                'total_price_set',
-                                'presentment_money',
-                                'currency_code',
-                            ])}
-                        />
-                    </CardHeaderValue>
-                </CardHeaderDetails>
+                <StaticField label="Created">
+                    <DatetimeLabel
+                        key="created-at"
+                        dateTime={source.get('created_at') as string}
+                    />
+                </StaticField>
+                <StaticField label="Total">
+                    <MoneyAmount
+                        amount={source.getIn([
+                            'total_price_set',
+                            'presentment_money',
+                            'amount',
+                        ])}
+                        currencyCode={source.getIn([
+                            'total_price_set',
+                            'presentment_money',
+                            'currency_code',
+                        ])}
+                    />
+                </StaticField>
             </>
         )
     }
@@ -285,23 +274,38 @@ type TitleWrapperProps = {
 function TitleWrapper({children, source}: TitleWrapperProps) {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {integration} = useContext(IntegrationContext)
+    const {isOrderCancelled} = useContext(OrderContext)
     const shopName: string = integration.getIn(['meta', 'shop_name']) as string
 
     return (
-        <a
-            href={`https://${shopName}.myshopify.com/admin/orders/${(
-                (source.get('id') as number) || ''
-            ).toString()}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-                logEvent(SegmentEvent.ShopifyOrderClicked, {
-                    account_domain: currentAccount.get('domain'),
-                })
-            }}
-        >
-            {children}
-        </a>
+        <>
+            <a
+                href={`https://${shopName}.myshopify.com/admin/orders/${(
+                    (source.get('id') as number) || ''
+                ).toString()}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                    logEvent(SegmentEvent.ShopifyOrderClicked, {
+                        account_domain: currentAccount.get('domain'),
+                    })
+                }}
+                className={css.orderTitle}
+            >
+                {children}
+            </a>
+            <div>
+                <OrderStatus
+                    fulfillmentStatus={
+                        source.get('fulfillment_status') as FulfillmentStatus
+                    }
+                    financialStatus={
+                        source.get('financial_status') as FinancialStatus
+                    }
+                    isCancelled={!!isOrderCancelled}
+                />
+            </div>
+        </>
     )
 }
 

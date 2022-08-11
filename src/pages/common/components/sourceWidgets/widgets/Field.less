@@ -1,0 +1,31 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .sourceWidgetField {
+        position: relative;
+        margin: 0 8px;
+        padding: 3px 4px;
+        display: flex;
+        align-items: flex-start;
+        border: 1px solid transparent;
+        &:hover {
+            border: 1px dashed @classic-neutral-grey-4;
+        }
+        &:active {
+            border: 1px solid transparent;
+        }
+    }
+
+    .sourceWidgetFieldLabel {
+        padding-right: 8px;
+        color: @classic-neutral-grey-5;
+    }
+
+    .sourceWidgetFieldValue {
+        flex-grow: 1;
+        align-self: flex-end;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

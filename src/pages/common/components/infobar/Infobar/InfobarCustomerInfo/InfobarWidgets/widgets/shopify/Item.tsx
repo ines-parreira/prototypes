@@ -7,6 +7,7 @@ import React, {
 import {fromJS, List, Map} from 'immutable'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import {StaticField} from '../StaticField'
 import {OrderContext} from './Order/OrderWidget'
 
 export default function Item() {
@@ -33,14 +34,11 @@ class BeforeContent extends React.Component {
         }
 
         return (
-            <div className="simple-field">
-                <span className="field-label">Refunded:</span>
-                <span className="field-value">
-                    <Badge type={ColorType.Warning}>
-                        {refundedQuantity} item{refundedQuantity > 1 && 's'}
-                    </Badge>
-                </span>
-            </div>
+            <StaticField label="Refunded">
+                <Badge type={ColorType.Warning}>
+                    {refundedQuantity} item{refundedQuantity > 1 && 's'}
+                </Badge>
+            </StaticField>
         )
     }
 }

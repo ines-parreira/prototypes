@@ -2,65 +2,63 @@
 
 exports[`<TitleWrapper/> render() should render empty state cause no data is available 1`] = `
 <Fragment>
-  <CardHeaderIcon
-    alt="Yotpo"
-    src="test-file-stub"
-  />
-  <CardHeaderTitle>
-    Yotpo
-  </CardHeaderTitle>
-  <CardHeaderStatusLabel />
   <ExpandAllButton />
+  <CardHeaderTitle>
+    <CardHeaderIcon
+      alt="Yotpo"
+      src="test-file-stub"
+    />
+    Yotpo
+    <CardHeaderStatusLabel />
+  </CardHeaderTitle>
 </Fragment>
 `;
 
 exports[`<TitleWrapper/> render() should render empty state cause no data is available 2`] = `
-<div
-  className="emptyStateContainer"
+<StaticField
+  noBold={true}
 >
-  <span>
-    No statistic data are available right now.
-  </span>
-</div>
+  No statistic data are available right now.
+</StaticField>
 `;
 
 exports[`<TitleWrapper/> render() should render icon, points and not tier because data is missing 1`] = `
 <Fragment>
-  <CardHeaderIcon
-    alt="Yotpo"
-    src="test-file-stub"
-  />
-  <CardHeaderTitle>
-    Yotpo
-  </CardHeaderTitle>
-  <CardHeaderBadge
-    iconName="stars"
-  >
-    1
-  </CardHeaderBadge>
-  <CardHeaderStatusLabel />
   <ExpandAllButton />
+  <CardHeaderTitle>
+    <CardHeaderIcon
+      alt="Yotpo"
+      src="test-file-stub"
+    />
+    Yotpo
+    <CardHeaderYotpoBadge
+      iconName="stars"
+    >
+      1
+    </CardHeaderYotpoBadge>
+    <CardHeaderStatusLabel />
+  </CardHeaderTitle>
 </Fragment>
 `;
 
 exports[`<TitleWrapper/> render() should render icon, points and tier because data is correct 1`] = `
 <Fragment>
-  <CardHeaderIcon
-    alt="Yotpo"
-    src="test-file-stub"
-  />
-  <CardHeaderTitle>
-    Yotpo
-  </CardHeaderTitle>
-  <CardHeaderBadge
-    iconName="stars"
-  >
-    1
-  </CardHeaderBadge>
-  <CardHeaderStatusLabel>
-    Vip
-  </CardHeaderStatusLabel>
   <ExpandAllButton />
+  <CardHeaderTitle>
+    <CardHeaderIcon
+      alt="Yotpo"
+      src="test-file-stub"
+    />
+    Yotpo
+    <CardHeaderYotpoBadge
+      iconName="stars"
+    >
+      1
+    </CardHeaderYotpoBadge>
+    <CardHeaderStatusLabel>
+      Vip
+    </CardHeaderStatusLabel>
+  </CardHeaderTitle>
 </Fragment>
 `;
 

@@ -159,38 +159,34 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
           <p>
             'We have found someone similar to the customer of this ticket. If it is the same person, merge them together to get a unified view of this customer.
           </p>
-          <div
-            style="margin-bottom: 30px;"
+          <button
+            class="wrapper mr-2 fill primary medium"
+            type="button"
           >
-            <button
-              class="wrapper mr-2 fill primary medium"
-              type="button"
+            <span
+              class="wrapper"
             >
-              <span
-                class="wrapper"
+              <i
+                class="material-icons icon isLeft medium"
               >
-                <i
-                  class="material-icons icon isLeft medium"
-                >
-                  call_merge
-                </i>
-                Merge
-              </span>
-            </button>
-          </div>
-          <div
-            data-testid="InfobarCustomerInfo"
-          >
-            InfobarCustomerInfo
-            <div>
-              customer: 
-              {"id":10}
-            </div>
-          </div>
-          <div>
-            MergeCustomersContainer
-          </div>
+                call_merge
+              </i>
+              Merge
+            </span>
+          </button>
         </div>
+      </div>
+      <div
+        data-testid="InfobarCustomerInfo"
+      >
+        InfobarCustomerInfo
+        <div>
+          customer: 
+          {"id":10}
+        </div>
+      </div>
+      <div>
+        MergeCustomersContainer
       </div>
     </div>
   </div>

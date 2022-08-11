@@ -9,13 +9,13 @@ exports[`<ActionButtons/> should render links and buttons  1`] = `
       class="actionButtons group horizontal"
     >
       <button
-        class="wrapper actionButton fill secondary medium left"
+        class="wrapper actionButton fill secondary small left"
         type="button"
       >
         button - I am in snapshots
       </button>
       <button
-        class="wrapper actionButton fill secondary medium right"
+        class="wrapper actionButton fill secondary small right"
         type="button"
       >
         button - I am in snapshots too
@@ -23,10 +23,10 @@ exports[`<ActionButtons/> should render links and buttons  1`] = `
     </span>
   </div>
   <ul
-    class="listGroup list-group list-group-flush"
+    class="linkList"
   >
     <li
-      class="groupItem list-group-item"
+      class="linkRow"
     >
       <a
         class="link"
@@ -43,7 +43,7 @@ exports[`<ActionButtons/> should render links and buttons  1`] = `
       </a>
     </li>
     <li
-      class="groupItem list-group-item"
+      class="linkRow"
     >
       <a
         class="link"
@@ -68,13 +68,13 @@ exports[`<ActionButtons/> should render links and buttons in edition mode 1`] = 
   class="container"
 >
   <ul
-    class="list-group list-group-flush"
+    class="editList"
   >
     <li
-      class="editRow list-group-item"
+      class="editRow"
     >
       <button
-        class="btn btn-secondary"
+        class="wrapper fill secondary small"
         type="button"
       >
         button - I am in snapshots
@@ -83,22 +83,22 @@ exports[`<ActionButtons/> should render links and buttons in edition mode 1`] = 
         class="editIcons"
       >
         <i
-          class="material-icons text-faded clickable"
+          class="material-icons"
         >
-          settings
+          edit
         </i>
         <i
-          class="material-icons text-danger clickable"
+          class="material-icons text-danger"
         >
-          close
+          delete
         </i>
       </span>
     </li>
     <li
-      class="editRow list-group-item"
+      class="editRow"
     >
       <button
-        class="btn btn-secondary"
+        class="wrapper fill secondary small"
         type="button"
       >
         button - I am in snapshots too
@@ -107,27 +107,27 @@ exports[`<ActionButtons/> should render links and buttons in edition mode 1`] = 
         class="editIcons"
       >
         <i
-          class="material-icons text-faded clickable"
+          class="material-icons"
         >
-          settings
+          edit
         </i>
         <i
-          class="material-icons text-danger clickable"
+          class="material-icons text-danger"
         >
-          close
+          delete
         </i>
       </span>
     </li>
   </ul>
   <button
-    class="wrapper addButton fill secondary medium"
+    class="wrapper addButton fill secondary small"
     type="button"
   >
     <span
       class="wrapper"
     >
       <i
-        class="material-icons icon isLeft medium"
+        class="material-icons icon isLeft small"
       >
         add
       </i>
@@ -135,10 +135,10 @@ exports[`<ActionButtons/> should render links and buttons in edition mode 1`] = 
     Add Button
   </button>
   <ul
-    class="listGroup list-group list-group-flush"
+    class="linkList"
   >
     <li
-      class="groupItem list-group-item"
+      class="linkRow"
     >
       <a
         class="link"
@@ -157,20 +157,20 @@ exports[`<ActionButtons/> should render links and buttons in edition mode 1`] = 
         class="editIcons"
       >
         <i
-          class="material-icons text-faded clickable"
+          class="material-icons"
           id="custom-action-link-templatePath-0"
         >
-          settings
+          edit
         </i>
         <i
-          class="material-icons text-danger clickable"
+          class="material-icons text-danger"
         >
-          close
+          delete
         </i>
       </span>
     </li>
     <li
-      class="groupItem list-group-item"
+      class="linkRow"
     >
       <a
         class="link"
@@ -189,21 +189,21 @@ exports[`<ActionButtons/> should render links and buttons in edition mode 1`] = 
         class="editIcons"
       >
         <i
-          class="material-icons text-faded clickable"
+          class="material-icons"
           id="custom-action-link-templatePath-1"
         >
-          settings
+          edit
         </i>
         <i
-          class="material-icons text-danger clickable"
+          class="material-icons text-danger"
         >
-          close
+          delete
         </i>
       </span>
     </li>
   </ul>
   <button
-    class="wrapper addButton fill secondary medium"
+    class="wrapper addButton fill secondary small"
     id="custom-action-link-templatePath"
     type="button"
   >
@@ -211,7 +211,7 @@ exports[`<ActionButtons/> should render links and buttons in edition mode 1`] = 
       class="wrapper"
     >
       <i
-        class="material-icons icon isLeft medium"
+        class="material-icons icon isLeft small"
       >
         add
       </i>

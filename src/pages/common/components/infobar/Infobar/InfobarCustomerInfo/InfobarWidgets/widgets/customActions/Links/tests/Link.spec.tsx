@@ -89,7 +89,7 @@ describe('<Link/>', () => {
                 <Link {...props} isEditing />
             </Provider>
         )
-        fireEvent.click(screen.getByText('settings'))
+        fireEvent.click(screen.getByText('edit'))
         await waitFor(() => {
             fireEvent.click(screen.getByRole('button', {name: 'Save'}))
             expect(props.onSubmit).toHaveBeenCalledWith(props.link, props.index)
@@ -106,7 +106,7 @@ describe('<Link/>', () => {
                 <Link {...props} isEditing />
             </Provider>
         )
-        fireEvent.click(screen.getByText('close'))
+        fireEvent.click(screen.getByText('delete'))
         expect(props.onRemove).toHaveBeenCalledWith(props.index)
     })
 })

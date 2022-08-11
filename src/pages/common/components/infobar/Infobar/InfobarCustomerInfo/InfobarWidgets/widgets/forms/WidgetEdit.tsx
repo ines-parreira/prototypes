@@ -19,7 +19,7 @@ import {isSimpleTemplateWidget} from 'pages/common/components/infobar/utils'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import FileField, {UploadType} from 'pages/common/forms/FileField'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {PartialTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/types'
 
 type EditionHiddenField = 'link' | 'displayCard'
@@ -57,7 +57,7 @@ const WidgetEdit = ({
         link: template.getIn(['meta', 'link'], ''),
         pictureUrl: template.getIn(['meta', 'pictureUrl'], ''),
         color: template.getIn(['meta', 'color'], ''),
-        displayCard: true,
+        displayCard: template.getIn(['meta', 'displayCard'], true),
         limit: isParentList ? parent.getIn(['meta', 'limit'], '') : '',
         orderBy: isParentList ? parent.getIn(['meta', 'orderBy'], '') : '',
     })
@@ -169,7 +169,7 @@ const WidgetEdit = ({
                             />
                             <ColorField
                                 name="card.meta.color"
-                                label="Widget color"
+                                label="Icon background"
                                 value={formState.color}
                                 onChange={(color: string) => {
                                     setFormState((formState) => ({

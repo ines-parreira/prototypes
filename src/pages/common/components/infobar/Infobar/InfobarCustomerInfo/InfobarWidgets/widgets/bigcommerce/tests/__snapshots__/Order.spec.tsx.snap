@@ -3,36 +3,33 @@
 exports[`Order <AfterTitle/> should match snapshot 1`] = `
 <div>
   <div
-    class="badge ml-1"
-  >
-    Completed
-  </div>
-  <div
-    class="container"
+    class="widgetField staticWidgetField"
   >
     <span
-      class="container"
+      class="widgetFieldLabel"
     >
-      <span
-        class="label"
-      >
-        Created
-        : 
-      </span>
-      <strong />
+      Created
+      :
+       
     </span>
     <span
-      class="container"
+      class="widgetFieldValue"
+    />
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
     >
-      <span
-        class="label"
-      >
-        Total
-        : 
-      </span>
-      <strong>
-        —
-      </strong>
+      Total
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      —
     </span>
   </div>
 </div>

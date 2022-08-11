@@ -130,9 +130,6 @@ export const getIntegrationById = (id: number) =>
         }
     )
 
-export const makeGetIntegrationById = (state: RootState) => (id: number) =>
-    getIntegrationById(id)(state)
-
 export const getIntegrationsByTypes = (
     types: readonly IntegrationType[] | IntegrationType[] | IntegrationType
 ) =>

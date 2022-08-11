@@ -6,15 +6,14 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {Collapse, ListGroup} from 'reactstrap'
+import {Collapse} from 'reactstrap'
 import {List, Map} from 'immutable'
-import {connect, ConnectedProps} from 'react-redux'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
-import expandUp from 'assets/img/infobar/expand-up-blue.svg'
-import expandDown from 'assets/img/infobar/expand-down.svg'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import {
     removeEditedWidget,
     startWidgetEdition,
@@ -22,12 +21,11 @@ import {
 } from 'state/widgets/actions'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {
     Link as LinkType,
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import useAppSelector from 'hooks/useAppSelector'
 
 import Editor from './Editor'
 import Link from './Link'
@@ -43,18 +41,16 @@ type Props = {
     isEditing?: boolean
 }
 
-export function Links(props: Props & ConnectedProps<typeof connector>) {
+export function Links(props: Props) {
     const {
         templatePath,
         templateAbsolutePath,
         source,
         immutableLinks,
         isEditing = false,
-        startWidgetEdition,
-        updateCustomActions,
-        removeEditedWidget,
     } = props
 
+    const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {integrationId} = useContext(IntegrationContext)
 
@@ -71,16 +67,20 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
 
     const handleRemove = useCallback(
         (index: number) => {
-            removeEditedWidget(
-                `${templatePath}.meta.custom.links`,
-                templateAbsolutePath
+            dispatch(
+                removeEditedWidget(
+                    `${templatePath}.meta.custom.links`,
+                    templateAbsolutePath
+                )
             )
 
             links.splice(index, 1)
 
             if (links.length > 0) {
-                startWidgetEdition(`${templatePath}.meta.custom.links`)
-                updateCustomActions(links)
+                dispatch(
+                    startWidgetEdition(`${templatePath}.meta.custom.links`)
+                )
+                dispatch(updateCustomActions(links))
             }
 
             logEvent(SegmentEvent.CustomActionLinksDeleted, {
@@ -90,19 +90,17 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
         },
         [
             links,
-            removeEditedWidget,
-            startWidgetEdition,
             templateAbsolutePath,
             templatePath,
-            updateCustomActions,
             currentAccount,
             integrationId,
+            dispatch,
         ]
     )
 
     const handleSubmit = useCallback<SubmitLink>(
         (link, index) => {
-            startWidgetEdition(`${templatePath}.meta.custom.links`)
+            dispatch(startWidgetEdition(`${templatePath}.meta.custom.links`))
 
             if (typeof index === 'number') {
                 links[index] = link
@@ -118,16 +116,9 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
                 })
             }
 
-            updateCustomActions(links)
+            dispatch(updateCustomActions(links))
         },
-        [
-            links,
-            startWidgetEdition,
-            templatePath,
-            updateCustomActions,
-            currentAccount,
-            integrationId,
-        ]
+        [links, templatePath, currentAccount, integrationId, dispatch]
     )
 
     const targetId = `custom-action-link-${templatePath.replace(/\./g, '')}`
@@ -156,13 +147,16 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
         <>
             {allLinks.length > 0 && (
                 <>
-                    <ListGroup flush className={css.listGroup}>
+                    <ul className={css.linkList}>
                         {isEditing || !isCollapsible ? (
                             allLinks
                         ) : (
                             <>
                                 {allLinks.slice(0, MAX_VISIBLE_LINKS)}
-                                <Collapse isOpen={collapseOpen}>
+                                <Collapse
+                                    isOpen={collapseOpen}
+                                    className={css.collapseGroup}
+                                >
                                     {allLinks.slice(
                                         MAX_VISIBLE_LINKS,
                                         allLinks.length
@@ -170,33 +164,22 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
                                 </Collapse>
                             </>
                         )}
-                    </ListGroup>
+                    </ul>
                     {isCollapsible && (
                         <Button
                             type="button"
                             intent="secondary"
-                            className={css.collapseButton}
+                            size="small"
+                            className={css.showMore}
                             onClick={handleToggle}
                         >
-                            {collapseOpen ? (
-                                <>
-                                    <img
-                                        src={expandUp}
-                                        alt="Contract"
-                                        className={css.collapseIcon}
-                                    />
-                                    SHOW LESS
-                                </>
-                            ) : (
-                                <>
-                                    <img
-                                        src={expandDown}
-                                        alt="Expand"
-                                        className={css.collapseIcon}
-                                    />
-                                    SHOW MORE
-                                </>
-                            )}
+                            <ButtonIconLabel
+                                icon={
+                                    collapseOpen ? 'expand_less' : 'expand_more'
+                                }
+                            >
+                                Show {collapseOpen ? 'less' : 'more'}
+                            </ButtonIconLabel>
                         </Button>
                     )}
                 </>
@@ -208,6 +191,7 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
                         id={targetId}
                         className={css.addButton}
                         intent="secondary"
+                        size="small"
                     >
                         <ButtonIconLabel icon="add" />
                         Add Redirection Link
@@ -219,10 +203,4 @@ export function Links(props: Props & ConnectedProps<typeof connector>) {
     )
 }
 
-const connector = connect(null, {
-    updateCustomActions,
-    startWidgetEdition,
-    removeEditedWidget,
-})
-
-export default connector(memo(Links))
+export default memo(Links)

@@ -3,13 +3,13 @@ import {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/bigcommerce.svg'
 
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+
+import {StaticField} from '../StaticField'
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
-import {IntegrationContext} from '../IntegrationContext'
 
 export default function Customer() {
     return {
@@ -24,9 +24,7 @@ function AfterTitle() {
 
     return (
         <>
-            <CardHeaderDetails>
-                <CardHeaderValue label="Store">{storeName}</CardHeaderValue>
-            </CardHeaderDetails>
+            <StaticField label="Store">{storeName}</StaticField>
         </>
     )
 }
@@ -44,18 +42,20 @@ export function TitleWrapper({children, source}: TitleWrapperProps) {
 
     return (
         <>
-            <CardHeaderIcon src={logo} alt="BigCommerce" />
-            <CardHeaderTitle>BigCommerce</CardHeaderTitle>
-            <CardHeaderSubtitle>
-                <a
-                    href={customerLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    {children}
-                </a>
-            </CardHeaderSubtitle>
             <ExpandAllButton />
+            <CardHeaderTitle>
+                <CardHeaderIcon src={logo} alt="BigCommerce" />
+                BigCommerce
+                <CardHeaderSubtitle>
+                    <a
+                        href={customerLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {children}
+                    </a>
+                </CardHeaderSubtitle>
+            </CardHeaderTitle>
         </>
     )
 }

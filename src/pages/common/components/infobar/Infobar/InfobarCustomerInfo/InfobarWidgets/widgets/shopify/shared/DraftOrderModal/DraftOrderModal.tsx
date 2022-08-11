@@ -6,13 +6,11 @@ import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {useUpdateEffect, usePrevious} from 'react-use'
 
-import {CustomerContext} from 'providers/CustomerContext'
+import {CustomerContext} from 'providers/infobar/CustomerContext'
 
-import {
-    Product,
-    Variant,
-} from '../../../../../../../../../../../constants/integrations/types/shopify'
-import {getCreateOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
+import {WidgetContext} from 'providers/infobar/WidgetContext'
+import {Product, Variant} from 'constants/integrations/types/shopify'
+import {getCreateOrderState} from 'state/infobarActions/shopify/createOrder/selectors'
 import {
     addCustomRow,
     addRow,
@@ -22,24 +20,21 @@ import {
     onInit,
     onLineItemChange,
     onReset,
-} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
-import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
-import {RootState} from '../../../../../../../../../../../state/types'
-import {
-    IntegrationType,
-    IntegrationDataItem,
-} from '../../../../../../../../../../../models/integration/types'
-import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput'
-import {DatetimeLabel} from '../../../../../../../../../utils/labels'
-import Loader from '../../../../../../../../Loader/Loader'
-import {InfobarModalProps} from '../../../types'
-import DEPRECATED_Modal from '../../../../../../../../DEPRECATED_Modal'
-import {IntegrationContext} from '../../../IntegrationContext'
-import {ShopifyActionType} from '../../types'
-import Alert, {AlertType} from '../../../../../../../../Alert/Alert'
+} from 'state/infobarActions/shopify/createOrder/actions'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+import {IntegrationType, IntegrationDataItem} from 'models/integration/types'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import Loader from 'pages/common/components/Loader/Loader'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
-import {WidgetContext} from '../../../../WidgetContext'
+import {InfobarModalProps} from '../../../types'
+import {ShopifyActionType} from '../../types'
+
 import AddCustomItemPopover from './AddCustomItemPopover/AddCustomItemPopover'
 import EmailInvoicePopover from './EmailInvoicePopover/EmailInvoicePopover'
 import DraftOrderFooter from './OrderFooter/OrderFooter'

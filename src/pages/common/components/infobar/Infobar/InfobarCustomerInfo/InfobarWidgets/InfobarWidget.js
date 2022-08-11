@@ -7,10 +7,10 @@ import {
     prepareWidgetToDisplay,
 } from '../../../utils.tsx'
 
-import ListInfobarWidget from './widgets/ListInfobar.tsx'
-import WrapperInfobarWidget from './widgets/WrapperInfobarWidget.tsx'
-import CardInfobarWidget from './widgets/CardInfobarWidget'
-import FieldInfobarWidget from './widgets/FieldInfobarWidget'
+import List from './widgets/List.tsx'
+import Wrapper from './widgets/Wrapper.tsx'
+import Card from './widgets/Card'
+import Field from './widgets/Field'
 
 import http from './widgets/http'
 import magento2 from './widgets/magento2'
@@ -19,10 +19,10 @@ import shopify from './widgets/shopify/index.ts'
 import smile from './widgets/smile/index.ts'
 import smoochInside from './widgets/smoochInside/index.ts'
 import yotpo from './widgets/yotpo/index.ts'
-import klaviyo from './widgets/klaviyo'
 import bigcommerce from './widgets/bigcommerce'
-import {WidgetContext} from './WidgetContext.ts'
 import {infobarWidgetShouldRender} from './predicates.ts'
+
+import {WidgetContext} from 'providers/infobar/WidgetContext.ts'
 
 import {
     HTTP_WIDGET_TYPE,
@@ -32,7 +32,6 @@ import {
     SMILE_WIDGET_TYPE,
     SMOOCH_INSIDE_WIDGET_TYPE,
     YOTPO_WIDGET_TYPE,
-    KLAVIYO_WIDGET_TYPE,
     BIGCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants.ts'
 
@@ -45,6 +44,7 @@ export default class InfobarWidget extends React.Component {
         template: PropTypes.object.isRequired,
         isEditing: PropTypes.bool.isRequired,
         open: PropTypes.bool.isRequired,
+        removeBorderTop: PropTypes.bool,
     }
 
     static defaultProps = {
@@ -60,6 +60,7 @@ export default class InfobarWidget extends React.Component {
             editing,
             isEditing,
             open,
+            removeBorderTop = false,
         } = this.props
 
         if (!infobarWidgetShouldRender(source)) {
@@ -79,7 +80,6 @@ export default class InfobarWidget extends React.Component {
             [SMOOCH_INSIDE_WIDGET_TYPE]: smoochInside,
             [HTTP_WIDGET_TYPE]: http,
             [YOTPO_WIDGET_TYPE]: yotpo,
-            [KLAVIYO_WIDGET_TYPE]: klaviyo,
             [BIGCOMMERCE_WIDGET_TYPE]: bigcommerce,
         }
 
@@ -126,7 +126,7 @@ export default class InfobarWidget extends React.Component {
         switch (type) {
             case 'wrapper': {
                 component = (
-                    <WrapperInfobarWidget
+                    <Wrapper
                         isEditing={isEditing}
                         source={data || fromJS({})}
                         widget={widget}
@@ -138,7 +138,7 @@ export default class InfobarWidget extends React.Component {
             }
             case 'list': {
                 component = (
-                    <ListInfobarWidget
+                    <List
                         isEditing={isEditing}
                         isParentList={isParentList}
                         source={data || fromJS({})}
@@ -146,6 +146,7 @@ export default class InfobarWidget extends React.Component {
                         template={updatedTemplate}
                         editing={editing}
                         open={open}
+                        removeBorderTop={removeBorderTop}
                     />
                 )
                 break
@@ -162,7 +163,7 @@ export default class InfobarWidget extends React.Component {
                 }
 
                 component = (
-                    <CardInfobarWidget
+                    <Card
                         isEditing={isEditing}
                         isParentList={isParentList}
                         source={data}
@@ -171,20 +172,18 @@ export default class InfobarWidget extends React.Component {
                         editing={editing}
                         parent={parent}
                         open={open || !isParentList}
+                        removeBorderTop={removeBorderTop}
                         {...extension}
                     />
                 )
                 break
             }
-            case 'divider': {
-                component = <div className="divider" />
-                break
-            }
             default: {
                 component = (
-                    <FieldInfobarWidget
+                    <Field
                         isEditing={isEditing}
                         isParentList={isParentList}
+                        type={type}
                         value={guessFieldValueFromRawData(
                             data,
                             type,

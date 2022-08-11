@@ -2,15 +2,14 @@ import React, {ContextType, ReactNode} from 'react'
 import type {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/magento.svg'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import {DatetimeLabel} from '../../../../../../../utils/labels'
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
+import {StaticField} from '../StaticField'
 import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
-import {IntegrationContext} from '../IntegrationContext'
 
 export default function Customer() {
     return {
@@ -30,14 +29,12 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 
         return (
             <>
-                <CardHeaderDetails>
-                    <CardHeaderValue label="Created">
-                        <DatetimeLabel
-                            key="created-at"
-                            dateTime={source.get('created_at')}
-                        />
-                    </CardHeaderValue>
-                </CardHeaderDetails>
+                <StaticField label="Created">
+                    <DatetimeLabel
+                        key="created-at"
+                        dateTime={source.get('created_at')}
+                    />
+                </StaticField>
             </>
         )
     }
@@ -72,14 +69,20 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
 
         return (
             <>
-                <CardHeaderIcon src={logo} alt="Magento" />
-                <CardHeaderTitle>Magento</CardHeaderTitle>
-                <CardHeaderSubtitle>
-                    <a href={link} target="_blank" rel="noopener noreferrer">
-                        {children}
-                    </a>
-                </CardHeaderSubtitle>
                 <ExpandAllButton />
+                <CardHeaderTitle>
+                    <CardHeaderIcon src={logo} alt="Magento" />
+                    Magento
+                    <CardHeaderSubtitle>
+                        <a
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {children}
+                        </a>
+                    </CardHeaderSubtitle>
+                </CardHeaderTitle>
             </>
         )
     }

@@ -35,13 +35,19 @@ export class TitleWrapper extends Component<Props> {
 
         return (
             <>
-                <CardHeaderIcon src={logo} alt="Smile" />
-                <CardHeaderTitle>Smile</CardHeaderTitle>
-                <CardHeaderSubtitle>
-                    <a href={link} target="_blank" rel="noopener noreferrer">
-                        {children}
-                    </a>
-                </CardHeaderSubtitle>
+                <CardHeaderTitle>
+                    <CardHeaderIcon src={logo} alt="Smile" />
+                    Smile
+                    <CardHeaderSubtitle>
+                        <a
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            {children}
+                        </a>
+                    </CardHeaderSubtitle>
+                </CardHeaderTitle>
             </>
         )
     }

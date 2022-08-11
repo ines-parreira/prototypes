@@ -1,34 +1,37 @@
 @import '~css/new/colorTokens';
 
 :local {
-    .addButton {
-        display: flex;
-        margin-bottom: 8px;
+    .editList {
+        margin: 0 0 12px 0;
+        padding: 0;
     }
     .editRow {
-        display: flex !important;
+        display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 0 8px 0 !important;
-        border: none !important;
+        margin-bottom: 8px;
+        padding: 0;
         button {
-            flex: 0 1 auto;
-            margin-right: 6px;
             overflow: hidden;
             text-overflow: ellipsis;
             background-color: @classic-neutral-grey-0 !important;
         }
         &:hover .editIcons {
-            opacity: 1;
+            display: inline;
         }
     }
     .editIcons {
+        display: none;
         flex: 0 0 auto;
-        min-width: 52px;
-        opacity: 0;
+        font-size: 1.3rem;
+        line-height: 1.3rem;
         i {
-            padding: 6px;
+            padding: 0 4px;
+            cursor: pointer;
         }
+    }
+    .addButton {
+        width: 100%;
     }
     .formParamRow {
         display: flex;
@@ -82,5 +85,6 @@
         max-width: 260px;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 12px;
     }
 }

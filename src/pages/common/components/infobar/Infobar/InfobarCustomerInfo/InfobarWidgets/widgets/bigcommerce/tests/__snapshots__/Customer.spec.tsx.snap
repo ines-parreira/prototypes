@@ -2,33 +2,35 @@
 
 exports[`Customer TitleWrapper should render default link 1`] = `
 <div>
-  <img
-    alt="BigCommerce"
-    class="container"
-    src="test-file-stub"
-    style="background-color: rgba(0, 0, 0, 0);"
-  />
   <span
-    class="container"
+    class="expandAll"
+    title="Fold all"
   >
-    BigCommerce
+    <i
+      class="material-icons"
+    >
+      unfold_less
+    </i>
   </span>
   <span
     class="container"
-  >
-    <a
-      href="https://store-pk360c6roo.mybigcommerce.com/manage/customers/1/edit"
-      rel="noopener noreferrer"
-      target="_blank"
-    />
-  </span>
-  <span
-    class="container expand-all"
   >
     <img
-      alt="Expand all"
+      alt="BigCommerce"
+      class="container"
       src="test-file-stub"
+      style="background-color: rgba(0, 0, 0, 0);"
     />
+    BigCommerce
+    <span
+      class="container"
+    >
+      <a
+        href="https://store-pk360c6roo.mybigcommerce.com/manage/customers/1/edit"
+        rel="noopener noreferrer"
+        target="_blank"
+      />
+    </span>
   </span>
    
 </div>

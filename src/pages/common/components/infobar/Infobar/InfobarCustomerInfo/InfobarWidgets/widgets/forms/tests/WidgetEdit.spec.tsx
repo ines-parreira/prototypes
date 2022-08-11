@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import * as utils from 'utils'
 import {IntegrationType} from 'models/integration/constants'
 import * as actions from 'state/widgets/actions'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import WidgetEdit from '../WidgetEdit'
 
 const mockStore = configureMockStore([thunk])

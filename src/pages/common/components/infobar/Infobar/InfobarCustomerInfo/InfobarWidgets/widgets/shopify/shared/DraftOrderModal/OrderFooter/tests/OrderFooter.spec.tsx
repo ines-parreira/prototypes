@@ -7,32 +7,27 @@ import configureMockStore from 'redux-mock-store'
 
 import {ShopifyTags} from 'models/integration/types'
 import {fetchShopTags} from 'models/integration/resources/shopify'
-import {
-    SegmentEvent,
-    logEvent,
-} from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {shopifyDraftOrderPayloadFixture} from '../../../../../../../../../../../../../fixtures/shopify'
+import {SegmentEvent, logEvent} from 'store/middlewares/segmentTracker'
+import {shopifyDraftOrderPayloadFixture} from 'fixtures/shopify'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+
 import {ShopifyActionType} from '../../../../types'
-import {IntegrationContext} from '../../../../../IntegrationContext'
 import {OrderFooterComponent} from '../OrderFooter'
-import MultiSelectOptionsField from '../../../../../../../../../../../forms/MultiSelectOptionsField/MultiSelectOptionsField'
 
 jest.useFakeTimers()
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
-jest.mock(
-    '../../../../../../../../../../../../../store/middlewares/segmentTracker',
-    () => {
-        const segmentTracker: Record<string, unknown> = jest.requireActual(
-            '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-        )
-        return {
-            ...segmentTracker,
-            logEvent: jest.fn(),
-        }
+jest.mock('store/middlewares/segmentTracker', () => {
+    const segmentTracker: Record<string, unknown> = jest.requireActual(
+        'store/middlewares/segmentTracker'
+    )
+    return {
+        ...segmentTracker,
+        logEvent: jest.fn(),
     }
-)
+})
 
 jest.mock('models/integration/resources/shopify', () => {
     return {

@@ -2,11 +2,11 @@
 
 exports[`<TitleWrapper/> render() should render with a link 1`] = `
 <Fragment>
-  <CardHeaderIcon
-    alt="Chat"
-    src="test-file-stub"
-  />
   <CardHeaderTitle>
+    <CardHeaderIcon
+      alt="Chat"
+      src="test-file-stub"
+    />
     <a
       href="https://foo.bar/?baz=BAZ"
       rel="noopener noreferrer"
@@ -22,11 +22,11 @@ exports[`<TitleWrapper/> render() should render with a link 1`] = `
 
 exports[`<TitleWrapper/> render() should render without link 1`] = `
 <Fragment>
-  <CardHeaderIcon
-    alt="Chat"
-    src="test-file-stub"
-  />
   <CardHeaderTitle>
+    <CardHeaderIcon
+      alt="Chat"
+      src="test-file-stub"
+    />
     <span>
       Chat
     </span>

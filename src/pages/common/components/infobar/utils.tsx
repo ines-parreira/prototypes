@@ -569,7 +569,7 @@ export function prepareWidgetToDisplay(
     updatedTemplate = updatedTemplate.set('path', path)
 
     // get data of widget in shortcuts
-    const data = path ? source.getIn(path) : source
+    const data = (path ? source.getIn(path) : source) as Map<string, unknown>
     const type = updatedTemplate.get('type', '')
 
     return {
@@ -764,19 +764,19 @@ export function guessFieldValueFromRawData(
 /**
  * Display a widget field label (before the value)
  */
-export const displayLabel = (label: any) => {
-    const defaultLabel = '-'
+export const displayValue = (label: any) => {
+    const defaultValue = '-'
 
     if (_isUndefined(label)) {
-        return defaultLabel
+        return defaultValue
     }
 
     if (_isNull(label)) {
-        return defaultLabel
+        return defaultValue
     }
 
     if (_isString(label) && !label) {
-        return defaultLabel
+        return defaultValue
     }
 
     return label as ReactNode

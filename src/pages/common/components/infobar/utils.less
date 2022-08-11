@@ -3,6 +3,12 @@
 :local {
     .starRatingWrapper {
         float: right;
+        // prevent ReactStars from breaking drag and drop
+        // with absolute positioning outside of screen
+        // for some a11y reasons
+        [role='status'] {
+            display: none;
+        }
     }
 
     .thumb {

@@ -3,7 +3,7 @@ import React, {Children, ReactNode, useState} from 'react'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import css from './ShowMore.less'
+import css from './CustomerInfoWrapper.less'
 
 type Props = {
     children: ReactNode

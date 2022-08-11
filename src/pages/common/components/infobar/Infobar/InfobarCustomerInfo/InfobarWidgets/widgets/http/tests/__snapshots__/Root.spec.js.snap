@@ -1,58 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<TitleWrapper/> render() should render default 1`] = `
-<div
-  style="display: flex; align-items: center;"
+<span
+  class="container"
 >
   <img
     alt="HTTP"
     class="container"
     src="test-file-stub"
   />
-  <span
-    class="container"
-  >
-    HTTP
-  </span>
-</div>
+  HTTP
+</span>
 `;
 
 exports[`<TitleWrapper/> render() should render inline 1`] = `
-<div
-  style="display: inline-flex; align-items: center;"
+<span
+  class="container"
 >
   <img
     alt="HTTP"
     class="container"
     src="test-file-stub"
   />
-  <span
-    class="container"
-  >
-    HTTP
-  </span>
-</div>
+  HTTP
+</span>
 `;
 
 exports[`<TitleWrapper/> render() should render with a color tile 1`] = `
-<div
-  style="display: flex; align-items: center;"
+<span
+  class="container"
 >
   <div
     class="colorTile"
     style="background-color: rgb(17, 34, 51);"
   />
-  <span
-    class="container"
-  >
-    HTTP
-  </span>
-</div>
+  HTTP
+</span>
 `;
 
 exports[`<TitleWrapper/> render() should render with a custom picture 1`] = `
-<div
-  style="display: flex; align-items: center;"
+<span
+  class="container"
 >
   <img
     alt="Widget Icon"
@@ -60,35 +48,27 @@ exports[`<TitleWrapper/> render() should render with a custom picture 1`] = `
     src="http://mypictureurl.com"
     style="background-color: rgb(17, 34, 51);"
   />
-  <span
-    class="container"
-  >
-    HTTP
-  </span>
-</div>
+  HTTP
+</span>
 `;
 
 exports[`<TitleWrapper/> render() should render with a link 1`] = `
-<div
-  style="display: flex; align-items: center;"
+<span
+  class="container"
 >
   <img
     alt="HTTP"
     class="container"
     src="test-file-stub"
   />
-  <span
-    class="container"
+  <a
+    href="https://foo.bar/?baz=BAZ"
+    rel="noopener noreferrer"
+    target="_blank"
   >
-    <a
-      href="https://foo.bar/?baz=BAZ"
-      rel="noopener noreferrer"
-      target="_blank"
-    >
-      <span>
-        Foo
-      </span>
-    </a>
-  </span>
-</div>
+    <span>
+      Foo
+    </span>
+  </a>
+</span>
 `;

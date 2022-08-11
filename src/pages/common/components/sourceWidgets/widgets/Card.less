@@ -1,0 +1,40 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .sourceWidgetCard {
+        margin-top: 12px;
+        background-color: @classic-neutral-grey-0;
+        border: 1px solid @classic-neutral-grey-3;
+        border-radius: 4px;
+
+        .sourceWidgetCard {
+            margin: 12px;
+            padding-bottom: 1px;
+            border: none;
+            border-left: 1px dashed @classic-neutral-grey-3;
+            border-radius: 0;
+
+            &:hover {
+                border-left: 1px solid transparent;
+            }
+
+            .sourceWidgetCardHeader {
+                padding: 12px 0;
+                margin-bottom: 0;
+            }
+        }
+
+        &:hover {
+            box-shadow: 0 0 5px @classic-neutral-grey-3;
+        }
+    }
+
+    .sourceWidgetCardMarginWrapper {
+        margin: 12px 0;
+    }
+
+    .sourceWidgetCardHeader {
+        margin: 12px;
+        font-weight: 600;
+    }
+}

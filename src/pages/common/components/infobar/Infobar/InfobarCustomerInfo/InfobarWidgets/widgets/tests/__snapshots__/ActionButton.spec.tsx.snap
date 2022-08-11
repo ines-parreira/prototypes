@@ -3,10 +3,12 @@
 exports[`ActionButton component should display a single option with a checkbox parameter 1`] = `
 <Fragment>
   <ForwardRef
+    className="actionButton"
     id="action-button-4"
     intent="secondary"
     isDisabled={false}
     onClick={[Function]}
+    size="small"
     type="button"
   >
     <span
@@ -93,10 +95,12 @@ exports[`ActionButton component should display a single option with a checkbox p
 exports[`ActionButton component should display a single option with a number parameter 1`] = `
 <Fragment>
   <ForwardRef
+    className="actionButton"
     id="action-button-3"
     intent="secondary"
     isDisabled={false}
     onClick={[Function]}
+    size="small"
     type="button"
   >
     <span
@@ -187,10 +191,12 @@ exports[`ActionButton component should display a single option with a number par
 exports[`ActionButton component should display a single option with a select parameter 1`] = `
 <Fragment>
   <ForwardRef
+    className="actionButton"
     id="action-button-5"
     intent="secondary"
     isDisabled={false}
     onClick={[Function]}
+    size="small"
     type="button"
   >
     <span
@@ -298,10 +304,12 @@ exports[`ActionButton component should display a single option with a select par
 exports[`ActionButton component should display a single option with a text parameter 1`] = `
 <Fragment>
   <ForwardRef
+    className="actionButton"
     id="action-button-2"
     intent="secondary"
     isDisabled={false}
     onClick={[Function]}
+    size="small"
     type="button"
   >
     <span
@@ -389,10 +397,12 @@ exports[`ActionButton component should display a single option with a text param
 exports[`ActionButton component should display a single option with no parameters 1`] = `
 <Fragment>
   <ForwardRef
+    className="actionButton"
     id="action-button-1"
     intent="secondary"
     isDisabled={false}
     onClick={[Function]}
+    size="small"
     type="button"
   >
     <span
@@ -470,10 +480,12 @@ exports[`ActionButton component should display a single option with no parameter
 exports[`ActionButton component should display multiple options with a common parameter 1`] = `
 <Fragment>
   <ForwardRef
+    className="actionButton"
     id="action-button-7"
     intent="secondary"
     isDisabled={false}
     onClick={[Function]}
+    size="small"
     type="button"
   >
     <span
@@ -606,10 +618,12 @@ exports[`ActionButton component should display multiple options with a common pa
 exports[`ActionButton component should display multiple options with different parameter 1`] = `
 <Fragment>
   <ForwardRef
+    className="actionButton"
     id="action-button-8"
     intent="secondary"
     isDisabled={false}
     onClick={[Function]}
+    size="small"
     type="button"
   >
     <span
@@ -742,10 +756,12 @@ exports[`ActionButton component should display multiple options with different p
 exports[`ActionButton component should display multiple options without parameters 1`] = `
 <Fragment>
   <ForwardRef
+    className="actionButton"
     id="action-button-6"
     intent="secondary"
     isDisabled={false}
     onClick={[Function]}
+    size="small"
     type="button"
   >
     <span

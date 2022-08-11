@@ -8,7 +8,7 @@ const iconRegex = /\B(:\w+:)\B/gi
 const icons = {
     ':cart:': 'shopping_cart',
     ':product:': 'local_mall',
-    ':refund:': 'redeem',
+    ':refund:': 'attach_money',
     ':shipment_status:': 'local_shipping',
     ':shipping_address:': 'home',
     ':shipping_cost:': 'widgets',

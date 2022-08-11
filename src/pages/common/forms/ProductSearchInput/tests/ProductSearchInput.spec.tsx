@@ -2,7 +2,8 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {IntegrationContext} from '../../../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+
 import ProductSearchInput from '../ProductSearchInput'
 
 describe('<ProductSearchInput/>', () => {

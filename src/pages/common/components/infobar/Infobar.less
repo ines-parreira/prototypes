@@ -4,18 +4,8 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    background-color: @classic-neutral-grey-1;
+    background-color: @classic-neutral-grey-0;
     border-left: 1px solid @classic-neutral-grey-3;
-
-    .widgetsList {
-        > :global(.card:first-child) {
-            margin-top: 0;
-        }
-    }
-
-    &.editing {
-        background-color: @ultraLightBlue;
-    }
 
     .selectionBackButton {
         display: inline-block;
@@ -26,12 +16,6 @@
         background-color: @classic-neutral-grey-2;
         border-radius: 3px;
         padding: 16px;
-
-        :global(.infobar-wrapper) {
-            margin: 0.5rem 0 0 0;
-            min-width: 100%;
-            max-width: 100%;
-        }
     }
 
     .content {
@@ -46,9 +30,9 @@
     }
 
     .customerInfo {
-        background: @classic-neutral-grey-0;
         padding: 1rem;
-        box-shadow: inset 0 -1px 0 @classic-neutral-grey-2;
+        background: @classic-neutral-grey-0;
+        border-right: 1px solid @classic-neutral-grey-3;
     }
 
     .customerProfile {
@@ -125,7 +109,6 @@
 
     .infobarSearchWrapper {
         padding: 12px;
-        margin-bottom: 1px;
         background: @classic-neutral-grey-0;
         border-bottom: 1px solid @classic-neutral-grey-3;
     }

@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<StaticField/> render() should render with label 1`] = `
+<div
+  className="widgetField staticWidgetField"
+>
+  <span
+    className="widgetFieldLabel"
+  >
+    Label
+    :
+     
+  </span>
+  <span
+    className="widgetFieldValue"
+  >
+    foo
+  </span>
+</div>
+`;
+
+exports[`<StaticField/> render() should render without label 1`] = `
+<div
+  className="widgetField staticWidgetField"
+>
+  <span
+    className="widgetFieldValue"
+  >
+    foo
+  </span>
+</div>
+`;

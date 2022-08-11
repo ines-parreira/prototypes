@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import Customer from '../Customer'
 

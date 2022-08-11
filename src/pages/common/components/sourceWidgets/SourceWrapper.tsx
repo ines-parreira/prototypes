@@ -1,16 +1,19 @@
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
+import classnames from 'classnames'
+import {Link} from 'react-router-dom'
 import {fromJS, Set, Map, List} from 'immutable'
-import {Card, CardBody} from 'reactstrap'
 
-import {IntegrationType} from '../../../../models/integration/types'
-import * as integrationsSelectors from '../../../../state/integrations/selectors'
-import {RootState} from '../../../../state/types'
-import history from '../../../history'
-import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
+import useAppSelector from 'hooks/useAppSelector'
+import {IntegrationType} from 'models/integration/types/'
+import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
+import history from 'pages/history'
+import {
+    areSourcesReady,
+    jsonToWidgets,
+} from 'pages/common/components/infobar/utils'
 
-import SourceWidgets from './SourceWidgets.js'
+import css from './SourceWrapper.less'
+import Widgets from './Widgets'
 
 export const WIDGET_DATA_TYPES = [
     {
@@ -108,19 +111,6 @@ export const WIDGET_DATA_TYPES = [
         ),
     },
     {
-        type: IntegrationType.Klaviyo,
-        title: 'Klaviyo data',
-        description: (
-            <div>
-                The following data comes from your{' '}
-                <Link to="/app/settings/integrations/klaviyo" target="_blank">
-                    <b>Klaviyo integrations</b>
-                </Link>
-                .
-            </div>
-        ),
-    },
-    {
         type: IntegrationType.BigCommerce,
         title: 'BigCommerce data',
         description: (
@@ -161,182 +151,152 @@ type Props = {
             stopEditionMode: () => void
         }
     }
-} & RouteComponentProps &
-    ConnectedProps<typeof connector>
-
-type State = {
-    widgetsTemplate: List<any>
-    availableTypes: Set<any>
 }
 
-class SourceWrapper extends Component<Props, State> {
-    constructor(props: Props) {
-        super(props)
-        // defaults
-        this.state = {
-            widgetsTemplate: fromJS([]),
-            availableTypes: fromJS([]),
-        }
-        // generate widgets
-        Object.assign(this.state, this._getWidgetsState(props))
-    }
+export default function SourceWrapper({
+    actions,
+    context,
+    identifier,
+    sources,
+    widgets,
+}: Props) {
+    const [widgetsTemplate, setWidgetsTemplate] = useState<
+        List<Map<string, unknown>>
+    >(fromJS([]))
+    const [availableTypes, setAvailableTypes] = useState<Set<string>>(
+        fromJS([])
+    )
 
-    componentWillReceiveProps(nextProps: Props) {
-        this.setState(this._getWidgetsState(nextProps) as State)
-    }
+    const integrations = useAppSelector(DEPRECATED_getIntegrations)
 
-    _getWidgetsState(props: Props): Partial<State> {
-        const {sources, widgets, getIntegrationById} = props
-
+    useEffect(() => {
         const context = widgets.get('currentContext', '')
-
-        const hasWidgetsTemplates = !this.state.widgetsTemplate.isEmpty()
+        const hasNoWidgetsTemplates = widgetsTemplate.isEmpty()
 
         const shouldGenerateWidgets =
-            areSourcesReady(sources as any, context) && !hasWidgetsTemplates
+            areSourcesReady(sources as any, context) && hasNoWidgetsTemplates
 
         // Generate widgets template from incoming json and use it to display source widgets (i.e. the things you can
         // drag into the infobar).
         // If there's integrations widgets, we only want one widget per integration_type (except for HTTP integrations,
         // for which we want a widget per integration).
-        if (shouldGenerateWidgets) {
-            let widgetsTemplate = fromJS(
-                jsonToWidgets(sources.toJS(), context)
-            ) as List<any>
-            const typesAlreadyDisplayed: string[] = []
+        if (!shouldGenerateWidgets) return
 
-            // Make sure we only have one `sourceWidget` per type, except for HTTP
-            widgetsTemplate = (
-                widgetsTemplate.map((widgetTemplate: Map<any, any>) => {
-                    let ret = widgetTemplate
+        let newWidgetsTemplate = fromJS(
+            jsonToWidgets(sources.toJS(), context)
+        ) as List<any>
+        const typesAlreadyDisplayed: string[] = []
 
-                    if (
-                        (
-                            widgetTemplate.get('sourcePath') as List<any>
-                        ).includes('integrations')
-                    ) {
-                        const integrationId = (
-                            widgetTemplate.get('sourcePath') as List<any>
-                        ).last()
+        // Make sure we only have one `sourceWidget` per type, except for HTTP
+        newWidgetsTemplate = (
+            newWidgetsTemplate.map((widgetsTemplate: Map<any, any>) => {
+                let ret = widgetsTemplate
 
-                        // If the integrationId is not a valid int, something is wrong so we discard the widget
-                        if (isNaN(parseInt(integrationId))) {
-                            return false
-                        }
+                if (
+                    (widgetsTemplate.get('sourcePath') as List<any>).includes(
+                        'integrations'
+                    )
+                ) {
+                    const integrationId = (
+                        widgetsTemplate.get('sourcePath') as List<any>
+                    ).last() as string
 
-                        const integration = getIntegrationById(
-                            parseInt(integrationId)
-                        )
-
-                        // If there's already a sourceWidget of this type, we don't want another one (except for http)
-                        if (
-                            typesAlreadyDisplayed.includes(
-                                integration.get('type')
-                            ) &&
-                            integration.get('type') !== 'http'
-                        ) {
-                            return false
-                        }
-
-                        typesAlreadyDisplayed.push(integration.get('type'))
-                        ret = widgetTemplate.set(
-                            'type',
-                            integration.get('type')
-                        )
-                    } else {
-                        typesAlreadyDisplayed.push('custom')
+                    // If the integrationId is not a valid int, something is wrong so we discard the widget
+                    if (isNaN(parseInt(integrationId, 10))) {
+                        return false
                     }
 
-                    return ret
-                }) as List<any>
-            ).filter((w: Map<any, any>) => !!w) as List<any> // filter out null values
+                    const integration = getIntegrationById(
+                        integrations,
+                        integrationId
+                    )
 
-            return {
-                widgetsTemplate,
-                availableTypes: Set(typesAlreadyDisplayed) as Set<any>,
-            }
-        }
+                    // If there's already a sourceWidget of this type, we don't want another one (except for http)
+                    if (
+                        typesAlreadyDisplayed.includes(
+                            integration.get('type')
+                        ) &&
+                        integration.get('type') !== 'http'
+                    ) {
+                        return false
+                    }
 
-        return {}
-    }
+                    typesAlreadyDisplayed.push(integration.get('type'))
+                    ret = widgetsTemplate.set('type', integration.get('type'))
+                } else {
+                    typesAlreadyDisplayed.push('custom')
+                }
 
-    _leaveEditionMode = () => {
-        const {actions, context, identifier, location} = this.props
+                return ret
+            }) as List<any>
+        ).filter((w: Map<any, any>) => !!w) as List<any> // filter out null values
 
+        setWidgetsTemplate(newWidgetsTemplate)
+        setAvailableTypes(Set(typesAlreadyDisplayed) as Set<any>)
+    }, [integrations, sources, widgets, widgetsTemplate])
+
+    const leaveEditionMode = () => {
         actions.widgets.stopEditionMode()
         history.push(`/app/${context}/${identifier}${location.search}`)
     }
 
-    render() {
-        const {sources, widgets} = this.props
+    const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
 
-        const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
+    return (
+        <div className={classnames({dragging: isDragging})}>
+            <h3 className="mb-4">
+                Manage widgets
+                <a className="clickable float-right" onClick={leaveEditionMode}>
+                    <i className="material-icons">close</i>
+                </a>
+            </h3>
 
-        return (
-            <div>
-                <h3 className="mb-4">
-                    Manage widgets
-                    <a
-                        className="clickable float-right"
-                        onClick={this._leaveEditionMode}
+            <p>
+                Drag and drop the values below into the sidebar to preview how
+                they will look like next to your tickets.
+            </p>
+
+            {WIDGET_DATA_TYPES.map((widgetDataType, idx) =>
+                availableTypes.has(widgetDataType.type) ? (
+                    <section
+                        className={classnames(
+                            css.dataFields,
+                            css[widgetDataType.type]
+                        )}
+                        key={idx}
                     >
-                        <i className="material-icons">close</i>
-                    </a>
-                </h3>
-
-                <p>
-                    Drag and drop the values below into the sidebar to preview
-                    how they will look like next to your tickets.
-                </p>
-
-                <div className="source-widgets">
-                    {WIDGET_DATA_TYPES.map((widgetDataType, idx) => {
-                        return (
-                            this.state.availableTypes.has(
-                                widgetDataType.type
-                            ) && (
-                                <Card className="data-fields" key={idx}>
-                                    <CardBody className="header">
-                                        <div className="title">
-                                            {widgetDataType.title}
-                                        </div>
-                                        {widgetDataType.description}
-                                    </CardBody>
-                                    <CardBody className="content">
-                                        <SourceWidgets
-                                            source={sources}
-                                            widgets={this.state.widgetsTemplate.filter(
-                                                (
-                                                    widgetTemplate: Map<
-                                                        any,
-                                                        any
-                                                    >
-                                                ) =>
-                                                    widgetTemplate.get(
-                                                        'type'
-                                                    ) === widgetDataType.type
-                                            )}
-                                            editing={{
-                                                isDragging,
-                                                actions:
-                                                    this.props.actions.widgets,
-                                            }}
-                                        />
-                                    </CardBody>
-                                </Card>
-                            )
-                        )
-                    })}
-                </div>
-            </div>
-        )
-    }
+                        <header className={css.dataHeader}>
+                            <h2 className={css.dataTitle}>
+                                {widgetDataType.title}
+                            </h2>
+                            {widgetDataType.description}
+                        </header>
+                        <Widgets
+                            source={sources}
+                            widgets={
+                                widgetsTemplate.filter(
+                                    (widgetsTemplate) =>
+                                        widgetsTemplate?.get('type') ===
+                                        widgetDataType.type
+                                ) as List<Map<string, unknown>>
+                            }
+                        />
+                    </section>
+                ) : null
+            )}
+        </div>
+    )
 }
 
-const connector = connect((state: RootState) => {
-    return {
-        getIntegrationById: integrationsSelectors.makeGetIntegrationById(state),
-    }
-})
-
-export default withRouter(connector(SourceWrapper))
+function getIntegrationById(
+    integrations: List<Map<any, any>>,
+    id: string | number
+) {
+    return (
+        integrations.find(
+            (integration) =>
+                (integration?.get('id', '') as string | number).toString() ===
+                (id || '').toString()
+        ) || fromJS({})
+    )
+}

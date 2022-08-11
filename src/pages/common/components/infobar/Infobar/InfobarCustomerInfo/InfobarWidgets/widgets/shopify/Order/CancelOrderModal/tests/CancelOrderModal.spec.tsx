@@ -14,7 +14,7 @@ import {
     shopifyCancelOrderPayloadFixture,
     shopifySuggestedRefundFixture,
 } from 'fixtures/shopify'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import {CancelOrderModalContainer} from '../CancelOrderModal'
 

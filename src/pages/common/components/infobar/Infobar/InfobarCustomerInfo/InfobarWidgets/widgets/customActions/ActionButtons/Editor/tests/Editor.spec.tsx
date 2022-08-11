@@ -5,18 +5,20 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
-import {actionFixture} from '../../../../../../../../../../../../fixtures/infobarCustomActions'
+import * as actions from 'state/widgets/actions'
+import {actionFixture} from 'fixtures/infobarCustomActions'
 import {Editor} from '../Editor'
+
+jest.spyOn(actions, 'startWidgetEdition')
+jest.spyOn(actions, 'updateCustomActions')
+jest.spyOn(actions, 'removeEditedWidget')
+const startWidgetEdition = actions.startWidgetEdition as jest.Mock
+const updateCustomActions = actions.updateCustomActions as jest.Mock
+const removeEditedWidget = actions.removeEditedWidget as jest.Mock
 
 const mockStore = configureMockStore([thunk])
 
 describe('<Editor/>', () => {
-    const actionMock = jest.fn()
-    const buildActionMock =
-        (actionName: string) =>
-        (...args: any) =>
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            actionMock(actionName, ...args)
     const action = actionFixture()
 
     const props = {
@@ -27,9 +29,6 @@ describe('<Editor/>', () => {
         templatePath: 'some.template',
         templateAbsolutePath: ['some', 'absolute', 'template'],
         source: fromJS({}),
-        startWidgetEdition: buildActionMock('startWidgetEdition'),
-        updateCustomActions: buildActionMock('updateCustomActions'),
-        removeEditedWidget: buildActionMock('removeEditedWidget'),
     }
 
     beforeEach(() => {
@@ -90,8 +89,10 @@ describe('<Editor/>', () => {
                 <Editor {...props} />
             </Provider>
         )
-        fireEvent.click(screen.getAllByText('close')[1])
-        expect(actionMock.mock.calls).toMatchSnapshot()
+        fireEvent.click(screen.getAllByText('delete')[1])
+        expect(startWidgetEdition.mock.calls).toMatchSnapshot()
+        expect(updateCustomActions.mock.calls).toMatchSnapshot()
+        expect(removeEditedWidget.mock.calls).toMatchSnapshot()
     })
     it('should call the correct callbacks when submitting a new button', async () => {
         render(
@@ -109,7 +110,8 @@ describe('<Editor/>', () => {
             target: {value: 'ok'},
         })
         fireEvent.click(screen.getByRole('button', {name: 'Save'}))
-        expect(actionMock.mock.calls).toMatchSnapshot()
+        expect(startWidgetEdition.mock.calls).toMatchSnapshot()
+        expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })
     it('should call the correct callbacks when submitting a edited button', async () => {
         render(
@@ -121,9 +123,10 @@ describe('<Editor/>', () => {
                 <Editor {...props} />
             </Provider>
         )
-        fireEvent.click(screen.getAllByText('settings')[1])
+        fireEvent.click(screen.getAllByText('edit')[1])
         await screen.findByRole('button', {name: 'Save'})
         fireEvent.click(screen.getByRole('button', {name: 'Save'}))
-        expect(actionMock.mock.calls).toMatchSnapshot()
+        expect(startWidgetEdition.mock.calls).toMatchSnapshot()
+        expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })
 })

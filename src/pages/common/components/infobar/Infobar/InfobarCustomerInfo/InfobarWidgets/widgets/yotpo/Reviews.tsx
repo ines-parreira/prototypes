@@ -2,10 +2,9 @@ import React from 'react'
 import ReactStars from 'react-rating-stars-component'
 import {List, Map} from 'immutable'
 
-import {CardHeaderValue} from '../CardHeaderValue'
-import {DatetimeLabel} from '../../../../../../../utils/labels'
-import {CardHeaderBadge} from '../CardHeaderBadge'
-import {StarRatingColors} from '../../../../../utils'
+import {DatetimeLabel} from 'pages/common/utils/labels'
+import {StarRatingColors} from 'pages/common/components/infobar/utils'
+import {StaticField} from '../StaticField'
 
 import css from './Reviews.less'
 
@@ -54,26 +53,18 @@ type TitleWrapperProps = {
 class TitleWrapper extends React.Component<TitleWrapperProps> {
     render() {
         const {source} = this.props
-        const visible = source.get('published')
         const reviewSearchURL = makeReviewSearchURL(source.get('title'))
         return (
-            <div className={css.titleContainer}>
-                <a
-                    className={css.title}
-                    target={reviewSearchURL.target}
-                    href={reviewSearchURL.url}
-                >
-                    <span className={`material-icons ${css.inventory}`}>
-                        inventory
-                    </span>
-                    <span>{source.get('title')}</span>
-                    <CardHeaderBadge
-                        className={`material-icons ${css.visibility}`}
-                        iconName={visible ? `visibility` : `visibility_off`}
-                        color={visible ? `primary` : `secondary`}
-                    />
-                </a>
-            </div>
+            <a
+                className={css.title}
+                target={reviewSearchURL.target}
+                href={reviewSearchURL.url}
+            >
+                <span className={`material-icons ${css.inventory}`}>
+                    inventory
+                </span>
+                <span>{source.get('title')}</span>
+            </a>
         )
     }
 }
@@ -86,17 +77,17 @@ class AfterTitle extends React.Component<AfterTitleProps> {
         const {source} = this.props
         const starRatings = starRatingProps(source.get('score'))
         return (
-            <span className={css.subtitle}>
-                <CardHeaderValue label="Created">
+            <div className={css.afterTitle}>
+                <StaticField label="Created">
                     <DatetimeLabel
                         key="created-at"
                         dateTime={source.get('created_at') as string}
                     />
-                    <span className={css.starRatingWrapper}>
-                        <ReactStars {...starRatings} />
-                    </span>
-                </CardHeaderValue>
-            </span>
+                </StaticField>
+                <StaticField>
+                    <ReactStars {...starRatings} />
+                </StaticField>
+            </div>
         )
     }
 }
@@ -112,11 +103,13 @@ class BeforeContent extends React.Component<BeforeContentReviewsProps> {
             []
         )
         return (
-            <div className={css.reviewContainer}>
-                <p className={css.reviewTitle}>{source.get('title')}</p>
-                <p className={css.reviewContent}>{source.get('content')}</p>
+            <>
+                <div>
+                    <StaticField>{source.get('title')}</StaticField>
+                    <StaticField noBold>{source.get('content')}</StaticField>
+                </div>
                 {imagesData.size > 0 && (
-                    <div className={css.reviewImagesContainer}>
+                    <StaticField>
                         {imagesData.map(
                             (img) =>
                                 img && (
@@ -128,14 +121,14 @@ class BeforeContent extends React.Component<BeforeContentReviewsProps> {
                                     />
                                 )
                         )}
-                    </div>
+                    </StaticField>
                 )}
-                <div className={css.reviewFooter}>
-                    {/*
+                <div>
+                    <StaticField>
+                        {/*
                         Commented out while waiting for Yotpo to implement the feature
                         <a href={makeReviewSearchURL(source.get('title'))} target="_blank">View reply</a>
                     */}
-                    <span className={css.reviewFooterThumbs}>
                         <span
                             className={`material-icons ${css.reviewFooterThumb}`}
                         >
@@ -148,9 +141,9 @@ class BeforeContent extends React.Component<BeforeContentReviewsProps> {
                             thumb_up{' '}
                         </span>
                         <b>{source.get('votes_down')}</b>
-                    </span>
+                    </StaticField>
                 </div>
-            </div>
+            </>
         )
     }
 }

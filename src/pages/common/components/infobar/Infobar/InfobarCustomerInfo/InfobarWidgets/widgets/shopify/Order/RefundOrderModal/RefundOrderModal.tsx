@@ -12,17 +12,17 @@ import {
     onPayloadChange,
     onReset,
     setPayload,
-} from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/actions'
-import {getRefundOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
-import {RootState} from '../../../../../../../../../../../state/types'
-import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
-import {getFinalRefundOrderPayload} from '../../../../../../../../../../../business/shopify/order'
-import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
-import Loader from '../../../../../../../../Loader/Loader'
-import DEPRECATED_Modal from '../../../../../../../../DEPRECATED_Modal'
+} from 'state/infobarActions/shopify/refundOrder/actions'
+import {getRefundOrderState} from 'state/infobarActions/shopify/refundOrder/selectors'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {getFinalRefundOrderPayload} from 'business/shopify/order'
+import {IntegrationType} from 'models/integration/types'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import Loader from 'pages/common/components/Loader/Loader'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import {InfobarModalProps} from '../../../types'
-import {IntegrationContext} from '../../../IntegrationContext'
 import RefundOrderForm from '../RefundOrderForm/RefundOrderForm'
 
 import css from './RefundOrderModal.less'

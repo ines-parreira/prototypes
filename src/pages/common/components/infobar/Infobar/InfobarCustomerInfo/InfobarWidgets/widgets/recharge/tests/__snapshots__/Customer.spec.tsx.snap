@@ -2,33 +2,35 @@
 
 exports[`Customer TitleWrapper should render custom link because it is set 1`] = `
 <div>
-  <img
-    alt="Recharge"
-    class="container"
-    src="test-file-stub"
-    style="background-color: rgba(0, 0, 0, 0);"
-  />
   <span
-    class="container"
+    class="expandAll"
+    title="Fold all"
   >
-    Recharge
+    <i
+      class="material-icons"
+    >
+      unfold_less
+    </i>
   </span>
   <span
     class="container"
-  >
-    <a
-      href="https://gorgias.io/a8s4d86as54d/"
-      rel="noopener noreferrer"
-      target="_blank"
-    />
-  </span>
-  <span
-    class="container expand-all"
   >
     <img
-      alt="Expand all"
+      alt="Recharge"
+      class="container"
       src="test-file-stub"
+      style="background-color: rgba(0, 0, 0, 0);"
     />
+    Recharge
+    <span
+      class="container"
+    >
+      <a
+        href="https://gorgias.io/a8s4d86as54d/"
+        rel="noopener noreferrer"
+        target="_blank"
+      />
+    </span>
   </span>
    
 </div>
@@ -36,33 +38,35 @@ exports[`Customer TitleWrapper should render custom link because it is set 1`] =
 
 exports[`Customer TitleWrapper should render default link because no custom link is set 1`] = `
 <div>
-  <img
-    alt="Recharge"
-    class="container"
-    src="test-file-stub"
-    style="background-color: rgba(0, 0, 0, 0);"
-  />
   <span
-    class="container"
+    class="expandAll"
+    title="Fold all"
   >
-    Recharge
+    <i
+      class="material-icons"
+    >
+      unfold_less
+    </i>
   </span>
   <span
     class="container"
-  >
-    <a
-      href="https://mystore-sp.admin.rechargeapps.com/admin/customers/a8s4d86as54d/subscriptions/"
-      rel="noopener noreferrer"
-      target="_blank"
-    />
-  </span>
-  <span
-    class="container expand-all"
   >
     <img
-      alt="Expand all"
+      alt="Recharge"
+      class="container"
       src="test-file-stub"
+      style="background-color: rgba(0, 0, 0, 0);"
     />
+    Recharge
+    <span
+      class="container"
+    >
+      <a
+        href="https://mystore-sp.admin.rechargeapps.com/admin/customers/a8s4d86as54d/subscriptions/"
+        rel="noopener noreferrer"
+        target="_blank"
+      />
+    </span>
   </span>
    
 </div>

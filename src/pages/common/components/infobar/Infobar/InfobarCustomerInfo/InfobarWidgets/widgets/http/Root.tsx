@@ -17,36 +17,30 @@ type Props = {
     children: ReactNode
     source: Map<string, any>
     template: Map<string, any>
-    isEditing: boolean
 }
 
-export function TitleWrapper({children, source, template, isEditing}: Props) {
+export function TitleWrapper({children, source, template}: Props) {
     const link = template.getIn(['meta', 'link']) as string
     const pictureUrl = template.getIn(['meta', 'pictureUrl'], '') as string
     const color = template.getIn(['meta', 'color'], '') as string
 
     return (
-        <div
-            style={{
-                display: isEditing ? 'inline-flex' : 'flex',
-                alignItems: 'center',
-            }}
-        >
-            {color && !pictureUrl ? (
-                <div
-                    className={css.colorTile}
-                    style={{
-                        backgroundColor: color,
-                    }}
-                />
-            ) : (
-                <CardHeaderIcon
-                    src={pictureUrl || logo}
-                    alt={pictureUrl ? 'Widget Icon' : 'HTTP'}
-                    color={color}
-                />
-            )}
+        <>
             <CardHeaderTitle>
+                {color && !pictureUrl ? (
+                    <div
+                        className={css.colorTile}
+                        style={{
+                            backgroundColor: color,
+                        }}
+                    />
+                ) : (
+                    <CardHeaderIcon
+                        src={pictureUrl || logo}
+                        alt={pictureUrl ? 'Widget Icon' : 'HTTP'}
+                        color={color}
+                    />
+                )}
                 {link ? (
                     <a
                         href={renderTemplate(link, source.toJS())}
@@ -59,6 +53,6 @@ export function TitleWrapper({children, source, template, isEditing}: Props) {
                     children || 'HTTP'
                 )}
             </CardHeaderTitle>
-        </div>
+        </>
     )
 }

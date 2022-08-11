@@ -422,62 +422,70 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
   <ContextProvider
     value={
       Object {
-        "customerId": 1,
+        "isEditing": true,
       }
     }
   >
-    <Component
-      context="ticket"
-      displayTabs={true}
-      editing={
+    <ContextProvider
+      value={
         Object {
-          "actions": Object {
-            "generateAndSetWidgets": [MockFunction],
-            "resetWidgets": [MockFunction],
-            "setEditedWidgets": [MockFunction],
-            "setEditionAsDirty": [MockFunction],
-          },
-          "canDrop": [Function],
-          "isDragging": true,
-          "isEditing": true,
-          "state": Immutable.Map {
-            "currentContext": "ticket",
-            "_internal": Immutable.Map {
-              "drag": Immutable.Map {
-                "isDragging": true,
-              },
-              "editedItems": Immutable.List [
-                Immutable.Map {
-                  "template": Immutable.Map {},
-                },
-              ],
-              "hasFetchedWidgets": true,
-            },
-            "items": Immutable.List [],
-          },
+          "customerId": 1,
         }
       }
-      source={
-        Immutable.Map {
-          "ticket": Immutable.Map {
-            "customer": Immutable.Map {
-              "integrations": Immutable.Map {
-                "118": Immutable.Map {
-                  "foo": "bar",
-                },
-              },
+    >
+      <Component
+        context="ticket"
+        displayTabs={true}
+        editing={
+          Object {
+            "actions": Object {
+              "generateAndSetWidgets": [MockFunction],
+              "resetWidgets": [MockFunction],
+              "setEditedWidgets": [MockFunction],
+              "setEditionAsDirty": [MockFunction],
             },
-          },
+            "canDrop": [Function],
+            "isDragging": true,
+            "isEditing": true,
+            "state": Immutable.Map {
+              "currentContext": "ticket",
+              "_internal": Immutable.Map {
+                "drag": Immutable.Map {
+                  "isDragging": true,
+                },
+                "editedItems": Immutable.List [
+                  Immutable.Map {
+                    "template": Immutable.Map {},
+                  },
+                ],
+                "hasFetchedWidgets": true,
+              },
+              "items": Immutable.List [],
+            },
+          }
         }
-      }
-      widgets={
-        Immutable.List [
+        source={
           Immutable.Map {
-            "template": Immutable.Map {},
-          },
-        ]
-      }
-    />
+            "ticket": Immutable.Map {
+              "customer": Immutable.Map {
+                "integrations": Immutable.Map {
+                  "118": Immutable.Map {
+                    "foo": "bar",
+                  },
+                },
+              },
+            },
+          }
+        }
+        widgets={
+          Immutable.List [
+            Immutable.Map {
+              "template": Immutable.Map {},
+            },
+          ]
+        }
+      />
+    </ContextProvider>
   </ContextProvider>
 </div>
 `;
@@ -526,14 +534,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
       </Component>
     </div>
   </div>
-  <AddIntegrationSuggestion
-    customer={
-      Immutable.Map {
-        "id": 1,
-        "name": "foo",
-      }
-    }
-  />
+  <AddIntegrationSuggestion />
 </div>
 `;
 

@@ -3,128 +3,125 @@
 exports[`Order <AfterContent/> render() should display credit memos with links because there is an admin url suffix 1`] = `
 <div>
   <div
-    class="mt-3"
+    class="delimiter"
   >
-    <div
-      class="card"
+    <a
+      href="https://magento.gorgi.us/admin_123/sales/creditmemo/view/creditmemo_id/852/"
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <div
-        class="header clearfix card-body"
+        class="widgetField staticWidgetField"
       >
-        <a
-          href="https://magento.gorgi.us/admin_123/sales/creditmemo/view/creditmemo_id/852/"
-          rel="noopener noreferrer"
-          target="_blank"
+        <span
+          class="widgetFieldLabel"
         >
-          <span>
-            <i
-              class="material-icons"
-            >
-              redeem
-            </i>
-             Credit memo: 
-             
-          </span>
-        </a>
+          <i
+            class="material-icons"
+          >
+            redeem
+          </i>
+           
+          Credit memo
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+           
+        </span>
       </div>
-      <div
-        class="content card-body"
+    </a>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldLabel"
       >
-        <div
-          class="simple-field"
-        >
-          <span
-            class="field-label"
-          >
-            Last updated:
-          </span>
-          <span
-            class="field-value"
-          >
-            <time
-              datetime="2018-11-07 05:22"
-            />
-          </span>
-        </div>
-        <div
-          class="list mt-3"
-        >
-          <div
-            class="card"
-          >
-            <div
-              class="header clearfix card-body"
-            >
-              <span>
-                4
-                 x
-                 
-                Sneakers
-              </span>
-            </div>
-          </div>
-          <div
-            class="card"
-          >
-            <div
-              class="header clearfix card-body"
-            >
-              <span>
-                1
-                 x
-                 
-                T-shirt
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+        Last updated
+        :
+         
+      </span>
+      <span
+        class="widgetFieldValue"
+      >
+        <time
+          datetime="2018-11-07 05:22"
+        />
+      </span>
     </div>
     <div
-      class="card"
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldValue"
+      >
+        4
+         x 
+        Sneakers
+      </span>
+    </div>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldValue"
+      >
+        1
+         x 
+        T-shirt
+      </span>
+    </div>
+  </div>
+  <div
+    class="delimiter"
+  >
+    <a
+      href="https://magento.gorgi.us/admin_123/sales/creditmemo/view/creditmemo_id/854/"
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <div
-        class="header clearfix card-body"
+        class="widgetField staticWidgetField"
       >
-        <a
-          href="https://magento.gorgi.us/admin_123/sales/creditmemo/view/creditmemo_id/854/"
-          rel="noopener noreferrer"
-          target="_blank"
+        <span
+          class="widgetFieldLabel"
         >
-          <span>
-            <i
-              class="material-icons"
-            >
-              redeem
-            </i>
-             Credit memo: 
-             
-          </span>
-        </a>
+          <i
+            class="material-icons"
+          >
+            redeem
+          </i>
+           
+          Credit memo
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+           
+        </span>
       </div>
-      <div
-        class="content card-body"
+    </a>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldLabel"
       >
-        <div
-          class="simple-field"
-        >
-          <span
-            class="field-label"
-          >
-            Last updated:
-          </span>
-          <span
-            class="field-value"
-          >
-            <time
-              datetime="2018-11-07 05:22"
-            />
-          </span>
-        </div>
-        <div
-          class="list mt-3"
+        Last updated
+        :
+         
+      </span>
+      <span
+        class="widgetFieldValue"
+      >
+        <time
+          datetime="2018-11-07 05:22"
         />
-      </div>
+      </span>
     </div>
   </div>
 </div>
@@ -133,128 +130,125 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
 exports[`Order <AfterContent/> render() should display credit memos without links because there is no admin url suffix 1`] = `
 <div>
   <div
-    class="mt-3"
+    class="delimiter"
   >
-    <div
-      class="card"
+    <a
+      href=""
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <div
-        class="header clearfix card-body"
+        class="widgetField staticWidgetField"
       >
-        <a
-          href=""
-          rel="noopener noreferrer"
-          target="_blank"
+        <span
+          class="widgetFieldLabel"
         >
-          <span>
-            <i
-              class="material-icons"
-            >
-              redeem
-            </i>
-             Credit memo: 
-             
-          </span>
-        </a>
+          <i
+            class="material-icons"
+          >
+            redeem
+          </i>
+           
+          Credit memo
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+           
+        </span>
       </div>
-      <div
-        class="content card-body"
+    </a>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldLabel"
       >
-        <div
-          class="simple-field"
-        >
-          <span
-            class="field-label"
-          >
-            Last updated:
-          </span>
-          <span
-            class="field-value"
-          >
-            <time
-              datetime="2018-11-07 05:22"
-            />
-          </span>
-        </div>
-        <div
-          class="list mt-3"
-        >
-          <div
-            class="card"
-          >
-            <div
-              class="header clearfix card-body"
-            >
-              <span>
-                4
-                 x
-                 
-                Sneakers
-              </span>
-            </div>
-          </div>
-          <div
-            class="card"
-          >
-            <div
-              class="header clearfix card-body"
-            >
-              <span>
-                1
-                 x
-                 
-                T-shirt
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
+        Last updated
+        :
+         
+      </span>
+      <span
+        class="widgetFieldValue"
+      >
+        <time
+          datetime="2018-11-07 05:22"
+        />
+      </span>
     </div>
     <div
-      class="card"
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldValue"
+      >
+        4
+         x 
+        Sneakers
+      </span>
+    </div>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldValue"
+      >
+        1
+         x 
+        T-shirt
+      </span>
+    </div>
+  </div>
+  <div
+    class="delimiter"
+  >
+    <a
+      href=""
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <div
-        class="header clearfix card-body"
+        class="widgetField staticWidgetField"
       >
-        <a
-          href=""
-          rel="noopener noreferrer"
-          target="_blank"
+        <span
+          class="widgetFieldLabel"
         >
-          <span>
-            <i
-              class="material-icons"
-            >
-              redeem
-            </i>
-             Credit memo: 
-             
-          </span>
-        </a>
+          <i
+            class="material-icons"
+          >
+            redeem
+          </i>
+           
+          Credit memo
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+           
+        </span>
       </div>
-      <div
-        class="content card-body"
+    </a>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldLabel"
       >
-        <div
-          class="simple-field"
-        >
-          <span
-            class="field-label"
-          >
-            Last updated:
-          </span>
-          <span
-            class="field-value"
-          >
-            <time
-              datetime="2018-11-07 05:22"
-            />
-          </span>
-        </div>
-        <div
-          class="list mt-3"
+        Last updated
+        :
+         
+      </span>
+      <span
+        class="widgetFieldValue"
+      >
+        <time
+          datetime="2018-11-07 05:22"
         />
-      </div>
+      </span>
     </div>
   </div>
 </div>
@@ -264,252 +258,245 @@ exports[`Order <AfterContent/> render() should return null because the order has
 
 exports[`Order <BeforeContent/> render() should display shipments with links because there is an admin url suffix 1`] = `
 <div>
-  <div>
-    <div
-      class="simple-field"
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
     >
-      <span
-        class="field-label"
+      State
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <div
+        class="badge"
       >
-        State:
-      </span>
-      <span
-        class="field-value"
+        New
+      </div>
+    </span>
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Created at
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <time
+        datetime="\\"2020-10-07 09:30:03\\""
+      />
+    </span>
+  </div>
+  <div
+    class="section"
+  >
+    <div
+      class="widgetCardHeader"
+    >
+      <a
+        href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/963/"
+        rel="noopener noreferrer"
+        target="_blank"
       >
-        <div
-          class="badge"
+        <i
+          class="material-icons"
         >
-          New
-        </div>
-      </span>
+          local_shipping
+        </i>
+         
+        <span>
+          Shipment
+        </span>
+      </a>
     </div>
     <div
-      class="simple-field"
+      class="widgetField staticWidgetField"
     >
       <span
-        class="field-label"
+        class="widgetFieldLabel"
       >
-        Created at:
+        Last updated
+        :
+         
       </span>
       <span
-        class="field-value"
+        class="widgetFieldValue"
       >
         <time
-          datetime="\\"2020-10-07 09:30:03\\""
+          datetime="2019-03-04 11:12"
         />
       </span>
     </div>
-    <div
-      class="mt-3"
-    >
+    <div>
       <div
-        class="card"
+        class="widgetField staticWidgetField"
       >
-        <div
-          class="header clearfix card-body"
+        <span
+          class="widgetFieldLabel"
         >
-          <a
-            href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/963/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <i
-              class="material-icons"
-            >
-              local_shipping
-            </i>
-             
-            <span>
-              Shipment
-            </span>
-          </a>
-        </div>
-        <div
-          class="content card-body"
+          Carrier code
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
         >
-          <div
-            class="simple-field"
-          >
-            <span
-              class="field-label"
-            >
-              Last updated:
-            </span>
-            <span
-              class="field-value"
-            >
-              <time
-                datetime="2019-03-04 11:12"
-              />
-            </span>
-          </div>
-          <div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Carrier code:
-              </span>
-              <span
-                class="field-value"
-              >
-                UPS
-              </span>
-            </div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Tracking number:
-              </span>
-              <span
-                class="field-value"
-              >
-                123ABC
-              </span>
-            </div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Tracking URL:
-              </span>
-              <span
-                class="field-value"
-              >
-                -
-              </span>
-            </div>
-          </div>
-          <div
-            class="list mt-3"
-          >
-            <div
-              class="card"
-            >
-              <div
-                class="header clearfix card-body"
-              >
-                <span>
-                  4
-                   x
-                   
-                  Sneakers
-                </span>
-              </div>
-            </div>
-            <div
-              class="card"
-            >
-              <div
-                class="header clearfix card-body"
-              >
-                <span>
-                  1
-                   x
-                   
-                  Pants
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+          UPS
+        </span>
       </div>
       <div
-        class="card"
+        class="widgetField staticWidgetField"
       >
-        <div
-          class="header clearfix card-body"
+        <span
+          class="widgetFieldLabel"
         >
-          <a
-            href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/741/"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <i
-              class="material-icons"
-            >
-              local_shipping
-            </i>
-             
-            <span>
-              Shipment
-            </span>
-          </a>
-        </div>
-        <div
-          class="content card-body"
+          Tracking number
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
         >
-          <div
-            class="simple-field"
-          >
-            <span
-              class="field-label"
-            >
-              Last updated:
-            </span>
-            <span
-              class="field-value"
-            >
-              <time
-                datetime="2019-02-04 11:12"
-              />
-            </span>
-          </div>
-          <div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Carrier code:
-              </span>
-              <span
-                class="field-value"
-              >
-                LaPoste
-              </span>
-            </div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Tracking number:
-              </span>
-              <span
-                class="field-value"
-              >
-                789GHJ
-              </span>
-            </div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Tracking URL:
-              </span>
-              <span
-                class="field-value"
-              >
-                -
-              </span>
-            </div>
-          </div>
-          <div
-            class="list mt-3"
-          />
-        </div>
+          123ABC
+        </span>
+      </div>
+      <div
+        class="widgetField staticWidgetField"
+      >
+        <span
+          class="widgetFieldLabel"
+        >
+          Tracking URL
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+          -
+        </span>
+      </div>
+    </div>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldValue"
+      >
+        4
+         x 
+        Sneakers
+      </span>
+    </div>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldValue"
+      >
+        1
+         x 
+        Pants
+      </span>
+    </div>
+  </div>
+  <div
+    class="section"
+  >
+    <div
+      class="widgetCardHeader"
+    >
+      <a
+        href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/741/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <i
+          class="material-icons"
+        >
+          local_shipping
+        </i>
+         
+        <span>
+          Shipment
+        </span>
+      </a>
+    </div>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldLabel"
+      >
+        Last updated
+        :
+         
+      </span>
+      <span
+        class="widgetFieldValue"
+      >
+        <time
+          datetime="2019-02-04 11:12"
+        />
+      </span>
+    </div>
+    <div>
+      <div
+        class="widgetField staticWidgetField"
+      >
+        <span
+          class="widgetFieldLabel"
+        >
+          Carrier code
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+          LaPoste
+        </span>
+      </div>
+      <div
+        class="widgetField staticWidgetField"
+      >
+        <span
+          class="widgetFieldLabel"
+        >
+          Tracking number
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+          789GHJ
+        </span>
+      </div>
+      <div
+        class="widgetField staticWidgetField"
+      >
+        <span
+          class="widgetFieldLabel"
+        >
+          Tracking URL
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+          -
+        </span>
       </div>
     </div>
   </div>
@@ -518,252 +505,245 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
 
 exports[`Order <BeforeContent/> render() should display shipments without links because there is no admin url suffix 1`] = `
 <div>
-  <div>
-    <div
-      class="simple-field"
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
     >
-      <span
-        class="field-label"
+      State
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <div
+        class="badge"
       >
-        State:
-      </span>
-      <span
-        class="field-value"
+        New
+      </div>
+    </span>
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Created at
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <time
+        datetime="\\"2020-10-07 09:30:03\\""
+      />
+    </span>
+  </div>
+  <div
+    class="section"
+  >
+    <div
+      class="widgetCardHeader"
+    >
+      <a
+        href=""
+        rel="noopener noreferrer"
+        target="_blank"
       >
-        <div
-          class="badge"
+        <i
+          class="material-icons"
         >
-          New
-        </div>
-      </span>
+          local_shipping
+        </i>
+         
+        <span>
+          Shipment
+        </span>
+      </a>
     </div>
     <div
-      class="simple-field"
+      class="widgetField staticWidgetField"
     >
       <span
-        class="field-label"
+        class="widgetFieldLabel"
       >
-        Created at:
+        Last updated
+        :
+         
       </span>
       <span
-        class="field-value"
+        class="widgetFieldValue"
       >
         <time
-          datetime="\\"2020-10-07 09:30:03\\""
+          datetime="2019-03-04 11:12"
         />
       </span>
     </div>
-    <div
-      class="mt-3"
-    >
+    <div>
       <div
-        class="card"
+        class="widgetField staticWidgetField"
       >
-        <div
-          class="header clearfix card-body"
+        <span
+          class="widgetFieldLabel"
         >
-          <a
-            href=""
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <i
-              class="material-icons"
-            >
-              local_shipping
-            </i>
-             
-            <span>
-              Shipment
-            </span>
-          </a>
-        </div>
-        <div
-          class="content card-body"
+          Carrier code
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
         >
-          <div
-            class="simple-field"
-          >
-            <span
-              class="field-label"
-            >
-              Last updated:
-            </span>
-            <span
-              class="field-value"
-            >
-              <time
-                datetime="2019-03-04 11:12"
-              />
-            </span>
-          </div>
-          <div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Carrier code:
-              </span>
-              <span
-                class="field-value"
-              >
-                UPS
-              </span>
-            </div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Tracking number:
-              </span>
-              <span
-                class="field-value"
-              >
-                123ABC
-              </span>
-            </div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Tracking URL:
-              </span>
-              <span
-                class="field-value"
-              >
-                -
-              </span>
-            </div>
-          </div>
-          <div
-            class="list mt-3"
-          >
-            <div
-              class="card"
-            >
-              <div
-                class="header clearfix card-body"
-              >
-                <span>
-                  4
-                   x
-                   
-                  Sneakers
-                </span>
-              </div>
-            </div>
-            <div
-              class="card"
-            >
-              <div
-                class="header clearfix card-body"
-              >
-                <span>
-                  1
-                   x
-                   
-                  Pants
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+          UPS
+        </span>
       </div>
       <div
-        class="card"
+        class="widgetField staticWidgetField"
       >
-        <div
-          class="header clearfix card-body"
+        <span
+          class="widgetFieldLabel"
         >
-          <a
-            href=""
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <i
-              class="material-icons"
-            >
-              local_shipping
-            </i>
-             
-            <span>
-              Shipment
-            </span>
-          </a>
-        </div>
-        <div
-          class="content card-body"
+          Tracking number
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
         >
-          <div
-            class="simple-field"
-          >
-            <span
-              class="field-label"
-            >
-              Last updated:
-            </span>
-            <span
-              class="field-value"
-            >
-              <time
-                datetime="2019-02-04 11:12"
-              />
-            </span>
-          </div>
-          <div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Carrier code:
-              </span>
-              <span
-                class="field-value"
-              >
-                LaPoste
-              </span>
-            </div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Tracking number:
-              </span>
-              <span
-                class="field-value"
-              >
-                789GHJ
-              </span>
-            </div>
-            <div
-              class="simple-field"
-            >
-              <span
-                class="field-label"
-              >
-                Tracking URL:
-              </span>
-              <span
-                class="field-value"
-              >
-                -
-              </span>
-            </div>
-          </div>
-          <div
-            class="list mt-3"
-          />
-        </div>
+          123ABC
+        </span>
+      </div>
+      <div
+        class="widgetField staticWidgetField"
+      >
+        <span
+          class="widgetFieldLabel"
+        >
+          Tracking URL
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+          -
+        </span>
+      </div>
+    </div>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldValue"
+      >
+        4
+         x 
+        Sneakers
+      </span>
+    </div>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldValue"
+      >
+        1
+         x 
+        Pants
+      </span>
+    </div>
+  </div>
+  <div
+    class="section"
+  >
+    <div
+      class="widgetCardHeader"
+    >
+      <a
+        href=""
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <i
+          class="material-icons"
+        >
+          local_shipping
+        </i>
+         
+        <span>
+          Shipment
+        </span>
+      </a>
+    </div>
+    <div
+      class="widgetField staticWidgetField"
+    >
+      <span
+        class="widgetFieldLabel"
+      >
+        Last updated
+        :
+         
+      </span>
+      <span
+        class="widgetFieldValue"
+      >
+        <time
+          datetime="2019-02-04 11:12"
+        />
+      </span>
+    </div>
+    <div>
+      <div
+        class="widgetField staticWidgetField"
+      >
+        <span
+          class="widgetFieldLabel"
+        >
+          Carrier code
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+          LaPoste
+        </span>
+      </div>
+      <div
+        class="widgetField staticWidgetField"
+      >
+        <span
+          class="widgetFieldLabel"
+        >
+          Tracking number
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+          789GHJ
+        </span>
+      </div>
+      <div
+        class="widgetField staticWidgetField"
+      >
+        <span
+          class="widgetFieldLabel"
+        >
+          Tracking URL
+          :
+           
+        </span>
+        <span
+          class="widgetFieldValue"
+        >
+          -
+        </span>
       </div>
     </div>
   </div>
@@ -772,350 +752,342 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
 
 exports[`Order <BeforeContent/> render() should render the state and an empty created at date but no shipments because there are none 1`] = `
 <div>
-  <div>
-    <div
-      class="simple-field"
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
     >
-      <span
-        class="field-label"
-      >
-        State:
-      </span>
-      <span
-        class="field-value"
-      >
-        <div
-          class="badge"
-        >
-          New
-        </div>
-      </span>
-    </div>
-    <div
-      class="simple-field"
+      State
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
     >
-      <span
-        class="field-label"
+      <div
+        class="badge"
       >
-        Created at:
-      </span>
-      <span
-        class="field-value"
-      >
-        <time />
-      </span>
-    </div>
-    <div
-      class="mt-3"
-    />
+        New
+      </div>
+    </span>
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Created at
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <time />
+    </span>
   </div>
 </div>
 `;
 
 exports[`Order <BeforeContent/> render() should render with a label for the canceled state and a created at date but no shipments because there are none 1`] = `
 <div>
-  <div>
-    <div
-      class="simple-field"
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
     >
-      <span
-        class="field-label"
-      >
-        State:
-      </span>
-      <span
-        class="field-value"
-      >
-        <div
-          class="badge"
-        >
-          Canceled
-        </div>
-      </span>
-    </div>
-    <div
-      class="simple-field"
+      State
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
     >
-      <span
-        class="field-label"
+      <div
+        class="badge"
       >
-        Created at:
-      </span>
-      <span
-        class="field-value"
-      >
-        <time
-          datetime="\\"2020-10-07 09:30:03\\""
-        />
-      </span>
-    </div>
-    <div
-      class="mt-3"
-    />
+        Canceled
+      </div>
+    </span>
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Created at
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <time
+        datetime="\\"2020-10-07 09:30:03\\""
+      />
+    </span>
   </div>
 </div>
 `;
 
 exports[`Order <BeforeContent/> render() should render with a label for the closed state and a created at date but no shipments because there are none 1`] = `
 <div>
-  <div>
-    <div
-      class="simple-field"
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
     >
-      <span
-        class="field-label"
-      >
-        State:
-      </span>
-      <span
-        class="field-value"
-      >
-        <div
-          class="badge"
-        >
-          Closed
-        </div>
-      </span>
-    </div>
-    <div
-      class="simple-field"
+      State
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
     >
-      <span
-        class="field-label"
+      <div
+        class="badge"
       >
-        Created at:
-      </span>
-      <span
-        class="field-value"
-      >
-        <time
-          datetime="\\"2020-10-07 09:30:03\\""
-        />
-      </span>
-    </div>
-    <div
-      class="mt-3"
-    />
+        Closed
+      </div>
+    </span>
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Created at
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <time
+        datetime="\\"2020-10-07 09:30:03\\""
+      />
+    </span>
   </div>
 </div>
 `;
 
 exports[`Order <BeforeContent/> render() should render with a label for the complete state and a created at date but no shipments because there are none 1`] = `
 <div>
-  <div>
-    <div
-      class="simple-field"
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
     >
-      <span
-        class="field-label"
-      >
-        State:
-      </span>
-      <span
-        class="field-value"
-      >
-        <div
-          class="badge"
-        >
-          Complete
-        </div>
-      </span>
-    </div>
-    <div
-      class="simple-field"
+      State
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
     >
-      <span
-        class="field-label"
+      <div
+        class="badge"
       >
-        Created at:
-      </span>
-      <span
-        class="field-value"
-      >
-        <time
-          datetime="\\"2020-10-07 09:30:03\\""
-        />
-      </span>
-    </div>
-    <div
-      class="mt-3"
-    />
+        Complete
+      </div>
+    </span>
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Created at
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <time
+        datetime="\\"2020-10-07 09:30:03\\""
+      />
+    </span>
   </div>
 </div>
 `;
 
 exports[`Order <BeforeContent/> render() should render with a label for the new state and a created at date but no shipments because there are none 1`] = `
 <div>
-  <div>
-    <div
-      class="simple-field"
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
     >
-      <span
-        class="field-label"
-      >
-        State:
-      </span>
-      <span
-        class="field-value"
-      >
-        <div
-          class="badge"
-        >
-          New
-        </div>
-      </span>
-    </div>
-    <div
-      class="simple-field"
+      State
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
     >
-      <span
-        class="field-label"
+      <div
+        class="badge"
       >
-        Created at:
-      </span>
-      <span
-        class="field-value"
-      >
-        <time
-          datetime="\\"2020-10-07 09:30:03\\""
-        />
-      </span>
-    </div>
-    <div
-      class="mt-3"
-    />
+        New
+      </div>
+    </span>
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Created at
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <time
+        datetime="\\"2020-10-07 09:30:03\\""
+      />
+    </span>
   </div>
 </div>
 `;
 
 exports[`Order <BeforeContent/> render() should render with a label for the on_hold state and a created at date but no shipments because there are none 1`] = `
 <div>
-  <div>
-    <div
-      class="simple-field"
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
     >
-      <span
-        class="field-label"
-      >
-        State:
-      </span>
-      <span
-        class="field-value"
-      >
-        <div
-          class="badge"
-        >
-          On hold
-        </div>
-      </span>
-    </div>
-    <div
-      class="simple-field"
+      State
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
     >
-      <span
-        class="field-label"
+      <div
+        class="badge"
       >
-        Created at:
-      </span>
-      <span
-        class="field-value"
-      >
-        <time
-          datetime="\\"2020-10-07 09:30:03\\""
-        />
-      </span>
-    </div>
-    <div
-      class="mt-3"
-    />
+        On hold
+      </div>
+    </span>
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Created at
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <time
+        datetime="\\"2020-10-07 09:30:03\\""
+      />
+    </span>
   </div>
 </div>
 `;
 
 exports[`Order <BeforeContent/> render() should render with a label for the pending state and a created at date but no shipments because there are none 1`] = `
 <div>
-  <div>
-    <div
-      class="simple-field"
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
     >
-      <span
-        class="field-label"
-      >
-        State:
-      </span>
-      <span
-        class="field-value"
-      >
-        <div
-          class="badge"
-        >
-          Pending
-        </div>
-      </span>
-    </div>
-    <div
-      class="simple-field"
+      State
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
     >
-      <span
-        class="field-label"
+      <div
+        class="badge"
       >
-        Created at:
-      </span>
-      <span
-        class="field-value"
-      >
-        <time
-          datetime="\\"2020-10-07 09:30:03\\""
-        />
-      </span>
-    </div>
-    <div
-      class="mt-3"
-    />
+        Pending
+      </div>
+    </span>
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Created at
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <time
+        datetime="\\"2020-10-07 09:30:03\\""
+      />
+    </span>
   </div>
 </div>
 `;
 
 exports[`Order <BeforeContent/> render() should render with a label for the processing state and a created at date but no shipments because there are none 1`] = `
 <div>
-  <div>
-    <div
-      class="simple-field"
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
     >
-      <span
-        class="field-label"
-      >
-        State:
-      </span>
-      <span
-        class="field-value"
-      >
-        <div
-          class="badge"
-        >
-          Processing
-        </div>
-      </span>
-    </div>
-    <div
-      class="simple-field"
+      State
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
     >
-      <span
-        class="field-label"
+      <div
+        class="badge"
       >
-        Created at:
-      </span>
-      <span
-        class="field-value"
-      >
-        <time
-          datetime="\\"2020-10-07 09:30:03\\""
-        />
-      </span>
-    </div>
-    <div
-      class="mt-3"
-    />
+        Processing
+      </div>
+    </span>
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Created at
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <time
+        datetime="\\"2020-10-07 09:30:03\\""
+      />
+    </span>
   </div>
 </div>
 `;

@@ -24,7 +24,7 @@ import {getTicket} from 'state/ticket/selectors'
 import {getActiveCustomer} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {
     Action,
     Button as ButtonType,
@@ -36,8 +36,8 @@ import Button from './Button'
 import ActionEditor from './ActionEditor'
 
 const NB_MIN_BUTTON_DISPLAYED = 2
-const FONT_SIZE = 14
-const BUTTON_SPACING = 22
+const FONT_SIZE = 12
+const BUTTON_SPACING = 18
 const SHOW_MORE_WIDTH = 31
 
 type Props = {
@@ -136,7 +136,7 @@ function ButtonsGroup({buttons, source}: Props) {
                 {dropdownButtons.length > 0 && (
                     <UncontrolledDropdown>
                         <DropdownToggle tag={'span'}>
-                            <IconButton intent="secondary">
+                            <IconButton size="small" intent="secondary">
                                 more_horiz
                             </IconButton>
                         </DropdownToggle>

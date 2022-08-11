@@ -5,13 +5,14 @@ import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import Clipboard from 'clipboard'
 
+import {EditionContext} from 'providers/infobar/EditionContext'
 import Button from 'pages/common/components/button/Button'
 import {RootState} from 'state/types'
 import {itemsWithContext} from 'state/widgets/utils'
 import {getDisplayName} from 'state/customers/helpers'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/types'
-import {CustomerContext} from 'providers/CustomerContext'
+import {CustomerContext} from 'providers/infobar/CustomerContext'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import css from 'pages/common/components/infobar/Infobar.less'
@@ -217,19 +218,21 @@ export const InfobarCustomerInfoContainer = ({
             : undefined
 
         return (
-            <CustomerContext.Provider
-                value={{
-                    customerId: customer.get('id'),
-                }}
-            >
-                <InfobarWidgets
-                    context={widgets.get('currentContext', '')}
-                    source={sources}
-                    widgets={renderedContextWidgets}
-                    displayTabs={displayTabs}
-                    editing={editing}
-                />
-            </CustomerContext.Provider>
+            <EditionContext.Provider value={{isEditing}}>
+                <CustomerContext.Provider
+                    value={{
+                        customerId: customer.get('id'),
+                    }}
+                >
+                    <InfobarWidgets
+                        context={widgets.get('currentContext', '')}
+                        source={sources}
+                        widgets={renderedContextWidgets}
+                        displayTabs={displayTabs}
+                        editing={editing}
+                    />
+                </CustomerContext.Provider>
+            </EditionContext.Provider>
         )
     }
 
@@ -238,7 +241,7 @@ export const InfobarCustomerInfoContainer = ({
             return null
         }
 
-        return <AddIntegrationSuggestion customer={customer} />
+        return <AddIntegrationSuggestion />
     }
 
     if (!customer || customer.isEmpty()) {

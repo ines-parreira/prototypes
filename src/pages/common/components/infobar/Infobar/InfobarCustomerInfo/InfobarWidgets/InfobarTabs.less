@@ -2,10 +2,12 @@
 
 :local {
     .container {
-        background: @classic-neutral-grey-0;
-        box-shadow: inset 0 -1px 0 @classic-neutral-grey-2;
+        top: -1px; // avoid double margins when sticky
         padding-left: 0;
         padding-right: 0;
+        background: @classic-neutral-grey-0;
+        border-top: 1px solid @classic-neutral-grey-3;
+        border-right: 1px solid @classic-neutral-grey-3;
     }
 
     .tab {

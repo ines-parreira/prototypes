@@ -6,7 +6,7 @@ exports[`<TitleWrapper/> should match snapshot 1`] = `
     class="container group horizontal"
   >
     <button
-      class="wrapper fill secondary medium"
+      class="wrapper actionButton fill secondary small"
       id="action-button-1"
       type="button"
     >
@@ -17,7 +17,7 @@ exports[`<TitleWrapper/> should match snapshot 1`] = `
         class="wrapper"
       >
         <i
-          class="material-icons icon isLeft medium"
+          class="material-icons icon isLeft small"
         >
           add
         </i>
@@ -26,34 +26,36 @@ exports[`<TitleWrapper/> should match snapshot 1`] = `
     </button>
   </span>
   <div
-    class="container"
+    class="widgetField staticWidgetField"
   >
     <span
-      class="container"
+      class="widgetFieldLabel"
     >
-      <span
-        class="label"
-      >
-        Total spent
-        : 
-      </span>
-      <strong>
-        <span>
-          £100.00
-        </span>
-      </strong>
+      Total spent
+      :
+       
     </span>
     <span
-      class="container"
+      class="widgetFieldValue"
     >
-      <span
-        class="label"
-      >
-        Orders
-        : 
+      <span>
+        £100.00
       </span>
-      <strong />
     </span>
+  </div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Orders
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    />
   </div>
 </div>
 `;

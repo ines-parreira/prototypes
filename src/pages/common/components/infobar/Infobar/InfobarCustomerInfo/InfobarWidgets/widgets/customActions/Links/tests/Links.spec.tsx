@@ -6,19 +6,24 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
+import * as actions from 'state/widgets/actions'
 import {Link} from '../../types'
 import {Links} from '../Links'
 
 const mockStore = configureMockStore([thunk])
+
+jest.spyOn(actions, 'startWidgetEdition')
+jest.spyOn(actions, 'updateCustomActions')
+jest.spyOn(actions, 'removeEditedWidget')
+const startWidgetEdition = actions.startWidgetEdition as jest.Mock
+const updateCustomActions = actions.updateCustomActions as jest.Mock
+const removeEditedWidget = actions.removeEditedWidget as jest.Mock
 
 describe('<Links/>', () => {
     const props = {
         templatePath: 'template.path',
         templateAbsolutePath: ['template', 'absolute', 'path'],
         source: fromJS({}),
-        startWidgetEdition: jest.fn(),
-        updateCustomActions: jest.fn(),
-        removeEditedWidget: jest.fn(),
     }
 
     const label = 'Gorgias'
@@ -103,7 +108,7 @@ describe('<Links/>', () => {
             screen.queryAllByText(new RegExp(label + '.*', 'gm'))
         ).toHaveLength(5)
         expect(screen.queryByText('Add Redirection Link')).toBeFalsy()
-        expect(screen.queryByText('SHOW MORE')).toBeTruthy()
+        expect(screen.queryByText(/show more/i)).toBeTruthy()
     })
 
     it('should open Editor when clicking on Add Redirection Link', async () => {
@@ -135,10 +140,10 @@ describe('<Links/>', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getAllByText('close')[0])
-        expect(props.removeEditedWidget).toHaveBeenCalled()
-        expect(props.startWidgetEdition).not.toHaveBeenCalled()
-        expect(props.updateCustomActions).not.toHaveBeenCalled()
+        fireEvent.click(screen.getAllByText('delete')[0])
+        expect(removeEditedWidget.mock.calls).toMatchSnapshot()
+        expect(startWidgetEdition.mock.calls).toMatchSnapshot()
+        expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })
 
     it('should call all actions when removing a link', () => {
@@ -153,12 +158,10 @@ describe('<Links/>', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getAllByText('close')[0])
-        expect(props.removeEditedWidget).toHaveBeenCalled()
-        expect(props.startWidgetEdition).toHaveBeenCalledWith(
-            `${props.templatePath}.meta.custom.links`
-        )
-        expect(props.updateCustomActions).toHaveBeenCalledWith([links[1]])
+        fireEvent.click(screen.getAllByText('delete')[0])
+        expect(removeEditedWidget.mock.calls).toMatchSnapshot()
+        expect(startWidgetEdition.mock.calls).toMatchSnapshot()
+        expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })
 
     it('should call widget actions when editing a link', async () => {
@@ -173,14 +176,12 @@ describe('<Links/>', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByText('settings'))
+        fireEvent.click(screen.getByText('edit'))
         await waitFor(() => expect(screen.getByText('Save')))
 
         fireEvent.click(screen.getByText('Save'))
-        expect(props.startWidgetEdition).toHaveBeenCalledWith(
-            `${props.templatePath}.meta.custom.links`
-        )
-        expect(props.updateCustomActions).toHaveBeenCalledWith([links[0]])
+        expect(startWidgetEdition.mock.calls).toMatchSnapshot()
+        expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })
 
     it('should call actions when adding a link', async () => {
@@ -203,11 +204,7 @@ describe('<Links/>', () => {
 
         fireEvent.click(screen.getByText('Save'))
 
-        expect(props.startWidgetEdition).toHaveBeenCalledWith(
-            `${props.templatePath}.meta.custom.links`
-        )
-        expect(props.updateCustomActions).toHaveBeenCalledWith([
-            {label: 'Gorgias', url: 'www.gorgias.com'},
-        ])
+        expect(startWidgetEdition.mock.calls).toMatchSnapshot()
+        expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })
 })

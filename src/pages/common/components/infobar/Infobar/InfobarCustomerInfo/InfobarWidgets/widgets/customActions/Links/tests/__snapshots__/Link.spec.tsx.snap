@@ -2,7 +2,7 @@
 
 exports[`<Link/> should not render all agent available data 1`] = `
 <li
-  class="groupItem list-group-item"
+  class="linkRow"
 >
   <a
     class="link"
@@ -22,7 +22,7 @@ exports[`<Link/> should not render all agent available data 1`] = `
 
 exports[`<Link/> should render with template replaced with its according value 1`] = `
 <li
-  class="groupItem list-group-item"
+  class="linkRow"
 >
   <a
     class="link"
@@ -42,7 +42,7 @@ exports[`<Link/> should render with template replaced with its according value 1
 
 exports[`<Link/> should render with the editor 1`] = `
 <li
-  class="groupItem list-group-item"
+  class="linkRow"
 >
   <a
     class="link"
@@ -61,15 +61,15 @@ exports[`<Link/> should render with the editor 1`] = `
     class="editIcons"
   >
     <i
-      class="material-icons text-faded clickable"
+      class="material-icons"
       id="somepath-2"
     >
-      settings
+      edit
     </i>
     <i
-      class="material-icons text-danger clickable"
+      class="material-icons text-danger"
     >
-      close
+      delete
     </i>
   </span>
 </li>

@@ -1,27 +1,25 @@
 import React, {useContext, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import {WidgetContext} from 'providers/infobar/WidgetContext'
+import {ShopifyTags} from 'models/integration/types'
+import {fetchShopTags} from 'models/integration/resources/shopify'
 import {reportError} from 'utils/errors'
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import useId from 'hooks/useId'
+import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {getActiveCustomerId} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {isEditing} from 'state/widgets/selectors'
 import {executeAction} from 'state/infobar/actions'
 import {RootState} from 'state/types'
-
-import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import Tooltip from 'pages/common/components/Tooltip'
-import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
-
 import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 import {ActionButtonContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
 import {getOptionsFromTags} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/utils'
 import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
-import {ShopifyTags} from 'models/integration/types'
-import {fetchShopTags} from 'models/integration/resources/shopify'
 import {getLoggerOnTagSelectionEvent} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/logEventData'
-import useId from 'hooks/useId'
 
 type OwnProps = {
     selectedOptions: string

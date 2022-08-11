@@ -1,9 +1,6 @@
 @import '~css/new/colors';
 
 :local {
-    .titleContainer {
-        padding-bottom: 1rem;
-    }
     .title {
         color: @yotpoBlue;
         font-size: 15px;
@@ -12,29 +9,18 @@
         font-size: 1rem;
         margin-right: 0.5rem;
     }
-    .visibility {
-        position: absolute;
-        right: 11px;
-        font-size: 1rem;
-        float: right;
-        padding-top: 1px;
-    }
-    .starRatingWrapper {
-        float: right;
+
+    .afterTitle {
+        display: flex;
+        align-items: center;
+        // prevent ReactStars from breaking drag and drop
+        // with absolute positioning outside of screen
+        // for some a11y reasons
+        [role='status'] {
+            display: none;
+        }
     }
 
-    .reviewContainer {
-        padding: 10px 18px;
-    }
-
-    .reviewTitle {
-        font-size: 13px;
-        font-weight: 600;
-        margin-bottom: 12px;
-    }
-    .reviewContent {
-        font-size: 13px;
-    }
     .reviewImage {
         width: 80px;
         height: 80px;
@@ -43,14 +29,7 @@
         margin-right: 11px;
         margin-bottom: 6px;
     }
-    .reviewFooter {
-        margin-top: 10px;
-        line-height: 32px;
-    }
-    .reviewFooterThumbs {
-        float: right;
-        margin-bottom: 0.5rem;
-    }
+
     .reviewFooterThumb {
         size: 20px;
         padding: 5px;

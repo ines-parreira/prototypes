@@ -1,15 +1,14 @@
 import React, {useCallback, useContext, useMemo} from 'react'
-import {ListGroupItem} from 'reactstrap'
 import {Map} from 'immutable'
 
-import {renderTemplate} from 'pages/common/utils/template'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {getTicket} from 'state/ticket/selectors'
 import {getActiveCustomer} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUserState} from 'state/currentUser/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {renderTemplate} from 'pages/common/utils/template'
 import {
     Link as LinkType,
     RemoveLink,
@@ -90,7 +89,7 @@ export function Link(props: Props) {
     }, [currentAccount, integrationId])
 
     return (
-        <ListGroupItem className={css.groupItem}>
+        <li className={css.linkRow}>
             <a
                 href={renderLinkUrl()}
                 target="_blank"
@@ -103,17 +102,14 @@ export function Link(props: Props) {
             </a>
             {isEditing && (
                 <span className={css.editIcons}>
-                    <i
-                        className="material-icons text-faded clickable"
-                        id={targetId}
-                    >
-                        settings
+                    <i className="material-icons" id={targetId}>
+                        edit
                     </i>
                     <i
-                        className="material-icons text-danger clickable"
+                        className="material-icons text-danger"
                         onClick={() => onRemove(index)}
                     >
-                        close
+                        delete
                     </i>
                     <Editor
                         target={targetId}
@@ -124,7 +120,7 @@ export function Link(props: Props) {
                     />
                 </span>
             )}
-        </ListGroupItem>
+        </li>
     )
 }
 

@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
-import {actionFixture} from '../../../../../../../../../../../../fixtures/infobarCustomActions'
+import {actionFixture} from 'fixtures/infobarCustomActions'
 import Button from '../Button'
 
 const mockStore = configureMockStore([thunk])
@@ -49,9 +49,9 @@ describe('<Button/>', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByText('settings'))
+        fireEvent.click(screen.getByText('edit'))
         expect(props.onOpenForm).toHaveBeenCalledWith(props.index)
-        fireEvent.click(screen.getByText('close'))
+        fireEvent.click(screen.getByText('delete'))
         expect(props.onRemove).toHaveBeenCalledWith(props.index)
     })
 })

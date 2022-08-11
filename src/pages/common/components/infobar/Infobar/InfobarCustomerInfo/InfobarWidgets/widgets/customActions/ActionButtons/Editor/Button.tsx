@@ -1,7 +1,7 @@
 import React, {memo, useCallback, useMemo} from 'react'
-import {Button as BasicButton, ListGroupItem} from 'reactstrap'
 import {Map} from 'immutable'
 
+import BasicButton from 'pages/common/components/button/Button'
 import {renderTemplate} from 'pages/common/utils/template'
 import {getTicket} from 'state/ticket/selectors'
 import {getActiveCustomer} from 'state/customers/selectors'
@@ -44,25 +44,25 @@ function Button(props: ButtonProps) {
 
     return (
         <>
-            <ListGroupItem className={css.editRow}>
-                <BasicButton type="button" onClick={() => onOpenForm(index)}>
-                    {renderTemplate(label, templateContext)}
-                </BasicButton>
-                <span className={css.editIcons}>
-                    <i
-                        className="material-icons text-faded clickable"
-                        onClick={() => onOpenForm(index)}
-                    >
-                        settings
-                    </i>
-                    <i
-                        className="material-icons text-danger clickable"
-                        onClick={handleRemove}
-                    >
-                        close
-                    </i>
-                </span>
-            </ListGroupItem>
+            <BasicButton
+                type="button"
+                intent="secondary"
+                size="small"
+                onClick={() => onOpenForm(index)}
+            >
+                {renderTemplate(label, templateContext)}
+            </BasicButton>
+            <span className={css.editIcons}>
+                <i className="material-icons" onClick={() => onOpenForm(index)}>
+                    edit
+                </i>
+                <i
+                    className="material-icons text-danger"
+                    onClick={handleRemove}
+                >
+                    delete
+                </i>
+            </span>
         </>
     )
 }

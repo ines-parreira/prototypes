@@ -6,13 +6,13 @@ exports[`<ActionButtons/> should render the action buttons if isEditing is set t
     class="actionButtons group horizontal"
   >
     <button
-      class="wrapper actionButton fill secondary medium left"
+      class="wrapper actionButton fill secondary small left"
       type="button"
     >
       I am in snapshots
     </button>
     <button
-      class="wrapper actionButton fill secondary medium right"
+      class="wrapper actionButton fill secondary small right"
       type="button"
     >
       I am in snapshots too
@@ -23,13 +23,13 @@ exports[`<ActionButtons/> should render the action buttons if isEditing is set t
 
 exports[`<ActionButtons/> should render the editor if isEditing is set to true  1`] = `
 <ul
-  class="list-group list-group-flush"
+  class="editList"
 >
   <li
-    class="editRow list-group-item"
+    class="editRow"
   >
     <button
-      class="btn btn-secondary"
+      class="wrapper fill secondary small"
       type="button"
     >
       I am in snapshots
@@ -38,22 +38,22 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
       class="editIcons"
     >
       <i
-        class="material-icons text-faded clickable"
+        class="material-icons"
       >
-        settings
+        edit
       </i>
       <i
-        class="material-icons text-danger clickable"
+        class="material-icons text-danger"
       >
-        close
+        delete
       </i>
     </span>
   </li>
   <li
-    class="editRow list-group-item"
+    class="editRow"
   >
     <button
-      class="btn btn-secondary"
+      class="wrapper fill secondary small"
       type="button"
     >
       I am in snapshots too
@@ -62,14 +62,14 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
       class="editIcons"
     >
       <i
-        class="material-icons text-faded clickable"
+        class="material-icons"
       >
-        settings
+        edit
       </i>
       <i
-        class="material-icons text-danger clickable"
+        class="material-icons text-danger"
       >
-        close
+        delete
       </i>
     </span>
   </li>

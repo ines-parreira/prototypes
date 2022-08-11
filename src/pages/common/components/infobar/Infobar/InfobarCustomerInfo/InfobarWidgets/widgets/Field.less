@@ -1,0 +1,71 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .widgetField {
+        position: relative;
+        margin: 0 8px;
+        padding: 3px 4px;
+        display: flex;
+        align-items: flex-start;
+        border: 1px solid transparent;
+    }
+
+    .widgetFieldLabel {
+        padding-right: 8px;
+        color: @classic-neutral-grey-5;
+    }
+
+    .widgetFieldValue {
+        flex-grow: 1;
+        align-self: flex-end;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        // the property belows prevents subcomponents (e.g. MultiSelectOptionsField) from auto-overflowing
+        // without preventing elements to overflow when desired (with absolute positionning)
+        min-width: 0;
+    }
+
+    .overflow {
+        overflow: visible;
+    }
+
+    .staticWidgetField {
+        display: inline-flex;
+    }
+
+    .disabled {
+        cursor: not-allowed;
+        color: @classic-neutral-grey-4;
+    }
+
+    .noBold {
+        font-weight: normal;
+    }
+
+    .widgetFieldTools {
+        display: none;
+        font-size: 1.3rem;
+    }
+
+    .widgetFieldToolIcon {
+        padding: 0 4px;
+        cursor: pointer;
+    }
+
+    .widgetFieldEditing {
+        .widgetFieldLabel {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        &.widgetField {
+            &:hover {
+                border: 1px dashed @classic-neutral-grey-4;
+                .widgetFieldTools {
+                    display: flex;
+                }
+            }
+        }
+    }
+}

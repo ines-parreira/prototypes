@@ -1,3 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<Links/> should call actions when adding a link 1`] = `
+Array [
+  Array [
+    "template.path.meta.custom.links",
+  ],
+]
+`;
+
+exports[`<Links/> should call actions when adding a link 2`] = `Array []`;
+
+exports[`<Links/> should call all actions when removing a link 1`] = `
+Array [
+  Array [
+    "template.path.meta.custom.links",
+    Array [
+      "template",
+      "absolute",
+      "path",
+    ],
+  ],
+]
+`;
+
+exports[`<Links/> should call all actions when removing a link 2`] = `Array []`;
+
+exports[`<Links/> should call all actions when removing a link 3`] = `Array []`;
+
+exports[`<Links/> should call only \`removeEditedWidget\` action when removing the last link 1`] = `
+Array [
+  Array [
+    "template.path.meta.custom.links",
+    Array [
+      "template",
+      "absolute",
+      "path",
+    ],
+  ],
+]
+`;
+
+exports[`<Links/> should call only \`removeEditedWidget\` action when removing the last link 2`] = `Array []`;
+
+exports[`<Links/> should call only \`removeEditedWidget\` action when removing the last link 3`] = `Array []`;
+
+exports[`<Links/> should call widget actions when editing a link 1`] = `
+Array [
+  Array [
+    "template.path.meta.custom.links",
+  ],
+]
+`;
+
+exports[`<Links/> should call widget actions when editing a link 2`] = `Array []`;
+
 exports[`<Links/> should render an empty component (no links, no button) 1`] = `<div />`;

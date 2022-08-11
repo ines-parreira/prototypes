@@ -6,11 +6,8 @@ import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 import {useUpdateEffect, usePrevious} from 'react-use'
 
-import {
-    Product,
-    Variant,
-} from '../../../../../../../../../../../constants/integrations/types/shopify'
-import {getEditOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/editOrder/selectors'
+import {Product, Variant} from 'constants/integrations/types/shopify'
+import {getEditOrderState} from 'state/infobarActions/shopify/editOrder/selectors'
 import {
     addCustomRow,
     addRow,
@@ -20,20 +17,17 @@ import {
     onNoteChange,
     onNotifyChange,
     onReset,
-} from '../../../../../../../../../../../state/infobarActions/shopify/editOrder/actions'
-import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
-import {RootState} from '../../../../../../../../../../../state/types'
-import {
-    IntegrationType,
-    IntegrationDataItem,
-} from '../../../../../../../../../../../models/integration/types'
-import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput/ProductSearchInput'
-import Loader from '../../../../../../../../Loader/Loader'
-import Alert, {AlertType} from '../../../../../../../../Alert/Alert'
-import DEPRECATED_Modal from '../../../../../../../../DEPRECATED_Modal'
+} from 'state/infobarActions/shopify/editOrder/actions'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import {RootState} from 'state/types'
+import {IntegrationType, IntegrationDataItem} from 'models/integration/types'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
+import Loader from 'pages/common/components/Loader/Loader'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import {InfobarModalProps} from '../../../types'
-import {IntegrationContext} from '../../../IntegrationContext'
 import {ShopifyActionType} from '../../types'
 import AddCustomItemPopover from '../../shared/DraftOrderModal/AddCustomItemPopover/AddCustomItemPopover'
 import EditOrderForm from '../EditOrderForm/EditOrderForm'

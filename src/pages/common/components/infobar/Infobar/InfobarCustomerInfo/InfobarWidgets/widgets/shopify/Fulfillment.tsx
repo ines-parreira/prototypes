@@ -1,17 +1,17 @@
 import React from 'react'
 import {Map} from 'immutable'
-import classnames from 'classnames'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {humanizeString} from 'utils'
+import {StaticField} from '../StaticField'
 
 export default function Fulfillment() {
     return {
-        AfterTitle,
+        BeforeContent,
     }
 }
 
-type AfterTitleProps = {
+type BeforeContentProps = {
     source: Map<any, any>
 }
 
@@ -27,7 +27,7 @@ const shipmentStatusColors: Record<string, ColorType> = {
     failure: ColorType.Error,
 }
 
-function AfterTitle({source}: AfterTitleProps) {
+function BeforeContent({source}: BeforeContentProps) {
     const shipmentStatus = source.get('shipment_status') as
         | undefined
         | keyof typeof shipmentStatusColors
@@ -38,9 +38,11 @@ function AfterTitle({source}: AfterTitleProps) {
     return (
         <>
             {shipmentStatus && (
-                <Badge className={classnames('ml-1')} type={color}>
-                    {humanizeString(shipmentStatus).replace(/_/g, ' ')}
-                </Badge>
+                <StaticField>
+                    <Badge type={color}>
+                        {humanizeString(shipmentStatus).replace(/_/g, ' ')}
+                    </Badge>
+                </StaticField>
             )}
         </>
     )

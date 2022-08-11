@@ -24,10 +24,9 @@ import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import {renderTemplate} from 'pages/common/utils/template'
 import {DatetimeLabel} from 'pages/common/utils/labels'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import ActionButtonsGroup from '../ActionButtonsGroup'
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
-import {IntegrationContext} from '../IntegrationContext'
+import {StaticField} from '../StaticField'
 
 export default function Subscription() {
     return {
@@ -120,7 +119,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 ),
                 child: (
                     <>
-                        <ButtonIconLabel icon="refresh" /> Activate
+                        <ButtonIconLabel icon="attach_money" /> Activate
                     </>
                 ),
             },
@@ -136,27 +135,16 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             subscription_id: source.get('id'),
         }
 
-        const status = ((source.get('status') as string) || '').toLowerCase()
-
         return (
             <>
-                <Badge
-                    key="status"
-                    type={statusColors[status]}
-                    className="ml-1"
-                >
-                    {humanizeString(status)}
-                </Badge>
                 <ActionButtonsGroup actions={actions} payload={payload} />
-                <CardHeaderDetails>
-                    <CardHeaderValue label="Created">
-                        <DatetimeLabel
-                            key="created-at"
-                            dateTime={source.get('created_at')}
-                            integrationType={RECHARGE_INTEGRATION_TYPE}
-                        />
-                    </CardHeaderValue>
-                </CardHeaderDetails>
+                <StaticField label="Created">
+                    <DatetimeLabel
+                        key="created-at"
+                        dateTime={source.get('created_at')}
+                        integrationType={RECHARGE_INTEGRATION_TYPE}
+                    />
+                </StaticField>
             </>
         )
     }
@@ -197,19 +185,32 @@ export function TitleWrapperContainer({
         }
     }
 
+    const status = ((source.get('status') as string) || '').toLowerCase()
+
     return (
-        <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-                logEvent(SegmentEvent.RechargeSubscriptionClicked, {
-                    account_domain: currentAccount.get('domain'),
-                })
-            }}
-        >
-            {children}
-        </a>
+        <>
+            <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                    logEvent(SegmentEvent.RechargeSubscriptionClicked, {
+                        account_domain: currentAccount.get('domain'),
+                    })
+                }}
+            >
+                {children}
+            </a>
+            <div>
+                <Badge
+                    key="status"
+                    type={statusColors[status]}
+                    className="mt-2"
+                >
+                    {humanizeString(status)}
+                </Badge>
+            </div>
+        </>
     )
 }
 

@@ -9,9 +9,10 @@ type Props = {
     children: ReactNode
     group: GroupOptions
     isEditing: boolean
-    sort: boolean
-    templatePath: string
-    watchDrop: boolean
+    sort?: boolean
+    templatePath?: string
+    watchDrop?: boolean
+    tag?: keyof JSX.IntrinsicElements | null
 }
 
 function DragWrapper({
@@ -21,6 +22,7 @@ function DragWrapper({
     templatePath = '',
     isEditing,
     watchDrop = false,
+    tag = 'div',
 }: Props) {
     const dispatch = useAppDispatch()
 
@@ -43,6 +45,7 @@ function DragWrapper({
                     dispatch(cancelDrag())
                 },
             }}
+            tag={tag}
             onChange={(order, sortable, evt) => {
                 if (watchDrop && isSortableEvent(evt)) {
                     if (evt.type === 'add' || evt.type === 'update') {

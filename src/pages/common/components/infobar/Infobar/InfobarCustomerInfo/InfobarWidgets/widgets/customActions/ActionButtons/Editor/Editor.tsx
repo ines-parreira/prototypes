@@ -1,9 +1,9 @@
 import React, {useCallback, useContext, useMemo, useState} from 'react'
-import {ListGroup, Modal} from 'reactstrap'
+import {Modal} from 'reactstrap'
 
 import {Map} from 'immutable'
-import {connect, ConnectedProps} from 'react-redux'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
@@ -13,7 +13,7 @@ import {
 } from 'state/widgets/actions'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
-import {IntegrationContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/IntegrationContext'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {
     Button as ButtonType,
     OnOpenForm,
@@ -38,19 +38,19 @@ export function Editor({
     templateAbsolutePath,
     source,
     buttons,
-    startWidgetEdition,
-    updateCustomActions,
-    removeEditedWidget,
-}: Props & ConnectedProps<typeof connector>) {
+}: Props) {
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const dispatch = useAppDispatch()
     const {integrationId} = useContext(IntegrationContext)
     const [isFormOpen, setFormOpen] = useState<boolean>(false)
     const [editorIndex, setFormIndex] = useState<number | null>(null)
     const handleRemove = useCallback<OnRemoveButton>(
         (index) => {
-            removeEditedWidget(
-                `${templatePath}.meta.custom.buttons`,
-                templateAbsolutePath
+            dispatch(
+                removeEditedWidget(
+                    `${templatePath}.meta.custom.buttons`,
+                    templateAbsolutePath
+                )
             )
 
             const newButtons = buttons.filter(
@@ -63,25 +63,25 @@ export function Editor({
             })
 
             if (buttons.length > 0) {
-                startWidgetEdition(`${templatePath}.meta.custom.buttons`)
-                updateCustomActions(newButtons)
+                dispatch(
+                    startWidgetEdition(`${templatePath}.meta.custom.buttons`)
+                )
+                dispatch(updateCustomActions(newButtons))
             }
         },
         [
             buttons,
             templateAbsolutePath,
             templatePath,
-            removeEditedWidget,
-            startWidgetEdition,
-            updateCustomActions,
             currentAccount,
             integrationId,
+            dispatch,
         ]
     )
 
     const handleSubmit = useCallback<OnSubmitButton>(
         (button, index) => {
-            startWidgetEdition(`${templatePath}.meta.custom.buttons`)
+            dispatch(startWidgetEdition(`${templatePath}.meta.custom.buttons`))
 
             const newButtons = [...buttons]
 
@@ -99,16 +99,9 @@ export function Editor({
                 newButtons.push(button)
             }
 
-            updateCustomActions(newButtons)
+            dispatch(updateCustomActions(newButtons))
         },
-        [
-            buttons,
-            templatePath,
-            startWidgetEdition,
-            updateCustomActions,
-            currentAccount,
-            integrationId,
-        ]
+        [buttons, templatePath, currentAccount, integrationId, dispatch]
     )
 
     const handleOpenForm = useCallback<OnOpenForm>(
@@ -143,22 +136,24 @@ export function Editor({
 
     return (
         <>
-            <ListGroup flush>
+            <ul className={css.editList}>
                 {buttons.map((button, index) => (
-                    <EditableButton
-                        key={index}
-                        index={index}
-                        source={source}
-                        button={button}
-                        onRemove={handleRemove}
-                        onOpenForm={handleOpenForm}
-                    />
+                    <li className={css.editRow} key={index}>
+                        <EditableButton
+                            index={index}
+                            source={source}
+                            button={button}
+                            onRemove={handleRemove}
+                            onOpenForm={handleOpenForm}
+                        />
+                    </li>
                 ))}
-            </ListGroup>
+            </ul>
             <Button
                 className={css.addButton}
                 intent="secondary"
                 type="button"
+                size="small"
                 onClick={() => handleOpenForm()}
             >
                 <ButtonIconLabel icon="add" />
@@ -178,10 +173,4 @@ export function Editor({
     )
 }
 
-const connector = connect(null, {
-    updateCustomActions,
-    startWidgetEdition,
-    removeEditedWidget,
-})
-
-export default connector(Editor)
+export default Editor
