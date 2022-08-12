@@ -40,6 +40,7 @@ const sourceTypeToIcon = (
         case IntegrationType.GorgiasChat:
         case IntegrationType.Smooch:
         case IntegrationType.SmoochInside:
+        case TicketMessageSourceType.HelpCenterContactForm:
         case TicketMessageSourceType.ChatContactForm:
             icon.name = 'forum'
             break

@@ -3,6 +3,7 @@ import {shallow} from 'enzyme'
 
 import SourceIcon from '../SourceIcon'
 import * as ticketConfig from '../../../../config/ticket'
+import {TicketMessageSourceType} from '../../../../business/types/ticket'
 
 describe('SourceIcon component', () => {
     it('should show default icon', () => {
@@ -22,5 +23,12 @@ describe('SourceIcon component', () => {
             const component = shallow(<SourceIcon type={type} />)
             expect(component).toMatchSnapshot()
         })
+    })
+
+    it('should show HELP_CENTER_CONTACT_FORM icons', () => {
+        const component = shallow(
+            <SourceIcon type={TicketMessageSourceType.HelpCenterContactForm} />
+        )
+        expect(component).toMatchSnapshot()
     })
 })

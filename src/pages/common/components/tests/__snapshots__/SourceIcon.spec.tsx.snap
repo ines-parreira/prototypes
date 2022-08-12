@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SourceIcon component should show HELP_CENTER_CONTACT_FORM icons 1`] = `
+<i
+  className="icon d-inline-block material-icons"
+>
+  forum
+</i>
+`;
+
 exports[`SourceIcon component should show SYSTEM_SOURCE_TYPES icons 1`] = `
 <i
   className="icon d-inline-block text-warning material-icons"

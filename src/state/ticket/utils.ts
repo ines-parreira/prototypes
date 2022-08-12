@@ -225,7 +225,7 @@ export function isSupportAddress(
 export function getValuePropFromSourceType(
     sourceType: TicketMessageSourceType
 ) {
-    return SOURCE_VALUE_PROP[sourceType as keyof typeof SOURCE_VALUE_PROP]
+    return SOURCE_VALUE_PROP[sourceType]
 }
 
 /**

@@ -3,6 +3,7 @@ export enum TicketMessageSourceType {
     Api = 'api',
     Chat = 'chat',
     ChatContactForm = 'chat-contact-form',
+    HelpCenterContactForm = 'help-center-contact-form',
     Email = 'email',
     EmailForward = 'email-forward',
     Facebook = 'facebook',
