@@ -14,6 +14,7 @@ import {
     MacroSortableProperties,
     Macro,
 } from 'models/macro/types'
+import Video from 'pages/common/components/Video/Video'
 import {macrosFetched} from 'state/entities/macros/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -124,7 +125,9 @@ export function MacrosSettingsContentContainer({
                 fluid
                 className={classnames(
                     settingsCss.pageContainer,
-                    settingsCss.pb0
+                    settingsCss.pb0,
+                    'd-flex',
+                    'justify-content-between'
                 )}
                 data-candu-id="setting-macros-description"
             >
@@ -143,6 +146,7 @@ export function MacrosSettingsContentContainer({
                         </p>
                     </div>
                 </div>
+                <Video videoId="RevBOdLYeYo" legend="Working with macros" />
             </Container>
 
             <MacrosSettingsTable

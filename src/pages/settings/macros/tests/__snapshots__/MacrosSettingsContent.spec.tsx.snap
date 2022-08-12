@@ -31,7 +31,7 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
     </div>
   </PageHeader>
   <Container
-    className="pageContainer pb0"
+    className="pageContainer pb0 d-flex justify-content-between"
     data-candu-id="setting-macros-description"
     fluid={true}
     tag="div"
@@ -50,6 +50,10 @@ exports[`<MacrosSettingsContent/> should match snapshot 1`] = `
         </p>
       </div>
     </div>
+    <Video
+      legend="Working with macros"
+      videoId="RevBOdLYeYo"
+    />
   </Container>
   <Component
     isLoading={false}
