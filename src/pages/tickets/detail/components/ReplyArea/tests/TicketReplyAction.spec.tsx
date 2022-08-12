@@ -5,32 +5,34 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {createEvent, fireEvent, render} from '@testing-library/react'
 
+import {FORM_CONTENT_TYPE} from 'config'
 import {MacroActionName} from 'models/macroAction/types'
 
-import TicketReplyAction from '../TicketReplyAction'
+import {TicketReplyActionContainer} from '../TicketReplyAction'
 
-const mockedDebounce = jest.fn()
-
-jest.mock('lodash/debounce', () => () => mockedDebounce)
+jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
 describe('<TicketReplyAction />', () => {
     const mockStore = configureMockStore([thunk])
+    const minProps = {
+        action: fromJS({
+            name: MacroActionName.AddInternalNote,
+            arguments: {},
+        }),
+        index: 1,
+        remove: jest.fn(),
+        ticketId: 1,
+        updateActionArgsOnApplied: jest.fn(),
+    }
 
-    it('should debounce the internal note update', () => {
-        const mockedUpdate = jest.fn()
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
 
+    it('should call updateActionArgsOnApplied when the internal note is updated', () => {
         const {container} = render(
             <Provider store={mockStore({})}>
-                <TicketReplyAction
-                    action={fromJS({
-                        name: MacroActionName.AddInternalNote,
-                        arguments: {},
-                    })}
-                    index={1}
-                    remove={jest.fn()}
-                    ticketId={1}
-                    update={mockedUpdate}
-                />
+                <TicketReplyActionContainer {...minProps} />
             </Provider>
         )
         const editor = container.querySelector('.public-DraftEditor-content')!
@@ -44,6 +46,76 @@ describe('<TicketReplyAction />', () => {
         fireEvent(editor, event)
         fireEvent(editor, event)
 
-        expect(mockedDebounce).toHaveBeenCalledTimes(3)
+        expect(minProps.updateActionArgsOnApplied).toHaveBeenCalledTimes(3)
+    })
+
+    it('should call updateActionArgsOnApplied when the dict argument is updated', () => {
+        const {getByDisplayValue} = render(
+            <Provider store={mockStore({})}>
+                <TicketReplyActionContainer
+                    {...minProps}
+                    action={fromJS({
+                        name: MacroActionName.Http,
+                        arguments: {
+                            content_type: FORM_CONTENT_TYPE,
+                            form: [
+                                {
+                                    editable: true,
+                                    key: 'foo',
+                                    value: 'bar',
+                                },
+                            ],
+                        },
+                    })}
+                />
+            </Provider>
+        )
+
+        fireEvent.change(getByDisplayValue(/bar/), {target: {value: 'baz'}})
+
+        expect(minProps.updateActionArgsOnApplied).toHaveBeenNthCalledWith(
+            1,
+            1,
+            fromJS({
+                content_type: FORM_CONTENT_TYPE,
+                form: [
+                    {
+                        editable: true,
+                        key: 'foo',
+                        value: 'baz',
+                    },
+                ],
+            }),
+            1
+        )
+    })
+
+    it('should call updateActionArgsOnApplied when the argument is updated', () => {
+        const {queryAllByRole} = render(
+            <Provider store={mockStore({})}>
+                <TicketReplyActionContainer
+                    {...minProps}
+                    action={fromJS({
+                        name: MacroActionName.ShopifyCancelLastOrder,
+                        arguments: {
+                            restock: true,
+                            refund: true,
+                        },
+                    })}
+                />
+            </Provider>
+        )
+
+        fireEvent.click(queryAllByRole('checkbox')![0])
+
+        expect(minProps.updateActionArgsOnApplied).toHaveBeenNthCalledWith(
+            1,
+            1,
+            fromJS({
+                restock: false,
+                refund: true,
+            }),
+            1
+        )
     })
 })

@@ -40,7 +40,6 @@ describe('<TicketReply/>', () => {
         newMessageType: answerableSourceType,
         deleteActionOnApplied: jest.fn(),
         deleteAttachment: jest.fn(),
-        updateActionArgsOnApplied: jest.fn(),
     }
 
     it('should render the editor', () => {

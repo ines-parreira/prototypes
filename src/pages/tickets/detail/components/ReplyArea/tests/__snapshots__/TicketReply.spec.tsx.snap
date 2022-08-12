@@ -94,7 +94,6 @@ exports[`<TicketReply/> should render the editor with the applied macro actions 
       }
     }
     onDelete={[MockFunction]}
-    onUpdate={[MockFunction]}
     ticketId={1}
   />
 </div>

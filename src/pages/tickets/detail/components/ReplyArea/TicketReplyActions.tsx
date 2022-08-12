@@ -6,7 +6,6 @@ import classNames from 'classnames'
 import {MacroActionName} from 'models/macroAction/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Tooltip from 'pages/common/components/Tooltip'
-import {updateActionArgsOnApplied} from 'state/ticket/actions'
 import {getActionTemplate} from 'utils'
 
 import {ActionTemplateExecution} from 'config'
@@ -20,14 +19,12 @@ type Props = {
     ticketId: number
     appliedMacro?: Map<any, any>
     onDelete: (actionIndex: number, ticketId: number) => void
-    onUpdate: typeof updateActionArgsOnApplied
 }
 
 export default function TicketReplyActions({
     ticketId,
     appliedMacro,
     onDelete,
-    onUpdate,
 }: Props) {
     const backendActions: List<any> = appliedMacro
         ? (appliedMacro.get('actions') as List<Map<any, any>>).filter(
@@ -92,7 +89,6 @@ export default function TicketReplyActions({
                                 appliedMacro.get('actions') as List<any>
                             ).indexOf(action)}
                             action={action}
-                            update={onUpdate}
                             remove={onDelete}
                             ticketId={ticketId}
                         />

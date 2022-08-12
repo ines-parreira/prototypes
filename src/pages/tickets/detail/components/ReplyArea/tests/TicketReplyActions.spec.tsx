@@ -30,7 +30,6 @@ describe('<TicketReplyActions/>', () => {
             ],
         }),
         onDelete: jest.fn(),
-        onUpdate: jest.fn(),
     }
 
     const element = document.createElement('div')
@@ -78,7 +77,6 @@ describe('<TicketReplyActions/>', () => {
                 ],
             }),
             onDelete: jest.fn(),
-            onUpdate: jest.fn(),
         }
 
         const {container} = render(

@@ -6,10 +6,7 @@ import {List, Map} from 'immutable'
 import {RootState} from 'state/types'
 import {canReply} from 'business/ticket'
 
-import {
-    deleteActionOnApplied,
-    updateActionArgsOnApplied,
-} from '../../../../../state/ticket/actions'
+import {deleteActionOnApplied} from '../../../../../state/ticket/actions'
 import {deleteAttachment} from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import DEPRECATED_RichField from '../../../../common/forms/RichField/DEPRECATED_RichField'
@@ -56,7 +53,6 @@ export class TicketReplyContainer extends Component<Props> {
             applyMacro,
             shouldDisplayQuickReply,
             deleteActionOnApplied,
-            updateActionArgsOnApplied,
         } = this.props
 
         const canReplyResult = canReply(
@@ -89,7 +85,6 @@ export class TicketReplyContainer extends Component<Props> {
                         ticketId={ticket.get('id')}
                         appliedMacro={appliedMacro}
                         onDelete={deleteActionOnApplied}
-                        onUpdate={updateActionArgsOnApplied}
                     />
                 ) : null}
             </div>
@@ -109,7 +104,6 @@ const connector = connect(
     {
         deleteActionOnApplied,
         deleteAttachment,
-        updateActionArgsOnApplied,
     }
 )
 

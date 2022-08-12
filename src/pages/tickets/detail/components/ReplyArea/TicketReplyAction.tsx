@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
+import {connect, ConnectedProps} from 'react-redux'
 
 import {FORM_CONTENT_TYPE} from 'config'
 import {getIconFromActionType} from 'models/macroAction/helpers'
@@ -27,43 +28,78 @@ type Props = {
     index: number
     remove: (actionIndex: number, ticketId: number) => void
     ticketId: number
-    update: typeof updateActionArgsOnApplied
+} & ConnectedProps<typeof connector>
+
+type State = {
+    currentArguments: Map<any, any>
 }
 
-export default class TicketReplyAction extends Component<Props> {
-    setListDictValue(
+export class TicketReplyActionContainer extends Component<Props, State> {
+    state: State = {
+        currentArguments: this.props.action.get('arguments', fromJS({})),
+    }
+
+    componentDidUpdate(prevProps: Props, prevState: State) {
+        const {index, ticketId} = this.props
+        const {currentArguments} = this.state
+
+        if (prevState.currentArguments !== currentArguments) {
+            this.debouncedUpdateActionArgs(index, currentArguments, ticketId)
+        }
+    }
+
+    getAction = () => {
+        const {action} = this.props
+        const {currentArguments} = this.state
+
+        return action.get('arguments') === currentArguments
+            ? action
+            : action.set('arguments', currentArguments)
+    }
+
+    debouncedUpdateActionArgs = _debounce(
+        this.props.updateActionArgsOnApplied,
+        200
+    )
+
+    setListDictValue = (
         arg: Map<any, any>,
         value: number | string | boolean,
         category: string
-    ) {
+    ) => {
+        const action = this.getAction()
         const index = (
-            this.props.action.getIn(['arguments', category]) as List<any>
+            action.getIn(['arguments', category]) as List<any>
         ).indexOf(arg)
 
         const newValue = (
-            this.props.action.get('arguments', fromJS({})) as Map<any, any>
+            action.get('arguments', fromJS({})) as Map<any, any>
         ).setIn([category, index, 'value'], value)
 
         if (~index) {
-            this.props.update(this.props.index, newValue, this.props.ticketId)
+            this.setState({currentArguments: newValue})
         }
     }
 
     setArguments = _debounce(
         (index: number, args = fromJS({})) => {
-            this.props.action.setIn(['arguments'], args)
-            this.props.update(index, args, this.props.ticketId)
+            this.props.updateActionArgsOnApplied(
+                index,
+                args,
+                this.props.ticketId
+            )
         },
         200,
         {leading: true, trailing: false}
     )
 
-    setValue(key: string, value: number | string | boolean) {
+    setValue = (key: string, value: number | string | boolean) => {
+        const action = this.getAction()
         const newValue = (
-            this.props.action.get('arguments', fromJS({})) as Map<any, any>
+            action.get('arguments', fromJS({})) as Map<any, any>
         ).set(key, value)
 
-        this.props.update(this.props.index, newValue, this.props.ticketId)
+        this.setState({currentArguments: newValue})
     }
 
     renderListDictArgs = (title: string, args: List<any>, category: string) => {
@@ -93,7 +129,7 @@ export default class TicketReplyAction extends Component<Props> {
     }
 
     renderArgs = (actionArgs: Map<any, any>, isInline: boolean) => {
-        const action = this.props.action
+        const action = this.getAction()
         const template = getActionTemplate(action.get('name'))
         if (!template || !template.arguments) return
 
@@ -279,7 +315,8 @@ export default class TicketReplyAction extends Component<Props> {
     }
 
     render() {
-        const {action, remove, ticketId} = this.props
+        const {remove, ticketId} = this.props
+        const action = this.getAction()
 
         let type = action.get('name')
         const template = getActionTemplate(type)
@@ -421,3 +458,9 @@ export default class TicketReplyAction extends Component<Props> {
         )
     }
 }
+
+const connector = connect(null, {
+    updateActionArgsOnApplied,
+})
+
+export default connector(TicketReplyActionContainer)
