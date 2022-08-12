@@ -1,11 +1,9 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {fromJS, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {useAsyncFn} from 'react-use'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import PageHeader from 'pages/common/components/PageHeader'
 import {getHasAutomationAddOn} from 'state/billing/selectors'
 import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
@@ -22,7 +20,9 @@ import {updateOrCreateIntegration} from 'state/integrations/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import ChatIntegrationNavigation from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationNavigation'
 import useAppSelector from 'hooks/useAppSelector'
+import {useFeatureFlags} from 'hooks/useFeatureFlags'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import {FlagKey} from 'providers/FeatureFlags'
 
 import settingsCss from 'pages/settings/settings.less'
 
@@ -54,8 +54,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
     } = useChatHelpCenterConfiguration(chatApplicationId)
     const integrationType: string = integration.get('type')
     const dispatch = useAppDispatch()
-    const hasSelfServiceArticleRecommendation: boolean | undefined =
-        useFlags()[FeatureFlagKey.SelfServiceArticleRecommendation]
+    const {getFlag} = useFeatureFlags()
 
     const helpCenters = useAppSelector(getHelpCenterList)
 
@@ -257,7 +256,8 @@ export function GorgiasChatIntegrationSelfServiceComponent({
 
             <ChatIntegrationNavigation integration={integration} />
 
-            {hasSelfServiceArticleRecommendation && hasAutomationAddOn ? (
+            {getFlag(FlagKey.SelfServiceArticleRecommendation) &&
+            hasAutomationAddOn ? (
                 <GorgiasChatIntegrationPreviewContainer
                     preview={
                         <FeaturesPreview

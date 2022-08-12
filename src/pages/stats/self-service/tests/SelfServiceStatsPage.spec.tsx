@@ -5,9 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
 import {proPlan} from 'fixtures/subscriptionPlan'
 import {flushPromises, renderWithRouter} from 'utils/testing'
@@ -19,7 +17,6 @@ import {
     SELF_SERVICE_OVERVIEW,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES,
     SELF_SERVICE_TOP_REPORTED_ISSUES,
-    SELF_SERVICE_VOLUME_PER_FLOW,
 } from 'config/stats'
 import {
     selfServiceFlowsDistribution,
@@ -27,7 +24,6 @@ import {
     selfServiceOverview,
     selfServiceProductsWithMostIssues,
     selfServiceTopReportedIssues,
-    selfServiceVolumePerFlow,
 } from 'fixtures/stats'
 import {StatsFilters} from 'models/stat/types'
 import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
@@ -89,10 +85,6 @@ describe('<SelfServiceStatsPage />', () => {
     } as RootState
 
     beforeEach(() => {
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.SelfServiceStatsV2]: false,
-        })
         useStatResourceMock.mockReturnValue([null, true, _noop])
     })
 
@@ -173,39 +165,5 @@ describe('<SelfServiceStatsPage />', () => {
         await flushPromises()
 
         expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should render the stats variant when the SelfServiceStatsV2 feature flag is truthy', async () => {
-        mockFlags({
-            [FeatureFlagKey.SelfServiceStatsV2]: true,
-        })
-        useStatResourceMock.mockImplementation(({resourceName}) => {
-            if (resourceName === SELF_SERVICE_OVERVIEW) {
-                return [selfServiceOverview, false, _noop]
-            } else if (resourceName === SELF_SERVICE_VOLUME_PER_FLOW) {
-                return [selfServiceVolumePerFlow, false, _noop]
-            } else if (
-                resourceName === SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION
-            ) {
-                return [selfServiceFlowsDistribution, false, _noop]
-            } else if (
-                resourceName === SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES
-            ) {
-                return [selfServiceProductsWithMostIssues, false, _noop]
-            } else if (resourceName === SELF_SERVICE_TOP_REPORTED_ISSUES) {
-                return [selfServiceTopReportedIssues, false, _noop]
-            }
-            return [selfServiceMostReturnedProducts, false, _noop]
-        })
-
-        const {getByText} = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <SelfServiceStatsPage />
-            </Provider>
-        )
-
-        await flushPromises()
-
-        expect(getByText(/Self-service volume per flow/)).toBeTruthy()
     })
 })

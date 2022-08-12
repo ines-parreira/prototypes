@@ -1668,59 +1668,6 @@ export const selfServiceOverview: Stat<OneDimensionalUnionChart> = {
     },
 }
 
-export const selfServiceVolumePerFlow: Stat<TwoDimensionalChart> = {
-    meta: {
-        end_datetime: '2022-01-12T23:59:59+01:00',
-        previous_end_datetime: '2022-01-06T00:00:00+01:00',
-        previous_start_datetime: '2021-12-30T00:00:01+01:00',
-        start_datetime: '2022-01-06T00:00:00+01:00',
-    },
-    data: {
-        label: 'Self-service volume per flow',
-        legend: {
-            axes: {
-                x: 'Interaction date',
-                y: 'Interactions',
-            },
-        },
-        data: {
-            axes: {
-                x: [
-                    1659416400, 1659502800, 1659589200, 1659675600, 1659762000,
-                    1659848400, 1659934800,
-                ],
-                y: [],
-            },
-            lines: [
-                {
-                    name: 'quick_responses',
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                },
-                {
-                    name: 'article_recommendation',
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                },
-                {
-                    name: 'track',
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                },
-                {
-                    name: 'report_issues',
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                },
-                {
-                    name: 'returns',
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                },
-                {
-                    name: 'cancellations',
-                    data: [0, 0, 0, 0, 0, 0, 0],
-                },
-            ],
-        },
-    },
-}
-
 export const selfServiceFlowsDistribution: Stat<TwoDimensionalChart> = {
     meta: {
         end_datetime: '2022-01-12T23:59:59+01:00',

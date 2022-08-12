@@ -5,7 +5,6 @@ import Enzyme from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import _noop from 'lodash/noop'
 import {MomentTimezone} from 'moment-timezone'
-import {mockFlags} from 'jest-launchdarkly-mock'
 
 import history from '../pages/history'
 
@@ -283,6 +282,3 @@ globalThis.analytics = {
     use: jest.fn(),
     user: jest.fn(),
 }
-
-// LaunchDarkly
-mockFlags({})

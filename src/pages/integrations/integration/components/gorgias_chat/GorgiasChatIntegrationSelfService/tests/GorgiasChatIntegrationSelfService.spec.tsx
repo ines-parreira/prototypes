@@ -2,14 +2,12 @@ import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {fromJS, Map} from 'immutable'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import MockDate from 'mockdate'
 
 import thunk from 'redux-thunk'
 
 import {Provider} from 'react-redux'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
 import {IntegrationType} from 'models/integration/types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
@@ -59,12 +57,8 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
     const date = '2021-01-24T17:30:00.000Z'
 
     beforeEach(() => {
-        resetLDMocks()
         jest.resetAllMocks()
         MockDate.set(date)
-        mockFlags({
-            [FeatureFlagKey.SelfServiceArticleRecommendation]: false,
-        })
     })
 
     afterEach(() => {
@@ -141,19 +135,6 @@ describe('<GorgiasChatIntegrationSelfService/>', () => {
                     }),
                 })
             )
-        })
-
-        it('should render the preview when the SelfServiceArticleRecommendation feature flag is truthy', () => {
-            mockFlags({
-                [FeatureFlagKey.SelfServiceArticleRecommendation]: true,
-            })
-            const {getByText} = render(
-                <Provider store={mockStore({...defaultState})}>
-                    <GorgiasChatIntegrationSelfService {...props} />
-                </Provider>
-            )
-
-            expect(getByText(/Enable article recommendation/)).toBeTruthy()
         })
     })
 })
