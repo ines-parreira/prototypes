@@ -38,7 +38,10 @@ export function TitleWrapper({children, source}: TitleWrapperProps) {
     const {integration} = useContext(IntegrationContext)
     const storeHash = integration.getIn(['meta', 'store_hash']) as string
     const customerId = (source.get('id') || '') as string
-    const customerLink = `https://store-${storeHash}.mybigcommerce.com/manage/customers/${customerId}/edit`
+    let customerLink = ''
+    if (customerId) {
+        customerLink = `https://store-${storeHash}.mybigcommerce.com/manage/customers/${customerId}/edit`
+    }
 
     return (
         <>
