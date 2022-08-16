@@ -35,6 +35,7 @@ export function checkBigCommerceAccess(domain: string) {
                   'redsbaby',
                   'joyoushealth',
                   'homedirect',
+                  'diybbq',
               ].includes(domain) || domain.includes('.preview')
             : false
     )
