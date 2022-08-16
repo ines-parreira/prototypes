@@ -261,6 +261,8 @@ export class Navbar extends Component<Props, State> {
 
                     <HomePageLink />
 
+                    <div data-candu-id="navbar-home-spacer" />
+
                     <DropdownMenu className={css['dropdown-menu']}>
                         {mainMenu.map((item) => {
                             return (
@@ -296,6 +298,8 @@ export class Navbar extends Component<Props, State> {
                 <div className={css['navbar-content']}>
                     {this.props.children}
                 </div>
+
+                <div data-candu-id="navbar-menu-spacer" />
 
                 <button
                     ref={this.menuToggleRef}
