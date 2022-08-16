@@ -1,0 +1,283 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MacroReplyActionControls should render "Current client" placeholder 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="optionalFields"
+  >
+    <span>
+      Cc
+    </span>
+     / 
+    <span>
+      Bcc
+    </span>
+  </div>
+  <div
+    class="recipient"
+  >
+    <span
+      class="fieldLabel"
+    >
+      To
+      :
+    </span>
+    <span
+      class="currentClient"
+    >
+      Current client
+    </span>
+  </div>
+</div>
+`;
+
+exports[`MacroReplyActionControls should render Bcc but not Cc 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="optionalFields"
+  >
+    <span>
+      Cc
+    </span>
+  </div>
+  <div
+    class="recipient"
+  >
+    <span
+      class="fieldLabel"
+    >
+      To
+      :
+    </span>
+    <span
+      class="currentClient"
+    >
+      Current client
+    </span>
+  </div>
+  <div
+    class="recipient"
+  >
+    <span
+      class="fieldLabel"
+    >
+      Bcc
+      :
+    </span>
+    <div
+      class="field"
+    >
+      <div
+        class="values"
+      >
+        <div
+          class="item"
+          tabindex="999999"
+        >
+          <span>
+            test@gorgias.com
+          </span>
+          <span
+            class="item-remove-button"
+          >
+            <i
+              class="material-icons"
+            >
+              close
+            </i>
+          </span>
+        </div>
+        <input
+          class="input"
+          placeholder=""
+          tabindex="2"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="suggestions suggestions--hidden"
+        tabindex="-1"
+      >
+        <div
+          class="emptySuggestions"
+        >
+          Type to search
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MacroReplyActionControls should render Cc but not Bcc 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="optionalFields"
+  >
+    <span>
+      Bcc
+    </span>
+  </div>
+  <div
+    class="recipient"
+  >
+    <span
+      class="fieldLabel"
+    >
+      To
+      :
+    </span>
+    <span
+      class="currentClient"
+    >
+      Current client
+    </span>
+  </div>
+  <div
+    class="recipient"
+  >
+    <span
+      class="fieldLabel"
+    >
+      Cc
+      :
+    </span>
+    <div
+      class="field"
+    >
+      <div
+        class="values"
+      >
+        <div
+          class="item"
+          tabindex="999999"
+        >
+          <span>
+            test@gorgias.com
+          </span>
+          <span
+            class="item-remove-button"
+          >
+            <i
+              class="material-icons"
+            >
+              close
+            </i>
+          </span>
+        </div>
+        <input
+          class="input"
+          placeholder=""
+          tabindex="2"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="suggestions suggestions--hidden"
+        tabindex="-1"
+      >
+        <div
+          class="emptySuggestions"
+        >
+          Type to search
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MacroReplyActionControls should render To field 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="optionalFields"
+  >
+    <span>
+      Cc
+    </span>
+     / 
+    <span>
+      Bcc
+    </span>
+  </div>
+  <div
+    class="recipient"
+  >
+    <span
+      class="fieldLabel"
+    >
+      To
+      :
+    </span>
+    <div
+      class="field"
+    >
+      <div
+        class="values"
+      >
+        <div
+          class="item"
+          tabindex="999999"
+        >
+          <span>
+            test@gorgias.com
+          </span>
+          <span
+            class="item-remove-button"
+          >
+            <i
+              class="material-icons"
+            >
+              close
+            </i>
+          </span>
+        </div>
+        <div
+          class="item"
+          tabindex="999999"
+        >
+          <span>
+            test@gorgias.com
+          </span>
+          <span
+            class="item-remove-button"
+          >
+            <i
+              class="material-icons"
+            >
+              close
+            </i>
+          </span>
+        </div>
+        <input
+          class="input"
+          placeholder=""
+          tabindex="2"
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="suggestions suggestions--hidden"
+        tabindex="-1"
+      >
+        <div
+          class="emptySuggestions"
+        >
+          Type to search
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

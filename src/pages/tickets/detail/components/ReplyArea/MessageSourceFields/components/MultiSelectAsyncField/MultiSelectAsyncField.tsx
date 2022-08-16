@@ -33,7 +33,7 @@ type Props = {
     required: boolean // true if a value is required
     allowCreate: boolean // true item creation is allowed
     allowCreateConstraint: (args: any) => void // constraint function called if item creation is allowed
-    loadOptions: (
+    loadOptions?: (
         input: string,
         callback: (options: ReceiverValue[]) => void
     ) => Promise<void> // async function returning search results when typing
@@ -80,7 +80,10 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
 
         if (inputValue !== prevState.inputValue) {
             this.setState({isLoading: true})
-            this.handleLoadOptions()
+
+            if (this.props.loadOptions) {
+                this.handleLoadOptions()
+            }
         }
     }
 
@@ -265,7 +268,7 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
     handleLoadOptions = _debounce(() => {
         const {inputValue} = this.state
 
-        void this.props.loadOptions(inputValue, (options) => {
+        void this.props.loadOptions!(inputValue, (options) => {
             this.setState({isLoading: false, options})
         })
     }, 300)
@@ -403,7 +406,7 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
     }
 
     render() {
-        const {value, disabled, placeholder, required} = this.props
+        const {value, disabled, placeholder, required, loadOptions} = this.props
         const {inputValue, isInputFocused, isLoading, options} = this.state
 
         const placeholderOnEmpty = value.length ? '' : placeholder
@@ -456,7 +459,8 @@ class MultiSelectAsyncField extends React.Component<Props, State> {
                 </div>
                 <div
                     className={classnames(css.suggestions, {
-                        [css['suggestions--hidden']]: !isInputFocused,
+                        [css['suggestions--hidden']]:
+                            !loadOptions || !isInputFocused,
                     })}
                     tabIndex={-1}
                 >

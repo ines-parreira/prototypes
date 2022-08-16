@@ -1,9 +1,16 @@
 import React, {ComponentProps} from 'react'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 import {render} from '@testing-library/react'
 
+import {MacroActionName} from 'models/macroAction/types'
+
 import {MacroEdit} from '../MacroEdit'
+
+const mockStore = configureMockStore([thunk])
 
 // To avoid snapshoting all languages
 jest.mock('constants/languages', () => {
@@ -18,6 +25,20 @@ jest.mock('constants/languages', () => {
         },
     }
 })
+
+const setResponseTextAction = {
+    type: 'user',
+    execution: 'front',
+    name: MacroActionName.SetResponseText,
+    title: 'Add forward by email',
+    arguments: {
+        body_text: '',
+        body_html: '',
+        cc: 'test@gorgias.com',
+        bcc: 'test@gorgias.com',
+        from: 'test@gorgias.com',
+    },
+}
 
 describe('MacroEdit component', () => {
     const defaultProps = {
@@ -41,5 +62,30 @@ describe('MacroEdit component', () => {
         )
 
         expect(getByDisplayValue('Pizza Capricciosa'))
+    })
+
+    it('should convert setResponseText to addInternalNote', () => {
+        const setActions = jest.fn()
+
+        const {queryByText} = render(
+            <Provider store={mockStore({})}>
+                <MacroEdit
+                    {...defaultProps}
+                    actions={fromJS([
+                        {
+                            ...setResponseTextAction,
+                            arguments: {
+                                ...setResponseTextAction.arguments,
+                                body_text: 'test body',
+                                body_html: 'test body',
+                            },
+                        },
+                    ])}
+                    setActions={setActions}
+                />
+            </Provider>
+        )
+
+        expect(queryByText('test body')).toBeTruthy()
     })
 })

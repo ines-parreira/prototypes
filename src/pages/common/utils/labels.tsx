@@ -29,6 +29,22 @@ import {formatDatetime, humanizeString, isImmutable} from 'utils'
 
 import css from './labels.less'
 
+type RecipientsLabelProps = {
+    recipients: string
+}
+
+export const RecipientsLabel: React.FC<RecipientsLabelProps> = ({
+    recipients,
+}) => (
+    <>
+        {recipients.split(',').map((recipient) => (
+            <div key={recipient} className={css.recipientLabel}>
+                {recipient}
+            </div>
+        ))}
+    </>
+)
+
 /**
  * AGENT
  */

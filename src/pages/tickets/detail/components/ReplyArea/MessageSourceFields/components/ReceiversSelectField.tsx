@@ -29,6 +29,8 @@ type Props = {
     sourceType: TicketMessageSourceType
     required?: boolean
     value: Receiver[]
+    placeholder?: string
+    disableSearch?: boolean
 }
 
 const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
@@ -39,6 +41,8 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
             required = false,
             sourceType,
             value,
+            placeholder,
+            disableSearch,
         }: Props,
         ref
     ) {
@@ -125,9 +129,11 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
             1000
         )
 
-        const placeholder = valueProp
-            ? 'Search customers...'
-            : 'Sorry, no recipient for this type of message...'
+        const _placeholder =
+            placeholder ??
+            (valueProp
+                ? 'Search customers...'
+                : 'Sorry, no recipient for this type of message...')
         const allowCreate =
             sourceType === TicketMessageSourceType.Email ||
             sourceType === TicketMessageSourceType.Phone ||
@@ -143,12 +149,12 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
                 ref={ref}
                 value={valueFromState(value)}
                 onChange={handleOnChange}
-                loadOptions={search}
+                loadOptions={disableSearch ? undefined : search}
                 disabled={disabled}
                 required={required}
                 allowCreate={allowCreate}
                 allowCreateConstraint={allowCreateConstraint}
-                placeholder={placeholder}
+                placeholder={_placeholder}
                 onOptionSelect={handleOptionSelect}
             />
         )

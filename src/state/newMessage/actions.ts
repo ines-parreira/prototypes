@@ -1213,3 +1213,7 @@ export const newMessageResetFromMessage = createAction<{
 export const newMessageQuickResponseFlow = createAction<{
     attachments: List<any>
 }>(constants.NEW_MESSAGE_QUICK_RESPONSE_FLOW)
+
+export const setShowConvertToForwardPopover = createAction<boolean>(
+    constants.NEW_MESSAGE_SHOW_CONVERT_TO_FORWARD_POPOVER
+)

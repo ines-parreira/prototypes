@@ -8,7 +8,11 @@ import {dismissNotification} from 'reapop'
 import {Moment} from 'moment'
 import {compressToEncodedURIComponent} from 'lz-string'
 
-import {TicketMessageSourceType, TicketStatus} from 'business/types/ticket'
+import {
+    TicketMessageSourceType,
+    TicketStatus,
+    TicketChannel,
+} from 'business/types/ticket'
 import {DEFAULT_ACTIONS} from 'config'
 import {ViewType} from 'models/view/constants'
 import {search} from 'models/search/resources'
@@ -25,14 +29,20 @@ import * as ticketsSelectors from 'state/tickets/selectors'
 import * as viewsSelectors from 'state/views/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isCurrentlyOnTicket, isTabActive} from 'utils'
+import {getLDClient} from 'utils/launchDarkly'
+import {FlagKey} from 'providers/FeatureFlags'
 
 import {
     Action,
     Ticket,
     TicketMessage,
     TicketMessageIntent,
+    SourceAddress,
 } from 'models/ticket/types'
 import {View} from 'models/view/types'
+
+import {MacroActionName} from 'models/macroAction/types'
+import {getChannelsByType} from 'state/integrations/selectors'
 
 import {
     JoinEventType,
@@ -47,13 +57,14 @@ import {
 } from 'state/notifications/types'
 import history from 'pages/history'
 import client from 'models/api/resources'
-import {RootState, StoreDispatch} from 'state/types'
+import {RootState, StoreDispatch, StoreState} from 'state/types'
 import {Macro} from 'state/macro/types'
 
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
     nestedReplace,
+    guessReceiversFromTicket,
 } from './utils'
 import * as types from './constants'
 
@@ -497,6 +508,28 @@ export const updateActionArgsOnApplied = (
     ticketId,
 })
 
+const getRecipientsArray = (
+    newRecipients?: string,
+    recipients: SourceAddress[] = []
+): SourceAddress[] => {
+    if (newRecipients) {
+        const recipientAddresses = recipients.map(({address}) => address)
+
+        return [
+            ...recipients,
+            ...newRecipients
+                .split(',')
+                .filter((address) => !recipientAddresses.includes(address))
+                .map<SourceAddress>((address) => ({
+                    name: '',
+                    address,
+                })),
+        ]
+    }
+
+    return recipients
+}
+
 export const applyMacroAction =
     (action: Map<any, any>) =>
     (
@@ -511,7 +544,58 @@ export const applyMacroAction =
             console.error('Applying unknown macro action', name)
         }
 
-        const args = action.get('arguments') as List<any>
+        const args = action.get('arguments') as Map<any, any>
+
+        const flags = getLDClient()?.allFlags()
+        const isMacroResponseCcBccEnabled =
+            flags?.[FlagKey.MacroResponseTextCcBcc]
+
+        if (
+            name === MacroActionName.SetResponseText &&
+            isMacroResponseCcBccEnabled &&
+            (args.get('cc') || args.get('bcc'))
+        ) {
+            const {
+                newMessage: {
+                    source: {
+                        type: sourceType,
+                        cc: currentCc,
+                        bcc: currentBcc,
+                        extra: {forward},
+                    },
+                },
+            } = state.newMessage.toJS()
+
+            const cc = getRecipientsArray(args.get('cc'), currentCc)
+            const bcc = getRecipientsArray(args.get('bcc'), currentBcc)
+
+            const {to} = guessReceiversFromTicket(
+                state.ticket,
+                TicketMessageSourceType.Email,
+                getChannelsByType(TicketMessageSourceType.Email)(
+                    state as unknown as StoreState
+                )
+            )
+
+            dispatch(newMessageActions.setSubject(''))
+            dispatch(
+                newMessageActions.setSourceType(TicketMessageSourceType.Email)
+            )
+            dispatch(newMessageActions.setSourceExtra({}))
+            dispatch(
+                newMessageActions.setShowConvertToForwardPopover(
+                    sourceType !== TicketChannel.Email || forward
+                )
+            )
+            dispatch(
+                newMessageActions.setReceivers({
+                    to,
+                    cc,
+                    bcc,
+                })
+            )
+            dispatch(newMessageActions.setSender())
+        }
 
         // should have the same params in state/newMessage/actions/setResponseText
         return dispatch({
@@ -558,11 +642,13 @@ export const applyMacro =
             ;(renderedMacro.get('actions', fromJS([])) as List<any>).forEach(
                 (action: Map<any, any>) => {
                     if (
-                        ['setResponseText', 'addAttachments'].includes(
-                            action.get('name')
-                        )
-                    )
+                        [
+                            MacroActionName.SetResponseText,
+                            MacroActionName.AddAttachments,
+                        ].includes(action.get('name'))
+                    ) {
                         dispatch(applyMacroAction(action))
+                    }
                 }
             )
             dispatch({

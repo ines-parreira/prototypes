@@ -1,0 +1,45 @@
+@import '~css/new/colorTokens';
+
+:local {
+    .wrapper {
+        position: relative;
+    }
+
+    .recipient {
+        display: flex;
+
+        &:not(:last-child) {
+            margin-bottom: 6px;
+        }
+    }
+
+    .fieldLabel {
+        min-width: 40px;
+        margin-right: 8px;
+        text-align: right;
+        font-weight: 500;
+    }
+
+    .currentClient {
+        padding: 0.25em 0.76em;
+        margin: 0 4px 3px 0;
+
+        background: @classic-neutral-grey-2;
+        color: @classic-neutral-grey-6;
+
+        font-weight: 600;
+        font-size: 12px;
+
+        cursor: default;
+        border-radius: 4px;
+    }
+
+    .optionalFields {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        color: @classic-main-primary;
+        cursor: pointer;
+    }
+}

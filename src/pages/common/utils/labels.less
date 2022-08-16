@@ -1,3 +1,5 @@
+@import '~css/new/colorTokens';
+
 :local {
     .AgentLabel,
     .TeamLabel {
@@ -39,5 +41,18 @@
         height: 26px;
         width: 26px;
         margin-right: 0.5rem;
+    }
+
+    .recipientLabel {
+        display: inline-block;
+        padding: 0.25em 0.76em 0.25em 0.76em;
+        margin: 0 4px 4px 0;
+
+        background: @classic-neutral-grey-2;
+        color: @classic-neutral-grey-6;
+        font-weight: 600;
+        font-size: 12px;
+        word-break: break-all;
+        border-radius: 4px;
     }
 }

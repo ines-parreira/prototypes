@@ -7,7 +7,7 @@ import {
     DropdownToggle,
     UncontrolledButtonDropdown,
 } from 'reactstrap'
-import {Map} from 'immutable'
+import {List, Map} from 'immutable'
 
 import {insertText} from 'utils'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
@@ -17,22 +17,36 @@ import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichFi
 import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import useAppSelector from 'hooks/useAppSelector'
+import {MacroActionName} from 'models/macroAction/types'
+import {useFeatureFlags} from 'hooks/useFeatureFlags'
+import {FlagKey} from 'providers/FeatureFlags'
+
+import MacroMessageActionsHeader, {
+    MacroMessageActionsHeaderProps,
+} from '../MacroMessageActionsHeader'
 
 import css from './AddInternalNoteAction.less'
 
 type Props = {
     action: Map<any, any>
+    actions?: List<any>
     updateActionArgs: (index: number, args: Map<any, any>) => void
     index: number
     renderVariables?: boolean
+    convertAction?: MacroMessageActionsHeaderProps['onSelect']
 }
 
 export default function AddInternalNoteAction({
     action,
+    actions,
     updateActionArgs,
     index,
     renderVariables = true,
+    convertAction,
 }: Props) {
+    const {getFlag} = useFeatureFlags()
+    const isMacroResponseCcBccEnabled = getFlag(FlagKey.MacroResponseTextCcBcc)
+
     const hasIntegrationOfTypes = useAppSelector(makeHasIntegrationOfTypes)
     const richArea = useRef<DEPRECATED_RichField>(null)
 
@@ -113,6 +127,15 @@ export default function AddInternalNoteAction({
 
     return (
         <div className={css.field}>
+            {isMacroResponseCcBccEnabled && actions && convertAction && (
+                <MacroMessageActionsHeader
+                    actions={actions}
+                    type={MacroActionName.AddInternalNote}
+                    onSelect={convertAction}
+                >
+                    <span className="font-weight-medium">Internal note</span>
+                </MacroMessageActionsHeader>
+            )}
             <DEPRECATED_RichField
                 ref={richArea}
                 value={{

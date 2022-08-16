@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ConvertToForwardPopover/> should not render popover 1`] = `
+<body>
+  <div>
+    <div />
+  </div>
+</body>
+`;
+
+exports[`<ConvertToForwardPopover/> should render popover 1`] = `
+<body>
+  <div>
+    <div />
+  </div>
+  <div>
+    <div
+      class="fade"
+    >
+      <div
+        class="popover show popover bs-popover-auto"
+        style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+      >
+        <div
+          class="popover-inner"
+          role="tooltip"
+        >
+          <div
+            class="popover-body"
+          >
+            <p>
+              This thread has been converted to email.
+            </p>
+            <button
+              class="wrapper button mr-2 fill primary medium"
+              type="button"
+            >
+              Understood
+            </button>
+            <button
+              class="wrapper button fill secondary medium"
+              type="button"
+            >
+              Change To Forward
+            </button>
+          </div>
+        </div>
+        <span
+          class="arrow"
+        />
+      </div>
+    </div>
+  </div>
+</body>
+`;

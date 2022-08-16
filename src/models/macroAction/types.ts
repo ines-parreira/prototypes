@@ -47,6 +47,10 @@ export type MacroAction = {
         assignee_team?: Team
         subject?: string
         snooze_timedelta?: string
+        to?: string
+        cc?: string
+        bcc?: string
+        from?: string
     }
     description?: string
     name: MacroActionName

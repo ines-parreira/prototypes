@@ -42,6 +42,16 @@ export const isLoading = (name: string) =>
 export const makeIsLoading = (state: RootState) => (name: string) =>
     isLoading(name)(state)
 
+export const getShowConvertToForwardPopover = createSelector<
+    RootState,
+    boolean,
+    NewMessageState
+>(
+    getNewMessageState,
+    (state) =>
+        state.getIn(['state', 'showConvertToForwardPopover'], false) as boolean
+)
+
 export const isDirty = createSelector<RootState, boolean, NewMessageState>(
     getNewMessageState,
     (state) => state.getIn(['state', 'dirty'], false) as boolean
@@ -106,6 +116,15 @@ export const getNewMessageSource = createImmutableSelector<
 >(
     getNewMessage,
     (state) => (state.get('source') || fromJS({})) as Map<any, any>
+)
+
+export const getNewMessageExtra = createSelector<
+    RootState,
+    Map<any, any>,
+    Map<any, any>
+>(
+    getNewMessage,
+    (state) => state.getIn(['source', 'extra'], fromJS({})) as Map<any, any>
 )
 
 export const getNewMessageAttachments = createImmutableSelector<
@@ -217,7 +236,7 @@ export const getNewMessageRecipients = createImmutableSelector<
                     const recipients = getFromSource(prop)
                     let nextResult = result
                     recipients.forEach((recipient) => {
-                        nextResult = result.push(fromJS(recipient))
+                        nextResult = nextResult.push(fromJS(recipient))
                     })
                     return nextResult
                 }, fromJS([]))

@@ -6,10 +6,11 @@ import {
     DropdownMenu,
     DropdownItem,
 } from 'reactstrap'
-import {Map} from 'immutable'
+import {List, Map} from 'immutable'
 import {EditorState} from 'draft-js'
 
 import Button from 'pages/common/components/button/Button'
+import Tip from 'pages/common/components/tip/Tip'
 import {insertText} from 'utils'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 import {getVariables} from 'config/ticket'
@@ -18,17 +19,40 @@ import {RootState} from 'state/types'
 import {IntegrationType} from 'models/integration/types'
 import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import * as integrationsSelectors from 'state/integrations/selectors'
+import {MacroActionName} from 'models/macroAction/types'
+import {FlagKey} from 'providers/FeatureFlags'
+import FeatureFlagsContext from 'providers/FeatureFlags/context'
+
+import MacroMessageActionsHeader, {
+    MacroMessageActionsHeaderProps,
+} from '../MacroMessageActionsHeader'
+import MacroReplyActionControls, {
+    onFieldChange,
+} from '../MacroReplyActionControls'
 
 type Props = {
     action: Map<string, any>
+    actions?: List<any>
     index: number
     ignoredVariables?: string[]
     updateActionArgs: (index: number, args: Map<string, any>) => void
     toolbarOnTop?: boolean
+    convertAction?: MacroMessageActionsHeaderProps['onSelect']
 } & ConnectedProps<typeof connector>
 
-export class SetResponseTextAction extends Component<Props> {
+type State = {
+    showCcTip: boolean
+}
+
+export class SetResponseTextAction extends Component<Props, State> {
     richArea?: DEPRECATED_RichField | null
+
+    constructor(props: Props) {
+        super(props)
+        this.state = {
+            showCcTip: false,
+        }
+    }
 
     _insertText = (text: string) => {
         if (!this.richArea) {
@@ -42,6 +66,17 @@ export class SetResponseTextAction extends Component<Props> {
         // we do it on insertion so we do not have focus/cursor position errors
         editorState = attachEntitiesToVariables(editorState, true)
         this.richArea.setEditorState(editorState)
+    }
+
+    _setField: onFieldChange = (field, value) => {
+        const args: Map<any, any> = this.props.action.get('arguments')
+
+        this.props.updateActionArgs(
+            this.props.index,
+            args.merge({
+                [field]: value,
+            })
+        )
     }
 
     _setResponseText = (editorState: EditorState) => {
@@ -120,7 +155,7 @@ export class SetResponseTextAction extends Component<Props> {
     }
 
     render() {
-        const {action, toolbarOnTop} = this.props
+        const {action, actions, convertAction, toolbarOnTop} = this.props
 
         const toolbar = (
             <div className="textarea-toolbar">
@@ -128,8 +163,55 @@ export class SetResponseTextAction extends Component<Props> {
             </div>
         )
 
+        const {cc, bcc} = (action.get('arguments') as Map<any, any>).toJS()
+
         return (
             <div className="field">
+                <FeatureFlagsContext.Consumer>
+                    {({getFlag}) => {
+                        const isMacroResponseCcBccEnabled = getFlag(
+                            FlagKey.MacroResponseTextCcBcc
+                        )
+
+                        if (!isMacroResponseCcBccEnabled) {
+                            return
+                        }
+
+                        return (
+                            <>
+                                {(this.state.showCcTip || cc || bcc) && (
+                                    <Tip
+                                        icon={true}
+                                        actionLabel="Got It"
+                                        storageKey="response-cc"
+                                        className="mb-2"
+                                    >
+                                        If a cc is applied and the original
+                                        message channel is not email then the
+                                        entire thread will be converted to
+                                        email.
+                                    </Tip>
+                                )}
+                                {actions && convertAction && (
+                                    <MacroMessageActionsHeader
+                                        actions={actions}
+                                        type={MacroActionName.SetResponseText}
+                                        onSelect={convertAction}
+                                    >
+                                        <MacroReplyActionControls
+                                            fields={{cc, bcc}}
+                                            onChange={this._setField}
+                                            onShowCcBcc={() =>
+                                                this.setState({showCcTip: true})
+                                            }
+                                            showCcBccTooltip
+                                        />
+                                    </MacroMessageActionsHeader>
+                                )}
+                            </>
+                        )
+                    }}
+                </FeatureFlagsContext.Consumer>
                 {toolbarOnTop && toolbar}
                 <DEPRECATED_RichField
                     ref={(richArea) => {

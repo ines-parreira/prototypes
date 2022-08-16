@@ -1,5 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`new message selectors getNewMessageRecipients() should return all recipients 1`] = `
+Immutable.List [
+  Immutable.Map {
+    "address": "to1@to.com",
+  },
+  Immutable.Map {
+    "address": "to2@to.com",
+  },
+  Immutable.Map {
+    "address": "cc1@cc.com",
+  },
+  Immutable.Map {
+    "address": "cc2@cc.com",
+  },
+  Immutable.Map {
+    "address": "bcc1@bcc.com",
+  },
+  Immutable.Map {
+    "address": "bcc2@bcc.com",
+  },
+]
+`;
+
 exports[`new message selectors getNewMessageSignature() should return a rendered signature (email address) 1`] = `
 Immutable.Map {
   "text": "Cheers, Steve",

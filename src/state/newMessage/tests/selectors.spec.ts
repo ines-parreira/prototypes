@@ -229,6 +229,33 @@ describe('new message selectors', () => {
         })
     })
 
+    describe('getNewMessageRecipients()', () => {
+        it('should return all recipients', () => {
+            state = {
+                newMessage: initialState.mergeDeep({
+                    newMessage: {
+                        source: {
+                            to: [
+                                {address: 'to1@to.com'},
+                                {address: 'to2@to.com'},
+                            ],
+                            cc: [
+                                {address: 'cc1@cc.com'},
+                                {address: 'cc2@cc.com'},
+                            ],
+                            bcc: [
+                                {address: 'bcc1@bcc.com'},
+                                {address: 'bcc2@bcc.com'},
+                            ],
+                        },
+                    },
+                }),
+            } as RootState
+
+            expect(selectors.getNewMessageRecipients(state)).toMatchSnapshot()
+        })
+    })
+
     describe('isNewMessageEmailExtraAdded', () => {
         it('should return the emailExtraAdded of the new message state', () => {
             state.newMessage = state.newMessage.setIn(

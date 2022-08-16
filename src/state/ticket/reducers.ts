@@ -469,6 +469,7 @@ export default function reducer(
                         '_internal',
                         'pendingMessages',
                     ]) || fromJS([])) as List<any>
+
                     // pending messages don't have an id we can match on
                     const pendingIndex = getPendingMessageIndex(
                         pendingMessages.toJS(),

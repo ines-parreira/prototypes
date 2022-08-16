@@ -152,7 +152,7 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
         <button
           aria-expanded="false"
           aria-haspopup="true"
-          class="dropdown-toggle btn btn-primary"
+          class="dropdown-toggle btn btn-secondary"
           type="button"
         >
           Add action

@@ -7,7 +7,7 @@
     .arrow {
         position: absolute;
         // use a string otherwise LESS calculates `50% - 10px`
-        top: ~'calc(50% - 10px)';
+        top: ~'calc(50% - 8px)';
         right: 9px;
         z-index: 1;
 
@@ -19,15 +19,17 @@
         appearance: none;
 
         position: relative;
-        padding: 0.38em 24px 0.38em 0.76em;
+        padding: 0.25em 24px 0.25em 0.76em;
         margin: 0 4px 2px 0;
         outline: none !important; // prevent outline from focus
-        background: @classic-neutral-grey-1;
+        background: @classic-neutral-grey-2;
         border: 0;
         cursor: pointer;
 
         color: @classic-neutral-grey-6;
-        font-weight: 500;
+        font-weight: 600;
+        font-size: 12px;
         white-space: nowrap;
+        border-radius: 4px;
     }
 }

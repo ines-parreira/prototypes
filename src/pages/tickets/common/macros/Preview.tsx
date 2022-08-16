@@ -1,7 +1,7 @@
 import React, {Component, ComponentProps} from 'react'
 import classnames from 'classnames'
 import {Badge} from 'reactstrap'
-import {Map, List} from 'immutable'
+import {Map, List, fromJS} from 'immutable'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
 import {isRichType} from 'config/ticket'
@@ -16,11 +16,14 @@ import {
     StatusLabel,
     TimedeltaLabel,
     TeamLabel,
+    RecipientsLabel,
 } from 'pages/common/utils/labels'
 import {
     fileIconFromContentType,
     getSortedIntegrationActions,
 } from 'pages/tickets/common/utils'
+import {FlagKey} from 'providers/FeatureFlags'
+import FeatureFlagsContext from 'providers/FeatureFlags/context'
 import {getActionTemplate} from 'utils'
 import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
 import {ActionTemplateExecution} from 'config'
@@ -89,14 +92,62 @@ class Preview extends Component<Props> {
             value.html = html
         }
 
+        const {cc, bcc} = (
+            responseTextAction.get('arguments', fromJS({})) as Map<any, any>
+        ).toJS()
+
         return (
-            <div className={css.macroData}>
-                <DEPRECATED_RichField
-                    value={value}
-                    onChange={() => null}
-                    displayOnly
-                />
-            </div>
+            <>
+                <FeatureFlagsContext.Consumer>
+                    {({getFlag}) => {
+                        const isMacroResponseCcBccEnabled = getFlag(
+                            FlagKey.MacroResponseTextCcBcc
+                        )
+
+                        if (!isMacroResponseCcBccEnabled) {
+                            return
+                        }
+
+                        return (
+                            <>
+                                {cc && (
+                                    <div
+                                        className={classnames(
+                                            css.macroData,
+                                            css.recipientsWrapper
+                                        )}
+                                    >
+                                        <strong className="text-muted mr-2">
+                                            Add as CC:
+                                        </strong>
+                                        <RecipientsLabel recipients={cc} />
+                                    </div>
+                                )}
+                                {bcc && (
+                                    <div
+                                        className={classnames(
+                                            css.macroData,
+                                            css.recipientsWrapper
+                                        )}
+                                    >
+                                        <strong className="text-muted mr-2">
+                                            Add as BCC:
+                                        </strong>
+                                        <RecipientsLabel recipients={bcc} />
+                                    </div>
+                                )}
+                            </>
+                        )
+                    }}
+                </FeatureFlagsContext.Consumer>
+                <div className={css.macroData}>
+                    <DEPRECATED_RichField
+                        value={value}
+                        onChange={() => null}
+                        displayOnly
+                    />
+                </div>
+            </>
         )
     }
 

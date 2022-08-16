@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MacroMessageActionsHeader should not fire onSelect on used option 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="dropdown btn-group"
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="dropdownToggle dropdown-toggle btn btn-"
+      type="button"
+    >
+      <i
+        class="material-icons"
+      >
+        reply
+      </i>
+    </button>
+    <div
+      aria-hidden="true"
+      class="dropdownMenu dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      <div
+        class="menu"
+      >
+        <button
+          class="dropdownItem dropdown-item"
+          id="macro-action-header-item-setResponseText"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <i
+            class="material-icons"
+          >
+            reply
+          </i>
+          <span>
+            Response text
+          </span>
+          <i
+            class="material-icons"
+          >
+            check
+          </i>
+        </button>
+        <button
+          class="dropdownItem dropdownItemDisabled dropdown-item"
+          id="macro-action-header-item-addInternalNote"
+          role="menuitem"
+          tabindex="0"
+          type="button"
+        >
+          <i
+            class="material-icons"
+          >
+            note
+          </i>
+          <span>
+            Internal note
+          </span>
+          <i
+            class="material-icons"
+          >
+            check
+          </i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="content"
+  >
+    test
+  </div>
+</div>
+`;

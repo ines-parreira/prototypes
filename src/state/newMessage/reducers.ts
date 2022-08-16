@@ -194,6 +194,13 @@ export default function reducer(
                 )
         }
 
+        case types.NEW_MESSAGE_SHOW_CONVERT_TO_FORWARD_POPOVER: {
+            return state.setIn(
+                ['state', 'showConvertToForwardPopover'],
+                action.payload
+            )
+        }
+
         case types.NEW_MESSAGE_SUBMIT_TICKET_START: {
             return state
                 .setIn(['_internal', 'loading', 'submitMessage'], true)

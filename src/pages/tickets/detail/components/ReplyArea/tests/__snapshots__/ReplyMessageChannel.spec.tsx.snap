@@ -13,6 +13,11 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -20,6 +25,13 @@ exports[`ReplyMessageChannel component existing ticket with last message as chat
           type="chat"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -107,6 +119,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -114,6 +131,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type chat
           type="chat"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -201,6 +225,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -208,6 +237,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type emai
           type="email"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -284,6 +320,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -291,6 +332,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
           type="facebook-comment"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -378,6 +426,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -385,6 +438,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
           type="facebook-mention-comment"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -472,6 +532,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -479,6 +544,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
           type="facebook-mention-comment"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -566,6 +638,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -573,6 +650,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
           type="facebook-messenger"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -660,6 +744,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -667,6 +756,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type face
           type="facebook-comment"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -754,6 +850,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -761,6 +862,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
           type="instagram-ad-comment"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -848,6 +956,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -855,6 +968,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
           type="instagram-ad-comment"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -942,6 +1062,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -949,6 +1074,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
           type="instagram-comment"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -1036,6 +1168,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -1043,6 +1180,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type inst
           type="instagram-comment"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -1130,6 +1274,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -1137,6 +1286,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
           type="twitter-mention-tweet"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -1224,6 +1380,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -1231,6 +1392,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
           type="twitter-quoted-tweet"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -1318,6 +1486,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -1325,6 +1498,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type twit
           type="twitter-tweet"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -1412,6 +1592,11 @@ exports[`ReplyMessageChannel component existing ticket with message of type yotp
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -1419,6 +1604,13 @@ exports[`ReplyMessageChannel component existing ticket with message of type yotp
           type="yotpo-review"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -1517,6 +1709,11 @@ exports[`ReplyMessageChannel component existing ticket without messages 1`] = `
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -1524,6 +1721,13 @@ exports[`ReplyMessageChannel component existing ticket without messages 1`] = `
           type="email"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -1578,6 +1782,11 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -1585,6 +1794,13 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
           type="email"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -1649,6 +1865,11 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -1656,6 +1877,13 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
           type="email"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"
@@ -1721,6 +1949,11 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
         caret={true}
         className="dropdownToggle"
         color=""
+        innerRef={
+          Object {
+            "current": null,
+          }
+        }
         type="button"
       >
         <SourceIcon
@@ -1728,6 +1961,13 @@ exports[`ReplyMessageChannel component should render option "Make outbound call"
           type="email"
         />
       </DropdownToggle>
+      <ConvertToForwardPopover
+        target={
+          Object {
+            "current": null,
+          }
+        }
+      />
       <DropdownMenu
         flip={true}
         tag="div"

@@ -89,6 +89,38 @@ export class MacroEdit extends Component<Props> {
         this.props.setActions(actions)
     }
 
+    _replaceAction = (index: number, actionName: MacroActionName) => {
+        const replyActions = [
+            MacroActionName.SetResponseText,
+            MacroActionName.AddInternalNote,
+        ]
+
+        const currentAction = this.props.actions.get(index) as Map<any, any>
+        let newAction = generateDefaultAction(actionName)!
+
+        if (
+            [currentAction.get('name'), actionName].every((action) =>
+                replyActions.includes(action)
+            )
+        ) {
+            let args = (currentAction.get('arguments') as Map<any, any>).delete(
+                'to'
+            )
+
+            if (currentAction.get('name') === MacroActionName.AddInternalNote) {
+                args = Map({
+                    body_text: args.get('body_text'),
+                    body_html: args.get('body_html'),
+                })
+            }
+
+            newAction = newAction.set('arguments', args)
+        }
+
+        const actions = this.props.actions.set(index, newAction)
+        this.props.setActions(actions)
+    }
+
     _addAttachment = (index: number, files: Attachment[]) => {
         const actions = this.props.actions.updateIn(
             [index, 'arguments', 'attachments'],
@@ -201,7 +233,11 @@ export class MacroEdit extends Component<Props> {
                         <SetResponseTextAction
                             index={index}
                             action={action}
+                            actions={this.props.actions}
                             updateActionArgs={this._updateActionArguments}
+                            convertAction={(type) =>
+                                this._replaceAction(index, type)
+                            }
                         />
                     ),
                 }
@@ -213,7 +249,11 @@ export class MacroEdit extends Component<Props> {
                         <AddInternalNoteAction
                             index={index}
                             action={action}
+                            actions={this.props.actions}
                             updateActionArgs={this._updateActionArguments}
+                            convertAction={(type) =>
+                                this._replaceAction(index, type)
+                            }
                         />
                     ),
                 }
@@ -393,7 +433,11 @@ export class MacroEdit extends Component<Props> {
                         })}
                     <div className="mt-3">
                         <UncontrolledButtonDropdown className="mr-2">
-                            <DropdownToggle color="primary" caret type="button">
+                            <DropdownToggle
+                                color="secondary"
+                                caret
+                                type="button"
+                            >
                                 Add action
                             </DropdownToggle>
                             {this.renderNewActionMenu()}

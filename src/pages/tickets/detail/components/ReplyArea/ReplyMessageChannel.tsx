@@ -22,6 +22,7 @@ import MultiSelectAsyncField from './MessageSourceFields/components/MultiSelectA
 import MessageSourceFields from './MessageSourceFields/MessageSourceFields'
 
 import css from './ReplyMessageChannel.less'
+import ConvertToForwardPopover from './ConvertToForwardPopover'
 
 const changeReceiversAllowedSourceTypes = [
     TicketMessageSourceType.Email,
@@ -45,6 +46,13 @@ export class ReplyMessageChannelContainer extends Component<Props> {
     channelPickerRef: Maybe<HTMLDivElement>
     messageChannelRef: Maybe<HTMLDivElement>
     multiSelectAsyncFieldRef?: MultiSelectAsyncField | null
+    replyMessageChannelToggle: React.RefObject<HTMLElement>
+
+    constructor(props: Props) {
+        super(props)
+
+        this.replyMessageChannelToggle = React.createRef()
+    }
 
     componentDidMount() {
         window.addEventListener('click', this.updateMessageSourceFieldsOpening)
@@ -217,9 +225,13 @@ export class ReplyMessageChannelContainer extends Component<Props> {
                             color=""
                             type="button"
                             className={css.dropdownToggle}
+                            innerRef={this.replyMessageChannelToggle}
                         >
                             <SourceIcon type={iconLabel} className="md-2" />
                         </DropdownToggle>
+                        <ConvertToForwardPopover
+                            target={this.replyMessageChannelToggle}
+                        />
                         <DropdownMenu>
                             {suggestEmail && (
                                 <DropdownItem
