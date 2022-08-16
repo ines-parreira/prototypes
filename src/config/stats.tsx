@@ -309,7 +309,7 @@ export type StatConfig = {
         label: string
         tooltip: string
     }
-    tableOptions?: {showLines: number}
+    tableOptions?: {showLines: number; moreIsBetter: boolean}
 }
 
 export type StatMap = Map<keyof StatConfig, ValueOf<StatConfig>>
@@ -1725,7 +1725,7 @@ export const stats = toImmutable<
             </a>
         ),
         axisHelpers: {
-            'Percentage of tickets':
+            '% of issues reported':
                 'Percentage of tickets for a given reason compared to all auto-generated chat tickets  when customers report an issue in self-service.',
         },
         style: 'table',
@@ -1733,10 +1733,11 @@ export const stats = toImmutable<
         downloadable: true,
         tableOptions: {
             showLines: 6,
+            moreIsBetter: true,
         },
         callbacks: {
             cell: ({value, axis}) => {
-                if (axis.name === 'Reason') {
+                if (axis.name === 'Issue') {
                     const translatedIssue = (
                         REASONS_DROPDOWN_OPTIONS as SelectableOption[]
                     ).find(

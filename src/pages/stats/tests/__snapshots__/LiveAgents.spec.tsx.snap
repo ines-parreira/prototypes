@@ -714,7 +714,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                   <div>
                     <div
                       class="statusDot isOnline"
-                      id="Online-time-0-tooltip"
+                      id="Online-time-tooltip-0"
                     />
                     <span>
                       7h 42m 

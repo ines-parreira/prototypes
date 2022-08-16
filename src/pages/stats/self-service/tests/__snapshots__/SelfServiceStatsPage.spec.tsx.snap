@@ -1076,7 +1076,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                 <span
                   class="cell-wrapper"
                 >
-                  REASON
+                  ISSUE
                 </span>
               </th>
               <th
@@ -1094,13 +1094,13 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                 <span
                   class="cell-wrapper"
                 >
-                  PERCENTAGE OF TICKETS
+                  % OF ISSUES REPORTED
                   <span
                     class="axisHelperIcon"
                   >
                     <i
                       class="material-icons ml-2 helpIcon"
-                      id="Percentage-of-tickets-tooltip"
+                      id="percent-of-issues-reported-tooltip"
                     >
                       info_outline
                     </i>
@@ -1163,7 +1163,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                     >
                       <span>
                         <i
-                          class="material-icons mr-1 statsDifference"
+                          class="material-icons mr-1 statsDifference positive"
                         >
                           arrow_upward
                         </i>

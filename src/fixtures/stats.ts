@@ -1784,7 +1784,7 @@ export const selfServiceTopReportedIssues: Stat<TwoDimensionalChart> = {
             axes: {
                 x: [
                     {
-                        name: 'Reason',
+                        name: 'Issue',
                         type: StatType.IssueReason,
                     },
                     {
@@ -1792,7 +1792,7 @@ export const selfServiceTopReportedIssues: Stat<TwoDimensionalChart> = {
                         type: StatType.Number,
                     },
                     {
-                        name: 'Percentage of tickets',
+                        name: '% of issues reported',
                         type: StatType.Percent,
                     },
                     {

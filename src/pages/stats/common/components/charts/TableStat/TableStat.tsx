@@ -57,6 +57,11 @@ export class TableStat extends Component<
         expanded: false,
     }
 
+    _getTooltipId = (axis: Map<any, any>) =>
+        `${(axis.get('name') as string)
+            .replace(/%/g, 'percent')
+            .replace(/ /g, '-')}-tooltip`
+
     // Render a table cell depending on its value type (percent, date, delta, etc.)
     _renderCell = (
         line: List<any>,
@@ -108,10 +113,7 @@ export class TableStat extends Component<
                 )
             }
             case StatValueType.OnlineTime: {
-                const tooltipId = `${(axis.get('name') as string).replace(
-                    ' ',
-                    '-'
-                )}-${lineIndex}-tooltip`
+                const tooltipId = `${this._getTooltipId(axis)}-${lineIndex}`
                 const value = Math.floor(metric.get('value', 2) / 60) * 60
 
                 return (
@@ -220,6 +222,10 @@ export class TableStat extends Component<
                                     callback as StatConfigCallbacks<ReactText>['cell']
                                 )(callbackData, callbackContext)}
                                 percentage={metric.get('value')}
+                                moreIsBetter={config.getIn([
+                                    'tableOptions',
+                                    'moreIsBetter',
+                                ])}
                             />
                         </span>
                         <Tooltip placement="top" target={id}>
@@ -371,9 +377,7 @@ export class TableStat extends Component<
                             {(
                                 data.getIn(['axes', 'x']) as List<Map<any, any>>
                             ).map((axe, index) => {
-                                const axisId = `${(
-                                    axe!.get('name') as string
-                                ).replace(/ /g, '-')}-tooltip`
+                                const axisId = this._getTooltipId(axe!)
                                 return (
                                     <th
                                         key={index}

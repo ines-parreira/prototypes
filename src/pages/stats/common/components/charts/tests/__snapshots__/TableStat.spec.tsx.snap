@@ -287,10 +287,10 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             <div>
               <div
                 className="statusDot isOnline"
-                id="Online-time-0-tooltip"
+                id="Online-time-tooltip-0"
               />
               <Tooltip
-                target="Online-time-0-tooltip"
+                target="Online-time-tooltip-0"
               >
                 <b>
                   Timezone 
@@ -544,10 +544,10 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             <div>
               <div
                 className="statusDot isOnline"
-                id="Online-time-1-tooltip"
+                id="Online-time-tooltip-1"
               />
               <Tooltip
-                target="Online-time-1-tooltip"
+                target="Online-time-tooltip-1"
               >
                 <b>
                   Timezone 
@@ -982,10 +982,10 @@ exports[`TableStat should render a table chart 1`] = `
             <div>
               <div
                 className="statusDot isOnline"
-                id="Online-time-0-tooltip"
+                id="Online-time-tooltip-0"
               />
               <Tooltip
-                target="Online-time-0-tooltip"
+                target="Online-time-tooltip-0"
               >
                 <b>
                   Timezone 
@@ -1415,10 +1415,10 @@ exports[`TableStat should render a table with the expand button and one line vis
             <div>
               <div
                 className="statusDot isOnline"
-                id="Online-time-0-tooltip"
+                id="Online-time-tooltip-0"
               />
               <Tooltip
-                target="Online-time-0-tooltip"
+                target="Online-time-tooltip-0"
               >
                 <b>
                   Timezone 
