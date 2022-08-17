@@ -179,7 +179,7 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
           <li>
             <a
               class="actionLink"
-              href="https://docs.gorgias.com/ecommerce-integrations"
+              href="https://docs.gorgias.com/bigcommerce-105241"
               rel="noopener noreferrer"
               target="_blank"
             >

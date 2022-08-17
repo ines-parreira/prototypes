@@ -333,7 +333,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         company: 'Gorgias',
         companyUrl: 'https://www.gorgias.com/',
         privacyPolicy: 'https://www.bigcommerce.com/privacy/',
-        setupGuide: 'https://docs.gorgias.com/ecommerce-integrations',
+        setupGuide: 'https://docs.gorgias.com/bigcommerce-105241',
         hasFreeTrial: true,
         freeTrialPeriod: TrialPeriod.CUSTOM,
     },
