@@ -224,7 +224,6 @@ export class SetResponseTextAction extends Component<Props, State> {
                     onChange={this._setResponseText}
                     spellCheck
                     productCardsEnabled={false}
-                    allowExternalChanges
                     placeholder="Type {{ for variables }}"
                 />
                 {!toolbarOnTop && toolbar}
