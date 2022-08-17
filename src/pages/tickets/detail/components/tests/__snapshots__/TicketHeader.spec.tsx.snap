@@ -22,6 +22,18 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
       />
     </div>
     <div
+      class="ticketIdContainer"
+    >
+      <button
+        class="wrapper ticketIdButton ghost secondary small"
+        id="copy-ticket-id-152-tooltip-trigger"
+        type="button"
+      >
+        ID: 
+        152
+      </button>
+    </div>
+    <div
       class="dropdown"
     >
       <button
@@ -584,6 +596,18 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
       />
     </div>
     <div
+      class="ticketIdContainer"
+    >
+      <button
+        class="wrapper ticketIdButton ghost secondary small"
+        id="copy-ticket-id-152-tooltip-trigger"
+        type="button"
+      >
+        ID: 
+        152
+      </button>
+    </div>
+    <div
       class="headerIcon"
     >
       <i
@@ -940,6 +964,18 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
         type="text"
         value="Great ticket"
       />
+    </div>
+    <div
+      class="ticketIdContainer"
+    >
+      <button
+        class="wrapper ticketIdButton ghost secondary small"
+        id="copy-ticket-id-152-tooltip-trigger"
+        type="button"
+      >
+        ID: 
+        152
+      </button>
     </div>
     <div
       class="headerIcon"
