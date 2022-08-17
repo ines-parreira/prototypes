@@ -136,8 +136,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                                     'btn-loading': isRowSubmitting,
                                 })}
                                 onClick={(e) => {
-                                    const uri = `${gmailRedirectUri}?
-                                    integration_id=${
+                                    const uri = `${gmailRedirectUri}?integration_id=${
                                         integration.get('id') as number
                                     }`
                                     e.preventDefault()
