@@ -32,25 +32,23 @@ exports[`<Preview /> should multiple actions preview 1`] = `
     </span>
   </div>
   <div
-    class="macroData integrationActions"
+    class="macroData"
   >
     <strong
-      class="text-muted mr-2"
+      class="text-muted mr-2 align-middle"
     >
-      Internal note
-       actions:
+      Send internal note:
     </strong>
-    <div
-      class="integrationAction"
+    <span
+      class="material-icons mr-2 internalNoteIcon"
     >
-      <img
-        alt="addInternalNote logo"
-        class="logo"
-        role="presentation"
-        src="test-file-stub"
-      />
+      note
+    </span>
+    <span
+      class="internalNote"
+    >
       Add internal note
-    </div>
+    </span>
   </div>
 </div>
 `;
@@ -60,25 +58,23 @@ exports[`<Preview /> should render backend action preview 1`] = `
   class="component"
 >
   <div
-    class="macroData integrationActions"
+    class="macroData"
   >
     <strong
-      class="text-muted mr-2"
+      class="text-muted mr-2 align-middle"
     >
-      Internal note
-       actions:
+      Send internal note:
     </strong>
-    <div
-      class="integrationAction"
+    <span
+      class="material-icons mr-2 internalNoteIcon"
     >
-      <img
-        alt="addInternalNote logo"
-        class="logo"
-        role="presentation"
-        src="test-file-stub"
-      />
+      note
+    </span>
+    <span
+      class="internalNote"
+    >
       Add internal note
-    </div>
+    </span>
   </div>
 </div>
 `;

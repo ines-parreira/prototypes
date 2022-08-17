@@ -29,6 +29,7 @@ type AvailableActions =
     | MacroActionName.SetTeamAssignee
     | MacroActionName.SetSubject
     | MacroActionName.AddAttachments
+    | MacroActionName.AddInternalNote
 
 const ACTION_COMPONENT_MAPPER: Record<
     AvailableActions,
@@ -41,6 +42,7 @@ const ACTION_COMPONENT_MAPPER: Record<
     [MacroActionName.SetTeamAssignee]: SimpleActionPreview,
     [MacroActionName.SetSubject]: SimpleActionPreview,
     [MacroActionName.AddAttachments]: SimpleActionPreview,
+    [MacroActionName.AddInternalNote]: SimpleActionPreview,
 }
 
 export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
@@ -51,7 +53,6 @@ export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
     const simpleActions = actions.filter(
         (action) =>
             action.name !== MacroActionName.SetResponseText &&
-            action.name !== MacroActionName.AddInternalNote &&
             getActionTemplate(action.name)?.execution !==
                 ActionTemplateExecution.External
     )
@@ -59,8 +60,7 @@ export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
     const complexActions = actions.filter(
         (action) =>
             getActionTemplate(action.name)?.execution ===
-                ActionTemplateExecution.External ||
-            action.name === MacroActionName.AddInternalNote
+            ActionTemplateExecution.External
     )
 
     const hasSimpleActions = simpleActions.length > 0

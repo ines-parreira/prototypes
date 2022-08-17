@@ -1,6 +1,7 @@
 import React from 'react'
 import {Badge} from 'reactstrap'
 
+import classnames from 'classnames'
 import {MacroAction, MacroActionName} from 'models/macroAction/types'
 import * as Label from 'pages/common/utils/labels'
 import {fileIconFromContentType} from 'pages/tickets/common/utils'
@@ -57,6 +58,20 @@ export const SimpleActionPreview = ({action}: Props) => {
                         <span>{file.name}</span>
                     </Badge>
                 ))
+            case MacroActionName.AddInternalNote:
+                return (
+                    <Badge className={css.internalNote}>
+                        <span
+                            className={classnames(
+                                'material-icons mr-2',
+                                css.internalNoteIcon
+                            )}
+                        >
+                            note
+                        </span>
+                        <span>{action.title}</span>
+                    </Badge>
+                )
             default:
                 break
         }

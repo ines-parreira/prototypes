@@ -251,6 +251,26 @@ class Preview extends Component<Props> {
         )
     }
 
+    renderInternalNote(action?: Map<string, any>) {
+        if (!action) return null
+        return (
+            <div className={css.macroData}>
+                <strong className="text-muted mr-2 align-middle">
+                    Send internal note:
+                </strong>
+                <span
+                    className={classnames(
+                        'material-icons mr-2',
+                        css.internalNoteIcon
+                    )}
+                >
+                    note
+                </span>
+                <span className={css.internalNote}>{action.get('title')}</span>
+            </div>
+        )
+    }
+
     renderActions(integrationType: string, integrationActions: List<any>) {
         if (!integrationActions?.size) return null
 
@@ -293,8 +313,7 @@ class Preview extends Component<Props> {
                 .filter(
                     (action) =>
                         getActionTemplate(action?.get('name'))?.execution ===
-                            ActionTemplateExecution.External ||
-                        action?.get('name') === MacroActionName.AddInternalNote
+                        ActionTemplateExecution.External
                 )
                 .toList()
         )
@@ -324,6 +343,9 @@ class Preview extends Component<Props> {
                     findAction(MacroActionName.SetTeamAssignee)
                 )}
                 {this.renderSetSubject(findAction(MacroActionName.SetSubject))}
+                {this.renderInternalNote(
+                    findAction(MacroActionName.AddInternalNote)
+                )}
                 {this.renderIntegrations(actions)}
                 {this.renderAddAttachments(
                     findAction(MacroActionName.AddAttachments)
