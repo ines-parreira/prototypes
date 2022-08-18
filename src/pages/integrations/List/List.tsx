@@ -32,7 +32,6 @@ import css from 'pages/settings/settings.less'
 import {getCheapestPlanNameForFeature} from 'utils/paywalls'
 
 import IntegrationListRow from './Row'
-import {checkBigCommerceAccess} from './checkFeatureAccess'
 
 export const List = ({
     currentPlan,
@@ -41,7 +40,6 @@ export const List = ({
     integrationsList,
     activeIntegrations,
     allowedIntegrations,
-    accountDomain,
 }: ConnectedProps<typeof connector>) => {
     const [isLoading, setLoading] = useState(true)
     const [apps, setApps] = useState<AppListItem[]>([])
@@ -195,13 +193,6 @@ export const List = ({
                 return false
             }
 
-            if (
-                integration.type === IntegrationType.BigCommerce &&
-                !checkBigCommerceAccess(accountDomain)
-            ) {
-                return false
-            }
-
             return true
         })
         .map((integration) => {
@@ -281,7 +272,6 @@ const connector = connect((state: RootState) => ({
     integrations: getIntegrations(state),
     integrationsList: getIntegrationsList(state),
     plans: getBillingState(state).plans,
-    accountDomain: state.currentAccount.get('domain') as string,
 }))
 
 export default connector(List)
