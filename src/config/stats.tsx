@@ -525,12 +525,8 @@ export const stats = toImmutable<
                         ) {
                             return index % 2 === 0
                                 ? moment
-                                      .utc(
-                                          moment.unix(
-                                              parseInt(
-                                                  this.getLabelForValue(val)
-                                              )
-                                          )
+                                      .unix(
+                                          parseInt(this.getLabelForValue(val))
                                       )
                                       .format('h a')
                                 : ''
