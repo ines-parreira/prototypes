@@ -238,10 +238,10 @@ export const IntegrationDetail = ({
     })
 
     useUpdateEffect(() => {
-        if (integrationId && !['new', 'setup'].includes(integrationId)) {
+        if (integrationId && isIntegrationId) {
             actions.fetchIntegration(integrationId, integrationType)
         }
-    }, [integrationId])
+    }, [integrationId, isIntegrationId])
 
     switch (integrationType) {
         case IntegrationType.Aircall:

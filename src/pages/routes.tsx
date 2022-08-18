@@ -7,6 +7,7 @@ import {
     useLocation,
 } from 'react-router-dom'
 import {useUpdateEffect} from 'react-use'
+import _memoize from 'lodash/memoize'
 
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
 import {PageSection} from 'config/pages'
@@ -104,6 +105,8 @@ import AutomationMacros from './stats/AutomationMacros'
 import AutomationIntents from './stats/AutomationIntents'
 import SelfServiceStatsPage from './stats/self-service/SelfServiceStatsPage'
 import TwilioSubaccountStatusForm from './tasks/detail/TwilioSubaccountStatusForm'
+
+const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
 
@@ -226,7 +229,7 @@ export function CustomerRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:customerId/edit-widgets`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         CustomerSourceContainer,
                         ADMIN_ROLE,
                         undefined,
@@ -301,7 +304,7 @@ export function UserRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:customerId/edit-widgets`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         CustomerSourceContainer,
                         ADMIN_ROLE,
                         undefined,
@@ -335,7 +338,7 @@ export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
                 path={`${path}/:ticketId/edit-widgets`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         TicketSourceContainer,
                         ADMIN_ROLE,
                         undefined,
@@ -593,7 +596,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/audit`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         UserAuditList,
                         ADMIN_ROLE,
                         PageSection.Audit
@@ -608,7 +611,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/manage-tags`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         ManageTagsContainer,
                         AGENT_ROLE,
                         PageSection.ManageTags
@@ -620,7 +623,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
             <Route
                 path={`${path}/access`}
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         Access,
                         ADMIN_ROLE,
                         PageSection.Access
@@ -638,7 +641,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                         undefined,
                         satisfactionPaywallConfig
                     )(
-                        withUserRoleRequired(
+                        memoizedWithUserRoleRequired(
                             SatisfactionSurveyView,
                             ADMIN_ROLE,
                             PageSection.SatisfactionSurveys
@@ -650,7 +653,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
             <Route
                 path={`${path}/business-hours`}
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         BusinessHours,
                         ADMIN_ROLE,
                         PageSection.BusinessHours
@@ -663,7 +666,7 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/ticket-assignment`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         TicketAssignment,
                         ADMIN_ROLE,
                         PageSection.TicketAssignment
@@ -685,7 +688,7 @@ export function IntegrationsSettingsRoutes({
                     path={`${path}/`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             IntegrationsList,
                             ADMIN_ROLE,
                             PageSection.Integrations
@@ -697,7 +700,10 @@ export function IntegrationsSettingsRoutes({
                     path={`${path}/app/:appId`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(AppDetail, ADMIN_ROLE),
+                        content: memoizedWithUserRoleRequired(
+                            AppDetail,
+                            ADMIN_ROLE
+                        ),
                         navbar: SettingsNavbarContainer,
                     })}
                 />
@@ -705,7 +711,7 @@ export function IntegrationsSettingsRoutes({
                     path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             IntegrationDetail,
                             ADMIN_ROLE,
                             PageSection.Integrations
@@ -727,7 +733,7 @@ export function PhoneNumbersSettingsRoutes({
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         PhoneNumbersListContainer,
                         ADMIN_ROLE,
                         PageSection.PhoneNumbers
@@ -739,7 +745,7 @@ export function PhoneNumbersSettingsRoutes({
                 path={`${path}/new`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         PhoneNumberCreateContainer,
                         ADMIN_ROLE,
                         PageSection.PhoneNumbers
@@ -751,7 +757,7 @@ export function PhoneNumbersSettingsRoutes({
                 path={`${path}/:phoneNumberId`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         PhoneNumberDetailContainer,
                         ADMIN_ROLE,
                         PageSection.PhoneNumbers
@@ -776,7 +782,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                                 AccountFeature.HelpCenter,
                                 HelpCenterPaywall
                             )(
-                                withUserRoleRequired(
+                                memoizedWithUserRoleRequired(
                                     HelpCenterStartView,
                                     ADMIN_ROLE,
                                     PageSection.HelpCenter
@@ -793,7 +799,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                                 AccountFeature.HelpCenter,
                                 HelpCenterPaywall
                             )(
-                                withUserRoleRequired(
+                                memoizedWithUserRoleRequired(
                                     HelpCenterNewView,
                                     ADMIN_ROLE,
                                     PageSection.HelpCenter
@@ -809,7 +815,7 @@ export function HelpCenterSettingsRoutes({match: {path}}: RouteComponentProps) {
                                 AccountFeature.HelpCenter,
                                 HelpCenterPaywall
                             )(
-                                withUserRoleRequired(
+                                memoizedWithUserRoleRequired(
                                     CurrentHelpCenter,
                                     ADMIN_ROLE,
                                     PageSection.HelpCenter
@@ -836,7 +842,7 @@ export function SelfServiceSettingsRoutes({
                     path={`${path}/`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             SelfServiceContainer,
                             ADMIN_ROLE,
                             PageSection.SelfService
@@ -857,7 +863,7 @@ export function SelfServiceSettingsRoutes({
                     path={`${path}/:integrationType/:shopName/preferences/quick-response`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             SelfServiceQuickResponseFlowsPreferencesContainer,
                             ADMIN_ROLE,
                             PageSection.SelfService
@@ -869,7 +875,7 @@ export function SelfServiceSettingsRoutes({
                     path={`${path}/:integrationType/:shopName/preferences/quick-response/new`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             SelfServiceQuickResponseFlowNewItemContainer,
                             ADMIN_ROLE,
                             PageSection.SelfService
@@ -881,7 +887,7 @@ export function SelfServiceSettingsRoutes({
                     path={`${path}/:integrationType/:shopName/preferences/quick-response/:quickResponseId`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             SelfServiceQuickResponseFlowEditItemContainer,
                             ADMIN_ROLE,
                             PageSection.SelfService
@@ -893,7 +899,7 @@ export function SelfServiceSettingsRoutes({
                     path={`${path}/:integrationType/:shopName/preferences/order-management`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             SelfServiceOrderManagementFlowsPreferencesContainer,
                             ADMIN_ROLE,
                             PageSection.SelfService
@@ -905,7 +911,7 @@ export function SelfServiceSettingsRoutes({
                     path={`${path}/:integrationType/:shopName/preferences/cancellations`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             SelfServiceCancellationsPolicyContainer,
                             ADMIN_ROLE,
                             PageSection.SelfService
@@ -917,7 +923,7 @@ export function SelfServiceSettingsRoutes({
                     path={`${path}/:integrationType/:shopName/preferences/returns`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             SelfServiceReturnsPolicyContainer,
                             ADMIN_ROLE,
                             PageSection.SelfService
@@ -929,7 +935,7 @@ export function SelfServiceSettingsRoutes({
                     path={`${path}/:integrationType/:shopName/preferences/report-issue`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             SelfServiceReportIssuePolicyContainer,
                             ADMIN_ROLE,
                             PageSection.SelfService
@@ -941,7 +947,7 @@ export function SelfServiceSettingsRoutes({
                     path={`${path}/:integrationType/:shopName/preferences/report-issue/:caseIndex`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             SelfServiceReportIssueCaseEditorContainer,
                             ADMIN_ROLE,
                             PageSection.SelfService
@@ -961,7 +967,7 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         MacrosSettingsContent,
                         AGENT_ROLE,
                         PageSection.Macros
@@ -973,7 +979,7 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/new`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         MacrosSettingsForm,
                         AGENT_ROLE,
                         PageSection.Macros
@@ -985,7 +991,7 @@ export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:macroId`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         MacrosSettingsForm,
                         AGENT_ROLE,
                         PageSection.Macros
@@ -1005,7 +1011,7 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                     path={`${path}/`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             RulesView,
                             AGENT_ROLE,
                             PageSection.Rules
@@ -1017,7 +1023,7 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                     path={`${path}/new`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             RuleDetailForm,
                             AGENT_ROLE,
                             PageSection.Rules
@@ -1029,7 +1035,7 @@ export function RulesSettingsRoute({match: {path}}: RouteComponentProps) {
                     path={`${path}/:ruleId`}
                     exact
                     render={appRender({
-                        content: withUserRoleRequired(
+                        content: memoizedWithUserRoleRequired(
                             RuleDetailForm,
                             AGENT_ROLE,
                             PageSection.Rules
@@ -1049,7 +1055,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         TeamsList as any,
                         ADMIN_ROLE,
                         PageSection.Teams
@@ -1061,7 +1067,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         TeamsForm,
                         ADMIN_ROLE,
                         PageSection.Teams
@@ -1073,7 +1079,7 @@ export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id/members`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         List,
                         ADMIN_ROLE,
                         PageSection.Teams
@@ -1092,7 +1098,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         TeamList as any,
                         ADMIN_ROLE,
                         PageSection.Users
@@ -1104,7 +1110,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/add`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         TeamForm,
                         ADMIN_ROLE,
                         PageSection.Users
@@ -1116,7 +1122,7 @@ export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/:id`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         TeamForm,
                         ADMIN_ROLE,
                         PageSection.Users
@@ -1135,7 +1141,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         BillingContainer,
                         ADMIN_ROLE,
                         PageSection.Billing
@@ -1147,7 +1153,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/add-payment-method`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         CreditCardContainer,
                         ADMIN_ROLE,
                         PageSection.Billing
@@ -1159,7 +1165,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/change-credit-card`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         CreditCardContainer,
                         ADMIN_ROLE,
                         PageSection.Billing
@@ -1171,7 +1177,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/update-billing-details`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         BillingDetailsFormContainer,
                         ADMIN_ROLE,
                         PageSection.Billing
@@ -1183,7 +1189,7 @@ export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/plans`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         BillingPlansContainer,
                         ADMIN_ROLE,
                         PageSection.Billing
@@ -1202,7 +1208,7 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         ImportDataContainer,
                         ADMIN_ROLE,
                         PageSection.ImportData
@@ -1214,7 +1220,7 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/zendesk`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         ImportZendeskCreate,
                         ADMIN_ROLE,
                         PageSection.ImportData
@@ -1226,7 +1232,7 @@ export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/zendesk/:integrationId/:extra?`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         ImportZendeskDetail,
                         ADMIN_ROLE,
                         PageSection.ImportData
@@ -1245,7 +1251,7 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/import-phone-number`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         ImportPhoneNumber,
                         ADMIN_ROLE,
                         PageSection.ImportPhoneNumber
@@ -1257,7 +1263,7 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/twilio-subaccount-status`}
                 exact
                 render={appRender({
-                    content: withUserRoleRequired(
+                    content: memoizedWithUserRoleRequired(
                         TwilioSubaccountStatusForm,
                         ADMIN_ROLE,
                         PageSection.TwilioSubaccountStatus
