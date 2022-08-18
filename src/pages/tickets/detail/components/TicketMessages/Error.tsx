@@ -170,7 +170,7 @@ class Error extends Component<Props, State> {
                         onClick={this.force}
                         isDisabled={!!this.state.loading}
                     >
-                        Skip Failed Action
+                        Send Anyway
                     </Button>
                     <Tooltip placement="top" target={id} offset="0, 4px">
                         Ignore failure, execute other actions and send the
