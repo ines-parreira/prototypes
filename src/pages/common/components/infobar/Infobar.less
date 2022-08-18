@@ -80,10 +80,6 @@
         font-size: 13px;
     }
 
-    .infobarCard {
-        border-radius: 2px;
-    }
-
     .footer {
         padding: 0.78em;
         background-color: @classic-neutral-grey-1;
@@ -155,50 +151,5 @@
     }
     .error {
         color: @classic-feedback-error;
-    }
-}
-
-/**
-Infobar suggestion
- */
-.blurred {
-    filter: blur(1.8px);
-    color: @classic-neutral-grey-3;
-}
-
-.suggestion {
-    z-index: 10;
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-}
-
-/**
-Infobar steps for boarding
-*/
-.boarding {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    margin-top: 16px;
-
-    .step {
-        margin-bottom: 10px;
-
-        i {
-            vertical-align: middle;
-            font-size: 22px;
-            margin-right: 10px;
-            color: darkgrey;
-        }
-
-        &.done {
-            &,
-            i {
-                color: #38cd5d;
-            }
-        }
     }
 }

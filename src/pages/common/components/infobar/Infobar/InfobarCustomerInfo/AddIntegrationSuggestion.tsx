@@ -6,7 +6,7 @@ import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 
 export default function AddIntegrationSuggestion() {
     return (
-        <div className="no-result-container suggestion">
+        <div className="no-result-container mt-5">
             <div
                 className="mb-3"
                 style={{
