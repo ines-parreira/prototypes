@@ -11,6 +11,8 @@ import classnames from 'classnames'
 import expandDown from 'assets/img/infobar/expand-down.svg'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 
+import {REASONS_DROPDOWN_OPTIONS} from 'pages/settings/selfService/components/ReportIssueCaseEditor/constants'
+import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {
@@ -93,6 +95,27 @@ export class TableStat extends Component<
         }
 
         switch (type) {
+            case StatValueType.Issues: {
+                return (
+                    <div>
+                        {(metric.get('value') as List<any>).map(
+                            (issue: string) => {
+                                const translatedIssue = (
+                                    REASONS_DROPDOWN_OPTIONS as SelectableOption[]
+                                ).find(
+                                    (option) => option.value === issue
+                                )?.label
+
+                                return (
+                                    <div key={issue}>
+                                        {translatedIssue || issue}
+                                    </div>
+                                )
+                            }
+                        )}
+                    </div>
+                )
+            }
             case StatValueType.TicketDetails: {
                 const details = (
                     metric.get('details') as Map<any, any>

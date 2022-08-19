@@ -15,6 +15,7 @@ import {
     SELF_SERVICE_VOLUME_PER_FLOW,
     SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
+    SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
 } from 'config/stats'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {
@@ -181,6 +182,16 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             resourceName: SELF_SERVICE_TOP_REPORTED_ISSUES,
             statsFilters: pageStatsFilters,
         })
+
+    const [
+        productsWithMostIssuesAndReturnRequests,
+        isFetchingProductsWithMostIssuesAndReturnRequests,
+    ] = useStatResource<TwoDimensionalChart>({
+        statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
+        resourceName:
+            SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
+        statsFilters: pageStatsFilters,
+    })
 
     const [mostReturnedProducts, isFetchingMostReturnedProducts] =
         useStatResource<TwoDimensionalChart>({
@@ -385,25 +396,31 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             </StatWrapper>
                         </>
                     )}
-                    <h3 className={css.section}>Report issues flow</h3>
-                    <StatWrapper
-                        stat={productWithMostIssues}
-                        isFetchingStat={isFetchingProductWithMostIssues}
-                        resourceName={SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES}
-                        statsFilters={pageStatsFilters}
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <TableStat
-                                context={{tagColors: null}}
-                                data={stat.getIn(['data', 'data'])}
-                                meta={stat.get('meta')}
-                                config={statsConfig.get(
+                    {!getFlag(FlagKey.SelfServiceStatsV2) && (
+                        <>
+                            <h3 className={css.section}>Report issues flow</h3>
+                            <StatWrapper
+                                stat={productWithMostIssues}
+                                isFetchingStat={isFetchingProductWithMostIssues}
+                                resourceName={
                                     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES
+                                }
+                                statsFilters={pageStatsFilters}
+                                isDownloadable
+                            >
+                                {(stat) => (
+                                    <TableStat
+                                        context={{tagColors: null}}
+                                        data={stat.getIn(['data', 'data'])}
+                                        meta={stat.get('meta')}
+                                        config={statsConfig.get(
+                                            SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES
+                                        )}
+                                    />
                                 )}
-                            />
-                        )}
-                    </StatWrapper>
+                            </StatWrapper>
+                        </>
+                    )}
                     <StatWrapper
                         stat={topReportedIssues}
                         isFetchingStat={isFetchingTopReportedIssues}
@@ -438,25 +455,55 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             />
                         )}
                     </StatWrapper>
-                    <h3 className={css.section}>Returns flow</h3>
-                    <StatWrapper
-                        stat={mostReturnedProducts}
-                        isFetchingStat={isFetchingMostReturnedProducts}
-                        resourceName={SELF_SERVICE_MOST_RETURNED_PRODUCTS}
-                        statsFilters={pageStatsFilters}
-                        isDownloadable
-                    >
-                        {(stat) => (
-                            <TableStat
-                                context={{tagColors: null}}
-                                data={stat.getIn(['data', 'data'])}
-                                meta={stat.get('meta')}
-                                config={statsConfig.get(
+                    {!getFlag(FlagKey.SelfServiceStatsV2) && (
+                        <>
+                            <h3 className={css.section}>Returns flow</h3>
+                            <StatWrapper
+                                stat={mostReturnedProducts}
+                                isFetchingStat={isFetchingMostReturnedProducts}
+                                resourceName={
                                     SELF_SERVICE_MOST_RETURNED_PRODUCTS
+                                }
+                                statsFilters={pageStatsFilters}
+                                isDownloadable
+                            >
+                                {(stat) => (
+                                    <TableStat
+                                        context={{tagColors: null}}
+                                        data={stat.getIn(['data', 'data'])}
+                                        meta={stat.get('meta')}
+                                        config={statsConfig.get(
+                                            SELF_SERVICE_MOST_RETURNED_PRODUCTS
+                                        )}
+                                    />
                                 )}
-                            />
-                        )}
-                    </StatWrapper>
+                            </StatWrapper>
+                        </>
+                    )}
+                    {getFlag(FlagKey.SelfServiceStatsV2) && (
+                        <StatWrapper
+                            stat={productsWithMostIssuesAndReturnRequests}
+                            isFetchingStat={
+                                isFetchingProductsWithMostIssuesAndReturnRequests
+                            }
+                            resourceName={
+                                SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS
+                            }
+                            statsFilters={pageStatsFilters}
+                            isDownloadable
+                        >
+                            {(stat) => (
+                                <TableStat
+                                    context={{tagColors: null}}
+                                    data={stat.getIn(['data', 'data'])}
+                                    meta={stat.get('meta')}
+                                    config={statsConfig.get(
+                                        SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS
+                                    )}
+                                />
+                            )}
+                        </StatWrapper>
+                    )}
                 </>
             )}
         </StatsPage>

@@ -76,6 +76,8 @@ export const SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION =
     'self-service-help-center-flows-distribution'
 export const SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES =
     'self-service-product-with-most-issues'
+export const SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS =
+    'self-service-products-with-most-issues-and-return-requests'
 export const SELF_SERVICE_TOP_REPORTED_ISSUES =
     'self-service-top-reported-issues'
 export const SELF_SERVICE_MOST_RETURNED_PRODUCTS =
@@ -255,7 +257,7 @@ export enum StatValueType {
     Duration = 'duration',
     Object = 'object',
     Product = 'product',
-    SelfServiceIssue = 'self-service-issue',
+    Issues = 'issues',
 }
 
 export type StatConfigCellCallbackData = {
@@ -1713,6 +1715,11 @@ export const stats = toImmutable<
                 return value
             },
         } as StatConfigCallbacks<ReactNode>,
+    },
+    [SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS]: {
+        style: 'table',
+        downloadable: true,
+        tableOptions: {showLines: 4},
     },
     [SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES]: {
         style: 'table',
