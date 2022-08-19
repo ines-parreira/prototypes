@@ -70,7 +70,13 @@ export const StandaloneBanner = ({
         <Banner
             dismissible
             title={title}
-            preview={<img src={standalonePreview} alt="" />}
+            preview={
+                <img
+                    className={css.bannerImage}
+                    src={standalonePreview}
+                    alt=""
+                />
+            }
             onClose={onClose}
         >
             {content}

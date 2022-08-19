@@ -72,9 +72,10 @@ export const HelpCenterStartView: React.FC = () => {
             PRODUCT_BANNER_KEY.HELP_CENTER_STANDALONE_SSP
         )
 
-        if (productBannerInfo) {
-            return
+        if (productBannerInfo?.closedAt) {
+            return setShouldShowProductBanner(false)
         }
+
         setShouldShowProductBanner(standaloneHelpCenters.length > 0)
     }, [standaloneHelpCenters, setShouldShowProductBanner, getProductBanner])
 

@@ -124,7 +124,13 @@ export const CategoriesViews = ({
                     {helpCenter.source === 'automation' && (
                         <div className={css.bannerContainer}>
                             <Banner
-                                preview={<img src={standalonePreview} alt="" />}
+                                preview={
+                                    <img
+                                        className={css.bannerImage}
+                                        src={standalonePreview}
+                                        alt=""
+                                    />
+                                }
                                 title="Not ready to add articles? Customize your Help Center in the meantime."
                             >
                                 <div className={css.bannerContent}>
@@ -139,7 +145,11 @@ export const CategoriesViews = ({
                                             and fonts, and more!
                                         </div>
                                     </div>
-                                    <NavLink to={`${baseURL}/appearance`} exact>
+                                    <NavLink
+                                        className={css.bannerLink}
+                                        to={`${baseURL}/appearance`}
+                                        exact
+                                    >
                                         Customize Help Center
                                     </NavLink>
                                 </div>
