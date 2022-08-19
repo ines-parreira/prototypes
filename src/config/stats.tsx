@@ -68,6 +68,10 @@ export const SELF_SERVICE_OVERVIEW = 'self-service-overview'
 export const SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION =
     'self-service-chat-flows-distribution'
 export const SELF_SERVICE_VOLUME_PER_FLOW = 'self-service-volume-per-flow'
+export const SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE =
+    'self-service-article-recommendation-performance'
+export const SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE =
+    'self-service-quick-response-performance'
 export const SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION =
     'self-service-help-center-flows-distribution'
 export const SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES =
@@ -246,6 +250,7 @@ export enum StatValueType {
     OnlineTime = 'online-time',
     Number = 'number',
     String = 'string',
+    TitleWithLink = 'title-with-link',
     TicketDetails = 'ticket-details',
     Duration = 'duration',
     Object = 'object',
@@ -1684,6 +1689,30 @@ export const stats = toImmutable<
                 },
             },
         }),
+    },
+    [SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE]: {
+        style: 'table',
+        downloadable: true,
+        tableOptions: {
+            showLines: 6,
+        },
+        callbacks: {
+            cell: ({value}) => {
+                return value
+            },
+        } as StatConfigCallbacks<ReactNode>,
+    },
+    [SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE]: {
+        style: 'table',
+        downloadable: true,
+        tableOptions: {
+            showLines: 6,
+        },
+        callbacks: {
+            cell: ({value}) => {
+                return value
+            },
+        } as StatConfigCallbacks<ReactNode>,
     },
     [SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES]: {
         style: 'table',
