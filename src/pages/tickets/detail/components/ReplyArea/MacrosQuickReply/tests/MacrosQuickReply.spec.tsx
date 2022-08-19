@@ -27,6 +27,7 @@ jest.mock('lodash/debounce', () => {
     const _identity: <T>(v: T) => T = jest.requireActual('lodash/identity')
     return _identity
 })
+jest.mock('pages/tickets/common/macros/Preview', () => () => <>Preview</>)
 
 const logEventMock = logEvent as jest.Mock
 const applyMacro = jest.fn()

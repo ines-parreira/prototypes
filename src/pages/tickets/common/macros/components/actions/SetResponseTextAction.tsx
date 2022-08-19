@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, ComponentClass} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {
     UncontrolledButtonDropdown,
@@ -8,7 +8,10 @@ import {
 } from 'reactstrap'
 import {List, Map} from 'immutable'
 import {EditorState} from 'draft-js'
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import Tip from 'pages/common/components/tip/Tip'
 import {insertText} from 'utils'
@@ -20,8 +23,6 @@ import {IntegrationType} from 'models/integration/types'
 import DEPRECATED_RichField from 'pages/common/forms/RichField/DEPRECATED_RichField'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {MacroActionName} from 'models/macroAction/types'
-import {FlagKey} from 'providers/FeatureFlags'
-import FeatureFlagsContext from 'providers/FeatureFlags/context'
 
 import MacroMessageActionsHeader, {
     MacroMessageActionsHeaderProps,
@@ -38,6 +39,7 @@ type Props = {
     updateActionArgs: (index: number, args: Map<string, any>) => void
     toolbarOnTop?: boolean
     convertAction?: MacroMessageActionsHeaderProps['onSelect']
+    flags: LDFlagSet
 } & ConnectedProps<typeof connector>
 
 type State = {
@@ -155,7 +157,7 @@ export class SetResponseTextAction extends Component<Props, State> {
     }
 
     render() {
-        const {action, actions, convertAction, toolbarOnTop} = this.props
+        const {action, actions, convertAction, flags, toolbarOnTop} = this.props
 
         const toolbar = (
             <div className="textarea-toolbar">
@@ -164,54 +166,43 @@ export class SetResponseTextAction extends Component<Props, State> {
         )
 
         const {cc, bcc} = (action.get('arguments') as Map<any, any>).toJS()
+        const isMacroResponseCcBccEnabled: boolean | undefined =
+            flags[FeatureFlagKey.MacroResponseTextCcBcc]
 
         return (
             <div className="field">
-                <FeatureFlagsContext.Consumer>
-                    {({getFlag}) => {
-                        const isMacroResponseCcBccEnabled = getFlag(
-                            FlagKey.MacroResponseTextCcBcc
-                        )
-
-                        if (!isMacroResponseCcBccEnabled) {
-                            return
-                        }
-
-                        return (
-                            <>
-                                {(this.state.showCcTip || cc || bcc) && (
-                                    <Tip
-                                        icon={true}
-                                        actionLabel="Got It"
-                                        storageKey="response-cc"
-                                        className="mb-2"
-                                    >
-                                        If a cc is applied and the original
-                                        message channel is not email then the
-                                        entire thread will be converted to
-                                        email.
-                                    </Tip>
-                                )}
-                                {actions && convertAction && (
-                                    <MacroMessageActionsHeader
-                                        actions={actions}
-                                        type={MacroActionName.SetResponseText}
-                                        onSelect={convertAction}
-                                    >
-                                        <MacroReplyActionControls
-                                            fields={{cc, bcc}}
-                                            onChange={this._setField}
-                                            onShowCcBcc={() =>
-                                                this.setState({showCcTip: true})
-                                            }
-                                            showCcBccTooltip
-                                        />
-                                    </MacroMessageActionsHeader>
-                                )}
-                            </>
-                        )
-                    }}
-                </FeatureFlagsContext.Consumer>
+                {isMacroResponseCcBccEnabled && (
+                    <>
+                        {(this.state.showCcTip || cc || bcc) && (
+                            <Tip
+                                icon={true}
+                                actionLabel="Got It"
+                                storageKey="response-cc"
+                                className="mb-2"
+                            >
+                                If a cc is applied and the original message
+                                channel is not email then the entire thread will
+                                be converted to email.
+                            </Tip>
+                        )}
+                        {actions && convertAction && (
+                            <MacroMessageActionsHeader
+                                actions={actions}
+                                type={MacroActionName.SetResponseText}
+                                onSelect={convertAction}
+                            >
+                                <MacroReplyActionControls
+                                    fields={{cc, bcc}}
+                                    onChange={this._setField}
+                                    onShowCcBcc={() =>
+                                        this.setState({showCcTip: true})
+                                    }
+                                    showCcBccTooltip
+                                />
+                            </MacroMessageActionsHeader>
+                        )}
+                    </>
+                )}
                 {toolbarOnTop && toolbar}
                 <DEPRECATED_RichField
                     ref={(richArea) => {
@@ -239,4 +230,8 @@ const connector = connect((state: RootState) => {
     }
 })
 
-export default connector(SetResponseTextAction)
+export default connector(
+    withLDConsumer()(
+        SetResponseTextAction as any as ComponentClass<Omit<Props, 'flags'>>
+    )
+)

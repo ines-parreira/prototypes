@@ -8,7 +8,9 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 import {List, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {insertText} from 'utils'
 import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
 import {convertToHTML, getPlainText} from 'utils/editor'
@@ -18,8 +20,6 @@ import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import {MacroActionName} from 'models/macroAction/types'
-import {useFeatureFlags} from 'hooks/useFeatureFlags'
-import {FlagKey} from 'providers/FeatureFlags'
 
 import MacroMessageActionsHeader, {
     MacroMessageActionsHeaderProps,
@@ -44,8 +44,8 @@ export default function AddInternalNoteAction({
     renderVariables = true,
     convertAction,
 }: Props) {
-    const {getFlag} = useFeatureFlags()
-    const isMacroResponseCcBccEnabled = getFlag(FlagKey.MacroResponseTextCcBcc)
+    const isMacroResponseCcBccEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.MacroResponseTextCcBcc]
 
     const hasIntegrationOfTypes = useAppSelector(makeHasIntegrationOfTypes)
     const richArea = useRef<DEPRECATED_RichField>(null)

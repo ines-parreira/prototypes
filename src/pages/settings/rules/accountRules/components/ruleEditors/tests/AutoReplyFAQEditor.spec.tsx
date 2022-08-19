@@ -16,6 +16,11 @@ jest.mock(
     () => () => <p>Link to view</p>
 )
 
+jest.mock(
+    'pages/tickets/common/macros/components/actions/SetResponseTextAction',
+    () => () => <>SetResponseTextAction</>
+)
+
 describe('<AutoReplyFAQEditor/>', () => {
     const minProps: ComponentProps<typeof AutoReplyFAQEditor> = {
         settings: {

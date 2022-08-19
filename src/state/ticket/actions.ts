@@ -14,6 +14,7 @@ import {
     TicketChannel,
 } from 'business/types/ticket'
 import {DEFAULT_ACTIONS} from 'config'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {ViewType} from 'models/view/constants'
 import {search} from 'models/search/resources'
 import {SearchType, UserSearchResult} from 'models/search/types'
@@ -30,7 +31,6 @@ import * as viewsSelectors from 'state/views/selectors'
 import {logEvent, SegmentEvent} from 'store/middlewares/segmentTracker'
 import {isCurrentlyOnTicket, isTabActive} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
-import {FlagKey} from 'providers/FeatureFlags'
 
 import {
     Action,
@@ -548,7 +548,7 @@ export const applyMacroAction =
 
         const flags = getLDClient()?.allFlags()
         const isMacroResponseCcBccEnabled =
-            flags?.[FlagKey.MacroResponseTextCcBcc]
+            flags?.[FeatureFlagKey.MacroResponseTextCcBcc]
 
         if (
             name === MacroActionName.SetResponseText &&

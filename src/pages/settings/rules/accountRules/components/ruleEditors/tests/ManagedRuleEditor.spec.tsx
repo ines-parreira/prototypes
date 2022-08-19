@@ -17,6 +17,12 @@ jest.mock(
     'pages/settings/rules/accountRules/components/ruleEditors/LinkToRecipeView',
     () => () => <>Link</>
 )
+
+jest.mock(
+    'pages/tickets/common/macros/components/actions/SetResponseTextAction',
+    () => () => <>SetResponseTextAction</>
+)
+
 describe('<ManagedRuleEditor/>', () => {
     const minProps: ComponentProps<typeof ManagedRuleEditor> = {
         slug: ManagedRulesSlugs.AutoCloseSpam,

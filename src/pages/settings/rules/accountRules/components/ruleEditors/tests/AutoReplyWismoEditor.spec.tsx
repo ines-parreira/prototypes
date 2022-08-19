@@ -17,6 +17,11 @@ jest.mock(
     () => () => <>Link</>
 )
 
+jest.mock(
+    'pages/tickets/common/macros/components/actions/SetResponseTextAction',
+    () => () => <>SetResponseTextAction</>
+)
+
 describe('<AutoReplyWismoEditor/>', () => {
     const minProps: ComponentProps<typeof AutoReplyWismoEditor> = {
         settings: {

@@ -26,6 +26,11 @@ jest.mock('constants/languages', () => {
     }
 })
 
+jest.mock(
+    'pages/tickets/common/macros/components/actions/SetResponseTextAction',
+    () => () => <>SetResponseTextAction</>
+)
+
 const setResponseTextAction = {
     type: 'user',
     execution: 'front',
@@ -86,6 +91,6 @@ describe('MacroEdit component', () => {
             </Provider>
         )
 
-        expect(queryByText('test body')).toBeTruthy()
+        expect(queryByText('SetResponseTextAction')).toBeTruthy()
     })
 })

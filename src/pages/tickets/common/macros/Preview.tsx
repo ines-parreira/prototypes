@@ -1,9 +1,12 @@
-import React, {Component, ComponentProps} from 'react'
+import React, {Component, ComponentClass, ComponentProps} from 'react'
 import classnames from 'classnames'
 import {Badge} from 'reactstrap'
 import {Map, List, fromJS} from 'immutable'
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {isRichType} from 'config/ticket'
 import {getIconFromActionType} from 'models/macroAction/helpers'
 
@@ -22,8 +25,6 @@ import {
     fileIconFromContentType,
     getSortedIntegrationActions,
 } from 'pages/tickets/common/utils'
-import {FlagKey} from 'providers/FeatureFlags'
-import FeatureFlagsContext from 'providers/FeatureFlags/context'
 import {getActionTemplate} from 'utils'
 import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
 import {ActionTemplateExecution} from 'config'
@@ -35,6 +36,7 @@ type Props = {
     actions: List<Map<string, any>>
     ticketMessageSourceType?: TicketMessageSourceType
     className?: string
+    flags: LDFlagSet
 }
 
 class Preview extends Component<Props> {
@@ -96,50 +98,42 @@ class Preview extends Component<Props> {
             responseTextAction.get('arguments', fromJS({})) as Map<any, any>
         ).toJS()
 
+        const isMacroResponseCcBccEnabled: boolean | undefined =
+            this.props.flags[FeatureFlagKey.MacroResponseTextCcBcc]
+
         return (
             <>
-                <FeatureFlagsContext.Consumer>
-                    {({getFlag}) => {
-                        const isMacroResponseCcBccEnabled = getFlag(
-                            FlagKey.MacroResponseTextCcBcc
-                        )
-
-                        if (!isMacroResponseCcBccEnabled) {
-                            return
-                        }
-
-                        return (
-                            <>
-                                {cc && (
-                                    <div
-                                        className={classnames(
-                                            css.macroData,
-                                            css.recipientsWrapper
-                                        )}
-                                    >
-                                        <strong className="text-muted mr-2">
-                                            Add as CC:
-                                        </strong>
-                                        <RecipientsLabel recipients={cc} />
-                                    </div>
+                {isMacroResponseCcBccEnabled && (
+                    <>
+                        {cc && (
+                            <div
+                                className={classnames(
+                                    css.macroData,
+                                    css.recipientsWrapper
                                 )}
-                                {bcc && (
-                                    <div
-                                        className={classnames(
-                                            css.macroData,
-                                            css.recipientsWrapper
-                                        )}
-                                    >
-                                        <strong className="text-muted mr-2">
-                                            Add as BCC:
-                                        </strong>
-                                        <RecipientsLabel recipients={bcc} />
-                                    </div>
+                            >
+                                <strong className="text-muted mr-2">
+                                    Add as CC:
+                                </strong>
+                                <RecipientsLabel recipients={cc} />
+                            </div>
+                        )}
+                        {bcc && (
+                            <div
+                                className={classnames(
+                                    css.macroData,
+                                    css.recipientsWrapper
                                 )}
-                            </>
-                        )
-                    }}
-                </FeatureFlagsContext.Consumer>
+                            >
+                                <strong className="text-muted mr-2">
+                                    Add as BCC:
+                                </strong>
+                                <RecipientsLabel recipients={bcc} />
+                            </div>
+                        )}
+                    </>
+                )}
+
                 <div className={css.macroData}>
                     <DEPRECATED_RichField
                         value={value}
@@ -358,4 +352,6 @@ class Preview extends Component<Props> {
     }
 }
 
-export default Preview
+export default withLDConsumer()(
+    Preview as any as ComponentClass<Omit<Props, 'flags'>>
+)
