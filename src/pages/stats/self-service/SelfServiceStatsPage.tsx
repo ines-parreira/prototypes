@@ -11,6 +11,8 @@ import {
     SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION,
     SELF_SERVICE_HELP_CENTER_FLOWS_DISTRIBUTION,
     SELF_SERVICE_VOLUME_PER_FLOW,
+    SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
+    SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
 } from 'config/stats'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {
@@ -135,6 +137,22 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             statsFilters: pageStatsFilters,
         })
 
+    const [quickResponsePerformance, isFetchingQuickResponsePerformance] =
+        useStatResource<TwoDimensionalChart>({
+            statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
+            resourceName: SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
+            statsFilters: pageStatsFilters,
+        })
+
+    const [
+        articleRecommendationPerformance,
+        isFetchingArticleRecommendationPerformance,
+    ] = useStatResource<TwoDimensionalChart>({
+        statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
+        resourceName: SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
+        statsFilters: pageStatsFilters,
+    })
+
     const [chatFlowsDistribution, isFetchingChatFlowsDistribution] =
         useStatResource<TwoDimensionalChart>({
             statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
@@ -249,26 +267,72 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                         />
                     </KeyMetricStatWrapper>
                     {getFlag(FlagKey.SelfServiceStatsV2) && (
-                        <StatWrapper
-                            stat={volumePerFlow}
-                            isFetchingStat={isFetchingVolumePerFlow}
-                            resourceName={SELF_SERVICE_VOLUME_PER_FLOW}
-                            statsFilters={pageStatsFilters}
-                            isDownloadable
-                        >
-                            {(stat) => (
-                                <NormalizedLineStat
-                                    data={stat.getIn(['data', 'data'])}
-                                    legend={stat.getIn(
-                                        ['data', 'legend'],
-                                        null
-                                    )}
-                                    config={statsConfig.get(
-                                        SELF_SERVICE_VOLUME_PER_FLOW
-                                    )}
-                                />
-                            )}
-                        </StatWrapper>
+                        <>
+                            <StatWrapper
+                                stat={volumePerFlow}
+                                isFetchingStat={isFetchingVolumePerFlow}
+                                resourceName={SELF_SERVICE_VOLUME_PER_FLOW}
+                                statsFilters={pageStatsFilters}
+                                isDownloadable
+                            >
+                                {(stat) => (
+                                    <NormalizedLineStat
+                                        data={stat.getIn(['data', 'data'])}
+                                        legend={stat.getIn(
+                                            ['data', 'legend'],
+                                            null
+                                        )}
+                                        config={statsConfig.get(
+                                            SELF_SERVICE_VOLUME_PER_FLOW
+                                        )}
+                                    />
+                                )}
+                            </StatWrapper>
+                            <StatWrapper
+                                stat={quickResponsePerformance}
+                                isFetchingStat={
+                                    isFetchingQuickResponsePerformance
+                                }
+                                resourceName={
+                                    SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
+                                }
+                                statsFilters={pageStatsFilters}
+                                isDownloadable
+                            >
+                                {(stat) => (
+                                    <TableStat
+                                        context={{tagColors: null}}
+                                        data={stat.getIn(['data', 'data'])}
+                                        meta={stat.get('meta')}
+                                        config={statsConfig.get(
+                                            SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
+                                        )}
+                                    />
+                                )}
+                            </StatWrapper>
+                            <StatWrapper
+                                stat={articleRecommendationPerformance}
+                                isFetchingStat={
+                                    isFetchingArticleRecommendationPerformance
+                                }
+                                resourceName={
+                                    SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
+                                }
+                                statsFilters={pageStatsFilters}
+                                isDownloadable
+                            >
+                                {(stat) => (
+                                    <TableStat
+                                        context={{tagColors: null}}
+                                        data={stat.getIn(['data', 'data'])}
+                                        meta={stat.get('meta')}
+                                        config={statsConfig.get(
+                                            SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
+                                        )}
+                                    />
+                                )}
+                            </StatWrapper>
+                        </>
                     )}
                     {!getFlag(FlagKey.SelfServiceStatsV2) && (
                         <>
