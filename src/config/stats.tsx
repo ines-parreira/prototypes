@@ -65,6 +65,7 @@ export const AUTOMATION_OVERVIEW = 'automation-overview'
 export const AUTOMATION_FLOW = 'automation-flow'
 export const AUTOMATION_PER_CHANNEL = 'automation-per-channel'
 export const SELF_SERVICE_OVERVIEW = 'self-service-overview'
+export const SELF_SERVICE_OVERVIEW_V2 = 'self-service-overview-v2'
 export const SELF_SERVICE_CHAT_FLOWS_DISTRIBUTION =
     'self-service-chat-flows-distribution'
 export const SELF_SERVICE_VOLUME_PER_FLOW = 'self-service-volume-per-flow'
@@ -1405,6 +1406,36 @@ export const stats = toImmutable<
                 label: 'Automated interactions (% of total)',
                 tooltip:
                     'Number of automated self-service interactions divided by the total number of self-service interactions across chat and help center.',
+            },
+        ],
+    },
+    [SELF_SERVICE_OVERVIEW_V2]: {
+        style: 'key-metrics',
+        api_resource_name: SELF_SERVICE_OVERVIEW_V2,
+        metrics: [
+            {
+                name: 'total_self_service_interaction_count',
+                label: 'Total Self-service interactions',
+                tooltip:
+                    'Total number of Self-service interactions started by shoppers.',
+            },
+            {
+                name: 'self_service_automation_rate',
+                label: 'Self-service automation rate',
+                tooltip:
+                    'The number of interactions resolved by Self-service, divided by all Self-service sessions.',
+            },
+            {
+                name: 'automated_self_service_interaction_count',
+                label: 'Automated Self-service interactions',
+                tooltip:
+                    'Number of Self-service sessions automated by Self-service through the Track Order flow, Quick Response, or Article Recommendation.',
+            },
+            {
+                name: 'not_automated_self_service_interaction_count',
+                label: 'Served by an agent after Self-service',
+                tooltip:
+                    'Number of Self-service interactions that resulted in a chat ticket for an agent to handle.',
             },
         ],
     },

@@ -16,6 +16,7 @@ import {
     SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
+    SELF_SERVICE_OVERVIEW_V2,
 } from 'config/stats'
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {
@@ -270,14 +271,29 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         >
             {pageStatsFilters && (
                 <>
-                    <KeyMetricStatWrapper>
-                        <KeyMetricStat
-                            data={immutableOverview.getIn(['data', 'data'])}
-                            meta={immutableOverview.get('meta')}
-                            loading={isFetchingOverview}
-                            config={statsConfig.get(SELF_SERVICE_OVERVIEW)}
-                        />
-                    </KeyMetricStatWrapper>
+                    {hasSelfServiceStatisticsV2 && (
+                        <KeyMetricStatWrapper>
+                            <KeyMetricStat
+                                data={immutableOverview.getIn(['data', 'data'])}
+                                meta={immutableOverview.get('meta')}
+                                loading={isFetchingOverview}
+                                config={statsConfig.get(
+                                    SELF_SERVICE_OVERVIEW_V2
+                                )}
+                            />
+                        </KeyMetricStatWrapper>
+                    )}
+                    {!hasSelfServiceStatisticsV2 && (
+                        <KeyMetricStatWrapper>
+                            <KeyMetricStat
+                                data={immutableOverview.getIn(['data', 'data'])}
+                                meta={immutableOverview.get('meta')}
+                                loading={isFetchingOverview}
+                                config={statsConfig.get(SELF_SERVICE_OVERVIEW)}
+                            />
+                        </KeyMetricStatWrapper>
+                    )}
+
                     {hasSelfServiceStatisticsV2 && (
                         <>
                             <StatWrapper
@@ -396,7 +412,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             </StatWrapper>
                         </>
                     )}
-                    {!getFlag(FlagKey.SelfServiceStatsV2) && (
+                    {!hasSelfServiceStatisticsV2 && (
                         <>
                             <h3 className={css.section}>Report issues flow</h3>
                             <StatWrapper
@@ -455,7 +471,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             />
                         )}
                     </StatWrapper>
-                    {!getFlag(FlagKey.SelfServiceStatsV2) && (
+                    {!hasSelfServiceStatisticsV2 && (
                         <>
                             <h3 className={css.section}>Returns flow</h3>
                             <StatWrapper
@@ -480,7 +496,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             </StatWrapper>
                         </>
                     )}
-                    {getFlag(FlagKey.SelfServiceStatsV2) && (
+                    {hasSelfServiceStatisticsV2 && (
                         <StatWrapper
                             stat={productsWithMostIssuesAndReturnRequests}
                             isFetchingStat={
