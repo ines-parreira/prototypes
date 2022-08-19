@@ -30,7 +30,6 @@ import {
 import DistributionVariantStat from '../DistributionVariantStat'
 import StatPercentageDiff from '../../StatPercentageDiff'
 import StatsHelpIcon from '../../StatsHelpIcon'
-import linkIcon from './link-icon.svg'
 
 import ProductCell from './cells/ProductCell'
 import css from './TableStat.less'
@@ -314,20 +313,6 @@ export class TableStat extends Component<
                         name={metric.getIn(['value', 'name'])}
                         imageUrl={metric.getIn(['value', 'image_url'])}
                     />
-                )
-            }
-            case StatValueType.TitleWithLink: {
-                return (
-                    <>
-                        {metric.getIn(['value', 'title'])}{' '}
-                        <a
-                            href={metric.getIn(['value', 'url'])}
-                            target={'_blank'}
-                            rel="noreferrer"
-                        >
-                            <img src={linkIcon} alt="icon" />
-                        </a>
-                    </>
                 )
             }
             default:
