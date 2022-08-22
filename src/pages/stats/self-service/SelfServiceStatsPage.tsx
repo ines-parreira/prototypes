@@ -444,10 +444,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                         statsFilters={pageStatsFilters}
                         helpText={
                             <span>
-                                Only the reasons you have configured will be
-                                displayed below. You can also customize the list
-                                of reasons available to your customers depending
-                                on the order statuses.{' '}
+                                Only issues configured during the selected time
+                                period are displayed below. You can customize
+                                possible issues based on order status.{' '}
                                 <a
                                     href="https://docs.gorgias.com/self-service/configure-your-self-service-portal"
                                     target="_blank"

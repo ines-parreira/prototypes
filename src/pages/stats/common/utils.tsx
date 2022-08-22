@@ -27,7 +27,7 @@ export const comparedPeriodString = (
         previousPeriod = previousStartDatetime.format('MMM DD, YYYY')
     }
 
-    return `Compared to : ${previousPeriod}`
+    return `Compared to: ${previousPeriod}`
 }
 
 export const formatNumber = (value: number) => {
@@ -47,7 +47,7 @@ export const formatCurrency = (value: number, currency: string) => {
         return value
     }
 
-    // For now, we don't store the country, an we'll use en-us
+    // For now, we don't store the country, and we'll use en-us
     return value.toLocaleString('en-us', {
         style: 'currency',
         currency: currency,

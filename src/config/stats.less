@@ -4,4 +4,26 @@
     .tooltipWrapper {
         text-align: left;
     }
+
+    .customizeReportIssues {
+        display: flex;
+        align-items: center;
+        line-height: 20px;
+
+        a {
+            margin-left: 16px;
+            color: @classic-main-primary;
+
+            &:hover {
+                color: @classic-main-primary-4;
+            }
+        }
+
+        img {
+            margin-left: 6px;
+
+            filter: invert(59%) sepia(75%) saturate(3829%) hue-rotate(197deg)
+                brightness(99%) contrast(98%);
+        }
+    }
 }

@@ -262,7 +262,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                 placement="top"
                 target="difference-0"
               >
-                Compared to : Oct 22, 2018 - Oct 23, 2018
+                Compared to: Oct 22, 2018 - Oct 23, 2018
               </Tooltip>
             </span>
           </span>
@@ -519,7 +519,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                 placement="top"
                 target="difference-1"
               >
-                Compared to : Oct 22, 2018 - Oct 23, 2018
+                Compared to: Oct 22, 2018 - Oct 23, 2018
               </Tooltip>
             </span>
           </span>
@@ -957,7 +957,7 @@ exports[`TableStat should render a table chart 1`] = `
                 placement="top"
                 target="difference-0"
               >
-                Compared to : Oct 22, 2018 - Oct 23, 2018
+                Compared to: Oct 22, 2018 - Oct 23, 2018
               </Tooltip>
             </span>
           </span>
@@ -1390,7 +1390,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                 placement="top"
                 target="difference-0"
               >
-                Compared to : Oct 22, 2018 - Oct 23, 2018
+                Compared to: Oct 22, 2018 - Oct 23, 2018
               </Tooltip>
             </span>
           </span>

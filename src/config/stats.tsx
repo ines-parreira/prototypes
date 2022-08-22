@@ -7,6 +7,7 @@ import _isString from 'lodash/isString'
 import {ChartType, Scale, TooltipItem} from 'chart.js'
 import {defaults} from 'react-chartjs-2'
 
+import upgradeIcon from 'assets/img/icons/upgrade-icon.svg'
 import {formatDuration, formatNumber} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
 import {IntentName} from '../models/intent/types'
@@ -1777,7 +1778,7 @@ export const stats = toImmutable<
     },
     [SELF_SERVICE_TOP_REPORTED_ISSUES]: {
         helpText:
-            'Only the reasons you have configured will be displayed below. You can also customize the list of reasons available to your customers depending on the order statuses.',
+            'Only issues configured during the selected time period are displayed below. You can customize possible issues based on order status.',
         helpTextLink: () => (
             <a
                 href="https://docs.gorgias.com/self-service/configure-your-self-service-portal"
@@ -1789,7 +1790,7 @@ export const stats = toImmutable<
         ),
         axisHelpers: {
             '% of issues reported':
-                'Percentage of tickets for a given reason compared to all auto-generated chat tickets  when customers report an issue in self-service.',
+                'Percent of issues reported out of all order issues reported.',
         },
         style: 'table',
         padding: '6px 30px 30px 30px',
@@ -1808,18 +1809,19 @@ export const stats = toImmutable<
                     )?.label
 
                     return value === ReportIssueReasons.REASON_OTHER ? (
-                        <div
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                lineHeight: '20px',
-                            }}
-                        >
-                            <h5 style={{margin: 0}} className="mr-2">
+                        <div className={css.customizeReportIssues}>
+                            <h5
+                                style={{margin: 0, fontStyle: 'italic'}}
+                                className="mr-2"
+                            >
                                 {translatedIssue || value}
                             </h5>
-                            <Link to="/app/settings/self-service">
+                            <Link
+                                className={css.customizeReportIssues}
+                                to="/app/settings/self-service"
+                            >
                                 Customize Report Issues
+                                <img src={upgradeIcon} alt="icon" />
                             </Link>
                         </div>
                     ) : (
