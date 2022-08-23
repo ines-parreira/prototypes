@@ -1730,6 +1730,12 @@ export const stats = toImmutable<
         tableOptions: {
             showLines: 6,
         },
+        axisHelpers: {
+            'Automation rate':
+                'Number of interactions resolved by Quick Response divided by the total number of times a user views the Quick Response.',
+            'Served by an agent after quick response':
+                'If a shopper is not satisfied with the response provided or if there is no response configured for a flow, a ticket is created.',
+        },
         callbacks: {
             cell: ({value}) => {
                 return value
@@ -1741,6 +1747,12 @@ export const stats = toImmutable<
         downloadable: true,
         tableOptions: {
             showLines: 6,
+        },
+        axisHelpers: {
+            'Automation rate':
+                'Number of interactions resolved by Article Recommendation divided by the total number of times a user is recommended an article.',
+            'Served by an agent after article rec':
+                'If a shopper is not satisfied with the article and asks for more help, a ticket is created.',
         },
         callbacks: {
             cell: ({value}) => {
@@ -1777,17 +1789,6 @@ export const stats = toImmutable<
         } as StatConfigCallbacks<ReactNode>,
     },
     [SELF_SERVICE_TOP_REPORTED_ISSUES]: {
-        helpText:
-            'Only issues configured during the selected time period are displayed below. You can customize possible issues based on order status.',
-        helpTextLink: () => (
-            <a
-                href="https://docs.gorgias.com/self-service/configure-your-self-service-portal"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                Learn more
-            </a>
-        ),
         axisHelpers: {
             '% of issues reported':
                 'Percent of issues reported out of all order issues reported.',

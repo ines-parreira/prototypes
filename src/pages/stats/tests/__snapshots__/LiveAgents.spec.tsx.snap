@@ -642,7 +642,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                   >
                     <i
                       class="material-icons ml-2 helpIcon"
-                      id="Online-time-tooltip"
+                      id="Online-time-tooltip-live-agents-stat"
                     >
                       info_outline
                     </i>
@@ -661,7 +661,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                   >
                     <i
                       class="material-icons ml-2 helpIcon"
-                      id="Tickets-closed-tooltip"
+                      id="Tickets-closed-tooltip-live-agents-stat"
                     >
                       info_outline
                     </i>

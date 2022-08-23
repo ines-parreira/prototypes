@@ -325,6 +325,23 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                     SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
                                 }
                                 statsFilters={pageStatsFilters}
+                                helpText={
+                                    <span>
+                                        You can enable up to four Quick Response
+                                        flows at a time to automatically answer
+                                        shopper questions. Only flows enabled
+                                        during the selected time period are
+                                        displayed below.{' '}
+                                        <a
+                                            href="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Learn more
+                                        </a>
+                                    </span>
+                                }
+                                helpAutoHide={false}
                                 isDownloadable
                             >
                                 {(stat) => (
@@ -335,6 +352,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         config={statsConfig.get(
                                             SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
                                         )}
+                                        name={
+                                            SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
+                                        }
                                     />
                                 )}
                             </StatWrapper>
@@ -347,6 +367,23 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
                                 }
                                 statsFilters={pageStatsFilters}
+                                helpText={
+                                    <span>
+                                        When enabled, relevant articles display
+                                        in chat to automatically answer customer
+                                        questions. Only articles recommended
+                                        during the selected time period are
+                                        displayed below.{' '}
+                                        <a
+                                            href="https://docs.gorgias.com/en-US/help-center-article-recommendation-in-chat-89341"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Learn more
+                                        </a>
+                                    </span>
+                                }
+                                helpAutoHide={false}
                                 isDownloadable
                             >
                                 {(stat) => (
@@ -357,6 +394,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         config={statsConfig.get(
                                             SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
                                         )}
+                                        name={
+                                            SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
+                                        }
                                     />
                                 )}
                             </StatWrapper>

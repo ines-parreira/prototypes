@@ -415,7 +415,10 @@ export class TableStat extends Component<
                             {(
                                 data.getIn(['axes', 'x']) as List<Map<any, any>>
                             ).map((axe, index) => {
-                                const axisId = this._getTooltipId(axe!)
+                                const tableName = this.props.name
+                                const axisId = `${this._getTooltipId(axe!)}${
+                                    tableName ? `-${tableName}` : ''
+                                }`
                                 return (
                                     <th
                                         key={index}
