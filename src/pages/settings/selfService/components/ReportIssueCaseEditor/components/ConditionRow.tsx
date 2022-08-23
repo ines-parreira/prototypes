@@ -13,7 +13,7 @@ import {
 } from '../../../../../../models/selfServiceConfiguration/types'
 import {
     FINANCIAL_STATUSES_OPTIONS,
-    FULFILLEMENT_STATUSES_OPTIONS,
+    FULFILLMENT_STATUSES_OPTIONS,
     ORDER_STATUSES_OPTIONS,
     SHIPMENT_STATUSES_OPTIONS,
 } from '../constants'
@@ -43,7 +43,7 @@ const getOperatorHumanReadableName = (
 
 const OptionsByVariableMap: Record<ReportIssueVariable, Option[]> = {
     [ReportIssueVariable.FINANCIAL_STATUS]: FINANCIAL_STATUSES_OPTIONS,
-    [ReportIssueVariable.FULFILLMENT_STATUS]: FULFILLEMENT_STATUSES_OPTIONS,
+    [ReportIssueVariable.FULFILLMENT_STATUS]: FULFILLMENT_STATUSES_OPTIONS,
     [ReportIssueVariable.SHIPMENT_STATUS]: SHIPMENT_STATUSES_OPTIONS,
     [ReportIssueVariable.ORDER_STATUS]: ORDER_STATUSES_OPTIONS,
 } as const

@@ -168,7 +168,7 @@ export enum FinancialStatuses {
     VOIDED = 'voided',
 }
 
-export enum FulfillementStatuses {
+export enum FulfillmentStatuses {
     PENDING = 'pending',
     OPEN = 'open',
     SUCCESS = 'success',

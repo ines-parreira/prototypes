@@ -5,7 +5,7 @@ import {
 import {Option as MultiSelectOptionsFieldOption} from '../../../../common/forms/MultiSelectOptionsField/types'
 import {
     ShipmentStatuses,
-    FulfillementStatuses,
+    FulfillmentStatuses,
     FinancialStatuses,
     OrderStatuses,
 } from '../../../../../models/selfServiceConfiguration/types'
@@ -138,13 +138,13 @@ export const FINANCIAL_STATUSES_OPTIONS: MultiSelectOptionsFieldOption[] = [
     {value: FinancialStatuses.VOIDED, label: 'Voided'},
 ]
 
-export const FULFILLEMENT_STATUSES_OPTIONS: MultiSelectOptionsFieldOption[] = [
-    {value: FulfillementStatuses.PENDING, label: 'Pending'},
-    {value: FulfillementStatuses.OPEN, label: 'Open'},
-    {value: FulfillementStatuses.SUCCESS, label: 'Success'},
-    {value: FulfillementStatuses.CANCELLED, label: 'Cancelled'},
-    {value: FulfillementStatuses.ERROR, label: 'Error'},
-    {value: FulfillementStatuses.FAILURE, label: 'Failure'},
+export const FULFILLMENT_STATUSES_OPTIONS: MultiSelectOptionsFieldOption[] = [
+    {value: FulfillmentStatuses.PENDING, label: 'Pending'},
+    {value: FulfillmentStatuses.OPEN, label: 'Open'},
+    {value: FulfillmentStatuses.SUCCESS, label: 'Success'},
+    {value: FulfillmentStatuses.CANCELLED, label: 'Cancelled'},
+    {value: FulfillmentStatuses.ERROR, label: 'Error'},
+    {value: FulfillmentStatuses.FAILURE, label: 'Failure'},
 ]
 
 export const SHIPMENT_STATUSES_OPTIONS: MultiSelectOptionsFieldOption[] = [
