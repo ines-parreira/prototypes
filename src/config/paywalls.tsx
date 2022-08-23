@@ -1,8 +1,13 @@
 import React, {ReactElement} from 'react'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {AccountFeature} from '../state/currentAccount/types'
+import {FeatureFlagKey} from './featureFlags'
 
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
+
+const hasSelfServiceStatisticsV2: boolean | undefined =
+    getLDClient()?.allFlags()[FeatureFlagKey.SelfServiceStatsV2]
 
 export type PaywallConfig = {
     pageHeader?: string
@@ -64,15 +69,27 @@ export const paywallConfigs: Partial<Record<AccountFeature, PaywallConfig>> = {
             'Track your agents in real-time. See how long they have been online, how many tickets have been assigned to them and the work they have accomplished over a given day.',
         preview: `${assetsURL}/static/private/js/assets/img/paywalls/screens/live-agents-statistic.png`,
     },
-    [AccountFeature.AutomationSelfServiceStatistics]: {
-        header: 'Track self-service’s interactions',
-        description: (
-            <div>
-                Activate <b>self-service</b> and see the number of your
-                customers’ requests passing through it and how many of these
-                interactions you are <b>automating!</b>
-            </div>
-        ),
-        preview: `${assetsURL}/static/private/js/assets/img/paywalls/screens/self-service-statistics.png`,
-    },
+    [AccountFeature.AutomationSelfServiceStatistics]: hasSelfServiceStatisticsV2
+        ? {
+              header: 'Track self-service performance',
+              description: (
+                  <div>
+                      See how many customer interactions are automated by
+                      self-service flows, gain insights to improve your
+                      automation rate, and more!
+                  </div>
+              ),
+              preview: `${assetsURL}/static/private/js/assets/img/paywalls/screens/self-service-statistics-v2.png`,
+          }
+        : {
+              header: 'Track self-service’s interactions',
+              description: (
+                  <div>
+                      Activate <b>self-service</b> and see the number of your
+                      customers’ requests passing through it and how many of
+                      these interactions you are <b>automating!</b>
+                  </div>
+              ),
+              preview: `${assetsURL}/static/private/js/assets/img/paywalls/screens/self-service-statistics.png`,
+          },
 }

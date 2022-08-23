@@ -237,7 +237,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                         onClick={() => {
                             setIsAutomationModalOpened(true)
                         }}
-                        label="Get Automation Features"
+                        label="Add Automation Features"
                         segmentEventToSend={segmentEventToSend}
                     />
                 }
