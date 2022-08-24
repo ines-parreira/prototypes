@@ -65,6 +65,18 @@ const tableStatData = fromJS({
                     name: 'Satisfaction survey link - empty space comment',
                     type: StatValueType.SatisfactionSurveyLink,
                 },
+                {
+                    name: 'Title with link',
+                    type: StatValueType.TitleWithLink,
+                },
+                {
+                    name: 'Quick Response automation rate',
+                    type: StatValueType.QuickResponseAutomationRate,
+                },
+                {
+                    name: 'Article Recommendation automation rate',
+                    type: StatValueType.ArticleRecommendationAutomationRate,
+                },
             ],
         },
         lines: [
@@ -159,6 +171,20 @@ const tableStatData = fromJS({
                     comment: '     ',
                     ticket_id: 1,
                     type: StatValueType.SatisfactionSurveyLink,
+                },
+                {
+                    value: {title: 'Article Title', url: 'fake url'},
+                    type: StatValueType.TitleWithLink,
+                },
+                {
+                    value: 30,
+                    type: StatValueType.ArticleRecommendationAutomationRate,
+                },
+                {
+                    value: 30,
+                    shop_integration_id: 1,
+                    flow_id: 'fakeflowId',
+                    type: StatValueType.QuickResponseAutomationRate,
                 },
             ],
         ],

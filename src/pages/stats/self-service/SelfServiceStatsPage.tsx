@@ -44,6 +44,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import AutomationSubscriptionModal from 'pages/settings/billing/automation/AutomationSubscriptionModal'
 import AutomationSubscriptionButton from 'pages/settings/billing/automation/AutomationSubscriptionButton'
 
+import {getIntegrations} from 'state/integrations/selectors'
 import KeyMetricStat from '../common/components/charts/KeyMetricStat/KeyMetricStat'
 import NormalizedBarStat from '../common/components/charts/NormalizedBarStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
@@ -80,6 +81,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     )
     const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
     const currentPlan = useAppSelector(DEPRECATED_getCurrentPlan)
+    const integrations = useAppSelector(getIntegrations)
     const statsFilters = useAppSelector(getStatsFilters)
     const hasSelfServiceStatisticsV2: boolean | undefined =
         useFlags()[FeatureFlagKey.SelfServiceStatsV2]
@@ -355,6 +357,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         name={
                                             SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
                                         }
+                                        integrations={integrations}
                                     />
                                 )}
                             </StatWrapper>

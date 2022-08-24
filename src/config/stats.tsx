@@ -5,9 +5,9 @@ import moment from 'moment'
 import _merge from 'lodash/merge'
 import _isString from 'lodash/isString'
 import {ChartType, Scale, TooltipItem} from 'chart.js'
+import classNames from 'classnames'
 import {defaults} from 'react-chartjs-2'
 
-import upgradeIcon from 'assets/img/icons/upgrade-icon.svg'
 import {formatDuration, formatNumber} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
 import {IntentName} from '../models/intent/types'
@@ -246,6 +246,8 @@ export enum StatValueType {
     Delta = 'delta',
     SatisfactionScore = 'satisfaction-score',
     Percent = 'percent',
+    QuickResponseAutomationRate = 'quick-response-automation-rate',
+    ArticleRecommendationAutomationRate = 'article-recommendation-automation-rate',
     Date = 'date',
     Currency = 'currency',
     CustomerLink = 'customer-link',
@@ -1822,7 +1824,9 @@ export const stats = toImmutable<
                                 to="/app/settings/self-service"
                             >
                                 Customize Report Issues
-                                <img src={upgradeIcon} alt="icon" />
+                                <span className={classNames('material-icons')}>
+                                    auto_awesome
+                                </span>
                             </Link>
                         </div>
                     ) : (

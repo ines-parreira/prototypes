@@ -160,6 +160,36 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             SATISFACTION SURVEY LINK - EMPTY SPACE COMMENT
           </span>
         </th>
+        <th
+          className="title-with-link"
+          key="15"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            TITLE WITH LINK
+          </span>
+        </th>
+        <th
+          className="quick-response-automation-rate"
+          key="16"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            QUICK RESPONSE AUTOMATION RATE
+          </span>
+        </th>
+        <th
+          className="article-recommendation-automation-rate"
+          key="17"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            ARTICLE RECOMMENDATION AUTOMATION RATE
+          </span>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -417,6 +447,77 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             >
               Go to ticket
             </Link>
+          </span>
+        </td>
+        <td
+          className="lineCell title-with-link link-full-td"
+          key="15"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            Article Title
+             
+            <a
+              className="material-icons-outlined openArticle"
+              href="fake url"
+              rel="noreferrer"
+              target="_blank"
+            >
+              open_in_new
+            </a>
+          </span>
+        </td>
+        <td
+          className="lineCell quick-response-automation-rate link-full-td"
+          key="16"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            30
+            %
+             
+            <span
+              className="material-icons lowAutomationRateIcon"
+              id="quick-response-automation-rate-0-tooltip"
+            >
+              error
+            </span>
+            <Tooltip
+              placement="top"
+              target="quick-response-automation-rate-0-tooltip"
+            >
+              Automation rate is low! Review 
+              <br />
+              tickets to improve your responses.
+            </Tooltip>
+          </span>
+        </td>
+        <td
+          className="lineCell article-recommendation-automation-rate link-full-td"
+          key="17"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            30
+            %
+             
+            <span
+              className="material-icons lowAutomationRateIcon"
+              id="article-recommendation-automation-rate-0-tooltip"
+            >
+              error
+            </span>
+            <Tooltip
+              placement="top"
+              target="article-recommendation-automation-rate-0-tooltip"
+            >
+              Review tickets to ensure relevant 
+              <br />
+              questions are addressed by this article
+            </Tooltip>
           </span>
         </td>
       </tr>
@@ -676,6 +777,77 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             </Link>
           </span>
         </td>
+        <td
+          className="lineCell title-with-link link-full-td"
+          key="15"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            Article Title
+             
+            <a
+              className="material-icons-outlined openArticle"
+              href="fake url"
+              rel="noreferrer"
+              target="_blank"
+            >
+              open_in_new
+            </a>
+          </span>
+        </td>
+        <td
+          className="lineCell quick-response-automation-rate link-full-td"
+          key="16"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            30
+            %
+             
+            <span
+              className="material-icons lowAutomationRateIcon"
+              id="quick-response-automation-rate-1-tooltip"
+            >
+              error
+            </span>
+            <Tooltip
+              placement="top"
+              target="quick-response-automation-rate-1-tooltip"
+            >
+              Automation rate is low! Review 
+              <br />
+              tickets to improve your responses.
+            </Tooltip>
+          </span>
+        </td>
+        <td
+          className="lineCell article-recommendation-automation-rate link-full-td"
+          key="17"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            30
+            %
+             
+            <span
+              className="material-icons lowAutomationRateIcon"
+              id="article-recommendation-automation-rate-1-tooltip"
+            >
+              error
+            </span>
+            <Tooltip
+              placement="top"
+              target="article-recommendation-automation-rate-1-tooltip"
+            >
+              Review tickets to ensure relevant 
+              <br />
+              questions are addressed by this article
+            </Tooltip>
+          </span>
+        </td>
       </tr>
     </tbody>
   </Table>
@@ -855,6 +1027,36 @@ exports[`TableStat should render a table chart 1`] = `
             SATISFACTION SURVEY LINK - EMPTY SPACE COMMENT
           </span>
         </th>
+        <th
+          className="title-with-link"
+          key="15"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            TITLE WITH LINK
+          </span>
+        </th>
+        <th
+          className="quick-response-automation-rate"
+          key="16"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            QUICK RESPONSE AUTOMATION RATE
+          </span>
+        </th>
+        <th
+          className="article-recommendation-automation-rate"
+          key="17"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            ARTICLE RECOMMENDATION AUTOMATION RATE
+          </span>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -1112,6 +1314,77 @@ exports[`TableStat should render a table chart 1`] = `
             >
               Go to ticket
             </Link>
+          </span>
+        </td>
+        <td
+          className="lineCell title-with-link link-full-td"
+          key="15"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            Article Title
+             
+            <a
+              className="material-icons-outlined openArticle"
+              href="fake url"
+              rel="noreferrer"
+              target="_blank"
+            >
+              open_in_new
+            </a>
+          </span>
+        </td>
+        <td
+          className="lineCell quick-response-automation-rate link-full-td"
+          key="16"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            30
+            %
+             
+            <span
+              className="material-icons lowAutomationRateIcon"
+              id="quick-response-automation-rate-0-tooltip"
+            >
+              error
+            </span>
+            <Tooltip
+              placement="top"
+              target="quick-response-automation-rate-0-tooltip"
+            >
+              Automation rate is low! Review 
+              <br />
+              tickets to improve your responses.
+            </Tooltip>
+          </span>
+        </td>
+        <td
+          className="lineCell article-recommendation-automation-rate link-full-td"
+          key="17"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            30
+            %
+             
+            <span
+              className="material-icons lowAutomationRateIcon"
+              id="article-recommendation-automation-rate-0-tooltip"
+            >
+              error
+            </span>
+            <Tooltip
+              placement="top"
+              target="article-recommendation-automation-rate-0-tooltip"
+            >
+              Review tickets to ensure relevant 
+              <br />
+              questions are addressed by this article
+            </Tooltip>
           </span>
         </td>
       </tr>
@@ -1288,6 +1561,36 @@ exports[`TableStat should render a table with the expand button and one line vis
             SATISFACTION SURVEY LINK - EMPTY SPACE COMMENT
           </span>
         </th>
+        <th
+          className="title-with-link"
+          key="15"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            TITLE WITH LINK
+          </span>
+        </th>
+        <th
+          className="quick-response-automation-rate"
+          key="16"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            QUICK RESPONSE AUTOMATION RATE
+          </span>
+        </th>
+        <th
+          className="article-recommendation-automation-rate"
+          key="17"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            ARTICLE RECOMMENDATION AUTOMATION RATE
+          </span>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -1545,6 +1848,77 @@ exports[`TableStat should render a table with the expand button and one line vis
             >
               Go to ticket
             </Link>
+          </span>
+        </td>
+        <td
+          className="lineCell title-with-link link-full-td"
+          key="15"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            Article Title
+             
+            <a
+              className="material-icons-outlined openArticle"
+              href="fake url"
+              rel="noreferrer"
+              target="_blank"
+            >
+              open_in_new
+            </a>
+          </span>
+        </td>
+        <td
+          className="lineCell quick-response-automation-rate link-full-td"
+          key="16"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            30
+            %
+             
+            <span
+              className="material-icons lowAutomationRateIcon"
+              id="quick-response-automation-rate-0-tooltip"
+            >
+              error
+            </span>
+            <Tooltip
+              placement="top"
+              target="quick-response-automation-rate-0-tooltip"
+            >
+              Automation rate is low! Review 
+              <br />
+              tickets to improve your responses.
+            </Tooltip>
+          </span>
+        </td>
+        <td
+          className="lineCell article-recommendation-automation-rate link-full-td"
+          key="17"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            30
+            %
+             
+            <span
+              className="material-icons lowAutomationRateIcon"
+              id="article-recommendation-automation-rate-0-tooltip"
+            >
+              error
+            </span>
+            <Tooltip
+              placement="top"
+              target="article-recommendation-automation-rate-0-tooltip"
+            >
+              Review tickets to ensure relevant 
+              <br />
+              questions are addressed by this article
+            </Tooltip>
           </span>
         </td>
       </tr>

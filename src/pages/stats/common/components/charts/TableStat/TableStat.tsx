@@ -13,6 +13,7 @@ import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 
 import {REASONS_DROPDOWN_OPTIONS} from 'pages/settings/selfService/components/ReportIssueCaseEditor/constants'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import {Integration} from 'models/integration/types'
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {
@@ -32,7 +33,6 @@ import {
 import DistributionVariantStat from '../DistributionVariantStat'
 import StatPercentageDiff from '../../StatPercentageDiff'
 import StatsHelpIcon from '../../StatsHelpIcon'
-import linkIcon from './link-icon.svg'
 
 import ProductCell from './cells/ProductCell'
 import css from './TableStat.less'
@@ -46,6 +46,7 @@ type OwnProps = {
     context: {
         tagColors: Map<any, any> | null
     }
+    integrations?: Integration[]
 }
 
 type State = {
@@ -277,6 +278,76 @@ export class TableStat extends Component<
                     callbackContext
                 )
             }
+            case StatValueType.QuickResponseAutomationRate: {
+                const value = metric.get('value') as number
+                const hasLowAutomationRate = value < 80
+                const tooltipId = `${StatValueType.QuickResponseAutomationRate}-${lineIndex}-tooltip`
+                const shopIntegrationId = metric.get(
+                    'shop_integration_id'
+                ) as number
+                const shopName = this.props.integrations?.find(
+                    (integration) => integration.id === shopIntegrationId
+                )?.name
+
+                return (
+                    <>
+                        {value}%{' '}
+                        {hasLowAutomationRate && (
+                            <>
+                                <span
+                                    className={classnames(
+                                        'material-icons',
+                                        css.lowAutomationRateIcon
+                                    )}
+                                    id={tooltipId}
+                                >
+                                    error
+                                </span>
+                                <Tooltip placement="top" target={tooltipId}>
+                                    Automation rate is low! Review <br />
+                                    tickets to improve your responses.
+                                </Tooltip>
+                                {shopName && (
+                                    <Link
+                                        to={`/app/settings/self-service/shopify/${shopName}/preferences/quick-response/${
+                                            metric.get('flow_id') as number
+                                        }`}
+                                    >
+                                        Edit quick response
+                                    </Link>
+                                )}
+                            </>
+                        )}
+                    </>
+                )
+            }
+            case StatValueType.ArticleRecommendationAutomationRate: {
+                const value = metric.get('value') as number
+                const hasLowAutomationRate = value < 40
+                const tooltipId = `${StatValueType.ArticleRecommendationAutomationRate}-${lineIndex}-tooltip`
+                return (
+                    <>
+                        {value}%{' '}
+                        {hasLowAutomationRate && (
+                            <>
+                                <span
+                                    className={classnames(
+                                        'material-icons',
+                                        css.lowAutomationRateIcon
+                                    )}
+                                    id={tooltipId}
+                                >
+                                    error
+                                </span>
+                                <Tooltip placement="top" target={tooltipId}>
+                                    Review tickets to ensure relevant <br />
+                                    questions are addressed by this article
+                                </Tooltip>
+                            </>
+                        )}
+                    </>
+                )
+            }
             case StatValueType.Date: {
                 return (
                     <div className="fit-cell">
@@ -344,11 +415,15 @@ export class TableStat extends Component<
                     <>
                         {metric.getIn(['value', 'title'])}{' '}
                         <a
+                            className={classnames(
+                                'material-icons-outlined',
+                                css.openArticle
+                            )}
                             href={metric.getIn(['value', 'url'])}
                             target={'_blank'}
                             rel="noreferrer"
                         >
-                            <img src={linkIcon} alt="icon" />
+                            open_in_new
                         </a>
                     </>
                 )
