@@ -126,7 +126,7 @@ const ReceiversSelectField = forwardRef<MultiSelectAsyncField, Props>(
                     callback(valueFromState(resp.data))
                 }
             },
-            1000
+            300
         )
 
         const _placeholder =
