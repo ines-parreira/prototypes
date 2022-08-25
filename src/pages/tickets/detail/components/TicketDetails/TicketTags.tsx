@@ -30,7 +30,6 @@ type OwnProps = {
     removeTag: (tag: string) => void
     transparent: boolean
     right?: boolean
-    dropdownUpDirection?: boolean
     dropdownContainer?: HTMLElement
 }
 
@@ -239,14 +238,8 @@ export class TicketTags extends Component<Props, State> {
     }
 
     render() {
-        const {
-            ticketTags,
-            removeTag,
-            transparent,
-            right,
-            dropdownUpDirection,
-            dropdownContainer,
-        } = this.props
+        const {ticketTags, removeTag, transparent, right, dropdownContainer} =
+            this.props
         return (
             <div
                 className={`d-none d-md-inline-flex align-items-center flex-wrap mr-2 mb-1${
@@ -289,7 +282,6 @@ export class TicketTags extends Component<Props, State> {
                     toggle={this.toggle}
                     group={false}
                     key={+this.state.isLoading} //Force re-render so dropdown position is correct
-                    direction={dropdownUpDirection ? 'up' : 'down'}
                 >
                     <DropdownToggle
                         color="secondary"
@@ -310,6 +302,9 @@ export class TicketTags extends Component<Props, State> {
                         right={!!right}
                         style={{padding: '0.5rem 4px'}}
                         container={dropdownContainer}
+                        modifiers={{
+                            preventOverflow: {boundariesElement: 'viewport'},
+                        }}
                     >
                         <DropdownItem header>ADD TAG:</DropdownItem>
                         <DropdownItem header className="dropdown-item-input">

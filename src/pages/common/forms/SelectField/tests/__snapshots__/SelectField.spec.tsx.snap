@@ -229,6 +229,13 @@ exports[`SelectField should render a select input with custom props 1`] = `
     <DropdownMenu
       className="options"
       flip={true}
+      modifiers={
+        Object {
+          "preventOverflow": Object {
+            "boundariesElement": "viewport",
+          },
+        }
+      }
       tag="div"
     >
       <DropdownItem
@@ -269,6 +276,13 @@ exports[`SelectField should render a select input with default props 1`] = `
     <DropdownMenu
       className="options"
       flip={true}
+      modifiers={
+        Object {
+          "preventOverflow": Object {
+            "boundariesElement": "viewport",
+          },
+        }
+      }
       tag="div"
     >
       <DropdownItem
@@ -324,6 +338,13 @@ exports[`SelectField should set the minWidth of the input according to the lengt
     <DropdownMenu
       className="options"
       flip={true}
+      modifiers={
+        Object {
+          "preventOverflow": Object {
+            "boundariesElement": "viewport",
+          },
+        }
+      }
       tag="div"
     >
       <DropdownItem

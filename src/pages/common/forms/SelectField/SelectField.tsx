@@ -510,6 +510,9 @@ export default class SelectField extends Component<Props, State> {
                         )}
                         container={container}
                         positionFixed={positionFixed}
+                        modifiers={{
+                            preventOverflow: {boundariesElement: 'viewport'},
+                        }}
                     >
                         {hasNoFilteredOptions && !allowCustomValue ? (
                             <DropdownItem header>No result</DropdownItem>

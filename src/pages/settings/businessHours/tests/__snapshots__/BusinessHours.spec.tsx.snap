@@ -475,6 +475,13 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               <DropdownMenu
                                                 className="options"
                                                 flip={true}
+                                                modifiers={
+                                                  Object {
+                                                    "preventOverflow": Object {
+                                                      "boundariesElement": "viewport",
+                                                    },
+                                                  }
+                                                }
                                                 tag="div"
                                               >
                                                 <div
@@ -904,6 +911,13 @@ exports[`BusinessHours component should render values from state 1`] = `
                                               <DropdownMenu
                                                 className="options"
                                                 flip={true}
+                                                modifiers={
+                                                  Object {
+                                                    "preventOverflow": Object {
+                                                      "boundariesElement": "viewport",
+                                                    },
+                                                  }
+                                                }
                                                 tag="div"
                                               >
                                                 <div

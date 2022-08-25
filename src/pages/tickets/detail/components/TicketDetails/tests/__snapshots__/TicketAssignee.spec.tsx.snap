@@ -26,6 +26,13 @@ exports[`<TicketAssignee/> render() should display teams only 1`] = `
   </DropdownToggle>
   <DropdownMenu
     flip={true}
+    modifiers={
+      Object {
+        "preventOverflow": Object {
+          "boundariesElement": "viewport",
+        },
+      }
+    }
     right={true}
     style={
       Object {
@@ -120,6 +127,13 @@ exports[`<TicketAssignee/> render() should display the email of the agent assign
   </DropdownToggle>
   <DropdownMenu
     flip={true}
+    modifiers={
+      Object {
+        "preventOverflow": Object {
+          "boundariesElement": "viewport",
+        },
+      }
+    }
     right={true}
     style={
       Object {
@@ -236,6 +250,13 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
   </DropdownToggle>
   <DropdownMenu
     flip={true}
+    modifiers={
+      Object {
+        "preventOverflow": Object {
+          "boundariesElement": "viewport",
+        },
+      }
+    }
     right={true}
     style={
       Object {
@@ -352,6 +373,13 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
   </DropdownToggle>
   <DropdownMenu
     flip={true}
+    modifiers={
+      Object {
+        "preventOverflow": Object {
+          "boundariesElement": "viewport",
+        },
+      }
+    }
     right={true}
     style={
       Object {
@@ -481,6 +509,13 @@ exports[`<TicketAssignee/> render() should display the name of the team assigned
   </DropdownToggle>
   <DropdownMenu
     flip={true}
+    modifiers={
+      Object {
+        "preventOverflow": Object {
+          "boundariesElement": "viewport",
+        },
+      }
+    }
     right={true}
     style={
       Object {
@@ -594,6 +629,13 @@ exports[`<TicketAssignee/> render() should display users only 1`] = `
   </DropdownToggle>
   <DropdownMenu
     flip={true}
+    modifiers={
+      Object {
+        "preventOverflow": Object {
+          "boundariesElement": "viewport",
+        },
+      }
+    }
     right={true}
     style={
       Object {
@@ -694,6 +736,13 @@ exports[`<TicketAssignee/> render() should not display any agent info because th
   </DropdownToggle>
   <DropdownMenu
     flip={true}
+    modifiers={
+      Object {
+        "preventOverflow": Object {
+          "boundariesElement": "viewport",
+        },
+      }
+    }
     right={true}
     style={
       Object {
@@ -794,6 +843,13 @@ exports[`<TicketAssignee/> render() should not display teams because object is e
   </DropdownToggle>
   <DropdownMenu
     flip={true}
+    modifiers={
+      Object {
+        "preventOverflow": Object {
+          "boundariesElement": "viewport",
+        },
+      }
+    }
     right={true}
     style={
       Object {
@@ -982,6 +1038,13 @@ exports[`<TicketAssignee/> should read data from the redux store correctly 1`] =
             </DropdownToggle>
             <DropdownMenu
               flip={true}
+              modifiers={
+                Object {
+                  "preventOverflow": Object {
+                    "boundariesElement": "viewport",
+                  },
+                }
+              }
               right={true}
               style={
                 Object {

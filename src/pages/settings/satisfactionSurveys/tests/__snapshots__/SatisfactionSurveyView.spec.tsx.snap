@@ -235,6 +235,13 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                     <DropdownMenu
                                       className="options optionsFullWidth"
                                       flip={true}
+                                      modifiers={
+                                        Object {
+                                          "preventOverflow": Object {
+                                            "boundariesElement": "viewport",
+                                          },
+                                        }
+                                      }
                                       tag="div"
                                     >
                                       <div

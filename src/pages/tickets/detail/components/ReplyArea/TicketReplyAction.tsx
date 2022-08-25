@@ -184,13 +184,17 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                         {args.label}
                                     </Label>
                                     <SelectField
-                                        className={css.input}
+                                        className={classnames(
+                                            css.input,
+                                            'ml-2'
+                                        )}
                                         {...args.input}
                                         value={value as string | number}
                                         onChange={(value) =>
                                             this.setValue(key, value)
                                         }
                                         required={!!args.required}
+                                        container={document.body}
                                     />
                                 </div>
                             )
@@ -221,8 +225,6 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                         )
                                     }}
                                     handleTeams={true}
-                                    right={true}
-                                    up={true}
                                     dropdownContainer={document.body}
                                 />
                             )
@@ -239,8 +241,6 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                         )
                                     }}
                                     handleUsers={true}
-                                    right={true}
-                                    up={true}
                                     dropdownContainer={document.body}
                                 />
                             )
@@ -270,7 +270,6 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                             )
                                         }}
                                         right={true}
-                                        dropdownUpDirection={true}
                                         dropdownContainer={document.body}
                                     />
                                 </div>

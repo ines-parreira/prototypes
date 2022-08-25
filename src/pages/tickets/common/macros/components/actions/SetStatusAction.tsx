@@ -30,6 +30,7 @@ const SetStatusAction = ({
                     label: _upperFirst(status),
                 }))}
                 fullWidth={fullWidth}
+                container={document.body}
             />
         </div>
     )

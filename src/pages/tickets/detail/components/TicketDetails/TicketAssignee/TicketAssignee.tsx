@@ -346,6 +346,9 @@ export class TicketAssigneeContainer extends Component<Props, State> {
                     right={menuDirection === 'right'}
                     style={{width: '260px', zIndex: 1051}}
                     container={dropdownContainer}
+                    modifiers={{
+                        preventOverflow: {boundariesElement: 'viewport'},
+                    }}
                 >
                     <DropdownItem header>ASSIGN TO:</DropdownItem>
                     <DropdownItem header className="dropdown-item-input">
