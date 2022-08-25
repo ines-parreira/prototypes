@@ -1630,45 +1630,202 @@ export const selfServiceOverview: Stat<OneDimensionalUnionChart> = {
     data: {
         data: [
             {
-                name: 'total_interactions',
+                name: 'chat_self_service_interaction_count',
                 type: StatType.Number,
                 more_is_better: true,
-                value: 3,
-                delta: 100,
+                value: 3302,
+                delta: -57,
             },
             {
-                name: 'total_unique_customers',
-                type: StatType.Number,
-                more_is_better: true,
-                value: 2,
-                delta: 100,
-            },
-            {
-                name: 'tickets_deflected',
+                name: 'chat_self_service_interaction_ratio',
                 type: StatType.Percent,
                 more_is_better: true,
-                value: 100,
-                delta: 100,
+                value: 99,
+                delta: -1,
             },
             {
-                name: 'tickets_created',
+                name: 'help_center_self_service_interaction_count',
+                type: StatType.Number,
+                more_is_better: true,
+                value: 754,
+                delta: 81,
+            },
+            {
+                name: 'automated_interaction_count',
+                type: StatType.Number,
+                more_is_better: true,
+                value: 713,
+                delta: -64,
+            },
+            {
+                name: 'automated_interaction_ratio',
+                type: StatType.Percent,
+                more_is_better: true,
+                value: 17,
+                delta: -30,
+            },
+            {
+                name: 'total_self_service_interaction_count',
+                type: StatType.Number,
+                more_is_better: true,
+                value: 4875,
+                delta: -41,
+            },
+            {
+                name: 'automated_self_service_interaction_count',
+                type: StatType.Number,
+                more_is_better: true,
+                value: 2129,
+                delta: -26,
+            },
+            {
+                name: 'self_service_automation_rate',
+                type: StatType.Percent,
+                more_is_better: true,
+                value: 43,
+                delta: 22,
+            },
+            {
+                name: 'not_automated_self_service_interaction_count',
+                type: StatType.Number,
+                more_is_better: false,
+                value: 2746,
+                delta: -48,
+            },
+        ],
+    },
+}
+
+export const selfServiceOverviewNoData: Stat<OneDimensionalUnionChart> = {
+    meta: {
+        end_datetime: '2022-01-12T23:59:59+01:00',
+        previous_end_datetime: '2022-01-06T00:00:00+01:00',
+        previous_start_datetime: '2021-12-30T00:00:01+01:00',
+        start_datetime: '2022-01-06T00:00:00+01:00',
+    },
+    data: {
+        data: [
+            {
+                name: 'chat_self_service_interaction_count',
                 type: StatType.Number,
                 more_is_better: true,
                 value: 0,
                 delta: 0,
             },
             {
-                name: 'self-service_usage',
+                name: 'chat_self_service_interaction_ratio',
                 type: StatType.Percent,
                 more_is_better: true,
-                value: 60,
-                delta: 100,
+                value: 0,
+                delta: 0,
+            },
+            {
+                name: 'help_center_self_service_interaction_count',
+                type: StatType.Number,
+                more_is_better: true,
+                value: 0,
+                delta: 0,
+            },
+            {
+                name: 'automated_interaction_count',
+                type: StatType.Number,
+                more_is_better: true,
+                value: 0,
+                delta: 0,
+            },
+            {
+                name: 'automated_interaction_ratio',
+                type: StatType.Percent,
+                more_is_better: true,
+                value: 0,
+                delta: 0,
+            },
+            {
+                name: 'total_self_service_interaction_count',
+                type: StatType.Number,
+                more_is_better: true,
+                value: 0,
+                delta: 0,
+            },
+            {
+                name: 'automated_self_service_interaction_count',
+                type: StatType.Number,
+                more_is_better: true,
+                value: 0,
+                delta: 0,
+            },
+            {
+                name: 'self_service_automation_rate',
+                type: StatType.Percent,
+                more_is_better: true,
+                value: 0,
+                delta: 0,
+            },
+            {
+                name: 'not_automated_self_service_interaction_count',
+                type: StatType.Number,
+                more_is_better: false,
+                value: 0,
+                delta: 0,
             },
         ],
     },
 }
 
 export const selfServiceVolumePerFlow: Stat<TwoDimensionalChart> = {
+    meta: {
+        end_datetime: '2022-01-12T23:59:59+01:00',
+        previous_end_datetime: '2022-01-06T00:00:00+01:00',
+        previous_start_datetime: '2021-12-30T00:00:01+01:00',
+        start_datetime: '2022-01-06T00:00:00+01:00',
+    },
+    data: {
+        label: 'Self-service volume per flow',
+        legend: {
+            axes: {
+                x: 'Interaction date',
+                y: 'Interactions',
+            },
+        },
+        data: {
+            axes: {
+                x: [
+                    1659416400, 1659502800, 1659589200, 1659675600, 1659762000,
+                    1659848400, 1659934800,
+                ],
+                y: [],
+            },
+            lines: [
+                {
+                    name: 'quick_responses',
+                    data: [97, 106, 80, 83, 59, 96, 90],
+                },
+                {
+                    name: 'article_recommendation',
+                    data: [38, 82, 75, 63, 69, 52, 44],
+                },
+                {
+                    name: 'track',
+                    data: [26, 68, 69, 50, 38, 32, 19],
+                },
+                {
+                    name: 'report_issues',
+                    data: [58, 118, 105, 97, 69, 82, 58],
+                },
+                {
+                    name: 'returns',
+                    data: [51, 74, 81, 84, 66, 78, 50],
+                },
+                {
+                    name: 'cancellations',
+                    data: [1, 5, 2, 13, 15, 13, 2],
+                },
+            ],
+        },
+    },
+}
+
+export const selfServiceVolumePerFlowNoData: Stat<TwoDimensionalChart> = {
     meta: {
         end_datetime: '2022-01-12T23:59:59+01:00',
         previous_end_datetime: '2022-01-06T00:00:00+01:00',
@@ -1774,6 +1931,181 @@ export const selfServiceFlowsDistribution: Stat<TwoDimensionalChart> = {
     },
 }
 
+export const selfServiceQuickResponsePerformance: Stat<TwoDimensionalChart> = {
+    data: {
+        label: 'Quick response performance',
+        data: {
+            axes: {
+                x: [
+                    {name: 'Quick response', type: StatType.Title},
+                    {
+                        name: 'Automation rate',
+                        type: StatType.QuickResponseAutomationRate,
+                    },
+                    {
+                        name: 'Automated by quick response',
+                        type: StatType.Number,
+                    },
+                    {
+                        name: 'Served by an agent after quick response',
+                        type: StatType.Number,
+                    },
+                ],
+            },
+            lines: [
+                [
+                    {
+                        type: StatType.Title,
+                        value: 'How do I pick the right size?',
+                    },
+                    {type: StatType.Percent, value: 86},
+                    {type: StatType.Number, value: 750},
+                    {type: StatType.Number, value: 116},
+                ],
+                [
+                    {
+                        type: StatType.Title,
+                        value: 'What is your shipping policy?',
+                    },
+                    {type: StatType.Percent, value: 85},
+                    {type: StatType.Number, value: 417},
+                    {type: StatType.Number, value: 68},
+                ],
+            ],
+        },
+    },
+    meta: {
+        end_datetime: '2022-08-24T23:59:59-07:00',
+        previous_end_datetime: '2022-06-25T23:59:59-07:00',
+        previous_start_datetime: '2022-04-27T00:00:00-07:00',
+        start_datetime: '2022-06-26T00:00:00-07:00',
+    },
+}
+
+export const selfServiceQuickResponsePerformanceNoData: Stat<TwoDimensionalChart> =
+    {
+        data: {
+            label: 'Quick response performance',
+            data: {
+                axes: {
+                    x: [
+                        {name: 'Quick response', type: StatType.Title},
+                        {
+                            name: 'Automation rate',
+                            type: StatType.QuickResponseAutomationRate,
+                        },
+                        {
+                            name: 'Automated by quick response',
+                            type: StatType.Number,
+                        },
+                        {
+                            name: 'Served by an agent after quick response',
+                            type: StatType.Number,
+                        },
+                    ],
+                },
+                lines: [],
+            },
+        },
+        meta: {
+            end_datetime: '2022-08-24T23:59:59-07:00',
+            previous_end_datetime: '2022-06-25T23:59:59-07:00',
+            previous_start_datetime: '2022-04-27T00:00:00-07:00',
+            start_datetime: '2022-06-26T00:00:00-07:00',
+        },
+    }
+
+export const selfServiceArticleRecommendationPerformance: Stat<TwoDimensionalChart> =
+    {
+        data: {
+            label: 'Article recommendation performance',
+            data: {
+                axes: {
+                    x: [
+                        {name: 'Article', type: StatType.TitleWithLink},
+                        {
+                            name: 'Automation rate',
+                            type: StatType.ArticleRecommendationAutomationRate,
+                        },
+                        {
+                            name: 'Automated by article rec',
+                            type: StatType.Number,
+                        },
+                        {
+                            name: 'Served by an agent after article rec',
+                            type: StatType.Number,
+                        },
+                    ],
+                },
+                lines: [
+                    [
+                        {
+                            type: StatType.TitleWithLink,
+                            value: {
+                                title: 'Care instructions',
+                                url: 'https://trueclassictees.gorgias.help/en-US/care-instructions-78902',
+                            },
+                        },
+                        {type: StatType.Percent, value: 16},
+                        {type: StatType.Number, value: 12},
+                        {type: StatType.Number, value: 60},
+                    ],
+                    [
+                        {
+                            type: StatType.TitleWithLink,
+                            value: {
+                                title: 'Loyalty Program',
+                                url: 'https://trueclassictees.gorgias.help/en-US/loyalty-program-78905',
+                            },
+                        },
+                        {type: StatType.Percent, value: 14},
+                        {type: StatType.Number, value: 21},
+                        {type: StatType.Number, value: 126},
+                    ],
+                ],
+            },
+        },
+        meta: {
+            end_datetime: '2022-08-24T23:59:59-07:00',
+            previous_end_datetime: '2022-06-25T23:59:59-07:00',
+            previous_start_datetime: '2022-04-27T00:00:00-07:00',
+            start_datetime: '2022-06-26T00:00:00-07:00',
+        },
+    }
+
+export const selfServiceArticleRecommendationPerformanceNoData: Stat<TwoDimensionalChart> =
+    {
+        data: {
+            label: 'Article recommendation performance',
+            data: {
+                axes: {
+                    x: [
+                        {name: 'Article', type: StatType.TitleWithLink},
+                        {
+                            name: 'Automation rate',
+                            type: StatType.ArticleRecommendationAutomationRate,
+                        },
+                        {
+                            name: 'Automated by article rec',
+                            type: StatType.String,
+                        },
+                        {
+                            name: 'Served by an agent after article rec',
+                            type: StatType.String,
+                        },
+                    ],
+                },
+                lines: [],
+            },
+        },
+        meta: {
+            end_datetime: '2022-08-24T23:59:59-07:00',
+            previous_end_datetime: '2022-06-25T23:59:59-07:00',
+            previous_start_datetime: '2022-04-27T00:00:00-07:00',
+            start_datetime: '2022-06-26T00:00:00-07:00',
+        },
+    }
+
 export const selfServiceProductsWithMostIssues: Stat<TwoDimensionalChart> = {
     meta: {
         end_datetime: '2022-01-12T23:59:59+01:00',
@@ -1824,6 +2156,94 @@ export const selfServiceProductsWithMostIssues: Stat<TwoDimensionalChart> = {
     },
 }
 
+export const selfServiceProductsWithMostIssuesAndReturnRequests: Stat<TwoDimensionalChart> =
+    {
+        meta: {
+            end_datetime: '2022-08-24T23:59:59-07:00',
+            previous_end_datetime: '2022-08-17T23:59:59-07:00',
+            previous_start_datetime: '2022-08-11T00:00:00-07:00',
+            start_datetime: '2022-08-18T00:00:00-07:00',
+        },
+        data: {
+            label: 'Products with most issues and return requests',
+            data: {
+                axes: {
+                    x: [
+                        {name: 'Product', type: StatType.Product},
+                        {name: 'Total issues reported', type: StatType.Number},
+                        {name: 'Issues', type: StatType.Issues},
+                        {name: 'Return Requests', type: StatType.Number},
+                    ],
+                },
+                lines: [
+                    [
+                        {
+                            type: StatType.Product,
+                            value: {
+                                image_url:
+                                    'https://cdn.shopify.com/s/files/1/0220/4008/4552/products/Staple_6pack_77e9f90d-c32d-45d4-aa67-cf5e2c5b3336_100x100.jpg?v=1652759372',
+                                name: 'The Staple 6-Pack - L',
+                            },
+                        },
+                        {type: StatType.Number, value: 61},
+                        {
+                            type: StatType.Issues,
+                            value: [
+                                ReportIssueReasons.REASON_PAST_EXPECTED_DELIVERY_DATE,
+                                ReportIssueReasons.REASON_DID_NOT_RECEIVE_REFUND,
+                                ReportIssueReasons.REASON_EDIT_ORDER,
+                            ],
+                        },
+                        {type: StatType.Number, value: 45},
+                    ],
+                    [
+                        {
+                            type: StatType.Product,
+                            value: {
+                                image_url:
+                                    'https://cdn.shopify.com/s/files/1/0220/4008/4552/products/Staple_6pack_77e9f90d-c32d-45d4-aa67-cf5e2c5b3336_100x100.jpg?v=1652759372',
+                                name: 'The Staple 6-Pack - XL',
+                            },
+                        },
+                        {type: StatType.Number, value: 59},
+                        {
+                            type: StatType.Issues,
+                            value: [
+                                ReportIssueReasons.REASON_CHANGE_DELIVERY_DATE,
+                                ReportIssueReasons.REASON_OTHER,
+                            ],
+                        },
+                        {type: StatType.Number, value: 11},
+                    ],
+                ],
+            },
+        },
+    }
+
+export const selfServiceProductsWithMostIssuesAndReturnRequestsNoData: Stat<TwoDimensionalChart> =
+    {
+        meta: {
+            end_datetime: '2022-08-24T23:59:59-07:00',
+            previous_end_datetime: '2022-08-17T23:59:59-07:00',
+            previous_start_datetime: '2022-08-11T00:00:00-07:00',
+            start_datetime: '2022-08-18T00:00:00-07:00',
+        },
+        data: {
+            label: 'Products with most issues and return requests',
+            data: {
+                axes: {
+                    x: [
+                        {name: 'Product', type: StatType.Product},
+                        {name: 'Total issues reported', type: StatType.Number},
+                        {name: 'Issues', type: StatType.Issues},
+                        {name: 'Return Requests', type: StatType.Number},
+                    ],
+                },
+                lines: [],
+            },
+        },
+    }
+
 export const selfServiceTopReportedIssues: Stat<TwoDimensionalChart> = {
     meta: {
         end_datetime: '2022-01-12T23:59:59+01:00',
@@ -1832,7 +2252,7 @@ export const selfServiceTopReportedIssues: Stat<TwoDimensionalChart> = {
         start_datetime: '2021-11-14T00:00:00+01:00',
     },
     data: {
-        label: 'Top issues reported',
+        label: 'Top order issues reported',
         data: {
             axes: {
                 x: [
@@ -1874,6 +2294,41 @@ export const selfServiceTopReportedIssues: Stat<TwoDimensionalChart> = {
                     },
                 ],
             ],
+        },
+    },
+}
+
+export const selfServiceTopReportedIssuesNoData: Stat<TwoDimensionalChart> = {
+    meta: {
+        end_datetime: '2022-01-12T23:59:59+01:00',
+        previous_end_datetime: '2021-11-14T00:00:00+01:00',
+        previous_start_datetime: '2021-09-15T00:00:01+01:00',
+        start_datetime: '2021-11-14T00:00:00+01:00',
+    },
+    data: {
+        label: 'Top order issues reported',
+        data: {
+            axes: {
+                x: [
+                    {
+                        name: 'Issue',
+                        type: StatType.IssueReason,
+                    },
+                    {
+                        name: 'Tickets created',
+                        type: StatType.Number,
+                    },
+                    {
+                        name: '% of issues reported',
+                        type: StatType.Percent,
+                    },
+                    {
+                        name: 'Delta',
+                        type: StatType.Delta,
+                    },
+                ],
+            },
+            lines: [],
         },
     },
 }

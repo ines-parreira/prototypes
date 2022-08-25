@@ -1,8 +1,28 @@
 @import '~css/new/colors';
+@import '~css/typography';
 
 :local {
     .section {
         padding: 0 30px;
         margin-bottom: 6px;
+    }
+
+    .noActivityAlert {
+        margin-right: 30px;
+        margin-left: 30px;
+    }
+
+    .title {
+        .heading-subsection-semibold();
+
+        color: @classic-neutral-grey-6;
+        margin-bottom: 8px;
+    }
+
+    .description {
+        .heading-subsection-regular();
+
+        color: @classic-neutral-grey-5;
+        margin-bottom: 38px;
     }
 }

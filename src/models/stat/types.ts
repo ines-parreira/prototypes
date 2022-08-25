@@ -15,25 +15,30 @@ export type StatsFilters = {
 }
 
 export enum StatType {
-    User = 'user',
-    Number = 'number',
-    String = 'string',
-    Percent = 'percent',
-    Delta = 'delta',
-    Duration = 'duration',
+    ArticleRecommendationAutomationRate = 'article-recommendation-automation-rate',
+    Boolean = 'bool',
+    Currency = 'currency',
     CustomerLink = 'customer-link',
     Date = 'date',
+    Delta = 'delta',
+    Duration = 'duration',
+    IssueReason = 'issue-reason',
+    Issues = 'issues',
+    Number = 'number',
+    Object = 'object',
+    OnlineTime = 'online-time',
+    Percent = 'percent',
+    Product = 'product',
+    QuickResponseAutomationRate = 'quick-response-automation-rate',
     SatisfactionScore = 'satisfaction-score',
     SatisfactionSurveyLink = 'satisfaction-survey-link',
-    Currency = 'currency',
-    TicketLink = 'ticket-link',
-    OnlineTime = 'online-time',
+    String = 'string',
     TicketDetails = 'ticket-details',
+    TicketLink = 'ticket-link',
     Timezone = 'timezone',
-    Boolean = 'bool',
-    Object = 'object',
-    Product = 'product',
-    IssueReason = 'issue-reason',
+    Title = 'title',
+    TitleWithLink = 'title-with-link',
+    User = 'user',
 }
 
 export type Stat<T = StatData> = {
@@ -141,7 +146,7 @@ export type DataStatLine = {
 export type AnyStatLine = DataStatLine | StatCell[]
 
 export type TextStatCell = {
-    type: StatType.String | StatType.Timezone
+    type: StatType.String | StatType.Timezone | StatType.Title
     value: string
 }
 
@@ -171,10 +176,6 @@ export type StatCell =
     | NumericStatCell
     | TicketDetailStatCell
     | OnlineTimeDetailStatCell
-    | {
-          type: StatType.User
-          value: {name: string; id: number}
-      }
     | {type: StatType.Date; value: string | null}
     | {
           type: StatType.SatisfactionSurveyLink
@@ -216,4 +217,15 @@ export type StatCell =
     | {
           type: StatType.IssueReason
           value: ReportIssueReasons
+      }
+    | {
+          type: StatType.Issues
+          value: ReportIssueReasons[]
+      }
+    | {
+          type: StatType.TitleWithLink
+          value: {
+              title: string
+              url: string
+          }
       }
