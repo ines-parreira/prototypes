@@ -5,9 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import _omit from 'lodash/omit'
-import copy from 'copy-to-clipboard'
 
-import {TooltipProps} from 'reactstrap'
 import {ticket} from 'fixtures/ticket'
 import * as notificationsActions from 'state/notifications/actions'
 import * as ticketActions from 'state/ticket/actions'
@@ -15,7 +13,7 @@ import {RootState} from 'state/types'
 import {UserRole} from '../../../../../config/types/user'
 import {user} from '../../../../../fixtures/users'
 import {NotificationStatus} from '../../../../../state/notifications/types'
-import TicketHeader, {COPY_ID_TIMEOUT_MS} from '../TicketHeader'
+import TicketHeader from '../TicketHeader'
 import shortcutManager from '../../../../../services/shortcutManager'
 import {makeExecuteKeyboardAction} from '../../../../../utils/testing'
 
@@ -50,14 +48,8 @@ jest.mock('reactstrap', () => {
         Popover: (props: Record<string, any>) => {
             return props.isOpen ? <div {...props}>{props.children}</div> : null
         },
-        Tooltip: (props: TooltipProps) => {
-            return props.isOpen ? <div>{props.children}</div> : null
-        },
     }
 })
-
-jest.mock('copy-to-clipboard')
-jest.spyOn(window, 'clearTimeout')
 
 const shortcutManagerMock = shortcutManager as jest.Mocked<
     typeof shortcutManager
@@ -283,73 +275,5 @@ describe('<TicketHeader />', () => {
         )('DELETE_TICKET')
 
         expect(queryByText(/You are about to /)).toBeFalsy()
-    })
-
-    it(
-        'should copy ticket ID to clipboard when clicking on the ID in the UI' +
-            'and notify the user with a tooltip',
-        async () => {
-            const {getByText, findByText, queryByText} = render(
-                <Provider
-                    store={mockStore({...defaultStore, ticket: fromJS(ticket)})}
-                >
-                    <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-                </Provider>
-            )
-
-            fireEvent.click(getByText(`ID: ${ticket.id}`))
-            expect(copy).toHaveBeenCalledWith(ticket.id)
-            await findByText(/Ticket ID copied to clipboard/)
-            jest.useFakeTimers()
-            jest.advanceTimersByTime(COPY_ID_TIMEOUT_MS)
-            expect(queryByText(/Ticket ID copied to clipboard /)).toBeFalsy()
-        }
-    )
-
-    it('should clear previous timeout when clicking on the ID in the UI twice in a row', () => {
-        const {getByText} = render(
-            <Provider
-                store={mockStore({...defaultStore, ticket: fromJS(ticket)})}
-            >
-                <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-            </Provider>
-        )
-
-        jest.useFakeTimers()
-        fireEvent.click(getByText(`ID: ${ticket.id}`))
-        fireEvent.click(getByText(`ID: ${ticket.id}`))
-        jest.advanceTimersByTime(COPY_ID_TIMEOUT_MS)
-        expect(window.clearTimeout).toHaveBeenCalled()
-    })
-
-    it('should clear copy id timeout when clicking on the ID in the UI and then unmounting', () => {
-        const {getByText, unmount} = render(
-            <Provider
-                store={mockStore({...defaultStore, ticket: fromJS(ticket)})}
-            >
-                <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(`ID: ${ticket.id}`))
-        unmount()
-        expect(window.clearTimeout).toHaveBeenCalled()
-    })
-
-    it('should hide the copy ticket ID tooltip and clear timeout when moving away from the ID wrapper', async () => {
-        const {getByText, findByText, queryByText} = render(
-            <Provider
-                store={mockStore({...defaultStore, ticket: fromJS(ticket)})}
-            >
-                <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-            </Provider>
-        )
-        const ticketIdButton = getByText(`ID: ${ticket.id}`)
-
-        fireEvent.click(ticketIdButton)
-        await findByText(/Ticket ID copied to clipboard/)
-        fireEvent.mouseLeave(ticketIdButton.parentElement as Element)
-        expect(queryByText(/Ticket ID copied to clipboard /)).toBeFalsy()
-        expect(window.clearTimeout).toHaveBeenCalled()
     })
 })

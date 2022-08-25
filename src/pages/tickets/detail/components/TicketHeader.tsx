@@ -1,4 +1,4 @@
-import React, {createRef} from 'react'
+import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import moment, {Moment} from 'moment-timezone'
 import classnames from 'classnames'
@@ -7,10 +7,8 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
-    Tooltip,
 } from 'reactstrap'
 import {Map} from 'immutable'
-import copy from 'copy-to-clipboard'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {
@@ -29,9 +27,6 @@ import {
     snoozeTicket,
     ticketPartialUpdate,
 } from 'state/ticket/actions'
-import Button from 'pages/common/components/button/Button'
-import tooltipCSS from 'pages/common/components/Tooltip.less'
-
 import shortcutManager from '../../../../services/shortcutManager'
 import EditableTitle from '../../../common/components/EditableTitle'
 import MergeTicketsContainer from '../../../common/components/MergeTickets/MergeTicketsContainer'
@@ -52,8 +47,6 @@ import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
 import TicketTrash from './TicketDetails/TicketTrash'
 import css from './TicketHeader.less'
 
-export const COPY_ID_TIMEOUT_MS = 3000
-
 type Props = {
     ticket: Map<any, any>
     className: string
@@ -64,7 +57,6 @@ type State = {
     askTrashConfirmation: boolean
     showSnoozePicker: boolean
     isMergeTicketModalOpen: boolean
-    isCopyIdTooltipOpened: boolean
 }
 
 export class TicketHeaderContainer extends React.Component<Props, State> {
@@ -72,11 +64,7 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         askTrashConfirmation: false,
         showSnoozePicker: false,
         isMergeTicketModalOpen: false,
-        isCopyIdTooltipOpened: false,
     }
-
-    copyIdContainerRef = createRef<HTMLDivElement>()
-    copyIdTimeout: number | null = null
 
     componentDidMount() {
         this._bindKeys()
@@ -84,9 +72,6 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
 
     componentWillUnmount() {
         shortcutManager.unbind('TicketDetailContainer')
-        if (this.copyIdTimeout) {
-            window.clearTimeout(this.copyIdTimeout)
-        }
     }
 
     _toggleStatus = (status: string) => {
@@ -217,28 +202,6 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         })
     }
 
-    copyIdToClipboard = () => {
-        this.clearCopyIdTimeout()
-
-        copy(this.props.ticket.get('id'))
-        this.setState({isCopyIdTooltipOpened: true})
-
-        this.copyIdTimeout = window.setTimeout(() => {
-            this.setState({isCopyIdTooltipOpened: false})
-        }, COPY_ID_TIMEOUT_MS)
-    }
-
-    clearCopyIdTimeout = () => {
-        if (this.copyIdTimeout) {
-            window.clearTimeout(this.copyIdTimeout)
-        }
-    }
-
-    hideCopyTooltip = () => {
-        this.setState({isCopyIdTooltipOpened: false})
-        this.clearCopyIdTimeout()
-    }
-
     render() {
         const {
             addTags,
@@ -257,9 +220,6 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
         const {askTrashConfirmation, showSnoozePicker} = this.state
         const isUpdate = !!ticket.get('id')
         const isTrashed = !!ticket.get('trashed_datetime')
-        const copyTooltipId = `copy-ticket-id-${
-            ticket.get('id') as string
-        }-tooltip-trigger`
 
         return (
             <div
@@ -274,34 +234,6 @@ export class TicketHeaderContainer extends React.Component<Props, State> {
                         update={setSubject}
                         focus={!ticket.get('id')}
                     />
-
-                    {isUpdate && (
-                        <div
-                            ref={this.copyIdContainerRef}
-                            onMouseLeave={this.hideCopyTooltip}
-                            className={css.ticketIdContainer}
-                        >
-                            <Button
-                                id={copyTooltipId}
-                                intent="secondary"
-                                fillStyle="ghost"
-                                size="small"
-                                className={css.ticketIdButton}
-                                onClick={this.copyIdToClipboard}
-                            >
-                                ID: {ticket.get('id')}
-                            </Button>
-                            <Tooltip
-                                placement="bottom"
-                                target={copyTooltipId}
-                                container={this.copyIdContainerRef}
-                                isOpen={this.state.isCopyIdTooltipOpened}
-                                className={tooltipCSS.tooltip}
-                            >
-                                Ticket ID copied to clipboard
-                            </Tooltip>
-                        </div>
-                    )}
 
                     <TicketSnooze
                         className={css.headerIcon}
