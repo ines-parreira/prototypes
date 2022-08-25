@@ -79,6 +79,12 @@ export type DisconnectResponse = {
     is_uninstalled: boolean
 }
 
+export type AppErrorLog = {
+    error: string
+    payload: any
+    created_datetime: string
+}
+
 export const isAppListItem = (
     input: IntegrationListItem | AppListItem
 ): input is AppListItem => input.type === IntegrationType.App

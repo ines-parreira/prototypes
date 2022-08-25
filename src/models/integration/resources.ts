@@ -5,6 +5,7 @@ import {
     AppListData,
     AppData,
     AppDetail,
+    AppErrorLog,
     AppListItem,
     DisconnectResponse,
 } from './types/app'
@@ -65,4 +66,14 @@ export const disconnectApp = async (appId: string): Promise<boolean> => {
         `/api/apps/uninstall/${appId}`
     )
     return data.is_uninstalled
+}
+
+export const fetchAppErrorLogs = async (
+    appId: string
+): Promise<AppErrorLog[]> => {
+    const {data} = await client.get<ApiListResponse<AppErrorLog[], never>>(
+        '/api/async/errors',
+        {params: {app_id: appId}}
+    )
+    return data.data
 }

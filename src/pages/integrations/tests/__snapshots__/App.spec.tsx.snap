@@ -306,3 +306,63 @@ exports[`App should render 2`] = `
   </main>
 </div>
 `;
+
+exports[`App should render the advanced tab 1`] = `
+<div
+  class="container"
+>
+  <div
+    class="inner"
+    style="min-height: 300px;"
+  >
+    <i
+      class="icon-custom icon-circle-o-notch md-spin"
+      style="font-size: 40px;"
+    />
+  </div>
+</div>
+`;
+
+exports[`App should render the advanced tab 2`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          My test app
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="p-4"
+  >
+    <h2>
+      Error Logs
+    </h2>
+    <p>
+      No errors to show from the past 7 days.
+    </p>
+  </div>
+</div>
+`;

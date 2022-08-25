@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppErrorRow should render 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="info"
+    >
+      <div
+        class="message"
+      >
+        <b
+          class="mr-2"
+        >
+          Test error
+        </b>
+        <button
+          class="wrapper wrapper ghost ghost secondary medium"
+          title="More details"
+          type="button"
+        >
+          <i
+            class="material-icons icon"
+          >
+            expand_more
+          </i>
+        </button>
+      </div>
+      <span
+        class="text-faded"
+      >
+        <span
+          id="datetime-tooltip-4fzzzxjylrx"
+        >
+          01/17/2022
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`AppErrorRow should render without a payload 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <div
+      class="info"
+    >
+      <div
+        class="message"
+      >
+        <b
+          class="mr-2"
+        >
+          Test error
+        </b>
+      </div>
+      <span
+        class="text-faded"
+      >
+        <span
+          id="datetime-tooltip-4fzzzxjylrx"
+        >
+          01/17/2022
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;

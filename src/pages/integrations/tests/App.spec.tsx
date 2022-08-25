@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {renderWithRouter} from 'utils/testing'
-import App from 'pages/integrations/App'
+import App, {Tab} from 'pages/integrations/App'
 import client from 'models/api/resources'
 import {dummyAppData} from 'fixtures/apps'
 
@@ -54,5 +54,23 @@ describe(`App`, () => {
         await findAllByText(new RegExp(dummyAppData.name))
 
         expect(mockServer.history.get.length).toEqual(1)
+    })
+
+    it('should render the advanced tab', async () => {
+        const {container} = renderWithRouter(
+            <Provider store={store}>
+                <App />
+            </Provider>,
+            {
+                path: '/integrations/app/:appId/:extra?',
+                route: `/integrations/app/${appId}/${Tab.Advanced}`,
+            }
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+        mockServer.onGet(`/api/apps/${appId}`).reply(200, dummyAppData)
+        mockServer.onGet(`/api/async/errors`).reply(200, {data: []})
+        await screen.findAllByText(new RegExp(dummyAppData.name))
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

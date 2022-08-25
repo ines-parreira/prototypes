@@ -697,7 +697,7 @@ export function IntegrationsSettingsRoutes({
                     })}
                 />
                 <Route
-                    path={`${path}/app/:appId`}
+                    path={`${path}/app/:appId/:extra?`}
                     exact
                     render={appRender({
                         content: memoizedWithUserRoleRequired(

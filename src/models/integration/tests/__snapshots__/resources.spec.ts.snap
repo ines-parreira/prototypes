@@ -48,6 +48,32 @@ Object {
 }
 `;
 
+exports[`integration resource fetchAppErrorLogs should return the errors 1`] = `
+Array [
+  Array [
+    Object {
+      "created_datetime": "2022-01-17T18:20:50.067Z",
+      "error": "Test error",
+      "payload": Object {
+        "test": "Test value",
+      },
+    },
+    Object {
+      "created_datetime": "2022-02-17T18:20:50.067Z",
+      "error": "Test error 2",
+      "payload": null,
+    },
+    Object {
+      "created_datetime": "2022-03-17T18:20:50.067Z",
+      "error": "Test error 3",
+      "payload": Object {
+        "test": "Test value 3",
+      },
+    },
+  ],
+]
+`;
+
 exports[`integration resource fetchApps should return formatted apps 1`] = `
 Array [
   Object {
