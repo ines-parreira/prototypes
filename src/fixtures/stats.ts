@@ -2188,11 +2188,11 @@ export const selfServiceProductsWithMostIssuesAndReturnRequests: Stat<TwoDimensi
                         {type: StatType.Number, value: 61},
                         {
                             type: StatType.Issues,
-                            value: [
-                                ReportIssueReasons.REASON_PAST_EXPECTED_DELIVERY_DATE,
-                                ReportIssueReasons.REASON_DID_NOT_RECEIVE_REFUND,
-                                ReportIssueReasons.REASON_EDIT_ORDER,
-                            ],
+                            value: {
+                                [ReportIssueReasons.REASON_PAST_EXPECTED_DELIVERY_DATE]: 30,
+                                [ReportIssueReasons.REASON_DID_NOT_RECEIVE_REFUND]: 30,
+                                [ReportIssueReasons.REASON_EDIT_ORDER]: 1,
+                            },
                         },
                         {type: StatType.Number, value: 45},
                     ],
@@ -2208,10 +2208,10 @@ export const selfServiceProductsWithMostIssuesAndReturnRequests: Stat<TwoDimensi
                         {type: StatType.Number, value: 59},
                         {
                             type: StatType.Issues,
-                            value: [
-                                ReportIssueReasons.REASON_CHANGE_DELIVERY_DATE,
-                                ReportIssueReasons.REASON_OTHER,
-                            ],
+                            value: {
+                                [ReportIssueReasons.REASON_CHANGE_DELIVERY_DATE]: 30,
+                                [ReportIssueReasons.REASON_OTHER]: 29,
+                            },
                         },
                         {type: StatType.Number, value: 11},
                     ],

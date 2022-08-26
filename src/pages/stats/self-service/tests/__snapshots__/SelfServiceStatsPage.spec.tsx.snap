@@ -2480,12 +2480,21 @@ exports[`<SelfServiceStatsPage /> should render the stats variant when the SelfS
                   <div>
                     <div>
                       I'm past my expected delivery date
+                       (
+                      30
+                      )
                     </div>
                     <div>
                       I didn't get my refund
+                       (
+                      30
+                      )
                     </div>
                     <div>
                       I'd like to edit my order
+                       (
+                      1
+                      )
                     </div>
                   </div>
                 </span>
@@ -2540,9 +2549,15 @@ exports[`<SelfServiceStatsPage /> should render the stats variant when the SelfS
                   <div>
                     <div>
                       I'd like to change the delivery date
+                       (
+                      30
+                      )
                     </div>
                     <div>
                       Other
+                       (
+                      29
+                      )
                     </div>
                   </div>
                 </span>

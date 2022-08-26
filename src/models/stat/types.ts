@@ -220,7 +220,7 @@ export type StatCell =
       }
     | {
           type: StatType.Issues
-          value: ReportIssueReasons[]
+          value: {[key in ReportIssueReasons]?: number}
       }
     | {
           type: StatType.TitleWithLink

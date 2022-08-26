@@ -97,10 +97,13 @@ export class TableStat extends Component<
 
         switch (type) {
             case StatValueType.Issues: {
+                const value = (metric.get('value') as Map<any, any>).sort(
+                    (a, b) => b - a
+                )
                 return (
                     <div>
-                        {(metric.get('value') as List<any>).map(
-                            (issue: string) => {
+                        {value
+                            .map((count: string, issue: string) => {
                                 const translatedIssue = (
                                     REASONS_DROPDOWN_OPTIONS as SelectableOption[]
                                 ).find(
@@ -109,11 +112,11 @@ export class TableStat extends Component<
 
                                 return (
                                     <div key={issue}>
-                                        {translatedIssue || issue}
+                                        {translatedIssue || issue} ({count})
                                     </div>
                                 )
-                            }
-                        )}
+                            })
+                            .toList()}
                     </div>
                 )
             }
