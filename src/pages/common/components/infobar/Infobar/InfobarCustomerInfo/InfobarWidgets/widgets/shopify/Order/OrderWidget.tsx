@@ -250,11 +250,7 @@ class AfterTitle extends Component<AfterTitleProps> {
                 </StaticField>
                 <StaticField label="Total">
                     <MoneyAmount
-                        amount={source.getIn([
-                            'total_price_set',
-                            'presentment_money',
-                            'amount',
-                        ])}
+                        amount={source.getIn(['current_total_price'])}
                         currencyCode={source.getIn([
                             'total_price_set',
                             'presentment_money',
