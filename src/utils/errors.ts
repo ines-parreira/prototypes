@@ -14,7 +14,6 @@ import {
 const TRACE_SAMPLE_RATE = 0.001
 const IGNORED_ERRORS = [
     'fb_xd_fragment', // Facebook borked
-    'draft-js/lib/*', // Draft JS errors
     'ResizeObserver loop completed with undelivered notifications',
     'TypeError: Failed to fetch', // https://linear.app/gorgias/issue/COR-1014/typeerror-failed-to-fetch
     'TypeError: NetworkError when attempting to fetch resource.', // https://linear.app/gorgias/issue/COR-1014/typeerror-failed-to-fetch
@@ -53,6 +52,8 @@ export function initErrorReporter({
             // Chrome extensions
             /extensions\//i,
             /^chrome:\/\//i,
+            /draft-js\/lib/i, // Draft JS errors
+            /analytics\.min\.js/i, // https://linear.app/gorgias/issue/PLTCO-1017/typeerror-cannot-read-property-page-of-undefined
         ],
     })
     Sentry.setTag('language', 'javascript')

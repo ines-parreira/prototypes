@@ -7,13 +7,14 @@ Array [
       "denyUrls": Array [
         /extensions\\\\//i,
         /\\^chrome:\\\\/\\\\//i,
+        /draft-js\\\\/lib/i,
+        /analytics\\\\\\.min\\\\\\.js/i,
       ],
       "dsn": "https://example.com/error",
       "enabled": true,
       "environment": "development",
       "ignoreErrors": Array [
         "fb_xd_fragment",
-        "draft-js/lib/*",
         "ResizeObserver loop completed with undelivered notifications",
         "TypeError: Failed to fetch",
         "TypeError: NetworkError when attempting to fetch resource.",
