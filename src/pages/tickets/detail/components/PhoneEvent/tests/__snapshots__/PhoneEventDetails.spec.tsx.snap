@@ -1,5 +1,60 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<PhoneEventDetails/> render() should render audio recording message played event details 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Audio recording
+        :
+      </b>
+       
+      voice_recording.mp3
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEventDetails/> render() should render call forwarded to external number event details 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Forwarded to:
+      </b>
+       
+      +1 456 765 4985
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEventDetails/> render() should render call forwarded to gorgias number event details 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Forwarded to:
+      </b>
+       
+      +1 456 765 4985
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<PhoneEventDetails/> render() should render call recording event 1`] = `
 <div
   class="eventDetails"
@@ -168,6 +223,25 @@ exports[`<PhoneEventDetails/> render() should render details for the rest of eve
       </b>
        
       +1 662 442 4075
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<PhoneEventDetails/> render() should render text message played event details 1`] = `
+<div
+  class="eventDetails"
+>
+  <div
+    class="content"
+  >
+    <div>
+      <b>
+        Text
+        :
+      </b>
+       
+      Text to speech message to play
     </div>
   </div>
 </div>

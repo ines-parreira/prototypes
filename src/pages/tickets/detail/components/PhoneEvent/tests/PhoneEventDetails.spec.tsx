@@ -101,6 +101,98 @@ describe('<PhoneEventDetails/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
+        it('should render call forwarded to external number event details', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
+                data: {
+                    call: {
+                        selected_menu_option: {
+                            forward_call: {
+                                phone_number: '+14567654985',
+                            },
+                        },
+                    },
+                },
+            })
+            const {container} = render(
+                <Provider store={store}>
+                    <PhoneEventDetails event={event} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render call forwarded to gorgias number event details', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.PhoneCallForwardedToGorgiasNumber,
+                data: {
+                    call: {
+                        selected_menu_option: {
+                            forward_call: {
+                                phone_number: '+14567654985',
+                            },
+                        },
+                    },
+                },
+            })
+            const {container} = render(
+                <Provider store={store}>
+                    <PhoneEventDetails event={event} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render audio recording message played event details', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.MessagePlayed,
+                data: {
+                    call: {
+                        selected_menu_option: {
+                            voice_message: {
+                                voice_message_type: 'voice_recording',
+                                new_voice_recording_file_name:
+                                    'voice_recording.mp3',
+                            },
+                        },
+                    },
+                },
+            })
+            const {container} = render(
+                <Provider store={store}>
+                    <PhoneEventDetails event={event} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render text message played event details', () => {
+            const event = fromJS({
+                type: PhoneIntegrationEvent.MessagePlayed,
+                data: {
+                    call: {
+                        selected_menu_option: {
+                            voice_message: {
+                                voice_message_type: 'text_to_speech',
+                                text_to_speech_content:
+                                    'Text to speech message to play',
+                            },
+                        },
+                    },
+                },
+            })
+            const {container} = render(
+                <Provider store={store}>
+                    <PhoneEventDetails event={event} />
+                </Provider>
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
         it('should render call recording event', () => {
             const event = fromJS({
                 type: PhoneIntegrationEvent.CallRecording,

@@ -77,6 +77,9 @@ const withDetailsEvents = [
     PhoneIntegrationEvent.VoicemailRecording,
     PhoneIntegrationEvent.CallRecording,
     PhoneIntegrationEvent.PhoneCallAnswered,
+    PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
+    PhoneIntegrationEvent.PhoneCallForwardedToGorgiasNumber,
+    PhoneIntegrationEvent.MessagePlayed,
 ]
 
 type Props = {

@@ -273,6 +273,13 @@ exports[`<PhoneEvent/> render() should render with closed details 7`] = `
       >
         Call forwarded to an external number
       </span>
+      <span>
+        <i
+          class="material-icons blue eventDetailsIcon cursor-pointer"
+        >
+          keyboard_arrow_down
+        </i>
+      </span>
     </div>
   </div>
 </div>
@@ -300,6 +307,13 @@ exports[`<PhoneEvent/> render() should render with closed details 8`] = `
         class="actionName"
       >
         Call forwarded to a Gorgias number
+      </span>
+      <span>
+        <i
+          class="material-icons blue eventDetailsIcon cursor-pointer"
+        >
+          keyboard_arrow_down
+        </i>
       </span>
     </div>
   </div>
@@ -356,6 +370,13 @@ exports[`<PhoneEvent/> render() should render with closed details 10`] = `
         class="actionName"
       >
         Message played
+      </span>
+      <span>
+        <i
+          class="material-icons blue eventDetailsIcon cursor-pointer"
+        >
+          keyboard_arrow_down
+        </i>
       </span>
     </div>
   </div>
