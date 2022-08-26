@@ -90,6 +90,7 @@ export enum EventType {
     TicketClosed = 'ticket-closed',
     TicketCreated = 'ticket-created',
     TicketCustomerUpdated = 'ticket-customer-updated',
+    TicketDeleted = 'ticket-deleted',
     TicketMarkedSpam = 'ticket-marked-spam',
     TicketMerged = 'ticket-merged',
     TicketMessageCreated = 'ticket-message-created',
