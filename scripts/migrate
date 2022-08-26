@@ -7,10 +7,13 @@ const childProcess = require('child_process')
 
 const {Command} = require('commander')
 
-const SOURCE_REPO_URL = 'git@github.com:gorgias/gorgias.git'
-const TARGET_REPO_URL = 'git@github.com:gorgias/helpdesk-web-app.git'
+const SOURCE_REPO = 'gorgias/gorgias'
+const TARGET_REPO = 'gorgias/helpdesk-web-app'
 
 const program = new Command()
+
+const GITHUB_USERNAME = process.env.GITHUB_USERNAME ?? 'gorgias-bot'
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN
 
 program
     .name('migrate')
@@ -94,7 +97,11 @@ function extractFilesAndHistory() {
 }
 
 function setRepoRemote() {
-    exec(`git remote add origin ${TARGET_REPO_URL}`)
+    const targetRepoUrl = repoUrl(TARGET_REPO, {
+        username: GITHUB_USERNAME,
+        password: GITHUB_TOKEN,
+    })
+    exec(`git remote add origin ${targetRepoUrl}`)
 }
 
 function pushBranch(sourceBranch, targetBranch, force = false) {
@@ -104,8 +111,12 @@ function pushBranch(sourceBranch, targetBranch, force = false) {
 }
 
 function cloneSourceRepo(branchName, directoryName) {
+    const sourceRepoUrl = repoUrl(SOURCE_REPO, {
+        username: GITHUB_USERNAME,
+        password: GITHUB_TOKEN,
+    })
     exec(
-        `git clone ${SOURCE_REPO_URL} --branch ${branchName} --single-branch ${directoryName}`
+        `git clone ${sourceRepoUrl} --branch ${branchName} --single-branch ${directoryName}`
     )
 }
 
@@ -116,7 +127,7 @@ function getSourcePrMetadata(number) {
     try {
         const data = exec(
             `gh pr view ${number} \
-                --repo ${repoName(SOURCE_REPO_URL)} \
+                --repo ${SOURCE_REPO} \
                 --json number,title,body,url,headRefName`,
             'pipe'
         )
@@ -136,15 +147,12 @@ function createTargetPr(metadata) {
                         /<!-- Reviewable:start -->([\s\S]+)<!-- Reviewable:end -->/,
                         ''
                     )
-                    .replace(
-                        repoName(SOURCE_REPO_URL),
-                        repoName(TARGET_REPO_URL)
-                    )
+                    .replace(SOURCE_REPO, TARGET_REPO)
             const bodyFile = path.join(tmpDir, 'body')
             fs.writeFileSync(bodyFile, body)
             exec(
                 `gh pr create \
-                    --repo=${repoName(TARGET_REPO_URL)} \
+                    --repo=${TARGET_REPO} \
                     --head=${metadata.headRefName} \
                     --title="${metadata.title.replace(/[\""]/g, '\\"')}" \
                     --body-file=${bodyFile}`,
@@ -157,8 +165,13 @@ function createTargetPr(metadata) {
     }
 }
 
-function repoName(repoUrl) {
-    return repoUrl.replace('git@github.com:', '').replace('.git', '')
+function repoUrl(repoName, opts = {}) {
+    const username = opts?.username
+    const password = opts?.password
+    const repoBaseUrl = `github.com/${repoName}`
+    return username && password
+        ? `https://${username}:${password}@${repoBaseUrl}`
+        : `https://${repoBaseUrl}`
 }
 
 //
