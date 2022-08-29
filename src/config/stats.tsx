@@ -257,6 +257,7 @@ export enum StatValueType {
     Percent = 'percent',
     Product = 'product',
     QuickResponseAutomationRate = 'quick-response-automation-rate',
+    QuickResponseTitle = 'quick-response-title',
     SatisfactionScore = 'satisfaction-score',
     SatisfactionSurveyLink = 'satisfaction-survey-link',
     String = 'string',

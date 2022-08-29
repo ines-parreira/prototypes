@@ -449,6 +449,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                                     SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
                                                 }
                                                 integrations={integrations}
+                                                selfServiceConfigurations={
+                                                    selfServiceConfigurations
+                                                }
                                             />
                                         )}
                                     </>

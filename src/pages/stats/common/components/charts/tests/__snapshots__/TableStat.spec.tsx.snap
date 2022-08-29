@@ -171,8 +171,18 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </th>
         <th
-          className="quick-response-automation-rate"
+          className="quick-response-title"
           key="16"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            TITLE FOR QUICK RESPONSE
+          </span>
+        </th>
+        <th
+          className="quick-response-automation-rate"
+          key="17"
         >
           <span
             className="cell-wrapper"
@@ -182,7 +192,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
         </th>
         <th
           className="article-recommendation-automation-rate"
-          key="17"
+          key="18"
         >
           <span
             className="cell-wrapper"
@@ -469,8 +479,24 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell quick-response-automation-rate link-full-td"
+          className="lineCell quick-response-title link-full-td"
           key="16"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            title
+             
+            <span
+              className="material-icons quickResponseEnabled"
+            >
+              circle
+            </span>
+          </span>
+        </td>
+        <td
+          className="lineCell quick-response-automation-rate link-full-td"
+          key="17"
         >
           <span
             className="cell-wrapper cell-content"
@@ -492,11 +518,16 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
               <br />
               tickets to improve your responses.
             </Tooltip>
+            <Link
+              to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
+            >
+              Edit quick response
+            </Link>
           </span>
         </td>
         <td
           className="lineCell article-recommendation-automation-rate link-full-td"
-          key="17"
+          key="18"
         >
           <span
             className="cell-wrapper cell-content"
@@ -504,20 +535,6 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             30
             %
              
-            <span
-              className="material-icons lowAutomationRateIcon"
-              id="article-recommendation-automation-rate-0-tooltip"
-            >
-              error
-            </span>
-            <Tooltip
-              placement="top"
-              target="article-recommendation-automation-rate-0-tooltip"
-            >
-              Review tickets to ensure relevant 
-              <br />
-              questions are addressed by this article
-            </Tooltip>
           </span>
         </td>
       </tr>
@@ -797,8 +814,24 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
           </span>
         </td>
         <td
-          className="lineCell quick-response-automation-rate link-full-td"
+          className="lineCell quick-response-title link-full-td"
           key="16"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            title
+             
+            <span
+              className="material-icons quickResponseEnabled"
+            >
+              circle
+            </span>
+          </span>
+        </td>
+        <td
+          className="lineCell quick-response-automation-rate link-full-td"
+          key="17"
         >
           <span
             className="cell-wrapper cell-content"
@@ -820,11 +853,16 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
               <br />
               tickets to improve your responses.
             </Tooltip>
+            <Link
+              to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
+            >
+              Edit quick response
+            </Link>
           </span>
         </td>
         <td
           className="lineCell article-recommendation-automation-rate link-full-td"
-          key="17"
+          key="18"
         >
           <span
             className="cell-wrapper cell-content"
@@ -832,20 +870,6 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             30
             %
              
-            <span
-              className="material-icons lowAutomationRateIcon"
-              id="article-recommendation-automation-rate-1-tooltip"
-            >
-              error
-            </span>
-            <Tooltip
-              placement="top"
-              target="article-recommendation-automation-rate-1-tooltip"
-            >
-              Review tickets to ensure relevant 
-              <br />
-              questions are addressed by this article
-            </Tooltip>
           </span>
         </td>
       </tr>
@@ -1038,8 +1062,18 @@ exports[`TableStat should render a table chart 1`] = `
           </span>
         </th>
         <th
-          className="quick-response-automation-rate"
+          className="quick-response-title"
           key="16"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            TITLE FOR QUICK RESPONSE
+          </span>
+        </th>
+        <th
+          className="quick-response-automation-rate"
+          key="17"
         >
           <span
             className="cell-wrapper"
@@ -1049,7 +1083,7 @@ exports[`TableStat should render a table chart 1`] = `
         </th>
         <th
           className="article-recommendation-automation-rate"
-          key="17"
+          key="18"
         >
           <span
             className="cell-wrapper"
@@ -1336,8 +1370,24 @@ exports[`TableStat should render a table chart 1`] = `
           </span>
         </td>
         <td
-          className="lineCell quick-response-automation-rate link-full-td"
+          className="lineCell quick-response-title link-full-td"
           key="16"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            title
+             
+            <span
+              className="material-icons quickResponseEnabled"
+            >
+              circle
+            </span>
+          </span>
+        </td>
+        <td
+          className="lineCell quick-response-automation-rate link-full-td"
+          key="17"
         >
           <span
             className="cell-wrapper cell-content"
@@ -1359,11 +1409,16 @@ exports[`TableStat should render a table chart 1`] = `
               <br />
               tickets to improve your responses.
             </Tooltip>
+            <Link
+              to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
+            >
+              Edit quick response
+            </Link>
           </span>
         </td>
         <td
           className="lineCell article-recommendation-automation-rate link-full-td"
-          key="17"
+          key="18"
         >
           <span
             className="cell-wrapper cell-content"
@@ -1371,20 +1426,6 @@ exports[`TableStat should render a table chart 1`] = `
             30
             %
              
-            <span
-              className="material-icons lowAutomationRateIcon"
-              id="article-recommendation-automation-rate-0-tooltip"
-            >
-              error
-            </span>
-            <Tooltip
-              placement="top"
-              target="article-recommendation-automation-rate-0-tooltip"
-            >
-              Review tickets to ensure relevant 
-              <br />
-              questions are addressed by this article
-            </Tooltip>
           </span>
         </td>
       </tr>
@@ -1572,8 +1613,18 @@ exports[`TableStat should render a table with the expand button and one line vis
           </span>
         </th>
         <th
-          className="quick-response-automation-rate"
+          className="quick-response-title"
           key="16"
+        >
+          <span
+            className="cell-wrapper"
+          >
+            TITLE FOR QUICK RESPONSE
+          </span>
+        </th>
+        <th
+          className="quick-response-automation-rate"
+          key="17"
         >
           <span
             className="cell-wrapper"
@@ -1583,7 +1634,7 @@ exports[`TableStat should render a table with the expand button and one line vis
         </th>
         <th
           className="article-recommendation-automation-rate"
-          key="17"
+          key="18"
         >
           <span
             className="cell-wrapper"
@@ -1870,8 +1921,24 @@ exports[`TableStat should render a table with the expand button and one line vis
           </span>
         </td>
         <td
-          className="lineCell quick-response-automation-rate link-full-td"
+          className="lineCell quick-response-title link-full-td"
           key="16"
+        >
+          <span
+            className="cell-wrapper cell-content"
+          >
+            title
+             
+            <span
+              className="material-icons quickResponseEnabled"
+            >
+              circle
+            </span>
+          </span>
+        </td>
+        <td
+          className="lineCell quick-response-automation-rate link-full-td"
+          key="17"
         >
           <span
             className="cell-wrapper cell-content"
@@ -1893,11 +1960,16 @@ exports[`TableStat should render a table with the expand button and one line vis
               <br />
               tickets to improve your responses.
             </Tooltip>
+            <Link
+              to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
+            >
+              Edit quick response
+            </Link>
           </span>
         </td>
         <td
           className="lineCell article-recommendation-automation-rate link-full-td"
-          key="17"
+          key="18"
         >
           <span
             className="cell-wrapper cell-content"
@@ -1905,20 +1977,6 @@ exports[`TableStat should render a table with the expand button and one line vis
             30
             %
              
-            <span
-              className="material-icons lowAutomationRateIcon"
-              id="article-recommendation-automation-rate-0-tooltip"
-            >
-              error
-            </span>
-            <Tooltip
-              placement="top"
-              target="article-recommendation-automation-rate-0-tooltip"
-            >
-              Review tickets to ensure relevant 
-              <br />
-              questions are addressed by this article
-            </Tooltip>
           </span>
         </td>
       </tr>

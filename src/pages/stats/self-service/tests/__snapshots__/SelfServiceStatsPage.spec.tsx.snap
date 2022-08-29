@@ -2144,12 +2144,6 @@ exports[`<SelfServiceStatsPage /> should render the stats variant when the SelfS
                   16
                   %
                    
-                  <span
-                    class="material-icons lowAutomationRateIcon"
-                    id="article-recommendation-automation-rate-0-tooltip"
-                  >
-                    error
-                  </span>
                 </span>
               </td>
               <td
@@ -2199,12 +2193,6 @@ exports[`<SelfServiceStatsPage /> should render the stats variant when the SelfS
                   14
                   %
                    
-                  <span
-                    class="material-icons lowAutomationRateIcon"
-                    id="article-recommendation-automation-rate-1-tooltip"
-                  >
-                    error
-                  </span>
                 </span>
               </td>
               <td

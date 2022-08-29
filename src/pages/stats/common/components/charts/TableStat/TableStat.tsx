@@ -14,6 +14,7 @@ import expandUp from 'assets/img/infobar/expand-up-blue.svg'
 import {REASONS_DROPDOWN_OPTIONS} from 'pages/settings/selfService/components/ReportIssueCaseEditor/constants'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import {Integration} from 'models/integration/types'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import {
@@ -47,6 +48,7 @@ type OwnProps = {
         tagColors: Map<any, any> | null
     }
     integrations?: Integration[]
+    selfServiceConfigurations?: SelfServiceConfiguration[]
 }
 
 type State = {
@@ -65,6 +67,19 @@ export class TableStat extends Component<
         `${(axis.get('name') as string)
             .replace(/%/g, 'percent')
             .replace(/ /g, '-')}-tooltip`
+
+    _getIsQuickResponseEnabled = (flowId: string, shopName?: string) => {
+        const quickReponsePolicies = this.props.selfServiceConfigurations?.find(
+            (selfServiceConfiguration) =>
+                selfServiceConfiguration.shop_name === shopName
+        )?.quick_response_policies
+        const quickReponseDeactivatedDatetime = quickReponsePolicies?.find(
+            (quickReponsePolicy) => quickReponsePolicy.id === flowId
+        )?.deactivated_datetime
+        const isQuickResponseEnabled = quickReponseDeactivatedDatetime === null
+
+        return isQuickResponseEnabled
+    }
 
     // Render a table cell depending on its value type (percent, date, delta, etc.)
     _renderCell = (
@@ -291,11 +306,16 @@ export class TableStat extends Component<
                 const shopName = this.props.integrations?.find(
                     (integration) => integration.id === shopIntegrationId
                 )?.name
+                const flowId = metric.get('flow_id') as string
+                const isQuickResponseEnabled = this._getIsQuickResponseEnabled(
+                    flowId,
+                    shopName
+                )
 
                 return (
                     <>
                         {value}%{' '}
-                        {hasLowAutomationRate && (
+                        {hasLowAutomationRate && isQuickResponseEnabled && (
                             <>
                                 <span
                                     className={classnames(
@@ -312,9 +332,7 @@ export class TableStat extends Component<
                                 </Tooltip>
                                 {shopName && (
                                     <Link
-                                        to={`/app/settings/self-service/shopify/${shopName}/preferences/quick-response/${
-                                            metric.get('flow_id') as number
-                                        }`}
+                                        to={`/app/settings/self-service/shopify/${shopName}/preferences/quick-response/${flowId}`}
                                     >
                                         Edit quick response
                                     </Link>
@@ -326,7 +344,8 @@ export class TableStat extends Component<
             }
             case StatValueType.ArticleRecommendationAutomationRate: {
                 const value = metric.get('value') as number
-                const hasLowAutomationRate = value < 40
+                // TODO: Put threshold again when defined
+                const hasLowAutomationRate = false // value < 40
                 const tooltipId = `${StatValueType.ArticleRecommendationAutomationRate}-${lineIndex}-tooltip`
                 return (
                     <>
@@ -428,6 +447,35 @@ export class TableStat extends Component<
                         >
                             open_in_new
                         </a>
+                    </>
+                )
+            }
+            case StatValueType.QuickResponseTitle: {
+                const shopIntegrationId = metric.get(
+                    'shop_integration_id'
+                ) as number
+                const shopName = this.props.integrations?.find(
+                    (integration) => integration.id === shopIntegrationId
+                )?.name
+                const flowId = metric.get('flow_id') as string
+                const isQuickResponseEnabled = this._getIsQuickResponseEnabled(
+                    flowId,
+                    shopName
+                )
+
+                return (
+                    <>
+                        {metric.get('value')}{' '}
+                        {isQuickResponseEnabled && (
+                            <span
+                                className={classnames(
+                                    'material-icons',
+                                    css.quickResponseEnabled
+                                )}
+                            >
+                                circle
+                            </span>
+                        )}
                     </>
                 )
             }

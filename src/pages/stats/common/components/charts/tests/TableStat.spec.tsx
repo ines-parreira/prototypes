@@ -2,6 +2,8 @@ import React, {ComponentProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 
+import {Integration} from 'models/integration/types'
+import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {TableStat} from '../TableStat/TableStat'
 import {
     stats as statsConfig,
@@ -68,6 +70,10 @@ const tableStatData = fromJS({
                 {
                     name: 'Title with link',
                     type: StatValueType.TitleWithLink,
+                },
+                {
+                    name: 'Title for Quick Response',
+                    type: StatValueType.QuickResponseTitle,
                 },
                 {
                     name: 'Quick Response automation rate',
@@ -177,14 +183,20 @@ const tableStatData = fromJS({
                     type: StatValueType.TitleWithLink,
                 },
                 {
-                    value: 30,
-                    type: StatValueType.ArticleRecommendationAutomationRate,
+                    value: 'title',
+                    shop_integration_id: 1,
+                    flow_id: 'fakeflowId',
+                    type: StatValueType.QuickResponseTitle,
                 },
                 {
                     value: 30,
                     shop_integration_id: 1,
                     flow_id: 'fakeflowId',
                     type: StatValueType.QuickResponseAutomationRate,
+                },
+                {
+                    value: 30,
+                    type: StatValueType.ArticleRecommendationAutomationRate,
                 },
             ],
         ],
@@ -203,6 +215,25 @@ const tableStatNoData = fromJS({
     meta: {},
 }) as Map<any, any>
 
+const integrationsData = [
+    {
+        id: 1,
+        name: 'test-shop',
+    } as Integration,
+]
+
+const selfServiceConfigurationsData = [
+    {
+        shop_name: 'test-shop',
+        quick_response_policies: [
+            {
+                id: 'fakeflowId',
+                deactivated_datetime: null,
+            },
+        ],
+    } as SelfServiceConfiguration,
+]
+
 describe('TableStat', () => {
     it('should render a table chart', () => {
         const config = statsConfig.find(
@@ -215,6 +246,8 @@ describe('TableStat', () => {
                 >)}
                 context={{tagColors: null}}
                 config={config}
+                integrations={integrationsData}
+                selfServiceConfigurations={selfServiceConfigurationsData}
             />
         )
         expect(component).toMatchSnapshot()
@@ -256,6 +289,8 @@ describe('TableStat', () => {
                     .toObject() as ComponentProps<typeof TableStat>)}
                 context={{tagColors: null}}
                 config={fromJS(config)}
+                integrations={integrationsData}
+                selfServiceConfigurations={selfServiceConfigurationsData}
             />
         )
 
@@ -282,6 +317,8 @@ describe('TableStat', () => {
                     .toObject() as ComponentProps<typeof TableStat>)}
                 context={{tagColors: null}}
                 config={fromJS(config)}
+                integrations={integrationsData}
+                selfServiceConfigurations={selfServiceConfigurationsData}
             />
         )
 
