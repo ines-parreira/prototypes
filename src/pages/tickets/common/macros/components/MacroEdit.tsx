@@ -398,6 +398,7 @@ export class MacroEdit extends Component<Props> {
                                 name="name"
                                 onChange={this.props.setName}
                                 value={this.props.name}
+                                hasError={!this.props.name}
                                 label="Macro name"
                                 isRequired
                                 className="mb-0"

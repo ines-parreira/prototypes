@@ -72,6 +72,7 @@ describe('macro utils', () => {
                                         ],
                                     },
                                 },
+                                name: ['Name cannot be empty'],
                             },
                         },
                     },

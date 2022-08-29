@@ -64,19 +64,31 @@ export function getDefaultMacro() {
     }) as Map<any, any>
 }
 
-export function getErrorReason(error: MacroApiError) {
-    return Object.values(error.response.data.error.data?.actions || {})
-        .reduce((errors: string[], action) => {
-            Object.values(action).forEach((argumentsValue) => {
-                argumentsValue.forEach((reason) => {
-                    errors.push(
-                        ...(typeof reason === 'string'
-                            ? [reason]
-                            : Object.values(reason))
-                    )
+export function getErrorReason({
+    response: {
+        data: {
+            error: {data},
+        },
+    },
+}: MacroApiError) {
+    const {actions, name = []} = data || {}
+
+    return [
+        ...Object.values(actions || {}).reduce<string[]>(
+            (errors: string[], action) => {
+                Object.values(action).forEach((argumentsValue) => {
+                    argumentsValue.forEach((reason) => {
+                        errors.push(
+                            ...(typeof reason === 'string'
+                                ? [reason]
+                                : Object.values(reason))
+                        )
+                    })
                 })
-            })
-            return errors
-        }, [])
-        .join(', ')
+                return errors
+            },
+            []
+        ),
+        ...name,
+    ].join(', ')
 }

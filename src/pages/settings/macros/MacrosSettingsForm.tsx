@@ -202,6 +202,9 @@ export function MacrosSettingsFormContainer({
             })
         }
     }, [macros, macroId])
+
+    const hasInputError = !macroForm.name
+
     const isActionDisabled =
         isSubmitPending || isDeletePending || isDuplicatePending
 
@@ -233,7 +236,7 @@ export function MacrosSettingsFormContainer({
                     <Form
                         onSubmit={(e: SyntheticEvent<HTMLFormElement>) => {
                             e.preventDefault()
-                            if (!isActionDisabled) {
+                            if (!isActionDisabled && !hasInputError) {
                                 void handleFormSubmit()
                             }
                         }}
@@ -262,7 +265,7 @@ export function MacrosSettingsFormContainer({
                                 type="submit"
                                 className="mr-2"
                                 isLoading={isSubmitPending}
-                                isDisabled={isActionDisabled}
+                                isDisabled={isActionDisabled || hasInputError}
                             >
                                 {macroId ? 'Update macro' : 'Create macro'}
                             </Button>

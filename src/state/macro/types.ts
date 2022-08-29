@@ -7,4 +7,5 @@ export type State = Map<any, any>
 
 export type MacroApiError = GorgiasApiError<{
     actions: Record<string, Record<string, Record<string, string>[]>>
+    name: string[]
 }>
