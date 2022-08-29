@@ -1910,14 +1910,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                       className="formGroup d-flex"
                     >
                       <ToggleInput
-                        aria-label="Hide chat temporarily"
+                        aria-label="Hide chat"
                         isDisabled={false}
                         isLoading={false}
                         onClick={[Function]}
                       >
                         <div>
                           <Label
-                            aria-label="Hide chat temporarily"
+                            aria-label="Hide chat"
                             className="label"
                             htmlFor="toggle-button-6"
                             isDisabled={false}
@@ -1925,14 +1925,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                             role="switch"
                           >
                             <label
-                              aria-label="Hide chat temporarily"
+                              aria-label="Hide chat"
                               className="label label"
                               htmlFor="toggle-button-6"
                               onClick={[Function]}
                               role="switch"
                             >
                               <input
-                                aria-label="Hide chat temporarily"
+                                aria-label="Hide chat"
                                 className="input"
                                 disabled={true}
                                 id="toggle-button-6"
@@ -1950,8 +1950,77 @@ exports[`<GorgiasChatIntegrationInstall/> should display a list of Shopify store
                         className="ml-2"
                       >
                         <b>
-                          Hide chat temporarily
+                          Hide chat
                         </b>
+                         
+                        <i
+                          className="material-icons-outlined"
+                          id="hide-chat-help"
+                        >
+                          error_outline
+                        </i>
+                        <Tooltip
+                          autohide={false}
+                          delay={100}
+                          placement="top-start"
+                          style={
+                            Object {
+                              "textAlign": "left",
+                            }
+                          }
+                          target="hide-chat-help"
+                        >
+                          <UncontrolledTooltip
+                            autohide={false}
+                            className="tooltip"
+                            delay={100}
+                            placement="top-start"
+                            style={
+                              Object {
+                                "textAlign": "left",
+                              }
+                            }
+                            target="hide-chat-help"
+                          >
+                            <Tooltip
+                              autohide={false}
+                              className="tooltip"
+                              delay={100}
+                              isOpen={false}
+                              placement="top-start"
+                              placementPrefix="bs-tooltip"
+                              style={
+                                Object {
+                                  "textAlign": "left",
+                                }
+                              }
+                              target="hide-chat-help"
+                              toggle={[Function]}
+                              trigger="hover focus"
+                            >
+                              <TooltipPopoverWrapper
+                                autohide={false}
+                                className="tooltip"
+                                delay={100}
+                                fade={true}
+                                hideArrow={false}
+                                innerClassName="tooltip-inner"
+                                isOpen={false}
+                                placement="top-start"
+                                placementPrefix="bs-tooltip"
+                                popperClassName="tooltip show"
+                                style={
+                                  Object {
+                                    "textAlign": "left",
+                                  }
+                                }
+                                target="hide-chat-help"
+                                toggle={[Function]}
+                                trigger="hover focus"
+                              />
+                            </Tooltip>
+                          </UncontrolledTooltip>
+                        </Tooltip>
                       </div>
                     </div>
                   </div>
@@ -2903,14 +2972,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                       className="formGroup d-flex"
                     >
                       <ToggleInput
-                        aria-label="Hide chat temporarily"
+                        aria-label="Hide chat"
                         isDisabled={false}
                         isLoading={false}
                         onClick={[Function]}
                       >
                         <div>
                           <Label
-                            aria-label="Hide chat temporarily"
+                            aria-label="Hide chat"
                             className="label"
                             htmlFor="toggle-button-8"
                             isDisabled={false}
@@ -2918,14 +2987,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                             role="switch"
                           >
                             <label
-                              aria-label="Hide chat temporarily"
+                              aria-label="Hide chat"
                               className="label label"
                               htmlFor="toggle-button-8"
                               onClick={[Function]}
                               role="switch"
                             >
                               <input
-                                aria-label="Hide chat temporarily"
+                                aria-label="Hide chat"
                                 className="input"
                                 disabled={true}
                                 id="toggle-button-8"
@@ -2943,8 +3012,77 @@ exports[`<GorgiasChatIntegrationInstall/> should display the Custom installation
                         className="ml-2"
                       >
                         <b>
-                          Hide chat temporarily
+                          Hide chat
                         </b>
+                         
+                        <i
+                          className="material-icons-outlined"
+                          id="hide-chat-help"
+                        >
+                          error_outline
+                        </i>
+                        <Tooltip
+                          autohide={false}
+                          delay={100}
+                          placement="top-start"
+                          style={
+                            Object {
+                              "textAlign": "left",
+                            }
+                          }
+                          target="hide-chat-help"
+                        >
+                          <UncontrolledTooltip
+                            autohide={false}
+                            className="tooltip"
+                            delay={100}
+                            placement="top-start"
+                            style={
+                              Object {
+                                "textAlign": "left",
+                              }
+                            }
+                            target="hide-chat-help"
+                          >
+                            <Tooltip
+                              autohide={false}
+                              className="tooltip"
+                              delay={100}
+                              isOpen={false}
+                              placement="top-start"
+                              placementPrefix="bs-tooltip"
+                              style={
+                                Object {
+                                  "textAlign": "left",
+                                }
+                              }
+                              target="hide-chat-help"
+                              toggle={[Function]}
+                              trigger="hover focus"
+                            >
+                              <TooltipPopoverWrapper
+                                autohide={false}
+                                className="tooltip"
+                                delay={100}
+                                fade={true}
+                                hideArrow={false}
+                                innerClassName="tooltip-inner"
+                                isOpen={false}
+                                placement="top-start"
+                                placementPrefix="bs-tooltip"
+                                popperClassName="tooltip show"
+                                style={
+                                  Object {
+                                    "textAlign": "left",
+                                  }
+                                }
+                                target="hide-chat-help"
+                                toggle={[Function]}
+                                trigger="hover focus"
+                              />
+                            </Tooltip>
+                          </UncontrolledTooltip>
+                        </Tooltip>
                       </div>
                     </div>
                   </div>
@@ -4255,14 +4393,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                       className="formGroup d-flex"
                     >
                       <ToggleInput
-                        aria-label="Hide chat temporarily"
+                        aria-label="Hide chat"
                         isDisabled={false}
                         isLoading={false}
                         onClick={[Function]}
                       >
                         <div>
                           <Label
-                            aria-label="Hide chat temporarily"
+                            aria-label="Hide chat"
                             className="label"
                             htmlFor="toggle-button-3"
                             isDisabled={false}
@@ -4270,14 +4408,14 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                             role="switch"
                           >
                             <label
-                              aria-label="Hide chat temporarily"
+                              aria-label="Hide chat"
                               className="label label"
                               htmlFor="toggle-button-3"
                               onClick={[Function]}
                               role="switch"
                             >
                               <input
-                                aria-label="Hide chat temporarily"
+                                aria-label="Hide chat"
                                 className="input"
                                 disabled={true}
                                 id="toggle-button-3"
@@ -4295,8 +4433,77 @@ exports[`<GorgiasChatIntegrationInstall/> should display the associated Shopify 
                         className="ml-2"
                       >
                         <b>
-                          Hide chat temporarily
+                          Hide chat
                         </b>
+                         
+                        <i
+                          className="material-icons-outlined"
+                          id="hide-chat-help"
+                        >
+                          error_outline
+                        </i>
+                        <Tooltip
+                          autohide={false}
+                          delay={100}
+                          placement="top-start"
+                          style={
+                            Object {
+                              "textAlign": "left",
+                            }
+                          }
+                          target="hide-chat-help"
+                        >
+                          <UncontrolledTooltip
+                            autohide={false}
+                            className="tooltip"
+                            delay={100}
+                            placement="top-start"
+                            style={
+                              Object {
+                                "textAlign": "left",
+                              }
+                            }
+                            target="hide-chat-help"
+                          >
+                            <Tooltip
+                              autohide={false}
+                              className="tooltip"
+                              delay={100}
+                              isOpen={false}
+                              placement="top-start"
+                              placementPrefix="bs-tooltip"
+                              style={
+                                Object {
+                                  "textAlign": "left",
+                                }
+                              }
+                              target="hide-chat-help"
+                              toggle={[Function]}
+                              trigger="hover focus"
+                            >
+                              <TooltipPopoverWrapper
+                                autohide={false}
+                                className="tooltip"
+                                delay={100}
+                                fade={true}
+                                hideArrow={false}
+                                innerClassName="tooltip-inner"
+                                isOpen={false}
+                                placement="top-start"
+                                placementPrefix="bs-tooltip"
+                                popperClassName="tooltip show"
+                                style={
+                                  Object {
+                                    "textAlign": "left",
+                                  }
+                                }
+                                target="hide-chat-help"
+                                toggle={[Function]}
+                                trigger="hover focus"
+                              />
+                            </Tooltip>
+                          </UncontrolledTooltip>
+                        </Tooltip>
                       </div>
                     </div>
                   </div>

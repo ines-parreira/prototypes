@@ -40,9 +40,9 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
 
     const longTypeDescription = (
         <div>
-            Live chat with your customers by adding our Chat widget on your
-            website. Every time a customer starts a conversation on your
-            website, it opens a ticket in Gorgias.
+            Chat with your customers by adding our Chat widget on your website.
+            Every time a customer starts a conversation on your website, it
+            opens a ticket in Gorgias.
         </div>
     )
 
@@ -53,8 +53,8 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
             icon
             onClose={() => setCalloutDisplayed(false)}
         >
-            We moved the toggle to temporarily remove the chat from your website
-            to the <b>Installation tab</b> in the integration's page.
+            The toggle to hide the chat from your website was moved to the{' '}
+            <b>Installation tab</b> tab of your chat's settings.
         </Alert>
     )
 

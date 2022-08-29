@@ -14,6 +14,7 @@ import {
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import Tooltip from 'pages/common/components/Tooltip'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -97,8 +98,9 @@ function GorgiasChatIntegrationInstall({
 
     const isDisabled = integration.get('deactivated_datetime')
 
+    const integrationId = integration.get('id') as number
+
     const toggleActivationState = () => {
-        const integrationId = integration.get('id') as number
         if (isDisabled) {
             actions.activateIntegration(integrationId)
         } else {
@@ -179,10 +181,36 @@ function GorgiasChatIntegrationInstall({
                                     isToggled={isDisabled}
                                     isLoading={isLoading}
                                     isDisabled={isLoading}
-                                    aria-label="Hide chat temporarily"
+                                    aria-label="Hide chat"
                                 />
                                 <div className="ml-2">
-                                    <b>Hide chat temporarily</b>
+                                    <b>Hide chat</b>{' '}
+                                    <i
+                                        id="hide-chat-help"
+                                        className="material-icons-outlined"
+                                    >
+                                        error_outline
+                                    </i>
+                                    <Tooltip
+                                        autohide={false}
+                                        delay={100}
+                                        target="hide-chat-help"
+                                        placement="top-start"
+                                        style={{textAlign: 'left'}}
+                                    >
+                                        Turning this on will remove the widget
+                                        from your website but won't uninstall
+                                        it. <br /> <br />
+                                        If you are looking to reduce chat ticket
+                                        volume, we recommend you disable{' '}
+                                        <b>Live Chat</b> in the{' '}
+                                        <Link
+                                            to={`/app/settings/integrations/${GORGIAS_CHAT_INTEGRATION_TYPE}/${integrationId}/preferences`}
+                                        >
+                                            Preferences
+                                        </Link>{' '}
+                                        tab.
+                                    </Tooltip>
                                 </div>
                             </div>
                             {isUpdate && (
