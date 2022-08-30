@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import {Container, Row, Col} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
 
+import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -209,7 +210,11 @@ export class MacroModalContainer extends Component<Props, State> {
                 this.state.language === '' ? null : this.state.language
             )
         return createMacro(newMacro).then((resp) => {
-            if ((resp as Record<string, unknown>).status !== 'error') {
+            if (
+                resp?.id &&
+                (resp as unknown as UpsertNotificationAction)?.payload
+                    ?.status !== 'error'
+            ) {
                 this.props.onSearch({search: newMacro.get('name')}, true)
                 this.props.handleClickItem(resp.id)
             }
