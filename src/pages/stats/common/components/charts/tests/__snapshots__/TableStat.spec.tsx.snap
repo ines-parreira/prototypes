@@ -504,20 +504,6 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             30
             %
              
-            <span
-              className="material-icons lowAutomationRateIcon"
-              id="quick-response-automation-rate-0-tooltip"
-            >
-              error
-            </span>
-            <Tooltip
-              placement="top"
-              target="quick-response-automation-rate-0-tooltip"
-            >
-              Automation rate is low! Review 
-              <br />
-              tickets to improve your responses.
-            </Tooltip>
             <Link
               to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
             >
@@ -839,20 +825,6 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
             30
             %
              
-            <span
-              className="material-icons lowAutomationRateIcon"
-              id="quick-response-automation-rate-1-tooltip"
-            >
-              error
-            </span>
-            <Tooltip
-              placement="top"
-              target="quick-response-automation-rate-1-tooltip"
-            >
-              Automation rate is low! Review 
-              <br />
-              tickets to improve your responses.
-            </Tooltip>
             <Link
               to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
             >
@@ -1395,20 +1367,6 @@ exports[`TableStat should render a table chart 1`] = `
             30
             %
              
-            <span
-              className="material-icons lowAutomationRateIcon"
-              id="quick-response-automation-rate-0-tooltip"
-            >
-              error
-            </span>
-            <Tooltip
-              placement="top"
-              target="quick-response-automation-rate-0-tooltip"
-            >
-              Automation rate is low! Review 
-              <br />
-              tickets to improve your responses.
-            </Tooltip>
             <Link
               to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
             >
@@ -1946,20 +1904,6 @@ exports[`TableStat should render a table with the expand button and one line vis
             30
             %
              
-            <span
-              className="material-icons lowAutomationRateIcon"
-              id="quick-response-automation-rate-0-tooltip"
-            >
-              error
-            </span>
-            <Tooltip
-              placement="top"
-              target="quick-response-automation-rate-0-tooltip"
-            >
-              Automation rate is low! Review 
-              <br />
-              tickets to improve your responses.
-            </Tooltip>
             <Link
               to="/app/settings/self-service/shopify/test-shop/preferences/quick-response/fakeflowId"
             >

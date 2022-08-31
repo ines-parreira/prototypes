@@ -298,8 +298,6 @@ export class TableStat extends Component<
             }
             case StatValueType.QuickResponseAutomationRate: {
                 const value = metric.get('value') as number
-                const hasLowAutomationRate = value < 80
-                const tooltipId = `${StatValueType.QuickResponseAutomationRate}-${lineIndex}-tooltip`
                 const shopIntegrationId = metric.get(
                     'shop_integration_id'
                 ) as number
@@ -315,21 +313,8 @@ export class TableStat extends Component<
                 return (
                     <>
                         {value}%{' '}
-                        {hasLowAutomationRate && isQuickResponseEnabled && (
+                        {isQuickResponseEnabled && (
                             <>
-                                <span
-                                    className={classnames(
-                                        'material-icons',
-                                        css.lowAutomationRateIcon
-                                    )}
-                                    id={tooltipId}
-                                >
-                                    error
-                                </span>
-                                <Tooltip placement="top" target={tooltipId}>
-                                    Automation rate is low! Review <br />
-                                    tickets to improve your responses.
-                                </Tooltip>
                                 {shopName && (
                                     <Link
                                         to={`/app/settings/self-service/shopify/${shopName}/preferences/quick-response/${flowId}`}

@@ -1,8 +1,10 @@
 import React, {ComponentProps} from 'react'
 import {NavLink} from 'react-router-dom'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import css from 'assets/css/navbar.less'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 const COMMON_NAV_LINK_PROPS: Partial<ComponentProps<NavLink>> = {
     className: css.link,
@@ -11,6 +13,9 @@ const COMMON_NAV_LINK_PROPS: Partial<ComponentProps<NavLink>> = {
 }
 
 export default function StatsNavbarView() {
+    const hasSelfServiceStatisticsV2: boolean | undefined =
+        useFlags()[FeatureFlagKey.SelfServiceStatsV2]
+
     return (
         <>
             <NavbarBlock icon="adjust" title="Live">
@@ -65,12 +70,14 @@ export default function StatsNavbarView() {
             </NavbarBlock>
             <NavbarBlock icon="bolt" title="Automations">
                 <div className={css.menu}>
-                    <NavLink
-                        {...COMMON_NAV_LINK_PROPS}
-                        to="/app/stats/automation"
-                    >
-                        Overview
-                    </NavLink>
+                    {!hasSelfServiceStatisticsV2 && (
+                        <NavLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/automation"
+                        >
+                            Overview
+                        </NavLink>
+                    )}
                     <NavLink {...COMMON_NAV_LINK_PROPS} to="/app/stats/macros">
                         Macros
                     </NavLink>
