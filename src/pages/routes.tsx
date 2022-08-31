@@ -588,7 +588,11 @@ export function SettingsRoutes({match: {path}}: RouteComponentProps) {
                 path={`${path}/api`}
                 exact
                 render={appRender({
-                    content: APIView,
+                    content: memoizedWithUserRoleRequired(
+                        APIView,
+                        ADMIN_ROLE,
+                        PageSection.Api
+                    ),
                     navbar: SettingsNavbarContainer,
                 })}
             />

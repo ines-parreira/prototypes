@@ -65,4 +65,7 @@ export const roleRestrictionConfigs: Record<
     [PageSection.TwilioSubaccountStatus]: {
         pageHeader: SectionPageHeader.TwilioSubaccountStatus,
     },
+    [PageSection.Api]: {
+        pageHeader: SectionPageHeader.Api,
+    },
 }
