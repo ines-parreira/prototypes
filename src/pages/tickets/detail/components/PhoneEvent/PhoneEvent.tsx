@@ -36,6 +36,18 @@ const icons = new window.Map<string, string>([
     ],
     [PhoneIntegrationEvent.PhoneCallForwarded, callForwardedIcon],
     [PhoneIntegrationEvent.MessagePlayed, callAnsweredIcon],
+    [PhoneIntegrationEvent.PhoneCallTransferredToAgent, callForwardedIcon],
+    [PhoneIntegrationEvent.PhoneCallTransferToAgentMissed, callMissedIcon],
+])
+
+const actionFailedIcon = (
+    <div className={classnames(css.icon, css.danger)} title="Fail">
+        <i className="material-icons">close</i>
+    </div>
+)
+
+const materialIcons = new window.Map<string, any>([
+    [PhoneIntegrationEvent.PhoneCallTransferToAgentFailed, actionFailedIcon],
 ])
 
 const names = new window.Map<string, string>([
@@ -57,6 +69,12 @@ const names = new window.Map<string, string>([
     ],
     [PhoneIntegrationEvent.PhoneCallForwarded, 'Call forwarded'],
     [PhoneIntegrationEvent.MessagePlayed, 'Message played'],
+    [PhoneIntegrationEvent.PhoneCallTransferredToAgent, 'Call transferred'],
+    [PhoneIntegrationEvent.PhoneCallTransferToAgentFailed, 'Call transfer'],
+    [
+        PhoneIntegrationEvent.PhoneCallTransferToAgentMissed,
+        'Transferred call missed',
+    ],
 ])
 const customerBasedEvents = [
     PhoneIntegrationEvent.IncomingPhoneCall,
@@ -70,6 +88,12 @@ const agentBasedEvents = [
     PhoneIntegrationEvent.ConversationStarted,
 ]
 
+const callTransferEvents = [
+    PhoneIntegrationEvent.PhoneCallTransferredToAgent,
+    PhoneIntegrationEvent.PhoneCallTransferToAgentFailed,
+    PhoneIntegrationEvent.PhoneCallTransferToAgentMissed,
+]
+
 const withDetailsEvents = [
     PhoneIntegrationEvent.IncomingPhoneCall,
     PhoneIntegrationEvent.OutgoingPhoneCall,
@@ -80,6 +104,7 @@ const withDetailsEvents = [
     PhoneIntegrationEvent.PhoneCallForwardedToExternalNumber,
     PhoneIntegrationEvent.PhoneCallForwardedToGorgiasNumber,
     PhoneIntegrationEvent.MessagePlayed,
+    PhoneIntegrationEvent.PhoneCallTransferToAgentFailed,
 ]
 
 type Props = {
@@ -92,6 +117,7 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
     const eventData = event.get('data', fromJS({})) as Map<string, any>
     const callRecording = eventData.get('recording') as Map<string, any>
     const icon = icons.get(eventType) || null
+    const materialIcon = materialIcons.get(eventType) || null
 
     const [displayAdditionalInfo, setDisplayAdditionalInfo] =
         useState<boolean>(false)
@@ -122,9 +148,12 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
         const agentName: string | null = event.getIn(['user', 'name'])
         const isCustomerBasedEvent = customerBasedEvents.includes(eventType)
         const isAgentBasedEvent = agentBasedEvents.includes(eventType)
+        const isCallTransferEvent = callTransferEvents.includes(eventType)
 
         if (
-            (!isCustomerBasedEvent && !isAgentBasedEvent) ||
+            (!isCustomerBasedEvent &&
+                !isAgentBasedEvent &&
+                !isCallTransferEvent) ||
             (!agentName && isAgentBasedEvent) ||
             (!customerName && isCustomerBasedEvent)
         ) {
@@ -147,6 +176,27 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
         if (isAgentBasedEvent) {
             return `${eventName} by ${agentName as string}`
         }
+        if (isCallTransferEvent) {
+            const targetedAgentName: string | null = event.getIn([
+                'data',
+                'targeted_agent',
+                'name',
+            ])
+
+            if (
+                eventType === PhoneIntegrationEvent.PhoneCallTransferredToAgent
+            ) {
+                return `${eventName} from ${agentName as string} to ${
+                    targetedAgentName as string
+                }`
+            } else if (
+                eventType ===
+                PhoneIntegrationEvent.PhoneCallTransferToAgentFailed
+            ) {
+                return `${eventName} to ${targetedAgentName as string} failed`
+            }
+            return `${eventName} by ${targetedAgentName as string}`
+        }
     }, [event])
     const eventTitle = getEventTitle()
     const phoneTicketId: Maybe<string> = event.getIn([
@@ -167,6 +217,7 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
                             <img src={icon} alt={eventType || ''} />
                         </div>
                     )}
+                    {materialIcon !== null && materialIcon}
                     {eventTitle && (
                         <span className={css.actionName}>{eventTitle}</span>
                     )}

@@ -131,6 +131,21 @@ export default function PhoneEventDetails({
             )
             break
         }
+        case PhoneIntegrationEvent.PhoneCallTransferToAgentFailed: {
+            const error_message: string | null = event.getIn([
+                'data',
+                'error_message',
+            ])
+            content = (
+                <>
+                    <div>
+                        <b>Error: </b>
+                        {error_message}
+                    </div>
+                </>
+            )
+            break
+        }
         default: {
             const formattedForwardedPhoneNumber = parsePhoneNumber(
                 eventData.get('forwarded_to', '')

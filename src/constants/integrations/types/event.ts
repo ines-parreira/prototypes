@@ -11,4 +11,7 @@ export enum PhoneIntegrationEvent {
     PhoneCallForwardedToGorgiasNumber = 'phone-call-forwarded-to-gorgias-number',
     PhoneCallForwarded = 'phone-call-forwarded',
     MessagePlayed = 'message-played',
+    PhoneCallTransferredToAgent = 'phone-call-transferred-to-agent',
+    PhoneCallTransferToAgentFailed = 'phone-call-transfer-to-agent-failed',
+    PhoneCallTransferToAgentMissed = 'phone-call-transfer-to-agent-missed',
 }
