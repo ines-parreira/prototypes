@@ -64,6 +64,7 @@ import Alert, {AlertType} from '../../common/components/Alert/Alert'
 import SelfServiceIntegrationsFilter from './SelfServiceIntegrationsFilter'
 import css from './SelfServiceStatsPage.less'
 import {SelfServiceFeaturePreview} from './SelfServiceFeaturePreview'
+import {useIsArticleRecommendationDisabled} from './self-service-stats.utils'
 
 const AUTOMATION_SELF_SERVICE_STAT_NAME = 'automation-self-service'
 const TITLE = 'Self-service'
@@ -199,6 +200,10 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     const articleRecommendationPerformanceNoData =
         (articleRecommendationPerformance?.data.data.lines.length ?? 0) === 0
+
+    const articleRecommendationDisabled = useIsArticleRecommendationDisabled(
+        articleRecommendationPerformanceNoData
+    )
 
     const [chatFlowsDistribution, isFetchingChatFlowsDistribution] =
         useStatResource<TwoDimensionalChart>({
@@ -487,7 +492,8 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             >
                                 {(stat) => (
                                     <>
-                                        {articleRecommendationPerformanceNoData ? (
+                                        {articleRecommendationPerformanceNoData &&
+                                        articleRecommendationDisabled ? (
                                             <SelfServiceFeaturePreview
                                                 title="Leverage your Help Center to automate tickets"
                                                 description="Enable article recommendation in Chat settings to automatically recommend relevant Help Center articles to shoppers."
