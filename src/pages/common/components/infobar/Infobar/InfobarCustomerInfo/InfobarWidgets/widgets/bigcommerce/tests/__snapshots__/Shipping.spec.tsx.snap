@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Shipping <AfterTitle/> should match snapshot - fedex tracking link 1`] = `
+<div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Tracking Link
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      <a
+        href="https://www.fedex.com/apps/fedextrack/?tracknumbers=111111111"
+      >
+        track order
+      </a>
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Shipping <AfterTitle/> should match snapshot - no tracking link 1`] = `
+<div>
+  <div
+    class="widgetField staticWidgetField"
+  >
+    <span
+      class="widgetFieldLabel"
+    >
+      Tracking Link
+      :
+       
+    </span>
+    <span
+      class="widgetFieldValue"
+    >
+      N/A
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Shipping <AfterTitle/> should not render because widgets are being edited 1`] = `<div />`;

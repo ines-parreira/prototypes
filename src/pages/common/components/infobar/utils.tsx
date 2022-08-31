@@ -42,6 +42,11 @@ import {
 import EditableListWidget from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/EditableListWidget'
 import {DatetimeLabel} from '../../utils/labels'
 import css from './utils.less'
+import {
+    FEDEX_BASE_TRACKING_LINK,
+    UPSREADY_BASE_TRACKING_LINK,
+    USPS_BASE_TRACKING_LINK,
+} from './constants'
 
 /**
  * Check if is an array of objects (and no an array of string for example)
@@ -835,4 +840,25 @@ export function getInfobarMinWidth() {
 
 export function getInfobarWidth() {
     return window.localStorage.getItem('infobar-width')
+}
+
+/** Compute the tracking URL based on the tracking number and the shipping provider. **/
+export function getTrackingLink(
+    trackingNumber: string,
+    provider: string
+): string | null {
+    switch (provider) {
+        case 'fedex': {
+            return `${FEDEX_BASE_TRACKING_LINK}${trackingNumber}`
+        }
+        case 'upsready': {
+            return `${UPSREADY_BASE_TRACKING_LINK}${trackingNumber}`
+        }
+        case 'usps': {
+            return `${USPS_BASE_TRACKING_LINK}${trackingNumber}`
+        }
+        default: {
+            return null
+        }
+    }
 }

@@ -2,6 +2,7 @@ import {List, Map} from 'immutable'
 
 import Customer from './Customer'
 import Order from './Order'
+import Shipping from './Shipping'
 
 const bigcommerce = (args: {
     template: Map<any, any>
@@ -18,10 +19,16 @@ const bigcommerce = (args: {
     }
 
     if (
-        path.match(/integrations\.\d+\.orders.\[]$/) &&
+        path.match(/integrations\.\d+\.orders\.\[]$/) &&
         templatePath.match(/\d+\.template\.widgets\.\d+\.widgets\.\d+$/)
     ) {
         return Order()
+    }
+
+    if (
+        path.match(/integrations\.\d+\.orders\.\[]\.bc_order_shipments\.\[]$/)
+    ) {
+        return Shipping()
     }
 
     return {}
