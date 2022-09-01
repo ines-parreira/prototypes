@@ -254,6 +254,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                         this.setValue(key, value.get('status'))
                                     }}
                                     fullWidth={false}
+                                    dropdownContainer={document.body}
                                 />
                             )
                         case 'tags-select':

@@ -10,6 +10,7 @@ type Props = {
     index: number
     updateActionArgs: (index: number, args: Map<string, any>) => void
     fullWidth?: boolean
+    dropdownContainer?: HTMLElement
 }
 
 const SetStatusAction = ({
@@ -17,6 +18,7 @@ const SetStatusAction = ({
     action,
     updateActionArgs,
     fullWidth = true,
+    dropdownContainer,
 }: Props) => {
     return (
         <div className="field">
@@ -30,7 +32,7 @@ const SetStatusAction = ({
                     label: _upperFirst(status),
                 }))}
                 fullWidth={fullWidth}
-                container={document.body}
+                container={dropdownContainer}
             />
         </div>
     )
