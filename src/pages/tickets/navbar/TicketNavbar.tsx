@@ -4,6 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {useHistory, useParams} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 
+import GorgiasApi from 'services/gorgiasApi'
 import useSearch from '../../../hooks/useSearch'
 import {
     UserRole,
@@ -18,7 +19,7 @@ import {
     deleteSection,
 } from '../../../models/section/resources'
 import {SectionDraft, Section} from '../../../models/section/types'
-import {fetchViews, updateView} from '../../../models/view/resources'
+import {fetchViewsPaginated, updateView} from '../../../models/view/resources'
 import {View} from '../../../models/view/types'
 import shortcutManager from '../../../services/shortcutManager/shortcutManager'
 import {
@@ -116,12 +117,17 @@ export function TicketNavbarContainer({
     useEffect(() => {
         void (async () => {
             try {
-                const res = await fetchViews()
+                const client = new GorgiasApi()
+                const generator = client.cursorPaginate(fetchViewsPaginated)
+                let result: View[] = []
+                for await (const page of generator) {
+                    result = result.concat(page)
+                }
                 fetchViewsSuccess(
-                    res,
+                    {data: result},
                     params.viewId != null ? params.viewId : (viewId as string)
                 )
-                viewsFetched(res.data)
+                viewsFetched(result)
             } catch (error) {
                 void notify({
                     message: 'Failed to fetch views',

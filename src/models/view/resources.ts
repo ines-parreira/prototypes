@@ -1,7 +1,11 @@
 import _omit from 'lodash/omit'
+import {stringify} from 'qs'
 
-import client from '../api/resources'
-import {ApiListResponsePagination} from '../api/types'
+import client from 'models/api/resources'
+import {
+    ApiListResponseCursorPagination,
+    ApiPaginationParams,
+} from 'models/api/types'
 
 import {View, ViewDraft} from './types'
 
@@ -10,11 +14,14 @@ type SharedView = View & {
     shared_with_users: {id: number}[]
 }
 
-export const fetchViews = async () => {
-    const res = await client.get<ApiListResponsePagination<View[]>>(
-        '/api/views/'
+export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
+    return await client.get<ApiListResponseCursorPagination<View[]>>(
+        `/api/views/`,
+        {
+            params: {limit: 100, ...params},
+            paramsSerializer: stringify,
+        }
     )
-    return res.data
 }
 
 export const createView = async (viewDraft: ViewDraft) => {

@@ -4,7 +4,12 @@ import _omit from 'lodash/omit'
 import {view} from 'fixtures/views'
 import client from 'models/api/resources'
 
-import {fetchViews, createView, updateView, deleteView} from '../resources'
+import {
+    fetchViewsPaginated,
+    createView,
+    updateView,
+    deleteView,
+} from '../resources'
 import {ViewDraft} from '../types'
 
 const mockedServer = new MockAdapter(client)
@@ -18,19 +23,19 @@ describe('view resources', () => {
         mockedServer.reset()
     })
 
-    describe('fetchViews', () => {
+    describe('fetchViewsPaginated', () => {
         it('should resolve with a View list on success', async () => {
-            mockedServer.onGet('/api/views/').reply(200, {
+            mockedServer.onGet(/\/api\/views\/*/).reply(200, {
                 data: [view, view, view],
             })
 
-            const res = await fetchViews()
+            const res = await fetchViewsPaginated()
             expect(res).toMatchSnapshot()
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onGet('/api/views/').reply(503, {message: 'error'})
-            return expect(fetchViews()).rejects.toEqual(
+            mockedServer.onGet(/\/api\/views\/*/).reply(503, {message: 'error'})
+            return expect(fetchViewsPaginated()).rejects.toEqual(
                 new Error('Request failed with status code 503')
             )
         })

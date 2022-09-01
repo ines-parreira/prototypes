@@ -28,8 +28,10 @@ import {buildJobMessage} from 'utils/notificationUtils'
 import {getMoment} from 'utils/date'
 import {StoreDispatch, RootState} from 'state/types'
 import client from 'models/api/resources'
+import {fetchViewsPaginated} from 'models/view/resources'
 import {SearchEngine, SearchType} from 'models/search/types'
 import {SearchRank} from 'hooks/useSearchRankScenario'
+import GorgiasApi from 'services/gorgiasApi'
 
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
@@ -159,26 +161,27 @@ export const resetView = (configName?: string) => {
 }
 
 export function fetchViews(currentViewId: string) {
-    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+    return async (dispatch: StoreDispatch) => {
         dispatch({
             type: types.FETCH_VIEW_LIST_START,
         })
 
-        return client
-            .get<{data: View[]}>('/api/views/')
-            .then((json) => json?.data)
-            .then(
-                (resp) => {
-                    dispatch(fetchViewsSuccess(resp, currentViewId))
-                },
-                (error) => {
-                    dispatch({
-                        type: types.FETCH_VIEW_LIST_ERROR,
-                        error,
-                        reason: 'Failed to fetch views',
-                    })
-                }
-            )
+        const client = new GorgiasApi()
+        const generator = client.cursorPaginate(fetchViewsPaginated)
+
+        let result: View[] = []
+        try {
+            for await (const page of generator) {
+                result = result.concat(page)
+            }
+            dispatch(fetchViewsSuccess({data: result}, currentViewId))
+        } catch (error) {
+            dispatch({
+                type: types.FETCH_VIEW_LIST_ERROR,
+                error,
+                reason: 'Failed to fetch views',
+            })
+        }
     }
 }
 

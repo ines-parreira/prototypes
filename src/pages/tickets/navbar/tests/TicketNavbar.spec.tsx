@@ -191,8 +191,9 @@ describe('<TicketNavbar/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockedServer.reset()
-        mockedServer.onGet('/api/views/').reply(200, {
+        mockedServer.onGet(/\/api\/views\/*/).reply(200, {
             data: [view],
+            meta: {},
         })
         mockedServer.onGet('/api/view-sections/').reply(200, {data: [section]})
         mockedServer.onPost('/api/view-sections/').reply(200, section)
@@ -264,7 +265,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should dispatch a notification when failing to fetch views', (done) => {
-        mockedServer.onGet('/api/views/').reply(503, {message: 'error'})
+        mockedServer.onGet(/\/api\/views\/*/).reply(503, {message: 'error'})
         renderWithRouter(<TicketNavbarContainer {...minProps} />, {
             path: '/foo/:viewId?',
             route: '/foo/1',
