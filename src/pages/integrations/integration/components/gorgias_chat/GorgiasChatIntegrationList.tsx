@@ -165,7 +165,7 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
             </PageHeader>
 
             <Container
-                data-candu-id="integration-container"
+                data-candu-id="integration-list-top"
                 fluid
                 className={classnames(
                     settingsCss.pageContainer,
@@ -204,6 +204,8 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
                     </TableBody>
                 </TableWrapper>
             )}
+
+            <Container fluid data-candu-id="integration-list-bottom" />
         </div>
     )
 }

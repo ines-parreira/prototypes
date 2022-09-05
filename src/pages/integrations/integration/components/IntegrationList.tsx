@@ -131,7 +131,7 @@ class IntegrationList extends React.Component<Props> {
                 <Container
                     fluid
                     className={classnames(css.pageContainer, css.pb0)}
-                    data-candu-id="integration-container"
+                    data-candu-id="integration-list-top"
                 >
                     <div className="mb-3">{longTypeDescription}</div>
                     {alert}
@@ -160,6 +160,8 @@ class IntegrationList extends React.Component<Props> {
                         </tbody>
                     </Table>
                 )}
+
+                <Container fluid data-candu-id="integration-list-bottom" />
             </div>
         )
     }

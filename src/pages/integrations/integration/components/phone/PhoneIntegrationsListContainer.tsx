@@ -44,7 +44,7 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                 }
             />
             <Container
-                data-candu-id="integration-container"
+                data-candu-id="integration-list-top"
                 fluid
                 className={css.pageContainer}
             >
@@ -56,6 +56,7 @@ export function PhoneIntegrationsListContainer(): JSX.Element {
                 )}
             </Container>
             <PhoneIntegrationsList type={IntegrationType.Phone} />
+            <Container fluid data-candu-id="integration-list-bottom" />
         </div>
     )
 }
