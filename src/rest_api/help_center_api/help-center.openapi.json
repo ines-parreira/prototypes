@@ -435,7 +435,8 @@
                         }
                     }
                 },
-                "tags": ["help-centers"]
+                "tags": ["help-centers"],
+                "security": [{"ApiKey": []}]
             },
             "delete": {
                 "operationId": "deleteHelpCenter",
@@ -449,7 +450,8 @@
                     }
                 ],
                 "responses": {"200": {"description": ""}},
-                "tags": ["help-centers"]
+                "tags": ["help-centers"],
+                "security": [{"ApiKey": []}]
             }
         },
         "/api/help-center/help-centers/delete-account": {
@@ -471,6 +473,26 @@
                 "tags": ["help-centers"]
             }
         },
+        "/api/help-center/help-centers/update-contact-form-integration": {
+            "post": {
+                "operationId": "updateContactFormIntegration",
+                "summary": "Update the help centers contact form integration values",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateContactFormIntegrationDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"204": {"description": ""}},
+                "tags": ["help-centers"],
+                "security": [{"ApiKey": []}]
+            }
+        },
         "/api/help-center/help-centers/shop-name/{shop_name}/purge-cache": {
             "post": {
                 "operationId": "purgeCache",
@@ -486,6 +508,34 @@
                 "responses": {"201": {"description": ""}},
                 "tags": ["help-centers"],
                 "security": [{"ApiKey": []}]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/duplicate": {
+            "post": {
+                "operationId": "duplicateHelpCenter",
+                "summary": "Duplicate a help center",
+                "description": "Duplicate a help center with all its translations, categories, articles, navigation links and redirects.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HelpCenterDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["help-centers"]
             }
         },
         "/api/help-center/help-centers/{help_center_id}/translations": {
@@ -1919,7 +1969,11 @@
                     }
                 },
                 "tags": ["articles"],
-                "security": [{"ApiKey": []}, {"AgentBasicAuth": []}]
+                "security": [
+                    {"ApiKey": []},
+                    {"ApiKey": []},
+                    {"AgentBasicAuth": []}
+                ]
             },
             "post": {
                 "operationId": "createArticle",
@@ -3878,6 +3932,39 @@
                     }
                 },
                 "required": ["account_id"]
+            },
+            "ToIntegrationDto": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "number", "example": 12345},
+                    "email": {
+                        "type": "string",
+                        "example": "acme-support@gorgias.xyz"
+                    }
+                },
+                "required": ["id", "email"]
+            },
+            "UpdateContactFormIntegrationDto": {
+                "type": "object",
+                "properties": {
+                    "account_id": {
+                        "type": "number",
+                        "description": "The account id whose help centers should be deleted",
+                        "example": 1
+                    },
+                    "from_integration_id": {
+                        "type": "number",
+                        "description": "The target email integration id",
+                        "example": 2
+                    },
+                    "to_integration": {
+                        "nullable": true,
+                        "allOf": [
+                            {"$ref": "#/components/schemas/ToIntegrationDto"}
+                        ]
+                    }
+                },
+                "required": ["account_id", "from_integration_id"]
             },
             "HelpCenterTranslationsListPageDto": {
                 "type": "object",

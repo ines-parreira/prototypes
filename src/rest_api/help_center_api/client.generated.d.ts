@@ -1304,6 +1304,18 @@ declare namespace Components {
       subject: string;
       message: string;
     }
+    export interface ToIntegrationDto {
+      /**
+       * example:
+       * 12345
+       */
+      id: number;
+      /**
+       * example:
+       * acme-support@gorgias.xyz
+       */
+      email: string;
+    }
     export interface UpdateArticleDto {
       category_id?: number | null;
     }
@@ -1416,6 +1428,32 @@ declare namespace Components {
        * The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.
        */
       visibility_status?: "PUBLIC" | "UNLISTED";
+    }
+    export interface UpdateContactFormIntegrationDto {
+      /**
+       * The account id whose help centers should be deleted
+       * example:
+       * 1
+       */
+      account_id: number;
+      /**
+       * The target email integration id
+       * example:
+       * 2
+       */
+      from_integration_id: number;
+      to_integration?: {
+        /**
+         * example:
+         * 12345
+         */
+        id: number;
+        /**
+         * example:
+         * acme-support@gorgias.xyz
+         */
+        email: string;
+      } | null;
     }
     export interface UpdateExtraHTMLDto {
       /**
@@ -1920,6 +1958,17 @@ declare namespace Paths {
     }
     export interface QueryParameters {
       from: Parameters.From;
+    }
+  }
+  namespace DuplicateHelpCenter {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    namespace Responses {
+      export type $201 = Components.Schemas.HelpCenterDto;
     }
   }
   namespace GenerateCsvTemplate {
@@ -2527,6 +2576,9 @@ declare namespace Paths {
       export type $200 = Components.Schemas.CategoryTranslationDto;
     }
   }
+  namespace UpdateContactFormIntegration {
+    export type RequestBody = Components.Schemas.UpdateContactFormIntegrationDto;
+  }
   namespace UpdateExtraHTML {
     namespace Parameters {
       export type HelpCenterId = number;
@@ -2712,6 +2764,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
   /**
+   * updateContactFormIntegration - Update the help centers contact form integration values
+   */
+  'updateContactFormIntegration'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.UpdateContactFormIntegration.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
    * purgeCache - Purge CDN cache
    */
   'purgeCache'(
@@ -2719,6 +2779,16 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<any>
+  /**
+   * duplicateHelpCenter - Duplicate a help center
+   * 
+   * Duplicate a help center with all its translations, categories, articles, navigation links and redirects.
+   */
+  'duplicateHelpCenter'(
+    parameters?: Parameters<Paths.DuplicateHelpCenter.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.DuplicateHelpCenter.Responses.$201>
   /**
    * listHelpCenterTranslations - List help center's translations
    */
@@ -3348,6 +3418,16 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
+  ['/api/help-center/help-centers/update-contact-form-integration']: {
+    /**
+     * updateContactFormIntegration - Update the help centers contact form integration values
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.UpdateContactFormIntegration.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
   ['/api/help-center/help-centers/shop-name/{shop_name}/purge-cache']: {
     /**
      * purgeCache - Purge CDN cache
@@ -3357,6 +3437,18 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/duplicate']: {
+    /**
+     * duplicateHelpCenter - Duplicate a help center
+     * 
+     * Duplicate a help center with all its translations, categories, articles, navigation links and redirects.
+     */
+    'post'(
+      parameters?: Parameters<Paths.DuplicateHelpCenter.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.DuplicateHelpCenter.Responses.$201>
   }
   ['/api/help-center/help-centers/{help_center_id}/translations']: {
     /**
